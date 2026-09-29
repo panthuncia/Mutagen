@@ -374,7 +374,8 @@ public class LoquiBinaryTranslationGeneration : BinaryTranslationGeneration
                         }
 
                         sb.Append($"{typeGen.Name}");
-                        sb.Append($" => _{typeGen.Name}Locations != null ? ");
+                        // A group is read and located once, on first access, rather than on every access.
+                        sb.Append($" => _{typeGen.Name}Locations != null ? (_{typeGen.Name}GroupCache ??= ");
                         sb.Append(
                             $"{this.Module.BinaryOverlayClassName(loqui)}.{loqui.TargetObjectGeneration.Name}Factory({recordDataAccessor}, _{typeGen.Name}Locations, _package");
                         if (!recConverter.StartsWith("default("))
@@ -382,8 +383,10 @@ public class LoquiBinaryTranslationGeneration : BinaryTranslationGeneration
                             sb.Append($", {recConverter}");
                         }
 
-                        sb.Append($") ");
+                        sb.Append($")) ");
                         sb.Append($": default;");
+                        sb.AppendLine();
+                        sb.AppendLine($"private {loqui.Interface(getter: true, internalInterface: true)}? _{typeGen.Name}GroupCache;");
                     }
                 }
                 else if (loqui.TargetObjectGeneration.IsTypelessStruct())

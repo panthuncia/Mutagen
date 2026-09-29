@@ -12240,282 +12240,394 @@ namespace Mutagen.Bethesda.Oblivion
         #endregion
         #region GameSettings
         private List<RangeInt64>? _GameSettingsLocations;
-        private IOblivionGroupGetter<IGameSettingGetter>? _GameSettings => _GameSettingsLocations != null ? OblivionGroupBinaryOverlay<IGameSettingGetter>.OblivionGroupFactory(_stream, _GameSettingsLocations, _package) : default;
+        private IOblivionGroupGetter<IGameSettingGetter>? _GameSettings => _GameSettingsLocations != null ? (_GameSettingsGroupCache ??= OblivionGroupBinaryOverlay<IGameSettingGetter>.OblivionGroupFactory(_stream, _GameSettingsLocations, _package)) : default;
+        private IOblivionGroupGetter<IGameSettingGetter>? _GameSettingsGroupCache;
+
         public IOblivionGroupGetter<IGameSettingGetter> GameSettings => _GameSettings ?? new OblivionGroup<GameSetting>(this);
         #endregion
         #region Globals
         private List<RangeInt64>? _GlobalsLocations;
-        private IOblivionGroupGetter<IGlobalGetter>? _Globals => _GlobalsLocations != null ? OblivionGroupBinaryOverlay<IGlobalGetter>.OblivionGroupFactory(_stream, _GlobalsLocations, _package) : default;
+        private IOblivionGroupGetter<IGlobalGetter>? _Globals => _GlobalsLocations != null ? (_GlobalsGroupCache ??= OblivionGroupBinaryOverlay<IGlobalGetter>.OblivionGroupFactory(_stream, _GlobalsLocations, _package)) : default;
+        private IOblivionGroupGetter<IGlobalGetter>? _GlobalsGroupCache;
+
         public IOblivionGroupGetter<IGlobalGetter> Globals => _Globals ?? new OblivionGroup<Global>(this);
         #endregion
         #region Classes
         private List<RangeInt64>? _ClassesLocations;
-        private IOblivionGroupGetter<IClassGetter>? _Classes => _ClassesLocations != null ? OblivionGroupBinaryOverlay<IClassGetter>.OblivionGroupFactory(_stream, _ClassesLocations, _package) : default;
+        private IOblivionGroupGetter<IClassGetter>? _Classes => _ClassesLocations != null ? (_ClassesGroupCache ??= OblivionGroupBinaryOverlay<IClassGetter>.OblivionGroupFactory(_stream, _ClassesLocations, _package)) : default;
+        private IOblivionGroupGetter<IClassGetter>? _ClassesGroupCache;
+
         public IOblivionGroupGetter<IClassGetter> Classes => _Classes ?? new OblivionGroup<Class>(this);
         #endregion
         #region Factions
         private List<RangeInt64>? _FactionsLocations;
-        private IOblivionGroupGetter<IFactionGetter>? _Factions => _FactionsLocations != null ? OblivionGroupBinaryOverlay<IFactionGetter>.OblivionGroupFactory(_stream, _FactionsLocations, _package) : default;
+        private IOblivionGroupGetter<IFactionGetter>? _Factions => _FactionsLocations != null ? (_FactionsGroupCache ??= OblivionGroupBinaryOverlay<IFactionGetter>.OblivionGroupFactory(_stream, _FactionsLocations, _package)) : default;
+        private IOblivionGroupGetter<IFactionGetter>? _FactionsGroupCache;
+
         public IOblivionGroupGetter<IFactionGetter> Factions => _Factions ?? new OblivionGroup<Faction>(this);
         #endregion
         #region Hairs
         private List<RangeInt64>? _HairsLocations;
-        private IOblivionGroupGetter<IHairGetter>? _Hairs => _HairsLocations != null ? OblivionGroupBinaryOverlay<IHairGetter>.OblivionGroupFactory(_stream, _HairsLocations, _package) : default;
+        private IOblivionGroupGetter<IHairGetter>? _Hairs => _HairsLocations != null ? (_HairsGroupCache ??= OblivionGroupBinaryOverlay<IHairGetter>.OblivionGroupFactory(_stream, _HairsLocations, _package)) : default;
+        private IOblivionGroupGetter<IHairGetter>? _HairsGroupCache;
+
         public IOblivionGroupGetter<IHairGetter> Hairs => _Hairs ?? new OblivionGroup<Hair>(this);
         #endregion
         #region Eyes
         private List<RangeInt64>? _EyesLocations;
-        private IOblivionGroupGetter<IEyeGetter>? _Eyes => _EyesLocations != null ? OblivionGroupBinaryOverlay<IEyeGetter>.OblivionGroupFactory(_stream, _EyesLocations, _package) : default;
+        private IOblivionGroupGetter<IEyeGetter>? _Eyes => _EyesLocations != null ? (_EyesGroupCache ??= OblivionGroupBinaryOverlay<IEyeGetter>.OblivionGroupFactory(_stream, _EyesLocations, _package)) : default;
+        private IOblivionGroupGetter<IEyeGetter>? _EyesGroupCache;
+
         public IOblivionGroupGetter<IEyeGetter> Eyes => _Eyes ?? new OblivionGroup<Eye>(this);
         #endregion
         #region Races
         private List<RangeInt64>? _RacesLocations;
-        private IOblivionGroupGetter<IRaceGetter>? _Races => _RacesLocations != null ? OblivionGroupBinaryOverlay<IRaceGetter>.OblivionGroupFactory(_stream, _RacesLocations, _package) : default;
+        private IOblivionGroupGetter<IRaceGetter>? _Races => _RacesLocations != null ? (_RacesGroupCache ??= OblivionGroupBinaryOverlay<IRaceGetter>.OblivionGroupFactory(_stream, _RacesLocations, _package)) : default;
+        private IOblivionGroupGetter<IRaceGetter>? _RacesGroupCache;
+
         public IOblivionGroupGetter<IRaceGetter> Races => _Races ?? new OblivionGroup<Race>(this);
         #endregion
         #region Sounds
         private List<RangeInt64>? _SoundsLocations;
-        private IOblivionGroupGetter<ISoundGetter>? _Sounds => _SoundsLocations != null ? OblivionGroupBinaryOverlay<ISoundGetter>.OblivionGroupFactory(_stream, _SoundsLocations, _package) : default;
+        private IOblivionGroupGetter<ISoundGetter>? _Sounds => _SoundsLocations != null ? (_SoundsGroupCache ??= OblivionGroupBinaryOverlay<ISoundGetter>.OblivionGroupFactory(_stream, _SoundsLocations, _package)) : default;
+        private IOblivionGroupGetter<ISoundGetter>? _SoundsGroupCache;
+
         public IOblivionGroupGetter<ISoundGetter> Sounds => _Sounds ?? new OblivionGroup<Sound>(this);
         #endregion
         #region Skills
         private List<RangeInt64>? _SkillsLocations;
-        private IOblivionGroupGetter<ISkillRecordGetter>? _Skills => _SkillsLocations != null ? OblivionGroupBinaryOverlay<ISkillRecordGetter>.OblivionGroupFactory(_stream, _SkillsLocations, _package) : default;
+        private IOblivionGroupGetter<ISkillRecordGetter>? _Skills => _SkillsLocations != null ? (_SkillsGroupCache ??= OblivionGroupBinaryOverlay<ISkillRecordGetter>.OblivionGroupFactory(_stream, _SkillsLocations, _package)) : default;
+        private IOblivionGroupGetter<ISkillRecordGetter>? _SkillsGroupCache;
+
         public IOblivionGroupGetter<ISkillRecordGetter> Skills => _Skills ?? new OblivionGroup<SkillRecord>(this);
         #endregion
         #region MagicEffects
         private List<RangeInt64>? _MagicEffectsLocations;
-        private IOblivionGroupGetter<IMagicEffectGetter>? _MagicEffects => _MagicEffectsLocations != null ? OblivionGroupBinaryOverlay<IMagicEffectGetter>.OblivionGroupFactory(_stream, _MagicEffectsLocations, _package) : default;
+        private IOblivionGroupGetter<IMagicEffectGetter>? _MagicEffects => _MagicEffectsLocations != null ? (_MagicEffectsGroupCache ??= OblivionGroupBinaryOverlay<IMagicEffectGetter>.OblivionGroupFactory(_stream, _MagicEffectsLocations, _package)) : default;
+        private IOblivionGroupGetter<IMagicEffectGetter>? _MagicEffectsGroupCache;
+
         public IOblivionGroupGetter<IMagicEffectGetter> MagicEffects => _MagicEffects ?? new OblivionGroup<MagicEffect>(this);
         #endregion
         #region Scripts
         private List<RangeInt64>? _ScriptsLocations;
-        private IOblivionGroupGetter<IScriptGetter>? _Scripts => _ScriptsLocations != null ? OblivionGroupBinaryOverlay<IScriptGetter>.OblivionGroupFactory(_stream, _ScriptsLocations, _package) : default;
+        private IOblivionGroupGetter<IScriptGetter>? _Scripts => _ScriptsLocations != null ? (_ScriptsGroupCache ??= OblivionGroupBinaryOverlay<IScriptGetter>.OblivionGroupFactory(_stream, _ScriptsLocations, _package)) : default;
+        private IOblivionGroupGetter<IScriptGetter>? _ScriptsGroupCache;
+
         public IOblivionGroupGetter<IScriptGetter> Scripts => _Scripts ?? new OblivionGroup<Script>(this);
         #endregion
         #region LandTextures
         private List<RangeInt64>? _LandTexturesLocations;
-        private IOblivionGroupGetter<ILandTextureGetter>? _LandTextures => _LandTexturesLocations != null ? OblivionGroupBinaryOverlay<ILandTextureGetter>.OblivionGroupFactory(_stream, _LandTexturesLocations, _package) : default;
+        private IOblivionGroupGetter<ILandTextureGetter>? _LandTextures => _LandTexturesLocations != null ? (_LandTexturesGroupCache ??= OblivionGroupBinaryOverlay<ILandTextureGetter>.OblivionGroupFactory(_stream, _LandTexturesLocations, _package)) : default;
+        private IOblivionGroupGetter<ILandTextureGetter>? _LandTexturesGroupCache;
+
         public IOblivionGroupGetter<ILandTextureGetter> LandTextures => _LandTextures ?? new OblivionGroup<LandTexture>(this);
         #endregion
         #region Enchantments
         private List<RangeInt64>? _EnchantmentsLocations;
-        private IOblivionGroupGetter<IEnchantmentGetter>? _Enchantments => _EnchantmentsLocations != null ? OblivionGroupBinaryOverlay<IEnchantmentGetter>.OblivionGroupFactory(_stream, _EnchantmentsLocations, _package) : default;
+        private IOblivionGroupGetter<IEnchantmentGetter>? _Enchantments => _EnchantmentsLocations != null ? (_EnchantmentsGroupCache ??= OblivionGroupBinaryOverlay<IEnchantmentGetter>.OblivionGroupFactory(_stream, _EnchantmentsLocations, _package)) : default;
+        private IOblivionGroupGetter<IEnchantmentGetter>? _EnchantmentsGroupCache;
+
         public IOblivionGroupGetter<IEnchantmentGetter> Enchantments => _Enchantments ?? new OblivionGroup<Enchantment>(this);
         #endregion
         #region Spells
         private List<RangeInt64>? _SpellsLocations;
-        private IOblivionGroupGetter<ISpellGetter>? _Spells => _SpellsLocations != null ? OblivionGroupBinaryOverlay<ISpellGetter>.OblivionGroupFactory(_stream, _SpellsLocations, _package) : default;
+        private IOblivionGroupGetter<ISpellGetter>? _Spells => _SpellsLocations != null ? (_SpellsGroupCache ??= OblivionGroupBinaryOverlay<ISpellGetter>.OblivionGroupFactory(_stream, _SpellsLocations, _package)) : default;
+        private IOblivionGroupGetter<ISpellGetter>? _SpellsGroupCache;
+
         public IOblivionGroupGetter<ISpellGetter> Spells => _Spells ?? new OblivionGroup<Spell>(this);
         #endregion
         #region Birthsigns
         private List<RangeInt64>? _BirthsignsLocations;
-        private IOblivionGroupGetter<IBirthsignGetter>? _Birthsigns => _BirthsignsLocations != null ? OblivionGroupBinaryOverlay<IBirthsignGetter>.OblivionGroupFactory(_stream, _BirthsignsLocations, _package) : default;
+        private IOblivionGroupGetter<IBirthsignGetter>? _Birthsigns => _BirthsignsLocations != null ? (_BirthsignsGroupCache ??= OblivionGroupBinaryOverlay<IBirthsignGetter>.OblivionGroupFactory(_stream, _BirthsignsLocations, _package)) : default;
+        private IOblivionGroupGetter<IBirthsignGetter>? _BirthsignsGroupCache;
+
         public IOblivionGroupGetter<IBirthsignGetter> Birthsigns => _Birthsigns ?? new OblivionGroup<Birthsign>(this);
         #endregion
         #region Activators
         private List<RangeInt64>? _ActivatorsLocations;
-        private IOblivionGroupGetter<IActivatorGetter>? _Activators => _ActivatorsLocations != null ? OblivionGroupBinaryOverlay<IActivatorGetter>.OblivionGroupFactory(_stream, _ActivatorsLocations, _package) : default;
+        private IOblivionGroupGetter<IActivatorGetter>? _Activators => _ActivatorsLocations != null ? (_ActivatorsGroupCache ??= OblivionGroupBinaryOverlay<IActivatorGetter>.OblivionGroupFactory(_stream, _ActivatorsLocations, _package)) : default;
+        private IOblivionGroupGetter<IActivatorGetter>? _ActivatorsGroupCache;
+
         public IOblivionGroupGetter<IActivatorGetter> Activators => _Activators ?? new OblivionGroup<Activator>(this);
         #endregion
         #region AlchemicalApparatus
         private List<RangeInt64>? _AlchemicalApparatusLocations;
-        private IOblivionGroupGetter<IAlchemicalApparatusGetter>? _AlchemicalApparatus => _AlchemicalApparatusLocations != null ? OblivionGroupBinaryOverlay<IAlchemicalApparatusGetter>.OblivionGroupFactory(_stream, _AlchemicalApparatusLocations, _package) : default;
+        private IOblivionGroupGetter<IAlchemicalApparatusGetter>? _AlchemicalApparatus => _AlchemicalApparatusLocations != null ? (_AlchemicalApparatusGroupCache ??= OblivionGroupBinaryOverlay<IAlchemicalApparatusGetter>.OblivionGroupFactory(_stream, _AlchemicalApparatusLocations, _package)) : default;
+        private IOblivionGroupGetter<IAlchemicalApparatusGetter>? _AlchemicalApparatusGroupCache;
+
         public IOblivionGroupGetter<IAlchemicalApparatusGetter> AlchemicalApparatus => _AlchemicalApparatus ?? new OblivionGroup<AlchemicalApparatus>(this);
         #endregion
         #region Armors
         private List<RangeInt64>? _ArmorsLocations;
-        private IOblivionGroupGetter<IArmorGetter>? _Armors => _ArmorsLocations != null ? OblivionGroupBinaryOverlay<IArmorGetter>.OblivionGroupFactory(_stream, _ArmorsLocations, _package) : default;
+        private IOblivionGroupGetter<IArmorGetter>? _Armors => _ArmorsLocations != null ? (_ArmorsGroupCache ??= OblivionGroupBinaryOverlay<IArmorGetter>.OblivionGroupFactory(_stream, _ArmorsLocations, _package)) : default;
+        private IOblivionGroupGetter<IArmorGetter>? _ArmorsGroupCache;
+
         public IOblivionGroupGetter<IArmorGetter> Armors => _Armors ?? new OblivionGroup<Armor>(this);
         #endregion
         #region Books
         private List<RangeInt64>? _BooksLocations;
-        private IOblivionGroupGetter<IBookGetter>? _Books => _BooksLocations != null ? OblivionGroupBinaryOverlay<IBookGetter>.OblivionGroupFactory(_stream, _BooksLocations, _package) : default;
+        private IOblivionGroupGetter<IBookGetter>? _Books => _BooksLocations != null ? (_BooksGroupCache ??= OblivionGroupBinaryOverlay<IBookGetter>.OblivionGroupFactory(_stream, _BooksLocations, _package)) : default;
+        private IOblivionGroupGetter<IBookGetter>? _BooksGroupCache;
+
         public IOblivionGroupGetter<IBookGetter> Books => _Books ?? new OblivionGroup<Book>(this);
         #endregion
         #region Clothes
         private List<RangeInt64>? _ClothesLocations;
-        private IOblivionGroupGetter<IClothingGetter>? _Clothes => _ClothesLocations != null ? OblivionGroupBinaryOverlay<IClothingGetter>.OblivionGroupFactory(_stream, _ClothesLocations, _package) : default;
+        private IOblivionGroupGetter<IClothingGetter>? _Clothes => _ClothesLocations != null ? (_ClothesGroupCache ??= OblivionGroupBinaryOverlay<IClothingGetter>.OblivionGroupFactory(_stream, _ClothesLocations, _package)) : default;
+        private IOblivionGroupGetter<IClothingGetter>? _ClothesGroupCache;
+
         public IOblivionGroupGetter<IClothingGetter> Clothes => _Clothes ?? new OblivionGroup<Clothing>(this);
         #endregion
         #region Containers
         private List<RangeInt64>? _ContainersLocations;
-        private IOblivionGroupGetter<IContainerGetter>? _Containers => _ContainersLocations != null ? OblivionGroupBinaryOverlay<IContainerGetter>.OblivionGroupFactory(_stream, _ContainersLocations, _package) : default;
+        private IOblivionGroupGetter<IContainerGetter>? _Containers => _ContainersLocations != null ? (_ContainersGroupCache ??= OblivionGroupBinaryOverlay<IContainerGetter>.OblivionGroupFactory(_stream, _ContainersLocations, _package)) : default;
+        private IOblivionGroupGetter<IContainerGetter>? _ContainersGroupCache;
+
         public IOblivionGroupGetter<IContainerGetter> Containers => _Containers ?? new OblivionGroup<Container>(this);
         #endregion
         #region Doors
         private List<RangeInt64>? _DoorsLocations;
-        private IOblivionGroupGetter<IDoorGetter>? _Doors => _DoorsLocations != null ? OblivionGroupBinaryOverlay<IDoorGetter>.OblivionGroupFactory(_stream, _DoorsLocations, _package) : default;
+        private IOblivionGroupGetter<IDoorGetter>? _Doors => _DoorsLocations != null ? (_DoorsGroupCache ??= OblivionGroupBinaryOverlay<IDoorGetter>.OblivionGroupFactory(_stream, _DoorsLocations, _package)) : default;
+        private IOblivionGroupGetter<IDoorGetter>? _DoorsGroupCache;
+
         public IOblivionGroupGetter<IDoorGetter> Doors => _Doors ?? new OblivionGroup<Door>(this);
         #endregion
         #region Ingredients
         private List<RangeInt64>? _IngredientsLocations;
-        private IOblivionGroupGetter<IIngredientGetter>? _Ingredients => _IngredientsLocations != null ? OblivionGroupBinaryOverlay<IIngredientGetter>.OblivionGroupFactory(_stream, _IngredientsLocations, _package) : default;
+        private IOblivionGroupGetter<IIngredientGetter>? _Ingredients => _IngredientsLocations != null ? (_IngredientsGroupCache ??= OblivionGroupBinaryOverlay<IIngredientGetter>.OblivionGroupFactory(_stream, _IngredientsLocations, _package)) : default;
+        private IOblivionGroupGetter<IIngredientGetter>? _IngredientsGroupCache;
+
         public IOblivionGroupGetter<IIngredientGetter> Ingredients => _Ingredients ?? new OblivionGroup<Ingredient>(this);
         #endregion
         #region Lights
         private List<RangeInt64>? _LightsLocations;
-        private IOblivionGroupGetter<ILightGetter>? _Lights => _LightsLocations != null ? OblivionGroupBinaryOverlay<ILightGetter>.OblivionGroupFactory(_stream, _LightsLocations, _package) : default;
+        private IOblivionGroupGetter<ILightGetter>? _Lights => _LightsLocations != null ? (_LightsGroupCache ??= OblivionGroupBinaryOverlay<ILightGetter>.OblivionGroupFactory(_stream, _LightsLocations, _package)) : default;
+        private IOblivionGroupGetter<ILightGetter>? _LightsGroupCache;
+
         public IOblivionGroupGetter<ILightGetter> Lights => _Lights ?? new OblivionGroup<Light>(this);
         #endregion
         #region Miscellaneous
         private List<RangeInt64>? _MiscellaneousLocations;
-        private IOblivionGroupGetter<IMiscellaneousGetter>? _Miscellaneous => _MiscellaneousLocations != null ? OblivionGroupBinaryOverlay<IMiscellaneousGetter>.OblivionGroupFactory(_stream, _MiscellaneousLocations, _package) : default;
+        private IOblivionGroupGetter<IMiscellaneousGetter>? _Miscellaneous => _MiscellaneousLocations != null ? (_MiscellaneousGroupCache ??= OblivionGroupBinaryOverlay<IMiscellaneousGetter>.OblivionGroupFactory(_stream, _MiscellaneousLocations, _package)) : default;
+        private IOblivionGroupGetter<IMiscellaneousGetter>? _MiscellaneousGroupCache;
+
         public IOblivionGroupGetter<IMiscellaneousGetter> Miscellaneous => _Miscellaneous ?? new OblivionGroup<Miscellaneous>(this);
         #endregion
         #region Statics
         private List<RangeInt64>? _StaticsLocations;
-        private IOblivionGroupGetter<IStaticGetter>? _Statics => _StaticsLocations != null ? OblivionGroupBinaryOverlay<IStaticGetter>.OblivionGroupFactory(_stream, _StaticsLocations, _package) : default;
+        private IOblivionGroupGetter<IStaticGetter>? _Statics => _StaticsLocations != null ? (_StaticsGroupCache ??= OblivionGroupBinaryOverlay<IStaticGetter>.OblivionGroupFactory(_stream, _StaticsLocations, _package)) : default;
+        private IOblivionGroupGetter<IStaticGetter>? _StaticsGroupCache;
+
         public IOblivionGroupGetter<IStaticGetter> Statics => _Statics ?? new OblivionGroup<Static>(this);
         #endregion
         #region Grasses
         private List<RangeInt64>? _GrassesLocations;
-        private IOblivionGroupGetter<IGrassGetter>? _Grasses => _GrassesLocations != null ? OblivionGroupBinaryOverlay<IGrassGetter>.OblivionGroupFactory(_stream, _GrassesLocations, _package) : default;
+        private IOblivionGroupGetter<IGrassGetter>? _Grasses => _GrassesLocations != null ? (_GrassesGroupCache ??= OblivionGroupBinaryOverlay<IGrassGetter>.OblivionGroupFactory(_stream, _GrassesLocations, _package)) : default;
+        private IOblivionGroupGetter<IGrassGetter>? _GrassesGroupCache;
+
         public IOblivionGroupGetter<IGrassGetter> Grasses => _Grasses ?? new OblivionGroup<Grass>(this);
         #endregion
         #region Trees
         private List<RangeInt64>? _TreesLocations;
-        private IOblivionGroupGetter<ITreeGetter>? _Trees => _TreesLocations != null ? OblivionGroupBinaryOverlay<ITreeGetter>.OblivionGroupFactory(_stream, _TreesLocations, _package) : default;
+        private IOblivionGroupGetter<ITreeGetter>? _Trees => _TreesLocations != null ? (_TreesGroupCache ??= OblivionGroupBinaryOverlay<ITreeGetter>.OblivionGroupFactory(_stream, _TreesLocations, _package)) : default;
+        private IOblivionGroupGetter<ITreeGetter>? _TreesGroupCache;
+
         public IOblivionGroupGetter<ITreeGetter> Trees => _Trees ?? new OblivionGroup<Tree>(this);
         #endregion
         #region Flora
         private List<RangeInt64>? _FloraLocations;
-        private IOblivionGroupGetter<IFloraGetter>? _Flora => _FloraLocations != null ? OblivionGroupBinaryOverlay<IFloraGetter>.OblivionGroupFactory(_stream, _FloraLocations, _package) : default;
+        private IOblivionGroupGetter<IFloraGetter>? _Flora => _FloraLocations != null ? (_FloraGroupCache ??= OblivionGroupBinaryOverlay<IFloraGetter>.OblivionGroupFactory(_stream, _FloraLocations, _package)) : default;
+        private IOblivionGroupGetter<IFloraGetter>? _FloraGroupCache;
+
         public IOblivionGroupGetter<IFloraGetter> Flora => _Flora ?? new OblivionGroup<Flora>(this);
         #endregion
         #region Furniture
         private List<RangeInt64>? _FurnitureLocations;
-        private IOblivionGroupGetter<IFurnitureGetter>? _Furniture => _FurnitureLocations != null ? OblivionGroupBinaryOverlay<IFurnitureGetter>.OblivionGroupFactory(_stream, _FurnitureLocations, _package) : default;
+        private IOblivionGroupGetter<IFurnitureGetter>? _Furniture => _FurnitureLocations != null ? (_FurnitureGroupCache ??= OblivionGroupBinaryOverlay<IFurnitureGetter>.OblivionGroupFactory(_stream, _FurnitureLocations, _package)) : default;
+        private IOblivionGroupGetter<IFurnitureGetter>? _FurnitureGroupCache;
+
         public IOblivionGroupGetter<IFurnitureGetter> Furniture => _Furniture ?? new OblivionGroup<Furniture>(this);
         #endregion
         #region Weapons
         private List<RangeInt64>? _WeaponsLocations;
-        private IOblivionGroupGetter<IWeaponGetter>? _Weapons => _WeaponsLocations != null ? OblivionGroupBinaryOverlay<IWeaponGetter>.OblivionGroupFactory(_stream, _WeaponsLocations, _package) : default;
+        private IOblivionGroupGetter<IWeaponGetter>? _Weapons => _WeaponsLocations != null ? (_WeaponsGroupCache ??= OblivionGroupBinaryOverlay<IWeaponGetter>.OblivionGroupFactory(_stream, _WeaponsLocations, _package)) : default;
+        private IOblivionGroupGetter<IWeaponGetter>? _WeaponsGroupCache;
+
         public IOblivionGroupGetter<IWeaponGetter> Weapons => _Weapons ?? new OblivionGroup<Weapon>(this);
         #endregion
         #region Ammunitions
         private List<RangeInt64>? _AmmunitionsLocations;
-        private IOblivionGroupGetter<IAmmunitionGetter>? _Ammunitions => _AmmunitionsLocations != null ? OblivionGroupBinaryOverlay<IAmmunitionGetter>.OblivionGroupFactory(_stream, _AmmunitionsLocations, _package) : default;
+        private IOblivionGroupGetter<IAmmunitionGetter>? _Ammunitions => _AmmunitionsLocations != null ? (_AmmunitionsGroupCache ??= OblivionGroupBinaryOverlay<IAmmunitionGetter>.OblivionGroupFactory(_stream, _AmmunitionsLocations, _package)) : default;
+        private IOblivionGroupGetter<IAmmunitionGetter>? _AmmunitionsGroupCache;
+
         public IOblivionGroupGetter<IAmmunitionGetter> Ammunitions => _Ammunitions ?? new OblivionGroup<Ammunition>(this);
         #endregion
         #region Npcs
         private List<RangeInt64>? _NpcsLocations;
-        private IOblivionGroupGetter<INpcGetter>? _Npcs => _NpcsLocations != null ? OblivionGroupBinaryOverlay<INpcGetter>.OblivionGroupFactory(_stream, _NpcsLocations, _package) : default;
+        private IOblivionGroupGetter<INpcGetter>? _Npcs => _NpcsLocations != null ? (_NpcsGroupCache ??= OblivionGroupBinaryOverlay<INpcGetter>.OblivionGroupFactory(_stream, _NpcsLocations, _package)) : default;
+        private IOblivionGroupGetter<INpcGetter>? _NpcsGroupCache;
+
         public IOblivionGroupGetter<INpcGetter> Npcs => _Npcs ?? new OblivionGroup<Npc>(this);
         #endregion
         #region Creatures
         private List<RangeInt64>? _CreaturesLocations;
-        private IOblivionGroupGetter<ICreatureGetter>? _Creatures => _CreaturesLocations != null ? OblivionGroupBinaryOverlay<ICreatureGetter>.OblivionGroupFactory(_stream, _CreaturesLocations, _package) : default;
+        private IOblivionGroupGetter<ICreatureGetter>? _Creatures => _CreaturesLocations != null ? (_CreaturesGroupCache ??= OblivionGroupBinaryOverlay<ICreatureGetter>.OblivionGroupFactory(_stream, _CreaturesLocations, _package)) : default;
+        private IOblivionGroupGetter<ICreatureGetter>? _CreaturesGroupCache;
+
         public IOblivionGroupGetter<ICreatureGetter> Creatures => _Creatures ?? new OblivionGroup<Creature>(this);
         #endregion
         #region LeveledCreatures
         private List<RangeInt64>? _LeveledCreaturesLocations;
-        private IOblivionGroupGetter<ILeveledCreatureGetter>? _LeveledCreatures => _LeveledCreaturesLocations != null ? OblivionGroupBinaryOverlay<ILeveledCreatureGetter>.OblivionGroupFactory(_stream, _LeveledCreaturesLocations, _package) : default;
+        private IOblivionGroupGetter<ILeveledCreatureGetter>? _LeveledCreatures => _LeveledCreaturesLocations != null ? (_LeveledCreaturesGroupCache ??= OblivionGroupBinaryOverlay<ILeveledCreatureGetter>.OblivionGroupFactory(_stream, _LeveledCreaturesLocations, _package)) : default;
+        private IOblivionGroupGetter<ILeveledCreatureGetter>? _LeveledCreaturesGroupCache;
+
         public IOblivionGroupGetter<ILeveledCreatureGetter> LeveledCreatures => _LeveledCreatures ?? new OblivionGroup<LeveledCreature>(this);
         #endregion
         #region SoulGems
         private List<RangeInt64>? _SoulGemsLocations;
-        private IOblivionGroupGetter<ISoulGemGetter>? _SoulGems => _SoulGemsLocations != null ? OblivionGroupBinaryOverlay<ISoulGemGetter>.OblivionGroupFactory(_stream, _SoulGemsLocations, _package) : default;
+        private IOblivionGroupGetter<ISoulGemGetter>? _SoulGems => _SoulGemsLocations != null ? (_SoulGemsGroupCache ??= OblivionGroupBinaryOverlay<ISoulGemGetter>.OblivionGroupFactory(_stream, _SoulGemsLocations, _package)) : default;
+        private IOblivionGroupGetter<ISoulGemGetter>? _SoulGemsGroupCache;
+
         public IOblivionGroupGetter<ISoulGemGetter> SoulGems => _SoulGems ?? new OblivionGroup<SoulGem>(this);
         #endregion
         #region Keys
         private List<RangeInt64>? _KeysLocations;
-        private IOblivionGroupGetter<IKeyGetter>? _Keys => _KeysLocations != null ? OblivionGroupBinaryOverlay<IKeyGetter>.OblivionGroupFactory(_stream, _KeysLocations, _package) : default;
+        private IOblivionGroupGetter<IKeyGetter>? _Keys => _KeysLocations != null ? (_KeysGroupCache ??= OblivionGroupBinaryOverlay<IKeyGetter>.OblivionGroupFactory(_stream, _KeysLocations, _package)) : default;
+        private IOblivionGroupGetter<IKeyGetter>? _KeysGroupCache;
+
         public IOblivionGroupGetter<IKeyGetter> Keys => _Keys ?? new OblivionGroup<Key>(this);
         #endregion
         #region Potions
         private List<RangeInt64>? _PotionsLocations;
-        private IOblivionGroupGetter<IPotionGetter>? _Potions => _PotionsLocations != null ? OblivionGroupBinaryOverlay<IPotionGetter>.OblivionGroupFactory(_stream, _PotionsLocations, _package) : default;
+        private IOblivionGroupGetter<IPotionGetter>? _Potions => _PotionsLocations != null ? (_PotionsGroupCache ??= OblivionGroupBinaryOverlay<IPotionGetter>.OblivionGroupFactory(_stream, _PotionsLocations, _package)) : default;
+        private IOblivionGroupGetter<IPotionGetter>? _PotionsGroupCache;
+
         public IOblivionGroupGetter<IPotionGetter> Potions => _Potions ?? new OblivionGroup<Potion>(this);
         #endregion
         #region Subspaces
         private List<RangeInt64>? _SubspacesLocations;
-        private IOblivionGroupGetter<ISubspaceGetter>? _Subspaces => _SubspacesLocations != null ? OblivionGroupBinaryOverlay<ISubspaceGetter>.OblivionGroupFactory(_stream, _SubspacesLocations, _package) : default;
+        private IOblivionGroupGetter<ISubspaceGetter>? _Subspaces => _SubspacesLocations != null ? (_SubspacesGroupCache ??= OblivionGroupBinaryOverlay<ISubspaceGetter>.OblivionGroupFactory(_stream, _SubspacesLocations, _package)) : default;
+        private IOblivionGroupGetter<ISubspaceGetter>? _SubspacesGroupCache;
+
         public IOblivionGroupGetter<ISubspaceGetter> Subspaces => _Subspaces ?? new OblivionGroup<Subspace>(this);
         #endregion
         #region SigilStones
         private List<RangeInt64>? _SigilStonesLocations;
-        private IOblivionGroupGetter<ISigilStoneGetter>? _SigilStones => _SigilStonesLocations != null ? OblivionGroupBinaryOverlay<ISigilStoneGetter>.OblivionGroupFactory(_stream, _SigilStonesLocations, _package) : default;
+        private IOblivionGroupGetter<ISigilStoneGetter>? _SigilStones => _SigilStonesLocations != null ? (_SigilStonesGroupCache ??= OblivionGroupBinaryOverlay<ISigilStoneGetter>.OblivionGroupFactory(_stream, _SigilStonesLocations, _package)) : default;
+        private IOblivionGroupGetter<ISigilStoneGetter>? _SigilStonesGroupCache;
+
         public IOblivionGroupGetter<ISigilStoneGetter> SigilStones => _SigilStones ?? new OblivionGroup<SigilStone>(this);
         #endregion
         #region LeveledItems
         private List<RangeInt64>? _LeveledItemsLocations;
-        private IOblivionGroupGetter<ILeveledItemGetter>? _LeveledItems => _LeveledItemsLocations != null ? OblivionGroupBinaryOverlay<ILeveledItemGetter>.OblivionGroupFactory(_stream, _LeveledItemsLocations, _package) : default;
+        private IOblivionGroupGetter<ILeveledItemGetter>? _LeveledItems => _LeveledItemsLocations != null ? (_LeveledItemsGroupCache ??= OblivionGroupBinaryOverlay<ILeveledItemGetter>.OblivionGroupFactory(_stream, _LeveledItemsLocations, _package)) : default;
+        private IOblivionGroupGetter<ILeveledItemGetter>? _LeveledItemsGroupCache;
+
         public IOblivionGroupGetter<ILeveledItemGetter> LeveledItems => _LeveledItems ?? new OblivionGroup<LeveledItem>(this);
         #endregion
         #region Weathers
         private List<RangeInt64>? _WeathersLocations;
-        private IOblivionGroupGetter<IWeatherGetter>? _Weathers => _WeathersLocations != null ? OblivionGroupBinaryOverlay<IWeatherGetter>.OblivionGroupFactory(_stream, _WeathersLocations, _package) : default;
+        private IOblivionGroupGetter<IWeatherGetter>? _Weathers => _WeathersLocations != null ? (_WeathersGroupCache ??= OblivionGroupBinaryOverlay<IWeatherGetter>.OblivionGroupFactory(_stream, _WeathersLocations, _package)) : default;
+        private IOblivionGroupGetter<IWeatherGetter>? _WeathersGroupCache;
+
         public IOblivionGroupGetter<IWeatherGetter> Weathers => _Weathers ?? new OblivionGroup<Weather>(this);
         #endregion
         #region Climates
         private List<RangeInt64>? _ClimatesLocations;
-        private IOblivionGroupGetter<IClimateGetter>? _Climates => _ClimatesLocations != null ? OblivionGroupBinaryOverlay<IClimateGetter>.OblivionGroupFactory(_stream, _ClimatesLocations, _package) : default;
+        private IOblivionGroupGetter<IClimateGetter>? _Climates => _ClimatesLocations != null ? (_ClimatesGroupCache ??= OblivionGroupBinaryOverlay<IClimateGetter>.OblivionGroupFactory(_stream, _ClimatesLocations, _package)) : default;
+        private IOblivionGroupGetter<IClimateGetter>? _ClimatesGroupCache;
+
         public IOblivionGroupGetter<IClimateGetter> Climates => _Climates ?? new OblivionGroup<Climate>(this);
         #endregion
         #region Regions
         private List<RangeInt64>? _RegionsLocations;
-        private IOblivionGroupGetter<IRegionGetter>? _Regions => _RegionsLocations != null ? OblivionGroupBinaryOverlay<IRegionGetter>.OblivionGroupFactory(_stream, _RegionsLocations, _package) : default;
+        private IOblivionGroupGetter<IRegionGetter>? _Regions => _RegionsLocations != null ? (_RegionsGroupCache ??= OblivionGroupBinaryOverlay<IRegionGetter>.OblivionGroupFactory(_stream, _RegionsLocations, _package)) : default;
+        private IOblivionGroupGetter<IRegionGetter>? _RegionsGroupCache;
+
         public IOblivionGroupGetter<IRegionGetter> Regions => _Regions ?? new OblivionGroup<Region>(this);
         #endregion
         #region Cells
         private List<RangeInt64>? _CellsLocations;
-        private IOblivionListGroupGetter<ICellBlockGetter>? _Cells => _CellsLocations != null ? OblivionListGroupBinaryOverlay<ICellBlockGetter>.OblivionListGroupFactory(_stream, _CellsLocations, _package) : default;
+        private IOblivionListGroupGetter<ICellBlockGetter>? _Cells => _CellsLocations != null ? (_CellsGroupCache ??= OblivionListGroupBinaryOverlay<ICellBlockGetter>.OblivionListGroupFactory(_stream, _CellsLocations, _package)) : default;
+        private IOblivionListGroupGetter<ICellBlockGetter>? _CellsGroupCache;
+
         public IOblivionListGroupGetter<ICellBlockGetter> Cells => _Cells ?? new OblivionListGroup<CellBlock>();
         #endregion
         #region Worldspaces
         private List<RangeInt64>? _WorldspacesLocations;
-        private IOblivionGroupGetter<IWorldspaceGetter>? _Worldspaces => _WorldspacesLocations != null ? OblivionGroupBinaryOverlay<IWorldspaceGetter>.OblivionGroupFactory(_stream, _WorldspacesLocations, _package) : default;
+        private IOblivionGroupGetter<IWorldspaceGetter>? _Worldspaces => _WorldspacesLocations != null ? (_WorldspacesGroupCache ??= OblivionGroupBinaryOverlay<IWorldspaceGetter>.OblivionGroupFactory(_stream, _WorldspacesLocations, _package)) : default;
+        private IOblivionGroupGetter<IWorldspaceGetter>? _WorldspacesGroupCache;
+
         public IOblivionGroupGetter<IWorldspaceGetter> Worldspaces => _Worldspaces ?? new OblivionGroup<Worldspace>(this);
         #endregion
         #region DialogTopics
         private List<RangeInt64>? _DialogTopicsLocations;
-        private IOblivionGroupGetter<IDialogTopicGetter>? _DialogTopics => _DialogTopicsLocations != null ? OblivionGroupBinaryOverlay<IDialogTopicGetter>.OblivionGroupFactory(_stream, _DialogTopicsLocations, _package) : default;
+        private IOblivionGroupGetter<IDialogTopicGetter>? _DialogTopics => _DialogTopicsLocations != null ? (_DialogTopicsGroupCache ??= OblivionGroupBinaryOverlay<IDialogTopicGetter>.OblivionGroupFactory(_stream, _DialogTopicsLocations, _package)) : default;
+        private IOblivionGroupGetter<IDialogTopicGetter>? _DialogTopicsGroupCache;
+
         public IOblivionGroupGetter<IDialogTopicGetter> DialogTopics => _DialogTopics ?? new OblivionGroup<DialogTopic>(this);
         #endregion
         #region Quests
         private List<RangeInt64>? _QuestsLocations;
-        private IOblivionGroupGetter<IQuestGetter>? _Quests => _QuestsLocations != null ? OblivionGroupBinaryOverlay<IQuestGetter>.OblivionGroupFactory(_stream, _QuestsLocations, _package) : default;
+        private IOblivionGroupGetter<IQuestGetter>? _Quests => _QuestsLocations != null ? (_QuestsGroupCache ??= OblivionGroupBinaryOverlay<IQuestGetter>.OblivionGroupFactory(_stream, _QuestsLocations, _package)) : default;
+        private IOblivionGroupGetter<IQuestGetter>? _QuestsGroupCache;
+
         public IOblivionGroupGetter<IQuestGetter> Quests => _Quests ?? new OblivionGroup<Quest>(this);
         #endregion
         #region IdleAnimations
         private List<RangeInt64>? _IdleAnimationsLocations;
-        private IOblivionGroupGetter<IIdleAnimationGetter>? _IdleAnimations => _IdleAnimationsLocations != null ? OblivionGroupBinaryOverlay<IIdleAnimationGetter>.OblivionGroupFactory(_stream, _IdleAnimationsLocations, _package) : default;
+        private IOblivionGroupGetter<IIdleAnimationGetter>? _IdleAnimations => _IdleAnimationsLocations != null ? (_IdleAnimationsGroupCache ??= OblivionGroupBinaryOverlay<IIdleAnimationGetter>.OblivionGroupFactory(_stream, _IdleAnimationsLocations, _package)) : default;
+        private IOblivionGroupGetter<IIdleAnimationGetter>? _IdleAnimationsGroupCache;
+
         public IOblivionGroupGetter<IIdleAnimationGetter> IdleAnimations => _IdleAnimations ?? new OblivionGroup<IdleAnimation>(this);
         #endregion
         #region AIPackages
         private List<RangeInt64>? _AIPackagesLocations;
-        private IOblivionGroupGetter<IAIPackageGetter>? _AIPackages => _AIPackagesLocations != null ? OblivionGroupBinaryOverlay<IAIPackageGetter>.OblivionGroupFactory(_stream, _AIPackagesLocations, _package) : default;
+        private IOblivionGroupGetter<IAIPackageGetter>? _AIPackages => _AIPackagesLocations != null ? (_AIPackagesGroupCache ??= OblivionGroupBinaryOverlay<IAIPackageGetter>.OblivionGroupFactory(_stream, _AIPackagesLocations, _package)) : default;
+        private IOblivionGroupGetter<IAIPackageGetter>? _AIPackagesGroupCache;
+
         public IOblivionGroupGetter<IAIPackageGetter> AIPackages => _AIPackages ?? new OblivionGroup<AIPackage>(this);
         #endregion
         #region CombatStyles
         private List<RangeInt64>? _CombatStylesLocations;
-        private IOblivionGroupGetter<ICombatStyleGetter>? _CombatStyles => _CombatStylesLocations != null ? OblivionGroupBinaryOverlay<ICombatStyleGetter>.OblivionGroupFactory(_stream, _CombatStylesLocations, _package) : default;
+        private IOblivionGroupGetter<ICombatStyleGetter>? _CombatStyles => _CombatStylesLocations != null ? (_CombatStylesGroupCache ??= OblivionGroupBinaryOverlay<ICombatStyleGetter>.OblivionGroupFactory(_stream, _CombatStylesLocations, _package)) : default;
+        private IOblivionGroupGetter<ICombatStyleGetter>? _CombatStylesGroupCache;
+
         public IOblivionGroupGetter<ICombatStyleGetter> CombatStyles => _CombatStyles ?? new OblivionGroup<CombatStyle>(this);
         #endregion
         #region LoadScreens
         private List<RangeInt64>? _LoadScreensLocations;
-        private IOblivionGroupGetter<ILoadScreenGetter>? _LoadScreens => _LoadScreensLocations != null ? OblivionGroupBinaryOverlay<ILoadScreenGetter>.OblivionGroupFactory(_stream, _LoadScreensLocations, _package) : default;
+        private IOblivionGroupGetter<ILoadScreenGetter>? _LoadScreens => _LoadScreensLocations != null ? (_LoadScreensGroupCache ??= OblivionGroupBinaryOverlay<ILoadScreenGetter>.OblivionGroupFactory(_stream, _LoadScreensLocations, _package)) : default;
+        private IOblivionGroupGetter<ILoadScreenGetter>? _LoadScreensGroupCache;
+
         public IOblivionGroupGetter<ILoadScreenGetter> LoadScreens => _LoadScreens ?? new OblivionGroup<LoadScreen>(this);
         #endregion
         #region LeveledSpells
         private List<RangeInt64>? _LeveledSpellsLocations;
-        private IOblivionGroupGetter<ILeveledSpellGetter>? _LeveledSpells => _LeveledSpellsLocations != null ? OblivionGroupBinaryOverlay<ILeveledSpellGetter>.OblivionGroupFactory(_stream, _LeveledSpellsLocations, _package) : default;
+        private IOblivionGroupGetter<ILeveledSpellGetter>? _LeveledSpells => _LeveledSpellsLocations != null ? (_LeveledSpellsGroupCache ??= OblivionGroupBinaryOverlay<ILeveledSpellGetter>.OblivionGroupFactory(_stream, _LeveledSpellsLocations, _package)) : default;
+        private IOblivionGroupGetter<ILeveledSpellGetter>? _LeveledSpellsGroupCache;
+
         public IOblivionGroupGetter<ILeveledSpellGetter> LeveledSpells => _LeveledSpells ?? new OblivionGroup<LeveledSpell>(this);
         #endregion
         #region AnimatedObjects
         private List<RangeInt64>? _AnimatedObjectsLocations;
-        private IOblivionGroupGetter<IAnimatedObjectGetter>? _AnimatedObjects => _AnimatedObjectsLocations != null ? OblivionGroupBinaryOverlay<IAnimatedObjectGetter>.OblivionGroupFactory(_stream, _AnimatedObjectsLocations, _package) : default;
+        private IOblivionGroupGetter<IAnimatedObjectGetter>? _AnimatedObjects => _AnimatedObjectsLocations != null ? (_AnimatedObjectsGroupCache ??= OblivionGroupBinaryOverlay<IAnimatedObjectGetter>.OblivionGroupFactory(_stream, _AnimatedObjectsLocations, _package)) : default;
+        private IOblivionGroupGetter<IAnimatedObjectGetter>? _AnimatedObjectsGroupCache;
+
         public IOblivionGroupGetter<IAnimatedObjectGetter> AnimatedObjects => _AnimatedObjects ?? new OblivionGroup<AnimatedObject>(this);
         #endregion
         #region Waters
         private List<RangeInt64>? _WatersLocations;
-        private IOblivionGroupGetter<IWaterGetter>? _Waters => _WatersLocations != null ? OblivionGroupBinaryOverlay<IWaterGetter>.OblivionGroupFactory(_stream, _WatersLocations, _package) : default;
+        private IOblivionGroupGetter<IWaterGetter>? _Waters => _WatersLocations != null ? (_WatersGroupCache ??= OblivionGroupBinaryOverlay<IWaterGetter>.OblivionGroupFactory(_stream, _WatersLocations, _package)) : default;
+        private IOblivionGroupGetter<IWaterGetter>? _WatersGroupCache;
+
         public IOblivionGroupGetter<IWaterGetter> Waters => _Waters ?? new OblivionGroup<Water>(this);
         #endregion
         #region EffectShaders
         private List<RangeInt64>? _EffectShadersLocations;
-        private IOblivionGroupGetter<IEffectShaderGetter>? _EffectShaders => _EffectShadersLocations != null ? OblivionGroupBinaryOverlay<IEffectShaderGetter>.OblivionGroupFactory(_stream, _EffectShadersLocations, _package) : default;
+        private IOblivionGroupGetter<IEffectShaderGetter>? _EffectShaders => _EffectShadersLocations != null ? (_EffectShadersGroupCache ??= OblivionGroupBinaryOverlay<IEffectShaderGetter>.OblivionGroupFactory(_stream, _EffectShadersLocations, _package)) : default;
+        private IOblivionGroupGetter<IEffectShaderGetter>? _EffectShadersGroupCache;
+
         public IOblivionGroupGetter<IEffectShaderGetter> EffectShaders => _EffectShaders ?? new OblivionGroup<EffectShader>(this);
         #endregion
         protected OblivionModBinaryOverlay(
