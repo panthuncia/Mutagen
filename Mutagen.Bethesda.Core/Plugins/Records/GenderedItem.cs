@@ -107,10 +107,31 @@ namespace Mutagen.Bethesda.Plugins.Records
         {
             GenderedItem.Print(this, sb, name);
         }
+
+        public override bool Equals(object? obj) => GenderedItem.Equals(this, obj);
+
+        public override int GetHashCode() => GenderedItem.GetHashCode(this);
     }
 
     internal static class GenderedItem
     {
+        /// <summary>
+        /// Gendered items are equal when their male and female items are, whichever implementation holds them (an
+        /// object's, or an overlay's), so records holding them compare by value. The two may declare different item
+        /// types (an object's GenderedItem&lt;ArmorModel?&gt; against an overlay's IGenderedItemGetter&lt;IArmorModelGetter?&gt;),
+        /// so items of reference types are compared as objects, in either order.
+        /// </summary>
+        public static bool Equals<TItem>(IGenderedItemGetter<TItem> item, object? obj) => obj switch
+        {
+            IGenderedItemGetter<TItem> rhs => EqualityComparer<TItem>.Default.Equals(item.Male, rhs.Male)
+                                              && EqualityComparer<TItem>.Default.Equals(item.Female, rhs.Female),
+            IGenderedItemGetter<object?> rhs when item is IGenderedItemGetter<object?> lhs =>
+                object.Equals(lhs.Male, rhs.Male) && object.Equals(lhs.Female, rhs.Female),
+            _ => false,
+        };
+
+        public static int GetHashCode<TItem>(IGenderedItemGetter<TItem> item) => HashCode.Combine(item.Male, item.Female);
+
         public static void Print<TItem>(IGenderedItemGetter<TItem> item, StructuredStringBuilder sb, string? name)
         {
             sb.AppendLine($"{name} =>");
