@@ -85,7 +85,7 @@ public sealed class EnumBinaryTranslation<TEnum, TReader, TWriter>
         var i = length switch
         {
             1 => reader.ReadUInt8(),
-            2 => reader.ReadInt16(),
+            2 => reader.ReadUInt16(),
             4 => reader.ReadInt32(),
             8 => reader.ReadInt64(),
             _ => throw new NotImplementedException(),
@@ -101,7 +101,7 @@ public sealed class EnumBinaryTranslation<TEnum, TReader, TWriter>
                 Enums<TEnum>.Convert(reader.ReadUInt8());
                 break;
             case 2:
-                Enums<TEnum>.Convert(reader.ReadInt16());
+                Enums<TEnum>.Convert(reader.ReadUInt16());
                 break;
             case 4:
                 Enums<TEnum>.Convert(reader.ReadInt32());
@@ -225,7 +225,7 @@ public sealed class EnumBinaryTranslation<TEnum, TReader, TWriter>
                 val = data[0];
                 break;
             case 2:
-                val = BinaryPrimitives.ReadInt16LittleEndian(data);
+                val = BinaryPrimitives.ReadUInt16LittleEndian(data);
                 break;
             case 4:
                 val = BinaryPrimitives.ReadInt32LittleEndian(data);
