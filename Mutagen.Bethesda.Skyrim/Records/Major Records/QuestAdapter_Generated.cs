@@ -1691,7 +1691,8 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        public QuestAdapter.VersioningBreaks Versioning { get; private set; }
+        private QuestAdapter.VersioningBreaks VersioningStore;
+        public QuestAdapter.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public Byte ExtraBindDataVersion => _structData.Length <= ScriptsEndingPos + 0x0 ? default : _structData.Span[ScriptsEndingPos + 0x0];
         #region FragmentCount
         partial void FragmentCountCustomParse(

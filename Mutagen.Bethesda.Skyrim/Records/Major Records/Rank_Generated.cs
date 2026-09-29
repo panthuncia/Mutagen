@@ -1260,7 +1260,8 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Number
-        private int? _NumberLocation;
+        private int? _NumberLocationStore;
+        private int? _NumberLocation { get { EnsureFilled(); return _NumberLocationStore; } set => _NumberLocationStore = value; }
         public UInt32? Number => _NumberLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NumberLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region Title
@@ -1268,7 +1269,8 @@ namespace Mutagen.Bethesda.Skyrim
         public IGenderedItemGetter<ITranslatedStringGetter?>? Title => _TitleOverlay;
         #endregion
         #region Insignia
-        private int? _InsigniaLocation;
+        private int? _InsigniaLocationStore;
+        private int? _InsigniaLocation { get { EnsureFilled(); return _InsigniaLocationStore; } set => _InsigniaLocationStore = value; }
         public String? Insignia => _InsigniaLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _InsigniaLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(

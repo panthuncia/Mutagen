@@ -2064,8 +2064,14 @@ namespace Mutagen.Bethesda.Skyrim
         protected override Type LinkType => typeof(ICameraPathGetter);
 
 
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<ICameraPathGetter>> RelatedPaths { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
+        #region RelatedPaths
+        private IReadOnlyList<IFormLinkGetter<ICameraPathGetter>> RelatedPathsStore = [];
+        public IReadOnlyList<IFormLinkGetter<ICameraPathGetter>> RelatedPaths { get { EnsureFilled(); return RelatedPathsStore; } private set => RelatedPathsStore = value; }
+        #endregion
         #region Zoom
         partial void ZoomCustomParse(
             OverlayStream stream,
@@ -2074,7 +2080,10 @@ namespace Mutagen.Bethesda.Skyrim
         public partial CameraPath.ZoomType GetZoomCustom();
         public CameraPath.ZoomType Zoom => GetZoomCustom();
         #endregion
-        public IReadOnlyList<IFormLinkGetter<ICameraShotGetter>> Shots { get; private set; } = [];
+        #region Shots
+        private IReadOnlyList<IFormLinkGetter<ICameraShotGetter>> ShotsStore = [];
+        public IReadOnlyList<IFormLinkGetter<ICameraShotGetter>> Shots { get { EnsureFilled(); return ShotsStore; } private set => ShotsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

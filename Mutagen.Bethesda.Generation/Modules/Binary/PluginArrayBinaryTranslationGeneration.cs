@@ -36,7 +36,7 @@ public class PluginArrayBinaryTranslationGeneration : PluginListBinaryTranslatio
         }
         if (data.HasTrigger)
         {
-            sb.AppendLine($"private int? _{typeGen.Name}Location;");
+            LazyFill.Field(sb, "int?", $"_{typeGen.Name}Location");
         }
         if (arr.FixedSize.HasValue)
         {

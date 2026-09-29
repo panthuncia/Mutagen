@@ -220,7 +220,7 @@ public class StringBinaryTranslationGeneration : PrimitiveBinaryTranslationGener
         switch (str.BinaryType)  
         {  
             case StringBinaryType.NullTerminate:  
-                sb.AppendLine($"public {typeGen.TypeName(getter: true)}{str.NullChar} {typeGen.Name} {{ get; private set; }} = {(str.Translated.HasValue ? $"{nameof(TranslatedString)}.{nameof(TranslatedString.Empty)}" : "string.Empty")};");  
+                LazyFill.Property(sb, "public", $"{typeGen.TypeName(getter: true)}{str.NullChar}", typeGen.Name, str.Translated.HasValue ? $"{nameof(TranslatedString)}.{nameof(TranslatedString.Empty)}" : "string.Empty");  
                 break;  
             default:  
                 await base.GenerateWrapperFields(sb, objGen, typeGen, structDataAccessor, recordDataAccessor, currentPosition, passedLengthAccessor, dataType);  

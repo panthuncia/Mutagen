@@ -2444,11 +2444,13 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Type
-        private int? _TypeLocation;
+        private int? _TypeLocationStore;
+        private int? _TypeLocation { get { EnsureFilled(); return _TypeLocationStore; } set => _TypeLocationStore = value; }
         public SceneAction.TypeEnum Type => EnumBinaryTranslation<SceneAction.TypeEnum, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_TypeLocation, _recordData, _package, 2);
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2456,59 +2458,78 @@ namespace Mutagen.Bethesda.Skyrim
         #endregion
         #endregion
         #region ActorID
-        private int? _ActorIDLocation;
+        private int? _ActorIDLocationStore;
+        private int? _ActorIDLocation { get { EnsureFilled(); return _ActorIDLocationStore; } set => _ActorIDLocationStore = value; }
         public Int32? ActorID => _ActorIDLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ActorIDLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region LNAM
-        private int? _LNAMLocation;
+        private int? _LNAMLocationStore;
+        private int? _LNAMLocation { get { EnsureFilled(); return _LNAMLocationStore; } set => _LNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? LNAM => _LNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _LNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region Index
-        private int? _IndexLocation;
+        private int? _IndexLocationStore;
+        private int? _IndexLocation { get { EnsureFilled(); return _IndexLocationStore; } set => _IndexLocationStore = value; }
         public UInt32? Index => _IndexLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IndexLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public SceneAction.Flag? Flags => EnumBinaryTranslation<SceneAction.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 4);
         #endregion
         #region StartPhase
-        private int? _StartPhaseLocation;
+        private int? _StartPhaseLocationStore;
+        private int? _StartPhaseLocation { get { EnsureFilled(); return _StartPhaseLocationStore; } set => _StartPhaseLocationStore = value; }
         public UInt32? StartPhase => _StartPhaseLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _StartPhaseLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region EndPhase
-        private int? _EndPhaseLocation;
+        private int? _EndPhaseLocationStore;
+        private int? _EndPhaseLocation { get { EnsureFilled(); return _EndPhaseLocationStore; } set => _EndPhaseLocationStore = value; }
         public UInt32? EndPhase => _EndPhaseLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EndPhaseLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region TimerSeconds
-        private int? _TimerSecondsLocation;
+        private int? _TimerSecondsLocationStore;
+        private int? _TimerSecondsLocation { get { EnsureFilled(); return _TimerSecondsLocationStore; } set => _TimerSecondsLocationStore = value; }
         public Single? TimerSeconds => _TimerSecondsLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _TimerSecondsLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IPackageGetter>> Packages { get; private set; } = [];
+        #region Packages
+        private IReadOnlyList<IFormLinkGetter<IPackageGetter>> PackagesStore = [];
+        public IReadOnlyList<IFormLinkGetter<IPackageGetter>> Packages { get { EnsureFilled(); return PackagesStore; } private set => PackagesStore = value; }
+        #endregion
         #region Topic
-        private int? _TopicLocation;
+        private int? _TopicLocationStore;
+        private int? _TopicLocation { get { EnsureFilled(); return _TopicLocationStore; } set => _TopicLocationStore = value; }
         public IFormLinkNullableGetter<IDialogTopicGetter> Topic => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogTopicGetter>(_package, _recordData, _TopicLocation);
         #endregion
         #region HeadtrackActorID
-        private int? _HeadtrackActorIDLocation;
+        private int? _HeadtrackActorIDLocationStore;
+        private int? _HeadtrackActorIDLocation { get { EnsureFilled(); return _HeadtrackActorIDLocationStore; } set => _HeadtrackActorIDLocationStore = value; }
         public Int32? HeadtrackActorID => _HeadtrackActorIDLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HeadtrackActorIDLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region LoopingMax
-        private int? _LoopingMaxLocation;
+        private int? _LoopingMaxLocationStore;
+        private int? _LoopingMaxLocation { get { EnsureFilled(); return _LoopingMaxLocationStore; } set => _LoopingMaxLocationStore = value; }
         public Single? LoopingMax => _LoopingMaxLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _LoopingMaxLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region LoopingMin
-        private int? _LoopingMinLocation;
+        private int? _LoopingMinLocationStore;
+        private int? _LoopingMinLocation { get { EnsureFilled(); return _LoopingMinLocationStore; } set => _LoopingMinLocationStore = value; }
         public Single? LoopingMin => _LoopingMinLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _LoopingMinLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region Emotion
-        private int? _EmotionLocation;
+        private int? _EmotionLocationStore;
+        private int? _EmotionLocation { get { EnsureFilled(); return _EmotionLocationStore; } set => _EmotionLocationStore = value; }
         public Emotion? Emotion => EnumBinaryTranslation<Emotion, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_EmotionLocation, _recordData, _package, 4);
         #endregion
         #region EmotionValue
-        private int? _EmotionValueLocation;
+        private int? _EmotionValueLocationStore;
+        private int? _EmotionValueLocation { get { EnsureFilled(); return _EmotionValueLocationStore; } set => _EmotionValueLocationStore = value; }
         public UInt32? EmotionValue => _EmotionValueLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EmotionValueLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
-        public IScenePhaseUnusedDataGetter? Unused { get; private set; }
+        #region Unused
+        private IScenePhaseUnusedDataGetter? UnusedStore;
+        public IScenePhaseUnusedDataGetter? Unused { get { EnsureFilled(); return UnusedStore; } private set => UnusedStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

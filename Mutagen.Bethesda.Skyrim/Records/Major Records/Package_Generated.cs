@@ -3884,11 +3884,13 @@ namespace Mutagen.Bethesda.Skyrim
 
         #region VirtualMachineAdapter
         private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IPackageAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? PackageAdapterBinaryOverlay.PackageAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
-        private RangeInt32? _PKDTLocation;
+        private RangeInt32? _PKDTLocationStore;
+        private RangeInt32? _PKDTLocation { get { EnsureFilled(); return _PKDTLocationStore; } set => _PKDTLocationStore = value; }
         #region Flags
         private int _FlagsLocation => _PKDTLocation!.Value.Min;
         private bool _Flags_IsSet => _PKDTLocation.HasValue;
@@ -3924,7 +3926,8 @@ namespace Mutagen.Bethesda.Skyrim
         private bool _Unknown2_IsSet => _PKDTLocation.HasValue;
         public UInt16 Unknown2 => _Unknown2_IsSet ? BinaryPrimitives.ReadUInt16LittleEndian(_recordData.Slice(_Unknown2Location, 2)) : default(UInt16);
         #endregion
-        private RangeInt32? _PSDTLocation;
+        private RangeInt32? _PSDTLocationStore;
+        private RangeInt32? _PSDTLocation { get { EnsureFilled(); return _PSDTLocationStore; } set => _PSDTLocationStore = value; }
         #region ScheduleMonth
         private int _ScheduleMonthLocation => _PSDTLocation!.Value.Min;
         private bool _ScheduleMonth_IsSet => _PSDTLocation.HasValue;
@@ -3960,18 +3963,27 @@ namespace Mutagen.Bethesda.Skyrim
         private bool _ScheduleDurationInMinutes_IsSet => _PSDTLocation.HasValue;
         public Int32 ScheduleDurationInMinutes => _ScheduleDurationInMinutes_IsSet ? BinaryPrimitives.ReadInt32LittleEndian(_recordData.Slice(_ScheduleDurationInMinutesLocation, 4)) : default(Int32);
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region Unknown4
-        private int? _Unknown4Location;
+        private int? _Unknown4LocationStore;
+        private int? _Unknown4Location { get { EnsureFilled(); return _Unknown4LocationStore; } set => _Unknown4LocationStore = value; }
         public Int32? Unknown4 => _Unknown4Location.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _Unknown4Location.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
-        public IPackageIdlesGetter? IdleAnimations { get; private set; }
+        #region IdleAnimations
+        private IPackageIdlesGetter? IdleAnimationsStore;
+        public IPackageIdlesGetter? IdleAnimations { get { EnsureFilled(); return IdleAnimationsStore; } private set => IdleAnimationsStore = value; }
+        #endregion
         #region CombatStyle
-        private int? _CombatStyleLocation;
+        private int? _CombatStyleLocationStore;
+        private int? _CombatStyleLocation { get { EnsureFilled(); return _CombatStyleLocationStore; } set => _CombatStyleLocationStore = value; }
         public IFormLinkNullableGetter<ICombatStyleGetter> CombatStyle => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ICombatStyleGetter>(_package, _recordData, _CombatStyleLocation);
         #endregion
         #region OwnerQuest
-        private int? _OwnerQuestLocation;
+        private int? _OwnerQuestLocationStore;
+        private int? _OwnerQuestLocation { get { EnsureFilled(); return _OwnerQuestLocationStore; } set => _OwnerQuestLocationStore = value; }
         public IFormLinkNullableGetter<IQuestGetter> OwnerQuest => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IQuestGetter>(_package, _recordData, _OwnerQuestLocation);
         #endregion
         #region PackageTemplate
@@ -3990,9 +4002,18 @@ namespace Mutagen.Bethesda.Skyrim
         public partial ReadOnlyMemorySlice<Byte> GetXnamMarkerCustom();
         public ReadOnlyMemorySlice<Byte> XnamMarker => GetXnamMarkerCustom();
         #endregion
-        public IPackageEventGetter? OnBegin { get; private set; }
-        public IPackageEventGetter? OnEnd { get; private set; }
-        public IPackageEventGetter? OnChange { get; private set; }
+        #region OnBegin
+        private IPackageEventGetter? OnBeginStore;
+        public IPackageEventGetter? OnBegin { get { EnsureFilled(); return OnBeginStore; } private set => OnBeginStore = value; }
+        #endregion
+        #region OnEnd
+        private IPackageEventGetter? OnEndStore;
+        public IPackageEventGetter? OnEnd { get { EnsureFilled(); return OnEndStore; } private set => OnEndStore = value; }
+        #endregion
+        #region OnChange
+        private IPackageEventGetter? OnChangeStore;
+        public IPackageEventGetter? OnChange { get { EnsureFilled(); return OnChangeStore; } private set => OnChangeStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

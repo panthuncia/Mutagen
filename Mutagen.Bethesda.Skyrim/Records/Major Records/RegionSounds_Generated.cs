@@ -1351,10 +1351,14 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Music
-        private int? _MusicLocation;
+        private int? _MusicLocationStore;
+        private int? _MusicLocation { get { EnsureFilled(); return _MusicLocationStore; } set => _MusicLocationStore = value; }
         public IFormLinkNullableGetter<IMusicTypeGetter> Music => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMusicTypeGetter>(_package, _recordData, _MusicLocation);
         #endregion
-        public IReadOnlyList<IRegionSoundGetter>? Sounds { get; private set; }
+        #region Sounds
+        private IReadOnlyList<IRegionSoundGetter>? SoundsStore;
+        public IReadOnlyList<IRegionSoundGetter>? Sounds { get { EnsureFilled(); return SoundsStore; } private set => SoundsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

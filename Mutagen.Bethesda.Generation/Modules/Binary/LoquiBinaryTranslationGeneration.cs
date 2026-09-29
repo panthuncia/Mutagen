@@ -374,7 +374,8 @@ public class LoquiBinaryTranslationGeneration : BinaryTranslationGeneration
                         }
 
                         sb.Append($"{typeGen.Name}");
-                        sb.Append($" => _{typeGen.Name}Locations != null ? ");
+                        // A group is read and located once, on first access, rather than on every access.
+                        sb.Append($" => _{typeGen.Name}Locations != null ? (_{typeGen.Name}GroupCache ??= ");
                         sb.Append(
                             $"{this.Module.BinaryOverlayClassName(loqui)}.{loqui.TargetObjectGeneration.Name}Factory({recordDataAccessor}, _{typeGen.Name}Locations, _package");
                         if (!recConverter.StartsWith("default("))
@@ -382,8 +383,10 @@ public class LoquiBinaryTranslationGeneration : BinaryTranslationGeneration
                             sb.Append($", {recConverter}");
                         }
 
-                        sb.Append($") ");
+                        sb.Append($")) ");
                         sb.Append($": default;");
+                        sb.AppendLine();
+                        sb.AppendLine($"private {loqui.Interface(getter: true, internalInterface: true)}? _{typeGen.Name}GroupCache;");
                     }
                 }
                 else if (loqui.TargetObjectGeneration.IsTypelessStruct())
@@ -395,7 +398,7 @@ public class LoquiBinaryTranslationGeneration : BinaryTranslationGeneration
                     }
                     else if (loqui.Nullable)
                     {
-                        sb.AppendLine($"public {loqui.Interface(getter: true, internalInterface: true)}? {typeGen.Name} {{ get; private set; }}");
+                        LazyFill.Property(sb, "public", $"{loqui.Interface(getter: true, internalInterface: true)}?", typeGen.Name);
                     }
                 }
                 else
@@ -414,7 +417,15 @@ public class LoquiBinaryTranslationGeneration : BinaryTranslationGeneration
                     {
                         OverflowGenerationHelper.GenerateWrapperOverflowMember(sb, typeGen);
                     }
-                    sb.AppendLine($"private {GetLocationObjectString(objGen)}? _{typeGen.Name}Location;");
+                    if (objGen.GetObjectType() == ObjectType.Mod)
+                    {
+                        // A mod's groups are located eagerly when it is opened; only records defer their fill.
+                        sb.AppendLine($"private {GetLocationObjectString(objGen)}? _{typeGen.Name}Location;");
+                    }
+                    else
+                    {
+                        LazyFill.Field(sb, $"{GetLocationObjectString(objGen)}?", $"_{typeGen.Name}Location");
+                    }
                     using (sb.Line())
                     {
                         if (loqui.IsNullable)
@@ -489,7 +500,7 @@ public class LoquiBinaryTranslationGeneration : BinaryTranslationGeneration
             {
                 if (loqui.Singleton)
                 {
-                    sb.AppendLine($"private {loqui.Interface(getter: true, internalInterface: true)} _{typeGen.Name} {{ get; private set; }}");
+                    LazyFill.Property(sb, "private", $"{loqui.Interface(getter: true, internalInterface: true)}", $"_{typeGen.Name}");
                 }
                 else
                 {

@@ -2355,9 +2355,14 @@ namespace Mutagen.Bethesda.Skyrim
         protected override Type LinkType => typeof(ICameraShotGetter);
 
 
-        public IModelGetter? Model { get; private set; }
-        private RangeInt32? _DATALocation;
-        public CameraShot.DATADataType DATADataTypeState { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
+        private CameraShot.DATADataType DATADataTypeStateStore;
+        public CameraShot.DATADataType DATADataTypeState { get { EnsureFilled(); return DATADataTypeStateStore; } private set => DATADataTypeStateStore = value; }
         #region Action
         private int _ActionLocation => _DATALocation!.Value.Min;
         private bool _Action_IsSet => _DATALocation.HasValue;
@@ -2414,7 +2419,8 @@ namespace Mutagen.Bethesda.Skyrim
         public Single NearTargetDistance => _NearTargetDistance_IsSet ? _recordData.Slice(_NearTargetDistanceLocation, 4).Float() : default(Single);
         #endregion
         #region ImageSpaceModifier
-        private int? _ImageSpaceModifierLocation;
+        private int? _ImageSpaceModifierLocationStore;
+        private int? _ImageSpaceModifierLocation { get { EnsureFilled(); return _ImageSpaceModifierLocationStore; } set => _ImageSpaceModifierLocationStore = value; }
         public IFormLinkNullableGetter<IImageSpaceAdapterGetter> ImageSpaceModifier => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IImageSpaceAdapterGetter>(_package, _recordData, _ImageSpaceModifierLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -2438,6 +2444,23 @@ namespace Mutagen.Bethesda.Skyrim
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new CameraShotBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => CameraShotFill((CameraShotBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void CameraShotFill(
+            CameraShotBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2445,9 +2468,7 @@ namespace Mutagen.Bethesda.Skyrim
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new CameraShotBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2460,7 +2481,6 @@ namespace Mutagen.Bethesda.Skyrim
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ICameraShotGetter CameraShotFactory(

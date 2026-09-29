@@ -187,7 +187,7 @@ public class EnumBinaryTranslationGeneration : BinaryTranslationGeneration
         }
         if (data.HasTrigger)
         {
-            sb.AppendLine($"private int? _{typeGen.Name}Location;");
+            LazyFill.Field(sb, "int?", $"_{typeGen.Name}Location");
         }
         var posStr = dataType == null ? passedLengthAccessor : $"_{typeGen.Name}Location";
         posStr ??= "0x0";

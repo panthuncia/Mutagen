@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- SafePatch experiment: Mutagen's read paths against SafePatch's raw plugin scanner, on this source tree. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <DisableGitVersionTask>true</DisableGitVersionTask>
+    <NoWarn>$(NoWarn);CS0436</NoWarn>
+    <!-- EnumerateMajorRecordBatches exists only on the experiment branch. -->
+    <DefineConstants>$(DefineConstants);SAFEPATCH_BATCHES</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mutagen.Bethesda.Skyrim\Mutagen.Bethesda.Skyrim.csproj" />
+    <Compile Include="..\..\SynthesisMCP\src\SafePatch.Authoring\Index\PluginScanner.cs" Link="PluginScanner.cs" />
+    <Compile Include="..\..\SynthesisMCP\src\SafePatch.Authoring\Index\InflatePrefix.cs" Link="InflatePrefix.cs" />
+  </ItemGroup>
+</Project>

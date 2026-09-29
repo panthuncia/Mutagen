@@ -6623,35 +6623,43 @@ namespace Mutagen.Bethesda.Skyrim
         protected int CloudTexturesParseEndingPos;
         #endregion
         #region DNAM
-        private int? _DNAMLocation;
+        private int? _DNAMLocationStore;
+        private int? _DNAMLocation { get { EnsureFilled(); return _DNAMLocationStore; } set => _DNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? DNAM => _DNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region CNAM
-        private int? _CNAMLocation;
+        private int? _CNAMLocationStore;
+        private int? _CNAMLocation { get { EnsureFilled(); return _CNAMLocationStore; } set => _CNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? CNAM => _CNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _CNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region ANAM
-        private int? _ANAMLocation;
+        private int? _ANAMLocationStore;
+        private int? _ANAMLocation { get { EnsureFilled(); return _ANAMLocationStore; } set => _ANAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? ANAM => _ANAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ANAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region BNAM
-        private int? _BNAMLocation;
+        private int? _BNAMLocationStore;
+        private int? _BNAMLocation { get { EnsureFilled(); return _BNAMLocationStore; } set => _BNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? BNAM => _BNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _BNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region LNAM
-        private int? _LNAMLocation;
+        private int? _LNAMLocationStore;
+        private int? _LNAMLocation { get { EnsureFilled(); return _LNAMLocationStore; } set => _LNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? LNAM => _LNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _LNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region Precipitation
-        private int? _PrecipitationLocation;
+        private int? _PrecipitationLocationStore;
+        private int? _PrecipitationLocation { get { EnsureFilled(); return _PrecipitationLocationStore; } set => _PrecipitationLocationStore = value; }
         public IFormLinkNullableGetter<IShaderParticleGeometryGetter> Precipitation => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IShaderParticleGeometryGetter>(_package, _recordData, _PrecipitationLocation);
         #endregion
         #region VisualEffect
-        private int? _VisualEffectLocation;
+        private int? _VisualEffectLocationStore;
+        private int? _VisualEffectLocation { get { EnsureFilled(); return _VisualEffectLocationStore; } set => _VisualEffectLocationStore = value; }
         public IFormLinkGetter<IVisualEffectGetter> VisualEffect => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IVisualEffectGetter>(_package, _recordData, _VisualEffectLocation);
         #endregion
         #region ONAM
-        private int? _ONAMLocation;
+        private int? _ONAMLocationStore;
+        private int? _ONAMLocation { get { EnsureFilled(); return _ONAMLocationStore; } set => _ONAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? ONAM => _ONAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ONAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region Clouds
@@ -6680,8 +6688,10 @@ namespace Mutagen.Bethesda.Skyrim
             int offset,
             PreviousParse lastParsed);
         #endregion
-        private RangeInt32? _NAM0Location;
-        public Weather.NAM0DataType NAM0DataTypeState { get; private set; }
+        private RangeInt32? _NAM0LocationStore;
+        private RangeInt32? _NAM0Location { get { EnsureFilled(); return _NAM0LocationStore; } set => _NAM0LocationStore = value; }
+        private Weather.NAM0DataType NAM0DataTypeStateStore;
+        public Weather.NAM0DataType NAM0DataTypeState { get { EnsureFilled(); return NAM0DataTypeStateStore; } private set => NAM0DataTypeStateStore = value; }
         #region SkyUpperColor
         private int _SkyUpperColorLocation => _NAM0Location!.Value.Min;
         private bool _SkyUpperColor_IsSet => _NAM0Location.HasValue;
@@ -6784,7 +6794,8 @@ namespace Mutagen.Bethesda.Skyrim
         private IWeatherColorGetter? _MoonGlareColor => _MoonGlareColor_IsSet ? WeatherColorBinaryOverlay.WeatherColorFactory(_recordData.Slice(_MoonGlareColorLocation), _package) : default;
         public IWeatherColorGetter MoonGlareColor => _MoonGlareColor ?? new WeatherColor();
         #endregion
-        private RangeInt32? _FNAMLocation;
+        private RangeInt32? _FNAMLocationStore;
+        private RangeInt32? _FNAMLocation { get { EnsureFilled(); return _FNAMLocationStore; } set => _FNAMLocationStore = value; }
         #region FogDistanceDayNear
         private int _FogDistanceDayNearLocation => _FNAMLocation!.Value.Min;
         private bool _FogDistanceDayNear_IsSet => _FNAMLocation.HasValue;
@@ -6825,7 +6836,8 @@ namespace Mutagen.Bethesda.Skyrim
         private bool _FogDistanceNightMax_IsSet => _FNAMLocation.HasValue;
         public Single FogDistanceNightMax => _FogDistanceNightMax_IsSet ? _recordData.Slice(_FogDistanceNightMaxLocation, 4).Float() : default(Single);
         #endregion
-        private RangeInt32? _DATALocation;
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         #region WindSpeed
         private int _WindSpeedLocation => _DATALocation!.Value.Min;
         private bool _WindSpeed_IsSet => _DATALocation.HasValue;
@@ -6912,14 +6924,22 @@ namespace Mutagen.Bethesda.Skyrim
             int offset,
             PreviousParse lastParsed);
         #endregion
-        public IReadOnlyList<IWeatherSoundGetter> Sounds { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<IStaticGetter>> SkyStatics { get; private set; } = [];
+        #region Sounds
+        private IReadOnlyList<IWeatherSoundGetter> SoundsStore = [];
+        public IReadOnlyList<IWeatherSoundGetter> Sounds { get { EnsureFilled(); return SoundsStore; } private set => SoundsStore = value; }
+        #endregion
+        #region SkyStatics
+        private IReadOnlyList<IFormLinkGetter<IStaticGetter>> SkyStaticsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IStaticGetter>> SkyStatics { get { EnsureFilled(); return SkyStaticsStore; } private set => SkyStaticsStore = value; }
+        #endregion
         #region ImageSpaces
-        private RangeInt32? _ImageSpacesLocation;
+        private RangeInt32? _ImageSpacesLocationStore;
+        private RangeInt32? _ImageSpacesLocation { get { EnsureFilled(); return _ImageSpacesLocationStore; } set => _ImageSpacesLocationStore = value; }
         public IWeatherImageSpacesGetter? ImageSpaces => _ImageSpacesLocation.HasValue ? WeatherImageSpacesBinaryOverlay.WeatherImageSpacesFactory(_recordData.Slice(_ImageSpacesLocation!.Value.Min), _package) : default;
         #endregion
         #region VolumetricLighting
-        private RangeInt32? _VolumetricLightingLocation;
+        private RangeInt32? _VolumetricLightingLocationStore;
+        private RangeInt32? _VolumetricLightingLocation { get { EnsureFilled(); return _VolumetricLightingLocationStore; } set => _VolumetricLightingLocationStore = value; }
         public IWeatherVolumetricLightingGetter? VolumetricLighting => _VolumetricLightingLocation.HasValue ? WeatherVolumetricLightingBinaryOverlay.WeatherVolumetricLightingFactory(_recordData.Slice(_VolumetricLightingLocation!.Value.Min), _package) : default;
         #endregion
         #region DirectionalAmbientLightingColors
@@ -6931,16 +6951,22 @@ namespace Mutagen.Bethesda.Skyrim
         public IWeatherAmbientColorSetGetter? DirectionalAmbientLightingColors => GetDirectionalAmbientLightingColorsCustom();
         #endregion
         #region NAM2
-        private int? _NAM2Location;
+        private int? _NAM2LocationStore;
+        private int? _NAM2Location { get { EnsureFilled(); return _NAM2LocationStore; } set => _NAM2LocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? NAM2 => _NAM2Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM2Location.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region NAM3
-        private int? _NAM3Location;
+        private int? _NAM3LocationStore;
+        private int? _NAM3Location { get { EnsureFilled(); return _NAM3LocationStore; } set => _NAM3LocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? NAM3 => _NAM3Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM3Location.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
-        public IModelGetter? Aurora { get; private set; }
+        #region Aurora
+        private IModelGetter? AuroraStore;
+        public IModelGetter? Aurora { get { EnsureFilled(); return AuroraStore; } private set => AuroraStore = value; }
+        #endregion
         #region SunGlareLensFlare
-        private int? _SunGlareLensFlareLocation;
+        private int? _SunGlareLensFlareLocationStore;
+        private int? _SunGlareLensFlareLocation { get { EnsureFilled(); return _SunGlareLensFlareLocationStore; } set => _SunGlareLensFlareLocationStore = value; }
         public IFormLinkNullableGetter<ILensFlareGetter> SunGlareLensFlare => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ILensFlareGetter>(_package, _recordData, _SunGlareLensFlareLocation);
         #endregion
         partial void CustomFactoryEnd(

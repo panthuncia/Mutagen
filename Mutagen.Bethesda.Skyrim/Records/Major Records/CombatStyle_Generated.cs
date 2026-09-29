@@ -2665,8 +2665,10 @@ namespace Mutagen.Bethesda.Skyrim
 
         public CombatStyle.MajorFlag MajorFlags => (CombatStyle.MajorFlag)this.MajorRecordFlagsRaw;
 
-        private RangeInt32? _CSGDLocation;
-        public CombatStyle.CSGDDataType CSGDDataTypeState { get; private set; }
+        private RangeInt32? _CSGDLocationStore;
+        private RangeInt32? _CSGDLocation { get { EnsureFilled(); return _CSGDLocationStore; } set => _CSGDLocationStore = value; }
+        private CombatStyle.CSGDDataType CSGDDataTypeStateStore;
+        public CombatStyle.CSGDDataType CSGDDataTypeState { get { EnsureFilled(); return CSGDDataTypeStateStore; } private set => CSGDDataTypeStateStore = value; }
         #region OffensiveMult
         private int _OffensiveMultLocation => _CSGDLocation!.Value.Min;
         private bool _OffensiveMult_IsSet => _CSGDLocation.HasValue;
@@ -2718,27 +2720,33 @@ namespace Mutagen.Bethesda.Skyrim
         public Single AvoidThreatChance => _AvoidThreatChance_IsSet ? _recordData.Slice(_AvoidThreatChanceLocation, 4).Float() : default(Single);
         #endregion
         #region CSMD
-        private int? _CSMDLocation;
+        private int? _CSMDLocationStore;
+        private int? _CSMDLocation { get { EnsureFilled(); return _CSMDLocationStore; } set => _CSMDLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? CSMD => _CSMDLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _CSMDLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region Melee
-        private RangeInt32? _MeleeLocation;
+        private RangeInt32? _MeleeLocationStore;
+        private RangeInt32? _MeleeLocation { get { EnsureFilled(); return _MeleeLocationStore; } set => _MeleeLocationStore = value; }
         public ICombatStyleMeleeGetter? Melee => _MeleeLocation.HasValue ? CombatStyleMeleeBinaryOverlay.CombatStyleMeleeFactory(_recordData.Slice(_MeleeLocation!.Value.Min), _package) : default;
         #endregion
         #region CloseRange
-        private RangeInt32? _CloseRangeLocation;
+        private RangeInt32? _CloseRangeLocationStore;
+        private RangeInt32? _CloseRangeLocation { get { EnsureFilled(); return _CloseRangeLocationStore; } set => _CloseRangeLocationStore = value; }
         public ICombatStyleCloseRangeGetter? CloseRange => _CloseRangeLocation.HasValue ? CombatStyleCloseRangeBinaryOverlay.CombatStyleCloseRangeFactory(_recordData.Slice(_CloseRangeLocation!.Value.Min), _package) : default;
         #endregion
         #region LongRangeStrafeMult
-        private int? _LongRangeStrafeMultLocation;
+        private int? _LongRangeStrafeMultLocationStore;
+        private int? _LongRangeStrafeMultLocation { get { EnsureFilled(); return _LongRangeStrafeMultLocationStore; } set => _LongRangeStrafeMultLocationStore = value; }
         public Single? LongRangeStrafeMult => _LongRangeStrafeMultLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _LongRangeStrafeMultLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region Flight
-        private RangeInt32? _FlightLocation;
+        private RangeInt32? _FlightLocationStore;
+        private RangeInt32? _FlightLocation { get { EnsureFilled(); return _FlightLocationStore; } set => _FlightLocationStore = value; }
         public ICombatStyleFlightGetter? Flight => _FlightLocation.HasValue ? CombatStyleFlightBinaryOverlay.CombatStyleFlightFactory(_recordData.Slice(_FlightLocation!.Value.Min), _package) : default;
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public CombatStyle.Flag? Flags => EnumBinaryTranslation<CombatStyle.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 4);
         #endregion
         partial void CustomFactoryEnd(
@@ -2762,6 +2770,23 @@ namespace Mutagen.Bethesda.Skyrim
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new CombatStyleBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => CombatStyleFill((CombatStyleBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void CombatStyleFill(
+            CombatStyleBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2769,9 +2794,7 @@ namespace Mutagen.Bethesda.Skyrim
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new CombatStyleBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2784,7 +2807,6 @@ namespace Mutagen.Bethesda.Skyrim
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ICombatStyleGetter CombatStyleFactory(

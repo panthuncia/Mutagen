@@ -1202,7 +1202,8 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Text
-        public String Text { get; private set; } = string.Empty;
+        private String TextStore = string.Empty;
+        public String Text { get { EnsureFilled(); return TextStore; } private set => TextStore = value; }
         protected int TextEndingPos;
         #endregion
         partial void CustomFactoryEnd(

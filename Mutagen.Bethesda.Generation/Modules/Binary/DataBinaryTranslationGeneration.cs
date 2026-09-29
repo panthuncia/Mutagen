@@ -70,12 +70,12 @@ public class DataBinaryTranslationGeneration : BinaryTranslationGeneration
     {
         DataType dataType = typeGen as DataType;
 
-        sb.AppendLine($"private {nameof(RangeInt32)}? _{dataType.GetFieldData().RecordType}Location;");
+        LazyFill.Field(sb, $"{nameof(RangeInt32)}?", $"_{dataType.GetFieldData().RecordType}Location");
 
         var enumTypes = dataType.GetEnumTypes();
         if (enumTypes.Count > 0)
         {
-            sb.AppendLine($"public {objGen.ObjectName}.{dataType.EnumName} {dataType.StateName} {{ get; private set; }}");
+            LazyFill.Property(sb, "public", $"{objGen.ObjectName}.{dataType.EnumName}", dataType.StateName);
         }
 
         switch (typeGen.GetFieldData().BinaryOverlayFallback)

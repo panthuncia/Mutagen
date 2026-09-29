@@ -1334,7 +1334,8 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        private RangeInt32? _QSTALocation;
+        private RangeInt32? _QSTALocationStore;
+        private RangeInt32? _QSTALocation { get { EnsureFilled(); return _QSTALocationStore; } set => _QSTALocationStore = value; }
         #region AliasID
         private int _AliasIDLocation => _QSTALocation!.Value.Min;
         private bool _AliasID_IsSet => _QSTALocation.HasValue;
@@ -1345,7 +1346,10 @@ namespace Mutagen.Bethesda.Skyrim
         private bool _Flags_IsSet => _QSTALocation.HasValue;
         public Quest.TargetFlag Flags => _Flags_IsSet ? (Quest.TargetFlag)BinaryPrimitives.ReadInt32LittleEndian(_recordData.Span.Slice(_FlagsLocation, 0x4)) : default;
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

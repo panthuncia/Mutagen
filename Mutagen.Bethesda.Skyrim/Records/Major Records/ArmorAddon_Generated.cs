@@ -2843,10 +2843,12 @@ namespace Mutagen.Bethesda.Skyrim
         public IBodyTemplateGetter? BodyTemplate => GetBodyTemplateCustom();
         #endregion
         #region Race
-        private int? _RaceLocation;
+        private int? _RaceLocationStore;
+        private int? _RaceLocation { get { EnsureFilled(); return _RaceLocationStore; } set => _RaceLocationStore = value; }
         public IFormLinkNullableGetter<IRaceGetter> Race => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IRaceGetter>(_package, _recordData, _RaceLocation);
         #endregion
-        private RangeInt32? _DNAMLocation;
+        private RangeInt32? _DNAMLocationStore;
+        private RangeInt32? _DNAMLocation { get { EnsureFilled(); return _DNAMLocationStore; } set => _DNAMLocationStore = value; }
         #region Priority
         private int _PriorityLocation => _DNAMLocation!.Value.Min;
         private bool _Priority_IsSet => _DNAMLocation.HasValue;
@@ -2898,13 +2900,18 @@ namespace Mutagen.Bethesda.Skyrim
         private IGenderedItemGetter<IFormLinkNullableGetter<IFormListGetter>>? _TextureSwapListOverlay;
         public IGenderedItemGetter<IFormLinkNullableGetter<IFormListGetter>>? TextureSwapList => _TextureSwapListOverlay;
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IRaceGetter>> AdditionalRaces { get; private set; } = [];
+        #region AdditionalRaces
+        private IReadOnlyList<IFormLinkGetter<IRaceGetter>> AdditionalRacesStore = [];
+        public IReadOnlyList<IFormLinkGetter<IRaceGetter>> AdditionalRaces { get { EnsureFilled(); return AdditionalRacesStore; } private set => AdditionalRacesStore = value; }
+        #endregion
         #region FootstepSound
-        private int? _FootstepSoundLocation;
+        private int? _FootstepSoundLocationStore;
+        private int? _FootstepSoundLocation { get { EnsureFilled(); return _FootstepSoundLocationStore; } set => _FootstepSoundLocationStore = value; }
         public IFormLinkNullableGetter<IFootstepSetGetter> FootstepSound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IFootstepSetGetter>(_package, _recordData, _FootstepSoundLocation);
         #endregion
         #region ArtObject
-        private int? _ArtObjectLocation;
+        private int? _ArtObjectLocationStore;
+        private int? _ArtObjectLocation { get { EnsureFilled(); return _ArtObjectLocationStore; } set => _ArtObjectLocationStore = value; }
         public IFormLinkNullableGetter<IArtObjectGetter> ArtObject => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IArtObjectGetter>(_package, _recordData, _ArtObjectLocation);
         #endregion
         partial void CustomFactoryEnd(

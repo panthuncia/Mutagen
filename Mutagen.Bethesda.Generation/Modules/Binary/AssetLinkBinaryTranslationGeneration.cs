@@ -107,7 +107,7 @@ public class AssetLinkBinaryTranslationGeneration : StringBinaryTranslationGener
         switch (asset.BinaryType) 
         { 
             case StringBinaryType.NullTerminate: 
-                sb.AppendLine($"public {typeGen.TypeName(getter: true)}{asset.NullChar} {typeGen.Name} {{ get; private set; }} = null!;"); 
+                LazyFill.Property(sb, "public", $"{typeGen.TypeName(getter: true)}{asset.NullChar}", typeGen.Name, "null!"); 
                 break; 
             default: 
                 await base.GenerateWrapperFields(sb, objGen, typeGen, structDataAccessor, recordDataAccessor, currentPosition, passedLengthAccessor, dataType); 

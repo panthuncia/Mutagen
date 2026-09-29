@@ -2453,7 +2453,7 @@ public class PluginTranslationModule : BinaryTranslationModule
             sb.AppendLine();
             if (obj.Fields.Any(f => f is BreakType))
             {
-                sb.AppendLine($"public {obj.ObjectName}.{VersioningModule.VersioningEnumName} {VersioningModule.VersioningFieldName} {{ get; private set; }}");
+                LazyFill.Property(sb, "public", $"{obj.ObjectName}.{VersioningModule.VersioningEnumName}", VersioningModule.VersioningFieldName);
             }
 
             int? totalPassedLength = 0;
@@ -2879,7 +2879,72 @@ public class PluginTranslationModule : BinaryTranslationModule
     }
 
 
-    private async Task GenerateFactoryMethod(ObjectGeneration obj, StructuredStringBuilder sb, bool anyHasRecordTypes, int? totalPassedLength)
+    /// <summary>
+    /// Whether a record's overlay can defer its fill: a concrete major record with no hand-written parsing that could
+    /// read what the fill sets without completing it (custom fields, custom ends, subgroups, custom triggers).
+    /// </summary>
+    /// <summary>
+    /// Records with hand-written overlay code that has been made to complete a deferred fill before reading what the
+    /// fill sets (its members follow the <see cref="LazyFill"/> pattern).
+    /// </summary>
+    private static readonly HashSet<string> AuditedForDeferredFill = ["PlacedObject"];
+
+    private async Task<bool> CanDeferFill(ObjectGeneration obj)
+    {
+        if (obj.GetObjectType() != ObjectType.Record || obj.Abstract || !await obj.IsMajorRecord()) return false;
+        var objData = obj.GetObjectData();
+        if (objData.CustomBinaryEnd != CustomEnd.Off
+            || SubgroupsModule.HasSubgroups(obj)
+            || objData.MarkerType.HasValue
+            || obj.TryGetCustomRecordTypeTriggers(out _))
+        {
+            return false;
+        }
+        if (AuditedForDeferredFill.Contains(obj.Name)) return true;
+        for (var o = obj; o != null; o = o.BaseClass)
+        {
+            foreach (var field in o.Fields)
+            {
+                if (field is CustomLogic) return false;
+                var data = field.GetFieldData();
+                if (data.Binary == BinaryGenerationType.Custom || data.BinaryOverlayFallback == BinaryGenerationType.Custom) return false;
+            }
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// A factory that reads only the record's header and defers the rest: decompression and the fill run on first
+    /// read of a field, through <c>{Name}Fill</c>. The stream moves past the record at once, as a parent's fill expects.
+    /// </summary>
+    private void GenerateDeferredFactory(ObjectGeneration obj, StructuredStringBuilder sb)
+    {
+        var overlay = $"{BinaryOverlayClassName(obj)}{obj.GetGenericTypes(MaskType.Normal)}";
+        using (var args = sb.Function($"public static {obj.Interface(getter: true, internalInterface: true)} {obj.Name}Factory"))
+        {
+            args.Add($"{nameof(OverlayStream)} stream");
+            args.Add($"{nameof(BinaryOverlayFactoryPackage)} package");
+            args.Add($"{nameof(TypedParseParams)} translationParams = default");
+        }
+        using (sb.CurlyBrace())
+        {
+            sb.AppendLine("var lazyHeader = stream.GetMajorRecordHeader();");
+            sb.AppendLine("var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));");
+            sb.AppendLine("stream.Position += checked((int)lazyHeader.TotalLength);");
+            using (var args = sb.Call($"var ret = new {overlay}"))
+            {
+                args.Add($"memoryPair: {nameof(PluginBinaryOverlay.ExtractRecordMemory)}(lazyRecord, package.{nameof(BinaryOverlayFactoryPackage.MetaData)}.{nameof(ParsingMeta.Constants)})");
+                args.AddPassArg("package");
+            }
+            sb.AppendLine("ret._package.FormVersion = ret;");
+            // A static lambda: the deferred state carries everything, so nothing else is allocated per record.
+            sb.AppendLine($"ret.DeferFill(lazyRecord, translationParams, static (o, d) => {obj.Name}Fill(({overlay})o, new {nameof(OverlayStream)}(d.Record, o._package), o._package, d.TranslationParams));");
+            sb.AppendLine("return ret;");
+        }
+        sb.AppendLine();
+    }
+
+    private async Task GenerateFactoryMethod(ObjectGeneration obj, StructuredStringBuilder sb, bool anyHasRecordTypes, int? totalPassedLength, bool fillOnly = false)
     {
         var structDataAccessor = new Accessor("_structData");
         var recordDataAccessor = new Accessor("_recordData");
@@ -2887,10 +2952,21 @@ public class PluginTranslationModule : BinaryTranslationModule
 
         if (!objData.BinaryOverlayGenerateCtor) return;
 
+        if (!fillOnly && await CanDeferFill(obj))
+        {
+            GenerateDeferredFactory(obj, sb);
+            await GenerateFactoryMethod(obj, sb, anyHasRecordTypes, totalPassedLength, fillOnly: true);
+            return;
+        }
+
         var retValue = obj.GetObjectType() == ObjectType.Mod ? BinaryOverlayClass(obj) : obj.Interface(getter: true, internalInterface: true);
         using (var args = sb.Function(
-                   $"public static {retValue} {obj.Name}Factory"))
+                   fillOnly ? $"private static void {obj.Name}Fill" : $"public static {retValue} {obj.Name}Factory"))
         {
+            if (fillOnly)
+            {
+                args.Add($"{BinaryOverlayClassName(obj)}{obj.GetGenericTypes(MaskType.Normal)} ret");
+            }
             if (obj.GetObjectType() == ObjectType.Mod)
             {
                 args.Add($"{nameof(IMutagenReadStream)} stream");
@@ -3023,6 +3099,13 @@ public class PluginTranslationModule : BinaryTranslationModule
                 }
             }
 
+            if (fillOnly)
+            {
+                // The overlay already exists, made from the header by the deferred factory: give it the parsed record
+                // data. Its header (_structData) is already right and is read without the fill, so it is left alone.
+                sb.AppendLine("ret._recordData = memoryPair.RecordData;");
+            }
+            else
             using (var args = sb.Call(
                        $"var ret = new {BinaryOverlayClassName(obj)}{obj.GetGenericTypes(MaskType.Normal)}"))
             {
@@ -3311,7 +3394,10 @@ public class PluginTranslationModule : BinaryTranslationModule
                 }
             }
 
-            sb.AppendLine("return ret;");
+            if (!fillOnly)
+            {
+                sb.AppendLine("return ret;");
+            }
         }
         sb.AppendLine();
     }

@@ -1881,23 +1881,28 @@ namespace Mutagen.Bethesda.Skyrim
 
 
         #region ENAM
-        private int? _ENAMLocation;
+        private int? _ENAMLocationStore;
+        private int? _ENAMLocation { get { EnsureFilled(); return _ENAMLocationStore; } set => _ENAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? ENAM => _ENAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ENAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region Hdr
-        private RangeInt32? _HdrLocation;
+        private RangeInt32? _HdrLocationStore;
+        private RangeInt32? _HdrLocation { get { EnsureFilled(); return _HdrLocationStore; } set => _HdrLocationStore = value; }
         public IImageSpaceHdrGetter? Hdr => _HdrLocation.HasValue ? ImageSpaceHdrBinaryOverlay.ImageSpaceHdrFactory(_recordData.Slice(_HdrLocation!.Value.Min), _package) : default;
         #endregion
         #region Cinematic
-        private RangeInt32? _CinematicLocation;
+        private RangeInt32? _CinematicLocationStore;
+        private RangeInt32? _CinematicLocation { get { EnsureFilled(); return _CinematicLocationStore; } set => _CinematicLocationStore = value; }
         public IImageSpaceCinematicGetter? Cinematic => _CinematicLocation.HasValue ? ImageSpaceCinematicBinaryOverlay.ImageSpaceCinematicFactory(_recordData.Slice(_CinematicLocation!.Value.Min), _package) : default;
         #endregion
         #region Tint
-        private RangeInt32? _TintLocation;
+        private RangeInt32? _TintLocationStore;
+        private RangeInt32? _TintLocation { get { EnsureFilled(); return _TintLocationStore; } set => _TintLocationStore = value; }
         public IImageSpaceTintGetter? Tint => _TintLocation.HasValue ? ImageSpaceTintBinaryOverlay.ImageSpaceTintFactory(_recordData.Slice(_TintLocation!.Value.Min), _package) : default;
         #endregion
         #region DepthOfField
-        private RangeInt32? _DepthOfFieldLocation;
+        private RangeInt32? _DepthOfFieldLocationStore;
+        private RangeInt32? _DepthOfFieldLocation { get { EnsureFilled(); return _DepthOfFieldLocationStore; } set => _DepthOfFieldLocationStore = value; }
         public IImageSpaceDepthOfFieldGetter? DepthOfField => _DepthOfFieldLocation.HasValue ? ImageSpaceDepthOfFieldBinaryOverlay.ImageSpaceDepthOfFieldFactory(_recordData.Slice(_DepthOfFieldLocation!.Value.Min), _package) : default;
         #endregion
         partial void CustomFactoryEnd(
@@ -1921,6 +1926,23 @@ namespace Mutagen.Bethesda.Skyrim
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ImageSpaceBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ImageSpaceFill((ImageSpaceBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ImageSpaceFill(
+            ImageSpaceBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1928,9 +1950,7 @@ namespace Mutagen.Bethesda.Skyrim
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ImageSpaceBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1943,7 +1963,6 @@ namespace Mutagen.Bethesda.Skyrim
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IImageSpaceGetter ImageSpaceFactory(

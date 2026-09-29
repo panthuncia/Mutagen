@@ -1695,27 +1695,33 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Idle
-        private int? _IdleLocation;
+        private int? _IdleLocationStore;
+        private int? _IdleLocation { get { EnsureFilled(); return _IdleLocationStore; } set => _IdleLocationStore = value; }
         public IFormLinkGetter<IIdleAnimationGetter> Idle => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IIdleAnimationGetter>(_package, _recordData, _IdleLocation);
         #endregion
         #region SCHR
-        private int? _SCHRLocation;
+        private int? _SCHRLocationStore;
+        private int? _SCHRLocation { get { EnsureFilled(); return _SCHRLocationStore; } set => _SCHRLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? SCHR => _SCHRLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SCHRLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region SCDA
-        private int? _SCDALocation;
+        private int? _SCDALocationStore;
+        private int? _SCDALocation { get { EnsureFilled(); return _SCDALocationStore; } set => _SCDALocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? SCDA => _SCDALocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SCDALocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region SCTX
-        private int? _SCTXLocation;
+        private int? _SCTXLocationStore;
+        private int? _SCTXLocation { get { EnsureFilled(); return _SCTXLocationStore; } set => _SCTXLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? SCTX => _SCTXLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SCTXLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region QNAM
-        private int? _QNAMLocation;
+        private int? _QNAMLocationStore;
+        private int? _QNAMLocation { get { EnsureFilled(); return _QNAMLocationStore; } set => _QNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? QNAM => _QNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _QNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region TNAM
-        private int? _TNAMLocation;
+        private int? _TNAMLocationStore;
+        private int? _TNAMLocation { get { EnsureFilled(); return _TNAMLocationStore; } set => _TNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? TNAM => _TNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _TNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region Topics

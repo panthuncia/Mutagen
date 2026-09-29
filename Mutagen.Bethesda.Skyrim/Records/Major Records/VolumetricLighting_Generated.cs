@@ -2176,51 +2176,63 @@ namespace Mutagen.Bethesda.Skyrim
 
 
         #region Intensity
-        private int? _IntensityLocation;
+        private int? _IntensityLocationStore;
+        private int? _IntensityLocation { get { EnsureFilled(); return _IntensityLocationStore; } set => _IntensityLocationStore = value; }
         public Single? Intensity => _IntensityLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _IntensityLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region CustomColorContribution
-        private int? _CustomColorContributionLocation;
+        private int? _CustomColorContributionLocationStore;
+        private int? _CustomColorContributionLocation { get { EnsureFilled(); return _CustomColorContributionLocationStore; } set => _CustomColorContributionLocationStore = value; }
         public Single? CustomColorContribution => _CustomColorContributionLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _CustomColorContributionLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region ColorR
-        private int? _ColorRLocation;
+        private int? _ColorRLocationStore;
+        private int? _ColorRLocation { get { EnsureFilled(); return _ColorRLocationStore; } set => _ColorRLocationStore = value; }
         public Single? ColorR => _ColorRLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ColorRLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region ColorG
-        private int? _ColorGLocation;
+        private int? _ColorGLocationStore;
+        private int? _ColorGLocation { get { EnsureFilled(); return _ColorGLocationStore; } set => _ColorGLocationStore = value; }
         public Single? ColorG => _ColorGLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ColorGLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region ColorB
-        private int? _ColorBLocation;
+        private int? _ColorBLocationStore;
+        private int? _ColorBLocation { get { EnsureFilled(); return _ColorBLocationStore; } set => _ColorBLocationStore = value; }
         public Single? ColorB => _ColorBLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ColorBLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region DensityContribution
-        private int? _DensityContributionLocation;
+        private int? _DensityContributionLocationStore;
+        private int? _DensityContributionLocation { get { EnsureFilled(); return _DensityContributionLocationStore; } set => _DensityContributionLocationStore = value; }
         public Single? DensityContribution => _DensityContributionLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DensityContributionLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region DensitySize
-        private int? _DensitySizeLocation;
+        private int? _DensitySizeLocationStore;
+        private int? _DensitySizeLocation { get { EnsureFilled(); return _DensitySizeLocationStore; } set => _DensitySizeLocationStore = value; }
         public Single? DensitySize => _DensitySizeLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DensitySizeLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region DensityWindSpeed
-        private int? _DensityWindSpeedLocation;
+        private int? _DensityWindSpeedLocationStore;
+        private int? _DensityWindSpeedLocation { get { EnsureFilled(); return _DensityWindSpeedLocationStore; } set => _DensityWindSpeedLocationStore = value; }
         public Single? DensityWindSpeed => _DensityWindSpeedLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DensityWindSpeedLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region DensityFallingSpeed
-        private int? _DensityFallingSpeedLocation;
+        private int? _DensityFallingSpeedLocationStore;
+        private int? _DensityFallingSpeedLocation { get { EnsureFilled(); return _DensityFallingSpeedLocationStore; } set => _DensityFallingSpeedLocationStore = value; }
         public Single? DensityFallingSpeed => _DensityFallingSpeedLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DensityFallingSpeedLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region PhaseFunctionContribution
-        private int? _PhaseFunctionContributionLocation;
+        private int? _PhaseFunctionContributionLocationStore;
+        private int? _PhaseFunctionContributionLocation { get { EnsureFilled(); return _PhaseFunctionContributionLocationStore; } set => _PhaseFunctionContributionLocationStore = value; }
         public Single? PhaseFunctionContribution => _PhaseFunctionContributionLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _PhaseFunctionContributionLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region PhaseFunctionScattering
-        private int? _PhaseFunctionScatteringLocation;
+        private int? _PhaseFunctionScatteringLocationStore;
+        private int? _PhaseFunctionScatteringLocation { get { EnsureFilled(); return _PhaseFunctionScatteringLocationStore; } set => _PhaseFunctionScatteringLocationStore = value; }
         public Single? PhaseFunctionScattering => _PhaseFunctionScatteringLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _PhaseFunctionScatteringLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region SamplingRepartitionRangeFactor
-        private int? _SamplingRepartitionRangeFactorLocation;
+        private int? _SamplingRepartitionRangeFactorLocationStore;
+        private int? _SamplingRepartitionRangeFactorLocation { get { EnsureFilled(); return _SamplingRepartitionRangeFactorLocationStore; } set => _SamplingRepartitionRangeFactorLocationStore = value; }
         public Single? SamplingRepartitionRangeFactor => _SamplingRepartitionRangeFactorLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SamplingRepartitionRangeFactorLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         partial void CustomFactoryEnd(
@@ -2244,6 +2256,23 @@ namespace Mutagen.Bethesda.Skyrim
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new VolumetricLightingBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => VolumetricLightingFill((VolumetricLightingBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void VolumetricLightingFill(
+            VolumetricLightingBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2251,9 +2280,7 @@ namespace Mutagen.Bethesda.Skyrim
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new VolumetricLightingBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2266,7 +2293,6 @@ namespace Mutagen.Bethesda.Skyrim
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IVolumetricLightingGetter VolumetricLightingFactory(

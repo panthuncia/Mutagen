@@ -1107,7 +1107,8 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region InheritsSoundsFrom
-        private int? _InheritsSoundsFromLocation;
+        private int? _InheritsSoundsFromLocationStore;
+        private int? _InheritsSoundsFromLocation { get { EnsureFilled(); return _InheritsSoundsFromLocationStore; } set => _InheritsSoundsFromLocationStore = value; }
         public IFormLinkNullableGetter<INpcGetter> InheritsSoundsFrom => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<INpcGetter>(_package, _recordData, _InheritsSoundsFromLocation);
         #endregion
         partial void CustomFactoryEnd(
