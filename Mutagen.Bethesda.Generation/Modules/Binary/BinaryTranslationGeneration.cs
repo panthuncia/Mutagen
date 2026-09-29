@@ -14,6 +14,13 @@ public abstract class BinaryTranslationGeneration : TranslationGeneration
     public virtual string Namespace => "Mutagen.Bethesda.Plugins.Binary.Translations.";
     public virtual bool NeedsNamespacePrefix => true;
     public string NamespacePrefix => NeedsNamespacePrefix ? Namespace : string.Empty;
+
+    /// <summary>
+    /// What an overlay returns for a field its data does not reach (past a break, or unset): the field's declared
+    /// default when it has one, as a new object and a full parse have, otherwise <paramref name="fallback"/>.
+    /// </summary>
+    public static string OverlayDefault(ObjectGeneration objGen, TypeGeneration typeGen, string fallback) =>
+        typeGen.HasDefault ? $"{objGen.ObjectName}.{typeGen.Name}Default" : fallback;
     public virtual bool DoErrorMasks => this.Module.DoErrorMasks;
 
     public delegate TryGet<string> ParamTest(

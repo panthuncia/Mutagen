@@ -4543,7 +4543,7 @@ namespace Mutagen.Bethesda.Fallout4
         #region Unused
         private int _UnusedLocation => _FNAMLocation!.Value.Min + 0x5;
         private bool _Unused_IsSet => _FNAMLocation.HasValue;
-        public ReadOnlyMemorySlice<Byte> Unused => _Unused_IsSet ? _recordData.Span.Slice(_UnusedLocation, 3).ToArray() : ReadOnlyMemorySlice<byte>.Empty;
+        public ReadOnlyMemorySlice<Byte> Unused => _Unused_IsSet ? _recordData.Span.Slice(_UnusedLocation, 3).ToArray() : UtilityTranslation.Zeros.Slice(0, 3);
         #endregion
         public IReadOnlyList<IArmorResistanceGetter>? Resistances { get; private set; }
         #region TemplateArmor

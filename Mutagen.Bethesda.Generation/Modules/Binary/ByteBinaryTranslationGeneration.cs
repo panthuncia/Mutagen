@@ -70,7 +70,7 @@ public class ByteBinaryTranslationGeneration : PrimitiveBinaryTranslationGenerat
             {
                 if (data.IsAfterBreak)
                 {
-                    sb.AppendLine($"public {typeGen.TypeName(getter: true)} {typeGen.Name} => {structDataAccessor}.Length <= {passedLengthAccessor} ? default : {structDataAccessor}.Span[{passedLengthAccessor ?? "0x0"}];");   
+                    sb.AppendLine($"public {typeGen.TypeName(getter: true)} {typeGen.Name} => {structDataAccessor}.Length <= {passedLengthAccessor} ? {OverlayDefault(objGen, typeGen, "default")} : {structDataAccessor}.Span[{passedLengthAccessor ?? "0x0"}];");   
                 }
                 else
                 {
@@ -80,7 +80,7 @@ public class ByteBinaryTranslationGeneration : PrimitiveBinaryTranslationGenerat
             else
             {
                 DataBinaryTranslationGeneration.GenerateWrapperExtraMembers(sb, dataType, objGen, typeGen, passedLengthAccessor);
-                sb.AppendLine($"public {typeGen.TypeName(getter: true)} {typeGen.Name} => _{typeGen.Name}_IsSet ? {recordDataAccessor}.Span[_{typeGen.Name}Location] : default;");
+                sb.AppendLine($"public {typeGen.TypeName(getter: true)} {typeGen.Name} => _{typeGen.Name}_IsSet ? {recordDataAccessor}.Span[_{typeGen.Name}Location] : {OverlayDefault(objGen, typeGen, "default")};");
             }
         }
     }

@@ -2433,7 +2433,7 @@ namespace Mutagen.Bethesda.Fallout3
         #region Unknown1
         private int _Unknown1Location => _DATALocation!.Value.Min + 0x2C;
         private bool _Unknown1_IsSet => _DATALocation.HasValue;
-        public ReadOnlyMemorySlice<Byte> Unknown1 => _Unknown1_IsSet ? _recordData.Span.Slice(_Unknown1Location, 20).ToArray() : ReadOnlyMemorySlice<byte>.Empty;
+        public ReadOnlyMemorySlice<Byte> Unknown1 => _Unknown1_IsSet ? _recordData.Span.Slice(_Unknown1Location, 20).ToArray() : new byte[20];
         #endregion
         #region Font2
         private int _Font2Location => _DATALocation!.Value.Min + 0x40;

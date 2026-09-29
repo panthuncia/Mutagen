@@ -1415,7 +1415,7 @@ namespace Mutagen.Bethesda.Fallout3
         #region Unused
         private int _UnusedLocation => _QSTALocation!.Value.Min + 0x5;
         private bool _Unused_IsSet => _QSTALocation.HasValue;
-        public ReadOnlyMemorySlice<Byte> Unused => _Unused_IsSet ? _recordData.Span.Slice(_UnusedLocation, 3).ToArray() : ReadOnlyMemorySlice<byte>.Empty;
+        public ReadOnlyMemorySlice<Byte> Unused => _Unused_IsSet ? _recordData.Span.Slice(_UnusedLocation, 3).ToArray() : UtilityTranslation.Zeros.Slice(0, 3);
         #endregion
         public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
         partial void CustomFactoryEnd(

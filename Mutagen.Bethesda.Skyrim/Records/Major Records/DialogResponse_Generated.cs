@@ -1877,7 +1877,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region Unknown2
         private int _Unknown2Location => _TRDTLocation!.Value.Min + 0xD;
         private bool _Unknown2_IsSet => _TRDTLocation.HasValue;
-        public ReadOnlyMemorySlice<Byte> Unknown2 => _Unknown2_IsSet ? _recordData.Span.Slice(_Unknown2Location, 3).ToArray() : ReadOnlyMemorySlice<byte>.Empty;
+        public ReadOnlyMemorySlice<Byte> Unknown2 => _Unknown2_IsSet ? _recordData.Span.Slice(_Unknown2Location, 3).ToArray() : UtilityTranslation.Zeros.Slice(0, 3);
         #endregion
         #region Sound
         private int _SoundLocation => _TRDTLocation!.Value.Min + 0x10;
@@ -1892,7 +1892,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region Unknown3
         private int _Unknown3Location => _TRDTLocation!.Value.Min + 0x15;
         private bool _Unknown3_IsSet => _TRDTLocation.HasValue;
-        public ReadOnlyMemorySlice<Byte> Unknown3 => _Unknown3_IsSet ? _recordData.Span.Slice(_Unknown3Location, 3).ToArray() : ReadOnlyMemorySlice<byte>.Empty;
+        public ReadOnlyMemorySlice<Byte> Unknown3 => _Unknown3_IsSet ? _recordData.Span.Slice(_Unknown3Location, 3).ToArray() : UtilityTranslation.Zeros.Slice(0, 3);
         #endregion
         #region Text
         private int? _TextLocation;

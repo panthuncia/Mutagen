@@ -243,7 +243,11 @@ public class ByteArrayBinaryTranslationGeneration : PrimitiveBinaryTranslationGe
                 {
                     expLen = $"_{dataType.GetFieldData().RecordType}Location!.Value.Max - _{typeGen.Name}Location + 1";
                 }
-                sb.AppendLine($"public {typeGen.TypeName(getter: true)}{(typeGen.Nullable ? "?" : null)} {typeGen.Name} => _{typeGen.Name}_IsSet ? {recordDataAccessor}.Span.Slice(_{typeGen.Name}Location{(expLen != null ? $", {expLen}" : null)}).ToArray() : {(typeGen.Nullable ? $"default(ReadOnlyMemorySlice<byte>?)" : "ReadOnlyMemorySlice<byte>.Empty")};");
+                // A fixed-length array a new object or a full parse holds as zeros, when the data stops before it.
+                var unset = typeGen.Nullable ? "default(ReadOnlyMemorySlice<byte>?)"
+                    : data.Length is { } length ? (length <= UtilityTranslation.Zeros.Length ? $"UtilityTranslation.Zeros.Slice(0, {length})" : $"new byte[{length}]")
+                    : "ReadOnlyMemorySlice<byte>.Empty";
+                sb.AppendLine($"public {typeGen.TypeName(getter: true)}{(typeGen.Nullable ? "?" : null)} {typeGen.Name} => _{typeGen.Name}_IsSet ? {recordDataAccessor}.Span.Slice(_{typeGen.Name}Location{(expLen != null ? $", {expLen}" : null)}).ToArray() : {unset};");
             }
         }
     }
