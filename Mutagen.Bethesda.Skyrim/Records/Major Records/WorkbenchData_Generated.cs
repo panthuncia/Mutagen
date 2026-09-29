@@ -1064,6 +1064,7 @@ namespace Mutagen.Bethesda.Skyrim
             item.UsesSkill = EnumBinaryTranslation<Skill, MutagenFrame, MutagenWriter>.Instance.Parse(
                 reader: frame,
                 length: 1);
+            if (((int?)item.UsesSkill) == -1) item.UsesSkill = null;
         }
 
     }

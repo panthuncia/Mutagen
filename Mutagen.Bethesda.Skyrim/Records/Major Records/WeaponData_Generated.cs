@@ -2423,6 +2423,7 @@ namespace Mutagen.Bethesda.Skyrim
             item.Skill = EnumBinaryTranslation<Skill, MutagenFrame, MutagenWriter>.Instance.Parse(
                 reader: frame,
                 length: 4);
+            if (((int?)item.Skill) == -1) item.Skill = null;
             item.Unknown4 = frame.ReadInt64();
             item.Resist = EnumBinaryTranslation<ActorValue, MutagenFrame, MutagenWriter>.Instance.Parse(
                 reader: frame,

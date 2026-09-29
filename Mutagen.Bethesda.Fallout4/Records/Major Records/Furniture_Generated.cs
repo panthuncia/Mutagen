@@ -4670,6 +4670,7 @@ namespace Mutagen.Bethesda.Fallout4
                     item.UsesSkill = EnumBinaryTranslation<Skill, MutagenFrame, MutagenWriter>.Instance.Parse(
                         reader: dataFrame,
                         length: 1);
+                    if (((int?)item.UsesSkill) == -1) item.UsesSkill = null;
                     return (int)Furniture_FieldIndex.UsesSkill;
                 }
                 case RecordTypeInts.NAM1:

@@ -1555,6 +1555,7 @@ namespace Mutagen.Bethesda.Fallout3
             item.Teaches = EnumBinaryTranslation<Skill, MutagenFrame, MutagenWriter>.Instance.Parse(
                 reader: frame,
                 length: 1);
+            if (((int?)item.Teaches) == -1) item.Teaches = null;
             item.MaximumTrainingLevel = frame.ReadUInt8();
             item.Assistance = EnumBinaryTranslation<Assistance, MutagenFrame, MutagenWriter>.Instance.Parse(
                 reader: frame,
