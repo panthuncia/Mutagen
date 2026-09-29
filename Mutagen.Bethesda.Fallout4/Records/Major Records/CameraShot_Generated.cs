@@ -2617,7 +2617,7 @@ namespace Mutagen.Bethesda.Fallout4
                     item.NearTargetDistance = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: dataFrame);
                     if (dataFrame.Complete)
                     {
-                        item.DATADataTypeState |= CameraShot.DATADataType.Break0;
+                        item.DATADataTypeState |= CameraShot.DATADataType.Break0 | CameraShot.DATADataType.Break1;
                         return (int)CameraShot_FieldIndex.NearTargetDistance;
                     }
                     if (dataFrame.Remaining < 4) return null;

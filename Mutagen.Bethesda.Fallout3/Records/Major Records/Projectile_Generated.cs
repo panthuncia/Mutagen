@@ -3309,7 +3309,7 @@ namespace Mutagen.Bethesda.Fallout3
                     item.DefaultWeaponSource.SetTo(FormLinkBinaryTranslation.Instance.Parse(reader: frame));
                     if (dataFrame.Complete)
                     {
-                        item.DATADataTypeState |= Projectile.DATADataType.Break0;
+                        item.DATADataTypeState |= Projectile.DATADataType.Break0 | Projectile.DATADataType.Break1;
                         return (int)Projectile_FieldIndex.DefaultWeaponSource;
                     }
                     if (dataFrame.Remaining < 12) return null;

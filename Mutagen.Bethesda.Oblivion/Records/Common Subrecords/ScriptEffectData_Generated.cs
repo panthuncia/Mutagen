@@ -1251,7 +1251,7 @@ namespace Mutagen.Bethesda.Oblivion
             item.Script.SetTo(FormLinkBinaryTranslation.Instance.Parse(reader: frame));
             if (frame.Complete)
             {
-                item.Versioning |= ScriptEffectData.VersioningBreaks.Break0;
+                item.Versioning |= ScriptEffectData.VersioningBreaks.Break0 | ScriptEffectData.VersioningBreaks.Break1;
                 return;
             }
             item.MagicSchool = EnumBinaryTranslation<MagicSchool, MutagenFrame, MutagenWriter>.Instance.Parse(

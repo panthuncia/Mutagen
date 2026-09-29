@@ -1540,7 +1540,7 @@ namespace Mutagen.Bethesda.Fallout4
             item.Unknown = frame.ReadUInt16();
             if (frame.Complete)
             {
-                item.Versioning |= CrimeValues.VersioningBreaks.Break0;
+                item.Versioning |= CrimeValues.VersioningBreaks.Break0 | CrimeValues.VersioningBreaks.Break1;
                 return;
             }
             item.StealMult = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);

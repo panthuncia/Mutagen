@@ -14,6 +14,13 @@ public abstract class BinaryTranslationGeneration : TranslationGeneration
     public virtual string Namespace => "Mutagen.Bethesda.Plugins.Binary.Translations.";
     public virtual bool NeedsNamespacePrefix => true;
     public string NamespacePrefix => NeedsNamespacePrefix ? Namespace : string.Empty;
+
+    /// <summary>
+    /// The break flags to set when data stops at break <paramref name="first"/>: that break and every later one, since
+    /// the fields after each are all absent. The overlay sets them this way, testing each break against the length.
+    /// </summary>
+    public static string BreaksFrom(string enumName, int first, int count) =>
+        string.Join(" | ", Enumerable.Range(first, Math.Max(1, count - first)).Select(i => $"{enumName}.Break{i}"));
     public virtual bool DoErrorMasks => this.Module.DoErrorMasks;
 
     public delegate TryGet<string> ParamTest(

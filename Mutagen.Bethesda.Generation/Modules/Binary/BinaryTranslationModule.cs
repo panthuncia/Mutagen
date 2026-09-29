@@ -387,7 +387,7 @@ public abstract class BinaryTranslationModule : TranslationModule<BinaryTranslat
                 sb.AppendLine("if (frame.Complete)");
                 using (sb.CurlyBrace())
                 {
-                    sb.AppendLine($"item.{VersioningModule.VersioningFieldName} |= {obj.Name}.{VersioningModule.VersioningEnumName}.Break{breakIndex++};");
+                    sb.AppendLine($"item.{VersioningModule.VersioningFieldName} |= {BinaryTranslationGeneration.BreaksFrom($"{obj.Name}.{VersioningModule.VersioningEnumName}", breakIndex++, obj.Fields.WhereCastable<TypeGeneration, BreakType>().Count())};");
                     sb.AppendLine("return;");
                 }
                 continue;

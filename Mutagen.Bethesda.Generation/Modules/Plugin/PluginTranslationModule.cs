@@ -851,7 +851,7 @@ public class PluginTranslationModule : BinaryTranslationModule
                             sb.AppendLine("if (frame.Complete)");
                             using (sb.CurlyBrace())
                             {
-                                sb.AppendLine($"item.{VersioningModule.VersioningFieldName} |= {obj.Name}.{VersioningModule.VersioningEnumName}.Break{breakIndex++};");
+                                sb.AppendLine($"item.{VersioningModule.VersioningFieldName} |= {BinaryTranslationGeneration.BreaksFrom($"{obj.Name}.{VersioningModule.VersioningEnumName}", breakIndex++, obj.Fields.WhereCastable<TypeGeneration, BreakType>().Count())};");
                                 sb.AppendLine("return;");
                             }
                             continue;
@@ -1406,7 +1406,7 @@ public class PluginTranslationModule : BinaryTranslationModule
                     sb.AppendLine($"if (dataFrame.Complete)");
                     using (sb.CurlyBrace())
                     {
-                        sb.AppendLine($"item.{set.StateName} |= {obj.ObjectName}.{set.EnumName}.Break{subField.BreakIndex};");
+                        sb.AppendLine($"item.{set.StateName} |= {BinaryTranslationGeneration.BreaksFrom($"{obj.ObjectName}.{set.EnumName}", subField.BreakIndex, set.BreakIndices.Count)};");
                         string enumName = null;
                         for (int i = subField.FieldIndex - 1; i >= 0; i--)
                         {

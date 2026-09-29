@@ -1228,7 +1228,7 @@ namespace Mutagen.Bethesda.Fallout3
             item.Priority = frame.ReadUInt8();
             if (frame.Complete)
             {
-                item.Versioning |= QuestData.VersioningBreaks.Break0;
+                item.Versioning |= QuestData.VersioningBreaks.Break0 | QuestData.VersioningBreaks.Break1;
                 return;
             }
             item.Unused = frame.ReadUInt16();

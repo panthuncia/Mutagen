@@ -5341,7 +5341,7 @@ namespace Mutagen.Bethesda.Fallout3
             item.ColorKey3ColorKeyTime = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);
             if (frame.Complete)
             {
-                item.Versioning |= EffectShaderData.VersioningBreaks.Break0;
+                item.Versioning |= EffectShaderData.VersioningBreaks.Break0 | EffectShaderData.VersioningBreaks.Break1 | EffectShaderData.VersioningBreaks.Break2 | EffectShaderData.VersioningBreaks.Break3 | EffectShaderData.VersioningBreaks.Break4;
                 return;
             }
             item.ParticleShaderInitialSpeedAlongNormalVariance = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);
@@ -5351,13 +5351,13 @@ namespace Mutagen.Bethesda.Fallout3
             item.ParticleShaderRotationSpeedVariance = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);
             if (frame.Complete)
             {
-                item.Versioning |= EffectShaderData.VersioningBreaks.Break1;
+                item.Versioning |= EffectShaderData.VersioningBreaks.Break1 | EffectShaderData.VersioningBreaks.Break2 | EffectShaderData.VersioningBreaks.Break3 | EffectShaderData.VersioningBreaks.Break4;
                 return;
             }
             item.AddonModels.SetTo(FormLinkBinaryTranslation.Instance.Parse(reader: frame));
             if (frame.Complete)
             {
-                item.Versioning |= EffectShaderData.VersioningBreaks.Break2;
+                item.Versioning |= EffectShaderData.VersioningBreaks.Break2 | EffectShaderData.VersioningBreaks.Break3 | EffectShaderData.VersioningBreaks.Break4;
                 return;
             }
             item.HolesStartTime = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);
@@ -5371,7 +5371,7 @@ namespace Mutagen.Bethesda.Fallout3
             item.TextureCountV = frame.ReadUInt32();
             if (frame.Complete)
             {
-                item.Versioning |= EffectShaderData.VersioningBreaks.Break3;
+                item.Versioning |= EffectShaderData.VersioningBreaks.Break3 | EffectShaderData.VersioningBreaks.Break4;
                 return;
             }
             item.AddonModelsFadeInTime = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);

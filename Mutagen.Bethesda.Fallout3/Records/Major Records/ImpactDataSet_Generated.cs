@@ -2160,14 +2160,14 @@ namespace Mutagen.Bethesda.Fallout3
                     item.Water.SetTo(FormLinkBinaryTranslation.Instance.Parse(reader: frame));
                     if (dataFrame.Complete)
                     {
-                        item.DATADataTypeState |= ImpactDataSet.DATADataType.Break0;
+                        item.DATADataTypeState |= ImpactDataSet.DATADataType.Break0 | ImpactDataSet.DATADataType.Break1 | ImpactDataSet.DATADataType.Break2;
                         return (int)ImpactDataSet_FieldIndex.Water;
                     }
                     if (dataFrame.Remaining < 4) return null;
                     item.HollowMetal.SetTo(FormLinkBinaryTranslation.Instance.Parse(reader: frame));
                     if (dataFrame.Complete)
                     {
-                        item.DATADataTypeState |= ImpactDataSet.DATADataType.Break1;
+                        item.DATADataTypeState |= ImpactDataSet.DATADataType.Break1 | ImpactDataSet.DATADataType.Break2;
                         return (int)ImpactDataSet_FieldIndex.HollowMetal;
                     }
                     if (dataFrame.Remaining < 4) return null;

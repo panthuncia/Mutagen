@@ -1454,21 +1454,21 @@ namespace Mutagen.Bethesda.Skyrim
             item.HoverChance = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);
             if (frame.Complete)
             {
-                item.Versioning |= CombatStyleFlight.VersioningBreaks.Break0;
+                item.Versioning |= CombatStyleFlight.VersioningBreaks.Break0 | CombatStyleFlight.VersioningBreaks.Break1 | CombatStyleFlight.VersioningBreaks.Break2 | CombatStyleFlight.VersioningBreaks.Break3;
                 return;
             }
             item.DiveBombChance = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);
             item.GroundAttackChance = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);
             if (frame.Complete)
             {
-                item.Versioning |= CombatStyleFlight.VersioningBreaks.Break1;
+                item.Versioning |= CombatStyleFlight.VersioningBreaks.Break1 | CombatStyleFlight.VersioningBreaks.Break2 | CombatStyleFlight.VersioningBreaks.Break3;
                 return;
             }
             item.HoverTime = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);
             item.GroundAttackTime = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);
             if (frame.Complete)
             {
-                item.Versioning |= CombatStyleFlight.VersioningBreaks.Break2;
+                item.Versioning |= CombatStyleFlight.VersioningBreaks.Break2 | CombatStyleFlight.VersioningBreaks.Break3;
                 return;
             }
             item.PerchAttackChance = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);

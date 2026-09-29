@@ -3537,7 +3537,7 @@ namespace Mutagen.Bethesda.Fallout3
                     item.Unknown = dataFrame.ReadInt32();
                     if (dataFrame.Complete)
                     {
-                        item.DNAMDataTypeState |= ImageSpace.DNAMDataType.Break0;
+                        item.DNAMDataTypeState |= ImageSpace.DNAMDataType.Break0 | ImageSpace.DNAMDataType.Break1;
                         return (int)ImageSpace_FieldIndex.Unknown;
                     }
                     if (dataFrame.Remaining < 4) return null;

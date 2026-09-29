@@ -3174,7 +3174,7 @@ namespace Mutagen.Bethesda.Fallout4
                     item.Unknown = dataFrame.ReadInt32();
                     if (dataFrame.Complete)
                     {
-                        item.DATADataTypeState |= LightingTemplate.DATADataType.Break0;
+                        item.DATADataTypeState |= LightingTemplate.DATADataType.Break0 | LightingTemplate.DATADataType.Break1;
                         return (int)LightingTemplate_FieldIndex.Unknown;
                     }
                     if (dataFrame.Remaining < 4) return null;

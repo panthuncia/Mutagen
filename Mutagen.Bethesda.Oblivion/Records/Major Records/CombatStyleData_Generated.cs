@@ -3015,14 +3015,14 @@ namespace Mutagen.Bethesda.Oblivion
             frame.SetPosition(frame.Position + 2);
             if (frame.Complete)
             {
-                item.Versioning |= CombatStyleData.VersioningBreaks.Break0;
+                item.Versioning |= CombatStyleData.VersioningBreaks.Break0 | CombatStyleData.VersioningBreaks.Break1 | CombatStyleData.VersioningBreaks.Break2 | CombatStyleData.VersioningBreaks.Break3 | CombatStyleData.VersioningBreaks.Break4;
                 return;
             }
             item.RangeMultOptimal = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);
             item.RangeMultMax = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);
             if (frame.Complete)
             {
-                item.Versioning |= CombatStyleData.VersioningBreaks.Break1;
+                item.Versioning |= CombatStyleData.VersioningBreaks.Break1 | CombatStyleData.VersioningBreaks.Break2 | CombatStyleData.VersioningBreaks.Break3 | CombatStyleData.VersioningBreaks.Break4;
                 return;
             }
             item.SwitchDistanceMelee = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);
@@ -3030,14 +3030,14 @@ namespace Mutagen.Bethesda.Oblivion
             item.BuffStandoffDistance = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);
             if (frame.Complete)
             {
-                item.Versioning |= CombatStyleData.VersioningBreaks.Break2;
+                item.Versioning |= CombatStyleData.VersioningBreaks.Break2 | CombatStyleData.VersioningBreaks.Break3 | CombatStyleData.VersioningBreaks.Break4;
                 return;
             }
             item.RangedStandoffDistance = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);
             item.GroupStandoffDistance = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);
             if (frame.Complete)
             {
-                item.Versioning |= CombatStyleData.VersioningBreaks.Break3;
+                item.Versioning |= CombatStyleData.VersioningBreaks.Break3 | CombatStyleData.VersioningBreaks.Break4;
                 return;
             }
             item.RushingAttackPercentChance = frame.ReadUInt8();

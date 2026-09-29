@@ -2521,7 +2521,7 @@ namespace Mutagen.Bethesda.Fallout4
                 length: 4);
             if (frame.Complete)
             {
-                item.Versioning |= CellLighting.VersioningBreaks.Break0;
+                item.Versioning |= CellLighting.VersioningBreaks.Break0 | CellLighting.VersioningBreaks.Break1 | CellLighting.VersioningBreaks.Break2;
                 return;
             }
             item.NearHeightMid = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);
@@ -2531,7 +2531,7 @@ namespace Mutagen.Bethesda.Fallout4
             item.HighDensityScale = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);
             if (frame.Complete)
             {
-                item.Versioning |= CellLighting.VersioningBreaks.Break1;
+                item.Versioning |= CellLighting.VersioningBreaks.Break1 | CellLighting.VersioningBreaks.Break2;
                 return;
             }
             item.FogNearScale = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);

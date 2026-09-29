@@ -18,7 +18,7 @@ public class BreakBinaryTranslationGeneration : BinaryTranslationGeneration
         sb.AppendLine($"if (dataFrame.Complete)");
         using (sb.CurlyBrace())
         {
-            sb.AppendLine($"item.{VersioningModule.VersioningFieldName} |= {objGen.ObjectName}.{VersioningModule.VersioningEnumName}.Break{breakType.Index};");
+            sb.AppendLine($"item.{VersioningModule.VersioningFieldName} |= {BreaksFrom($"{objGen.ObjectName}.{VersioningModule.VersioningEnumName}", breakType.Index, objGen.Fields.WhereCastable<TypeGeneration, BreakType>().Count())};");
             string enumName = null;
             var startIndex = objGen.Fields.IndexOf(typeGen);
             for (int i = startIndex - 1; i >= 0; i--)

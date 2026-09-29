@@ -7659,14 +7659,14 @@ namespace Mutagen.Bethesda.Skyrim
                     item.AddonModelsScaleOutTime = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: dataFrame);
                     if (dataFrame.Complete)
                     {
-                        item.DATADataTypeState |= EffectShader.DATADataType.Break0;
+                        item.DATADataTypeState |= EffectShader.DATADataType.Break0 | EffectShader.DATADataType.Break1 | EffectShader.DATADataType.Break2 | EffectShader.DATADataType.Break3;
                         return (int)EffectShader_FieldIndex.AddonModelsScaleOutTime;
                     }
                     if (dataFrame.Remaining < 4) return null;
                     item.AmbientSound.SetTo(FormLinkBinaryTranslation.Instance.Parse(reader: frame));
                     if (dataFrame.Complete)
                     {
-                        item.DATADataTypeState |= EffectShader.DATADataType.Break1;
+                        item.DATADataTypeState |= EffectShader.DATADataType.Break1 | EffectShader.DATADataType.Break2 | EffectShader.DATADataType.Break3;
                         return (int)EffectShader_FieldIndex.AmbientSound;
                     }
                     if (dataFrame.Remaining < 4) return null;
@@ -7687,7 +7687,7 @@ namespace Mutagen.Bethesda.Skyrim
                     item.FillColorKey3Time = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: dataFrame);
                     if (dataFrame.Complete)
                     {
-                        item.DATADataTypeState |= EffectShader.DATADataType.Break2;
+                        item.DATADataTypeState |= EffectShader.DATADataType.Break2 | EffectShader.DATADataType.Break3;
                         return (int)EffectShader_FieldIndex.FillColorKey3Time;
                     }
                     if (dataFrame.Remaining < 4) return null;

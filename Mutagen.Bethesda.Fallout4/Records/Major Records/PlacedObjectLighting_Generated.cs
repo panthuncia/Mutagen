@@ -1339,7 +1339,7 @@ namespace Mutagen.Bethesda.Fallout4
             item.ShadowDepthBias = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);
             if (frame.Complete)
             {
-                item.Versioning |= PlacedObjectLighting.VersioningBreaks.Break0;
+                item.Versioning |= PlacedObjectLighting.VersioningBreaks.Break0 | PlacedObjectLighting.VersioningBreaks.Break1;
                 return;
             }
             item.NearClip = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);
