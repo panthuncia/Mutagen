@@ -93,27 +93,7 @@ public sealed class EnumBinaryTranslation<TEnum, TReader, TWriter>
         return Enums<TEnum>.Convert(i);
     }
 
-    public TEnum ParseValue(TReader reader)
-    {
-        switch (reader.Remaining)
-        {
-            case 1:
-                Enums<TEnum>.Convert(reader.ReadUInt8());
-                break;
-            case 2:
-                Enums<TEnum>.Convert(reader.ReadInt16());
-                break;
-            case 4:
-                Enums<TEnum>.Convert(reader.ReadInt32());
-                break;
-            case 8:
-                Enums<TEnum>.Convert(reader.ReadInt64());
-                break;
-            default:
-                throw new NotImplementedException();
-        }
-        return default;
-    }
+    public TEnum ParseValue(TReader reader) => ParseValue(reader, reader.Remaining);
 
     public void Write(TWriter writer, TEnum item, long length)
     {
