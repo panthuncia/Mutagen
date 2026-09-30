@@ -485,7 +485,7 @@ internal static unsafe class IndexPrototype
         private static void Save(string file, FileInfo info, PluginIndex index, string[] masters)
         {
             Directory.CreateDirectory(Path.GetDirectoryName(file)!);
-            using var stream = new BufferedStream(File.Create(file), 1 << 20);
+            using var stream = new BufferedStream(File.Create(file), 1 << 16);
             using var writer = new BinaryWriter(stream);
             writer.Write(Version);
             writer.Write(info.Length);
@@ -508,7 +508,7 @@ internal static unsafe class IndexPrototype
         private static PluginIndex? TryLoad(string file, FileInfo info, Func<string, int> mod)
         {
             if (!File.Exists(file)) return null;
-            using var stream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read, 1 << 20);
+            using var stream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.SequentialScan);
             using var reader = new BinaryReader(stream);
             if (reader.ReadInt32() != Version || reader.ReadInt64() != info.Length || reader.ReadInt64() != info.LastWriteTimeUtc.Ticks) return null;
             var masters = new int[reader.ReadInt32() + 1];
