@@ -10,6 +10,8 @@
     <SafePatchRepo Condition="'$(SafePatchRepo)' == ''">$(MSBuildThisFileDirectory)..\..\SynthesisMCP</SafePatchRepo>
     <!-- Build with -p:SafePatchBatches=true on a tree that has EnumerateMajorRecordBatches. -->
     <DefineConstants Condition="'$(SafePatchBatches)' == 'true'">$(DefineConstants);SAFEPATCH_BATCHES</DefineConstants>
+    <!-- Build with -p:SafePatchDiffering=true on a tree that has FillDifferingFields. -->
+    <DefineConstants Condition="'$(SafePatchDiffering)' == 'true'">$(DefineConstants);SAFEPATCH_DIFFERING</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mutagen.Bethesda.Skyrim\Mutagen.Bethesda.Skyrim.csproj" />

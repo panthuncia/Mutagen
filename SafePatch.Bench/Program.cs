@@ -11,6 +11,10 @@ using SafePatch.Authoring.Index;
 //   SafePatch.Bench <Data folder> <plugins.txt> [runs=3] [only=<step name part>|-] [label]
 //   SafePatch.Bench check <Data folder> <plugin,...> [label]
 //   SafePatch.Bench check-threads <Data folder> <plugin>
+//   SafePatch.Bench conflict-scan <Data folder> <plugins.txt or .paths> [runs=3] [label] [mask|fields|equals]
+//   SafePatch.Bench linkcache <Data folder> <plugins.txt or .paths> [label]
+//   SafePatch.Bench conflicts <Data folder> <plugins.txt or .paths> [runs=3] [label]
+//   SafePatch.Bench memory <Data folder> <plugins.txt> open|keep|keep-read|full [label]
 //   SafePatch.Bench check-hash <Data folder> <plugin,...> [label]
 //   SafePatch.Bench diag|diag-self|diag-hash <Data folder> <plugin> <record type> [max=3]
 if (args is ["check", var checkData, var checkPlugins, .. var checkRest])
@@ -24,6 +28,22 @@ if (args is ["diag" or "diag-self" or "diag-hash", var diagData, var diagPlugin,
 if (args is ["check-hash", var hashData, var hashPlugins, .. var hashRest])
 {
     return CheckHash(hashData, hashPlugins.Split(','), hashRest is [var hashLabel] ? hashLabel : "");
+}
+if (args is ["conflict-scan", var scanData, var scanPlugins, .. var scanRest])
+{
+    return ConflictScan.Run(scanData, scanPlugins, scanRest is [var r, ..] ? int.Parse(r) : 3, scanRest is [_, var l, ..] ? l : "", scanRest is [_, _, var c] ? c : "fields");
+}
+if (args is ["linkcache", var linkData, var linkPlugins, .. var linkRest])
+{
+    return LinkCacheBench.Run(linkData, linkPlugins, linkRest is [var linkLabel] ? linkLabel : "");
+}
+if (args is ["conflicts", var conflictData, var conflictPlugins, .. var conflictRest])
+{
+    return Conflicts.Run(conflictData, conflictPlugins, conflictRest is [var r, ..] ? int.Parse(r) : 3, conflictRest is [_, var conflictLabel] ? conflictLabel : "");
+}
+if (args is ["memory", var memoryData, var memoryPlugins, var memoryScenario, .. var memoryRest])
+{
+    return Memory.Run(memoryData, memoryPlugins, memoryScenario, memoryRest is [var memoryLabel] ? memoryLabel : "");
 }
 if (args is ["check-threads", var threadData, var threadPlugin])
 {
