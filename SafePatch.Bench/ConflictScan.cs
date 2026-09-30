@@ -77,6 +77,7 @@ internal static class ConflictScan
             read = null;
             var indexed = clock.Elapsed;
 
+            var contentions = Monitor.LockContentionCount;
             clock.Restart();
             long pairs = 0, differing = 0, failed = 0;
             Parallel.ForEach(Partitioner.Create(0, overridden.Length, 64), range =>
@@ -104,10 +105,11 @@ internal static class ConflictScan
                 Interlocked.Add(ref failed, localFailed);
             });
             var compared = clock.Elapsed;
+            var contended = Monitor.LockContentionCount - contentions;
             var mib = (GC.GetTotalAllocatedBytes(precise: true) - allocated) / (1024 * 1024);
             var gcs = GC.CollectionCount(0) - collections;
             Console.WriteLine($"run {run + 1}: {records:N0} versions, {overridden.Length:N0} overridden, {pairs:N0} pairs, {differing:N0} differing ({failed} failed): " +
-                              $"index {indexed.TotalMilliseconds:N0} ms, compare {compared.TotalMilliseconds:N0} ms; {mib:N0} MiB allocated, {gcs} gen0 collections");
+                              $"index {indexed.TotalMilliseconds:N0} ms, compare {compared.TotalMilliseconds:N0} ms; {mib:N0} MiB allocated, {gcs} gen0 collections, {contended:N0} contended locks while comparing");
             Console.WriteLine($"SCAN|{label}|{comparer}|{run + 1}|{records}|{pairs}|{differing}|{indexed.TotalMilliseconds:F0}|{compared.TotalMilliseconds:F0}|{mib}|{gcs}");
         }
         foreach (var mod in mods) (mod as IDisposable)?.Dispose();
