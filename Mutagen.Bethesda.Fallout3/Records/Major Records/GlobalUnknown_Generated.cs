@@ -1609,7 +1609,8 @@ namespace Mutagen.Bethesda.Fallout3
         public Char TypeChar => GetTypeCharCustom();
         #endregion
         #region Data
-        private int? _DataLocation;
+        private int? _DataLocationStore;
+        private int? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public Single? Data => _DataLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DataLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         partial void CustomFactoryEnd(

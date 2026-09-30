@@ -1166,11 +1166,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Quest
-        private int? _QuestLocation;
+        private int? _QuestLocationStore;
+        private int? _QuestLocation { get { EnsureFilled(); return _QuestLocationStore; } set => _QuestLocationStore = value; }
         public IFormLinkNullableGetter<IQuestGetter> Quest => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IQuestGetter>(_package, _recordData, _QuestLocation);
         #endregion
         #region HoursUntilReset
-        private int? _HoursUntilResetLocation;
+        private int? _HoursUntilResetLocationStore;
+        private int? _HoursUntilResetLocation { get { EnsureFilled(); return _HoursUntilResetLocationStore; } set => _HoursUntilResetLocationStore = value; }
         public Single? HoursUntilReset => _HoursUntilResetLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HoursUntilResetLocation.Value, _package.MetaData.Constants)) / 24f : default(Single?);
         #endregion
         partial void CustomFactoryEnd(

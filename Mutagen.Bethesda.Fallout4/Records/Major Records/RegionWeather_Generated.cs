@@ -1412,13 +1412,18 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IWeatherTypeGetter>? Weathers { get; private set; }
+        #region Weathers
+        private IReadOnlyList<IWeatherTypeGetter>? WeathersStore;
+        public IReadOnlyList<IWeatherTypeGetter>? Weathers { get { EnsureFilled(); return WeathersStore; } private set => WeathersStore = value; }
+        #endregion
         #region LodDisplayDistanceMultiplier
-        private int? _LodDisplayDistanceMultiplierLocation;
+        private int? _LodDisplayDistanceMultiplierLocationStore;
+        private int? _LodDisplayDistanceMultiplierLocation { get { EnsureFilled(); return _LodDisplayDistanceMultiplierLocationStore; } set => _LodDisplayDistanceMultiplierLocationStore = value; }
         public override Single? LodDisplayDistanceMultiplier => _LodDisplayDistanceMultiplierLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LodDisplayDistanceMultiplierLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region OcclusionAccuracyDist
-        private int? _OcclusionAccuracyDistLocation;
+        private int? _OcclusionAccuracyDistLocationStore;
+        private int? _OcclusionAccuracyDistLocation { get { EnsureFilled(); return _OcclusionAccuracyDistLocationStore; } set => _OcclusionAccuracyDistLocationStore = value; }
         public override Single? OcclusionAccuracyDist => _OcclusionAccuracyDistLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _OcclusionAccuracyDistLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         partial void CustomFactoryEnd(

@@ -1514,20 +1514,27 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region File
-        private int? _FileLocation;
+        private int? _FileLocationStore;
+        private int? _FileLocation { get { EnsureFilled(); return _FileLocationStore; } set => _FileLocationStore = value; }
         public String? File => _FileLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FileLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region MODB
-        private int? _MODBLocation;
+        private int? _MODBLocationStore;
+        private int? _MODBLocation { get { EnsureFilled(); return _MODBLocationStore; } set => _MODBLocationStore = value; }
         public Single? MODB => _MODBLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MODBLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Hashes
-        private int? _HashesLocation;
+        private int? _HashesLocationStore;
+        private int? _HashesLocation { get { EnsureFilled(); return _HashesLocationStore; } set => _HashesLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? Hashes => _HashesLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _HashesLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
-        public IReadOnlyList<IAlternateTextureGetter>? AlternateTextures { get; private set; }
+        #region AlternateTextures
+        private IReadOnlyList<IAlternateTextureGetter>? AlternateTexturesStore;
+        public IReadOnlyList<IAlternateTextureGetter>? AlternateTextures { get { EnsureFilled(); return AlternateTexturesStore; } private set => AlternateTexturesStore = value; }
+        #endregion
         #region FaceGenFlags
-        private int? _FaceGenFlagsLocation;
+        private int? _FaceGenFlagsLocationStore;
+        private int? _FaceGenFlagsLocation { get { EnsureFilled(); return _FaceGenFlagsLocationStore; } set => _FaceGenFlagsLocationStore = value; }
         public Model.FaceGenFlag? FaceGenFlags => EnumBinaryTranslation<Model.FaceGenFlag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FaceGenFlagsLocation, _recordData, _package, 1);
         #endregion
         partial void CustomFactoryEnd(

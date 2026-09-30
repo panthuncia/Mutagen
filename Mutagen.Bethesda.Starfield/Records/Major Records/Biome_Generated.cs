@@ -4716,7 +4716,8 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -4728,106 +4729,151 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #endregion
         #region Keywords
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get; private set; }
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? KeywordsStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get { EnsureFilled(); return KeywordsStore; } private set => KeywordsStore = value; }
         IReadOnlyList<IFormLinkGetter<IKeywordCommonGetter>>? IKeywordedGetter.Keywords => this.Keywords;
         #endregion
         #region FilterString
-        private int? _FilterStringLocation;
+        private int? _FilterStringLocationStore;
+        private int? _FilterStringLocation { get { EnsureFilled(); return _FilterStringLocationStore; } set => _FilterStringLocationStore = value; }
         public String? FilterString => _FilterStringLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FilterStringLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IFloraGetter>>? Flora { get; private set; }
-        public IReadOnlyList<IFormLinkGetter<IResourceGenerationDataGetter>> ResourceGeneration { get; private set; } = [];
-        public IReadOnlyList<IBiomeProceduralObjectGenerationGetter> ProceduralObjectGeneration { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<IObjectSwapGetter>> ObjectSwaps { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<ILayeredMaterialSwapGetter>> MaterialSwaps { get; private set; } = [];
+        #region Flora
+        private IReadOnlyList<IFormLinkGetter<IFloraGetter>>? FloraStore;
+        public IReadOnlyList<IFormLinkGetter<IFloraGetter>>? Flora { get { EnsureFilled(); return FloraStore; } private set => FloraStore = value; }
+        #endregion
+        #region ResourceGeneration
+        private IReadOnlyList<IFormLinkGetter<IResourceGenerationDataGetter>> ResourceGenerationStore = [];
+        public IReadOnlyList<IFormLinkGetter<IResourceGenerationDataGetter>> ResourceGeneration { get { EnsureFilled(); return ResourceGenerationStore; } private set => ResourceGenerationStore = value; }
+        #endregion
+        #region ProceduralObjectGeneration
+        private IReadOnlyList<IBiomeProceduralObjectGenerationGetter> ProceduralObjectGenerationStore = [];
+        public IReadOnlyList<IBiomeProceduralObjectGenerationGetter> ProceduralObjectGeneration { get { EnsureFilled(); return ProceduralObjectGenerationStore; } private set => ProceduralObjectGenerationStore = value; }
+        #endregion
+        #region ObjectSwaps
+        private IReadOnlyList<IFormLinkGetter<IObjectSwapGetter>> ObjectSwapsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IObjectSwapGetter>> ObjectSwaps { get { EnsureFilled(); return ObjectSwapsStore; } private set => ObjectSwapsStore = value; }
+        #endregion
+        #region MaterialSwaps
+        private IReadOnlyList<IFormLinkGetter<ILayeredMaterialSwapGetter>> MaterialSwapsStore = [];
+        public IReadOnlyList<IFormLinkGetter<ILayeredMaterialSwapGetter>> MaterialSwaps { get { EnsureFilled(); return MaterialSwapsStore; } private set => MaterialSwapsStore = value; }
+        #endregion
         #region Climate
-        private int? _ClimateLocation;
+        private int? _ClimateLocationStore;
+        private int? _ClimateLocation { get { EnsureFilled(); return _ClimateLocationStore; } set => _ClimateLocationStore = value; }
         public IFormLinkNullableGetter<IClimateGetter> Climate => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IClimateGetter>(_package, _recordData, _ClimateLocation);
         #endregion
         #region Water
-        private IBiomeWaterDataGetter? _Water;
+        private IBiomeWaterDataGetter? _WaterStore;
+        private IBiomeWaterDataGetter? _Water { get { EnsureFilled(); return _WaterStore; } set => _WaterStore = value; }
         public IBiomeWaterDataGetter Water => _Water ?? new BiomeWaterData();
         #endregion
         #region BlockDensityMult
-        private int? _BlockDensityMultLocation;
+        private int? _BlockDensityMultLocationStore;
+        private int? _BlockDensityMultLocation { get { EnsureFilled(); return _BlockDensityMultLocationStore; } set => _BlockDensityMultLocationStore = value; }
         public Single? BlockDensityMult => _BlockDensityMultLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BlockDensityMultLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region CellDensityMult
-        private int? _CellDensityMultLocation;
+        private int? _CellDensityMultLocationStore;
+        private int? _CellDensityMultLocation { get { EnsureFilled(); return _CellDensityMultLocationStore; } set => _CellDensityMultLocationStore = value; }
         public Single? CellDensityMult => _CellDensityMultLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _CellDensityMultLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region ScanWorldspaceMult
-        private int? _ScanWorldspaceMultLocation;
+        private int? _ScanWorldspaceMultLocationStore;
+        private int? _ScanWorldspaceMultLocation { get { EnsureFilled(); return _ScanWorldspaceMultLocationStore; } set => _ScanWorldspaceMultLocationStore = value; }
         public Single? ScanWorldspaceMult => _ScanWorldspaceMultLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ScanWorldspaceMultLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Child
-        private int? _ChildLocation;
+        private int? _ChildLocationStore;
+        private int? _ChildLocation { get { EnsureFilled(); return _ChildLocationStore; } set => _ChildLocationStore = value; }
         public IFormLinkNullableGetter<IBiomeGetter> Child => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IBiomeGetter>(_package, _recordData, _ChildLocation);
         #endregion
         #region AmbienceSet
-        private int? _AmbienceSetLocation;
+        private int? _AmbienceSetLocationStore;
+        private int? _AmbienceSetLocation { get { EnsureFilled(); return _AmbienceSetLocationStore; } set => _AmbienceSetLocationStore = value; }
         public IFormLinkNullableGetter<IAmbienceSetGetter> AmbienceSet => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IAmbienceSetGetter>(_package, _recordData, _AmbienceSetLocation);
         #endregion
         #region MusicType
-        private int? _MusicTypeLocation;
+        private int? _MusicTypeLocationStore;
+        private int? _MusicTypeLocation { get { EnsureFilled(); return _MusicTypeLocationStore; } set => _MusicTypeLocationStore = value; }
         public IFormLinkNullableGetter<IMusicTypeGetter> MusicType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMusicTypeGetter>(_package, _recordData, _MusicTypeLocation);
         #endregion
         #region TimeOfDay
-        private int? _TimeOfDayLocation;
+        private int? _TimeOfDayLocationStore;
+        private int? _TimeOfDayLocation { get { EnsureFilled(); return _TimeOfDayLocationStore; } set => _TimeOfDayLocationStore = value; }
         public IFormLinkNullableGetter<ITimeOfDayRecordGetter> TimeOfDay => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ITimeOfDayRecordGetter>(_package, _recordData, _TimeOfDayLocation);
         #endregion
         #region PatternStyle
-        private int? _PatternStyleLocation;
+        private int? _PatternStyleLocationStore;
+        private int? _PatternStyleLocation { get { EnsureFilled(); return _PatternStyleLocationStore; } set => _PatternStyleLocationStore = value; }
         public IFormLinkNullableGetter<ISurfacePatternStyleGetter> PatternStyle => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISurfacePatternStyleGetter>(_package, _recordData, _PatternStyleLocation);
         #endregion
         #region Color
-        private int? _ColorLocation;
+        private int? _ColorLocationStore;
+        private int? _ColorLocation { get { EnsureFilled(); return _ColorLocationStore; } set => _ColorLocationStore = value; }
         public Color Color => _ColorLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ColorLocation.Value, _package.MetaData.Constants).ReadColor(ColorBinaryType.Alpha) : default(Color);
         #endregion
         #region SurfaceColor1
-        private int? _SurfaceColor1Location;
+        private int? _SurfaceColor1LocationStore;
+        private int? _SurfaceColor1Location { get { EnsureFilled(); return _SurfaceColor1LocationStore; } set => _SurfaceColor1LocationStore = value; }
         public Color SurfaceColor1 => _SurfaceColor1Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SurfaceColor1Location.Value, _package.MetaData.Constants).ReadColor(ColorBinaryType.Alpha) : default(Color);
         #endregion
         #region SurfaceColor2
-        private int? _SurfaceColor2Location;
+        private int? _SurfaceColor2LocationStore;
+        private int? _SurfaceColor2Location { get { EnsureFilled(); return _SurfaceColor2LocationStore; } set => _SurfaceColor2LocationStore = value; }
         public Color SurfaceColor2 => _SurfaceColor2Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SurfaceColor2Location.Value, _package.MetaData.Constants).ReadColor(ColorBinaryType.Alpha) : default(Color);
         #endregion
         #region RockTint
-        private int? _RockTintLocation;
+        private int? _RockTintLocationStore;
+        private int? _RockTintLocation { get { EnsureFilled(); return _RockTintLocationStore; } set => _RockTintLocationStore = value; }
         public Color RockTint => _RockTintLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _RockTintLocation.Value, _package.MetaData.Constants).ReadColor(ColorBinaryType.Alpha) : default(Color);
         #endregion
         #region Type
-        private int? _TypeLocation;
+        private int? _TypeLocationStore;
+        private int? _TypeLocation { get { EnsureFilled(); return _TypeLocationStore; } set => _TypeLocationStore = value; }
         public Biome.TypeEnum Type => EnumBinaryTranslation<Biome.TypeEnum, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_TypeLocation, _recordData, _package, 4);
         #endregion
-        public IReadOnlyList<IBiomeMarkerTypeGetter> MarkerObjectKeywords { get; private set; } = [];
-        public IReadOnlyList<IBiomeTerrainGetter> Terrain { get; private set; } = [];
+        #region MarkerObjectKeywords
+        private IReadOnlyList<IBiomeMarkerTypeGetter> MarkerObjectKeywordsStore = [];
+        public IReadOnlyList<IBiomeMarkerTypeGetter> MarkerObjectKeywords { get { EnsureFilled(); return MarkerObjectKeywordsStore; } private set => MarkerObjectKeywordsStore = value; }
+        #endregion
+        #region Terrain
+        private IReadOnlyList<IBiomeTerrainGetter> TerrainStore = [];
+        public IReadOnlyList<IBiomeTerrainGetter> Terrain { get { EnsureFilled(); return TerrainStore; } private set => TerrainStore = value; }
+        #endregion
         #region GroundLayerNormal
-        private int? _GroundLayerNormalLocation;
+        private int? _GroundLayerNormalLocationStore;
+        private int? _GroundLayerNormalLocation { get { EnsureFilled(); return _GroundLayerNormalLocationStore; } set => _GroundLayerNormalLocationStore = value; }
         public String? GroundLayerNormal => _GroundLayerNormalLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _GroundLayerNormalLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region BTPS
-        private int? _BTPSLocation;
+        private int? _BTPSLocationStore;
+        private int? _BTPSLocation { get { EnsureFilled(); return _BTPSLocationStore; } set => _BTPSLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? BTPS => _BTPSLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _BTPSLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region DistantView
-        private int? _DistantViewLocation;
+        private int? _DistantViewLocationStore;
+        private int? _DistantViewLocation { get { EnsureFilled(); return _DistantViewLocationStore; } set => _DistantViewLocationStore = value; }
         public ReadOnlyMemorySlice<Byte> DistantView => _DistantViewLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DistantViewLocation.Value, _package.MetaData.Constants) : ReadOnlyMemorySlice<byte>.Empty;
         #endregion
         #region GlobalLayerMaterial
-        private int? _GlobalLayerMaterialLocation;
+        private int? _GlobalLayerMaterialLocationStore;
+        private int? _GlobalLayerMaterialLocation { get { EnsureFilled(); return _GlobalLayerMaterialLocationStore; } set => _GlobalLayerMaterialLocationStore = value; }
         public String? GlobalLayerMaterial => _GlobalLayerMaterialLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _GlobalLayerMaterialLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region BlockDensityMultGlobal
-        private int? _BlockDensityMultGlobalLocation;
+        private int? _BlockDensityMultGlobalLocationStore;
+        private int? _BlockDensityMultGlobalLocation { get { EnsureFilled(); return _BlockDensityMultGlobalLocationStore; } set => _BlockDensityMultGlobalLocationStore = value; }
         public IFormLinkNullableGetter<IGlobalGetter> BlockDensityMultGlobal => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IGlobalGetter>(_package, _recordData, _BlockDensityMultGlobalLocation);
         #endregion
         #region CellDensityMultGlobal
-        private int? _CellDensityMultGlobalLocation;
+        private int? _CellDensityMultGlobalLocationStore;
+        private int? _CellDensityMultGlobalLocation { get { EnsureFilled(); return _CellDensityMultGlobalLocationStore; } set => _CellDensityMultGlobalLocationStore = value; }
         public IFormLinkNullableGetter<IGlobalGetter> CellDensityMultGlobal => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IGlobalGetter>(_package, _recordData, _CellDensityMultGlobalLocation);
         #endregion
         #region ScanWorldspaceMultGlobal
-        private int? _ScanWorldspaceMultGlobalLocation;
+        private int? _ScanWorldspaceMultGlobalLocationStore;
+        private int? _ScanWorldspaceMultGlobalLocation { get { EnsureFilled(); return _ScanWorldspaceMultGlobalLocationStore; } set => _ScanWorldspaceMultGlobalLocationStore = value; }
         public IFormLinkNullableGetter<IGlobalGetter> ScanWorldspaceMultGlobal => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IGlobalGetter>(_package, _recordData, _ScanWorldspaceMultGlobalLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -4851,6 +4897,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new BiomeBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => BiomeFill((BiomeBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void BiomeFill(
+            BiomeBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -4858,9 +4921,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new BiomeBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -4873,7 +4934,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IBiomeGetter BiomeFactory(

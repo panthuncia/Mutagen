@@ -1755,36 +1755,47 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Perk
-        private int? _PerkLocation;
+        private int? _PerkLocationStore;
+        private int? _PerkLocation { get { EnsureFilled(); return _PerkLocationStore; } set => _PerkLocationStore = value; }
         public IFormLinkGetter<IPerkGetter> Perk => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IPerkGetter>(_package, _recordData, _PerkLocation);
         #endregion
         #region FNAM
-        private int? _FNAMLocation;
+        private int? _FNAMLocationStore;
+        private int? _FNAMLocation { get { EnsureFilled(); return _FNAMLocationStore; } set => _FNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? FNAM => _FNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region PerkGridX
-        private int? _PerkGridXLocation;
+        private int? _PerkGridXLocationStore;
+        private int? _PerkGridXLocation { get { EnsureFilled(); return _PerkGridXLocationStore; } set => _PerkGridXLocationStore = value; }
         public UInt32? PerkGridX => _PerkGridXLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _PerkGridXLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region PerkGridY
-        private int? _PerkGridYLocation;
+        private int? _PerkGridYLocationStore;
+        private int? _PerkGridYLocation { get { EnsureFilled(); return _PerkGridYLocationStore; } set => _PerkGridYLocationStore = value; }
         public UInt32? PerkGridY => _PerkGridYLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _PerkGridYLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region HorizontalPosition
-        private int? _HorizontalPositionLocation;
+        private int? _HorizontalPositionLocationStore;
+        private int? _HorizontalPositionLocation { get { EnsureFilled(); return _HorizontalPositionLocationStore; } set => _HorizontalPositionLocationStore = value; }
         public Single? HorizontalPosition => _HorizontalPositionLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HorizontalPositionLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region VerticalPosition
-        private int? _VerticalPositionLocation;
+        private int? _VerticalPositionLocationStore;
+        private int? _VerticalPositionLocation { get { EnsureFilled(); return _VerticalPositionLocationStore; } set => _VerticalPositionLocationStore = value; }
         public Single? VerticalPosition => _VerticalPositionLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _VerticalPositionLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region AssociatedSkill
-        private int? _AssociatedSkillLocation;
+        private int? _AssociatedSkillLocationStore;
+        private int? _AssociatedSkillLocation { get { EnsureFilled(); return _AssociatedSkillLocationStore; } set => _AssociatedSkillLocationStore = value; }
         public IFormLinkNullableGetter<IActorValueInformationGetter> AssociatedSkill => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IActorValueInformationGetter>(_package, _recordData, _AssociatedSkillLocation);
         #endregion
-        public IReadOnlyList<UInt32> ConnectionLineToIndices { get; private set; } = [];
+        #region ConnectionLineToIndices
+        private IReadOnlyList<UInt32> ConnectionLineToIndicesStore = [];
+        public IReadOnlyList<UInt32> ConnectionLineToIndices { get { EnsureFilled(); return ConnectionLineToIndicesStore; } private set => ConnectionLineToIndicesStore = value; }
+        #endregion
         #region Index
-        private int? _IndexLocation;
+        private int? _IndexLocationStore;
+        private int? _IndexLocation { get { EnsureFilled(); return _IndexLocationStore; } set => _IndexLocationStore = value; }
         public UInt32? Index => _IndexLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IndexLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         partial void CustomFactoryEnd(

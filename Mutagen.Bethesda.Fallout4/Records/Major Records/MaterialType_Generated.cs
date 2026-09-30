@@ -1967,11 +1967,13 @@ namespace Mutagen.Bethesda.Fallout4
 
 
         #region Parent
-        private int? _ParentLocation;
+        private int? _ParentLocationStore;
+        private int? _ParentLocation { get { EnsureFilled(); return _ParentLocationStore; } set => _ParentLocationStore = value; }
         public IFormLinkNullableGetter<IMaterialTypeGetter> Parent => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMaterialTypeGetter>(_package, _recordData, _ParentLocation);
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -1979,27 +1981,33 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #endregion
         #region HavokDisplayColor
-        private int? _HavokDisplayColorLocation;
+        private int? _HavokDisplayColorLocationStore;
+        private int? _HavokDisplayColorLocation { get { EnsureFilled(); return _HavokDisplayColorLocationStore; } set => _HavokDisplayColorLocationStore = value; }
         public Color? HavokDisplayColor => _HavokDisplayColorLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _HavokDisplayColorLocation.Value, _package.MetaData.Constants).ReadColor(ColorBinaryType.NoAlphaFloat) : default(Color?);
         #endregion
         #region Buoyancy
-        private int? _BuoyancyLocation;
+        private int? _BuoyancyLocationStore;
+        private int? _BuoyancyLocation { get { EnsureFilled(); return _BuoyancyLocationStore; } set => _BuoyancyLocationStore = value; }
         public Single? Buoyancy => _BuoyancyLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BuoyancyLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public MaterialType.Flag? Flags => EnumBinaryTranslation<MaterialType.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 4);
         #endregion
         #region HavokImpactDataSet
-        private int? _HavokImpactDataSetLocation;
+        private int? _HavokImpactDataSetLocationStore;
+        private int? _HavokImpactDataSetLocation { get { EnsureFilled(); return _HavokImpactDataSetLocationStore; } set => _HavokImpactDataSetLocationStore = value; }
         public IFormLinkNullableGetter<IImpactDataSetGetter> HavokImpactDataSet => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IImpactDataSetGetter>(_package, _recordData, _HavokImpactDataSetLocation);
         #endregion
         #region BreakableFX
-        private int? _BreakableFXLocation;
+        private int? _BreakableFXLocationStore;
+        private int? _BreakableFXLocation { get { EnsureFilled(); return _BreakableFXLocationStore; } set => _BreakableFXLocationStore = value; }
         public String? BreakableFX => _BreakableFXLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BreakableFXLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ModelData
-        private int? _ModelDataLocation;
+        private int? _ModelDataLocationStore;
+        private int? _ModelDataLocation { get { EnsureFilled(); return _ModelDataLocationStore; } set => _ModelDataLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? ModelData => _ModelDataLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ModelDataLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(
@@ -2023,6 +2031,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new MaterialTypeBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => MaterialTypeFill((MaterialTypeBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void MaterialTypeFill(
+            MaterialTypeBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2030,9 +2055,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new MaterialTypeBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2045,7 +2068,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IMaterialTypeGetter MaterialTypeFactory(

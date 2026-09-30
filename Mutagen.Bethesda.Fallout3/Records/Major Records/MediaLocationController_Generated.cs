@@ -3185,7 +3185,8 @@ namespace Mutagen.Bethesda.Fallout3
 
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -3197,45 +3198,72 @@ namespace Mutagen.Bethesda.Fallout3
         #endregion
         #endregion
         #region NAM1
-        private int? _NAM1Location;
+        private int? _NAM1LocationStore;
+        private int? _NAM1Location { get { EnsureFilled(); return _NAM1LocationStore; } set => _NAM1LocationStore = value; }
         public UInt32? NAM1 => _NAM1Location.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM1Location.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region NAM2
-        private int? _NAM2Location;
+        private int? _NAM2LocationStore;
+        private int? _NAM2Location { get { EnsureFilled(); return _NAM2LocationStore; } set => _NAM2LocationStore = value; }
         public UInt32? NAM2 => _NAM2Location.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM2Location.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region NAM3
-        private int? _NAM3Location;
+        private int? _NAM3LocationStore;
+        private int? _NAM3Location { get { EnsureFilled(); return _NAM3LocationStore; } set => _NAM3LocationStore = value; }
         public UInt32? NAM3 => _NAM3Location.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM3Location.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region LocationDelay
-        private int? _LocationDelayLocation;
+        private int? _LocationDelayLocationStore;
+        private int? _LocationDelayLocation { get { EnsureFilled(); return _LocationDelayLocationStore; } set => _LocationDelayLocationStore = value; }
         public Single? LocationDelay => _LocationDelayLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LocationDelayLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region DayStart
-        private int? _DayStartLocation;
+        private int? _DayStartLocationStore;
+        private int? _DayStartLocation { get { EnsureFilled(); return _DayStartLocationStore; } set => _DayStartLocationStore = value; }
         public UInt32? DayStart => _DayStartLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DayStartLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region NightStart
-        private int? _NightStartLocation;
+        private int? _NightStartLocationStore;
+        private int? _NightStartLocation { get { EnsureFilled(); return _NightStartLocationStore; } set => _NightStartLocationStore = value; }
         public UInt32? NightStart => _NightStartLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NightStartLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region RetriggerDelay
-        private int? _RetriggerDelayLocation;
+        private int? _RetriggerDelayLocationStore;
+        private int? _RetriggerDelayLocation { get { EnsureFilled(); return _RetriggerDelayLocationStore; } set => _RetriggerDelayLocationStore = value; }
         public Single? RetriggerDelay => _RetriggerDelayLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _RetriggerDelayLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IMediaSetGetter>> NeutralSets { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<IMediaSetGetter>> AllySets { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<IMediaSetGetter>> FriendSets { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<IMediaSetGetter>> EnemySets { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<IMediaSetGetter>> LocationSets { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<IMediaSetGetter>> BattleSets { get; private set; } = [];
+        #region NeutralSets
+        private IReadOnlyList<IFormLinkGetter<IMediaSetGetter>> NeutralSetsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IMediaSetGetter>> NeutralSets { get { EnsureFilled(); return NeutralSetsStore; } private set => NeutralSetsStore = value; }
+        #endregion
+        #region AllySets
+        private IReadOnlyList<IFormLinkGetter<IMediaSetGetter>> AllySetsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IMediaSetGetter>> AllySets { get { EnsureFilled(); return AllySetsStore; } private set => AllySetsStore = value; }
+        #endregion
+        #region FriendSets
+        private IReadOnlyList<IFormLinkGetter<IMediaSetGetter>> FriendSetsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IMediaSetGetter>> FriendSets { get { EnsureFilled(); return FriendSetsStore; } private set => FriendSetsStore = value; }
+        #endregion
+        #region EnemySets
+        private IReadOnlyList<IFormLinkGetter<IMediaSetGetter>> EnemySetsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IMediaSetGetter>> EnemySets { get { EnsureFilled(); return EnemySetsStore; } private set => EnemySetsStore = value; }
+        #endregion
+        #region LocationSets
+        private IReadOnlyList<IFormLinkGetter<IMediaSetGetter>> LocationSetsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IMediaSetGetter>> LocationSets { get { EnsureFilled(); return LocationSetsStore; } private set => LocationSetsStore = value; }
+        #endregion
+        #region BattleSets
+        private IReadOnlyList<IFormLinkGetter<IMediaSetGetter>> BattleSetsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IMediaSetGetter>> BattleSets { get { EnsureFilled(); return BattleSetsStore; } private set => BattleSetsStore = value; }
+        #endregion
         #region ConditionalFaction
-        private int? _ConditionalFactionLocation;
+        private int? _ConditionalFactionLocationStore;
+        private int? _ConditionalFactionLocation { get { EnsureFilled(); return _ConditionalFactionLocationStore; } set => _ConditionalFactionLocationStore = value; }
         public IFormLinkNullableGetter<IFactionGetter> ConditionalFaction => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IFactionGetter>(_package, _recordData, _ConditionalFactionLocation);
         #endregion
         #region FNAM
-        private int? _FNAMLocation;
+        private int? _FNAMLocationStore;
+        private int? _FNAMLocation { get { EnsureFilled(); return _FNAMLocationStore; } set => _FNAMLocationStore = value; }
         public UInt32? FNAM => _FNAMLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FNAMLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         partial void CustomFactoryEnd(
@@ -3259,6 +3287,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new MediaLocationControllerBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => MediaLocationControllerFill((MediaLocationControllerBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void MediaLocationControllerFill(
+            MediaLocationControllerBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -3266,9 +3311,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new MediaLocationControllerBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -3281,7 +3324,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IMediaLocationControllerGetter MediaLocationControllerFactory(

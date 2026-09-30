@@ -4003,77 +4003,116 @@ namespace Mutagen.Bethesda.Oblivion
 
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         string INamedRequiredGetter.Name => this.Name ?? string.Empty;
         #endregion
         #endregion
-        public IModelGetter? Model { get; private set; }
-        public IReadOnlyList<IItemEntryGetter> Items { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<ISpellRecordGetter>> Spells { get; private set; } = [];
-        public IReadOnlyList<String>? Models { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
+        #region Items
+        private IReadOnlyList<IItemEntryGetter> ItemsStore = [];
+        public IReadOnlyList<IItemEntryGetter> Items { get { EnsureFilled(); return ItemsStore; } private set => ItemsStore = value; }
+        #endregion
+        #region Spells
+        private IReadOnlyList<IFormLinkGetter<ISpellRecordGetter>> SpellsStore = [];
+        public IReadOnlyList<IFormLinkGetter<ISpellRecordGetter>> Spells { get { EnsureFilled(); return SpellsStore; } private set => SpellsStore = value; }
+        #endregion
+        #region Models
+        private IReadOnlyList<String>? ModelsStore;
+        public IReadOnlyList<String>? Models { get { EnsureFilled(); return ModelsStore; } private set => ModelsStore = value; }
+        #endregion
         #region NIFT
-        private int? _NIFTLocation;
+        private int? _NIFTLocationStore;
+        private int? _NIFTLocation { get { EnsureFilled(); return _NIFTLocationStore; } set => _NIFTLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? NIFT => _NIFTLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NIFTLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region Configuration
-        private RangeInt32? _ConfigurationLocation;
+        private RangeInt32? _ConfigurationLocationStore;
+        private RangeInt32? _ConfigurationLocation { get { EnsureFilled(); return _ConfigurationLocationStore; } set => _ConfigurationLocationStore = value; }
         public ICreatureConfigurationGetter? Configuration => _ConfigurationLocation.HasValue ? CreatureConfigurationBinaryOverlay.CreatureConfigurationFactory(_recordData.Slice(_ConfigurationLocation!.Value.Min), _package) : default;
         #endregion
-        public IReadOnlyList<IRankPlacementGetter> Factions { get; private set; } = [];
+        #region Factions
+        private IReadOnlyList<IRankPlacementGetter> FactionsStore = [];
+        public IReadOnlyList<IRankPlacementGetter> Factions { get { EnsureFilled(); return FactionsStore; } private set => FactionsStore = value; }
+        #endregion
         #region DeathItem
-        private int? _DeathItemLocation;
+        private int? _DeathItemLocationStore;
+        private int? _DeathItemLocation { get { EnsureFilled(); return _DeathItemLocationStore; } set => _DeathItemLocationStore = value; }
         public IFormLinkNullableGetter<IItemGetter> DeathItem => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IItemGetter>(_package, _recordData, _DeathItemLocation);
         #endregion
         #region Script
-        private int? _ScriptLocation;
+        private int? _ScriptLocationStore;
+        private int? _ScriptLocation { get { EnsureFilled(); return _ScriptLocationStore; } set => _ScriptLocationStore = value; }
         public IFormLinkNullableGetter<IScriptGetter> Script => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IScriptGetter>(_package, _recordData, _ScriptLocation);
         #endregion
         #region AIData
-        private RangeInt32? _AIDataLocation;
+        private RangeInt32? _AIDataLocationStore;
+        private RangeInt32? _AIDataLocation { get { EnsureFilled(); return _AIDataLocationStore; } set => _AIDataLocationStore = value; }
         public ICreatureAIDataGetter? AIData => _AIDataLocation.HasValue ? CreatureAIDataBinaryOverlay.CreatureAIDataFactory(_recordData.Slice(_AIDataLocation!.Value.Min), _package) : default;
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IAIPackageGetter>> AIPackages { get; private set; } = [];
-        public IReadOnlyList<String>? Animations { get; private set; }
+        #region AIPackages
+        private IReadOnlyList<IFormLinkGetter<IAIPackageGetter>> AIPackagesStore = [];
+        public IReadOnlyList<IFormLinkGetter<IAIPackageGetter>> AIPackages { get { EnsureFilled(); return AIPackagesStore; } private set => AIPackagesStore = value; }
+        #endregion
+        #region Animations
+        private IReadOnlyList<String>? AnimationsStore;
+        public IReadOnlyList<String>? Animations { get { EnsureFilled(); return AnimationsStore; } private set => AnimationsStore = value; }
+        #endregion
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public ICreatureDataGetter? Data => _DataLocation.HasValue ? CreatureDataBinaryOverlay.CreatureDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         #endregion
         #region AttackReach
-        private int? _AttackReachLocation;
+        private int? _AttackReachLocationStore;
+        private int? _AttackReachLocation { get { EnsureFilled(); return _AttackReachLocationStore; } set => _AttackReachLocationStore = value; }
         public Byte? AttackReach => _AttackReachLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _AttackReachLocation.Value, _package.MetaData.Constants)[0] : default(Byte?);
         #endregion
         #region CombatStyle
-        private int? _CombatStyleLocation;
+        private int? _CombatStyleLocationStore;
+        private int? _CombatStyleLocation { get { EnsureFilled(); return _CombatStyleLocationStore; } set => _CombatStyleLocationStore = value; }
         public IFormLinkNullableGetter<ICombatStyleGetter> CombatStyle => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ICombatStyleGetter>(_package, _recordData, _CombatStyleLocation);
         #endregion
         #region TurningSpeed
-        private int? _TurningSpeedLocation;
+        private int? _TurningSpeedLocationStore;
+        private int? _TurningSpeedLocation { get { EnsureFilled(); return _TurningSpeedLocationStore; } set => _TurningSpeedLocationStore = value; }
         public Single? TurningSpeed => _TurningSpeedLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TurningSpeedLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region BaseScale
-        private int? _BaseScaleLocation;
+        private int? _BaseScaleLocationStore;
+        private int? _BaseScaleLocation { get { EnsureFilled(); return _BaseScaleLocationStore; } set => _BaseScaleLocationStore = value; }
         public Single? BaseScale => _BaseScaleLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BaseScaleLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region FootWeight
-        private int? _FootWeightLocation;
+        private int? _FootWeightLocationStore;
+        private int? _FootWeightLocation { get { EnsureFilled(); return _FootWeightLocationStore; } set => _FootWeightLocationStore = value; }
         public Single? FootWeight => _FootWeightLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FootWeightLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region BloodSpray
-        private int? _BloodSprayLocation;
+        private int? _BloodSprayLocationStore;
+        private int? _BloodSprayLocation { get { EnsureFilled(); return _BloodSprayLocationStore; } set => _BloodSprayLocationStore = value; }
         public String? BloodSpray => _BloodSprayLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BloodSprayLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region BloodDecal
-        private int? _BloodDecalLocation;
+        private int? _BloodDecalLocationStore;
+        private int? _BloodDecalLocation { get { EnsureFilled(); return _BloodDecalLocationStore; } set => _BloodDecalLocationStore = value; }
         public String? BloodDecal => _BloodDecalLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BloodDecalLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region InheritsSoundFrom
-        private int? _InheritsSoundFromLocation;
+        private int? _InheritsSoundFromLocationStore;
+        private int? _InheritsSoundFromLocation { get { EnsureFilled(); return _InheritsSoundFromLocationStore; } set => _InheritsSoundFromLocationStore = value; }
         public IFormLinkNullableGetter<ICreatureGetter> InheritsSoundFrom => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ICreatureGetter>(_package, _recordData, _InheritsSoundFromLocation);
         #endregion
-        public IReadOnlyList<ICreatureSoundGetter> Sounds { get; private set; } = [];
+        #region Sounds
+        private IReadOnlyList<ICreatureSoundGetter> SoundsStore = [];
+        public IReadOnlyList<ICreatureSoundGetter> Sounds { get { EnsureFilled(); return SoundsStore; } private set => SoundsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -4095,6 +4134,23 @@ namespace Mutagen.Bethesda.Oblivion
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new CreatureBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => CreatureFill((CreatureBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void CreatureFill(
+            CreatureBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -4102,9 +4158,7 @@ namespace Mutagen.Bethesda.Oblivion
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new CreatureBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -4117,7 +4171,6 @@ namespace Mutagen.Bethesda.Oblivion
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ICreatureGetter CreatureFactory(

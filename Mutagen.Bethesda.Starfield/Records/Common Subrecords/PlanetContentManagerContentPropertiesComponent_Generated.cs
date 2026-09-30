@@ -2300,66 +2300,84 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region ZNAM
-        private int? _ZNAMLocation;
+        private int? _ZNAMLocationStore;
+        private int? _ZNAMLocation { get { EnsureFilled(); return _ZNAMLocationStore; } set => _ZNAMLocationStore = value; }
         public UInt32? ZNAM => _ZNAMLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ZNAMLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region YNAM
-        private int? _YNAMLocation;
+        private int? _YNAMLocationStore;
+        private int? _YNAMLocation { get { EnsureFilled(); return _YNAMLocationStore; } set => _YNAMLocationStore = value; }
         public Byte? YNAM => _YNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _YNAMLocation.Value, _package.MetaData.Constants)[0] : default(Byte?);
         #endregion
         #region XNAM
-        private int? _XNAMLocation;
+        private int? _XNAMLocationStore;
+        private int? _XNAMLocation { get { EnsureFilled(); return _XNAMLocationStore; } set => _XNAMLocationStore = value; }
         public UInt32? XNAM => _XNAMLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _XNAMLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region WNAM
-        private int? _WNAMLocation;
+        private int? _WNAMLocationStore;
+        private int? _WNAMLocation { get { EnsureFilled(); return _WNAMLocationStore; } set => _WNAMLocationStore = value; }
         public UInt32? WNAM => _WNAMLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _WNAMLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region VNAM
-        private int? _VNAMLocation;
+        private int? _VNAMLocationStore;
+        private int? _VNAMLocation { get { EnsureFilled(); return _VNAMLocationStore; } set => _VNAMLocationStore = value; }
         public Byte? VNAM => _VNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _VNAMLocation.Value, _package.MetaData.Constants)[0] : default(Byte?);
         #endregion
         #region UNAM
-        private int? _UNAMLocation;
+        private int? _UNAMLocationStore;
+        private int? _UNAMLocation { get { EnsureFilled(); return _UNAMLocationStore; } set => _UNAMLocationStore = value; }
         public UInt32? UNAM => _UNAMLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _UNAMLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region NAM1
-        private int? _NAM1Location;
+        private int? _NAM1LocationStore;
+        private int? _NAM1Location { get { EnsureFilled(); return _NAM1LocationStore; } set => _NAM1LocationStore = value; }
         public Single? NAM1 => _NAM1Location.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM1Location.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Global
-        private int? _GlobalLocation;
+        private int? _GlobalLocationStore;
+        private int? _GlobalLocation { get { EnsureFilled(); return _GlobalLocationStore; } set => _GlobalLocationStore = value; }
         public IFormLinkNullableGetter<IGlobalGetter> Global => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IGlobalGetter>(_package, _recordData, _GlobalLocation);
         #endregion
         #region NAM3
-        private int? _NAM3Location;
+        private int? _NAM3LocationStore;
+        private int? _NAM3Location { get { EnsureFilled(); return _NAM3LocationStore; } set => _NAM3LocationStore = value; }
         public UInt32? NAM3 => _NAM3Location.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM3Location.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region NAM4
-        private int? _NAM4Location;
+        private int? _NAM4LocationStore;
+        private int? _NAM4Location { get { EnsureFilled(); return _NAM4LocationStore; } set => _NAM4LocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? NAM4 => _NAM4Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM4Location.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region NAM5
-        private int? _NAM5Location;
+        private int? _NAM5LocationStore;
+        private int? _NAM5Location { get { EnsureFilled(); return _NAM5LocationStore; } set => _NAM5LocationStore = value; }
         public UInt32? NAM5 => _NAM5Location.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM5Location.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region NAM6
-        private int? _NAM6Location;
+        private int? _NAM6LocationStore;
+        private int? _NAM6Location { get { EnsureFilled(); return _NAM6LocationStore; } set => _NAM6LocationStore = value; }
         public UInt32? NAM6 => _NAM6Location.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM6Location.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region NAM7
-        private int? _NAM7Location;
+        private int? _NAM7LocationStore;
+        private int? _NAM7Location { get { EnsureFilled(); return _NAM7LocationStore; } set => _NAM7LocationStore = value; }
         public UInt32? NAM7 => _NAM7Location.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM7Location.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region NAM8
-        private int? _NAM8Location;
+        private int? _NAM8LocationStore;
+        private int? _NAM8Location { get { EnsureFilled(); return _NAM8LocationStore; } set => _NAM8LocationStore = value; }
         public Byte? NAM8 => _NAM8Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM8Location.Value, _package.MetaData.Constants)[0] : default(Byte?);
         #endregion
         #region NAM9
-        private int? _NAM9Location;
+        private int? _NAM9LocationStore;
+        private int? _NAM9Location { get { EnsureFilled(); return _NAM9LocationStore; } set => _NAM9LocationStore = value; }
         public UInt32? NAM9 => _NAM9Location.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM9Location.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
-        public IReadOnlyList<IConditionGetter>? Conditions { get; private set; }
+        #region Conditions
+        private IReadOnlyList<IConditionGetter>? ConditionsStore;
+        public IReadOnlyList<IConditionGetter>? Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

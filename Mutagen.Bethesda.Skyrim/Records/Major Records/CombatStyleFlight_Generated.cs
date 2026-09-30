@@ -1544,7 +1544,8 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        public CombatStyleFlight.VersioningBreaks Versioning { get; private set; }
+        private CombatStyleFlight.VersioningBreaks VersioningStore;
+        public CombatStyleFlight.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public Single HoverChance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
         public Single DiveBombChance => _structData.Length <= 0x4 ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
         public Single GroundAttackChance => _structData.Length <= 0x8 ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));

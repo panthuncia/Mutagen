@@ -1237,7 +1237,8 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        public SoundRepeat.VersioningBreaks Versioning { get; private set; }
+        private SoundRepeat.VersioningBreaks VersioningStore;
+        public SoundRepeat.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public Single MinTime => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
         public Single MaxTime => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
         public Boolean Stackable => _structData.Length <= 0x8 ? default : _structData.Slice(0x8, 0x1)[0] >= 1;

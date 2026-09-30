@@ -1742,14 +1742,19 @@ namespace Mutagen.Bethesda.Skyrim
 
 
         #region ColorInfluence
-        private int? _ColorInfluenceLocation;
+        private int? _ColorInfluenceLocationStore;
+        private int? _ColorInfluenceLocation { get { EnsureFilled(); return _ColorInfluenceLocationStore; } set => _ColorInfluenceLocationStore = value; }
         public Single? ColorInfluence => _ColorInfluenceLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ColorInfluenceLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region FadeDistanceRadiusScale
-        private int? _FadeDistanceRadiusScaleLocation;
+        private int? _FadeDistanceRadiusScaleLocationStore;
+        private int? _FadeDistanceRadiusScaleLocation { get { EnsureFilled(); return _FadeDistanceRadiusScaleLocationStore; } set => _FadeDistanceRadiusScaleLocationStore = value; }
         public Single? FadeDistanceRadiusScale => _FadeDistanceRadiusScaleLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FadeDistanceRadiusScaleLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
-        public IReadOnlyList<ILensFlareSpriteGetter>? Sprites { get; private set; }
+        #region Sprites
+        private IReadOnlyList<ILensFlareSpriteGetter>? SpritesStore;
+        public IReadOnlyList<ILensFlareSpriteGetter>? Sprites { get { EnsureFilled(); return SpritesStore; } private set => SpritesStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -1771,6 +1776,23 @@ namespace Mutagen.Bethesda.Skyrim
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new LensFlareBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => LensFlareFill((LensFlareBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void LensFlareFill(
+            LensFlareBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1778,9 +1800,7 @@ namespace Mutagen.Bethesda.Skyrim
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new LensFlareBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1793,7 +1813,6 @@ namespace Mutagen.Bethesda.Skyrim
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ILensFlareGetter LensFlareFactory(

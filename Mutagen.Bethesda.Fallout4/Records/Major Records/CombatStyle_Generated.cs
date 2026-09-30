@@ -4464,7 +4464,8 @@ namespace Mutagen.Bethesda.Fallout4
 
         public CombatStyle.MajorFlag MajorFlags => (CombatStyle.MajorFlag)this.MajorRecordFlagsRaw;
 
-        private RangeInt32? _CSGDLocation;
+        private RangeInt32? _CSGDLocationStore;
+        private RangeInt32? _CSGDLocation { get { EnsureFilled(); return _CSGDLocationStore; } set => _CSGDLocationStore = value; }
         #region OffensiveMult
         private int _OffensiveMultLocation => _CSGDLocation!.Value.Min;
         private bool _OffensiveMult_IsSet => _CSGDLocation.HasValue;
@@ -4526,11 +4527,14 @@ namespace Mutagen.Bethesda.Fallout4
         public Single EvadeThreatChance => _EvadeThreatChance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EvadeThreatChanceLocation, 4)) : default(Single);
         #endregion
         #region CSMD
-        private int? _CSMDLocation;
+        private int? _CSMDLocationStore;
+        private int? _CSMDLocation { get { EnsureFilled(); return _CSMDLocationStore; } set => _CSMDLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? CSMD => _CSMDLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _CSMDLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
-        private RangeInt32? _CSMELocation;
-        public CombatStyle.CSMEDataType CSMEDataTypeState { get; private set; }
+        private RangeInt32? _CSMELocationStore;
+        private RangeInt32? _CSMELocation { get { EnsureFilled(); return _CSMELocationStore; } set => _CSMELocationStore = value; }
+        private CombatStyle.CSMEDataType CSMEDataTypeStateStore;
+        public CombatStyle.CSMEDataType CSMEDataTypeState { get { EnsureFilled(); return CSMEDataTypeStateStore; } private set => CSMEDataTypeStateStore = value; }
         #region MeleeAttackStaggeredMult
         private int _MeleeAttackStaggeredMultLocation => _CSMELocation!.Value.Min;
         private bool _MeleeAttackStaggeredMult_IsSet => _CSMELocation.HasValue;
@@ -4582,10 +4586,12 @@ namespace Mutagen.Bethesda.Fallout4
         public Single MeleeAttackWhenStaggeredMult => _MeleeAttackWhenStaggeredMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MeleeAttackWhenStaggeredMultLocation, 4)) : default(Single);
         #endregion
         #region RangedAccuracyMult
-        private int? _RangedAccuracyMultLocation;
+        private int? _RangedAccuracyMultLocationStore;
+        private int? _RangedAccuracyMultLocation { get { EnsureFilled(); return _RangedAccuracyMultLocationStore; } set => _RangedAccuracyMultLocationStore = value; }
         public Single? RangedAccuracyMult => _RangedAccuracyMultLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _RangedAccuracyMultLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
-        private RangeInt32? _CSCRLocation;
+        private RangeInt32? _CSCRLocationStore;
+        private RangeInt32? _CSCRLocation { get { EnsureFilled(); return _CSCRLocationStore; } set => _CSCRLocationStore = value; }
         #region CloseRangeDuelingCircleMult
         private int _CloseRangeDuelingCircleMultLocation => _CSCRLocation!.Value.Min;
         private bool _CloseRangeDuelingCircleMult_IsSet => _CSCRLocation.HasValue;
@@ -4641,8 +4647,10 @@ namespace Mutagen.Bethesda.Fallout4
         private bool _CloseRangeFlankingVariance_IsSet => _CSCRLocation.HasValue;
         public Single CloseRangeFlankingVariance => _CloseRangeFlankingVariance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CloseRangeFlankingVarianceLocation, 4)) : default(Single);
         #endregion
-        private RangeInt32? _CSLRLocation;
-        public CombatStyle.CSLRDataType CSLRDataTypeState { get; private set; }
+        private RangeInt32? _CSLRLocationStore;
+        private RangeInt32? _CSLRLocation { get { EnsureFilled(); return _CSLRLocationStore; } set => _CSLRLocationStore = value; }
+        private CombatStyle.CSLRDataType CSLRDataTypeStateStore;
+        public CombatStyle.CSLRDataType CSLRDataTypeState { get { EnsureFilled(); return CSLRDataTypeStateStore; } private set => CSLRDataTypeStateStore = value; }
         #region LongRangeStrafeMult
         private int _LongRangeStrafeMultLocation => _CSLRLocation!.Value.Min;
         private bool _LongRangeStrafeMult_IsSet => _CSLRLocation.HasValue;
@@ -4669,10 +4677,12 @@ namespace Mutagen.Bethesda.Fallout4
         public Single LongRangeRangeMult => _LongRangeRangeMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_LongRangeRangeMultLocation, 4)) : default(Single);
         #endregion
         #region CoverSearchDistanceMult
-        private int? _CoverSearchDistanceMultLocation;
+        private int? _CoverSearchDistanceMultLocationStore;
+        private int? _CoverSearchDistanceMultLocation { get { EnsureFilled(); return _CoverSearchDistanceMultLocationStore; } set => _CoverSearchDistanceMultLocationStore = value; }
         public Single? CoverSearchDistanceMult => _CoverSearchDistanceMultLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _CoverSearchDistanceMultLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
-        private RangeInt32? _CSFLLocation;
+        private RangeInt32? _CSFLLocationStore;
+        private RangeInt32? _CSFLLocation { get { EnsureFilled(); return _CSFLLocationStore; } set => _CSFLLocationStore = value; }
         #region HoverChance
         private int _HoverChanceLocation => _CSFLLocation!.Value.Min;
         private bool _HoverChance_IsSet => _CSFLLocation.HasValue;
@@ -4714,7 +4724,8 @@ namespace Mutagen.Bethesda.Fallout4
         public Single FlyingAttackChance => _FlyingAttackChance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FlyingAttackChanceLocation, 4)) : default(Single);
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public CombatStyle.Flag? Flags => EnumBinaryTranslation<CombatStyle.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 4);
         #endregion
         partial void CustomFactoryEnd(
@@ -4738,6 +4749,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new CombatStyleBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => CombatStyleFill((CombatStyleBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void CombatStyleFill(
+            CombatStyleBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -4745,9 +4773,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new CombatStyleBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -4760,7 +4786,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ICombatStyleGetter CombatStyleFactory(

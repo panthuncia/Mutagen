@@ -1669,32 +1669,42 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region ECTE
-        private int? _ECTELocation;
+        private int? _ECTELocationStore;
+        private int? _ECTELocation { get { EnsureFilled(); return _ECTELocationStore; } set => _ECTELocationStore = value; }
         public Guid? ECTE => _ECTELocation.HasValue ? new Guid(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ECTELocation.Value, _package.MetaData.Constants).Slice(0, 16)) : default(Guid?);
         #endregion
-        public ISoundReferenceGetter? Sound { get; private set; }
+        #region Sound
+        private ISoundReferenceGetter? SoundStore;
+        public ISoundReferenceGetter? Sound { get { EnsureFilled(); return SoundStore; } private set => SoundStore = value; }
+        #endregion
         #region ANAM
-        private int? _ANAMLocation;
+        private int? _ANAMLocationStore;
+        private int? _ANAMLocation { get { EnsureFilled(); return _ANAMLocationStore; } set => _ANAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? ANAM => _ANAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ANAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region BNAM
-        private int? _BNAMLocation;
+        private int? _BNAMLocationStore;
+        private int? _BNAMLocation { get { EnsureFilled(); return _BNAMLocationStore; } set => _BNAMLocationStore = value; }
         public Single? BNAM => _BNAMLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BNAMLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region CNAM
-        private int? _CNAMLocation;
+        private int? _CNAMLocationStore;
+        private int? _CNAMLocation { get { EnsureFilled(); return _CNAMLocationStore; } set => _CNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? CNAM => _CNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _CNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region DNAM
-        private int? _DNAMLocation;
+        private int? _DNAMLocationStore;
+        private int? _DNAMLocation { get { EnsureFilled(); return _DNAMLocationStore; } set => _DNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? DNAM => _DNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region ENAM
-        private int? _ENAMLocation;
+        private int? _ENAMLocationStore;
+        private int? _ENAMLocation { get { EnsureFilled(); return _ENAMLocationStore; } set => _ENAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? ENAM => _ENAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ENAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region Description
-        private int? _DescriptionLocation;
+        private int? _DescriptionLocationStore;
+        private int? _DescriptionLocation { get { EnsureFilled(); return _DescriptionLocationStore; } set => _DescriptionLocationStore = value; }
         public String? Description => _DescriptionLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DescriptionLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(

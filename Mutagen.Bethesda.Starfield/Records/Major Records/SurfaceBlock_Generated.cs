@@ -2831,63 +2831,86 @@ namespace Mutagen.Bethesda.Starfield
         protected override Type LinkType => typeof(ISurfaceBlockGetter);
 
 
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
         #region ANAM
-        private int? _ANAMLocation;
+        private int? _ANAMLocationStore;
+        private int? _ANAMLocation { get { EnsureFilled(); return _ANAMLocationStore; } set => _ANAMLocationStore = value; }
         public String? ANAM => _ANAMLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ANAMLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region DNAM
-        private ISurfaceBlockIntItemGetter? _DNAM;
+        private ISurfaceBlockIntItemGetter? _DNAMStore;
+        private ISurfaceBlockIntItemGetter? _DNAM { get { EnsureFilled(); return _DNAMStore; } set => _DNAMStore = value; }
         public ISurfaceBlockIntItemGetter DNAM => _DNAM ?? new SurfaceBlockIntItem();
         #endregion
         #region ENAM
-        private ISurfaceBlockFloatItemGetter? _ENAM;
+        private ISurfaceBlockFloatItemGetter? _ENAMStore;
+        private ISurfaceBlockFloatItemGetter? _ENAM { get { EnsureFilled(); return _ENAMStore; } set => _ENAMStore = value; }
         public ISurfaceBlockFloatItemGetter ENAM => _ENAM ?? new SurfaceBlockFloatItem();
         #endregion
         #region FNAM
-        private int? _FNAMLocation;
+        private int? _FNAMLocationStore;
+        private int? _FNAMLocation { get { EnsureFilled(); return _FNAMLocationStore; } set => _FNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? FNAM => _FNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region GNAM
-        private int? _GNAMLocation;
+        private int? _GNAMLocationStore;
+        private int? _GNAMLocation { get { EnsureFilled(); return _GNAMLocationStore; } set => _GNAMLocationStore = value; }
         public Byte? GNAM => _GNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _GNAMLocation.Value, _package.MetaData.Constants)[0] : default(Byte?);
         #endregion
         #region HNAM
-        private int? _HNAMLocation;
+        private int? _HNAMLocationStore;
+        private int? _HNAMLocation { get { EnsureFilled(); return _HNAMLocationStore; } set => _HNAMLocationStore = value; }
         public UInt16 HNAM => _HNAMLocation.HasValue ? BinaryPrimitives.ReadUInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HNAMLocation.Value, _package.MetaData.Constants)) : default(UInt16);
         #endregion
         #region INAM
-        private int? _INAMLocation;
+        private int? _INAMLocationStore;
+        private int? _INAMLocation { get { EnsureFilled(); return _INAMLocationStore; } set => _INAMLocationStore = value; }
         public Byte INAM => _INAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _INAMLocation.Value, _package.MetaData.Constants)[0] : default(Byte);
         #endregion
         #region JNAM
-        private int? _JNAMLocation;
+        private int? _JNAMLocationStore;
+        private int? _JNAMLocation { get { EnsureFilled(); return _JNAMLocationStore; } set => _JNAMLocationStore = value; }
         public Byte JNAM => _JNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _JNAMLocation.Value, _package.MetaData.Constants)[0] : default(Byte);
         #endregion
         #region KNAM
-        private int? _KNAMLocation;
+        private int? _KNAMLocationStore;
+        private int? _KNAMLocation { get { EnsureFilled(); return _KNAMLocationStore; } set => _KNAMLocationStore = value; }
         public Byte KNAM => _KNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _KNAMLocation.Value, _package.MetaData.Constants)[0] : default(Byte);
         #endregion
         #region WHGT
-        private int? _WHGTLocation;
+        private int? _WHGTLocationStore;
+        private int? _WHGTLocation { get { EnsureFilled(); return _WHGTLocationStore; } set => _WHGTLocationStore = value; }
         public Single WHGT => _WHGTLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _WHGTLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region NAM0
-        private int? _NAM0Location;
+        private int? _NAM0LocationStore;
+        private int? _NAM0Location { get { EnsureFilled(); return _NAM0LocationStore; } set => _NAM0LocationStore = value; }
         public String? NAM0 => _NAM0Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM0Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region NAM1
-        private int? _NAM1Location;
+        private int? _NAM1LocationStore;
+        private int? _NAM1Location { get { EnsureFilled(); return _NAM1LocationStore; } set => _NAM1LocationStore = value; }
         public String? NAM1 => _NAM1Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM1Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region NAM2
-        private int? _NAM2Location;
+        private int? _NAM2LocationStore;
+        private int? _NAM2Location { get { EnsureFilled(); return _NAM2LocationStore; } set => _NAM2LocationStore = value; }
         public Int64? NAM2 => _NAM2Location.HasValue ? BinaryPrimitives.ReadInt64LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM2Location.Value, _package.MetaData.Constants)) : default(Int64?);
         #endregion
-        public ISurfaceBlockIntItemGetter? NAM3 { get; private set; }
-        public ISurfaceBlockFloatItemGetter? NAM4 { get; private set; }
+        #region NAM3
+        private ISurfaceBlockIntItemGetter? NAM3Store;
+        public ISurfaceBlockIntItemGetter? NAM3 { get { EnsureFilled(); return NAM3Store; } private set => NAM3Store = value; }
+        #endregion
+        #region NAM4
+        private ISurfaceBlockFloatItemGetter? NAM4Store;
+        public ISurfaceBlockFloatItemGetter? NAM4 { get { EnsureFilled(); return NAM4Store; } private set => NAM4Store = value; }
+        #endregion
         #region NAM5
-        private int? _NAM5Location;
+        private int? _NAM5LocationStore;
+        private int? _NAM5Location { get { EnsureFilled(); return _NAM5LocationStore; } set => _NAM5LocationStore = value; }
         public IFormLinkNullableGetter<ISurfaceBlockGetter> NAM5 => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISurfaceBlockGetter>(_package, _recordData, _NAM5Location);
         #endregion
         partial void CustomFactoryEnd(
@@ -2911,6 +2934,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new SurfaceBlockBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => SurfaceBlockFill((SurfaceBlockBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void SurfaceBlockFill(
+            SurfaceBlockBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2918,9 +2958,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new SurfaceBlockBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2933,7 +2971,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ISurfaceBlockGetter SurfaceBlockFactory(

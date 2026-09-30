@@ -1441,7 +1441,8 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        public PackageDialogueData.VersioningBreaks Versioning { get; private set; }
+        private PackageDialogueData.VersioningBreaks VersioningStore;
+        public PackageDialogueData.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public Single DialogueFOV => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
         public IFormLinkGetter<IDialogTopicGetter> DialogueTopic => FormLinkBinaryTranslation.Instance.OverlayFactory<IDialogTopicGetter>(_package, _structData.Span.Slice(0x4, 0x4));
         public Package.DialogueFlag DialogueFlags => (Package.DialogueFlag)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x8, 0x4));

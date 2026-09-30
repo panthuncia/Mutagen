@@ -1593,26 +1593,34 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Topic
-        private int? _TopicLocation;
+        private int? _TopicLocationStore;
+        private int? _TopicLocation { get { EnsureFilled(); return _TopicLocationStore; } set => _TopicLocationStore = value; }
         public IFormLinkNullableGetter<IDialogTopicGetter> Topic => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogTopicGetter>(_package, _recordData, _TopicLocation);
         #endregion
         #region LoopingMax
-        private int? _LoopingMaxLocation;
+        private int? _LoopingMaxLocationStore;
+        private int? _LoopingMaxLocation { get { EnsureFilled(); return _LoopingMaxLocationStore; } set => _LoopingMaxLocationStore = value; }
         public Single? LoopingMax => _LoopingMaxLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LoopingMaxLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region LoopingMin
-        private int? _LoopingMinLocation;
+        private int? _LoopingMinLocationStore;
+        private int? _LoopingMinLocation { get { EnsureFilled(); return _LoopingMinLocationStore; } set => _LoopingMinLocationStore = value; }
         public Single? LoopingMin => _LoopingMinLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LoopingMinLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region HNAM
-        private IHeadTrackingGetter? _HNAM;
+        private IHeadTrackingGetter? _HNAMStore;
+        private IHeadTrackingGetter? _HNAM { get { EnsureFilled(); return _HNAMStore; } set => _HNAMStore = value; }
         public IHeadTrackingGetter HNAM => _HNAM ?? new HeadTracking();
         #endregion
         #region DialogueSubtype
-        private int? _DialogueSubtypeLocation;
+        private int? _DialogueSubtypeLocationStore;
+        private int? _DialogueSubtypeLocation { get { EnsureFilled(); return _DialogueSubtypeLocationStore; } set => _DialogueSubtypeLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> DialogueSubtype => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _DialogueSubtypeLocation);
         #endregion
-        public ISoundReferenceGetter? WED0 { get; private set; }
+        #region WED0
+        private ISoundReferenceGetter? WED0Store;
+        public ISoundReferenceGetter? WED0 { get { EnsureFilled(); return WED0Store; } private set => WED0Store = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

@@ -3504,10 +3504,17 @@ namespace Mutagen.Bethesda.Fallout3
         protected override Type LinkType => typeof(IDialogTopicGetter);
 
 
-        public IReadOnlyList<IDialogTopicAssociatedQuestGetter> AssociatedQuests { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<IQuestGetter>> RemovedQuests { get; private set; } = [];
+        #region AssociatedQuests
+        private IReadOnlyList<IDialogTopicAssociatedQuestGetter> AssociatedQuestsStore = [];
+        public IReadOnlyList<IDialogTopicAssociatedQuestGetter> AssociatedQuests { get { EnsureFilled(); return AssociatedQuestsStore; } private set => AssociatedQuestsStore = value; }
+        #endregion
+        #region RemovedQuests
+        private IReadOnlyList<IFormLinkGetter<IQuestGetter>> RemovedQuestsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IQuestGetter>> RemovedQuests { get { EnsureFilled(); return RemovedQuestsStore; } private set => RemovedQuestsStore = value; }
+        #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -3515,15 +3522,19 @@ namespace Mutagen.Bethesda.Fallout3
         #endregion
         #endregion
         #region Priority
-        private int? _PriorityLocation;
+        private int? _PriorityLocationStore;
+        private int? _PriorityLocation { get { EnsureFilled(); return _PriorityLocationStore; } set => _PriorityLocationStore = value; }
         public Single? Priority => _PriorityLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _PriorityLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region DumbResponse
-        private int? _DumbResponseLocation;
+        private int? _DumbResponseLocationStore;
+        private int? _DumbResponseLocation { get { EnsureFilled(); return _DumbResponseLocationStore; } set => _DumbResponseLocationStore = value; }
         public String? DumbResponse => _DumbResponseLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DumbResponseLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        private RangeInt32? _DATALocation;
-        public DialogTopic.DATADataType DATADataTypeState { get; private set; }
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
+        private DialogTopic.DATADataType DATADataTypeStateStore;
+        public DialogTopic.DATADataType DATADataTypeState { get { EnsureFilled(); return DATADataTypeStateStore; } private set => DATADataTypeStateStore = value; }
         #region Type
         private int _TypeLocation => _DATALocation!.Value.Min;
         private bool _Type_IsSet => _DATALocation.HasValue;
@@ -3534,8 +3545,14 @@ namespace Mutagen.Bethesda.Fallout3
         private bool _Flags_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(DialogTopic.DATADataType.Break0);
         public DialogTopic.TopicFlag Flags => _Flags_IsSet ? (DialogTopic.TopicFlag)_recordData.Span.Slice(_FlagsLocation, 0x1)[0] : default;
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IDialogResponsesGetter>>? InfoOrderMastersOnly { get; private set; }
-        public IReadOnlyList<IFormLinkGetter<IDialogResponsesGetter>>? InfoOrderAllPreviousModules { get; private set; }
+        #region InfoOrderMastersOnly
+        private IReadOnlyList<IFormLinkGetter<IDialogResponsesGetter>>? InfoOrderMastersOnlyStore;
+        public IReadOnlyList<IFormLinkGetter<IDialogResponsesGetter>>? InfoOrderMastersOnly { get { EnsureFilled(); return InfoOrderMastersOnlyStore; } private set => InfoOrderMastersOnlyStore = value; }
+        #endregion
+        #region InfoOrderAllPreviousModules
+        private IReadOnlyList<IFormLinkGetter<IDialogResponsesGetter>>? InfoOrderAllPreviousModulesStore;
+        public IReadOnlyList<IFormLinkGetter<IDialogResponsesGetter>>? InfoOrderAllPreviousModules { get { EnsureFilled(); return InfoOrderAllPreviousModulesStore; } private set => InfoOrderAllPreviousModulesStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

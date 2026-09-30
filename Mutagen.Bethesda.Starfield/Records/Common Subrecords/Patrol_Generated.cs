@@ -1455,7 +1455,8 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region IdleTime
-        private int? _IdleTimeLocation;
+        private int? _IdleTimeLocationStore;
+        private int? _IdleTimeLocation { get { EnsureFilled(); return _IdleTimeLocationStore; } set => _IdleTimeLocationStore = value; }
         public Single IdleTime => _IdleTimeLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IdleTimeLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region PatrolScriptMarker
@@ -1465,7 +1466,8 @@ namespace Mutagen.Bethesda.Starfield
             PreviousParse lastParsed);
         #endregion
         #region Idle
-        private int? _IdleLocation;
+        private int? _IdleLocationStore;
+        private int? _IdleLocation { get { EnsureFilled(); return _IdleLocationStore; } set => _IdleLocationStore = value; }
         public IFormLinkGetter<IIdleAnimationGetter> Idle => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IIdleAnimationGetter>(_package, _recordData, _IdleLocation);
         #endregion
         #region Topics
@@ -1477,7 +1479,8 @@ namespace Mutagen.Bethesda.Starfield
             PreviousParse lastParsed);
         #endregion
         #region Topic
-        private int? _TopicLocation;
+        private int? _TopicLocationStore;
+        private int? _TopicLocation { get { EnsureFilled(); return _TopicLocationStore; } set => _TopicLocationStore = value; }
         public IFormLinkNullableGetter<IDialogTopicGetter> Topic => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogTopicGetter>(_package, _recordData, _TopicLocation);
         #endregion
         partial void CustomFactoryEnd(

@@ -1537,7 +1537,8 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region IdleTime
-        private int? _IdleTimeLocation;
+        private int? _IdleTimeLocationStore;
+        private int? _IdleTimeLocation { get { EnsureFilled(); return _IdleTimeLocationStore; } set => _IdleTimeLocationStore = value; }
         public Single IdleTime => _IdleTimeLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IdleTimeLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region PatrolScriptMarker
@@ -1547,15 +1548,18 @@ namespace Mutagen.Bethesda.Skyrim
             PreviousParse lastParsed);
         #endregion
         #region Idle
-        private int? _IdleLocation;
+        private int? _IdleLocationStore;
+        private int? _IdleLocation { get { EnsureFilled(); return _IdleLocationStore; } set => _IdleLocationStore = value; }
         public IFormLinkGetter<IIdleAnimationGetter> Idle => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IIdleAnimationGetter>(_package, _recordData, _IdleLocation);
         #endregion
         #region SCHR
-        private int? _SCHRLocation;
+        private int? _SCHRLocationStore;
+        private int? _SCHRLocation { get { EnsureFilled(); return _SCHRLocationStore; } set => _SCHRLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? SCHR => _SCHRLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SCHRLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region SCTX
-        private int? _SCTXLocation;
+        private int? _SCTXLocationStore;
+        private int? _SCTXLocation { get { EnsureFilled(); return _SCTXLocationStore; } set => _SCTXLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? SCTX => _SCTXLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SCTXLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region Topics

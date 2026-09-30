@@ -4808,7 +4808,8 @@ namespace Mutagen.Bethesda.Fallout4
         public IASceneActionTypeGetter Type => GetTypeCustom();
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -4816,114 +4817,150 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #endregion
         #region AliasID
-        private int? _AliasIDLocation;
+        private int? _AliasIDLocationStore;
+        private int? _AliasIDLocation { get { EnsureFilled(); return _AliasIDLocationStore; } set => _AliasIDLocationStore = value; }
         public Int32? AliasID => _AliasIDLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AliasIDLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region Index
-        private int? _IndexLocation;
+        private int? _IndexLocationStore;
+        private int? _IndexLocation { get { EnsureFilled(); return _IndexLocationStore; } set => _IndexLocationStore = value; }
         public UInt32? Index => _IndexLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IndexLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public SceneAction.Flag? Flags => EnumBinaryTranslation<SceneAction.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 4);
         #endregion
         #region StartPhase
-        private int? _StartPhaseLocation;
+        private int? _StartPhaseLocationStore;
+        private int? _StartPhaseLocation { get { EnsureFilled(); return _StartPhaseLocationStore; } set => _StartPhaseLocationStore = value; }
         public UInt32? StartPhase => _StartPhaseLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _StartPhaseLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region EndPhase
-        private int? _EndPhaseLocation;
+        private int? _EndPhaseLocationStore;
+        private int? _EndPhaseLocation { get { EnsureFilled(); return _EndPhaseLocationStore; } set => _EndPhaseLocationStore = value; }
         public UInt32? EndPhase => _EndPhaseLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EndPhaseLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region TimerMaxSeconds
-        private int? _TimerMaxSecondsLocation;
+        private int? _TimerMaxSecondsLocationStore;
+        private int? _TimerMaxSecondsLocation { get { EnsureFilled(); return _TimerMaxSecondsLocationStore; } set => _TimerMaxSecondsLocationStore = value; }
         public Single? TimerMaxSeconds => _TimerMaxSecondsLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TimerMaxSecondsLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region SetParentQuestStage
-        private int? _SetParentQuestStageLocation;
+        private int? _SetParentQuestStageLocationStore;
+        private int? _SetParentQuestStageLocation { get { EnsureFilled(); return _SetParentQuestStageLocationStore; } set => _SetParentQuestStageLocationStore = value; }
         public Int16? SetParentQuestStage => _SetParentQuestStageLocation.HasValue ? BinaryPrimitives.ReadInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SetParentQuestStageLocation.Value, _package.MetaData.Constants)) : default(Int16?);
         #endregion
         #region TimerMinSeconds
-        private int? _TimerMinSecondsLocation;
+        private int? _TimerMinSecondsLocationStore;
+        private int? _TimerMinSecondsLocation { get { EnsureFilled(); return _TimerMinSecondsLocationStore; } set => _TimerMinSecondsLocationStore = value; }
         public Single? TimerMinSeconds => _TimerMinSecondsLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TimerMinSecondsLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region STSC
-        private int? _STSCLocation;
+        private int? _STSCLocationStore;
+        private int? _STSCLocation { get { EnsureFilled(); return _STSCLocationStore; } set => _STSCLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? STSC => _STSCLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _STSCLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
-        public IReadOnlyList<IStartSceneGetter> StartScenes { get; private set; } = [];
+        #region StartScenes
+        private IReadOnlyList<IStartSceneGetter> StartScenesStore = [];
+        public IReadOnlyList<IStartSceneGetter> StartScenes { get { EnsureFilled(); return StartScenesStore; } private set => StartScenesStore = value; }
+        #endregion
         #region PlayerPositiveResponse
-        private int? _PlayerPositiveResponseLocation;
+        private int? _PlayerPositiveResponseLocationStore;
+        private int? _PlayerPositiveResponseLocation { get { EnsureFilled(); return _PlayerPositiveResponseLocationStore; } set => _PlayerPositiveResponseLocationStore = value; }
         public IFormLinkNullableGetter<IDialogTopicGetter> PlayerPositiveResponse => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogTopicGetter>(_package, _recordData, _PlayerPositiveResponseLocation);
         #endregion
         #region PlayerNegativeResponse
-        private int? _PlayerNegativeResponseLocation;
+        private int? _PlayerNegativeResponseLocationStore;
+        private int? _PlayerNegativeResponseLocation { get { EnsureFilled(); return _PlayerNegativeResponseLocationStore; } set => _PlayerNegativeResponseLocationStore = value; }
         public IFormLinkNullableGetter<IDialogTopicGetter> PlayerNegativeResponse => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogTopicGetter>(_package, _recordData, _PlayerNegativeResponseLocation);
         #endregion
         #region PlayerNeutralResponse
-        private int? _PlayerNeutralResponseLocation;
+        private int? _PlayerNeutralResponseLocationStore;
+        private int? _PlayerNeutralResponseLocation { get { EnsureFilled(); return _PlayerNeutralResponseLocationStore; } set => _PlayerNeutralResponseLocationStore = value; }
         public IFormLinkNullableGetter<IDialogTopicGetter> PlayerNeutralResponse => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogTopicGetter>(_package, _recordData, _PlayerNeutralResponseLocation);
         #endregion
         #region PlayerQuestionResponse
-        private int? _PlayerQuestionResponseLocation;
+        private int? _PlayerQuestionResponseLocationStore;
+        private int? _PlayerQuestionResponseLocation { get { EnsureFilled(); return _PlayerQuestionResponseLocationStore; } set => _PlayerQuestionResponseLocationStore = value; }
         public IFormLinkNullableGetter<IDialogTopicGetter> PlayerQuestionResponse => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogTopicGetter>(_package, _recordData, _PlayerQuestionResponseLocation);
         #endregion
         #region PlayerPositiveSubtype
-        private int? _PlayerPositiveSubtypeLocation;
+        private int? _PlayerPositiveSubtypeLocationStore;
+        private int? _PlayerPositiveSubtypeLocation { get { EnsureFilled(); return _PlayerPositiveSubtypeLocationStore; } set => _PlayerPositiveSubtypeLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> PlayerPositiveSubtype => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _PlayerPositiveSubtypeLocation);
         #endregion
         #region PlayerNegativeSubtype
-        private int? _PlayerNegativeSubtypeLocation;
+        private int? _PlayerNegativeSubtypeLocationStore;
+        private int? _PlayerNegativeSubtypeLocation { get { EnsureFilled(); return _PlayerNegativeSubtypeLocationStore; } set => _PlayerNegativeSubtypeLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> PlayerNegativeSubtype => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _PlayerNegativeSubtypeLocation);
         #endregion
         #region PlayerNeutralSubtype
-        private int? _PlayerNeutralSubtypeLocation;
+        private int? _PlayerNeutralSubtypeLocationStore;
+        private int? _PlayerNeutralSubtypeLocation { get { EnsureFilled(); return _PlayerNeutralSubtypeLocationStore; } set => _PlayerNeutralSubtypeLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> PlayerNeutralSubtype => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _PlayerNeutralSubtypeLocation);
         #endregion
         #region PlayerQuestionSubtype
-        private int? _PlayerQuestionSubtypeLocation;
+        private int? _PlayerQuestionSubtypeLocationStore;
+        private int? _PlayerQuestionSubtypeLocation { get { EnsureFilled(); return _PlayerQuestionSubtypeLocationStore; } set => _PlayerQuestionSubtypeLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> PlayerQuestionSubtype => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _PlayerQuestionSubtypeLocation);
         #endregion
-        public IReadOnlyList<Int32>? NpcHeadtrackingActorIds { get; private set; }
+        #region NpcHeadtrackingActorIds
+        private IReadOnlyList<Int32>? NpcHeadtrackingActorIdsStore;
+        public IReadOnlyList<Int32>? NpcHeadtrackingActorIds { get { EnsureFilled(); return NpcHeadtrackingActorIdsStore; } private set => NpcHeadtrackingActorIdsStore = value; }
+        #endregion
         #region NpcPositiveResponse
-        private int? _NpcPositiveResponseLocation;
+        private int? _NpcPositiveResponseLocationStore;
+        private int? _NpcPositiveResponseLocation { get { EnsureFilled(); return _NpcPositiveResponseLocationStore; } set => _NpcPositiveResponseLocationStore = value; }
         public IFormLinkNullableGetter<IDialogTopicGetter> NpcPositiveResponse => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogTopicGetter>(_package, _recordData, _NpcPositiveResponseLocation);
         #endregion
         #region NpcNegativeResponse
-        private int? _NpcNegativeResponseLocation;
+        private int? _NpcNegativeResponseLocationStore;
+        private int? _NpcNegativeResponseLocation { get { EnsureFilled(); return _NpcNegativeResponseLocationStore; } set => _NpcNegativeResponseLocationStore = value; }
         public IFormLinkNullableGetter<IDialogTopicGetter> NpcNegativeResponse => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogTopicGetter>(_package, _recordData, _NpcNegativeResponseLocation);
         #endregion
         #region NpcNeutralResponse
-        private int? _NpcNeutralResponseLocation;
+        private int? _NpcNeutralResponseLocationStore;
+        private int? _NpcNeutralResponseLocation { get { EnsureFilled(); return _NpcNeutralResponseLocationStore; } set => _NpcNeutralResponseLocationStore = value; }
         public IFormLinkNullableGetter<IDialogTopicGetter> NpcNeutralResponse => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogTopicGetter>(_package, _recordData, _NpcNeutralResponseLocation);
         #endregion
         #region NpcQuestionResponse
-        private int? _NpcQuestionResponseLocation;
+        private int? _NpcQuestionResponseLocationStore;
+        private int? _NpcQuestionResponseLocation { get { EnsureFilled(); return _NpcQuestionResponseLocationStore; } set => _NpcQuestionResponseLocationStore = value; }
         public IFormLinkNullableGetter<IDialogTopicGetter> NpcQuestionResponse => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogTopicGetter>(_package, _recordData, _NpcQuestionResponseLocation);
         #endregion
         #region NpcPositiveSubtype
-        private int? _NpcPositiveSubtypeLocation;
+        private int? _NpcPositiveSubtypeLocationStore;
+        private int? _NpcPositiveSubtypeLocation { get { EnsureFilled(); return _NpcPositiveSubtypeLocationStore; } set => _NpcPositiveSubtypeLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> NpcPositiveSubtype => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _NpcPositiveSubtypeLocation);
         #endregion
         #region NpcNegativeSubtype
-        private int? _NpcNegativeSubtypeLocation;
+        private int? _NpcNegativeSubtypeLocationStore;
+        private int? _NpcNegativeSubtypeLocation { get { EnsureFilled(); return _NpcNegativeSubtypeLocationStore; } set => _NpcNegativeSubtypeLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> NpcNegativeSubtype => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _NpcNegativeSubtypeLocation);
         #endregion
         #region NpcNeutralSubtype
-        private int? _NpcNeutralSubtypeLocation;
+        private int? _NpcNeutralSubtypeLocationStore;
+        private int? _NpcNeutralSubtypeLocation { get { EnsureFilled(); return _NpcNeutralSubtypeLocationStore; } set => _NpcNeutralSubtypeLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> NpcNeutralSubtype => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _NpcNeutralSubtypeLocation);
         #endregion
         #region NpcQuestionSubtype
-        private int? _NpcQuestionSubtypeLocation;
+        private int? _NpcQuestionSubtypeLocationStore;
+        private int? _NpcQuestionSubtypeLocation { get { EnsureFilled(); return _NpcQuestionSubtypeLocationStore; } set => _NpcQuestionSubtypeLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> NpcQuestionSubtype => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _NpcQuestionSubtypeLocation);
         #endregion
         #region DialogueTargetActorId
-        private int? _DialogueTargetActorIdLocation;
+        private int? _DialogueTargetActorIdLocationStore;
+        private int? _DialogueTargetActorIdLocation { get { EnsureFilled(); return _DialogueTargetActorIdLocationStore; } set => _DialogueTargetActorIdLocationStore = value; }
         public Int32? DialogueTargetActorId => _DialogueTargetActorIdLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DialogueTargetActorIdLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IPackageGetter>> Packages { get; private set; } = [];
+        #region Packages
+        private IReadOnlyList<IFormLinkGetter<IPackageGetter>> PackagesStore = [];
+        public IReadOnlyList<IFormLinkGetter<IPackageGetter>> Packages { get { EnsureFilled(); return PackagesStore; } private set => PackagesStore = value; }
+        #endregion
         #region Topic
-        private int? _TopicLocation;
+        private int? _TopicLocationStore;
+        private int? _TopicLocation { get { EnsureFilled(); return _TopicLocationStore; } set => _TopicLocationStore = value; }
         public IFormLinkNullableGetter<IDialogTopicGetter> Topic => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogTopicGetter>(_package, _recordData, _TopicLocation);
         #endregion
         #region HTIDParsing
@@ -4933,39 +4970,53 @@ namespace Mutagen.Bethesda.Fallout4
             PreviousParse lastParsed);
         #endregion
         #region LoopingMax
-        private int? _LoopingMaxLocation;
+        private int? _LoopingMaxLocationStore;
+        private int? _LoopingMaxLocation { get { EnsureFilled(); return _LoopingMaxLocationStore; } set => _LoopingMaxLocationStore = value; }
         public Single? LoopingMax => _LoopingMaxLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LoopingMaxLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region LoopingMin
-        private int? _LoopingMinLocation;
+        private int? _LoopingMinLocationStore;
+        private int? _LoopingMinLocation { get { EnsureFilled(); return _LoopingMinLocationStore; } set => _LoopingMinLocationStore = value; }
         public Single? LoopingMin => _LoopingMinLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LoopingMinLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Camera
-        private RangeInt32? _CameraLocation;
+        private RangeInt32? _CameraLocationStore;
+        private RangeInt32? _CameraLocation { get { EnsureFilled(); return _CameraLocationStore; } set => _CameraLocationStore = value; }
         public ISceneCameraGetter? Camera => _CameraLocation.HasValue ? SceneCameraBinaryOverlay.SceneCameraFactory(_recordData.Slice(_CameraLocation!.Value.Min), _package) : default;
         #endregion
         #region Emotion
-        private int? _EmotionLocation;
+        private int? _EmotionLocationStore;
+        private int? _EmotionLocation { get { EnsureFilled(); return _EmotionLocationStore; } set => _EmotionLocationStore = value; }
         public Emotion? Emotion => EnumBinaryTranslation<Emotion, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_EmotionLocation, _recordData, _package, 4);
         #endregion
         #region EmotionValue
-        private int? _EmotionValueLocation;
+        private int? _EmotionValueLocationStore;
+        private int? _EmotionValueLocation { get { EnsureFilled(); return _EmotionValueLocationStore; } set => _EmotionValueLocationStore = value; }
         public UInt32? EmotionValue => _EmotionValueLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EmotionValueLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
-        public IReadOnlyList<Int32>? PlayerHeadTrackingActorIds { get; private set; }
+        #region PlayerHeadTrackingActorIds
+        private IReadOnlyList<Int32>? PlayerHeadTrackingActorIdsStore;
+        public IReadOnlyList<Int32>? PlayerHeadTrackingActorIds { get { EnsureFilled(); return PlayerHeadTrackingActorIdsStore; } private set => PlayerHeadTrackingActorIdsStore = value; }
+        #endregion
         #region DialogueSubtype
-        private int? _DialogueSubtypeLocation;
+        private int? _DialogueSubtypeLocationStore;
+        private int? _DialogueSubtypeLocation { get { EnsureFilled(); return _DialogueSubtypeLocationStore; } set => _DialogueSubtypeLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> DialogueSubtype => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _DialogueSubtypeLocation);
         #endregion
         #region AnimArchType
-        private int? _AnimArchTypeLocation;
+        private int? _AnimArchTypeLocationStore;
+        private int? _AnimArchTypeLocation { get { EnsureFilled(); return _AnimArchTypeLocationStore; } set => _AnimArchTypeLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> AnimArchType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _AnimArchTypeLocation);
         #endregion
         #region AudioOutputOverride
-        private int? _AudioOutputOverrideLocation;
+        private int? _AudioOutputOverrideLocationStore;
+        private int? _AudioOutputOverrideLocation { get { EnsureFilled(); return _AudioOutputOverrideLocationStore; } set => _AudioOutputOverrideLocationStore = value; }
         public IFormLinkNullableGetter<ISoundOutputModelGetter> AudioOutputOverride => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundOutputModelGetter>(_package, _recordData, _AudioOutputOverrideLocation);
         #endregion
-        public IScenePhaseUnusedDataGetter? Unused { get; private set; }
+        #region Unused
+        private IScenePhaseUnusedDataGetter? UnusedStore;
+        public IScenePhaseUnusedDataGetter? Unused { get { EnsureFilled(); return UnusedStore; } private set => UnusedStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

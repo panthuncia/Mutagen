@@ -1487,16 +1487,22 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Music
-        private int? _MusicLocation;
+        private int? _MusicLocationStore;
+        private int? _MusicLocation { get { EnsureFilled(); return _MusicLocationStore; } set => _MusicLocationStore = value; }
         public IFormLinkNullableGetter<IMusicTypeGetter> Music => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMusicTypeGetter>(_package, _recordData, _MusicLocation);
         #endregion
-        public IReadOnlyList<IRegionSoundGetter>? Sounds { get; private set; }
+        #region Sounds
+        private IReadOnlyList<IRegionSoundGetter>? SoundsStore;
+        public IReadOnlyList<IRegionSoundGetter>? Sounds { get { EnsureFilled(); return SoundsStore; } private set => SoundsStore = value; }
+        #endregion
         #region LodDisplayDistanceMultiplier
-        private int? _LodDisplayDistanceMultiplierLocation;
+        private int? _LodDisplayDistanceMultiplierLocationStore;
+        private int? _LodDisplayDistanceMultiplierLocation { get { EnsureFilled(); return _LodDisplayDistanceMultiplierLocationStore; } set => _LodDisplayDistanceMultiplierLocationStore = value; }
         public override Single? LodDisplayDistanceMultiplier => _LodDisplayDistanceMultiplierLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LodDisplayDistanceMultiplierLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region OcclusionAccuracyDist
-        private int? _OcclusionAccuracyDistLocation;
+        private int? _OcclusionAccuracyDistLocationStore;
+        private int? _OcclusionAccuracyDistLocation { get { EnsureFilled(); return _OcclusionAccuracyDistLocationStore; } set => _OcclusionAccuracyDistLocationStore = value; }
         public override Single? OcclusionAccuracyDist => _OcclusionAccuracyDistLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _OcclusionAccuracyDistLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         partial void CustomFactoryEnd(

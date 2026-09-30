@@ -3363,7 +3363,8 @@ namespace Mutagen.Bethesda.Fallout3
 
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -3375,111 +3376,138 @@ namespace Mutagen.Bethesda.Fallout3
         #endregion
         #endregion
         #region Type
-        private int? _TypeLocation;
+        private int? _TypeLocationStore;
+        private int? _TypeLocation { get { EnsureFilled(); return _TypeLocationStore; } set => _TypeLocationStore = value; }
         public MediaSet.MediaSetType? Type => EnumBinaryTranslation<MediaSet.MediaSetType, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_TypeLocation, _recordData, _package, 4);
         #endregion
         #region LoopBattleDayOuter
-        private int? _LoopBattleDayOuterLocation;
+        private int? _LoopBattleDayOuterLocationStore;
+        private int? _LoopBattleDayOuterLocation { get { EnsureFilled(); return _LoopBattleDayOuterLocationStore; } set => _LoopBattleDayOuterLocationStore = value; }
         public String? LoopBattleDayOuter => _LoopBattleDayOuterLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LoopBattleDayOuterLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ExploreDayMiddle
-        private int? _ExploreDayMiddleLocation;
+        private int? _ExploreDayMiddleLocationStore;
+        private int? _ExploreDayMiddleLocation { get { EnsureFilled(); return _ExploreDayMiddleLocationStore; } set => _ExploreDayMiddleLocationStore = value; }
         public String? ExploreDayMiddle => _ExploreDayMiddleLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ExploreDayMiddleLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region SuspenseDayInner
-        private int? _SuspenseDayInnerLocation;
+        private int? _SuspenseDayInnerLocationStore;
+        private int? _SuspenseDayInnerLocation { get { EnsureFilled(); return _SuspenseDayInnerLocationStore; } set => _SuspenseDayInnerLocationStore = value; }
         public String? SuspenseDayInner => _SuspenseDayInnerLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SuspenseDayInnerLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region NightOuter
-        private int? _NightOuterLocation;
+        private int? _NightOuterLocationStore;
+        private int? _NightOuterLocation { get { EnsureFilled(); return _NightOuterLocationStore; } set => _NightOuterLocationStore = value; }
         public String? NightOuter => _NightOuterLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NightOuterLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region NightMiddle
-        private int? _NightMiddleLocation;
+        private int? _NightMiddleLocationStore;
+        private int? _NightMiddleLocation { get { EnsureFilled(); return _NightMiddleLocationStore; } set => _NightMiddleLocationStore = value; }
         public String? NightMiddle => _NightMiddleLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NightMiddleLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region NightInner
-        private int? _NightInnerLocation;
+        private int? _NightInnerLocationStore;
+        private int? _NightInnerLocation { get { EnsureFilled(); return _NightInnerLocationStore; } set => _NightInnerLocationStore = value; }
         public String? NightInner => _NightInnerLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NightInnerLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region LoopBattleDayOuterDb
-        private int? _LoopBattleDayOuterDbLocation;
+        private int? _LoopBattleDayOuterDbLocationStore;
+        private int? _LoopBattleDayOuterDbLocation { get { EnsureFilled(); return _LoopBattleDayOuterDbLocationStore; } set => _LoopBattleDayOuterDbLocationStore = value; }
         public Single? LoopBattleDayOuterDb => _LoopBattleDayOuterDbLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LoopBattleDayOuterDbLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region ExploreDayMiddleDb
-        private int? _ExploreDayMiddleDbLocation;
+        private int? _ExploreDayMiddleDbLocationStore;
+        private int? _ExploreDayMiddleDbLocation { get { EnsureFilled(); return _ExploreDayMiddleDbLocationStore; } set => _ExploreDayMiddleDbLocationStore = value; }
         public Single? ExploreDayMiddleDb => _ExploreDayMiddleDbLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ExploreDayMiddleDbLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region SuspenseDayInnerDb
-        private int? _SuspenseDayInnerDbLocation;
+        private int? _SuspenseDayInnerDbLocationStore;
+        private int? _SuspenseDayInnerDbLocation { get { EnsureFilled(); return _SuspenseDayInnerDbLocationStore; } set => _SuspenseDayInnerDbLocationStore = value; }
         public Single? SuspenseDayInnerDb => _SuspenseDayInnerDbLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SuspenseDayInnerDbLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region NightOuterDb
-        private int? _NightOuterDbLocation;
+        private int? _NightOuterDbLocationStore;
+        private int? _NightOuterDbLocation { get { EnsureFilled(); return _NightOuterDbLocationStore; } set => _NightOuterDbLocationStore = value; }
         public Single? NightOuterDb => _NightOuterDbLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NightOuterDbLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region NightMiddleDb
-        private int? _NightMiddleDbLocation;
+        private int? _NightMiddleDbLocationStore;
+        private int? _NightMiddleDbLocation { get { EnsureFilled(); return _NightMiddleDbLocationStore; } set => _NightMiddleDbLocationStore = value; }
         public Single? NightMiddleDb => _NightMiddleDbLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NightMiddleDbLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region NightInnerDb
-        private int? _NightInnerDbLocation;
+        private int? _NightInnerDbLocationStore;
+        private int? _NightInnerDbLocation { get { EnsureFilled(); return _NightInnerDbLocationStore; } set => _NightInnerDbLocationStore = value; }
         public Single? NightInnerDb => _NightInnerDbLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NightInnerDbLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region DayOuterBoundaryPercent
-        private int? _DayOuterBoundaryPercentLocation;
+        private int? _DayOuterBoundaryPercentLocationStore;
+        private int? _DayOuterBoundaryPercentLocation { get { EnsureFilled(); return _DayOuterBoundaryPercentLocationStore; } set => _DayOuterBoundaryPercentLocationStore = value; }
         public Single? DayOuterBoundaryPercent => _DayOuterBoundaryPercentLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DayOuterBoundaryPercentLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region DayMiddleBoundaryPercent
-        private int? _DayMiddleBoundaryPercentLocation;
+        private int? _DayMiddleBoundaryPercentLocationStore;
+        private int? _DayMiddleBoundaryPercentLocation { get { EnsureFilled(); return _DayMiddleBoundaryPercentLocationStore; } set => _DayMiddleBoundaryPercentLocationStore = value; }
         public Single? DayMiddleBoundaryPercent => _DayMiddleBoundaryPercentLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DayMiddleBoundaryPercentLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region DayInnerBoundaryPercent
-        private int? _DayInnerBoundaryPercentLocation;
+        private int? _DayInnerBoundaryPercentLocationStore;
+        private int? _DayInnerBoundaryPercentLocation { get { EnsureFilled(); return _DayInnerBoundaryPercentLocationStore; } set => _DayInnerBoundaryPercentLocationStore = value; }
         public Single? DayInnerBoundaryPercent => _DayInnerBoundaryPercentLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DayInnerBoundaryPercentLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region NightOuterBoundaryPercent
-        private int? _NightOuterBoundaryPercentLocation;
+        private int? _NightOuterBoundaryPercentLocationStore;
+        private int? _NightOuterBoundaryPercentLocation { get { EnsureFilled(); return _NightOuterBoundaryPercentLocationStore; } set => _NightOuterBoundaryPercentLocationStore = value; }
         public Single? NightOuterBoundaryPercent => _NightOuterBoundaryPercentLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NightOuterBoundaryPercentLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region NightMiddleBoundaryPercent
-        private int? _NightMiddleBoundaryPercentLocation;
+        private int? _NightMiddleBoundaryPercentLocationStore;
+        private int? _NightMiddleBoundaryPercentLocation { get { EnsureFilled(); return _NightMiddleBoundaryPercentLocationStore; } set => _NightMiddleBoundaryPercentLocationStore = value; }
         public Single? NightMiddleBoundaryPercent => _NightMiddleBoundaryPercentLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NightMiddleBoundaryPercentLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region NightInnerBoundaryPercent
-        private int? _NightInnerBoundaryPercentLocation;
+        private int? _NightInnerBoundaryPercentLocationStore;
+        private int? _NightInnerBoundaryPercentLocation { get { EnsureFilled(); return _NightInnerBoundaryPercentLocationStore; } set => _NightInnerBoundaryPercentLocationStore = value; }
         public Single? NightInnerBoundaryPercent => _NightInnerBoundaryPercentLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NightInnerBoundaryPercentLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region EnableFlags
-        private int? _EnableFlagsLocation;
+        private int? _EnableFlagsLocationStore;
+        private int? _EnableFlagsLocation { get { EnsureFilled(); return _EnableFlagsLocationStore; } set => _EnableFlagsLocationStore = value; }
         public MediaSet.MediaSetEnableFlag? EnableFlags => EnumBinaryTranslation<MediaSet.MediaSetEnableFlag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_EnableFlagsLocation, _recordData, _package, 1);
         #endregion
         #region WaitTimeMinTimeOnDaytimeMin
-        private int? _WaitTimeMinTimeOnDaytimeMinLocation;
+        private int? _WaitTimeMinTimeOnDaytimeMinLocationStore;
+        private int? _WaitTimeMinTimeOnDaytimeMinLocation { get { EnsureFilled(); return _WaitTimeMinTimeOnDaytimeMinLocationStore; } set => _WaitTimeMinTimeOnDaytimeMinLocationStore = value; }
         public Single? WaitTimeMinTimeOnDaytimeMin => _WaitTimeMinTimeOnDaytimeMinLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _WaitTimeMinTimeOnDaytimeMinLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region LoopFadeOutCrossfadeOverlapNighttimeMin
-        private int? _LoopFadeOutCrossfadeOverlapNighttimeMinLocation;
+        private int? _LoopFadeOutCrossfadeOverlapNighttimeMinLocationStore;
+        private int? _LoopFadeOutCrossfadeOverlapNighttimeMinLocation { get { EnsureFilled(); return _LoopFadeOutCrossfadeOverlapNighttimeMinLocationStore; } set => _LoopFadeOutCrossfadeOverlapNighttimeMinLocationStore = value; }
         public Single? LoopFadeOutCrossfadeOverlapNighttimeMin => _LoopFadeOutCrossfadeOverlapNighttimeMinLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LoopFadeOutCrossfadeOverlapNighttimeMinLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region RecoveryTimeCrossfadeTimeDaytimeMax
-        private int? _RecoveryTimeCrossfadeTimeDaytimeMaxLocation;
+        private int? _RecoveryTimeCrossfadeTimeDaytimeMaxLocationStore;
+        private int? _RecoveryTimeCrossfadeTimeDaytimeMaxLocation { get { EnsureFilled(); return _RecoveryTimeCrossfadeTimeDaytimeMaxLocationStore; } set => _RecoveryTimeCrossfadeTimeDaytimeMaxLocationStore = value; }
         public Single? RecoveryTimeCrossfadeTimeDaytimeMax => _RecoveryTimeCrossfadeTimeDaytimeMaxLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _RecoveryTimeCrossfadeTimeDaytimeMaxLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region NighttimeMax
-        private int? _NighttimeMaxLocation;
+        private int? _NighttimeMaxLocationStore;
+        private int? _NighttimeMaxLocation { get { EnsureFilled(); return _NighttimeMaxLocationStore; } set => _NighttimeMaxLocationStore = value; }
         public Single? NighttimeMax => _NighttimeMaxLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NighttimeMaxLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region IntroDaytime
-        private int? _IntroDaytimeLocation;
+        private int? _IntroDaytimeLocationStore;
+        private int? _IntroDaytimeLocation { get { EnsureFilled(); return _IntroDaytimeLocationStore; } set => _IntroDaytimeLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> IntroDaytime => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _IntroDaytimeLocation);
         #endregion
         #region OutroNighttime
-        private int? _OutroNighttimeLocation;
+        private int? _OutroNighttimeLocationStore;
+        private int? _OutroNighttimeLocation { get { EnsureFilled(); return _OutroNighttimeLocationStore; } set => _OutroNighttimeLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> OutroNighttime => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _OutroNighttimeLocation);
         #endregion
         #region DATA
-        private int? _DATALocation;
+        private int? _DATALocationStore;
+        private int? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? DATA => _DATALocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DATALocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(
@@ -3503,6 +3531,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new MediaSetBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => MediaSetFill((MediaSetBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void MediaSetFill(
+            MediaSetBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -3510,9 +3555,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new MediaSetBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -3525,7 +3568,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IMediaSetGetter MediaSetFactory(

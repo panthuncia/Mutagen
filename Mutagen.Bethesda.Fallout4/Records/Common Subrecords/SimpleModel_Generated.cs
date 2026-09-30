@@ -1322,19 +1322,23 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region File
-        private int? _FileLocation;
+        private int? _FileLocationStore;
+        private int? _FileLocation { get { EnsureFilled(); return _FileLocationStore; } set => _FileLocationStore = value; }
         public String? File => _FileLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FileLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ColorRemappingIndex
-        private int? _ColorRemappingIndexLocation;
+        private int? _ColorRemappingIndexLocationStore;
+        private int? _ColorRemappingIndexLocation { get { EnsureFilled(); return _ColorRemappingIndexLocationStore; } set => _ColorRemappingIndexLocationStore = value; }
         public Single? ColorRemappingIndex => _ColorRemappingIndexLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ColorRemappingIndexLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Data
-        private int? _DataLocation;
+        private int? _DataLocationStore;
+        private int? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? Data => _DataLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DataLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region MaterialSwap
-        private int? _MaterialSwapLocation;
+        private int? _MaterialSwapLocationStore;
+        private int? _MaterialSwapLocation { get { EnsureFilled(); return _MaterialSwapLocationStore; } set => _MaterialSwapLocationStore = value; }
         public IFormLinkNullableGetter<IMaterialSwapGetter> MaterialSwap => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMaterialSwapGetter>(_package, _recordData, _MaterialSwapLocation);
         #endregion
         partial void CustomFactoryEnd(

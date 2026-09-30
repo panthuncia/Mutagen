@@ -1985,7 +1985,8 @@ namespace Mutagen.Bethesda.Fallout4
 
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -1997,31 +1998,38 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public SoundCategory.Flag Flags => EnumBinaryTranslation<SoundCategory.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_FlagsLocation, _recordData, _package, 4);
         #endregion
         #region Parent
-        private int? _ParentLocation;
+        private int? _ParentLocationStore;
+        private int? _ParentLocation { get { EnsureFilled(); return _ParentLocationStore; } set => _ParentLocationStore = value; }
         public IFormLinkNullableGetter<ISoundCategoryGetter> Parent => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundCategoryGetter>(_package, _recordData, _ParentLocation);
         #endregion
         #region MenuSlider
-        private int? _MenuSliderLocation;
+        private int? _MenuSliderLocationStore;
+        private int? _MenuSliderLocation { get { EnsureFilled(); return _MenuSliderLocationStore; } set => _MenuSliderLocationStore = value; }
         public IFormLinkNullableGetter<ISoundCategoryGetter> MenuSlider => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundCategoryGetter>(_package, _recordData, _MenuSliderLocation);
         #endregion
         #region StaticVolumeMultiplier
-        private int? _StaticVolumeMultiplierLocation;
+        private int? _StaticVolumeMultiplierLocationStore;
+        private int? _StaticVolumeMultiplierLocation { get { EnsureFilled(); return _StaticVolumeMultiplierLocationStore; } set => _StaticVolumeMultiplierLocationStore = value; }
         public Single? StaticVolumeMultiplier => _StaticVolumeMultiplierLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _StaticVolumeMultiplierLocation.Value, _package.MetaData.Constants), FloatIntegerType.UShort, multiplier: null, divisor: 65535f) : default(Single?);
         #endregion
         #region DefaultMenuVolume
-        private int? _DefaultMenuVolumeLocation;
+        private int? _DefaultMenuVolumeLocationStore;
+        private int? _DefaultMenuVolumeLocation { get { EnsureFilled(); return _DefaultMenuVolumeLocationStore; } set => _DefaultMenuVolumeLocationStore = value; }
         public Single? DefaultMenuVolume => _DefaultMenuVolumeLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DefaultMenuVolumeLocation.Value, _package.MetaData.Constants), FloatIntegerType.UShort, multiplier: null, divisor: 65535f) : default(Single?);
         #endregion
         #region MinFrequencyMultiplier
-        private int? _MinFrequencyMultiplierLocation;
+        private int? _MinFrequencyMultiplierLocationStore;
+        private int? _MinFrequencyMultiplierLocation { get { EnsureFilled(); return _MinFrequencyMultiplierLocationStore; } set => _MinFrequencyMultiplierLocationStore = value; }
         public Single? MinFrequencyMultiplier => _MinFrequencyMultiplierLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MinFrequencyMultiplierLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region SidechainTargetMultiplier
-        private int? _SidechainTargetMultiplierLocation;
+        private int? _SidechainTargetMultiplierLocationStore;
+        private int? _SidechainTargetMultiplierLocation { get { EnsureFilled(); return _SidechainTargetMultiplierLocationStore; } set => _SidechainTargetMultiplierLocationStore = value; }
         public Single? SidechainTargetMultiplier => _SidechainTargetMultiplierLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SidechainTargetMultiplierLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         partial void CustomFactoryEnd(
@@ -2045,6 +2053,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new SoundCategoryBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => SoundCategoryFill((SoundCategoryBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void SoundCategoryFill(
+            SoundCategoryBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2052,9 +2077,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new SoundCategoryBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2067,7 +2090,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ISoundCategoryGetter SoundCategoryFactory(

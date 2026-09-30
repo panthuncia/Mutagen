@@ -1399,14 +1399,19 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region CDND
-        private int? _CDNDLocation;
+        private int? _CDNDLocationStore;
+        private int? _CDNDLocation { get { EnsureFilled(); return _CDNDLocationStore; } set => _CDNDLocationStore = value; }
         public Single? CDND => _CDNDLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _CDNDLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region CDNS
-        private int? _CDNSLocation;
+        private int? _CDNSLocationStore;
+        private int? _CDNSLocation { get { EnsureFilled(); return _CDNSLocationStore; } set => _CDNSLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? CDNS => _CDNSLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _CDNSLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
-        public IReadOnlyList<ICrowdComponentItemGetter> Items { get; private set; } = [];
+        #region Items
+        private IReadOnlyList<ICrowdComponentItemGetter> ItemsStore = [];
+        public IReadOnlyList<ICrowdComponentItemGetter> Items { get { EnsureFilled(); return ItemsStore; } private set => ItemsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

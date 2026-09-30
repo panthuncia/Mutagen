@@ -1141,11 +1141,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region MorphGroup
-        private int? _MorphGroupLocation;
+        private int? _MorphGroupLocationStore;
+        private int? _MorphGroupLocation { get { EnsureFilled(); return _MorphGroupLocationStore; } set => _MorphGroupLocationStore = value; }
         public String MorphGroup => _MorphGroupLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MorphGroupLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region BlendIntensity
-        private int? _BlendIntensityLocation;
+        private int? _BlendIntensityLocationStore;
+        private int? _BlendIntensityLocation { get { EnsureFilled(); return _BlendIntensityLocationStore; } set => _BlendIntensityLocationStore = value; }
         public Single BlendIntensity => _BlendIntensityLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BlendIntensityLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         partial void CustomFactoryEnd(

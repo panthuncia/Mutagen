@@ -2956,7 +2956,8 @@ namespace Mutagen.Bethesda.Skyrim
 
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2968,18 +2969,22 @@ namespace Mutagen.Bethesda.Skyrim
         #endregion
         #endregion
         #region Priority
-        private int? _PriorityLocation;
+        private int? _PriorityLocationStore;
+        private int? _PriorityLocation { get { EnsureFilled(); return _PriorityLocationStore; } set => _PriorityLocationStore = value; }
         public Single Priority => _PriorityLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _PriorityLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region Branch
-        private int? _BranchLocation;
+        private int? _BranchLocationStore;
+        private int? _BranchLocation { get { EnsureFilled(); return _BranchLocationStore; } set => _BranchLocationStore = value; }
         public IFormLinkNullableGetter<IDialogBranchGetter> Branch => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogBranchGetter>(_package, _recordData, _BranchLocation);
         #endregion
         #region Quest
-        private int? _QuestLocation;
+        private int? _QuestLocationStore;
+        private int? _QuestLocation { get { EnsureFilled(); return _QuestLocationStore; } set => _QuestLocationStore = value; }
         public IFormLinkNullableGetter<IQuestGetter> Quest => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IQuestGetter>(_package, _recordData, _QuestLocation);
         #endregion
-        private RangeInt32? _DATALocation;
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         #region TopicFlags
         private int _TopicFlagsLocation => _DATALocation!.Value.Min;
         private bool _TopicFlags_IsSet => _DATALocation.HasValue;
@@ -2996,7 +3001,8 @@ namespace Mutagen.Bethesda.Skyrim
         public DialogTopic.SubtypeEnum Subtype => _Subtype_IsSet ? (DialogTopic.SubtypeEnum)BinaryPrimitives.ReadUInt16LittleEndian(_recordData.Span.Slice(_SubtypeLocation, 0x2)) : default;
         #endregion
         #region SubtypeName
-        private int? _SubtypeNameLocation;
+        private int? _SubtypeNameLocationStore;
+        private int? _SubtypeNameLocation { get { EnsureFilled(); return _SubtypeNameLocationStore; } set => _SubtypeNameLocationStore = value; }
         public RecordType SubtypeName => _SubtypeNameLocation.HasValue ? new RecordType(BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SubtypeNameLocation.Value, _package.MetaData.Constants))) : RecordType.Null;
         #endregion
         #region ResponseCount

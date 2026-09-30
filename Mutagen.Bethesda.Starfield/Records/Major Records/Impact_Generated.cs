@@ -3232,9 +3232,16 @@ namespace Mutagen.Bethesda.Starfield
         protected override Type LinkType => typeof(IImpactGetter);
 
 
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
-        public IModelGetter? Model { get; private set; }
-        private RangeInt32? _DATALocation;
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         #region Duration
         private int _DurationLocation => _DATALocation!.Value.Min;
         private bool _Duration_IsSet => _DATALocation.HasValue;
@@ -3275,21 +3282,39 @@ namespace Mutagen.Bethesda.Starfield
         private bool _Unknown_IsSet => _DATALocation.HasValue;
         public Int16 Unknown => _Unknown_IsSet ? BinaryPrimitives.ReadInt16LittleEndian(_recordData.Slice(_UnknownLocation, 2)) : default(Int16);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IProjectedDecalGetter>>? ProjectedDecals { get; private set; }
-        public IReadOnlyList<IFormLinkGetter<IProjectedDecalGetter>>? ScatterProjectedDecals { get; private set; }
+        #region ProjectedDecals
+        private IReadOnlyList<IFormLinkGetter<IProjectedDecalGetter>>? ProjectedDecalsStore;
+        public IReadOnlyList<IFormLinkGetter<IProjectedDecalGetter>>? ProjectedDecals { get { EnsureFilled(); return ProjectedDecalsStore; } private set => ProjectedDecalsStore = value; }
+        #endregion
+        #region ScatterProjectedDecals
+        private IReadOnlyList<IFormLinkGetter<IProjectedDecalGetter>>? ScatterProjectedDecalsStore;
+        public IReadOnlyList<IFormLinkGetter<IProjectedDecalGetter>>? ScatterProjectedDecals { get { EnsureFilled(); return ScatterProjectedDecalsStore; } private set => ScatterProjectedDecalsStore = value; }
+        #endregion
         #region Decal
-        private RangeInt32? _DecalLocation;
+        private RangeInt32? _DecalLocationStore;
+        private RangeInt32? _DecalLocation { get { EnsureFilled(); return _DecalLocationStore; } set => _DecalLocationStore = value; }
         public IDecalGetter? Decal => _DecalLocation.HasValue ? DecalBinaryOverlay.DecalFactory(_recordData.Slice(_DecalLocation!.Value.Min), _package) : default;
         #endregion
-        public ISoundReferenceGetter? ImpactSoundDefault { get; private set; }
-        public ISoundReferenceGetter? ImpactSoundPlayerFirstShooter { get; private set; }
-        public ISoundReferenceGetter? ImpactSoundPlayerThirdTarget { get; private set; }
+        #region ImpactSoundDefault
+        private ISoundReferenceGetter? ImpactSoundDefaultStore;
+        public ISoundReferenceGetter? ImpactSoundDefault { get { EnsureFilled(); return ImpactSoundDefaultStore; } private set => ImpactSoundDefaultStore = value; }
+        #endregion
+        #region ImpactSoundPlayerFirstShooter
+        private ISoundReferenceGetter? ImpactSoundPlayerFirstShooterStore;
+        public ISoundReferenceGetter? ImpactSoundPlayerFirstShooter { get { EnsureFilled(); return ImpactSoundPlayerFirstShooterStore; } private set => ImpactSoundPlayerFirstShooterStore = value; }
+        #endregion
+        #region ImpactSoundPlayerThirdTarget
+        private ISoundReferenceGetter? ImpactSoundPlayerThirdTargetStore;
+        public ISoundReferenceGetter? ImpactSoundPlayerThirdTarget { get { EnsureFilled(); return ImpactSoundPlayerThirdTargetStore; } private set => ImpactSoundPlayerThirdTargetStore = value; }
+        #endregion
         #region FootstepParticleMaxDist
-        private int? _FootstepParticleMaxDistLocation;
+        private int? _FootstepParticleMaxDistLocationStore;
+        private int? _FootstepParticleMaxDistLocation { get { EnsureFilled(); return _FootstepParticleMaxDistLocationStore; } set => _FootstepParticleMaxDistLocationStore = value; }
         public Single? FootstepParticleMaxDist => _FootstepParticleMaxDistLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FootstepParticleMaxDistLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region DecalLifetime
-        private int? _DecalLifetimeLocation;
+        private int? _DecalLifetimeLocationStore;
+        private int? _DecalLifetimeLocation { get { EnsureFilled(); return _DecalLifetimeLocationStore; } set => _DecalLifetimeLocationStore = value; }
         public Single? DecalLifetime => _DecalLifetimeLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DecalLifetimeLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         partial void CustomFactoryEnd(
@@ -3313,6 +3338,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ImpactBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ImpactFill((ImpactBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ImpactFill(
+            ImpactBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -3320,9 +3362,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ImpactBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -3335,7 +3375,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IImpactGetter ImpactFactory(

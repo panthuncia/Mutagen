@@ -1683,7 +1683,8 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        public QuestAdapter.VersioningBreaks Versioning { get; private set; }
+        private QuestAdapter.VersioningBreaks VersioningStore;
+        public QuestAdapter.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public Byte ExtraBindDataVersion => _structData.Length <= ScriptsEndingPos + 0x0 ? QuestAdapter.ExtraBindDataVersionDefault : _structData.Span[ScriptsEndingPos + 0x0];
         #region FragmentCount
         partial void FragmentCountCustomParse(
@@ -1693,15 +1694,18 @@ namespace Mutagen.Bethesda.Fallout4
         #region Script
         public partial IScriptEntryGetter GetScriptCustom(int location);
         public IScriptEntryGetter Script => GetScriptCustom(location: ScriptsEndingPos + 0x3);
-        protected int ScriptEndingPos;
+        private int ScriptEndingPosStore;
+        protected int ScriptEndingPos { get { EnsureFilled(); return ScriptEndingPosStore; } private set => ScriptEndingPosStore = value; }
         partial void CustomScriptEndPos();
         #endregion
         #region Fragments
-        protected int FragmentsEndingPos;
+        private int FragmentsEndingPosStore;
+        protected int FragmentsEndingPos { get { EnsureFilled(); return FragmentsEndingPosStore; } private set => FragmentsEndingPosStore = value; }
         partial void CustomFragmentsEndPos();
         #endregion
         #region Aliases
-        protected int AliasesEndingPos;
+        private int AliasesEndingPosStore;
+        protected int AliasesEndingPos { get { EnsureFilled(); return AliasesEndingPosStore; } private set => AliasesEndingPosStore = value; }
         partial void CustomAliasesEndPos();
         #endregion
         partial void CustomFactoryEnd(

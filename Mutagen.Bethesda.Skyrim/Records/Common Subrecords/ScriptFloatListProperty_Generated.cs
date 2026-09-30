@@ -1196,7 +1196,8 @@ namespace Mutagen.Bethesda.Skyrim
 
         #region Data
         public IReadOnlyList<Single> Data => BinaryOverlayList.FactoryByCountLength<Single>(_structData, _package, 4, countLength: 4, (s, p) => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(s));
-        protected int DataEndingPos;
+        private int DataEndingPosStore;
+        protected int DataEndingPos { get { EnsureFilled(); return DataEndingPosStore; } private set => DataEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

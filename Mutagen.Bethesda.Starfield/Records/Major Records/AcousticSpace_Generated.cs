@@ -2792,61 +2792,84 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         private IObjectBoundsGetter? _ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         public IObjectBoundsGetter ObjectBounds => _ObjectBounds ?? new ObjectBounds();
         #endregion
         #region DirtinessScale
-        private int? _DirtinessScaleLocation;
+        private int? _DirtinessScaleLocationStore;
+        private int? _DirtinessScaleLocation { get { EnsureFilled(); return _DirtinessScaleLocationStore; } set => _DirtinessScaleLocationStore = value; }
         public Percent DirtinessScale => _DirtinessScaleLocation.HasValue ? PercentBinaryTranslation.GetPercent(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DirtinessScaleLocation.Value, _package.MetaData.Constants), FloatIntegerType.UInt) : default(Percent);
         #endregion
         #region ObjectPaletteDefaults
-        private RangeInt32? _ObjectPaletteDefaultsLocation;
+        private RangeInt32? _ObjectPaletteDefaultsLocationStore;
+        private RangeInt32? _ObjectPaletteDefaultsLocation { get { EnsureFilled(); return _ObjectPaletteDefaultsLocationStore; } set => _ObjectPaletteDefaultsLocationStore = value; }
         public IObjectPaletteDefaultsGetter? ObjectPaletteDefaults => _ObjectPaletteDefaultsLocation.HasValue ? ObjectPaletteDefaultsBinaryOverlay.ObjectPaletteDefaultsFactory(_recordData.Slice(_ObjectPaletteDefaultsLocation!.Value.Min), _package) : default;
         #endregion
-        public ISoundReferenceGetter? LoopingSound { get; private set; }
-        public ISoundReferenceGetter? InteriorSound { get; private set; }
-        public ISoundReferenceGetter? ExteriorSound { get; private set; }
+        #region LoopingSound
+        private ISoundReferenceGetter? LoopingSoundStore;
+        public ISoundReferenceGetter? LoopingSound { get { EnsureFilled(); return LoopingSoundStore; } private set => LoopingSoundStore = value; }
+        #endregion
+        #region InteriorSound
+        private ISoundReferenceGetter? InteriorSoundStore;
+        public ISoundReferenceGetter? InteriorSound { get { EnsureFilled(); return InteriorSoundStore; } private set => InteriorSoundStore = value; }
+        #endregion
+        #region ExteriorSound
+        private ISoundReferenceGetter? ExteriorSoundStore;
+        public ISoundReferenceGetter? ExteriorSound { get { EnsureFilled(); return ExteriorSoundStore; } private set => ExteriorSoundStore = value; }
+        #endregion
         #region AmbientSet
-        private int? _AmbientSetLocation;
+        private int? _AmbientSetLocationStore;
+        private int? _AmbientSetLocation { get { EnsureFilled(); return _AmbientSetLocationStore; } set => _AmbientSetLocationStore = value; }
         public IFormLinkNullableGetter<IAmbienceSetGetter> AmbientSet => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IAmbienceSetGetter>(_package, _recordData, _AmbientSetLocation);
         #endregion
         #region MusicType
-        private int? _MusicTypeLocation;
+        private int? _MusicTypeLocationStore;
+        private int? _MusicTypeLocation { get { EnsureFilled(); return _MusicTypeLocationStore; } set => _MusicTypeLocationStore = value; }
         public IFormLinkNullableGetter<IMusicTypeGetter> MusicType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMusicTypeGetter>(_package, _recordData, _MusicTypeLocation);
         #endregion
         #region EnvironmentType
-        private int? _EnvironmentTypeLocation;
+        private int? _EnvironmentTypeLocationStore;
+        private int? _EnvironmentTypeLocation { get { EnsureFilled(); return _EnvironmentTypeLocationStore; } set => _EnvironmentTypeLocationStore = value; }
         public IFormLinkNullableGetter<IReverbParametersGetter> EnvironmentType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IReverbParametersGetter>(_package, _recordData, _EnvironmentTypeLocation);
         #endregion
         #region ExteriorWeatherAttenuation
-        private int? _ExteriorWeatherAttenuationLocation;
+        private int? _ExteriorWeatherAttenuationLocationStore;
+        private int? _ExteriorWeatherAttenuationLocation { get { EnsureFilled(); return _ExteriorWeatherAttenuationLocationStore; } set => _ExteriorWeatherAttenuationLocationStore = value; }
         public Single ExteriorWeatherAttenuation => _ExteriorWeatherAttenuationLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ExteriorWeatherAttenuationLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region InteriorExteriorRatio
-        private int? _InteriorExteriorRatioLocation;
+        private int? _InteriorExteriorRatioLocationStore;
+        private int? _InteriorExteriorRatioLocation { get { EnsureFilled(); return _InteriorExteriorRatioLocationStore; } set => _InteriorExteriorRatioLocationStore = value; }
         public Single? InteriorExteriorRatio => _InteriorExteriorRatioLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _InteriorExteriorRatioLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region IsInterior
-        private int? _IsInteriorLocation;
+        private int? _IsInteriorLocationStore;
+        private int? _IsInteriorLocation { get { EnsureFilled(); return _IsInteriorLocationStore; } set => _IsInteriorLocationStore = value; }
         public Boolean IsInterior => _IsInteriorLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _IsInteriorLocation.Value, _package.MetaData.Constants)[0] >= 1 : default(Boolean);
         #endregion
         #region AllowExterior
-        private int? _AllowExteriorLocation;
+        private int? _AllowExteriorLocationStore;
+        private int? _AllowExteriorLocation { get { EnsureFilled(); return _AllowExteriorLocationStore; } set => _AllowExteriorLocationStore = value; }
         public Boolean AllowExterior => _AllowExteriorLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _AllowExteriorLocation.Value, _package.MetaData.Constants)[0] >= 1 : default(Boolean);
         #endregion
         #region SoundDetectionLevel
-        private int? _SoundDetectionLevelLocation;
+        private int? _SoundDetectionLevelLocationStore;
+        private int? _SoundDetectionLevelLocation { get { EnsureFilled(); return _SoundDetectionLevelLocationStore; } set => _SoundDetectionLevelLocationStore = value; }
         public SoundLevel? SoundDetectionLevel => EnumBinaryTranslation<SoundLevel, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_SoundDetectionLevelLocation, _recordData, _package, 4);
         #endregion
         #region DisableFlags
-        private int? _DisableFlagsLocation;
+        private int? _DisableFlagsLocationStore;
+        private int? _DisableFlagsLocation { get { EnsureFilled(); return _DisableFlagsLocationStore; } set => _DisableFlagsLocationStore = value; }
         public SoundLevel? DisableFlags => EnumBinaryTranslation<SoundLevel, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_DisableFlagsLocation, _recordData, _package, 8);
         #endregion
         partial void CustomFactoryEnd(
@@ -2870,6 +2893,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new AcousticSpaceBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => AcousticSpaceFill((AcousticSpaceBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void AcousticSpaceFill(
+            AcousticSpaceBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2877,9 +2917,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new AcousticSpaceBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2892,7 +2930,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IAcousticSpaceGetter AcousticSpaceFactory(

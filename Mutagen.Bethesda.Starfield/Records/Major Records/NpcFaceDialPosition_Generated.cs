@@ -1137,11 +1137,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Index
-        private int? _IndexLocation;
+        private int? _IndexLocationStore;
+        private int? _IndexLocation { get { EnsureFilled(); return _IndexLocationStore; } set => _IndexLocationStore = value; }
         public UInt32 Index => _IndexLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IndexLocation.Value, _package.MetaData.Constants)) : default(UInt32);
         #endregion
         #region Position
-        private int? _PositionLocation;
+        private int? _PositionLocationStore;
+        private int? _PositionLocation { get { EnsureFilled(); return _PositionLocationStore; } set => _PositionLocationStore = value; }
         public Single Position => _PositionLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _PositionLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         partial void CustomFactoryEnd(
