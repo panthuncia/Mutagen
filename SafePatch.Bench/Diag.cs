@@ -10,7 +10,7 @@ using Mutagen.Bethesda.Skyrim;
 /// </summary>
 internal static class Diag
 {
-    public static int Run(string data, string plugin, string type, int max, bool self)
+    public static int Run(string data, string plugin, string type, int max, bool self, bool hash = false)
     {
         var path = new ModPath(Path.Combine(data, plugin));
         var full = SkyrimMod.CreateFromBinary(path, SkyrimRelease.SkyrimSE);
@@ -24,12 +24,44 @@ internal static class Diag
         {
             if (!b.GetType().Name.StartsWith(type, StringComparison.Ordinal) || b.GetType().Name.Replace("BinaryOverlay", "") != type) continue;
             var a = reference[b.FormKey];
+            if (hash)
+            {
+                if (!a.Equals(b) || a.GetHashCode() == b.GetHashCode()) continue;
+                if (shown++ == max) break;
+                Console.WriteLine($"{b.FormKey} {type} {a.EditorID}: equal, hash codes differ");
+                HashParts("", a, b, 1);
+                continue;
+            }
             if (a.Equals(b) && a.EditorID == b.EditorID) continue;
             if (shown++ == max) break;
             Console.WriteLine($"{b.FormKey} {type} {a.EditorID}");
             Compare("", a, b, 1);
         }
         return 0;
+    }
+
+    // The properties whose values hash differently, recursing into generated objects.
+    static void HashParts(string name, object a, object b, int depth)
+    {
+        var getter = ((ILoquiObject)a).Registration.GetterType;
+        foreach (var prop in getter.GetInterfaces().Prepend(getter).SelectMany(i => i.GetProperties()).DistinctBy(p => p.Name)
+                     .Where(p => p.GetIndexParameters().Length == 0 && p.PropertyType != typeof(Type) && p.PropertyType != typeof(ILoquiRegistration)))
+        {
+            object? x, y;
+            try { x = prop.GetValue(a); y = prop.GetValue(b); } catch { continue; }
+            var hx = x is null ? 0 : x is ILoquiObject ? x.GetHashCode() : HashOf(x);
+            var hy = y is null ? 0 : y is ILoquiObject ? y.GetHashCode() : HashOf(y);
+            if (hx == hy) continue;
+            if (depth < 6 && x is ILoquiObject && y is ILoquiObject) { HashParts(name + "." + prop.Name, x, y, depth + 1); continue; }
+            Console.WriteLine($"{new string(' ', depth * 2)}{name}.{prop.Name}: {Show(x)} ({x?.GetType().Name}) vs {Show(y)} ({y?.GetType().Name})");
+        }
+    }
+
+    static int HashOf(object value)
+    {
+        var hash = new HashCode();
+        hash.Add(value);
+        return hash.ToHashCode();
     }
 
     static string Show(object? v) => v switch

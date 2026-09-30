@@ -20,6 +20,7 @@ fix-cumulative-breaks fix/cumulative-break-flags
 fix-gendered-equality fix/gendered-item-equality
 fix-condition-pack-data fix/condition-pack-data-flag
 fix-content-equality fix/content-equality
+fix-overlay-float-epsilon fix/overlay-float-epsilon
 perf-group-cache perf/cache-overlay-groups
 perf-deferred-fill a0f418c
 perf-deferred-fill-peek 3958614

@@ -4,7 +4,7 @@
 set -u
 PR=/c/Users/matth/source/repos/Mutagen-wt/pr; GEN=/c/Users/matth/source/repos/Mutagen-wt/gen
 cd $PR; git reset -q --hard; git checkout -q -B safepatch-perf-experiment 0188012
-for b in fix/unsigned-two-byte-enums fix/enum-parsevalue-result fix/nullable-enum-fallback-parse fix/overlay-declared-defaults fix/cumulative-break-flags fix/gendered-item-equality fix/condition-pack-data-flag fix/content-equality perf/cache-overlay-groups perf/deferred-overlay-fill perf/record-batches; do
+for b in fix/unsigned-two-byte-enums fix/enum-parsevalue-result fix/nullable-enum-fallback-parse fix/overlay-declared-defaults fix/cumulative-break-flags fix/gendered-item-equality fix/condition-pack-data-flag fix/content-equality fix/overlay-float-epsilon perf/cache-overlay-groups perf/deferred-overlay-fill perf/record-batches; do
   git merge -q --no-ff --no-edit $b > /dev/null 2>&1
   git diff --name-only --diff-filter=U | grep _Generated | while read f; do git checkout -q --ours -- "$f"; git add "$f"; done
   for f in $(git diff --name-only --diff-filter=U); do

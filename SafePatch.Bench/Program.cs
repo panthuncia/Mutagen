@@ -12,14 +12,14 @@ using SafePatch.Authoring.Index;
 //   SafePatch.Bench check <Data folder> <plugin,...> [label]
 //   SafePatch.Bench check-threads <Data folder> <plugin>
 //   SafePatch.Bench check-hash <Data folder> <plugin,...> [label]
-//   SafePatch.Bench diag|diag-self <Data folder> <plugin> <record type> [max=3]
+//   SafePatch.Bench diag|diag-self|diag-hash <Data folder> <plugin> <record type> [max=3]
 if (args is ["check", var checkData, var checkPlugins, .. var checkRest])
 {
     return Check(checkData, checkPlugins.Split(','), checkRest is [var checkLabel] ? checkLabel : "");
 }
-if (args is ["diag" or "diag-self", var diagData, var diagPlugin, var diagType, .. var diagRest])
+if (args is ["diag" or "diag-self" or "diag-hash", var diagData, var diagPlugin, var diagType, .. var diagRest])
 {
-    return Diag.Run(diagData, diagPlugin, diagType, diagRest is [var n] ? int.Parse(n) : 3, self: args[0] == "diag-self");
+    return Diag.Run(diagData, diagPlugin, diagType, diagRest is [var n] ? int.Parse(n) : 3, self: args[0] == "diag-self", hash: args[0] == "diag-hash");
 }
 if (args is ["check-hash", var hashData, var hashPlugins, .. var hashRest])
 {
