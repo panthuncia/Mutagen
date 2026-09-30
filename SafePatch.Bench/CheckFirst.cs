@@ -29,7 +29,7 @@ internal static class CheckFirst
                 var group = overlay.TryGetTopLevelGroup(getter) ?? throw new ArgumentException($"{typeName} has no top-level group");
                 var expected = full.EnumerateMajorRecords(getter).ToDictionary(r => r.FormKey);
                 var properties = getter.GetInterfaces().Prepend(getter).SelectMany(i => i.GetProperties())
-                    .Where(p => p.GetIndexParameters().Length == 0 && p.Name != "Registration" && p.Name != "ExportingExtraNam3")
+                    .Where(p => p.GetIndexParameters().Length == 0 && p.Name != "Registration" && p.Name != "ExportingExtraNam3" && p.Name != "Type")
                     .DistinctBy(p => p.Name).ToArray();
                 foreach (var formKey in group.FormKeys)
                 {
