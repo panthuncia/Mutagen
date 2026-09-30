@@ -934,7 +934,7 @@ namespace Mutagen.Bethesda.Starfield
             if (!base.Equals((IAComponentGetter)lhs, (IAComponentGetter)rhs, equalsMask)) return false;
             if ((equalsMask?.GetShouldTranslate((int)BlockHeightAdjustmentComponent_FieldIndex.SurfaceBlocks) ?? true))
             {
-                if (!lhs.SurfaceBlocks.SequenceEqual(rhs.SurfaceBlocks, (l, r) => ((BlockHeightAdjustmentComponentItemCommon)((IBlockHeightAdjustmentComponentItemGetter)l.Value).CommonInstance()!).Equals(l.Value, r.Value, equalsMask?.GetSubCrystal((int)BlockHeightAdjustmentComponent_FieldIndex.SurfaceBlocks)))) return false;
+                if (!lhs.SurfaceBlocks.Array2dEquals(rhs.SurfaceBlocks, (l, r) => ((BlockHeightAdjustmentComponentItemCommon)((IBlockHeightAdjustmentComponentItemGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)BlockHeightAdjustmentComponent_FieldIndex.SurfaceBlocks)))) return false;
             }
             if ((equalsMask?.GetShouldTranslate((int)BlockHeightAdjustmentComponent_FieldIndex.DATA) ?? true))
             {

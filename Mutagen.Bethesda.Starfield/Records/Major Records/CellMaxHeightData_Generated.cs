@@ -938,7 +938,7 @@ namespace Mutagen.Bethesda.Starfield
             }
             if ((equalsMask?.GetShouldTranslate((int)CellMaxHeightData_FieldIndex.HeightMap) ?? true))
             {
-                if (!lhs.HeightMap.SequenceEqualNullable(rhs.HeightMap)) return false;
+                if (!lhs.HeightMap.Array2dEquals(rhs.HeightMap)) return false;
             }
             return true;
         }

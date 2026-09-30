@@ -980,7 +980,7 @@ namespace Mutagen.Bethesda.Fallout4
             }
             if ((equalsMask?.GetShouldTranslate((int)LandscapeVertexHeightMap_FieldIndex.HeightMap) ?? true))
             {
-                if (!lhs.HeightMap.SequenceEqualNullable(rhs.HeightMap)) return false;
+                if (!lhs.HeightMap.Array2dEquals(rhs.HeightMap)) return false;
             }
             if ((equalsMask?.GetShouldTranslate((int)LandscapeVertexHeightMap_FieldIndex.Unknown) ?? true))
             {

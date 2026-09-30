@@ -1963,23 +1963,23 @@ namespace Mutagen.Bethesda.Starfield
             }
             if ((equalsMask?.GetShouldTranslate((int)SurfacePattern_FieldIndex.Blocks) ?? true))
             {
-                if (!lhs.Blocks.SequenceEqualNullable(rhs.Blocks)) return false;
+                if (!lhs.Blocks.Array2dEquals(rhs.Blocks)) return false;
             }
             if ((equalsMask?.GetShouldTranslate((int)SurfacePattern_FieldIndex.MasterBlocks) ?? true))
             {
-                if (!lhs.MasterBlocks.SequenceEqualNullable(rhs.MasterBlocks)) return false;
+                if (!lhs.MasterBlocks.Array2dEquals(rhs.MasterBlocks)) return false;
             }
             if ((equalsMask?.GetShouldTranslate((int)SurfacePattern_FieldIndex.MasterBlockRotations) ?? true))
             {
-                if (!lhs.MasterBlockRotations.SequenceEqualNullable(rhs.MasterBlockRotations)) return false;
+                if (!lhs.MasterBlockRotations.Array2dEquals(rhs.MasterBlockRotations)) return false;
             }
             if ((equalsMask?.GetShouldTranslate((int)SurfacePattern_FieldIndex.OverrideBlocks) ?? true))
             {
-                if (!lhs.OverrideBlocks.SequenceEqualNullable(rhs.OverrideBlocks)) return false;
+                if (!lhs.OverrideBlocks.Array2dEquals(rhs.OverrideBlocks)) return false;
             }
             if ((equalsMask?.GetShouldTranslate((int)SurfacePattern_FieldIndex.OverrideBlockRotations) ?? true))
             {
-                if (!lhs.OverrideBlockRotations.SequenceEqualNullable(rhs.OverrideBlockRotations)) return false;
+                if (!lhs.OverrideBlockRotations.Array2dEquals(rhs.OverrideBlockRotations)) return false;
             }
             if ((equalsMask?.GetShouldTranslate((int)SurfacePattern_FieldIndex.Worldspaces) ?? true))
             {
