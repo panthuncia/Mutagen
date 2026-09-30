@@ -63,6 +63,14 @@ public class DataRelativePathTests
     }
 
     [Fact]
+    public void RootedWithoutDrivePath()
+    {
+        // As plugins sometimes store paths: rooted without a drive, with backslashes on every platform. Not absolute.
+        var link = new DataRelativePath(@"\Meshes\Clutter\MyMesh.nif");
+        link.Path.ShouldBe(DataPath);
+    }
+
+    [Fact]
     public void BaseFolderContainsData()
     {
         var path = Path.Combine("SomeDataFolder", "OtherFolder", "Data", "Meshes", "Clutter", "MyMesh.nif");

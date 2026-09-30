@@ -31,6 +31,14 @@ public class AssetLinkPathingTests
     }
 
     [Fact]
+    public void RootedWithoutDrivePathReadFromPlugin()
+    {
+        // A plugin's model path stored as \Meshes\...: reading it must not throw.
+        var link = new AssetLinkGetter<TestAssetType>(@"\Meshes\Clutter\MyMesh.nif");
+        link.DataRelativePath.ShouldBe(DataPath);
+    }
+
+    [Fact]
     public void DataRelativePath()
     {
         var path = Path.Combine("Data", "Meshes", "Clutter", "MyMesh.nif");
