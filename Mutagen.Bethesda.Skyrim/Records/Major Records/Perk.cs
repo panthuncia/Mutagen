@@ -530,7 +530,9 @@ partial class PerkBinaryWriteTranslation
 
 partial class PerkBinaryOverlay
 {
-    public IReadOnlyList<IAPerkEffectGetter> Effects { get; private set; } = [];
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private IReadOnlyList<IAPerkEffectGetter> EffectsStore = [];
+    public IReadOnlyList<IAPerkEffectGetter> Effects { get { EnsureFilled(); return EffectsStore; } private set => EffectsStore = value; }
 
     private static RecordTriggerSpecs _effectSpecs = new(
         new RecordCollection()

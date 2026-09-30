@@ -96,15 +96,25 @@ partial class FootstepSetBinaryWriteTranslation
 
 partial class FootstepSetBinaryOverlay
 {
-    public IReadOnlyList<IFormLinkGetter<IFootstepGetter>> WalkForwardFootsteps { get; private set; } = Array.Empty<IFormLinkGetter<IFootstepGetter>>();
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private IReadOnlyList<IFormLinkGetter<IFootstepGetter>> WalkForwardFootstepsStore = Array.Empty<IFormLinkGetter<IFootstepGetter>>();
+    public IReadOnlyList<IFormLinkGetter<IFootstepGetter>> WalkForwardFootsteps { get { EnsureFilled(); return WalkForwardFootstepsStore; } private set => WalkForwardFootstepsStore = value; }
 
-    public IReadOnlyList<IFormLinkGetter<IFootstepGetter>> RunForwardFootsteps { get; private set; } = Array.Empty<IFormLinkGetter<IFootstepGetter>>();
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private IReadOnlyList<IFormLinkGetter<IFootstepGetter>> RunForwardFootstepsStore = Array.Empty<IFormLinkGetter<IFootstepGetter>>();
+    public IReadOnlyList<IFormLinkGetter<IFootstepGetter>> RunForwardFootsteps { get { EnsureFilled(); return RunForwardFootstepsStore; } private set => RunForwardFootstepsStore = value; }
 
-    public IReadOnlyList<IFormLinkGetter<IFootstepGetter>> WalkForwardAlternateFootsteps { get; private set; } = Array.Empty<IFormLinkGetter<IFootstepGetter>>();
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private IReadOnlyList<IFormLinkGetter<IFootstepGetter>> WalkForwardAlternateFootstepsStore = Array.Empty<IFormLinkGetter<IFootstepGetter>>();
+    public IReadOnlyList<IFormLinkGetter<IFootstepGetter>> WalkForwardAlternateFootsteps { get { EnsureFilled(); return WalkForwardAlternateFootstepsStore; } private set => WalkForwardAlternateFootstepsStore = value; }
 
-    public IReadOnlyList<IFormLinkGetter<IFootstepGetter>> RunForwardAlternateFootsteps { get; private set; } = Array.Empty<IFormLinkGetter<IFootstepGetter>>();
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private IReadOnlyList<IFormLinkGetter<IFootstepGetter>> RunForwardAlternateFootstepsStore = Array.Empty<IFormLinkGetter<IFootstepGetter>>();
+    public IReadOnlyList<IFormLinkGetter<IFootstepGetter>> RunForwardAlternateFootsteps { get { EnsureFilled(); return RunForwardAlternateFootstepsStore; } private set => RunForwardAlternateFootstepsStore = value; }
 
-    public IReadOnlyList<IFormLinkGetter<IFootstepGetter>> WalkForwardAlternateFootsteps2 { get; private set; } = Array.Empty<IFormLinkGetter<IFootstepGetter>>();
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private IReadOnlyList<IFormLinkGetter<IFootstepGetter>> WalkForwardAlternateFootsteps2Store = Array.Empty<IFormLinkGetter<IFootstepGetter>>();
+    public IReadOnlyList<IFormLinkGetter<IFootstepGetter>> WalkForwardAlternateFootsteps2 { get { EnsureFilled(); return WalkForwardAlternateFootsteps2Store; } private set => WalkForwardAlternateFootsteps2Store = value; }
 
     public partial ParseResult CountCustomParse(OverlayStream stream, int offset, PreviousParse lastParsed)
     {

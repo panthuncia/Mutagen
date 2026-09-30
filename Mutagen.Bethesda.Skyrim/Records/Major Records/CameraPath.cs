@@ -51,7 +51,9 @@ partial class CameraPathBinaryWriteTranslation
 
 partial class CameraPathBinaryOverlay
 {
-    int? _zoomLoc;
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private int? _zoomLocStore;
+    private int? _zoomLoc { get { EnsureFilled(); return _zoomLocStore; } set => _zoomLocStore = value; }
     public partial CameraPath.ZoomType GetZoomCustom() => _zoomLoc.HasValue ? (CameraPath.ZoomType)(HeaderTranslation.ExtractSubrecordMemory(_recordData, _zoomLoc.Value, _package.MetaData.Constants)[0] % 128) : default;
 
     public bool ZoomMustHaveCameraShots => _zoomLoc.HasValue && HeaderTranslation.ExtractSubrecordMemory(_recordData, _zoomLoc.Value, _package.MetaData.Constants)[0] < 128;

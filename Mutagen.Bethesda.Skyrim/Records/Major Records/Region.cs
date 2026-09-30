@@ -125,22 +125,34 @@ partial class RegionBinaryWriteTranslation
 
 partial class RegionBinaryOverlay
 {
-    private ReadOnlyMemorySlice<byte>? _objectsSpan;
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private ReadOnlyMemorySlice<byte>? _objectsSpanStore;
+    private ReadOnlyMemorySlice<byte>? _objectsSpan { get { EnsureFilled(); return _objectsSpanStore; } set => _objectsSpanStore = value; }
     public IRegionObjectsGetter? Objects => _objectsSpan.HasValue ? RegionObjectsBinaryOverlay.RegionObjectsFactory(new OverlayStream(_objectsSpan.Value, _package), _package) : default;
 
-    private ReadOnlyMemorySlice<byte>? _weatherSpan;
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private ReadOnlyMemorySlice<byte>? _weatherSpanStore;
+    private ReadOnlyMemorySlice<byte>? _weatherSpan { get { EnsureFilled(); return _weatherSpanStore; } set => _weatherSpanStore = value; }
     public IRegionWeatherGetter? Weather => _weatherSpan.HasValue ? RegionWeatherBinaryOverlay.RegionWeatherFactory(new OverlayStream(_weatherSpan.Value, _package), _package) : default;
 
-    private ReadOnlyMemorySlice<byte>? _mapSpan;
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private ReadOnlyMemorySlice<byte>? _mapSpanStore;
+    private ReadOnlyMemorySlice<byte>? _mapSpan { get { EnsureFilled(); return _mapSpanStore; } set => _mapSpanStore = value; }
     public IRegionMapGetter? Map => _mapSpan.HasValue ? RegionMapBinaryOverlay.RegionMapFactory(new OverlayStream(_mapSpan.Value, _package), _package) : default;
 
-    private ReadOnlyMemorySlice<byte>? _grassesSpan;
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private ReadOnlyMemorySlice<byte>? _grassesSpanStore;
+    private ReadOnlyMemorySlice<byte>? _grassesSpan { get { EnsureFilled(); return _grassesSpanStore; } set => _grassesSpanStore = value; }
     public IRegionGrassesGetter? Grasses => _grassesSpan.HasValue ? RegionGrassesBinaryOverlay.RegionGrassesFactory(new OverlayStream(_grassesSpan.Value, _package), _package) : default;
 
-    private ReadOnlyMemorySlice<byte>? _soundsSpan;
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private ReadOnlyMemorySlice<byte>? _soundsSpanStore;
+    private ReadOnlyMemorySlice<byte>? _soundsSpan { get { EnsureFilled(); return _soundsSpanStore; } set => _soundsSpanStore = value; }
     public IRegionSoundsGetter? Sounds => _soundsSpan.HasValue ? RegionSoundsBinaryOverlay.RegionSoundsFactory(new OverlayStream(_soundsSpan.Value, _package), _package) : default;
 
-    private ReadOnlyMemorySlice<byte>? _landSpan;
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private ReadOnlyMemorySlice<byte>? _landSpanStore;
+    private ReadOnlyMemorySlice<byte>? _landSpan { get { EnsureFilled(); return _landSpanStore; } set => _landSpanStore = value; }
     public IRegionLandGetter? Land => _landSpan.HasValue ? RegionLandBinaryOverlay.RegionLandFactory(new OverlayStream(_landSpan.Value, _package), _package) : default;
 
     public partial ParseResult RegionAreaLogicCustomParse(

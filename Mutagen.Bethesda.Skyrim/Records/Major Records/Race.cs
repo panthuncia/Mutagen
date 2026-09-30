@@ -124,13 +124,19 @@ partial class RaceBinaryCreateTranslation
 
 partial class RaceBinaryOverlay
 {
-    public bool ExportingExtraNam2 { get; private set; }
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private bool ExportingExtraNam2Store;
+    public bool ExportingExtraNam2 { get { EnsureFilled(); return ExportingExtraNam2Store; } private set => ExportingExtraNam2Store = value; }
     public bool ExportingExtraNam3 => throw new NotImplementedException();
 
-    private int? _faceFxPhonemesLoc;
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private int? _faceFxPhonemesLocStore;
+    private int? _faceFxPhonemesLoc { get { EnsureFilled(); return _faceFxPhonemesLocStore; } set => _faceFxPhonemesLocStore = value; }
     public IFaceFxPhonemesGetter FaceFxPhonemes => GetFaceFx();
 
-    private int? _bipedObjectNamesLoc;
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private int? _bipedObjectNamesLocStore;
+    private int? _bipedObjectNamesLoc { get { EnsureFilled(); return _bipedObjectNamesLocStore; } set => _bipedObjectNamesLocStore = value; }
     public IReadOnlyDictionary<BipedObject, string> BipedObjectNames
     {
         get
@@ -200,7 +206,9 @@ partial class RaceBinaryOverlay
         return flag;
     }
 
-    private int? _BodyTemplateLocation;
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private int? _BodyTemplateLocationStore;
+    private int? _BodyTemplateLocation { get { EnsureFilled(); return _BodyTemplateLocationStore; } set => _BodyTemplateLocationStore = value; }
     public partial IBodyTemplateGetter? GetBodyTemplateCustom() => _BodyTemplateLocation.HasValue ? BodyTemplateBinaryOverlay.CustomFactory(new OverlayStream(_recordData.Slice(_BodyTemplateLocation!.Value), _package), _package) : default;
     public bool BodyTemplate_IsSet => _BodyTemplateLocation.HasValue;
 

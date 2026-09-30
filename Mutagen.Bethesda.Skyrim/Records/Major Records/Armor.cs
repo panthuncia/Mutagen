@@ -38,7 +38,9 @@ partial class ArmorBinaryWriteTranslation
 
 partial class ArmorBinaryOverlay
 {
-    private int? _BodyTemplateLocation;
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private int? _BodyTemplateLocationStore;
+    private int? _BodyTemplateLocation { get { EnsureFilled(); return _BodyTemplateLocationStore; } set => _BodyTemplateLocationStore = value; }
     public partial IBodyTemplateGetter? GetBodyTemplateCustom() => _BodyTemplateLocation.HasValue ? BodyTemplateBinaryOverlay.CustomFactory(new OverlayStream(_recordData.Slice(_BodyTemplateLocation!.Value), _package), _package) : default;
     public bool BodyTemplate_IsSet => _BodyTemplateLocation.HasValue;
 

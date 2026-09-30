@@ -404,12 +404,16 @@ partial class WeatherBinaryWriteTranslation
 partial class WeatherBinaryOverlay
 {
     private readonly IAssetLink<SkyrimTextureAssetType>?[] _cloudTextures = new IAssetLink<SkyrimTextureAssetType>?[29];
-    public IReadOnlyList<IAssetLinkGetter<SkyrimTextureAssetType>?> CloudTextures => _cloudTextures;
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    public IReadOnlyList<IAssetLinkGetter<SkyrimTextureAssetType>?> CloudTextures { get { EnsureFilled(); return _cloudTextures; } }
 
     private readonly CloudLayer[] _clouds = ArrayExt.Create(WeatherBinaryCreateTranslation.NumLayers, (i) => new CloudLayer());
-    public IReadOnlyList<ICloudLayerGetter> Clouds => _clouds;
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    public IReadOnlyList<ICloudLayerGetter> Clouds { get { EnsureFilled(); return _clouds; } }
 
-    int? _directionalLoc;
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private int? _directionalLocStore;
+    private int? _directionalLoc { get { EnsureFilled(); return _directionalLocStore; } set => _directionalLocStore = value; }
 
     partial void CloudsCustomParse(OverlayStream stream, int finalPos, int offset, RecordType type, PreviousParse lastParsed)
     {

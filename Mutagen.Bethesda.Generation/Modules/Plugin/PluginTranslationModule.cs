@@ -2885,7 +2885,12 @@ public class PluginTranslationModule : BinaryTranslationModule
     /// reads only the record's header and what follows the record, so it runs when the record is created; it is given
     /// no meaningful finalPos or offset.
     /// </summary>
-    private static readonly HashSet<string> AuditedForDeferredFill = ["Skyrim.Cell"];
+    private static readonly HashSet<string> AuditedForDeferredFill =
+    [
+        "Skyrim.Armor", "Skyrim.ArmorAddon", "Skyrim.CameraPath", "Skyrim.Cell", "Skyrim.DialogTopic", "Skyrim.FootstepSet",
+        "Skyrim.Furniture", "Skyrim.IdleMarker", "Skyrim.MagicEffect", "Skyrim.Npc", "Skyrim.Package", "Skyrim.Perk",
+        "Skyrim.Quest", "Skyrim.Race", "Skyrim.Region", "Skyrim.Weather", "Skyrim.Worldspace",
+    ];
 
     private static bool Audited(ObjectGeneration obj) =>
         AuditedForDeferredFill.Contains($"{obj.ProtoGen.Protocol.Namespace}.{obj.Name}");
