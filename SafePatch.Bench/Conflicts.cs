@@ -16,23 +16,17 @@ using Mutagen.Bethesda.Skyrim;
 /// worldspace or topic by its generated <c>Equals</c> with a translation mask leaving its child records out (those are
 /// compared as records of their own). The plugins are opened once; each run collects fresh record objects, so every
 /// run reads and parses the records it compares.
-/// <code>SafePatch.Bench conflicts|conflicts-self &lt;Data folder&gt; &lt;plugins.txt&gt; [runs=3] [label]</code>
+/// <code>SafePatch.Bench conflicts &lt;Data folder&gt; &lt;plugins.txt or .paths&gt; [runs=3] [label]</code>
 /// </summary>
 internal static class Conflicts
 {
-    /// <param name="self">
-    /// Compare every record with the same record read from a second opening of the plugins, rather than overrides with
-    /// the versions before them: every record is compared, and every pair is equal, so every field of both is read.
-    /// This stands in for a heavily modded load order, where most of the records are overridden.
-    /// </param>
-    public static int Run(string data, string pluginsTxt, int runs, string label, bool self)
+    public static int Run(string data, string pluginsTxt, int runs, string label)
     {
         var mods = Paths(data, pluginsTxt).AsParallel().AsOrdered()
             .Select(path => SkyrimMod.CreateFromBinaryOverlay(path, SkyrimRelease.SkyrimSE))
             .ToArray();
         Console.WriteLine($"{mods.Length} plugins");
 
-        if (self) return RunSelf(data, listings, mods, runs, label);
         for (var run = 0; run < runs; run++)
         {
             GC.Collect();
@@ -76,47 +70,6 @@ internal static class Conflicts
             Console.WriteLine($"CONFLICTS|{label}|{run + 1}|{records}|{chains.Length}|{pairs}|{identical}|{indexed.TotalMilliseconds:F0}|{compared.TotalMilliseconds:F0}");
         }
         foreach (var mod in mods) (mod as IDisposable)?.Dispose();
-        return 0;
-    }
-
-    private static int RunSelf(string data, List<ILoadOrderListingGetter> listings, ISkyrimModGetter[] mods, int runs, string label)
-    {
-        var twins = listings.AsParallel().AsOrdered()
-            .Select(l => SkyrimMod.CreateFromBinaryOverlay(new ModPath(l.ModKey, Path.Combine(data, l.ModKey.FileName)), SkyrimRelease.SkyrimSE))
-            .ToArray();
-        for (var run = 0; run < runs; run++)
-        {
-            GC.Collect();
-            var clock = Stopwatch.StartNew();
-            var left = new List<IMajorRecordGetter>[mods.Length];
-            var right = new List<IMajorRecordGetter>[mods.Length];
-            Parallel.For(0, mods.Length * 2, i =>
-            {
-                if (i < mods.Length) left[i] = [.. mods[i].EnumerateMajorRecords()];
-                else right[i - mods.Length] = [.. twins[i - mods.Length].EnumerateMajorRecords()];
-            });
-            var pairsToCompare = left.Zip(right).SelectMany(p => p.First.Zip(p.Second)).ToArray();
-            var collected = clock.Elapsed;
-
-            clock.Restart();
-            long identical = 0;
-            Parallel.ForEach(Partitioner.Create(0, pairsToCompare.Length, 1024), range =>
-            {
-                long localIdentical = 0;
-                for (var i = range.Item1; i < range.Item2; i++)
-                {
-                    var (a, b) = pairsToCompare[i];
-                    if (a.FormKey != b.FormKey) throw new InvalidOperationException($"{a.FormKey} paired with {b.FormKey}.");
-                    if (Same(a, b)) localIdentical++;
-                }
-                Interlocked.Add(ref identical, localIdentical);
-            });
-            var compared = clock.Elapsed;
-            Console.WriteLine($"conflicts-self run {run + 1}: {pairsToCompare.Length:N0} pairs ({identical:N0} identical): " +
-                              $"collect {collected.TotalMilliseconds:N0} ms, compare {compared.TotalMilliseconds:N0} ms");
-            Console.WriteLine($"CONFLICTS-SELF|{label}|{run + 1}|{pairsToCompare.Length}|{identical}|{collected.TotalMilliseconds:F0}|{compared.TotalMilliseconds:F0}");
-        }
-        foreach (var mod in mods.Concat(twins)) (mod as IDisposable)?.Dispose();
         return 0;
     }
 
