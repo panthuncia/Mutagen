@@ -397,7 +397,9 @@ partial class CellBinaryOverlay
 
     public int TemporaryUnknownGroupData => _temporaryLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(_grupData!.Value.Slice(_temporaryLocation.Value + 20)) : 0;
 
-    int? _flagsLoc;
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private int? _flagsLocStore;
+    private int? _flagsLoc { get { EnsureFilled(); return _flagsLocStore; } set => _flagsLocStore = value; }
 
     public static int[] ParseRecordLocations(OverlayStream stream, BinaryOverlayFactoryPackage package)
     {
@@ -419,41 +421,32 @@ partial class CellBinaryOverlay
         return ret.ToArray();
     }
 
+    /// <summary>
+    /// A cell in a worldspace, created from its header: its own fields are read on first use (as the generated
+    /// factory defers them), and its child groups, which follow it, now.
+    /// </summary>
     public static CellBinaryOverlay CellFactory(
         OverlayStream stream,
         BinaryOverlayFactoryPackage package,
         bool insideWorldspace)
     {
-        var origStream = stream;
-        stream = Decompression.DecompressStream(stream);
-        stream = ExtractRecordMemory(
-            stream,
-            package.MetaData.Constants,
-            out var memoryPair,
-            out var offset,
-            out var finalPos);
+        var lazyHeader = stream.GetMajorRecordHeader();
+        var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+        stream.Position += checked((int)lazyHeader.TotalLength);
         var ret = new CellBinaryOverlay(
-            memoryPair: memoryPair,
+            memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
             package: package)
         {
             InsideWorldspace = insideWorldspace
         };
-        ret.CustomFactoryEnd(
-            stream: stream,
-            finalPos: finalPos,
-            offset: offset);
-        ret.FillSubrecordTypes(
-            stream: stream,
-            finalPos: finalPos,
-            offset: offset,
-            translationParams: null,
-            fill: ret.FillRecordType);
+        ret._package.FormVersion = ret;
+        ret.DeferFill(lazyRecord, default, static (o, d) => CellFill((CellBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
         try
         {
             ret.CustomEnd(
-                stream: origStream,
-                finalPos: stream.Length,
-                offset: offset);
+                stream: stream,
+                finalPos: checked((int)lazyHeader.TotalLength),
+                offset: 0);
         }
         catch (Exception ex)
         {
