@@ -142,4 +142,14 @@ public sealed class StringsFolderLookupOverlay : IStringsFolderLookup
     {
         return Get(source).Keys;
     }
+
+    /// <summary>
+    /// Every string of a source in one language, by key. Empty if the mod has no such strings file.
+    /// </summary>
+    public IEnumerable<KeyValuePair<uint, string>> Enumerate(StringsSource source, Language language)
+    {
+        return Get(source).TryGetValue(language, out var lookup)
+            ? lookup.Value.StringsLookup
+            : [];
+    }
 }
