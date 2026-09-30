@@ -52,6 +52,50 @@ public class StringsFolderLookupOverlayTests
     }
     
     [Theory, MutagenModAutoData]
+    internal void A_mods_strings_can_be_continued(IFileSystem fileSystem,
+        ModKey modKey,
+        DirectoryPath existingPath,
+        MutagenEncodingProvider encodingProvider,
+        IGameReleaseContext gameRelease,
+        IDataDirectoryProvider dataDirectoryProvider,
+        IGetApplicableArchivePaths getApplicableArchivePaths)
+    {
+        uint hello, world;
+        using (var writer = new StringsWriter(GameRelease.SkyrimSE, modKey, existingPath, encodingProvider, fileSystem))
+        {
+            hello = writer.Register(StringsSource.Normal,
+                new KeyValuePair<Language, string>(Language.English, "Hello"),
+                new KeyValuePair<Language, string>(Language.French, "Bonjour"));
+            world = writer.Register("World", Language.English, StringsSource.IL);
+        }
+        var existing = new StringsFolderLookupFactory(gameRelease, dataDirectoryProvider, getApplicableArchivePaths, fileSystem,
+            new StringsReadParameters { StringsFolderOverride = existingPath }).InternalFactory(modKey);
+
+        existing.Enumerate(StringsSource.Normal, Language.French).ShouldBe([new KeyValuePair<uint, string>(hello, "Bonjour")]);
+        existing.Enumerate(StringsSource.DL, Language.English).ShouldBeEmpty();
+
+        var continuedPath = new DirectoryPath(Path.Combine(existingPath.Path, "Continued"));
+        uint added;
+        using (var writer = new StringsWriter(GameRelease.SkyrimSE, modKey, continuedPath, encodingProvider, fileSystem))
+        {
+            writer.AddExisting(existing);
+            added = writer.Register("Added", Language.English, StringsSource.Normal);
+        }
+        var continued = new StringsFolderLookupFactory(gameRelease, dataDirectoryProvider, getApplicableArchivePaths, fileSystem,
+            new StringsReadParameters { StringsFolderOverride = continuedPath }).InternalFactory(modKey);
+
+        added.ShouldBe(Math.Max(hello, world) + 1);
+        continued.TryLookup(StringsSource.Normal, Language.English, hello, out var helloOut).ShouldBeTrue();
+        helloOut.ShouldBe("Hello");
+        continued.TryLookup(StringsSource.Normal, Language.French, hello, out var bonjourOut).ShouldBeTrue();
+        bonjourOut.ShouldBe("Bonjour");
+        continued.TryLookup(StringsSource.IL, Language.English, world, out var worldOut).ShouldBeTrue();
+        worldOut.ShouldBe("World");
+        continued.TryLookup(StringsSource.Normal, Language.English, added, out var addedOut).ShouldBeTrue();
+        addedOut.ShouldBe("Added");
+    }
+
+    [Theory, MutagenModAutoData]
     internal void SuffixCollision(IFileSystem fileSystem,
         DirectoryPath existingPath,
         MutagenEncodingProvider encodingProvider,

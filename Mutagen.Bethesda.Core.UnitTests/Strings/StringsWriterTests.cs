@@ -66,6 +66,31 @@ public class StringsWriterTests
 
     [Theory]
     [MutagenAutoData]
+    public void ExistingStringsKeepTheirKeysAndNewOnesFollowTheHighest(StringsWriter sut)
+    {
+        sut.AddExisting(StringsSource.Normal, 7, [new KeyValuePair<Language, string>(Language.English, "Seven")]);
+        sut.AddExisting(StringsSource.DL, 3, [new KeyValuePair<Language, string>(Language.English, "Three")]);
+        sut.Register("Eight", Language.English, StringsSource.Normal).ShouldEqual(8);
+        sut.Dispose();
+
+        GetStringOverlay(sut, Language.English, StringsSource.Normal).OrderBy(x => x.Key)
+            .ShouldBe([new KeyValuePair<uint, string>(7, "Seven"), new KeyValuePair<uint, string>(8, "Eight")]);
+        GetStringOverlay(sut, Language.English, StringsSource.DL)
+            .ShouldBe([new KeyValuePair<uint, string>(3, "Three")]);
+    }
+
+    [Theory]
+    [MutagenAutoData]
+    public void ExistingStringsCannotBeAddedAfterRegistering(StringsWriter sut)
+    {
+        sut.Register("First", Language.English, StringsSource.Normal);
+
+        Should.Throw<InvalidOperationException>(() =>
+            sut.AddExisting(StringsSource.Normal, 1, [new KeyValuePair<Language, string>(Language.English, "Clash")]));
+    }
+
+    [Theory]
+    [MutagenAutoData]
     public void WritesNothingIfEmpty(StringsWriter sut)
     {
         sut.Dispose();

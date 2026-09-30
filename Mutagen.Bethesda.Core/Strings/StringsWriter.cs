@@ -23,6 +23,7 @@ public sealed class StringsWriter : IDisposable
     private readonly List<ValueTuple<Language, string, uint>[]> _ilStrings = new();
     private readonly List<ValueTuple<Language, string, uint>[]> _dlStrings = new();
     private uint _index = 0;
+    private bool _registered;
 
     public StringsWriter(
         GameRelease release,
@@ -66,6 +67,7 @@ public sealed class StringsWriter : IDisposable
             StringsSource.DL => _dlStrings,
             _ => throw new NotImplementedException(),
         };
+        _registered = true;
         try
         {
             var nextIndex = Interlocked.Increment(ref _index);
@@ -82,6 +84,55 @@ public sealed class StringsWriter : IDisposable
         catch (OverflowException)
         {
             throw new OverflowException("Too many translated strings for current system to handle.");
+        }
+    }
+
+    /// <summary>
+    /// Adds a string the mod already has, keeping its key: it is written along with the registered strings, and
+    /// strings registered afterwards get keys after the highest existing one. For rewriting some of a mod's records
+    /// while keeping the strings of the rest.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">Strings have already been registered, so their keys could collide.</exception>
+    public void AddExisting(StringsSource source, uint key, IEnumerable<KeyValuePair<Language, string>> strs)
+    {
+        if (_registered)
+        {
+            throw new InvalidOperationException("Existing strings must be added before any are registered, so that their keys can't collide.");
+        }
+        List<ValueTuple<Language, string, uint>[]> strsList = source switch
+        {
+            StringsSource.Normal => _strings,
+            StringsSource.IL => _ilStrings,
+            StringsSource.DL => _dlStrings,
+            _ => throw new NotImplementedException(),
+        };
+        lock (strsList)
+        {
+            strsList.Add(strs.Select(x => new ValueTuple<Language, string, uint>(x.Key, x.Value, key)).ToArray());
+            _index = Math.Max(_index, key);
+        }
+    }
+
+    /// <summary>
+    /// Adds every string a mod already has, in every source and language, keeping their keys.
+    /// See <see cref="AddExisting(StringsSource, uint, IEnumerable{KeyValuePair{Language, string}})"/>.
+    /// </summary>
+    public void AddExisting(StringsFolderLookupOverlay existing)
+    {
+        foreach (var source in Enum.GetValues<StringsSource>())
+        {
+            var byKey = new SortedDictionary<uint, List<KeyValuePair<Language, string>>>();
+            foreach (var language in existing.AvailableLanguages(source))
+            {
+                foreach (var (key, str) in existing.Enumerate(source, language))
+                {
+                    byKey.GetOrAdd(key).Add(new KeyValuePair<Language, string>(language, str));
+                }
+            }
+            foreach (var (key, strs) in byKey)
+            {
+                AddExisting(source, key, strs);
+            }
         }
     }
 
