@@ -331,10 +331,14 @@ partial class FurnitureBinaryWriteTranslation
 
 partial class FurnitureBinaryOverlay
 {
-    Furniture.Flag? _flags;
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private Furniture.Flag? _flagsStore;
+    private Furniture.Flag? _flags { get { EnsureFilled(); return _flagsStore; } set => _flagsStore = value; }
     public partial Furniture.Flag? GetFlagsCustom() => _flags;
 
-    private ExtendedList<FurnitureMarker>? _markers;
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private ExtendedList<FurnitureMarker>? _markersStore;
+    private ExtendedList<FurnitureMarker>? _markers { get { EnsureFilled(); return _markersStore; } set => _markersStore = value; }
     public IReadOnlyList<IFurnitureMarkerGetter>? Markers => _markers;
 
     private FurnitureMarker GetNthMarker(int index)

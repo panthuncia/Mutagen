@@ -501,17 +501,26 @@ partial class PackageBinaryWriteTranslation
 
 partial class PackageBinaryOverlay
 {
-    public IReadOnlyList<IPackageBranchGetter> ProcedureTree { get; private set; } = [];
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private IReadOnlyList<IPackageBranchGetter> ProcedureTreeStore = [];
+    public IReadOnlyList<IPackageBranchGetter> ProcedureTree { get { EnsureFilled(); return ProcedureTreeStore; } private set => ProcedureTreeStore = value; }
 
     private readonly Dictionary<sbyte, APackageData> _packageData = new Dictionary<sbyte, APackageData>();
-    public IReadOnlyDictionary<sbyte, IAPackageDataGetter> Data => _packageData.Covariant<sbyte, APackageData, IAPackageDataGetter>();
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    public IReadOnlyDictionary<sbyte, IAPackageDataGetter> Data { get { EnsureFilled(); return _packageData.Covariant<sbyte, APackageData, IAPackageDataGetter>(); } }
 
-    public int DataInputVersion { get; private set; }
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private int DataInputVersionStore;
+    public int DataInputVersion { get { EnsureFilled(); return DataInputVersionStore; } private set => DataInputVersionStore = value; }
 
-    ReadOnlyMemorySlice<Byte> _xnam;
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private ReadOnlyMemorySlice<Byte> _xnamStore;
+    private ReadOnlyMemorySlice<Byte> _xnam { get { EnsureFilled(); return _xnamStore; } set => _xnamStore = value; }
     public partial ReadOnlyMemorySlice<Byte> GetXnamMarkerCustom() => _xnam;
 
-    IFormLinkGetter<IPackageGetter> _packageTemplate = null!;
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private IFormLinkGetter<IPackageGetter> _packageTemplateStore = null!;
+    private IFormLinkGetter<IPackageGetter> _packageTemplate { get { EnsureFilled(); return _packageTemplateStore; } set => _packageTemplateStore = value; }
     public partial IFormLinkGetter<IPackageGetter> GetPackageTemplateCustom() => _packageTemplate;
 
     partial void PackageTemplateCustomParse(OverlayStream stream, int finalPos, int offset)

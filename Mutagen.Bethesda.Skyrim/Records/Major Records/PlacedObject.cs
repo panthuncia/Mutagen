@@ -269,16 +269,21 @@ partial class PlacedObjectBinaryWriteTranslation
     
 partial class PlacedObjectBinaryOverlay
 {
-    int? _boundDataLoc;
+    // State the fill sets is read through properties that complete a deferred fill first (see LazyFill).
+    int? _boundDataLocStore;
+    int? _boundDataLoc { get { EnsureFilled(); return _boundDataLocStore; } set => _boundDataLocStore = value; }
 
     public short Unknown => _boundDataLoc.HasValue ? BinaryPrimitives.ReadInt16LittleEndian(_recordData.Slice(_boundDataLoc.Value + 8)) : default(short);
 
-    public IReadOnlyList<IFormLinkGetter<IPlacedObjectGetter>> LinkedRooms { get; private set; } = Array.Empty<IFormLinkGetter<IPlacedObjectGetter>>();
+    private IReadOnlyList<IFormLinkGetter<IPlacedObjectGetter>> _linkedRoomsStore = Array.Empty<IFormLinkGetter<IPlacedObjectGetter>>();
+    public IReadOnlyList<IFormLinkGetter<IPlacedObjectGetter>> LinkedRooms { get { EnsureFilled(); return _linkedRoomsStore; } private set => _linkedRoomsStore = value; }
 
-    int? _lightingTemplateLoc;
+    int? _lightingTemplateLocStore;
+    int? _lightingTemplateLoc { get { EnsureFilled(); return _lightingTemplateLocStore; } set => _lightingTemplateLocStore = value; }
     public IFormLinkNullableGetter<ILightingTemplateGetter> LightingTemplate => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ILightingTemplateGetter>(_package, _recordData, _lightingTemplateLoc);
 
-    int? _imageSpaceLoc;
+    int? _imageSpaceLocStore;
+    int? _imageSpaceLoc { get { EnsureFilled(); return _imageSpaceLocStore; } set => _imageSpaceLocStore = value; }
     public IFormLinkNullableGetter<IImageSpaceGetter> ImageSpace => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IImageSpaceGetter>(_package, _recordData, _imageSpaceLoc);
 
     public partial ParseResult BoundDataCustomParse(OverlayStream stream, int offset, PreviousParse lastParsed)

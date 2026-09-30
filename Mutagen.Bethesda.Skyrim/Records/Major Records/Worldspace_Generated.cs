@@ -6225,6 +6225,24 @@ namespace Mutagen.Bethesda.Skyrim
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new WorldspaceBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => WorldspaceFill((WorldspaceBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            ret.CustomEnd(stream: stream, finalPos: checked((int)lazyHeader.TotalLength), offset: 0);
+            return ret;
+        }
+
+        private static void WorldspaceFill(
+            WorldspaceBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             var origStream = stream;
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
@@ -6233,9 +6251,7 @@ namespace Mutagen.Bethesda.Skyrim
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new WorldspaceBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -6248,11 +6264,6 @@ namespace Mutagen.Bethesda.Skyrim
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            ret.CustomEnd(
-                stream: origStream,
-                finalPos: stream.Length,
-                offset: offset);
-            return ret;
         }
 
         public static IWorldspaceGetter WorldspaceFactory(

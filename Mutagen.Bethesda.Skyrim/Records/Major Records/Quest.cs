@@ -102,8 +102,12 @@ partial class QuestBinaryWriteTranslation
 
 partial class QuestBinaryOverlay
 {
-    public IReadOnlyList<IConditionGetter> DialogConditions { get; private set; } = [];
-    public IReadOnlyList<IConditionGetter> EventConditions { get; private set; } = [];
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private IReadOnlyList<IConditionGetter> DialogConditionsStore = [];
+    public IReadOnlyList<IConditionGetter> DialogConditions { get { EnsureFilled(); return DialogConditionsStore; } private set => DialogConditionsStore = value; }
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private IReadOnlyList<IConditionGetter> EventConditionsStore = [];
+    public IReadOnlyList<IConditionGetter> EventConditions { get { EnsureFilled(); return EventConditionsStore; } private set => EventConditionsStore = value; }
 
     partial void DialogConditionsCustomParse(OverlayStream stream, int finalPos, int offset, RecordType type, PreviousParse lastParsed)
     {

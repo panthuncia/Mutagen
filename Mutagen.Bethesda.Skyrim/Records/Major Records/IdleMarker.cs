@@ -86,7 +86,9 @@ partial class IdleMarkerBinaryOverlay
         return null;
     }
 
-    public IReadOnlyList<IFormLinkGetter<IIdleAnimationGetter>>? Animations { get; private set; }
+    // Set by the fill, which may be deferred: reading it completes the fill.
+    private IReadOnlyList<IFormLinkGetter<IIdleAnimationGetter>>? AnimationsStore;
+    public IReadOnlyList<IFormLinkGetter<IIdleAnimationGetter>>? Animations { get { EnsureFilled(); return AnimationsStore; } private set => AnimationsStore = value; }
 
     partial void AnimationsCustomParse(OverlayStream stream, int finalPos, int offset, RecordType type, PreviousParse lastParsed)
     {
