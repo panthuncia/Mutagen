@@ -2888,10 +2888,15 @@ public class PluginTranslationModule : BinaryTranslationModule
 
 
     /// <summary>
-    /// Records with hand-written overlay code that has been made to complete a deferred fill before reading what the
-    /// fill sets (its members follow the <see cref="LazyFill"/> pattern).
+    /// Records (game.record) with hand-written overlay code that has been made to complete a deferred fill before
+    /// reading what the fill sets (its members follow the <see cref="LazyFill"/> pattern). Their custom end, if any,
+    /// reads only the record's header and what follows the record, so it runs when the record is created; it is given
+    /// no meaningful finalPos or offset.
     /// </summary>
-    private static readonly HashSet<string> AuditedForDeferredFill = [];
+    private static readonly HashSet<string> AuditedForDeferredFill = ["Skyrim.Cell"];
+
+    private static bool Audited(ObjectGeneration obj) =>
+        AuditedForDeferredFill.Contains($"{obj.ProtoGen.Protocol.Namespace}.{obj.Name}");
 
     /// <summary>
     /// Whether a record's overlay can defer its fill: a concrete major record with no hand-written parsing that could
@@ -2901,14 +2906,14 @@ public class PluginTranslationModule : BinaryTranslationModule
     {
         if (obj.GetObjectType() != ObjectType.Record || obj.Abstract || !await obj.IsMajorRecord()) return false;
         var objData = obj.GetObjectData();
-        if (objData.CustomBinaryEnd != CustomEnd.Off
-            || SubgroupsModule.HasSubgroups(obj)
+        if (SubgroupsModule.HasSubgroups(obj)
             || objData.MarkerType.HasValue
             || obj.TryGetCustomRecordTypeTriggers(out _))
         {
             return false;
         }
-        if (AuditedForDeferredFill.Contains(obj.Name)) return true;
+        if (Audited(obj)) return true;
+        if (objData.CustomBinaryEnd != CustomEnd.Off) return false;
         for (var o = obj; o != null; o = o.BaseClass)
         {
             foreach (var field in o.Fields)
@@ -2947,6 +2952,11 @@ public class PluginTranslationModule : BinaryTranslationModule
             sb.AppendLine("ret._package.FormVersion = ret;");
             // A static lambda: the deferred state carries everything, so nothing else is allocated per record.
             sb.AppendLine($"ret.DeferFill(lazyRecord, translationParams, static (o, d) => {obj.Name}Fill(({overlay})o, new {nameof(OverlayStream)}(d.Record, o._package), o._package, d.TranslationParams));");
+            if (obj.GetObjectData().CustomBinaryEnd != CustomEnd.Off)
+            {
+                // What follows the record (a cell's child groups) is read now, from the stream past the record.
+                sb.AppendLine("ret.CustomEnd(stream: stream, finalPos: checked((int)lazyHeader.TotalLength), offset: 0);");
+            }
             sb.AppendLine("return ret;");
         }
         sb.AppendLine();
@@ -3367,7 +3377,8 @@ public class PluginTranslationModule : BinaryTranslationModule
                 }
             }
 
-            if (objData.CustomBinaryEnd != CustomEnd.Off)
+            // A deferred factory runs the custom end itself, when the record is created.
+            if (objData.CustomBinaryEnd != CustomEnd.Off && !fillOnly)
             {
                 using (var args = sb.Call(
                            "ret.CustomEnd"))
