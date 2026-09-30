@@ -26,17 +26,25 @@ internal static class CheckFirst
             {
                 var getter = typeof(ISkyrimModGetter).Assembly.GetType($"Mutagen.Bethesda.Skyrim.I{typeName}Getter")
                              ?? throw new ArgumentException($"No record type {typeName}");
-                var group = overlay.TryGetTopLevelGroup(getter) ?? throw new ArgumentException($"{typeName} has no top-level group");
                 var expected = full.EnumerateMajorRecords(getter).ToDictionary(r => r.FormKey);
+                // A fresh record for each property: from its top-level group, or, for records nested in cells (placed
+                // references), from the cell's list, whose items are made on each access.
+                var group = overlay.TryGetTopLevelGroup(getter);
+                IEnumerable<(FormKey FormKey, Func<IMajorRecordGetter> Fresh)> sources = group != null
+                    ? group.FormKeys.Select(k => (k, (Func<IMajorRecordGetter>)(() => group[k])))
+                    : overlay.EnumerateMajorRecords<ICellGetter>().SelectMany(cell =>
+                        new[] { cell.Persistent, cell.Temporary }.SelectMany(list => Enumerable.Range(0, list.Count)
+                            .Where(i => getter.IsInstanceOfType(list[i]))
+                            .Select(i => (list[i].FormKey, (Func<IMajorRecordGetter>)(() => list[i])))));
                 var properties = getter.GetInterfaces().Prepend(getter).SelectMany(i => i.GetProperties())
                     .Where(p => p.GetIndexParameters().Length == 0 && p.Name != "Registration" && p.Name != "ExportingExtraNam3" && p.Name != "Type")
                     .DistinctBy(p => p.Name).ToArray();
-                foreach (var formKey in group.FormKeys)
+                foreach (var (formKey, freshRecord) in sources)
                 {
                     records++;
                     foreach (var property in properties)
                     {
-                        var fresh = group[formKey];
+                        var fresh = freshRecord();
                         object? actual;
                         try { actual = property.GetValue(fresh); }
                         catch (TargetInvocationException ex) { Fail(failures, typeName, property.Name, ex.InnerException!.GetType().Name); continue; }
