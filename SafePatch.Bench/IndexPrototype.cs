@@ -1,4 +1,5 @@
 using System.Buffers.Binary;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO.MemoryMappedFiles;
 using System.Text;
@@ -30,6 +31,7 @@ internal static unsafe class IndexPrototype
         public int[] EditorIdStart = [];    // into EditorIdPool, or -1
         public ushort[] EditorIdLength = [];
         public byte[] EditorIdPool = [];
+        public int EditorIdPoolLength;
 
         public ulong Key(int record)
         {
@@ -89,7 +91,8 @@ internal static unsafe class IndexPrototype
         // Largest first, so the one big plugin does not start last.
         var order = Enumerable.Range(0, paths.Count).OrderByDescending(i => new FileInfo(paths[i]).Length).ToArray();
         var took = new double[paths.Count];
-        Parallel.ForEach(order, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount }, i =>
+        // One plugin at a time (an array would be handed out in ranges, the largest plugins together).
+        Parallel.ForEach(Partitioner.Create(order, EnumerablePartitionerOptions.NoBuffering), new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount }, i =>
         {
             var start = Stopwatch.GetTimestamp();
             plugins[i] = Scan(paths[i], Mod);
@@ -189,19 +192,143 @@ internal static unsafe class IndexPrototype
             pos += 6 + len;
         }
         masters.Add(mod(fileName));
-        var builder = new Builder(fileName, [.. masters], bytes.Length / 200);
-        builder.Contents(bytes, 24 + headerSize, bytes.Length, parent: -1);
-        return builder.Finish();
+        var recordCount = Math.Max(16, BinaryPrimitives.ReadInt32LittleEndian(bytes[(24 + 6 + 4)..]));
+        var start = 24 + headerSize;
+        if (bytes.Length < SplitAbove)
+        {
+            var builder = new Builder(fileName, [.. masters], recordCount, poolPerRecord: 12);
+            builder.Contents(bytes, start, bytes.Length, parent: -1);
+            return builder.Finish();
+        }
+        return ScanSplit(fileName, bytes, start, [.. masters], recordCount);
     }
 
-    private sealed class Builder(string fileName, int[] masterMods, int capacity)
+    /// <summary>Plugins at least this large are scanned in parallel pieces.</summary>
+    private const int SplitAbove = 16 << 20;
+
+    /// <summary>A unit's records whose parent is outside the unit (an exterior block's cells), fixed when joined.</summary>
+    private const int OutsideParent = -2;
+
+    /// <summary>
+    /// A large plugin in independent units scanned in parallel: each top-level group, except that a worldspace group
+    /// is walked here (its worldspace records, and their persistent cells) and each exterior block of it is a unit,
+    /// whose cells' parent is the worldspace. The head (what was walked here) and the units are then joined.
+    /// </summary>
+    private static PluginIndex ScanSplit(string fileName, ReadOnlySpan<byte> bytes, int start, int[] masters, int recordCount)
+    {
+        var units = new List<(int Start, int End, int ParentRecord)>();
+        var head = new Builder(fileName, masters, 1024, poolPerRecord: 24);
+        for (var pos = start; pos < bytes.Length;)
+        {
+            var size = (int)U32(bytes, pos + 4);
+            if (U32(bytes, pos + 8) == 0x444C5257) WalkWorldspaces(bytes, pos + 24, pos + size, head, units); // WRLD
+            else units.Add((pos + 24, pos + size, -1));
+            pos += size;
+        }
+        var headIndex = head.Finish();
+        byte* ptr;
+        fixed (byte* p = bytes) ptr = p; // the view stays mapped while the plugin is scanned
+        var length = bytes.Length;
+        var built = new PluginIndex[units.Count];
+        var perUnit = Math.Max(16, recordCount / Math.Max(1, units.Count));
+        Parallel.For(0, units.Count, u =>
+        {
+            var span = new ReadOnlySpan<byte>(ptr, length);
+            var unit = units[u];
+            var builder = new Builder(fileName, masters, perUnit, poolPerRecord: 12);
+            builder.Contents(span, unit.Start, unit.End, parent: unit.ParentRecord < 0 ? -1 : OutsideParent);
+            built[u] = builder.Finish();
+        });
+
+        var parts = new List<PluginIndex> { headIndex };
+        parts.AddRange(built);
+        var bases = new int[parts.Count + 1];
+        var poolBases = new int[parts.Count + 1];
+        for (var i = 0; i < parts.Count; i++)
+        {
+            bases[i + 1] = bases[i] + parts[i].Count;
+            poolBases[i + 1] = poolBases[i] + parts[i].EditorIdPoolLength;
+        }
+        var total = bases[^1];
+        var joined = new PluginIndex
+        {
+            FileName = fileName, MasterMods = masters, Count = total,
+            FormIds = new uint[total], Signatures = new uint[total], Flags = new uint[total], Offsets = new long[total],
+            Parents = new int[total], EditorIdStart = new int[total], EditorIdLength = new ushort[total],
+            EditorIdPool = new byte[poolBases[^1]], EditorIdPoolLength = poolBases[^1],
+        };
+        Parallel.For(0, parts.Count, i =>
+        {
+            var part = parts[i];
+            var at = bases[i];
+            part.FormIds.AsSpan(0, part.Count).CopyTo(joined.FormIds.AsSpan(at));
+            part.Signatures.AsSpan(0, part.Count).CopyTo(joined.Signatures.AsSpan(at));
+            part.Flags.AsSpan(0, part.Count).CopyTo(joined.Flags.AsSpan(at));
+            part.Offsets.AsSpan(0, part.Count).CopyTo(joined.Offsets.AsSpan(at));
+            part.EditorIdLength.AsSpan(0, part.Count).CopyTo(joined.EditorIdLength.AsSpan(at));
+            part.EditorIdPool.AsSpan(0, part.EditorIdPoolLength).CopyTo(joined.EditorIdPool.AsSpan(poolBases[i]));
+            var outside = i == 0 ? -1 : units[i - 1].ParentRecord; // the worldspace's index in the head, which comes first
+            for (var r = 0; r < part.Count; r++)
+            {
+                var parent = part.Parents[r];
+                joined.Parents[at + r] = parent == OutsideParent ? outside : parent < 0 ? -1 : parent + at;
+                joined.EditorIdStart[at + r] = part.EditorIdStart[r] < 0 ? -1 : part.EditorIdStart[r] + poolBases[i];
+            }
+        });
+        return joined;
+    }
+
+    /// <summary>
+    /// A top-level WRLD group's contents: worldspace records, and what their children groups hold outside the
+    /// exterior blocks (the persistent cell and its children), go to the head; each exterior block becomes a unit.
+    /// </summary>
+    private static void WalkWorldspaces(ReadOnlySpan<byte> bytes, int pos, int end, Builder head, List<(int Start, int End, int ParentRecord)> units)
+    {
+        var world = -1;
+        while (pos < end)
+        {
+            var type = U32(bytes, pos);
+            var size = (int)U32(bytes, pos + 4);
+            if (type != Grup)
+            {
+                world = head.AddRecord(bytes, pos, type, size, parent: -1);
+                pos += 24 + size;
+                continue;
+            }
+            for (var inner = pos + 24; inner < pos + size;)
+            {
+                var innerType = U32(bytes, inner);
+                var innerSize = (int)U32(bytes, inner + 4);
+                if (innerType == Grup)
+                {
+                    if ((int)U32(bytes, inner + 12) == 4) units.Add((inner + 24, inner + innerSize, world));
+                    else head.Contents(bytes, inner, inner + innerSize, parent: world);
+                    inner += innerSize;
+                }
+                else
+                {
+                    head.AddRecord(bytes, inner, innerType, innerSize, parent: world);
+                    inner += 24 + innerSize;
+                }
+            }
+            pos += size;
+        }
+    }
+
+    private sealed class Builder(string fileName, int[] masterMods, int capacity, int poolPerRecord)
     {
         private readonly PluginIndex _index = new()
         {
             FileName = fileName, MasterMods = masterMods,
             FormIds = new uint[capacity], Signatures = new uint[capacity], Flags = new uint[capacity], Offsets = new long[capacity],
-            Parents = new int[capacity], EditorIdStart = new int[capacity], EditorIdLength = new ushort[capacity], EditorIdPool = new byte[capacity * 16],
+            Parents = new int[capacity], EditorIdStart = new int[capacity], EditorIdLength = new ushort[capacity], EditorIdPool = new byte[capacity * poolPerRecord],
         };
+
+        public int AddRecord(ReadOnlySpan<byte> bytes, int pos, uint type, int size, int parent)
+        {
+            Add(bytes, pos, type, size, parent);
+            return _index.Count - 1;
+        }
         private int _pool;
 
         /// <summary>A group's contents: records, and groups whose records belong to the parent the group names.</summary>
@@ -292,7 +419,11 @@ internal static unsafe class IndexPrototype
             Array.Resize(ref _index.EditorIdLength, size);
         }
 
-        public PluginIndex Finish() => _index;
+        public PluginIndex Finish()
+        {
+            _index.EditorIdPoolLength = _pool;
+            return _index;
+        }
     }
 
     private static uint U32(ReadOnlySpan<byte> bytes, int pos) => BinaryPrimitives.ReadUInt32LittleEndian(bytes[pos..]);
