@@ -46,7 +46,7 @@ internal static class CheckFirst
                         {
                             Fail(failures, typeName, property.Name, "differs");
                             if (Shown.Add($"{typeName}.{property.Name}") && Environment.GetEnvironmentVariable("CHECK_FIRST_SHOW") == "1")
-                                Console.WriteLine($"  {formKey} {typeName}.{property.Name}: read first {Show(actual)}; full parse {Show(want)}");
+                                Console.WriteLine($"  {formKey} {typeName}.{property.Name}: read first {Show(actual)}; full parse {Show(want)}{Explain(actual, want)}");
                         }
                     }
                 }
@@ -67,6 +67,24 @@ internal static class CheckFirst
         IEnumerable items and not string => $"[{string.Join(", ", items.Cast<object?>().Take(6).Select(Show))}]",
         _ => value.ToString() ?? "?",
     };
+
+    /// <summary>For parts that differ, the fields that do (first differing element of a list), by their equals mask.</summary>
+    private static string Explain(object? actual, object? want)
+    {
+        if (actual is IEnumerable ea && want is IEnumerable eb && actual is not string)
+        {
+            var pair = ea.Cast<object?>().Zip(eb.Cast<object?>()).FirstOrDefault(p => !Same(p.First, p.Second));
+            return pair == default ? $" (types {actual.GetType().Name} / {want.GetType().Name})" : $" element {Explain(pair.First, pair.Second)}";
+        }
+        if (actual is not ILoquiObject la || want is null) return "";
+        var mixIn = la.Registration.ClassType.Assembly.GetType(la.Registration.ClassType.FullName + "MixIn");
+        var method = mixIn?.GetMethods().FirstOrDefault(m => m.Name == "GetEqualsMask" && m.GetParameters().Length == 3 && m.GetParameters()[0].ParameterType == la.Registration.GetterType);
+        if (method == null) return "";
+        var mask = method.Invoke(null, [want, actual, Enum.Parse(method.GetParameters()[2].ParameterType, "All")])!;
+        var differing = mask.GetType().GetFields().Select(f => (f.Name, V: f.GetValue(mask)))
+            .Where(f => f.V is false || f.V?.GetType().GetField("Overall")?.GetValue(f.V) is false).Select(f => f.Name);
+        return $" (differing: {string.Join(", ", differing)})";
+    }
 
     private static void Fail(SortedDictionary<string, int> failures, string type, string property, string why)
     {
