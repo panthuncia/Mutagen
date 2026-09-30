@@ -1772,7 +1772,7 @@ namespace Mutagen.Bethesda.Fallout3
             hash.Add(item.ActorBase);
             hash.Add(item.BodyPartData);
             hash.Add(item.FeedbackData);
-            hash.Add(item.FeedbackDynamicBones);
+            hash.AddContents(item.FeedbackDynamicBones);
             hash.Add(item.PoseMatchingData);
             if (item.DeathPose is {} DeathPoseitem)
             {

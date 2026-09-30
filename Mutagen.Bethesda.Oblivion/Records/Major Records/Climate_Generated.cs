@@ -1313,7 +1313,7 @@ namespace Mutagen.Bethesda.Oblivion
         public virtual int GetHashCode(IClimateGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Weathers);
+            hash.AddContents(item.Weathers);
             if (item.SunTexture is {} SunTextureitem)
             {
                 hash.Add(SunTextureitem);

@@ -3421,10 +3421,7 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.AvoidThreatChance);
             hash.Add(item.DodgeThreadChance);
             hash.Add(item.EvadeThreatChance);
-            if (item.CSMD is {} CSMDItem)
-            {
-                hash.Add(CSMDItem);
-            }
+            hash.AddContents(item.CSMD);
             hash.Add(item.MeleeAttackStaggeredMult);
             hash.Add(item.MeleePowerAttackStaggeredMult);
             hash.Add(item.MeleePowerAttackBlockingMult);

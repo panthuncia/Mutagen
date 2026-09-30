@@ -3104,7 +3104,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Transformsitem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.XALG is {} XALGitem)
             {
                 hash.Add(XALGitem);
@@ -3113,7 +3113,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Nameitem);
             }
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             if (item.Model is {} Modelitem)
             {
                 hash.Add(Modelitem);
@@ -3136,8 +3136,8 @@ namespace Mutagen.Bethesda.Starfield
                 hash.Add(CraftingSounditem);
             }
             hash.Add(item.Description);
-            hash.Add(item.Resources);
-            hash.Add(item.ComponentDisplayIndices);
+            hash.AddContents(item.Resources);
+            hash.AddContents(item.ComponentDisplayIndices);
             hash.Add(item.Weight);
             hash.Add(item.Value);
             hash.Add(item.Flags);
@@ -3148,7 +3148,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(AddictionNameitem);
             }
-            hash.Add(item.Effects);
+            hash.AddContents(item.Effects);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

@@ -954,7 +954,7 @@ namespace Mutagen.Bethesda.Fallout3
         {
             var hash = new HashCode();
             hash.Add(item.ParentActivateOnly);
-            hash.Add(item.Parents);
+            hash.AddContents(item.Parents);
             return hash.ToHashCode();
         }
         

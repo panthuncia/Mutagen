@@ -913,7 +913,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IActivityTrackerComponentGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Activities);
+            hash.AddContents(item.Activities);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

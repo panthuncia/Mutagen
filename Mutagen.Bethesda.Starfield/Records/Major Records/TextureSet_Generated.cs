@@ -1690,10 +1690,7 @@ namespace Mutagen.Bethesda.Starfield
                 hash.Add(VirtualMachineAdapteritem);
             }
             hash.Add(item.ObjectBounds);
-            if (item.ODTY is {} ODTYItem)
-            {
-                hash.Add(ODTYItem);
-            }
+            hash.AddContents(item.ODTY);
             if (item.TX00 is {} TX00item)
             {
                 hash.Add(TX00item);
@@ -1722,10 +1719,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(TX19item);
             }
-            if (item.DODT is {} DODTItem)
-            {
-                hash.Add(DODTItem);
-            }
+            hash.AddContents(item.DODT);
             hash.Add(item.Flags);
             if (item.Material is {} Materialitem)
             {

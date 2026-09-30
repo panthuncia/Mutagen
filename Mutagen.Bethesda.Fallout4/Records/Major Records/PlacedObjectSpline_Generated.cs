@@ -1058,7 +1058,7 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.Thickness);
             hash.Add(item.HalfExtents);
             hash.Add(item.IsWindDetachedEnd);
-            hash.Add(item.Unknown);
+            hash.AddContents(item.Unknown);
             return hash.ToHashCode();
         }
         

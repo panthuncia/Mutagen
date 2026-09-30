@@ -1034,8 +1034,8 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IPlanetModelComponentXMPMGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.UnknownStrings);
-            hash.Add(item.UnknownSubItems);
+            hash.AddContents(item.UnknownStrings);
+            hash.AddContents(item.UnknownSubItems);
             return hash.ToHashCode();
         }
         

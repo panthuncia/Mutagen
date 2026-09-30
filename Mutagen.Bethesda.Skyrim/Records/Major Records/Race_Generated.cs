@@ -5951,13 +5951,13 @@ namespace Mutagen.Bethesda.Skyrim
                 hash.Add(Nameitem);
             }
             hash.Add(item.Description);
-            hash.Add(item.ActorEffect);
+            hash.AddContents(item.ActorEffect);
             hash.Add(item.Skin);
             if (item.BodyTemplate is {} BodyTemplateitem)
             {
                 hash.Add(BodyTemplateitem);
             }
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             hash.Add(item.SkillBoost0);
             hash.Add(item.SkillBoost1);
             hash.Add(item.SkillBoost2);
@@ -5969,7 +5969,7 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(HashCode.Combine(item.Height.Male, item.Height.Female));
             hash.Add(HashCode.Combine(item.Weight.Male, item.Weight.Female));
             hash.Add(item.Flags);
-            hash.Add(item.Starting);
+            hash.AddContents(item.Starting);
             hash.Add(item.BaseCarryWeight);
             hash.Add(item.BaseMass);
             hash.Add(item.AccelerationRate);
@@ -5979,7 +5979,7 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.HairBipedObject);
             hash.Add(item.InjuredHealthPercent);
             hash.Add(item.ShieldBipedObject);
-            hash.Add(item.Regen);
+            hash.AddContents(item.Regen);
             hash.Add(item.UnarmedDamage);
             hash.Add(item.UnarmedReach);
             hash.Add(item.BodyBipedObject);
@@ -5992,7 +5992,7 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(HashCode.Combine(SkeletalModelitem.Male, SkeletalModelitem.Female));
             }
-            hash.Add(item.MovementTypeNames);
+            hash.AddContents(item.MovementTypeNames);
             hash.Add(HashCode.Combine(item.Voices.Male, item.Voices.Female));
             if (item.DecapitateArmors is {} DecapitateArmorsitem)
             {
@@ -6009,10 +6009,10 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.FacegenMainClamp);
             hash.Add(item.FacegenFaceClamp);
             hash.Add(item.AttackRace);
-            hash.Add(item.Attacks);
+            hash.AddContents(item.Attacks);
             hash.Add(HashCode.Combine(item.BodyData.Male, item.BodyData.Female));
-            hash.Add(item.Hairs);
-            hash.Add(item.Eyes);
+            hash.AddContents(item.Hairs);
+            hash.AddContents(item.Eyes);
             hash.Add(item.BodyPartData);
             hash.Add(HashCode.Combine(item.BehaviorGraph.Male, item.BehaviorGraph.Female));
             hash.Add(item.MaterialType);
@@ -6020,13 +6020,13 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.DecapitationFX);
             hash.Add(item.OpenLootSound);
             hash.Add(item.CloseLootSound);
-            hash.Add(item.BipedObjectNames);
-            hash.Add(item.MovementTypes);
+            hash.AddContents(item.BipedObjectNames);
+            hash.AddContents(item.MovementTypes);
             if (item.EquipmentFlags is {} EquipmentFlagsitem)
             {
                 hash.Add(EquipmentFlagsitem);
             }
-            hash.Add(item.EquipmentSlots);
+            hash.AddContents(item.EquipmentSlots);
             hash.Add(item.UnarmedEquipSlot);
             hash.Add(item.FaceFxPhonemes);
             hash.Add(item.BaseMovementDefaultWalk);

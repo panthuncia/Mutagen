@@ -1218,10 +1218,10 @@ namespace Mutagen.Bethesda.Fallout3
             hash.Add(item.EmotionValue);
             hash.Add(item.Unused1);
             hash.Add(item.ResponseNumber);
-            hash.Add(item.Unused2);
+            hash.AddContents(item.Unused2);
             hash.Add(item.ResponseSound);
             hash.Add(item.UseEmotionAnimation);
-            hash.Add(item.Unused3);
+            hash.AddContents(item.Unused3);
             return hash.ToHashCode();
         }
         

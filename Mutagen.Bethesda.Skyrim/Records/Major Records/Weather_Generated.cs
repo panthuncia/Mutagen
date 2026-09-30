@@ -4557,34 +4557,16 @@ namespace Mutagen.Bethesda.Skyrim
         public virtual int GetHashCode(IWeatherGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.CloudTextures);
-            if (item.DNAM is {} DNAMItem)
-            {
-                hash.Add(DNAMItem);
-            }
-            if (item.CNAM is {} CNAMItem)
-            {
-                hash.Add(CNAMItem);
-            }
-            if (item.ANAM is {} ANAMItem)
-            {
-                hash.Add(ANAMItem);
-            }
-            if (item.BNAM is {} BNAMItem)
-            {
-                hash.Add(BNAMItem);
-            }
-            if (item.LNAM is {} LNAMItem)
-            {
-                hash.Add(LNAMItem);
-            }
+            hash.AddContents(item.CloudTextures);
+            hash.AddContents(item.DNAM);
+            hash.AddContents(item.CNAM);
+            hash.AddContents(item.ANAM);
+            hash.AddContents(item.BNAM);
+            hash.AddContents(item.LNAM);
             hash.Add(item.Precipitation);
             hash.Add(item.VisualEffect);
-            if (item.ONAM is {} ONAMItem)
-            {
-                hash.Add(ONAMItem);
-            }
-            hash.Add(item.Clouds);
+            hash.AddContents(item.ONAM);
+            hash.AddContents(item.Clouds);
             hash.Add(item.SkyUpperColor);
             hash.Add(item.FogNearColor);
             hash.Add(item.UnknownColor);
@@ -4626,8 +4608,8 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.VisualEffectEnd);
             hash.Add(item.WindDirection);
             hash.Add(item.WindDirectionRange);
-            hash.Add(item.Sounds);
-            hash.Add(item.SkyStatics);
+            hash.AddContents(item.Sounds);
+            hash.AddContents(item.SkyStatics);
             if (item.ImageSpaces is {} ImageSpacesitem)
             {
                 hash.Add(ImageSpacesitem);
@@ -4640,14 +4622,8 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(DirectionalAmbientLightingColorsitem);
             }
-            if (item.NAM2 is {} NAM2Item)
-            {
-                hash.Add(NAM2Item);
-            }
-            if (item.NAM3 is {} NAM3Item)
-            {
-                hash.Add(NAM3Item);
-            }
+            hash.AddContents(item.NAM2);
+            hash.AddContents(item.NAM3);
             if (item.Aurora is {} Auroraitem)
             {
                 hash.Add(Auroraitem);

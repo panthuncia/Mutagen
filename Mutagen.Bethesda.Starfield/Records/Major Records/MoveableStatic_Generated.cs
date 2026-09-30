@@ -2558,7 +2558,7 @@ namespace Mutagen.Bethesda.Starfield
                 hash.Add(XALGitem);
             }
             hash.Add(item.DefaultLayer);
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Transforms2 is {} Transforms2item)
             {
                 hash.Add(Transforms2item);
@@ -2575,8 +2575,8 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Destructibleitem);
             }
-            hash.Add(item.Keywords);
-            hash.Add(item.Properties);
+            hash.AddContents(item.Keywords);
+            hash.AddContents(item.Properties);
             hash.Add(item.DATA);
             if (item.MSLS is {} MSLSitem)
             {

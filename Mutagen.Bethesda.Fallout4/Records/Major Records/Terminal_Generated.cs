@@ -2682,33 +2682,24 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(Modelitem);
             }
-            hash.Add(item.Keywords);
-            hash.Add(item.Properties);
-            if (item.PNAM is {} PNAMItem)
-            {
-                hash.Add(PNAMItem);
-            }
+            hash.AddContents(item.Keywords);
+            hash.AddContents(item.Properties);
+            hash.AddContents(item.PNAM);
             hash.Add(item.LoopingSound);
-            if (item.FNAM is {} FNAMItem)
-            {
-                hash.Add(FNAMItem);
-            }
-            hash.Add(item.Holotapes);
+            hash.AddContents(item.FNAM);
+            hash.AddContents(item.Holotapes);
             if (item.Flags is {} Flagsitem)
             {
                 hash.Add(Flagsitem);
             }
-            if (item.WorkbenchData is {} WorkbenchDataItem)
-            {
-                hash.Add(WorkbenchDataItem);
-            }
+            hash.AddContents(item.WorkbenchData);
             if (item.MarkerModel is {} MarkerModelitem)
             {
                 hash.Add(MarkerModelitem);
             }
-            hash.Add(item.MarkerParameters);
-            hash.Add(item.BodyTexts);
-            hash.Add(item.MenuItems);
+            hash.AddContents(item.MarkerParameters);
+            hash.AddContents(item.BodyTexts);
+            hash.AddContents(item.MenuItems);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

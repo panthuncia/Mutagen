@@ -5080,20 +5080,20 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(VirtualMachineAdapteritem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);
             }
             hash.Add(item.Description);
-            hash.Add(item.ActorEffect);
+            hash.AddContents(item.ActorEffect);
             hash.Add(item.Skin);
             if (item.FirstPersonFlags is {} FirstPersonFlagsitem)
             {
                 hash.Add(FirstPersonFlagsitem);
             }
-            hash.Add(item.Keywords);
-            hash.Add(item.Properties);
+            hash.AddContents(item.Keywords);
+            hash.AddContents(item.Properties);
             hash.Add(item.BodyPartData);
             hash.Add(HashCode.Combine(item.Height.Male, item.Height.Female));
             hash.Add(HashCode.Combine(item.DefaultWeight.Male, item.DefaultWeight.Female));
@@ -5101,26 +5101,26 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.AccelerationRate);
             hash.Add(item.DecelerationRate);
             hash.Add(item.Size);
-            hash.Add(item.DAT2Unknown1);
+            hash.AddContents(item.DAT2Unknown1);
             hash.Add(item.ShieldBipedObject);
             hash.Add(item.BeardBipedObject);
             hash.Add(item.BodyBipedObject);
-            hash.Add(item.DAT2Unknown2);
+            hash.AddContents(item.DAT2Unknown2);
             hash.Add(item.Explosion);
             hash.Add(item.Debris);
             hash.Add(item.ImpactDataSet);
             hash.Add(item.OrientationLimitsPitch);
             hash.Add(item.OrientationLimitsRoll);
-            hash.Add(item.DAT2Unknown3);
+            hash.AddContents(item.DAT2Unknown3);
             if (item.SkeletalModel is {} SkeletalModelitem)
             {
                 hash.Add(HashCode.Combine(SkeletalModelitem.Male, SkeletalModelitem.Female));
             }
-            hash.Add(item.MovementTypeNames);
+            hash.AddContents(item.MovementTypeNames);
             hash.Add(HashCode.Combine(item.Voices.Male, item.Voices.Female));
             hash.Add(item.FacegenMainClamp);
             hash.Add(item.FacegenFaceClamp);
-            hash.Add(item.Attacks);
+            hash.AddContents(item.Attacks);
             hash.Add(HashCode.Combine(item.BodyData.Male, item.BodyData.Female));
             hash.Add(item.AimAssistPose);
             hash.Add(item.ImpactMaterialType);
@@ -5132,13 +5132,13 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(WED1item);
             }
-            hash.Add(item.BipedObjects);
-            hash.Add(item.MovementDataOverrides);
+            hash.AddContents(item.BipedObjects);
+            hash.AddContents(item.MovementDataOverrides);
             if (item.EquipmentFlags is {} EquipmentFlagsitem)
             {
                 hash.Add(EquipmentFlagsitem);
             }
-            hash.Add(item.EquipmentSlots);
+            hash.AddContents(item.EquipmentSlots);
             hash.Add(item.UnarmedWeapon);
             hash.Add(item.BaseMovementDefault);
             hash.Add(item.BaseMovementSwimDefault);
@@ -5149,7 +5149,7 @@ namespace Mutagen.Bethesda.Starfield
             }
             hash.Add(item.ArmorRace);
             hash.Add(item.SubgraphTemplateRace);
-            hash.Add(item.Subgraphs);
+            hash.AddContents(item.Subgraphs);
             if (item.IdleChatterTimeMin is {} IdleChatterTimeMinitem)
             {
                 hash.Add(IdleChatterTimeMinitem);
@@ -5163,7 +5163,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(HashCode.Combine(HeadPartsAndBoneModifiersitem.Male, HeadPartsAndBoneModifiersitem.Female));
             }
-            hash.Add(item.MannequinSkinSwaps);
+            hash.AddContents(item.MannequinSkinSwaps);
             if (item.PluralName is {} PluralNameitem)
             {
                 hash.Add(PluralNameitem);

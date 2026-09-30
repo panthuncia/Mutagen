@@ -1440,7 +1440,7 @@ namespace Mutagen.Bethesda.Fallout4
         {
             var hash = new HashCode();
             hash.Add(item.Description);
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(item.LoadingScreenNif);
             hash.Add(item.Transform);
             if (item.Rotation is {} Rotationitem)

@@ -1411,7 +1411,7 @@ namespace Mutagen.Bethesda.Oblivion
                 hash.Add(Iconitem);
             }
             hash.Add(item.Script);
-            hash.Add(item.Effects);
+            hash.AddContents(item.Effects);
             if (item.Data is {} Dataitem)
             {
                 hash.Add(Dataitem);

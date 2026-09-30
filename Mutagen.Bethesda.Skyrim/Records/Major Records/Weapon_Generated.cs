@@ -3140,7 +3140,7 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.AlternateBlockMaterial);
             hash.Add(item.PickUpSound);
             hash.Add(item.PutDownSound);
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             if (item.Description is {} Descriptionitem)
             {
                 hash.Add(Descriptionitem);
@@ -3149,10 +3149,7 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(ScopeModelitem);
             }
-            if (item.Unused is {} UnusedItem)
-            {
-                hash.Add(UnusedItem);
-            }
+            hash.AddContents(item.Unused);
             hash.Add(item.ImpactDataSet);
             hash.Add(item.FirstPersonModel);
             hash.Add(item.AttackSound);

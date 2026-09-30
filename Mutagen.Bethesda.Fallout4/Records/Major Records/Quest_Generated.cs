@@ -3419,16 +3419,16 @@ namespace Mutagen.Bethesda.Fallout4
             }
             hash.Add(item.Location);
             hash.Add(item.QuestCompletionXp);
-            hash.Add(item.TextDisplayGlobals);
+            hash.AddContents(item.TextDisplayGlobals);
             if (item.Filter is {} Filteritem)
             {
                 hash.Add(Filteritem);
             }
-            hash.Add(item.DialogConditions);
-            hash.Add(item.UnusedConditions);
-            hash.Add(item.Stages);
-            hash.Add(item.Objectives);
-            hash.Add(item.Aliases);
+            hash.AddContents(item.DialogConditions);
+            hash.AddContents(item.UnusedConditions);
+            hash.AddContents(item.Stages);
+            hash.AddContents(item.Objectives);
+            hash.AddContents(item.Aliases);
             if (item.Description is {} Descriptionitem)
             {
                 hash.Add(Descriptionitem);
@@ -3440,9 +3440,9 @@ namespace Mutagen.Bethesda.Fallout4
             }
             hash.Add(item.Timestamp);
             hash.Add(item.Unknown);
-            hash.Add(item.DialogBranches);
-            hash.Add(item.DialogTopics);
-            hash.Add(item.Scenes);
+            hash.AddContents(item.DialogBranches);
+            hash.AddContents(item.DialogTopics);
+            hash.AddContents(item.Scenes);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

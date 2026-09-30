@@ -1882,8 +1882,8 @@ namespace Mutagen.Bethesda.Starfield
                 hash.Add(PerkIconitem);
             }
             hash.Add(item.Training);
-            hash.Add(item.Ranks);
-            hash.Add(item.BackgroundSkills);
+            hash.AddContents(item.Ranks);
+            hash.AddContents(item.BackgroundSkills);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

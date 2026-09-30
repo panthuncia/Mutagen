@@ -1586,7 +1586,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(VirtualMachineAdapteritem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);
@@ -1594,7 +1594,7 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.Reference);
             hash.Add(item.PackIn);
             hash.Add(item.LNAM);
-            hash.Add(item.MNAM);
+            hash.AddContents(item.MNAM);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

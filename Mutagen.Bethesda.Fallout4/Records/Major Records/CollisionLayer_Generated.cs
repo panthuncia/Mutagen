@@ -1338,7 +1338,7 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.DebugColor);
             hash.Add(item.Flags);
             hash.Add(item.Name);
-            hash.Add(item.CollidesWith);
+            hash.AddContents(item.CollidesWith);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

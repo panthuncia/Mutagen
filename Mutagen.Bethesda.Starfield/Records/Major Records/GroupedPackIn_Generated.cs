@@ -1096,7 +1096,7 @@ namespace Mutagen.Bethesda.Starfield
                 hash.Add(INAMitem);
             }
             hash.Add(item.JNAM);
-            hash.Add(item.LNAM);
+            hash.AddContents(item.LNAM);
             hash.Add(item.XGOM);
             return hash.ToHashCode();
         }

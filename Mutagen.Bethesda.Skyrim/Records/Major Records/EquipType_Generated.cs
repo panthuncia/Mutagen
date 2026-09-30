@@ -1130,7 +1130,7 @@ namespace Mutagen.Bethesda.Skyrim
         public virtual int GetHashCode(IEquipTypeGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.SlotParents);
+            hash.AddContents(item.SlotParents);
             if (item.UseAllParents is {} UseAllParentsitem)
             {
                 hash.Add(UseAllParentsitem);

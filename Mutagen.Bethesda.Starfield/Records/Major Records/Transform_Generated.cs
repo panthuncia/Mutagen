@@ -1299,14 +1299,8 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.Scale);
             hash.Add(item.ZoomMin);
             hash.Add(item.ZoomMax);
-            if (item.BNAM is {} BNAMItem)
-            {
-                hash.Add(BNAMItem);
-            }
-            if (item.ENAM is {} ENAMItem)
-            {
-                hash.Add(ENAMItem);
-            }
+            hash.AddContents(item.BNAM);
+            hash.AddContents(item.ENAM);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

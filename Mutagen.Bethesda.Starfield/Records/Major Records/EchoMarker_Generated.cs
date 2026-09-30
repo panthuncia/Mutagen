@@ -1217,26 +1217,14 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Sounditem);
             }
-            if (item.ANAM is {} ANAMItem)
-            {
-                hash.Add(ANAMItem);
-            }
+            hash.AddContents(item.ANAM);
             if (item.BNAM is {} BNAMitem)
             {
                 hash.Add(BNAMitem);
             }
-            if (item.CNAM is {} CNAMItem)
-            {
-                hash.Add(CNAMItem);
-            }
-            if (item.DNAM is {} DNAMItem)
-            {
-                hash.Add(DNAMItem);
-            }
-            if (item.ENAM is {} ENAMItem)
-            {
-                hash.Add(ENAMItem);
-            }
+            hash.AddContents(item.CNAM);
+            hash.AddContents(item.DNAM);
+            hash.AddContents(item.ENAM);
             if (item.Description is {} Descriptionitem)
             {
                 hash.Add(Descriptionitem);

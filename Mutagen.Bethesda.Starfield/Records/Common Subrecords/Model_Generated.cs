@@ -1244,11 +1244,8 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Fileitem);
             }
-            if (item.TextureFileHashes is {} TextureFileHashesItem)
-            {
-                hash.Add(TextureFileHashesItem);
-            }
-            hash.Add(item.MaterialSwaps);
+            hash.AddContents(item.TextureFileHashes);
+            hash.AddContents(item.MaterialSwaps);
             if (item.LightLayer is {} LightLayeritem)
             {
                 hash.Add(LightLayeritem);

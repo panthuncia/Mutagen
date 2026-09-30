@@ -1805,7 +1805,7 @@ namespace Mutagen.Bethesda.Skyrim
             }
             hash.Add(item.TrunkFlexibility);
             hash.Add(item.BranchFlexibility);
-            hash.Add(item.Unknown);
+            hash.AddContents(item.Unknown);
             hash.Add(item.LeafAmplitude);
             hash.Add(item.LeafFrequency);
             hash.Add(base.GetHashCode());

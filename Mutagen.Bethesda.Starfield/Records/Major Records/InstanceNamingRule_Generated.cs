@@ -705,7 +705,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Textitem);
             }
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             if (item.Property is {} Propertyitem)
             {
                 hash.Add(Propertyitem);

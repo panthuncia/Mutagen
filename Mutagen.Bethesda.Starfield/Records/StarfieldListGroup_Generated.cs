@@ -1067,7 +1067,7 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.Type);
             hash.Add(item.LastModified);
             hash.Add(item.Unknown);
-            hash.Add(item.Records);
+            hash.AddContents(item.Records);
             return hash.ToHashCode();
         }
         

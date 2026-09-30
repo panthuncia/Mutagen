@@ -1579,10 +1579,7 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.AlternateLipText);
             hash.Add(item.SpeakerIdleAnimation);
             hash.Add(item.ListenerIdleAnimation);
-            if (item.TextHash is {} TextHashItem)
-            {
-                hash.Add(TextHashItem);
-            }
+            hash.AddContents(item.TextHash);
             hash.Add(item.CameraPath);
             hash.Add(item.StopOnSceneEnd);
             return hash.ToHashCode();

@@ -812,10 +812,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IParticleSystemComponentGetter item)
         {
             var hash = new HashCode();
-            if (item.PTCL is {} PTCLItem)
-            {
-                hash.Add(PTCLItem);
-            }
+            hash.AddContents(item.PTCL);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

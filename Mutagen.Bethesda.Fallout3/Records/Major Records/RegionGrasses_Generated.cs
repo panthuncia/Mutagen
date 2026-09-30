@@ -920,7 +920,7 @@ namespace Mutagen.Bethesda.Fallout3
         public virtual int GetHashCode(IRegionGrassesGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Grasses);
+            hash.AddContents(item.Grasses);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

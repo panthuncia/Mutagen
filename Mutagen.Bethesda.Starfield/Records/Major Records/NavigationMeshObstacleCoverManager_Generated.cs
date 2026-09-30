@@ -1074,7 +1074,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(INavigationMeshObstacleCoverManagerGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.SubObjects);
+            hash.AddContents(item.SubObjects);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

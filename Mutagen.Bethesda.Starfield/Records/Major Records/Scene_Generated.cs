@@ -3302,19 +3302,16 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Flagsitem);
             }
-            hash.Add(item.Phases);
-            hash.Add(item.Actors);
-            hash.Add(item.Actions);
+            hash.AddContents(item.Phases);
+            hash.AddContents(item.Actors);
+            hash.AddContents(item.Actions);
             hash.Add(item.Quest);
             if (item.LastActionIndex is {} LastActionIndexitem)
             {
                 hash.Add(LastActionIndexitem);
             }
-            if (item.VNAM is {} VNAMItem)
-            {
-                hash.Add(VNAMItem);
-            }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.VNAM);
+            hash.AddContents(item.Conditions);
             if (item.SetParentQuestStage is {} SetParentQuestStageitem)
             {
                 hash.Add(SetParentQuestStageitem);
@@ -3324,40 +3321,25 @@ namespace Mutagen.Bethesda.Starfield
                 hash.Add(Notesitem);
             }
             hash.Add(item.Template);
-            if (item.BOLV is {} BOLVItem)
-            {
-                hash.Add(BOLVItem);
-            }
+            hash.AddContents(item.BOLV);
             if (item.Index is {} Indexitem)
             {
                 hash.Add(Indexitem);
             }
-            if (item.SCPI is {} SCPIItem)
-            {
-                hash.Add(SCPIItem);
-            }
-            if (item.JNAM is {} JNAMItem)
-            {
-                hash.Add(JNAMItem);
-            }
+            hash.AddContents(item.SCPI);
+            hash.AddContents(item.JNAM);
             hash.Add(item.SCPP);
             hash.Add(item.SCSP);
-            hash.Add(item.SPMA);
-            hash.Add(item.SPEX);
-            if (item.SPRK is {} SPRKItem)
-            {
-                hash.Add(SPRKItem);
-            }
-            if (item.SPRW is {} SPRWItem)
-            {
-                hash.Add(SPRWItem);
-            }
+            hash.AddContents(item.SPMA);
+            hash.AddContents(item.SPEX);
+            hash.AddContents(item.SPRK);
+            hash.AddContents(item.SPRW);
             hash.Add(item.SPRP);
             hash.Add(item.SPDF);
             hash.Add(item.SPPQ);
-            hash.Add(item.SPKW);
-            hash.Add(item.SPPK);
-            hash.Add(item.SPKY);
+            hash.AddContents(item.SPKW);
+            hash.AddContents(item.SPPK);
+            hash.AddContents(item.SPKY);
             hash.Add(item.DEVT);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();

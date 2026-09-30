@@ -920,7 +920,7 @@ namespace Mutagen.Bethesda.Oblivion
         public virtual int GetHashCode(IRegionWeatherGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Weathers);
+            hash.AddContents(item.Weathers);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

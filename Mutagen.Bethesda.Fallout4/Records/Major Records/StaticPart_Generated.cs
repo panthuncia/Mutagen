@@ -958,7 +958,7 @@ namespace Mutagen.Bethesda.Fallout4
         {
             var hash = new HashCode();
             hash.Add(item.Static);
-            hash.Add(item.Placements);
+            hash.AddContents(item.Placements);
             return hash.ToHashCode();
         }
         

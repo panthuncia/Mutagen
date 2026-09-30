@@ -1110,7 +1110,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IChallengeGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

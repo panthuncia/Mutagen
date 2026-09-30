@@ -2202,7 +2202,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(ObjectPaletteDefaultsitem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.XALG is {} XALGitem)
             {
                 hash.Add(XALGitem);
@@ -2213,14 +2213,14 @@ namespace Mutagen.Bethesda.Starfield
                 hash.Add(MaxCountitem);
             }
             hash.Add(item.Flags);
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(item.UseGlobal);
-            hash.Add(item.Entries);
+            hash.AddContents(item.Entries);
             if (item.Model is {} Modelitem)
             {
                 hash.Add(Modelitem);
             }
-            hash.Add(item.ForcedLocations);
+            hash.AddContents(item.ForcedLocations);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

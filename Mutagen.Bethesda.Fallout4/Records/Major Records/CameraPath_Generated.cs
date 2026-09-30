@@ -1404,10 +1404,10 @@ namespace Mutagen.Bethesda.Fallout4
         public virtual int GetHashCode(ICameraPathGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Conditions);
-            hash.Add(item.RelatedPaths);
+            hash.AddContents(item.Conditions);
+            hash.AddContents(item.RelatedPaths);
             hash.Add(item.Zoom);
-            hash.Add(item.Shots);
+            hash.AddContents(item.Shots);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

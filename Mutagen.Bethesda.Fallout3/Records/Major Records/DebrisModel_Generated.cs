@@ -1023,10 +1023,7 @@ namespace Mutagen.Bethesda.Fallout3
             hash.Add(item.Percentage);
             hash.Add(item.ModelFileName);
             hash.Add(item.HasCollision);
-            if (item.TextureFileHashes is {} TextureFileHashesItem)
-            {
-                hash.Add(TextureFileHashesItem);
-            }
+            hash.AddContents(item.TextureFileHashes);
             hash.Add(item.DATADataTypeState);
             return hash.ToHashCode();
         }

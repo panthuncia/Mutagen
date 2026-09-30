@@ -1307,7 +1307,7 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(Descriptionitem);
             }
-            hash.Add(item.WordsOfPower);
+            hash.AddContents(item.WordsOfPower);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

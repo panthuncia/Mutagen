@@ -1709,16 +1709,16 @@ namespace Mutagen.Bethesda.Skyrim
         public virtual int GetHashCode(IHeadDataGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.HeadParts);
+            hash.AddContents(item.HeadParts);
             if (item.AvailableMorphs is {} AvailableMorphsitem)
             {
                 hash.Add(AvailableMorphsitem);
             }
-            hash.Add(item.RacePresets);
-            hash.Add(item.AvailableHairColors);
-            hash.Add(item.FaceDetails);
+            hash.AddContents(item.RacePresets);
+            hash.AddContents(item.AvailableHairColors);
+            hash.AddContents(item.FaceDetails);
             hash.Add(item.DefaultFaceTexture);
-            hash.Add(item.TintMasks);
+            hash.AddContents(item.TintMasks);
             if (item.Model is {} Modelitem)
             {
                 hash.Add(Modelitem);

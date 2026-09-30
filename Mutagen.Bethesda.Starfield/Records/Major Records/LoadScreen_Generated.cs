@@ -1290,7 +1290,7 @@ namespace Mutagen.Bethesda.Starfield
                 hash.Add(VirtualMachineAdapteritem);
             }
             hash.Add(item.Description);
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             if (item.Loadscreen is {} Loadscreenitem)
             {
                 hash.Add(Loadscreenitem);

@@ -2967,12 +2967,12 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(Modelitem);
             }
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             if (item.Destructible is {} Destructibleitem)
             {
                 hash.Add(Destructibleitem);
             }
-            hash.Add(item.Properties);
+            hash.AddContents(item.Properties);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);

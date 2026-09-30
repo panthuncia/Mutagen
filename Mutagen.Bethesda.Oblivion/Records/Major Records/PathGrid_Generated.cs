@@ -1387,13 +1387,10 @@ namespace Mutagen.Bethesda.Oblivion
         public virtual int GetHashCode(IPathGridGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.PointToPointConnections);
-            if (item.PGAG is {} PGAGItem)
-            {
-                hash.Add(PGAGItem);
-            }
-            hash.Add(item.InterCellConnections);
-            hash.Add(item.PointToReferenceMappings);
+            hash.AddContents(item.PointToPointConnections);
+            hash.AddContents(item.PGAG);
+            hash.AddContents(item.InterCellConnections);
+            hash.AddContents(item.PointToReferenceMappings);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

@@ -1952,14 +1952,14 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(NeckFatAdjustmentsScaleitem);
             }
-            hash.Add(item.HeadParts);
-            hash.Add(item.RacePresets);
-            hash.Add(item.AvailableHairColors);
-            hash.Add(item.FaceDetails);
+            hash.AddContents(item.HeadParts);
+            hash.AddContents(item.RacePresets);
+            hash.AddContents(item.AvailableHairColors);
+            hash.AddContents(item.FaceDetails);
             hash.Add(item.DefaultFaceTexture);
-            hash.Add(item.TintLayers);
-            hash.Add(item.MorphGroups);
-            hash.Add(item.FaceMorphs);
+            hash.AddContents(item.TintLayers);
+            hash.AddContents(item.MorphGroups);
+            hash.AddContents(item.FaceMorphs);
             if (item.MaleWrinkleMapPath is {} MaleWrinkleMapPathitem)
             {
                 hash.Add(MaleWrinkleMapPathitem);

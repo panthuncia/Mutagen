@@ -1003,7 +1003,7 @@ namespace Mutagen.Bethesda.Oblivion
             hash.Add(item.EmotionValue);
             hash.Add(item.Unknown);
             hash.Add(item.ResponseNumber);
-            hash.Add(item.Unknown2);
+            hash.AddContents(item.Unknown2);
             return hash.ToHashCode();
         }
         

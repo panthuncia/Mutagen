@@ -3446,11 +3446,8 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(TimerMinSecondsitem);
             }
-            if (item.STSC is {} STSCItem)
-            {
-                hash.Add(STSCItem);
-            }
-            hash.Add(item.StartScenes);
+            hash.AddContents(item.STSC);
+            hash.AddContents(item.StartScenes);
             hash.Add(item.PlayerPositiveResponse);
             hash.Add(item.PlayerNegativeResponse);
             hash.Add(item.PlayerNeutralResponse);
@@ -3459,7 +3456,7 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.PlayerNegativeSubtype);
             hash.Add(item.PlayerNeutralSubtype);
             hash.Add(item.PlayerQuestionSubtype);
-            hash.Add(item.NpcHeadtrackingActorIds);
+            hash.AddContents(item.NpcHeadtrackingActorIds);
             hash.Add(item.NpcPositiveResponse);
             hash.Add(item.NpcNegativeResponse);
             hash.Add(item.NpcNeutralResponse);
@@ -3472,7 +3469,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(DialogueTargetActorIditem);
             }
-            hash.Add(item.Packages);
+            hash.AddContents(item.Packages);
             hash.Add(item.Topic);
             if (item.LoopingMax is {} LoopingMaxitem)
             {
@@ -3494,7 +3491,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(EmotionValueitem);
             }
-            hash.Add(item.PlayerHeadTrackingActorIds);
+            hash.AddContents(item.PlayerHeadTrackingActorIds);
             hash.Add(item.DialogueSubtype);
             hash.Add(item.AnimArchType);
             hash.Add(item.AudioOutputOverride);

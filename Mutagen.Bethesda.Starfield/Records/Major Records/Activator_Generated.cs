@@ -3221,7 +3221,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(XALGitem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);
@@ -3234,9 +3234,9 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Destructibleitem);
             }
-            hash.Add(item.Keywords);
-            hash.Add(item.Properties);
-            hash.Add(item.ForcedLocations);
+            hash.AddContents(item.Keywords);
+            hash.AddContents(item.Properties);
+            hash.AddContents(item.ForcedLocations);
             hash.Add(item.NativeTerminal);
             if (item.MarkerColor is {} MarkerColoritem)
             {
@@ -3268,7 +3268,7 @@ namespace Mutagen.Bethesda.Starfield
                 hash.Add(ActivationAngleitem);
             }
             hash.Add(item.InvertFacing);
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             if (item.NavmeshGeometry is {} NavmeshGeometryitem)
             {
                 hash.Add(NavmeshGeometryitem);

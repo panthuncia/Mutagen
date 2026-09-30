@@ -1386,7 +1386,7 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.HavokFriction);
             hash.Add(item.HavokRestitution);
             hash.Add(item.TextureSpecularExponent);
-            hash.Add(item.Grasses);
+            hash.AddContents(item.Grasses);
             if (item.Flags is {} Flagsitem)
             {
                 hash.Add(Flagsitem);

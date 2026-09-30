@@ -1276,7 +1276,7 @@ namespace Mutagen.Bethesda.Oblivion
             {
                 hash.Add(Flagsitem);
             }
-            hash.Add(item.Entries);
+            hash.AddContents(item.Entries);
             hash.Add(item.Script);
             hash.Add(item.Template);
             hash.Add(base.GetHashCode());

@@ -2770,10 +2770,7 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.DecalData);
             hash.Add(item.CollisionLayer);
             hash.Add(item.MuzzleFlashModel);
-            if (item.TextureFilesHashes is {} TextureFilesHashesItem)
-            {
-                hash.Add(TextureFilesHashesItem);
-            }
+            hash.AddContents(item.TextureFilesHashes);
             hash.Add(item.SoundLevel);
             hash.Add(item.DATADataTypeState);
             hash.Add(base.GetHashCode());

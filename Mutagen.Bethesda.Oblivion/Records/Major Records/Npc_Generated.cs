@@ -2792,18 +2792,18 @@ namespace Mutagen.Bethesda.Oblivion
             {
                 hash.Add(Configurationitem);
             }
-            hash.Add(item.Factions);
+            hash.AddContents(item.Factions);
             hash.Add(item.DeathItem);
             hash.Add(item.Race);
-            hash.Add(item.Spells);
+            hash.AddContents(item.Spells);
             hash.Add(item.Script);
-            hash.Add(item.Items);
+            hash.AddContents(item.Items);
             if (item.AIData is {} AIDataitem)
             {
                 hash.Add(AIDataitem);
             }
-            hash.Add(item.AIPackages);
-            hash.Add(item.Animations);
+            hash.AddContents(item.AIPackages);
+            hash.AddContents(item.Animations);
             hash.Add(item.Class);
             if (item.Stats is {} Statsitem)
             {
@@ -2814,28 +2814,16 @@ namespace Mutagen.Bethesda.Oblivion
             {
                 hash.Add(HairLengthitem);
             }
-            hash.Add(item.Eyes);
+            hash.AddContents(item.Eyes);
             if (item.HairColor is {} HairColoritem)
             {
                 hash.Add(HairColoritem);
             }
             hash.Add(item.CombatStyle);
-            if (item.FaceGenGeometrySymmetric is {} FaceGenGeometrySymmetricItem)
-            {
-                hash.Add(FaceGenGeometrySymmetricItem);
-            }
-            if (item.FaceGenGeometryAsymmetric is {} FaceGenGeometryAsymmetricItem)
-            {
-                hash.Add(FaceGenGeometryAsymmetricItem);
-            }
-            if (item.FaceGenTextureSymmetric is {} FaceGenTextureSymmetricItem)
-            {
-                hash.Add(FaceGenTextureSymmetricItem);
-            }
-            if (item.FNAM is {} FNAMItem)
-            {
-                hash.Add(FNAMItem);
-            }
+            hash.AddContents(item.FaceGenGeometrySymmetric);
+            hash.AddContents(item.FaceGenGeometryAsymmetric);
+            hash.AddContents(item.FaceGenTextureSymmetric);
+            hash.AddContents(item.FNAM);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

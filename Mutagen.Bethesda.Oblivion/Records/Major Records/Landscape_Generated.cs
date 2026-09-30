@@ -1423,24 +1423,12 @@ namespace Mutagen.Bethesda.Oblivion
         public virtual int GetHashCode(ILandscapeGetter item)
         {
             var hash = new HashCode();
-            if (item.DATA is {} DATAItem)
-            {
-                hash.Add(DATAItem);
-            }
-            if (item.VertexNormals is {} VertexNormalsItem)
-            {
-                hash.Add(VertexNormalsItem);
-            }
-            if (item.VertexHeightMap is {} VertexHeightMapItem)
-            {
-                hash.Add(VertexHeightMapItem);
-            }
-            if (item.VertexColors is {} VertexColorsItem)
-            {
-                hash.Add(VertexColorsItem);
-            }
-            hash.Add(item.Layers);
-            hash.Add(item.Textures);
+            hash.AddContents(item.DATA);
+            hash.AddContents(item.VertexNormals);
+            hash.AddContents(item.VertexHeightMap);
+            hash.AddContents(item.VertexColors);
+            hash.AddContents(item.Layers);
+            hash.AddContents(item.Textures);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

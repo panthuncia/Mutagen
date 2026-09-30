@@ -892,7 +892,7 @@ namespace Mutagen.Bethesda.Fallout4
         public virtual int GetHashCode(IQuestCollectionAliasGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Collection);
+            hash.AddContents(item.Collection);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

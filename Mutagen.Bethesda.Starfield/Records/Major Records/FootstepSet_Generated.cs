@@ -1728,11 +1728,11 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(VirtualMachineAdapteritem);
             }
-            hash.Add(item.WalkFootsteps);
-            hash.Add(item.RunFootsteps);
-            hash.Add(item.SprintFootsteps);
-            hash.Add(item.SneakFootsteps);
-            hash.Add(item.SwimFootsteps);
+            hash.AddContents(item.WalkFootsteps);
+            hash.AddContents(item.RunFootsteps);
+            hash.AddContents(item.SprintFootsteps);
+            hash.AddContents(item.SneakFootsteps);
+            hash.AddContents(item.SwimFootsteps);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

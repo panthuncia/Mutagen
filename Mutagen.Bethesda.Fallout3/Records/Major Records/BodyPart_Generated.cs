@@ -2322,10 +2322,7 @@ namespace Mutagen.Bethesda.Fallout3
             hash.Add(item.LimbReplacementScale);
             hash.Add(item.LimbReplacementModel);
             hash.Add(item.GoreTargetBone);
-            if (item.TextureFilesHashes is {} TextureFilesHashesItem)
-            {
-                hash.Add(TextureFilesHashesItem);
-            }
+            hash.AddContents(item.TextureFilesHashes);
             return hash.ToHashCode();
         }
         

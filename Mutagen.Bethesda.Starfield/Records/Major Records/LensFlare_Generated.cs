@@ -1416,7 +1416,7 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.ExposureInfluence);
             hash.Add(item.MinEV100);
             hash.Add(item.MaxEV100);
-            hash.Add(item.Sprites);
+            hash.AddContents(item.Sprites);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

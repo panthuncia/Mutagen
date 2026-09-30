@@ -1224,7 +1224,7 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 hash.Add(Modelitem);
             }
-            hash.Add(item.Parts);
+            hash.AddContents(item.Parts);
             hash.Add(item.Ragdoll);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();

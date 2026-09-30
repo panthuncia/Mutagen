@@ -9635,7 +9635,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(XALGitem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);
@@ -9660,19 +9660,16 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(DropdownSounditem);
             }
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             if (item.Description is {} Descriptionitem)
             {
                 hash.Add(Descriptionitem);
             }
             hash.Add(item.InstanceNaming);
-            hash.Add(item.AttachParentSlots);
-            hash.Add(item.ObjectTemplates);
+            hash.AddContents(item.AttachParentSlots);
+            hash.AddContents(item.ObjectTemplates);
             hash.Add(item.EmbeddedWeaponMod);
-            if (item.BNAM is {} BNAMItem)
-            {
-                hash.Add(BNAMItem);
-            }
+            hash.AddContents(item.BNAM);
             hash.Add(item.SightedTransitionSeconds);
             hash.Add(item.AimDownSightTemplate);
             hash.Add(item.AimModel);
@@ -9695,10 +9692,7 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.ProjectilesCount);
             hash.Add(item.NpcsUseAmmo);
             hash.Add(item.WAM2Unknown1);
-            if (item.WAMM is {} WAMMItem)
-            {
-                hash.Add(WAMMItem);
-            }
+            hash.AddContents(item.WAMM);
             hash.Add(item.MeleeOrCreature);
             hash.Add(item.PrimedExplosive);
             hash.Add(item.DryFire);
@@ -9708,10 +9702,7 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.FastEquip);
             hash.Add(item.SoundLevel);
             hash.Add(item.WAUDUnknown2);
-            if (item.WTUR is {} WTURItem)
-            {
-                hash.Add(WTURItem);
-            }
+            hash.AddContents(item.WTUR);
             hash.Add(item.ChargeFullPowerSeconds);
             hash.Add(item.ChargeMinPowerPerShot);
             hash.Add(item.ChargeCritBonus);
@@ -9734,7 +9725,7 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.WDMGUnknown8);
             hash.Add(item.WDMGUnknown9);
             hash.Add(item.CritChanceIncMult);
-            hash.Add(item.DamageTypes);
+            hash.AddContents(item.DamageTypes);
             hash.Add(item.FiringType);
             hash.Add(item.BurstCount);
             hash.Add(item.RepeatableFire);
@@ -9795,10 +9786,7 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.ReloadSpeed);
             hash.Add(item.ReloadCharging);
             hash.Add(item.ReloadSingle);
-            if (item.WRUM is {} WRUMItem)
-            {
-                hash.Add(WRUMItem);
-            }
+            hash.AddContents(item.WRUM);
             hash.Add(item.ApertureValueMin);
             hash.Add(item.ApertureValueMax);
             hash.Add(item.ApertureInputMin);

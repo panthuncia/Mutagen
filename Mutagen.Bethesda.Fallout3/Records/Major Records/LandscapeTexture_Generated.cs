@@ -1358,7 +1358,7 @@ namespace Mutagen.Bethesda.Fallout3
             hash.Add(item.TextureSet);
             hash.Add(item.Havok);
             hash.Add(item.TextureSpecularExponent);
-            hash.Add(item.Grasses);
+            hash.AddContents(item.Grasses);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

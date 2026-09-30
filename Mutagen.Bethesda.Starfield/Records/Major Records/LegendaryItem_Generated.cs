@@ -2958,10 +2958,7 @@ namespace Mutagen.Bethesda.Starfield
                 hash.Add(ObjectBoundsitem);
             }
             hash.Add(item.DirtinessScale);
-            if (item.FLLD is {} FLLDItem)
-            {
-                hash.Add(FLLDItem);
-            }
+            hash.AddContents(item.FLLD);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);
@@ -2978,7 +2975,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(XALGitem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Model is {} Modelitem)
             {
                 hash.Add(Modelitem);
@@ -2986,24 +2983,15 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.BaseObjectList);
             hash.Add(item.RankTemplate);
             hash.Add(item.MNAM);
-            hash.Add(item.LegendaryMods);
-            hash.Add(item.LnamEntries);
-            hash.Add(item.IncludeFilters);
-            hash.Add(item.ExcludeFilters);
-            if (item.FNAM is {} FNAMItem)
-            {
-                hash.Add(FNAMItem);
-            }
-            if (item.KNAM is {} KNAMItem)
-            {
-                hash.Add(KNAMItem);
-            }
-            hash.Add(item.GNAM);
-            hash.Add(item.HNAM);
-            if (item.JNAM is {} JNAMItem)
-            {
-                hash.Add(JNAMItem);
-            }
+            hash.AddContents(item.LegendaryMods);
+            hash.AddContents(item.LnamEntries);
+            hash.AddContents(item.IncludeFilters);
+            hash.AddContents(item.ExcludeFilters);
+            hash.AddContents(item.FNAM);
+            hash.AddContents(item.KNAM);
+            hash.AddContents(item.GNAM);
+            hash.AddContents(item.HNAM);
+            hash.AddContents(item.JNAM);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

@@ -1375,11 +1375,11 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(ICameraPathGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(item.Parent);
             hash.Add(item.Previous);
             hash.Add(item.Zoom);
-            hash.Add(item.Shots);
+            hash.AddContents(item.Shots);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

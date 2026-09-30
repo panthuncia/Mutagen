@@ -2970,7 +2970,7 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 hash.Add(OverridesAnimationSoundsitem);
             }
-            hash.Add(item.AnimationSounds);
+            hash.AddContents(item.AnimationSounds);
             hash.Add(item.AnimationSoundsTemplate);
             hash.Add(item.DNAMDataTypeState);
             hash.Add(base.GetHashCode());

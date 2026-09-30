@@ -2326,18 +2326,9 @@ namespace Mutagen.Bethesda.Starfield
             }
             hash.Add(item.ConsumeSpell);
             hash.Add(item.ContactSpell);
-            if (item.DATA is {} DATAItem)
-            {
-                hash.Add(DATAItem);
-            }
-            if (item.DNAM is {} DNAMItem)
-            {
-                hash.Add(DNAMItem);
-            }
-            if (item.GNAM is {} GNAMItem)
-            {
-                hash.Add(GNAMItem);
-            }
+            hash.AddContents(item.DATA);
+            hash.AddContents(item.DNAM);
+            hash.AddContents(item.GNAM);
             if (item.LinearVelocity is {} LinearVelocityitem)
             {
                 hash.Add(LinearVelocityitem);

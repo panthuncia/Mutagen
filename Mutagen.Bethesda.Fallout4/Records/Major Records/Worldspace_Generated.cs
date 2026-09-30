@@ -3707,7 +3707,7 @@ namespace Mutagen.Bethesda.Fallout4
         public virtual int GetHashCode(IWorldspaceGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.LargeReferences);
+            hash.AddContents(item.LargeReferences);
             if (item.MaxHeight is {} MaxHeightitem)
             {
                 hash.Add(MaxHeightitem);
@@ -3780,21 +3780,15 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(DefaultLevelDataitem);
             }
-            if (item.OffsetData is {} OffsetDataItem)
-            {
-                hash.Add(OffsetDataItem);
-            }
-            if (item.CellSizeData is {} CellSizeDataItem)
-            {
-                hash.Add(CellSizeDataItem);
-            }
+            hash.AddContents(item.OffsetData);
+            hash.AddContents(item.CellSizeData);
             if (item.TopCell is {} TopCellitem)
             {
                 hash.Add(TopCellitem);
             }
             hash.Add(item.SubCellsTimestamp);
             hash.Add(item.SubCellsUnknown);
-            hash.Add(item.SubCells);
+            hash.AddContents(item.SubCells);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

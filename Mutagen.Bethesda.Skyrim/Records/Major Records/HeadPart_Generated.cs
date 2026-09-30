@@ -1729,8 +1729,8 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(Typeitem);
             }
-            hash.Add(item.ExtraParts);
-            hash.Add(item.Parts);
+            hash.AddContents(item.ExtraParts);
+            hash.AddContents(item.Parts);
             hash.Add(item.TextureSet);
             hash.Add(item.Color);
             hash.Add(item.ValidRaces);

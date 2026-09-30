@@ -898,7 +898,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IGameplayOptionsGroupRootGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.GameplayOptionGroups);
+            hash.AddContents(item.GameplayOptionGroups);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

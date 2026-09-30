@@ -1045,8 +1045,8 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IStoredTraversalsComponentGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Traversals);
-            hash.Add(item.ActivatorTraversals);
+            hash.AddContents(item.Traversals);
+            hash.AddContents(item.ActivatorTraversals);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

@@ -3682,7 +3682,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(XALGitem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Model is {} Modelitem)
             {
                 hash.Add(Modelitem);
@@ -3691,8 +3691,8 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Destructibleitem);
             }
-            hash.Add(item.Keywords);
-            hash.Add(item.Properties);
+            hash.AddContents(item.Keywords);
+            hash.AddContents(item.Properties);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);

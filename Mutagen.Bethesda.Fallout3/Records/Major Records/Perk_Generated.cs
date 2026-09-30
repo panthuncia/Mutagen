@@ -1518,9 +1518,9 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 hash.Add(Iconsitem);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(item.PerkData);
-            hash.Add(item.Effects);
+            hash.AddContents(item.Effects);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

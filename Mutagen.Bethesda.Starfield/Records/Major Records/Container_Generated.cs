@@ -2984,7 +2984,7 @@ namespace Mutagen.Bethesda.Starfield
             }
             hash.Add(item.SnapTemplate);
             hash.Add(item.SnapBehavior);
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);
@@ -2993,17 +2993,17 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Modelitem);
             }
-            hash.Add(item.Items);
+            hash.AddContents(item.Items);
             if (item.Destructible is {} Destructibleitem)
             {
                 hash.Add(Destructibleitem);
             }
             hash.Add(item.Flags);
-            hash.Add(item.Keywords);
-            hash.Add(item.ForcedLocations);
+            hash.AddContents(item.Keywords);
+            hash.AddContents(item.ForcedLocations);
             hash.Add(item.NativeTerminal);
-            hash.Add(item.Properties);
-            hash.Add(item.AttachParentSlots);
+            hash.AddContents(item.Properties);
+            hash.AddContents(item.AttachParentSlots);
             if (item.OpenSound is {} OpenSounditem)
             {
                 hash.Add(OpenSounditem);

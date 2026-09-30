@@ -1302,7 +1302,7 @@ namespace Mutagen.Bethesda.Fallout4
             }
             hash.Add(item.Data);
             hash.Add(item.Flags);
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

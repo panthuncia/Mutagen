@@ -2098,20 +2098,14 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(Destructibleitem);
             }
-            hash.Add(item.Keywords);
-            hash.Add(item.Properties);
-            if (item.PNAM is {} PNAMItem)
-            {
-                hash.Add(PNAMItem);
-            }
+            hash.AddContents(item.Keywords);
+            hash.AddContents(item.Properties);
+            hash.AddContents(item.PNAM);
             if (item.ActivateTextOverride is {} ActivateTextOverrideitem)
             {
                 hash.Add(ActivateTextOverrideitem);
             }
-            if (item.FNAM is {} FNAMItem)
-            {
-                hash.Add(FNAMItem);
-            }
+            hash.AddContents(item.FNAM);
             hash.Add(item.Ingredient);
             hash.Add(item.HarvestSound);
             if (item.Production is {} Productionitem)

@@ -1190,7 +1190,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IConditionRecordGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(item.OwnerQuest);
             hash.Add(item.OwnerPackage);
             hash.Add(base.GetHashCode());

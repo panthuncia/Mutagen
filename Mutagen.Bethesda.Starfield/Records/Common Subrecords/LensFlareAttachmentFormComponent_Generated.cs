@@ -812,10 +812,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(ILensFlareAttachmentFormComponentGetter item)
         {
             var hash = new HashCode();
-            if (item.REFL is {} REFLItem)
-            {
-                hash.Add(REFLItem);
-            }
+            hash.AddContents(item.REFL);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

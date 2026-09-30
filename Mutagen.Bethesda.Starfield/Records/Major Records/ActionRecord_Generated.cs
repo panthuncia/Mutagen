@@ -1476,10 +1476,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Typeitem);
             }
-            if (item.FNAM is {} FNAMItem)
-            {
-                hash.Add(FNAMItem);
-            }
+            hash.AddContents(item.FNAM);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);

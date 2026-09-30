@@ -813,10 +813,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IHoudiniDataComponentGetter item)
         {
             var hash = new HashCode();
-            if (item.PCCC is {} PCCCItem)
-            {
-                hash.Add(PCCCItem);
-            }
+            hash.AddContents(item.PCCC);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

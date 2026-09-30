@@ -890,7 +890,7 @@ namespace Mutagen.Bethesda.Fallout4
         public virtual int GetHashCode(INavmeshSetGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Navmeshes);
+            hash.AddContents(item.Navmeshes);
             return hash.ToHashCode();
         }
         

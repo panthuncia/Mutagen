@@ -875,14 +875,8 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IAdaptiveTriggerDataComponentGetter item)
         {
             var hash = new HashCode();
-            if (item.WFIR is {} WFIRItem)
-            {
-                hash.Add(WFIRItem);
-            }
-            if (item.WAIM is {} WAIMItem)
-            {
-                hash.Add(WAIMItem);
-            }
+            hash.AddContents(item.WFIR);
+            hash.AddContents(item.WAIM);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

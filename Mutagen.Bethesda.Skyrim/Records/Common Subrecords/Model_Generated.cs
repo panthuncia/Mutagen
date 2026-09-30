@@ -919,7 +919,7 @@ namespace Mutagen.Bethesda.Skyrim
         public virtual int GetHashCode(IModelGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.AlternateTextures);
+            hash.AddContents(item.AlternateTextures);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

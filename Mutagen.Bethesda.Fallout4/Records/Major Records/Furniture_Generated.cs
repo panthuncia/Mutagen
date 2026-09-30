@@ -3319,14 +3319,11 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(Destructibleitem);
             }
-            hash.Add(item.Keywords);
-            hash.Add(item.Properties);
+            hash.AddContents(item.Keywords);
+            hash.AddContents(item.Properties);
             hash.Add(item.NativeTerminal);
             hash.Add(item.ForcedLocRefType);
-            if (item.PNAM is {} PNAMItem)
-            {
-                hash.Add(PNAMItem);
-            }
+            hash.AddContents(item.PNAM);
             hash.Add(item.DrinkingWater);
             if (item.ActivateTextOverride is {} ActivateTextOverrideitem)
             {
@@ -3336,8 +3333,8 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(Flagsitem);
             }
-            hash.Add(item.Conditions);
-            hash.Add(item.Items);
+            hash.AddContents(item.Conditions);
+            hash.AddContents(item.Items);
             hash.Add(item.BenchType);
             if (item.UsesSkill is {} UsesSkillitem)
             {
@@ -3348,14 +3345,14 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(EnabledEntryPointsitem);
             }
-            hash.Add(item.MarkerEntryPoints);
+            hash.AddContents(item.MarkerEntryPoints);
             if (item.MarkerModel is {} MarkerModelitem)
             {
                 hash.Add(MarkerModelitem);
             }
-            hash.Add(item.MarkerParameters);
-            hash.Add(item.AttachParentSlots);
-            hash.Add(item.ObjectTemplates);
+            hash.AddContents(item.MarkerParameters);
+            hash.AddContents(item.AttachParentSlots);
+            hash.AddContents(item.ObjectTemplates);
             if (item.NavmeshGeometry is {} NavmeshGeometryitem)
             {
                 hash.Add(NavmeshGeometryitem);

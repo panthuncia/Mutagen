@@ -1209,7 +1209,7 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.Unused);
             hash.Add(item.PercentMult);
             hash.Add(item.Flags);
-            hash.Add(item.Unused2);
+            hash.AddContents(item.Unused2);
             hash.Add(item.Unused3);
             hash.Add(item.Effect);
             hash.Add(item.Unused4);

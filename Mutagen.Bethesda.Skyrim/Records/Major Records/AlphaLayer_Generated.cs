@@ -908,7 +908,7 @@ namespace Mutagen.Bethesda.Skyrim
         public virtual int GetHashCode(IAlphaLayerGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.AlphaLayerData);
+            hash.AddContents(item.AlphaLayerData);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

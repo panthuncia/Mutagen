@@ -2081,12 +2081,12 @@ namespace Mutagen.Bethesda.Starfield
             }
             hash.Add(item.ObjectBounds);
             hash.Add(item.DirtinessScale);
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Model is {} Modelitem)
             {
                 hash.Add(Modelitem);
             }
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             if (item.CNAM is {} CNAMitem)
             {
                 hash.Add(CNAMitem);
@@ -2099,8 +2099,8 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(SNSTitem);
             }
-            hash.Add(item.AdjacentSnapNodes);
-            hash.Add(item.SnapAngles);
+            hash.AddContents(item.AdjacentSnapNodes);
+            hash.AddContents(item.SnapAngles);
             hash.Add(item.ArtObject);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();

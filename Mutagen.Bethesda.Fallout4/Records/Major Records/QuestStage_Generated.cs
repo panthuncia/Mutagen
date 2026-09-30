@@ -1054,7 +1054,7 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.Index);
             hash.Add(item.Flags);
             hash.Add(item.Unknown);
-            hash.Add(item.LogEntries);
+            hash.AddContents(item.LogEntries);
             return hash.ToHashCode();
         }
         

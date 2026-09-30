@@ -2750,9 +2750,9 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.ScheduleDate);
             hash.Add(item.ScheduleHour);
             hash.Add(item.ScheduleMinute);
-            hash.Add(item.Unknown3);
+            hash.AddContents(item.Unknown3);
             hash.Add(item.ScheduleDurationInMinutes);
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             if (item.IdleAnimations is {} IdleAnimationsitem)
             {
                 hash.Add(IdleAnimationsitem);
@@ -2762,9 +2762,9 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.AnimationFlavor);
             hash.Add(item.PackageTemplate);
             hash.Add(item.DataInputVersion);
-            hash.Add(item.Data);
+            hash.AddContents(item.Data);
             hash.Add(item.PackageGroup);
-            hash.Add(item.ProcedureTree);
+            hash.AddContents(item.ProcedureTree);
             if (item.OnBegin is {} OnBeginitem)
             {
                 hash.Add(OnBeginitem);

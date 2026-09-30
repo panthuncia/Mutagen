@@ -1100,7 +1100,7 @@ namespace Mutagen.Bethesda.Skyrim
             var hash = new HashCode();
             hash.Add(item.Rank);
             hash.Add(item.Priority);
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             if (item.ButtonLabel is {} ButtonLabelitem)
             {
                 hash.Add(ButtonLabelitem);

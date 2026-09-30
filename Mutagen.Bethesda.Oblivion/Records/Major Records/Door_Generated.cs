@@ -1506,7 +1506,7 @@ namespace Mutagen.Bethesda.Oblivion
             {
                 hash.Add(Flagsitem);
             }
-            hash.Add(item.RandomTeleportDestinations);
+            hash.AddContents(item.RandomTeleportDestinations);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

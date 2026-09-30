@@ -881,7 +881,7 @@ namespace Mutagen.Bethesda.Fallout3
         public virtual int GetHashCode(INavmeshGridCellGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Triangles);
+            hash.AddContents(item.Triangles);
             return hash.ToHashCode();
         }
         

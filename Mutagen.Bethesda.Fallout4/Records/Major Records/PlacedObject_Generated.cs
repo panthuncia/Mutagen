@@ -5885,15 +5885,12 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(Primitiveitem);
             }
-            hash.Add(item.Portals);
+            hash.AddContents(item.Portals);
             if (item.RoomPortal is {} RoomPortalitem)
             {
                 hash.Add(RoomPortalitem);
             }
-            if (item.XORD is {} XORDItem)
-            {
-                hash.Add(XORDItem);
-            }
+            hash.AddContents(item.XORD);
             if (item.OcclusionPlane is {} OcclusionPlaneitem)
             {
                 hash.Add(OcclusionPlaneitem);
@@ -5901,9 +5898,9 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.Unknown);
             hash.Add(item.LightingTemplate);
             hash.Add(item.ImageSpace);
-            hash.Add(item.LinkedRooms);
+            hash.AddContents(item.LinkedRooms);
             hash.Add(item.IsMultiBoundPrimitive);
-            hash.Add(item.RagdollData);
+            hash.AddContents(item.RagdollData);
             if (item.RagdollBipedRotation is {} RagdollBipedRotationitem)
             {
                 hash.Add(RagdollBipedRotationitem);
@@ -5917,7 +5914,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(Lightingitem);
             }
-            hash.Add(item.LitWater);
+            hash.AddContents(item.LitWater);
             if (item.Alpha is {} Alphaitem)
             {
                 hash.Add(Alphaitem);
@@ -5928,10 +5925,7 @@ namespace Mutagen.Bethesda.Fallout4
             }
             hash.Add(item.TeleportLocName);
             hash.Add(item.MultiBoundReference);
-            if (item.XWCN is {} XWCNItem)
-            {
-                hash.Add(XWCNItem);
-            }
+            hash.AddContents(item.XWCN);
             if (item.WaterVelocity is {} WaterVelocityitem)
             {
                 hash.Add(WaterVelocityitem);
@@ -5984,7 +5978,7 @@ namespace Mutagen.Bethesda.Fallout4
             }
             hash.Add(item.LocationReference);
             hash.Add(item.LocationRefType);
-            hash.Add(item.LocationRefTypes);
+            hash.AddContents(item.LocationRefTypes);
             hash.Add(item.IsIgnoredBySandbox);
             if (item.Ownership is {} Ownershipitem)
             {
@@ -6006,7 +6000,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(EnableParentitem);
             }
-            hash.Add(item.LinkedReferences);
+            hash.AddContents(item.LinkedReferences);
             if (item.Patrol is {} Patrolitem)
             {
                 hash.Add(Patrolitem);
@@ -6029,27 +6023,18 @@ namespace Mutagen.Bethesda.Fallout4
                 hash.Add(MapMarkeritem);
             }
             hash.Add(item.AttachRef);
-            hash.Add(item.SplineConnections);
-            hash.Add(item.PowerGridConnections);
-            if (item.XCVR is {} XCVRItem)
-            {
-                hash.Add(XCVRItem);
-            }
-            if (item.XCVL is {} XCVLItem)
-            {
-                hash.Add(XCVLItem);
-            }
+            hash.AddContents(item.SplineConnections);
+            hash.AddContents(item.PowerGridConnections);
+            hash.AddContents(item.XCVR);
+            hash.AddContents(item.XCVL);
             hash.Add(item.CurrentZoneReference);
-            if (item.XCZA is {} XCZAItem)
-            {
-                hash.Add(XCZAItem);
-            }
+            hash.AddContents(item.XCZA);
             hash.Add(item.CurrentZoneCell);
             if (item.Scale is {} Scaleitem)
             {
                 hash.Add(Scaleitem);
             }
-            hash.Add(item.DistantLodData);
+            hash.AddContents(item.DistantLodData);
             hash.Add(item.Position);
             hash.Add(item.Rotation);
             if (item.Comments is {} Commentsitem)

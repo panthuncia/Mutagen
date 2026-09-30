@@ -1420,15 +1420,12 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(Abbreviationitem);
             }
-            if (item.CNAM is {} CNAMItem)
-            {
-                hash.Add(CNAMItem);
-            }
+            hash.AddContents(item.CNAM);
             if (item.Skill is {} Skillitem)
             {
                 hash.Add(Skillitem);
             }
-            hash.Add(item.PerkTree);
+            hash.AddContents(item.PerkTree);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

@@ -1947,7 +1947,7 @@ namespace Mutagen.Bethesda.Skyrim
             }
             hash.Add(item.PickUpSound);
             hash.Add(item.PutDownSound);
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             hash.Add(item.Value);
             hash.Add(item.Weight);
             hash.Add(base.GetHashCode());

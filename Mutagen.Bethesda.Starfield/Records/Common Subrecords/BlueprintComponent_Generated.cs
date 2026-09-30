@@ -1148,8 +1148,8 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IBlueprintComponentGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Items);
-            hash.Add(item.BODSRows);
+            hash.AddContents(item.Items);
+            hash.AddContents(item.BODSRows);
             if (item.BLUF is {} BLUFitem)
             {
                 hash.Add(BLUFitem);

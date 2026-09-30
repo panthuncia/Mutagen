@@ -1277,7 +1277,7 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.Pitch);
             hash.Add(item.Roll);
             hash.Add(item.Yaw);
-            hash.Add(item.Unused);
+            hash.AddContents(item.Unused);
             return hash.ToHashCode();
         }
         

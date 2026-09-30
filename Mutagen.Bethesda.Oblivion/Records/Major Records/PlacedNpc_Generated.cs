@@ -1513,14 +1513,8 @@ namespace Mutagen.Bethesda.Oblivion
         {
             var hash = new HashCode();
             hash.Add(item.Base);
-            if (item.XPCIFluff is {} XPCIFluffItem)
-            {
-                hash.Add(XPCIFluffItem);
-            }
-            if (item.FULLFluff is {} FULLFluffItem)
-            {
-                hash.Add(FULLFluffItem);
-            }
+            hash.AddContents(item.XPCIFluff);
+            hash.AddContents(item.FULLFluff);
             if (item.DistantLODData is {} DistantLODDataitem)
             {
                 hash.Add(DistantLODDataitem);
@@ -1531,10 +1525,7 @@ namespace Mutagen.Bethesda.Oblivion
             }
             hash.Add(item.MerchantContainer);
             hash.Add(item.Horse);
-            if (item.RagdollData is {} RagdollDataItem)
-            {
-                hash.Add(RagdollDataItem);
-            }
+            hash.AddContents(item.RagdollData);
             if (item.Scale is {} Scaleitem)
             {
                 hash.Add(Scaleitem);

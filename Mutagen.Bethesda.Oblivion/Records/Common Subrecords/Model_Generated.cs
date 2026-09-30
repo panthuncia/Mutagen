@@ -912,10 +912,7 @@ namespace Mutagen.Bethesda.Oblivion
             var hash = new HashCode();
             hash.Add(item.File);
             hash.Add(item.BoundRadius);
-            if (item.Hashes is {} HashesItem)
-            {
-                hash.Add(HashesItem);
-            }
+            hash.AddContents(item.Hashes);
             return hash.ToHashCode();
         }
         

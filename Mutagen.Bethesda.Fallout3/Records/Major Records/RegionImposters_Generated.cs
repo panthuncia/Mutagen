@@ -922,7 +922,7 @@ namespace Mutagen.Bethesda.Fallout3
         public virtual int GetHashCode(IRegionImpostersGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Imposters);
+            hash.AddContents(item.Imposters);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

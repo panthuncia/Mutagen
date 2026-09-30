@@ -1166,11 +1166,8 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(ILayeredMaterialSwapGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Components);
-            if (item.REFL is {} REFLItem)
-            {
-                hash.Add(REFLItem);
-            }
+            hash.AddContents(item.Components);
+            hash.AddContents(item.REFL);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

@@ -1599,7 +1599,7 @@ namespace Mutagen.Bethesda.Oblivion
             {
                 hash.Add(Modelitem);
             }
-            hash.Add(item.Colors);
+            hash.AddContents(item.Colors);
             if (item.FogDistance is {} FogDistanceitem)
             {
                 hash.Add(FogDistanceitem);
@@ -1612,7 +1612,7 @@ namespace Mutagen.Bethesda.Oblivion
             {
                 hash.Add(Dataitem);
             }
-            hash.Add(item.Sounds);
+            hash.AddContents(item.Sounds);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

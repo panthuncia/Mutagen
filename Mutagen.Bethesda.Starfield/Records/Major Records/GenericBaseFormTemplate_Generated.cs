@@ -1073,7 +1073,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IGenericBaseFormTemplateGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

@@ -1282,7 +1282,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(VirtualMachineAdapteritem);
             }
-            hash.Add(item.SlotParents);
+            hash.AddContents(item.SlotParents);
             if (item.Flag is {} Flagitem)
             {
                 hash.Add(Flagitem);

@@ -1980,13 +1980,13 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(ObjectPaletteDefaultsitem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Model is {} Modelitem)
             {
                 hash.Add(Modelitem);
             }
-            hash.Add(item.Keywords);
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Keywords);
+            hash.AddContents(item.Conditions);
             hash.Add(item.MarkerType);
             hash.Add(item.FloraList);
             hash.Add(item.NavmeshObject);

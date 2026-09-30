@@ -953,7 +953,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Indexitem);
             }
-            hash.Add(item.MorphGroups);
+            hash.AddContents(item.MorphGroups);
             return hash.ToHashCode();
         }
         

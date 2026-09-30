@@ -6766,22 +6766,22 @@ namespace Mutagen.Bethesda.Fallout4
                 hash.Add(Nameitem);
             }
             hash.Add(item.Description);
-            hash.Add(item.ActorEffect);
+            hash.AddContents(item.ActorEffect);
             hash.Add(item.Skin);
             if (item.BipedBodyTemplate is {} BipedBodyTemplateitem)
             {
                 hash.Add(BipedBodyTemplateitem);
             }
-            hash.Add(item.Keywords);
-            hash.Add(item.Properties);
-            hash.Add(item.AttachParentSlots);
+            hash.AddContents(item.Keywords);
+            hash.AddContents(item.Properties);
+            hash.AddContents(item.AttachParentSlots);
             hash.Add(HashCode.Combine(item.Height.Male, item.Height.Female));
             hash.Add(HashCode.Combine(item.DefaultWeight.Male, item.DefaultWeight.Female));
             hash.Add(item.Flags);
             hash.Add(item.AccelerationRate);
             hash.Add(item.DecelerationRate);
             hash.Add(item.Size);
-            hash.Add(item.Unknown);
+            hash.AddContents(item.Unknown);
             hash.Add(item.InjuredHealthPercent);
             hash.Add(item.ShieldBipedObject);
             hash.Add(item.BeardBipedObject);
@@ -6790,7 +6790,7 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.FlightRadius);
             hash.Add(item.AngularAccelerationRate);
             hash.Add(item.AngularTolerance);
-            hash.Add(item.Unknown2);
+            hash.AddContents(item.Unknown2);
             hash.Add(item.PipboyBipedObject);
             hash.Add(item.XPValue);
             hash.Add(item.SeverableDebrisScale);
@@ -6818,7 +6818,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(HashCode.Combine(SkeletalModelitem.Male, SkeletalModelitem.Female));
             }
-            hash.Add(item.MovementTypeNames);
+            hash.AddContents(item.MovementTypeNames);
             hash.Add(HashCode.Combine(item.Voices.Male, item.Voices.Female));
             if (item.DefaultHairColors is {} DefaultHairColorsitem)
             {
@@ -6831,7 +6831,7 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.FacegenMainClamp);
             hash.Add(item.FacegenFaceClamp);
             hash.Add(item.AttackRace);
-            hash.Add(item.Attacks);
+            hash.AddContents(item.Attacks);
             hash.Add(HashCode.Combine(item.BodyData.Male, item.BodyData.Female));
             hash.Add(item.BodyPartData);
             hash.Add(HashCode.Combine(item.BehaviorGraph.Male, item.BehaviorGraph.Female));
@@ -6842,13 +6842,13 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.CollarTextureSet);
             hash.Add(item.SoundOpenCorpse);
             hash.Add(item.SoundCloseCorpse);
-            hash.Add(item.BipedObjects);
-            hash.Add(item.MovementDataOverrides);
+            hash.AddContents(item.BipedObjects);
+            hash.AddContents(item.MovementDataOverrides);
             if (item.EquipmentFlags is {} EquipmentFlagsitem)
             {
                 hash.Add(EquipmentFlagsitem);
             }
-            hash.Add(item.EquipmentSlots);
+            hash.AddContents(item.EquipmentSlots);
             hash.Add(item.UnarmedWeapon);
             hash.Add(item.FaceFxPhonemes);
             hash.Add(item.BaseMovementDefault);
@@ -6863,7 +6863,7 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.ArmorRace);
             hash.Add(item.SubgraphTemplateRace);
             hash.Add(item.SubgraphAdditiveRace);
-            hash.Add(item.Subgraphs);
+            hash.AddContents(item.Subgraphs);
             if (item.IdleChatterTimeMin is {} IdleChatterTimeMinitem)
             {
                 hash.Add(IdleChatterTimeMinitem);
@@ -6872,7 +6872,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(IdleChatterTimeMaxitem);
             }
-            hash.Add(item.MorphValues);
+            hash.AddContents(item.MorphValues);
             if (item.MorphValuesLastIndex is {} MorphValuesLastIndexitem)
             {
                 hash.Add(MorphValuesLastIndexitem);

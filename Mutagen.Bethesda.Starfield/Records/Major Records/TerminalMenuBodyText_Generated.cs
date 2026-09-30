@@ -1009,7 +1009,7 @@ namespace Mutagen.Bethesda.Starfield
         {
             var hash = new HashCode();
             hash.Add(item.Text);
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             if (item.UseTemplatedText is {} UseTemplatedTextitem)
             {
                 hash.Add(UseTemplatedTextitem);

@@ -4431,7 +4431,7 @@ namespace Mutagen.Bethesda.Fallout3
             var hash = new HashCode();
             hash.Add(item.Versioning);
             hash.Add(item.Flags);
-            hash.Add(item.Unused1);
+            hash.AddContents(item.Unused1);
             hash.Add(item.MembraneShaderSourceBlendMode);
             hash.Add(item.MembraneShaderBlendOperation);
             hash.Add(item.MembraneShaderZTestFunction);

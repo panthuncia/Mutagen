@@ -4532,7 +4532,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(ICellGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);
@@ -4562,11 +4562,8 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(XILSitem);
             }
-            hash.Add(item.XCLAs);
-            if (item.WaterData is {} WaterDataItem)
-            {
-                hash.Add(WaterDataItem);
-            }
+            hash.AddContents(item.XCLAs);
+            hash.AddContents(item.WaterData);
             hash.Add(item.CellSkyRegion);
             if (item.Ownership is {} Ownershipitem)
             {
@@ -4578,7 +4575,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(WaterTypeitem);
             }
-            hash.Add(item.ShipBlueprintSnapLinks);
+            hash.AddContents(item.ShipBlueprintSnapLinks);
             if (item.WaterVelocity is {} WaterVelocityitem)
             {
                 hash.Add(WaterVelocityitem);
@@ -4600,23 +4597,23 @@ namespace Mutagen.Bethesda.Starfield
                 hash.Add(GlobalDirtLayerInheritBiomeLayeritem);
             }
             hash.Add(item.TimeOfDay);
-            hash.Add(item.LinkedReferences);
+            hash.AddContents(item.LinkedReferences);
             hash.Add(item.IsLinkedRefTransient);
             if (item.EnvironmentMap is {} EnvironmentMapitem)
             {
                 hash.Add(EnvironmentMapitem);
             }
-            hash.Add(item.Traversals);
+            hash.AddContents(item.Traversals);
             hash.Add(item.NumTraversalFluffBytes);
-            hash.Add(item.NavigationMeshes);
+            hash.AddContents(item.NavigationMeshes);
             hash.Add(item.Timestamp);
             hash.Add(item.UnknownGroupData);
             hash.Add(item.PersistentTimestamp);
             hash.Add(item.PersistentUnknownGroupData);
-            hash.Add(item.Persistent);
+            hash.AddContents(item.Persistent);
             hash.Add(item.TemporaryTimestamp);
             hash.Add(item.TemporaryUnknownGroupData);
-            hash.Add(item.Temporary);
+            hash.AddContents(item.Temporary);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

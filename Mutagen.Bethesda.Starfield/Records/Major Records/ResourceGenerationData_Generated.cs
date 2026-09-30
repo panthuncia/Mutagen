@@ -1078,7 +1078,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IResourceGenerationDataGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Items);
+            hash.AddContents(item.Items);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

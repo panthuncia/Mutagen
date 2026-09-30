@@ -1065,8 +1065,8 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.Offset);
             hash.Add(item.Unknown);
             hash.Add(item.Angle);
-            hash.Add(item.Unknown2);
-            hash.Add(item.Unknown3);
+            hash.AddContents(item.Unknown2);
+            hash.AddContents(item.Unknown3);
             return hash.ToHashCode();
         }
         

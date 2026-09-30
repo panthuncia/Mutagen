@@ -1957,7 +1957,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(Modelitem);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(item.Action);
             hash.Add(item.Location);
             hash.Add(item.Target);

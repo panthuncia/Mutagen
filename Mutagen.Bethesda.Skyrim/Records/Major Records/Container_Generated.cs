@@ -1817,7 +1817,7 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(Modelitem);
             }
-            hash.Add(item.Items);
+            hash.AddContents(item.Items);
             if (item.Destructible is {} Destructibleitem)
             {
                 hash.Add(Destructibleitem);

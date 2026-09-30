@@ -1376,7 +1376,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(WED0item);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(item.BIPL);
             if (item.LVLO is {} LVLOitem)
             {

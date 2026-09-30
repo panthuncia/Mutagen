@@ -1693,17 +1693,14 @@ namespace Mutagen.Bethesda.Starfield
             }
             hash.Add(item.ObjectBounds);
             hash.Add(item.DirtinessScale);
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Model is {} Modelitem)
             {
                 hash.Add(Modelitem);
             }
             hash.Add(item.NodeIndex);
             hash.Add(item.Light);
-            if (item.Reflection is {} ReflectionItem)
-            {
-                hash.Add(ReflectionItem);
-            }
+            hash.AddContents(item.Reflection);
             hash.Add(item.MasterParticleSystemCap);
             hash.Add(item.Flags);
             hash.Add(base.GetHashCode());

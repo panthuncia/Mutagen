@@ -981,11 +981,8 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IPackageDataTopicGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Topics);
-            if (item.TPIC is {} TPICItem)
-            {
-                hash.Add(TPICItem);
-            }
+            hash.AddContents(item.Topics);
+            hash.AddContents(item.TPIC);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

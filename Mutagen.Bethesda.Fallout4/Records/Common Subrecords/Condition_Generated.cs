@@ -906,7 +906,7 @@ namespace Mutagen.Bethesda.Fallout4
             var hash = new HashCode();
             hash.Add(item.CompareOperator);
             hash.Add(item.Flags);
-            hash.Add(item.Unknown1);
+            hash.AddContents(item.Unknown1);
             return hash.ToHashCode();
         }
         

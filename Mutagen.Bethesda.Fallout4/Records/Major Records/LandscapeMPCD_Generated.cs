@@ -809,7 +809,7 @@ namespace Mutagen.Bethesda.Fallout4
         public virtual int GetHashCode(ILandscapeMPCDGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.MPCD);
+            hash.AddContents(item.MPCD);
             return hash.ToHashCode();
         }
         

@@ -953,7 +953,7 @@ namespace Mutagen.Bethesda.Fallout4
         {
             var hash = new HashCode();
             hash.Add(item.GridPosition);
-            hash.Add(item.References);
+            hash.AddContents(item.References);
             return hash.ToHashCode();
         }
         

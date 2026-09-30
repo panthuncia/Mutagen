@@ -1601,8 +1601,8 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.MaxCount);
             hash.Add(item.Flags);
             hash.Add(item.Global);
-            hash.Add(item.Entries);
-            hash.Add(item.FilterKeywordChances);
+            hash.AddContents(item.Entries);
+            hash.AddContents(item.FilterKeywordChances);
             if (item.Model is {} Modelitem)
             {
                 hash.Add(Modelitem);

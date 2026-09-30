@@ -1097,8 +1097,8 @@ namespace Mutagen.Bethesda.Fallout3
         public virtual int GetHashCode(IPlayerSkillsGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.SkillValues);
-            hash.Add(item.SkillOffsets);
+            hash.AddContents(item.SkillValues);
+            hash.AddContents(item.SkillOffsets);
             return hash.ToHashCode();
         }
         

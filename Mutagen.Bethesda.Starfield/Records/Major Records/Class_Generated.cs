@@ -1427,7 +1427,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(InventoryImageitem);
             }
-            hash.Add(item.Properties);
+            hash.AddContents(item.Properties);
             hash.Add(item.Unknown);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();

@@ -21,4 +21,7 @@ public class MutagenListType : ListType
         }
         base.GenerateForEquals(sb, accessor, rhsAccessor, maskAccessor);
     }
+
+    public override void GenerateForHash(StructuredStringBuilder sb, Accessor accessor, string hashResultAccessor) =>
+        ContentHashGeneration.Generate(sb, accessor, hashResultAccessor);
 }

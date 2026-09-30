@@ -2409,8 +2409,8 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(FavorCostitem);
             }
-            hash.Add(item.Reflections);
-            hash.Add(item.LinkedReferences);
+            hash.AddContents(item.Reflections);
+            hash.AddContents(item.LinkedReferences);
             if (item.ActivateParents is {} ActivateParentsitem)
             {
                 hash.Add(ActivateParentsitem);
@@ -2421,13 +2421,10 @@ namespace Mutagen.Bethesda.Skyrim
             }
             hash.Add(item.Emittance);
             hash.Add(item.MultiBoundReference);
-            if (item.IgnoredBySandbox is {} IgnoredBySandboxItem)
-            {
-                hash.Add(IgnoredBySandboxItem);
-            }
-            hash.Add(item.LocationRefTypes);
+            hash.AddContents(item.IgnoredBySandbox);
+            hash.AddContents(item.LocationRefTypes);
             hash.Add(item.LocationReference);
-            hash.Add(item.DistantLodData);
+            hash.AddContents(item.DistantLodData);
             if (item.Scale is {} Scaleitem)
             {
                 hash.Add(Scaleitem);

@@ -1679,9 +1679,9 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 hash.Add(QuestDataitem);
             }
-            hash.Add(item.Conditions);
-            hash.Add(item.Stages);
-            hash.Add(item.Objectives);
+            hash.AddContents(item.Conditions);
+            hash.AddContents(item.Stages);
+            hash.AddContents(item.Objectives);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

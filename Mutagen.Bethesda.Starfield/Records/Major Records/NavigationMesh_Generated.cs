@@ -1484,16 +1484,13 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(VirtualMachineAdapteritem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.NavmeshGeometry is {} NavmeshGeometryitem)
             {
                 hash.Add(NavmeshGeometryitem);
             }
-            if (item.NNAM is {} NNAMItem)
-            {
-                hash.Add(NNAMItem);
-            }
-            hash.Add(item.PreCutMapEntries);
+            hash.AddContents(item.NNAM);
+            hash.AddContents(item.PreCutMapEntries);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

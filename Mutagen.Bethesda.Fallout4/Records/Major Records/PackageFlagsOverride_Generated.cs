@@ -1050,7 +1050,7 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.SetInterruptFlags);
             hash.Add(item.ClearInterruptFlags);
             hash.Add(item.PreferredSpeed);
-            hash.Add(item.Unknown);
+            hash.AddContents(item.Unknown);
             return hash.ToHashCode();
         }
         

@@ -1753,16 +1753,16 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.NavmeshVersion);
             hash.Add(item.CrcHash);
             hash.Add(item.Parent);
-            hash.Add(item.Vertices);
-            hash.Add(item.Triangles);
-            hash.Add(item.EdgeLinks);
-            hash.Add(item.DoorTriangles);
+            hash.AddContents(item.Vertices);
+            hash.AddContents(item.Triangles);
+            hash.AddContents(item.EdgeLinks);
+            hash.AddContents(item.DoorTriangles);
             hash.Add(item.NavmeshGridDivisor);
             hash.Add(item.MaxDistanceX);
             hash.Add(item.MaxDistanceY);
             hash.Add(item.Min);
             hash.Add(item.Max);
-            hash.Add(item.NavmeshGrid);
+            hash.AddContents(item.NavmeshGrid);
             return hash.ToHashCode();
         }
         

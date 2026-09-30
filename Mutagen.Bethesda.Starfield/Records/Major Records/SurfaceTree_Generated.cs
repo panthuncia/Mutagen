@@ -1658,19 +1658,13 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(ISurfaceTreeGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Components);
-            hash.Add(item.CNAM);
-            hash.Add(item.DNAM);
-            hash.Add(item.SurfacePatterns);
-            if (item.GNAM is {} GNAMItem)
-            {
-                hash.Add(GNAMItem);
-            }
-            hash.Add(item.SurfacePatterns2);
-            if (item.GNAM2 is {} GNAM2Item)
-            {
-                hash.Add(GNAM2Item);
-            }
+            hash.AddContents(item.Components);
+            hash.AddContents(item.CNAM);
+            hash.AddContents(item.DNAM);
+            hash.AddContents(item.SurfacePatterns);
+            hash.AddContents(item.GNAM);
+            hash.AddContents(item.SurfacePatterns2);
+            hash.AddContents(item.GNAM2);
             hash.Add(item.Filter);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();

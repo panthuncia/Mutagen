@@ -1743,13 +1743,10 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(MTSHitem);
             }
-            hash.Add(item.CuePoints);
-            if (item.MSTF is {} MSTFItem)
-            {
-                hash.Add(MSTFItem);
-            }
-            hash.Add(item.Conditions);
-            hash.Add(item.Tracks);
+            hash.AddContents(item.CuePoints);
+            hash.AddContents(item.MSTF);
+            hash.AddContents(item.Conditions);
+            hash.AddContents(item.Tracks);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

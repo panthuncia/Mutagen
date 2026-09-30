@@ -1830,15 +1830,15 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 hash.Add(Dataitem);
             }
-            hash.Add(item.Vertices);
-            hash.Add(item.Triangles);
-            hash.Add(item.CoverTriangles);
-            hash.Add(item.DoorLinks);
+            hash.AddContents(item.Vertices);
+            hash.AddContents(item.Triangles);
+            hash.AddContents(item.CoverTriangles);
+            hash.AddContents(item.DoorLinks);
             if (item.NavmeshGrid is {} NavmeshGriditem)
             {
                 hash.Add(NavmeshGriditem);
             }
-            hash.Add(item.EdgeLinks);
+            hash.AddContents(item.EdgeLinks);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

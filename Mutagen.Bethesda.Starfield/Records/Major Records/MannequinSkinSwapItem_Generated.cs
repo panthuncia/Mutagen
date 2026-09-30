@@ -875,10 +875,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IMannequinSkinSwapItemGetter item)
         {
             var hash = new HashCode();
-            if (item.MSSI is {} MSSIItem)
-            {
-                hash.Add(MSSIItem);
-            }
+            hash.AddContents(item.MSSI);
             hash.Add(item.MaterialSwap);
             return hash.ToHashCode();
         }

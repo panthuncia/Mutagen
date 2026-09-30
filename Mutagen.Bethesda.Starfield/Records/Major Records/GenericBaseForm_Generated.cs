@@ -1875,14 +1875,14 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(ObjectPaletteDefaultsitem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Filter is {} Filteritem)
             {
                 hash.Add(Filteritem);
             }
             hash.Add(item.Template);
-            hash.Add(item.ObjectTemplateInstanceData);
-            hash.Add(item.ObjectTemplates);
+            hash.AddContents(item.ObjectTemplateInstanceData);
+            hash.AddContents(item.ObjectTemplates);
             if (item.NavmeshGeometry is {} NavmeshGeometryitem)
             {
                 hash.Add(NavmeshGeometryitem);

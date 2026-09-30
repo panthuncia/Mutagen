@@ -1257,8 +1257,8 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 hash.Add(Versionitem);
             }
-            hash.Add(item.Infos);
-            hash.Add(item.Connections);
+            hash.AddContents(item.Infos);
+            hash.AddContents(item.Connections);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

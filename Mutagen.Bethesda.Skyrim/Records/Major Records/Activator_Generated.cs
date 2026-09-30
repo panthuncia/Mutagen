@@ -2007,7 +2007,7 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(Destructibleitem);
             }
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             if (item.MarkerColor is {} MarkerColoritem)
             {
                 hash.Add(MarkerColoritem);

@@ -1004,7 +1004,7 @@ namespace Mutagen.Bethesda.Skyrim
             var hash = new HashCode();
             hash.Add(item.Type);
             hash.Add(item.TimerSetting);
-            hash.Add(item.Animations);
+            hash.AddContents(item.Animations);
             return hash.ToHashCode();
         }
         

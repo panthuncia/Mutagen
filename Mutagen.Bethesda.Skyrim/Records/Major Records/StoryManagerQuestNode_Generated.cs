@@ -1348,7 +1348,7 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(MaxNumQuestsToRunitem);
             }
-            hash.Add(item.Quests);
+            hash.AddContents(item.Quests);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

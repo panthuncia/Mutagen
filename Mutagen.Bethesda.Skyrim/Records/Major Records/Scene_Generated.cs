@@ -1985,9 +1985,9 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(Flagsitem);
             }
-            hash.Add(item.Phases);
-            hash.Add(item.Actors);
-            hash.Add(item.Actions);
+            hash.AddContents(item.Phases);
+            hash.AddContents(item.Actors);
+            hash.AddContents(item.Actions);
             if (item.Unused is {} Unuseditem)
             {
                 hash.Add(Unuseditem);
@@ -2001,11 +2001,8 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(LastActionIndexitem);
             }
-            if (item.VNAM is {} VNAMItem)
-            {
-                hash.Add(VNAMItem);
-            }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.VNAM);
+            hash.AddContents(item.Conditions);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

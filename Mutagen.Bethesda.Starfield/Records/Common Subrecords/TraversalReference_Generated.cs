@@ -1055,7 +1055,7 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.To);
             hash.Add(item.UnknownVector);
             hash.Add(item.Traversal);
-            hash.Add(item.Unknown);
+            hash.AddContents(item.Unknown);
             return hash.ToHashCode();
         }
         

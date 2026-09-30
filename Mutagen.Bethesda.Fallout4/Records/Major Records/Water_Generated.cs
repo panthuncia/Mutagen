@@ -3558,10 +3558,7 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.ConsumeSpell);
             hash.Add(item.ContactSpell);
             hash.Add(item.ImageSpace);
-            if (item.DATA is {} DATAItem)
-            {
-                hash.Add(DATAItem);
-            }
+            hash.AddContents(item.DATA);
             hash.Add(item.FogDepthAmount);
             hash.Add(item.FogShallowColor);
             hash.Add(item.FogDeepColor);
@@ -3601,10 +3598,7 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.NoiseLayerOne);
             hash.Add(item.NoiseLayerTwo);
             hash.Add(item.NoiseLayerThree);
-            if (item.GNAM is {} GNAMItem)
-            {
-                hash.Add(GNAMItem);
-            }
+            hash.AddContents(item.GNAM);
             if (item.LinearVelocity is {} LinearVelocityitem)
             {
                 hash.Add(LinearVelocityitem);

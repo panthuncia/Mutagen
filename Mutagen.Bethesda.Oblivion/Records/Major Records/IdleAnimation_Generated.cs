@@ -1337,12 +1337,12 @@ namespace Mutagen.Bethesda.Oblivion
             {
                 hash.Add(Modelitem);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             if (item.AnimationGroupSection is {} AnimationGroupSectionitem)
             {
                 hash.Add(AnimationGroupSectionitem);
             }
-            hash.Add(item.RelatedIdleAnimations);
+            hash.AddContents(item.RelatedIdleAnimations);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

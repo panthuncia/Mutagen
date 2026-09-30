@@ -1643,7 +1643,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(VirtualMachineAdapteritem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Color is {} Coloritem)
             {
                 hash.Add(Coloritem);
@@ -1656,10 +1656,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Typeitem);
             }
-            if (item.FNAM is {} FNAMItem)
-            {
-                hash.Add(FNAMItem);
-            }
+            hash.AddContents(item.FNAM);
             if (item.FlashLinkageName is {} FlashLinkageNameitem)
             {
                 hash.Add(FlashLinkageNameitem);

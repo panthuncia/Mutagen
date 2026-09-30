@@ -2470,7 +2470,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(XALGitem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);
@@ -2494,7 +2494,7 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.Gravity);
             hash.Add(item.Limit);
             hash.Add(item.Flags);
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

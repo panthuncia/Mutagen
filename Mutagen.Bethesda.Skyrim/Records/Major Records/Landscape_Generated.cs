@@ -1623,14 +1623,14 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(Flagsitem);
             }
-            hash.Add(item.VertexNormals);
+            hash.AddContents(item.VertexNormals);
             if (item.VertexHeightMap is {} VertexHeightMapitem)
             {
                 hash.Add(VertexHeightMapitem);
             }
-            hash.Add(item.VertexColors);
-            hash.Add(item.Layers);
-            hash.Add(item.Textures);
+            hash.AddContents(item.VertexColors);
+            hash.AddContents(item.Layers);
+            hash.AddContents(item.Textures);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

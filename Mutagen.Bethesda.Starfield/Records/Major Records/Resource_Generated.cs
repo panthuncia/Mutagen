@@ -1931,7 +1931,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Nameitem);
             }
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             if (item.CraftingSound is {} CraftingSounditem)
             {
                 hash.Add(CraftingSounditem);
@@ -1941,7 +1941,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Rarityitem);
             }
-            hash.Add(item.NextRarities);
+            hash.AddContents(item.NextRarities);
             if (item.SurfaceColor is {} SurfaceColoritem)
             {
                 hash.Add(SurfaceColoritem);

@@ -1631,11 +1631,11 @@ namespace Mutagen.Bethesda.Skyrim
         public virtual int GetHashCode(IFootstepSetGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.WalkForwardFootsteps);
-            hash.Add(item.RunForwardFootsteps);
-            hash.Add(item.WalkForwardAlternateFootsteps);
-            hash.Add(item.RunForwardAlternateFootsteps);
-            hash.Add(item.WalkForwardAlternateFootsteps2);
+            hash.AddContents(item.WalkForwardFootsteps);
+            hash.AddContents(item.RunForwardFootsteps);
+            hash.AddContents(item.WalkForwardAlternateFootsteps);
+            hash.AddContents(item.RunForwardAlternateFootsteps);
+            hash.AddContents(item.WalkForwardAlternateFootsteps2);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

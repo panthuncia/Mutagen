@@ -1352,8 +1352,8 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Nameitem);
             }
-            hash.Add(item.StartConditions);
-            hash.Add(item.CompletionConditions);
+            hash.AddContents(item.StartConditions);
+            hash.AddContents(item.CompletionConditions);
             if (item.EditorWidth is {} EditorWidthitem)
             {
                 hash.Add(EditorWidthitem);
@@ -1366,10 +1366,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(PhaseSetParentQuestStageitem);
             }
-            if (item.SPMV is {} SPMVItem)
-            {
-                hash.Add(SPMVItem);
-            }
+            hash.AddContents(item.SPMV);
             return hash.ToHashCode();
         }
         

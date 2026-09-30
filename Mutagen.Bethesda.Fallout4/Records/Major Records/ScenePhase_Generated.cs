@@ -1295,8 +1295,8 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(Nameitem);
             }
-            hash.Add(item.StartConditions);
-            hash.Add(item.CompletionConditions);
+            hash.AddContents(item.StartConditions);
+            hash.AddContents(item.CompletionConditions);
             if (item.EditorWidth is {} EditorWidthitem)
             {
                 hash.Add(EditorWidthitem);

@@ -895,10 +895,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Sounditem);
             }
-            if (item.CS3F is {} CS3FItem)
-            {
-                hash.Add(CS3FItem);
-            }
+            hash.AddContents(item.CS3F);
             return hash.ToHashCode();
         }
         

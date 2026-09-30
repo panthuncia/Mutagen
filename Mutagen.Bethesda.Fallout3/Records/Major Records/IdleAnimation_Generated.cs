@@ -1279,7 +1279,7 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 hash.Add(Modelitem);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(item.RelatedIdleAnimations);
             hash.Add(item.AnimationData);
             hash.Add(base.GetHashCode());

@@ -2605,8 +2605,8 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(Destructibleitem);
             }
-            hash.Add(item.Keywords);
-            hash.Add(item.Properties);
+            hash.AddContents(item.Keywords);
+            hash.AddContents(item.Properties);
             hash.Add(item.NativeTerminal);
             hash.Add(item.ForcedLocRefType);
             if (item.MarkerColor is {} MarkerColoritem)
@@ -2629,7 +2629,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(RadioReceiveritem);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             if (item.NavmeshGeometry is {} NavmeshGeometryitem)
             {
                 hash.Add(NavmeshGeometryitem);

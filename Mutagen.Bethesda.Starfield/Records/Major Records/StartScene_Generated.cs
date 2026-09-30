@@ -1180,7 +1180,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(StartPhaseForSceneitem);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             return hash.ToHashCode();
         }
         

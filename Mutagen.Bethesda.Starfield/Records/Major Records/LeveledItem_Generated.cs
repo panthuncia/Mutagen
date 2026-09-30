@@ -2664,7 +2664,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(ObjectPaletteDefaultsitem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.XALG is {} XALGitem)
             {
                 hash.Add(XALGitem);
@@ -2675,12 +2675,12 @@ namespace Mutagen.Bethesda.Starfield
                 hash.Add(MaxCountitem);
             }
             hash.Add(item.Flags);
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(item.UseChanceNoneGlobal);
             hash.Add(item.RequiredBiome);
             hash.Add(item.RequiredResourceVein);
-            hash.Add(item.Entries);
-            hash.Add(item.FilterKeywordChances);
+            hash.AddContents(item.Entries);
+            hash.AddContents(item.FilterKeywordChances);
             hash.Add(item.EpicLootChance);
             if (item.MarkerColor is {} MarkerColoritem)
             {
@@ -2698,7 +2698,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Modelitem);
             }
-            hash.Add(item.ForcedLocations);
+            hash.AddContents(item.ForcedLocations);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

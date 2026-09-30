@@ -3788,27 +3788,27 @@ namespace Mutagen.Bethesda.Skyrim
         public virtual int GetHashCode(ILocationGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.PersistentActorReferencesAdded);
-            hash.Add(item.PersistentActorReferencesStatic);
-            hash.Add(item.PersistentActorReferencesRemoved);
-            hash.Add(item.UniqueActorReferencesAdded);
-            hash.Add(item.UniqueActorReferencesStatic);
-            hash.Add(item.UniqueActorReferencesRemoved);
-            hash.Add(item.LocationRefTypeReferencesAdded);
-            hash.Add(item.LocationRefTypeReferencesStatic);
-            hash.Add(item.LocationRefTypeReferencesRemoved);
-            hash.Add(item.WorldspaceCellsAdded);
-            hash.Add(item.WorldspaceCellsStatic);
-            hash.Add(item.WorldspaceCellsRemoved);
-            hash.Add(item.InitiallyDisabledReferencesAdded);
-            hash.Add(item.InitiallyDisabledReferencesStatic);
-            hash.Add(item.EnableParentReferencesAdded);
-            hash.Add(item.EnableParentReferencesStatic);
+            hash.AddContents(item.PersistentActorReferencesAdded);
+            hash.AddContents(item.PersistentActorReferencesStatic);
+            hash.AddContents(item.PersistentActorReferencesRemoved);
+            hash.AddContents(item.UniqueActorReferencesAdded);
+            hash.AddContents(item.UniqueActorReferencesStatic);
+            hash.AddContents(item.UniqueActorReferencesRemoved);
+            hash.AddContents(item.LocationRefTypeReferencesAdded);
+            hash.AddContents(item.LocationRefTypeReferencesStatic);
+            hash.AddContents(item.LocationRefTypeReferencesRemoved);
+            hash.AddContents(item.WorldspaceCellsAdded);
+            hash.AddContents(item.WorldspaceCellsStatic);
+            hash.AddContents(item.WorldspaceCellsRemoved);
+            hash.AddContents(item.InitiallyDisabledReferencesAdded);
+            hash.AddContents(item.InitiallyDisabledReferencesStatic);
+            hash.AddContents(item.EnableParentReferencesAdded);
+            hash.AddContents(item.EnableParentReferencesStatic);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);
             }
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             hash.Add(item.ParentLocation);
             hash.Add(item.Music);
             hash.Add(item.UnreportedCrimeFaction);

@@ -1590,7 +1590,7 @@ namespace Mutagen.Bethesda.Fallout4
         {
             var hash = new HashCode();
             hash.Add(item.ObjectBounds);
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             if (item.Flags is {} Flagsitem)
             {
                 hash.Add(Flagsitem);
@@ -1599,7 +1599,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(IdleTimeritem);
             }
-            hash.Add(item.Animations);
+            hash.AddContents(item.Animations);
             hash.Add(item.Unknown);
             if (item.Model is {} Modelitem)
             {

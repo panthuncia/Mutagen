@@ -2346,16 +2346,16 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(Modelitem);
             }
-            hash.Add(item.Items);
+            hash.AddContents(item.Items);
             if (item.Destructible is {} Destructibleitem)
             {
                 hash.Add(Destructibleitem);
             }
             hash.Add(item.Flags);
             hash.Add(item.Weight);
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             hash.Add(item.ForcedLocRefType);
-            hash.Add(item.Properties);
+            hash.AddContents(item.Properties);
             hash.Add(item.NativeTerminal);
             hash.Add(item.OpenSound);
             hash.Add(item.CloseSound);

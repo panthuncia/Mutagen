@@ -992,10 +992,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(ColorRemappingIndexitem);
             }
-            if (item.Data is {} DataItem)
-            {
-                hash.Add(DataItem);
-            }
+            hash.AddContents(item.Data);
             hash.Add(item.MaterialSwap);
             return hash.ToHashCode();
         }

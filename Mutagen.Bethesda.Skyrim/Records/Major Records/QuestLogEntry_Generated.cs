@@ -1242,24 +1242,15 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(Flagsitem);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             if (item.Entry is {} Entryitem)
             {
                 hash.Add(Entryitem);
             }
             hash.Add(item.NextQuest);
-            if (item.SCHR is {} SCHRItem)
-            {
-                hash.Add(SCHRItem);
-            }
-            if (item.SCTX is {} SCTXItem)
-            {
-                hash.Add(SCTXItem);
-            }
-            if (item.QNAM is {} QNAMItem)
-            {
-                hash.Add(QNAMItem);
-            }
+            hash.AddContents(item.SCHR);
+            hash.AddContents(item.SCTX);
+            hash.AddContents(item.QNAM);
             return hash.ToHashCode();
         }
         

@@ -2213,7 +2213,7 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(Nameitem);
             }
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             if (item.Model is {} Modelitem)
             {
                 hash.Add(Modelitem);
@@ -2233,7 +2233,7 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.Weight);
             hash.Add(item.IngredientValue);
             hash.Add(item.Flags);
-            hash.Add(item.Effects);
+            hash.AddContents(item.Effects);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

@@ -827,10 +827,7 @@ namespace Mutagen.Bethesda.Oblivion
         public virtual int GetHashCode(IAlphaLayerGetter item)
         {
             var hash = new HashCode();
-            if (item.AlphaLayerData is {} AlphaLayerDataItem)
-            {
-                hash.Add(AlphaLayerDataItem);
-            }
+            hash.AddContents(item.AlphaLayerData);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

@@ -901,7 +901,7 @@ namespace Mutagen.Bethesda.Fallout4
         public virtual int GetHashCode(IScriptStructListPropertyGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Structs);
+            hash.AddContents(item.Structs);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

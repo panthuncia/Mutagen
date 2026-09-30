@@ -1896,14 +1896,14 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(Iconsitem);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(item.Trait);
             hash.Add(item.Level);
             hash.Add(item.NumRanks);
             hash.Add(item.Playable);
             hash.Add(item.Hidden);
             hash.Add(item.NextPerk);
-            hash.Add(item.Effects);
+            hash.AddContents(item.Effects);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

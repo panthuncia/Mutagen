@@ -1,5 +1,7 @@
 using System.Xml.Linq;
+using Loqui.Generation;
 using Noggog;
+using Noggog.StructuredStrings;
 
 namespace Mutagen.Bethesda.Generation.Fields;
 
@@ -19,4 +21,7 @@ public class DictType : Loqui.Generation.DictType
             NumEnumKeys = num;
         }
     }
+
+    public override void GenerateForHash(StructuredStringBuilder sb, Accessor accessor, string hashResultAccessor) =>
+        ContentHashGeneration.Generate(sb, accessor, hashResultAccessor);
 }

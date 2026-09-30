@@ -2906,7 +2906,7 @@ namespace Mutagen.Bethesda.Starfield
                 hash.Add(XALGitem);
             }
             hash.Add(item.DefaultLayer);
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);
@@ -2938,7 +2938,7 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.SpawnSpreadDegrees);
             hash.Add(item.Count);
             hash.Add(item.Duration);
-            hash.Add(item.DamageType);
+            hash.AddContents(item.DamageType);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

@@ -1288,9 +1288,9 @@ namespace Mutagen.Bethesda.Oblivion
         {
             var hash = new HashCode();
             hash.Add(item.Versioning);
-            hash.Add(item.PrimaryAttributes);
+            hash.AddContents(item.PrimaryAttributes);
             hash.Add(item.Specialization);
-            hash.Add(item.SecondaryAttributes);
+            hash.AddContents(item.SecondaryAttributes);
             hash.Add(item.Flags);
             hash.Add(item.ClassServices);
             hash.Add(item.Training);

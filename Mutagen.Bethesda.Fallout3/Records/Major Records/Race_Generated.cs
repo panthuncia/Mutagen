@@ -2221,7 +2221,7 @@ namespace Mutagen.Bethesda.Fallout3
                 hash.Add(Nameitem);
             }
             hash.Add(item.Description);
-            hash.Add(item.Relations);
+            hash.AddContents(item.Relations);
             if (item.Data is {} Dataitem)
             {
                 hash.Add(Dataitem);
@@ -2245,8 +2245,8 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 hash.Add(HashCode.Combine(BodyDataitem.Male, BodyDataitem.Female));
             }
-            hash.Add(item.Hairs);
-            hash.Add(item.Eyes);
+            hash.AddContents(item.Hairs);
+            hash.AddContents(item.Eyes);
             if (item.FaceGenData is {} FaceGenDataitem)
             {
                 hash.Add(HashCode.Combine(FaceGenDataitem.Male, FaceGenDataitem.Female));

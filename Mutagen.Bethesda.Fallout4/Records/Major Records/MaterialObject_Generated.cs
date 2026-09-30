@@ -1627,7 +1627,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(Modelitem);
             }
-            hash.Add(item.DNAMs);
+            hash.AddContents(item.DNAMs);
             hash.Add(item.FalloffScale);
             hash.Add(item.FalloffBias);
             hash.Add(item.NoiseUvScale);

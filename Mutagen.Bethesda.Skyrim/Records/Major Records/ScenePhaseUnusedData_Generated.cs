@@ -1036,26 +1036,11 @@ namespace Mutagen.Bethesda.Skyrim
         public virtual int GetHashCode(IScenePhaseUnusedDataGetter item)
         {
             var hash = new HashCode();
-            if (item.SCHR is {} SCHRItem)
-            {
-                hash.Add(SCHRItem);
-            }
-            if (item.SCDA is {} SCDAItem)
-            {
-                hash.Add(SCDAItem);
-            }
-            if (item.SCTX is {} SCTXItem)
-            {
-                hash.Add(SCTXItem);
-            }
-            if (item.QNAM is {} QNAMItem)
-            {
-                hash.Add(QNAMItem);
-            }
-            if (item.SCRO is {} SCROItem)
-            {
-                hash.Add(SCROItem);
-            }
+            hash.AddContents(item.SCHR);
+            hash.AddContents(item.SCDA);
+            hash.AddContents(item.SCTX);
+            hash.AddContents(item.QNAM);
+            hash.AddContents(item.SCRO);
             return hash.ToHashCode();
         }
         

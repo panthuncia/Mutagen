@@ -971,18 +971,9 @@ namespace Mutagen.Bethesda.Fallout3
         public virtual int GetHashCode(IFaceGenDataGetter item)
         {
             var hash = new HashCode();
-            if (item.SymmetricGeometry is {} SymmetricGeometryItem)
-            {
-                hash.Add(SymmetricGeometryItem);
-            }
-            if (item.AsymmetricGeometry is {} AsymmetricGeometryItem)
-            {
-                hash.Add(AsymmetricGeometryItem);
-            }
-            if (item.SymmetricTexture is {} SymmetricTextureItem)
-            {
-                hash.Add(SymmetricTextureItem);
-            }
+            hash.AddContents(item.SymmetricGeometry);
+            hash.AddContents(item.AsymmetricGeometry);
+            hash.AddContents(item.SymmetricTexture);
             hash.Add(item.SNAM);
             return hash.ToHashCode();
         }

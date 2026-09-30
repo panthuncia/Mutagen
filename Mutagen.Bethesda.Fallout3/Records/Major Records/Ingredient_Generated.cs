@@ -1706,7 +1706,7 @@ namespace Mutagen.Bethesda.Fallout3
             hash.Add(item.Weight);
             hash.Add(item.Value);
             hash.Add(item.Flags);
-            hash.Add(item.Effects);
+            hash.AddContents(item.Effects);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

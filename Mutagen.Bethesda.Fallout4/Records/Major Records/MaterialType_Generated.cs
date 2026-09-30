@@ -1405,10 +1405,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(BreakableFXitem);
             }
-            if (item.ModelData is {} ModelDataItem)
-            {
-                hash.Add(ModelDataItem);
-            }
+            hash.AddContents(item.ModelData);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

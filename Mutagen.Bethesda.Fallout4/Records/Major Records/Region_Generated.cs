@@ -1611,7 +1611,7 @@ namespace Mutagen.Bethesda.Fallout4
             var hash = new HashCode();
             hash.Add(item.MapColor);
             hash.Add(item.Worldspace);
-            hash.Add(item.RegionAreas);
+            hash.AddContents(item.RegionAreas);
             if (item.Objects is {} Objectsitem)
             {
                 hash.Add(Objectsitem);

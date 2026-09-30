@@ -1772,7 +1772,7 @@ namespace Mutagen.Bethesda.Fallout3
             hash.Add(item.FontColorG);
             hash.Add(item.FontColorB);
             hash.Add(item.Alignment);
-            hash.Add(item.Unknown1);
+            hash.AddContents(item.Unknown1);
             hash.Add(item.Font2);
             hash.Add(item.Font2ColorR);
             hash.Add(item.Font2ColorG);

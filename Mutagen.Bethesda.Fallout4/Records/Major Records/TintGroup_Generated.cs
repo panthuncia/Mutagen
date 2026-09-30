@@ -1069,7 +1069,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(Nameitem);
             }
-            hash.Add(item.Options);
+            hash.AddContents(item.Options);
             if (item.CategoryIndex is {} CategoryIndexitem)
             {
                 hash.Add(CategoryIndexitem);

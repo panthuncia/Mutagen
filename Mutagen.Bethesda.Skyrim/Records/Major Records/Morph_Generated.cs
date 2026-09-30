@@ -798,7 +798,7 @@ namespace Mutagen.Bethesda.Skyrim
         public virtual int GetHashCode(IMorphGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Data);
+            hash.AddContents(item.Data);
             return hash.ToHashCode();
         }
         

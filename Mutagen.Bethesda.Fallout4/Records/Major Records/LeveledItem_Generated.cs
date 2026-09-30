@@ -1629,8 +1629,8 @@ namespace Mutagen.Bethesda.Fallout4
             }
             hash.Add(item.Flags);
             hash.Add(item.Global);
-            hash.Add(item.Entries);
-            hash.Add(item.FilterKeywordChances);
+            hash.AddContents(item.Entries);
+            hash.AddContents(item.FilterKeywordChances);
             hash.Add(item.EpicLootChance);
             if (item.OverrideName is {} OverrideNameitem)
             {

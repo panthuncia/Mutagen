@@ -1631,11 +1631,11 @@ namespace Mutagen.Bethesda.Fallout4
         public virtual int GetHashCode(IFootstepSetGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.WalkFootsteps);
-            hash.Add(item.RunFootsteps);
-            hash.Add(item.SprintFootsteps);
-            hash.Add(item.SneakFootsteps);
-            hash.Add(item.SwimFootsteps);
+            hash.AddContents(item.WalkFootsteps);
+            hash.AddContents(item.RunFootsteps);
+            hash.AddContents(item.SprintFootsteps);
+            hash.AddContents(item.SneakFootsteps);
+            hash.AddContents(item.SwimFootsteps);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

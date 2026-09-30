@@ -1047,8 +1047,8 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IHeadPartsAndBoneModifiersGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.HeadParts);
-            hash.Add(item.BoneModifiers);
+            hash.AddContents(item.HeadParts);
+            hash.AddContents(item.BoneModifiers);
             return hash.ToHashCode();
         }
         

@@ -889,7 +889,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IPERSItemsGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Items);
+            hash.AddContents(item.Items);
             return hash.ToHashCode();
         }
         

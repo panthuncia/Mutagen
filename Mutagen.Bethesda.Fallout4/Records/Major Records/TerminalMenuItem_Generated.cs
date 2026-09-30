@@ -1272,7 +1272,7 @@ namespace Mutagen.Bethesda.Fallout4
                 hash.Add(ImageFileitem);
             }
             hash.Add(item.Submenu);
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             return hash.ToHashCode();
         }
         
