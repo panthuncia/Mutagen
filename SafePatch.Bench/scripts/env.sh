@@ -4,7 +4,7 @@
 #   D, P   the Skyrim Data folder (SKYRIM_DATA to override) and the load order's plugins.txt
 set -u
 SCRIPTS=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-REPO=$(cd "$(git -C "$SCRIPTS" rev-parse --git-common-dir)/.." && pwd)
+REPO=$(cd "$(git -C "$SCRIPTS" rev-parse --path-format=absolute --git-common-dir)/.." && pwd)
 WORK="$REPO/.safepatch-work"
 OUT="$WORK/bench-out"
 LOGS="$WORK/logs"
