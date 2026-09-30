@@ -2667,6 +2667,7 @@ abstract partial class ConditionBinaryOverlay
 
     public partial Condition.Flag GetFlagsCustom(int location) => ConditionBinaryCreateTranslation.GetFlag(_structData.Span[location])
         .SetFlag((Condition.Flag)Condition.ParametersUseAliases, false)
+        .SetFlag((Condition.Flag)Condition.ParametersUsePackData, false)
         .SetFlag((Condition.Flag)Condition.UseGlobal, false);
     public CompareOperator CompareOperator => ConditionBinaryCreateTranslation.GetCompareOperator(_structData.Span[0]);
     public ushort Unknown2 => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Span.Slice(10));
