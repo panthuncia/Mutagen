@@ -11,6 +11,7 @@ using SafePatch.Authoring.Index;
 //   SafePatch.Bench <Data folder> <plugins.txt> [runs=3] [only=<step name part>|-] [label]
 //   SafePatch.Bench check <Data folder> <plugin,...> [label]
 //   SafePatch.Bench check-threads <Data folder> <plugin>
+//   SafePatch.Bench check-first <Data folder> <plugin,...> <record type,...>
 //   SafePatch.Bench conflict-scan <Data folder> <plugins.txt or .paths> [runs=3] [label] [mask|fields|equals]
 //   SafePatch.Bench linkcache <Data folder> <plugins.txt or .paths> [label]
 //   SafePatch.Bench conflicts <Data folder> <plugins.txt or .paths> [runs=3] [label]
@@ -28,6 +29,10 @@ if (args is ["diag" or "diag-self" or "diag-hash", var diagData, var diagPlugin,
 if (args is ["check-hash", var hashData, var hashPlugins, .. var hashRest])
 {
     return CheckHash(hashData, hashPlugins.Split(','), hashRest is [var hashLabel] ? hashLabel : "");
+}
+if (args is ["check-first", var firstData, var firstPlugins, var firstTypes])
+{
+    return CheckFirst.Run(firstData, firstPlugins.Split(','), firstTypes.Split(','));
 }
 if (args is ["conflict-scan", var scanData, var scanPlugins, .. var scanRest])
 {
