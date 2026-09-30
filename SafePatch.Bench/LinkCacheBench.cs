@@ -8,8 +8,8 @@ using Mutagen.Bethesda.Skyrim;
 
 /// <summary>
 /// A patcher's use of a mutable link cache (Mutagen issue 229): for every winning NPC, add an override to a patch mod,
-/// then resolve the override's links (race, class, voice, outfit, keywords, and inventory items, which are
-/// <c>IItemGetter</c> links) through a cache of the load order plus the growing patch. Every resolve checks the patch
+/// then resolve the override itself and its links (template, an <c>INpcSpawnGetter</c> link; race, class, voice,
+/// outfit, keywords; inventory items, <c>IItemGetter</c> links) through a cache of the load order plus the growing patch. Every resolve checks the patch
 /// first. The same resolves through the load order's immutable cache are the control.
 /// <code>SafePatch.Bench linkcache &lt;Data folder&gt; &lt;plugins.txt or .paths&gt; [label]</code>
 /// </summary>
@@ -50,6 +50,9 @@ internal static class LinkCacheBench
                 resolves++;
                 if (link.TryResolve(cache, out _)) found++;
             }
+            // Links to the kind of record the patch collects: the NPC itself (has it been patched?) and its template.
+            Link(npc.ToLinkGetter());
+            Link(npc.Template);
             Link(npc.Race);
             Link(npc.Class);
             Link(npc.Voice);
