@@ -88,8 +88,19 @@ internal static unsafe class IndexPrototype
         var plugins = new PluginIndex[paths.Count];
         // Largest first, so the one big plugin does not start last.
         var order = Enumerable.Range(0, paths.Count).OrderByDescending(i => new FileInfo(paths[i]).Length).ToArray();
-        Parallel.ForEach(order, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount }, i => plugins[i] = Scan(paths[i], Mod));
+        var took = new double[paths.Count];
+        Parallel.ForEach(order, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount }, i =>
+        {
+            var start = Stopwatch.GetTimestamp();
+            plugins[i] = Scan(paths[i], Mod);
+            took[i] = Stopwatch.GetElapsedTime(start).TotalMilliseconds;
+        });
         var scanTime = clock.Elapsed;
+        if (Environment.GetEnvironmentVariable("INDEX_PROTO_SLOWEST") == "1")
+        {
+            Console.WriteLine($"  scan CPU {took.Sum():N0} ms over {paths.Count} plugins; slowest: " +
+                              string.Join(", ", Enumerable.Range(0, paths.Count).OrderByDescending(i => took[i]).Take(4).Select(i => $"{Path.GetFileName(paths[i])} {took[i]:N0} ms")));
+        }
 
         // One sort puts each FormKey's versions together, in load order: key in the high bits, version id below.
         var pluginStart = new int[plugins.Length + 1];
