@@ -171,7 +171,7 @@ Result IndexBatches(ISkyrimModGetter[] mods)
     Parallel.ForEach(System.Collections.Concurrent.Partitioner.Create(mods.SelectMany(m => m.EnumerateMajorRecordBatches()).ToList(), loadBalance: true), batch =>
     {
         long localN = 0, localH = 0;
-        foreach (var record in batch)
+        foreach (var (record, _) in batch)
         {
             localN++;
             localH += (record.FormKey.GetHashCode() & 0xFFFF) + (StringComparer.Ordinal.GetHashCode(record.EditorID ?? "") & 0xFFFF);
