@@ -1780,6 +1780,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IMoveableStaticGetter item,
+            IMoveableStaticGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((MoveableStaticCommon)((IMoveableStaticGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static MoveableStatic Duplicate(
             this IMoveableStaticGetter item,
             FormKey formKey,
@@ -2689,6 +2707,236 @@ namespace Mutagen.Bethesda.Starfield
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IMoveableStaticGetter lhs,
+            IMoveableStaticGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)MoveableStatic_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MoveableStatic_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)MoveableStatic_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)MoveableStatic_FieldIndex.ObjectBounds] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MoveableStatic_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)MoveableStatic_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)MoveableStatic_FieldIndex.DirtinessScale] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MoveableStatic_FieldIndex.DirtinessScale) ?? true))
+                {
+                    if (!lhs.DirtinessScale.Equals(rhs.DirtinessScale)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)MoveableStatic_FieldIndex.ObjectPaletteDefaults] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MoveableStatic_FieldIndex.ObjectPaletteDefaults) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectPaletteDefaults, rhs.ObjectPaletteDefaults, out var lhsObjectPaletteDefaults, out var rhsObjectPaletteDefaults, out var isObjectPaletteDefaultsEqual))
+                    {
+                        if (!((ObjectPaletteDefaultsCommon)((IObjectPaletteDefaultsGetter)lhsObjectPaletteDefaults).CommonInstance()!).Equals(lhsObjectPaletteDefaults, rhsObjectPaletteDefaults, equalsMask?.GetSubCrystal((int)MoveableStatic_FieldIndex.ObjectPaletteDefaults))) return false;
+                    }
+                    else if (!isObjectPaletteDefaultsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)MoveableStatic_FieldIndex.Transforms] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MoveableStatic_FieldIndex.Transforms) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Transforms, rhs.Transforms, out var lhsTransforms, out var rhsTransforms, out var isTransformsEqual))
+                    {
+                        if (!((TransformsCommon)((ITransformsGetter)lhsTransforms).CommonInstance()!).Equals(lhsTransforms, rhsTransforms, equalsMask?.GetSubCrystal((int)MoveableStatic_FieldIndex.Transforms))) return false;
+                    }
+                    else if (!isTransformsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)MoveableStatic_FieldIndex.SnapTemplate] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MoveableStatic_FieldIndex.SnapTemplate) ?? true))
+                {
+                    if (!lhs.SnapTemplate.Equals(rhs.SnapTemplate)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)MoveableStatic_FieldIndex.SnapBehavior] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MoveableStatic_FieldIndex.SnapBehavior) ?? true))
+                {
+                    if (!lhs.SnapBehavior.Equals(rhs.SnapBehavior)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)MoveableStatic_FieldIndex.XALG] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MoveableStatic_FieldIndex.XALG) ?? true))
+                {
+                    if (lhs.XALG != rhs.XALG) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)MoveableStatic_FieldIndex.DefaultLayer] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MoveableStatic_FieldIndex.DefaultLayer) ?? true))
+                {
+                    if (!lhs.DefaultLayer.Equals(rhs.DefaultLayer)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)MoveableStatic_FieldIndex.Components] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MoveableStatic_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)MoveableStatic_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)MoveableStatic_FieldIndex.Transforms2] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MoveableStatic_FieldIndex.Transforms2) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Transforms2, rhs.Transforms2, out var lhsTransforms2, out var rhsTransforms2, out var isTransforms2Equal))
+                    {
+                        if (!((TransformsCommon)((ITransformsGetter)lhsTransforms2).CommonInstance()!).Equals(lhsTransforms2, rhsTransforms2, equalsMask?.GetSubCrystal((int)MoveableStatic_FieldIndex.Transforms2))) return false;
+                    }
+                    else if (!isTransforms2Equal) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)MoveableStatic_FieldIndex.Name] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MoveableStatic_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)MoveableStatic_FieldIndex.Model] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MoveableStatic_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)MoveableStatic_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)MoveableStatic_FieldIndex.Destructible] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MoveableStatic_FieldIndex.Destructible) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Destructible, rhs.Destructible, out var lhsDestructible, out var rhsDestructible, out var isDestructibleEqual))
+                    {
+                        if (!((DestructibleCommon)((IDestructibleGetter)lhsDestructible).CommonInstance()!).Equals(lhsDestructible, rhsDestructible, equalsMask?.GetSubCrystal((int)MoveableStatic_FieldIndex.Destructible))) return false;
+                    }
+                    else if (!isDestructibleEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)MoveableStatic_FieldIndex.Keywords] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MoveableStatic_FieldIndex.Keywords) ?? true))
+                {
+                    if (!lhs.Keywords.SequenceEqualNullable(rhs.Keywords)) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)MoveableStatic_FieldIndex.Properties] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MoveableStatic_FieldIndex.Properties) ?? true))
+                {
+                    if (!lhs.Properties.SequenceEqualNullable(rhs.Properties, (l, r) => ((ObjectPropertyCommon)((IObjectPropertyGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)MoveableStatic_FieldIndex.Properties)))) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)MoveableStatic_FieldIndex.DATA] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MoveableStatic_FieldIndex.DATA) ?? true))
+                {
+                    if (lhs.DATA != rhs.DATA) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)MoveableStatic_FieldIndex.MSLS] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MoveableStatic_FieldIndex.MSLS) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.MSLS, rhs.MSLS, out var lhsMSLS, out var rhsMSLS, out var isMSLSEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsMSLS).CommonInstance()!).Equals(lhsMSLS, rhsMSLS, equalsMask?.GetSubCrystal((int)MoveableStatic_FieldIndex.MSLS))) return false;
+                    }
+                    else if (!isMSLSEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)MoveableStatic_FieldIndex.MSMO] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MoveableStatic_FieldIndex.MSMO) ?? true))
+                {
+                    if (!lhs.MSMO.EqualsWithin(rhs.MSMO)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMoveableStaticGetter)lhs, (IMoveableStaticGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMoveableStaticGetter)lhs, (IMoveableStaticGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IMoveableStaticGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

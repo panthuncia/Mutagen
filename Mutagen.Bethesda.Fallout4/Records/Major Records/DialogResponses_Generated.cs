@@ -1621,6 +1621,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IDialogResponsesGetter item,
+            IDialogResponsesGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((DialogResponsesCommon)((IDialogResponsesGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static DialogResponses Duplicate(
             this IDialogResponsesGetter item,
             FormKey formKey,
@@ -2442,6 +2460,234 @@ namespace Mutagen.Bethesda.Fallout4
                 yield return ResetGlobalInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IDialogResponsesGetter lhs,
+            IDialogResponsesGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)DialogResponses_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogResponses_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((DialogResponsesAdapterCommon)((IDialogResponsesAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)DialogResponses_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)DialogResponses_FieldIndex.Flags] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogResponses_FieldIndex.Flags) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Flags, rhs.Flags, out var lhsFlags, out var rhsFlags, out var isFlagsEqual))
+                    {
+                        if (!((DialogResponseFlagsCommon)((IDialogResponseFlagsGetter)lhsFlags).CommonInstance()!).Equals(lhsFlags, rhsFlags, equalsMask?.GetSubCrystal((int)DialogResponses_FieldIndex.Flags))) return false;
+                    }
+                    else if (!isFlagsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)DialogResponses_FieldIndex.Topic] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogResponses_FieldIndex.Topic) ?? true))
+                {
+                    if (!lhs.Topic.Equals(rhs.Topic)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)DialogResponses_FieldIndex.PreviousDialog] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogResponses_FieldIndex.PreviousDialog) ?? true))
+                {
+                    if (!lhs.PreviousDialog.Equals(rhs.PreviousDialog)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)DialogResponses_FieldIndex.SharedDialog] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogResponses_FieldIndex.SharedDialog) ?? true))
+                {
+                    if (!lhs.SharedDialog.Equals(rhs.SharedDialog)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)DialogResponses_FieldIndex.DialogGroup] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogResponses_FieldIndex.DialogGroup) ?? true))
+                {
+                    if (!lhs.DialogGroup.Equals(rhs.DialogGroup)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)DialogResponses_FieldIndex.OverrideFileName] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogResponses_FieldIndex.OverrideFileName) ?? true))
+                {
+                    if (!string.Equals(lhs.OverrideFileName, rhs.OverrideFileName)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)DialogResponses_FieldIndex.Responses] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogResponses_FieldIndex.Responses) ?? true))
+                {
+                    if (!lhs.Responses.SequenceEqual(rhs.Responses, (l, r) => ((DialogResponseCommon)((IDialogResponseGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)DialogResponses_FieldIndex.Responses)))) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)DialogResponses_FieldIndex.Conditions] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogResponses_FieldIndex.Conditions) ?? true))
+                {
+                    if (!lhs.Conditions.SequenceEqual(rhs.Conditions, (l, r) => ((ConditionCommon)((IConditionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)DialogResponses_FieldIndex.Conditions)))) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)DialogResponses_FieldIndex.Prompt] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogResponses_FieldIndex.Prompt) ?? true))
+                {
+                    if (!object.Equals(lhs.Prompt, rhs.Prompt)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)DialogResponses_FieldIndex.Speaker] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogResponses_FieldIndex.Speaker) ?? true))
+                {
+                    if (!lhs.Speaker.Equals(rhs.Speaker)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)DialogResponses_FieldIndex.StartScene] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogResponses_FieldIndex.StartScene) ?? true))
+                {
+                    if (!lhs.StartScene.Equals(rhs.StartScene)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)DialogResponses_FieldIndex.INTV] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogResponses_FieldIndex.INTV) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.INTV, rhs.INTV)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)DialogResponses_FieldIndex.ForcedAlias] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogResponses_FieldIndex.ForcedAlias) ?? true))
+                {
+                    if (lhs.ForcedAlias != rhs.ForcedAlias) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)DialogResponses_FieldIndex.AudioOutputOverride] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogResponses_FieldIndex.AudioOutputOverride) ?? true))
+                {
+                    if (!lhs.AudioOutputOverride.Equals(rhs.AudioOutputOverride)) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)DialogResponses_FieldIndex.GreetDistance] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogResponses_FieldIndex.GreetDistance) ?? true))
+                {
+                    if (lhs.GreetDistance != rhs.GreetDistance) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)DialogResponses_FieldIndex.SetParentQuestStage] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogResponses_FieldIndex.SetParentQuestStage) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.SetParentQuestStage, rhs.SetParentQuestStage, out var lhsSetParentQuestStage, out var rhsSetParentQuestStage, out var isSetParentQuestStageEqual))
+                    {
+                        if (!((DialogSetParentQuestStageCommon)((IDialogSetParentQuestStageGetter)lhsSetParentQuestStage).CommonInstance()!).Equals(lhsSetParentQuestStage, rhsSetParentQuestStage, equalsMask?.GetSubCrystal((int)DialogResponses_FieldIndex.SetParentQuestStage))) return false;
+                    }
+                    else if (!isSetParentQuestStageEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)DialogResponses_FieldIndex.StartScenePhase] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogResponses_FieldIndex.StartScenePhase) ?? true))
+                {
+                    if (!string.Equals(lhs.StartScenePhase, rhs.StartScenePhase)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)DialogResponses_FieldIndex.Challenge] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogResponses_FieldIndex.Challenge) ?? true))
+                {
+                    if (lhs.Challenge != rhs.Challenge) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)DialogResponses_FieldIndex.ResetGlobal] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogResponses_FieldIndex.ResetGlobal) ?? true))
+                {
+                    if (!lhs.ResetGlobal.Equals(rhs.ResetGlobal)) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)DialogResponses_FieldIndex.SubtitlePriority] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogResponses_FieldIndex.SubtitlePriority) ?? true))
+                {
+                    if (lhs.SubtitlePriority != rhs.SubtitlePriority) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IDialogResponsesGetter)lhs, (IDialogResponsesGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IDialogResponsesGetter)lhs, (IDialogResponsesGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

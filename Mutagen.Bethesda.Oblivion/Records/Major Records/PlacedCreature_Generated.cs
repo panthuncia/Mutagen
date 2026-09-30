@@ -959,6 +959,24 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IPlacedCreatureGetter item,
+            IPlacedCreatureGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((PlacedCreatureCommon)((IPlacedCreatureGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static PlacedCreature Duplicate(
             this IPlacedCreatureGetter item,
             FormKey formKey,
@@ -1523,6 +1541,126 @@ namespace Mutagen.Bethesda.Oblivion
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IPlacedCreatureGetter lhs,
+            IPlacedCreatureGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IOblivionMajorRecordGetter)lhs, (IOblivionMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)PlacedCreature_FieldIndex.Base] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedCreature_FieldIndex.Base) ?? true))
+                {
+                    if (!lhs.Base.Equals(rhs.Base)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)PlacedCreature_FieldIndex.Owner] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedCreature_FieldIndex.Owner) ?? true))
+                {
+                    if (!lhs.Owner.Equals(rhs.Owner)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)PlacedCreature_FieldIndex.FactionRank] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedCreature_FieldIndex.FactionRank) ?? true))
+                {
+                    if (lhs.FactionRank != rhs.FactionRank) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)PlacedCreature_FieldIndex.GlobalVariable] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedCreature_FieldIndex.GlobalVariable) ?? true))
+                {
+                    if (!lhs.GlobalVariable.Equals(rhs.GlobalVariable)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)PlacedCreature_FieldIndex.DistantLODData] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedCreature_FieldIndex.DistantLODData) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.DistantLODData, rhs.DistantLODData, out var lhsDistantLODData, out var rhsDistantLODData, out var isDistantLODDataEqual))
+                    {
+                        if (!((DistantLODDataCommon)((IDistantLODDataGetter)lhsDistantLODData).CommonInstance()!).Equals(lhsDistantLODData, rhsDistantLODData, equalsMask?.GetSubCrystal((int)PlacedCreature_FieldIndex.DistantLODData))) return false;
+                    }
+                    else if (!isDistantLODDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)PlacedCreature_FieldIndex.EnableParent] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedCreature_FieldIndex.EnableParent) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.EnableParent, rhs.EnableParent, out var lhsEnableParent, out var rhsEnableParent, out var isEnableParentEqual))
+                    {
+                        if (!((EnableParentCommon)((IEnableParentGetter)lhsEnableParent).CommonInstance()!).Equals(lhsEnableParent, rhsEnableParent, equalsMask?.GetSubCrystal((int)PlacedCreature_FieldIndex.EnableParent))) return false;
+                    }
+                    else if (!isEnableParentEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)PlacedCreature_FieldIndex.RagdollData] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedCreature_FieldIndex.RagdollData) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.RagdollData, rhs.RagdollData)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)PlacedCreature_FieldIndex.Scale] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedCreature_FieldIndex.Scale) ?? true))
+                {
+                    if (!lhs.Scale.EqualsWithin(rhs.Scale)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)PlacedCreature_FieldIndex.Location] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedCreature_FieldIndex.Location) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Location, rhs.Location, out var lhsLocation, out var rhsLocation, out var isLocationEqual))
+                    {
+                        if (!((LocationCommon)((ILocationGetter)lhsLocation).CommonInstance()!).Equals(lhsLocation, rhsLocation, equalsMask?.GetSubCrystal((int)PlacedCreature_FieldIndex.Location))) return false;
+                    }
+                    else if (!isLocationEqual) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IOblivionMajorRecordGetter lhs,
+            IOblivionMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPlacedCreatureGetter)lhs, (IPlacedCreatureGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPlacedCreatureGetter)lhs, (IPlacedCreatureGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

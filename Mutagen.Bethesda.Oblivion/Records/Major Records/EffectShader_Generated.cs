@@ -687,6 +687,24 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IEffectShaderGetter item,
+            IEffectShaderGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((EffectShaderCommon)((IEffectShaderGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static EffectShader Duplicate(
             this IEffectShaderGetter item,
             FormKey formKey,
@@ -1125,6 +1143,64 @@ namespace Mutagen.Bethesda.Oblivion
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IEffectShaderGetter lhs,
+            IEffectShaderGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IOblivionMajorRecordGetter)lhs, (IOblivionMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)EffectShader_FieldIndex.FillTexture] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.FillTexture) ?? true))
+                {
+                    if (!string.Equals(lhs.FillTexture, rhs.FillTexture)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)EffectShader_FieldIndex.ParticleShaderTexture] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleShaderTexture) ?? true))
+                {
+                    if (!string.Equals(lhs.ParticleShaderTexture, rhs.ParticleShaderTexture)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)EffectShader_FieldIndex.Data] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.Data) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Data, rhs.Data, out var lhsData, out var rhsData, out var isDataEqual))
+                    {
+                        if (!((EffectShaderDataCommon)((IEffectShaderDataGetter)lhsData).CommonInstance()!).Equals(lhsData, rhsData, equalsMask?.GetSubCrystal((int)EffectShader_FieldIndex.Data))) return false;
+                    }
+                    else if (!isDataEqual) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IOblivionMajorRecordGetter lhs,
+            IOblivionMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IEffectShaderGetter)lhs, (IEffectShaderGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IEffectShaderGetter)lhs, (IEffectShaderGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

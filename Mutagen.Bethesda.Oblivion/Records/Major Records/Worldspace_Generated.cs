@@ -1389,6 +1389,24 @@ namespace Mutagen.Bethesda.Oblivion
                 .Select(m => (IMajorRecord)m);
         }
 
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IWorldspaceGetter item,
+            IWorldspaceGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((WorldspaceCommon)((IWorldspaceGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         [DebuggerStepThrough]
         public static void Remove(
             this IWorldspaceInternal obj,
@@ -2751,6 +2769,180 @@ namespace Mutagen.Bethesda.Oblivion
                         yield break;
                     }
             }
+        }
+        
+        public virtual void FillDifferingFields(
+            IWorldspaceGetter lhs,
+            IWorldspaceGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IOblivionMajorRecordGetter)lhs, (IOblivionMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Worldspace_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Worldspace_FieldIndex.Name) ?? true))
+                {
+                    if (!string.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Worldspace_FieldIndex.Parent] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Worldspace_FieldIndex.Parent) ?? true))
+                {
+                    if (!lhs.Parent.Equals(rhs.Parent)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Worldspace_FieldIndex.Climate] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Worldspace_FieldIndex.Climate) ?? true))
+                {
+                    if (!lhs.Climate.Equals(rhs.Climate)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Worldspace_FieldIndex.Water] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Worldspace_FieldIndex.Water) ?? true))
+                {
+                    if (!lhs.Water.Equals(rhs.Water)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Worldspace_FieldIndex.Icon] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Worldspace_FieldIndex.Icon) ?? true))
+                {
+                    if (!string.Equals(lhs.Icon, rhs.Icon)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Worldspace_FieldIndex.MapData] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Worldspace_FieldIndex.MapData) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.MapData, rhs.MapData, out var lhsMapData, out var rhsMapData, out var isMapDataEqual))
+                    {
+                        if (!((MapDataCommon)((IMapDataGetter)lhsMapData).CommonInstance()!).Equals(lhsMapData, rhsMapData, equalsMask?.GetSubCrystal((int)Worldspace_FieldIndex.MapData))) return false;
+                    }
+                    else if (!isMapDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Worldspace_FieldIndex.Flags] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Worldspace_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Worldspace_FieldIndex.ObjectBoundsMin] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Worldspace_FieldIndex.ObjectBoundsMin) ?? true))
+                {
+                    if (!lhs.ObjectBoundsMin.Equals(rhs.ObjectBoundsMin)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Worldspace_FieldIndex.ObjectBoundsMax] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Worldspace_FieldIndex.ObjectBoundsMax) ?? true))
+                {
+                    if (!lhs.ObjectBoundsMax.Equals(rhs.ObjectBoundsMax)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Worldspace_FieldIndex.Music] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Worldspace_FieldIndex.Music) ?? true))
+                {
+                    if (lhs.Music != rhs.Music) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Worldspace_FieldIndex.OffsetData] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Worldspace_FieldIndex.OffsetData) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.OffsetData, rhs.OffsetData)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Worldspace_FieldIndex.Road] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Worldspace_FieldIndex.Road) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Road, rhs.Road, out var lhsRoad, out var rhsRoad, out var isRoadEqual))
+                    {
+                        if (!((RoadCommon)((IRoadGetter)lhsRoad).CommonInstance()!).Equals(lhsRoad, rhsRoad, equalsMask?.GetSubCrystal((int)Worldspace_FieldIndex.Road))) return false;
+                    }
+                    else if (!isRoadEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Worldspace_FieldIndex.TopCell] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Worldspace_FieldIndex.TopCell) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.TopCell, rhs.TopCell, out var lhsTopCell, out var rhsTopCell, out var isTopCellEqual))
+                    {
+                        if (!((CellCommon)((ICellGetter)lhsTopCell).CommonInstance()!).Equals(lhsTopCell, rhsTopCell, equalsMask?.GetSubCrystal((int)Worldspace_FieldIndex.TopCell))) return false;
+                    }
+                    else if (!isTopCellEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Worldspace_FieldIndex.SubCellsTimestamp] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Worldspace_FieldIndex.SubCellsTimestamp) ?? true))
+                {
+                    if (lhs.SubCellsTimestamp != rhs.SubCellsTimestamp) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Worldspace_FieldIndex.SubCells] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Worldspace_FieldIndex.SubCells) ?? true))
+                {
+                    if (!lhs.SubCells.SequenceEqual(rhs.SubCells, (l, r) => ((WorldspaceBlockCommon)((IWorldspaceBlockGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Worldspace_FieldIndex.SubCells)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IOblivionMajorRecordGetter lhs,
+            IOblivionMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IWorldspaceGetter)lhs, (IWorldspaceGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IWorldspaceGetter)lhs, (IWorldspaceGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IModContext<IOblivionMod, IOblivionModGetter, IMajorRecord, IMajorRecordGetter>> EnumerateMajorRecordContexts(

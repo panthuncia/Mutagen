@@ -768,6 +768,24 @@ namespace Mutagen.Bethesda.Starfield
                 .Select(m => (IMajorRecord)m);
         }
 
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IStarfieldMajorRecordGetter item,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((StarfieldMajorRecordCommon)((IStarfieldMajorRecordGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         [DebuggerStepThrough]
         public static void Remove(
             this IStarfieldMajorRecordInternal obj,
@@ -1457,6 +1475,51 @@ namespace Mutagen.Bethesda.Starfield
                         yield break;
                     }
             }
+        }
+        
+        public virtual void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IMajorRecordGetter)lhs, (IMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)StarfieldMajorRecord_FieldIndex.FormVersion] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)StarfieldMajorRecord_FieldIndex.FormVersion) ?? true))
+                {
+                    if (lhs.FormVersion != rhs.FormVersion) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)StarfieldMajorRecord_FieldIndex.Version2] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)StarfieldMajorRecord_FieldIndex.Version2) ?? true))
+                {
+                    if (lhs.Version2 != rhs.Version2) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)StarfieldMajorRecord_FieldIndex.StarfieldMajorRecordFlags] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)StarfieldMajorRecord_FieldIndex.StarfieldMajorRecordFlags) ?? true))
+                {
+                    if (lhs.StarfieldMajorRecordFlags != rhs.StarfieldMajorRecordFlags) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IStarfieldMajorRecordGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

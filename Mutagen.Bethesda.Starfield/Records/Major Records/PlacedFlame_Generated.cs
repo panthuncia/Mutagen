@@ -674,6 +674,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IPlacedFlameGetter item,
+            IPlacedFlameGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((PlacedFlameCommon)((IPlacedFlameGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static PlacedFlame Duplicate(
             this IPlacedFlameGetter item,
             FormKey formKey,
@@ -1184,6 +1202,51 @@ namespace Mutagen.Bethesda.Starfield
             }
             yield return FormLinkInformation.Factory(obj.Projectile);
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IPlacedFlameGetter lhs,
+            IPlacedFlameGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IAPlacedTrapGetter)lhs, (IAPlacedTrapGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)PlacedFlame_FieldIndex.Projectile] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedFlame_FieldIndex.Projectile) ?? true))
+                {
+                    if (!lhs.Projectile.Equals(rhs.Projectile)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IAPlacedTrapGetter lhs,
+            IAPlacedTrapGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPlacedFlameGetter)lhs, (IPlacedFlameGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPlacedFlameGetter)lhs, (IPlacedFlameGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPlacedFlameGetter)lhs, (IPlacedFlameGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

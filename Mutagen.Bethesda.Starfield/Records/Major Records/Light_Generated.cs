@@ -2631,6 +2631,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ILightGetter item,
+            ILightGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((LightCommon)((ILightGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Light Duplicate(
             this ILightGetter item,
             FormKey formKey,
@@ -3828,6 +3846,464 @@ namespace Mutagen.Bethesda.Starfield
                 yield return LensInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ILightGetter lhs,
+            ILightGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Light_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)Light_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Light_FieldIndex.ObjectBounds] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)Light_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Light_FieldIndex.DirtinessScale] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.DirtinessScale) ?? true))
+                {
+                    if (!lhs.DirtinessScale.Equals(rhs.DirtinessScale)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Light_FieldIndex.ObjectPaletteDefaults] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.ObjectPaletteDefaults) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectPaletteDefaults, rhs.ObjectPaletteDefaults, out var lhsObjectPaletteDefaults, out var rhsObjectPaletteDefaults, out var isObjectPaletteDefaultsEqual))
+                    {
+                        if (!((ObjectPaletteDefaultsCommon)((IObjectPaletteDefaultsGetter)lhsObjectPaletteDefaults).CommonInstance()!).Equals(lhsObjectPaletteDefaults, rhsObjectPaletteDefaults, equalsMask?.GetSubCrystal((int)Light_FieldIndex.ObjectPaletteDefaults))) return false;
+                    }
+                    else if (!isObjectPaletteDefaultsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Light_FieldIndex.Transforms] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.Transforms) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Transforms, rhs.Transforms, out var lhsTransforms, out var rhsTransforms, out var isTransformsEqual))
+                    {
+                        if (!((TransformsCommon)((ITransformsGetter)lhsTransforms).CommonInstance()!).Equals(lhsTransforms, rhsTransforms, equalsMask?.GetSubCrystal((int)Light_FieldIndex.Transforms))) return false;
+                    }
+                    else if (!isTransformsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Light_FieldIndex.DefaultLayer] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.DefaultLayer) ?? true))
+                {
+                    if (!lhs.DefaultLayer.Equals(rhs.DefaultLayer)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Light_FieldIndex.XALG] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.XALG) ?? true))
+                {
+                    if (lhs.XALG != rhs.XALG) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Light_FieldIndex.Components] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Light_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Light_FieldIndex.Model] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)Light_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Light_FieldIndex.Destructible] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.Destructible) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Destructible, rhs.Destructible, out var lhsDestructible, out var rhsDestructible, out var isDestructibleEqual))
+                    {
+                        if (!((DestructibleCommon)((IDestructibleGetter)lhsDestructible).CommonInstance()!).Equals(lhsDestructible, rhsDestructible, equalsMask?.GetSubCrystal((int)Light_FieldIndex.Destructible))) return false;
+                    }
+                    else if (!isDestructibleEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Light_FieldIndex.Keywords] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.Keywords) ?? true))
+                {
+                    if (!lhs.Keywords.SequenceEqualNullable(rhs.Keywords)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Light_FieldIndex.Properties] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.Properties) ?? true))
+                {
+                    if (!lhs.Properties.SequenceEqualNullable(rhs.Properties, (l, r) => ((ObjectPropertyCommon)((IObjectPropertyGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Light_FieldIndex.Properties)))) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Light_FieldIndex.Name] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Light_FieldIndex.Time] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.Time) ?? true))
+                {
+                    if (lhs.Time != rhs.Time) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Light_FieldIndex.Radius] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.Radius) ?? true))
+                {
+                    if (!lhs.Radius.EqualsWithin(rhs.Radius)) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)Light_FieldIndex.Color] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.Color) ?? true))
+                {
+                    if (!lhs.Color.ColorOnlyEquals(rhs.Color)) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)Light_FieldIndex.Flags] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)Light_FieldIndex.FalloffExponent] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.FalloffExponent) ?? true))
+                {
+                    if (!lhs.FalloffExponent.EqualsWithin(rhs.FalloffExponent)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)Light_FieldIndex.FOV] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.FOV) ?? true))
+                {
+                    if (!lhs.FOV.EqualsWithin(rhs.FOV)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)Light_FieldIndex.NearClip] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.NearClip) ?? true))
+                {
+                    if (!lhs.NearClip.EqualsWithin(rhs.NearClip)) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)Light_FieldIndex.FlickerPeriod] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.FlickerPeriod) ?? true))
+                {
+                    if (!lhs.FlickerPeriod.EqualsWithin(rhs.FlickerPeriod)) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)Light_FieldIndex.FlickerIntensityAmplitude] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.FlickerIntensityAmplitude) ?? true))
+                {
+                    if (!lhs.FlickerIntensityAmplitude.EqualsWithin(rhs.FlickerIntensityAmplitude)) return false;
+                }
+                return true;
+            }
+            if (!Equal22()) differs[(int)Light_FieldIndex.FlickerMovementAmplitude] = true;
+            bool Equal22()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.FlickerMovementAmplitude) ?? true))
+                {
+                    if (!lhs.FlickerMovementAmplitude.EqualsWithin(rhs.FlickerMovementAmplitude)) return false;
+                }
+                return true;
+            }
+            if (!Equal23()) differs[(int)Light_FieldIndex.ShadowOffset] = true;
+            bool Equal23()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.ShadowOffset) ?? true))
+                {
+                    if (!lhs.ShadowOffset.EqualsWithin(rhs.ShadowOffset)) return false;
+                }
+                return true;
+            }
+            if (!Equal24()) differs[(int)Light_FieldIndex.InnerFOV] = true;
+            bool Equal24()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.InnerFOV) ?? true))
+                {
+                    if (!lhs.InnerFOV.EqualsWithin(rhs.InnerFOV)) return false;
+                }
+                return true;
+            }
+            if (!Equal25()) differs[(int)Light_FieldIndex.PbrLightTemperatureK] = true;
+            bool Equal25()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.PbrLightTemperatureK) ?? true))
+                {
+                    if (lhs.PbrLightTemperatureK != rhs.PbrLightTemperatureK) return false;
+                }
+                return true;
+            }
+            if (!Equal26()) differs[(int)Light_FieldIndex.PbrLuminousPowerLm] = true;
+            bool Equal26()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.PbrLuminousPowerLm) ?? true))
+                {
+                    if (lhs.PbrLuminousPowerLm != rhs.PbrLuminousPowerLm) return false;
+                }
+                return true;
+            }
+            if (!Equal27()) differs[(int)Light_FieldIndex.Type] = true;
+            bool Equal27()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.Type) ?? true))
+                {
+                    if (lhs.Type != rhs.Type) return false;
+                }
+                return true;
+            }
+            if (!Equal28()) differs[(int)Light_FieldIndex.FlickerEffect] = true;
+            bool Equal28()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.FlickerEffect) ?? true))
+                {
+                    if (lhs.FlickerEffect != rhs.FlickerEffect) return false;
+                }
+                return true;
+            }
+            if (!Equal29()) differs[(int)Light_FieldIndex.UseAdaptiveLighting] = true;
+            bool Equal29()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.UseAdaptiveLighting) ?? true))
+                {
+                    if (lhs.UseAdaptiveLighting != rhs.UseAdaptiveLighting) return false;
+                }
+                return true;
+            }
+            if (!Equal30()) differs[(int)Light_FieldIndex.AdaptiveLightEc] = true;
+            bool Equal30()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.AdaptiveLightEc) ?? true))
+                {
+                    if (!lhs.AdaptiveLightEc.EqualsWithin(rhs.AdaptiveLightEc)) return false;
+                }
+                return true;
+            }
+            if (!Equal31()) differs[(int)Light_FieldIndex.AdaptiveLightEv100Min] = true;
+            bool Equal31()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.AdaptiveLightEv100Min) ?? true))
+                {
+                    if (!lhs.AdaptiveLightEv100Min.EqualsWithin(rhs.AdaptiveLightEv100Min)) return false;
+                }
+                return true;
+            }
+            if (!Equal32()) differs[(int)Light_FieldIndex.AdaptiveLightEv100Max] = true;
+            bool Equal32()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.AdaptiveLightEv100Max) ?? true))
+                {
+                    if (!lhs.AdaptiveLightEv100Max.EqualsWithin(rhs.AdaptiveLightEv100Max)) return false;
+                }
+                return true;
+            }
+            if (!Equal33()) differs[(int)Light_FieldIndex.RadiusFalloutExponent] = true;
+            bool Equal33()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.RadiusFalloutExponent) ?? true))
+                {
+                    if (!lhs.RadiusFalloutExponent.EqualsWithin(rhs.RadiusFalloutExponent)) return false;
+                }
+                return true;
+            }
+            if (!Equal34()) differs[(int)Light_FieldIndex.Gobo] = true;
+            bool Equal34()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.Gobo) ?? true))
+                {
+                    if (!string.Equals(lhs.Gobo, rhs.Gobo)) return false;
+                }
+                return true;
+            }
+            if (!Equal35()) differs[(int)Light_FieldIndex.SoundReference] = true;
+            bool Equal35()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.SoundReference) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.SoundReference, rhs.SoundReference, out var lhsSoundReference, out var rhsSoundReference, out var isSoundReferenceEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsSoundReference).CommonInstance()!).Equals(lhsSoundReference, rhsSoundReference, equalsMask?.GetSubCrystal((int)Light_FieldIndex.SoundReference))) return false;
+                    }
+                    else if (!isSoundReferenceEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal36()) differs[(int)Light_FieldIndex.Lens] = true;
+            bool Equal36()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.Lens) ?? true))
+                {
+                    if (!lhs.Lens.Equals(rhs.Lens)) return false;
+                }
+                return true;
+            }
+            if (!Equal37()) differs[(int)Light_FieldIndex.Barndoors] = true;
+            bool Equal37()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.Barndoors) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Barndoors, rhs.Barndoors, out var lhsBarndoors, out var rhsBarndoors, out var isBarndoorsEqual))
+                    {
+                        if (!((LightBarndoorsCommon)((ILightBarndoorsGetter)lhsBarndoors).CommonInstance()!).Equals(lhsBarndoors, rhsBarndoors, equalsMask?.GetSubCrystal((int)Light_FieldIndex.Barndoors))) return false;
+                    }
+                    else if (!isBarndoorsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal38()) differs[(int)Light_FieldIndex.Roundness] = true;
+            bool Equal38()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.Roundness) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Roundness, rhs.Roundness, out var lhsRoundness, out var rhsRoundness, out var isRoundnessEqual))
+                    {
+                        if (!((LightRoundnessCommon)((ILightRoundnessGetter)lhsRoundness).CommonInstance()!).Equals(lhsRoundness, rhsRoundness, equalsMask?.GetSubCrystal((int)Light_FieldIndex.Roundness))) return false;
+                    }
+                    else if (!isRoundnessEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal39()) differs[(int)Light_FieldIndex.GoboData] = true;
+            bool Equal39()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.GoboData) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.GoboData, rhs.GoboData, out var lhsGoboData, out var rhsGoboData, out var isGoboDataEqual))
+                    {
+                        if (!((LightGoboCommon)((ILightGoboGetter)lhsGoboData).CommonInstance()!).Equals(lhsGoboData, rhsGoboData, equalsMask?.GetSubCrystal((int)Light_FieldIndex.GoboData))) return false;
+                    }
+                    else if (!isGoboDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal40()) differs[(int)Light_FieldIndex.Layer] = true;
+            bool Equal40()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.Layer) ?? true))
+                {
+                    if (lhs.Layer != rhs.Layer) return false;
+                }
+                return true;
+            }
+            if (!Equal41()) differs[(int)Light_FieldIndex.AreaLight] = true;
+            bool Equal41()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.AreaLight) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.AreaLight, rhs.AreaLight, out var lhsAreaLight, out var rhsAreaLight, out var isAreaLightEqual))
+                    {
+                        if (!((AreaLightCommon)((IAreaLightGetter)lhsAreaLight).CommonInstance()!).Equals(lhsAreaLight, rhsAreaLight, equalsMask?.GetSubCrystal((int)Light_FieldIndex.AreaLight))) return false;
+                    }
+                    else if (!isAreaLightEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal42()) differs[(int)Light_FieldIndex.VolumetricLightIntensityScale] = true;
+            bool Equal42()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Light_FieldIndex.VolumetricLightIntensityScale) ?? true))
+                {
+                    if (!lhs.VolumetricLightIntensityScale.EqualsWithin(rhs.VolumetricLightIntensityScale)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILightGetter)lhs, (ILightGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILightGetter)lhs, (ILightGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(ILightGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

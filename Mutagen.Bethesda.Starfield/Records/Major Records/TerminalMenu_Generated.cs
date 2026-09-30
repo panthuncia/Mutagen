@@ -1106,6 +1106,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ITerminalMenuGetter item,
+            ITerminalMenuGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((TerminalMenuCommon)((ITerminalMenuGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static TerminalMenu Duplicate(
             this ITerminalMenuGetter item,
             FormKey formKey,
@@ -1695,6 +1713,109 @@ namespace Mutagen.Bethesda.Starfield
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ITerminalMenuGetter lhs,
+            ITerminalMenuGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)TerminalMenu_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TerminalMenu_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterIndexedCommon)((IVirtualMachineAdapterIndexedGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)TerminalMenu_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)TerminalMenu_FieldIndex.Name] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TerminalMenu_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)TerminalMenu_FieldIndex.ShowBodyText] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TerminalMenu_FieldIndex.ShowBodyText) ?? true))
+                {
+                    if (lhs.ShowBodyText != rhs.ShowBodyText) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)TerminalMenu_FieldIndex.MenuButtonStyle] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TerminalMenu_FieldIndex.MenuButtonStyle) ?? true))
+                {
+                    if (lhs.MenuButtonStyle != rhs.MenuButtonStyle) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)TerminalMenu_FieldIndex.Style] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TerminalMenu_FieldIndex.Style) ?? true))
+                {
+                    if (lhs.Style != rhs.Style) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)TerminalMenu_FieldIndex.INAM] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TerminalMenu_FieldIndex.INAM) ?? true))
+                {
+                    if (!object.Equals(lhs.INAM, rhs.INAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)TerminalMenu_FieldIndex.BodyTexts] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TerminalMenu_FieldIndex.BodyTexts) ?? true))
+                {
+                    if (!lhs.BodyTexts.SequenceEqualNullable(rhs.BodyTexts, (l, r) => ((TerminalMenuBodyTextCommon)((ITerminalMenuBodyTextGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)TerminalMenu_FieldIndex.BodyTexts)))) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)TerminalMenu_FieldIndex.MenuItems] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TerminalMenu_FieldIndex.MenuItems) ?? true))
+                {
+                    if (!lhs.MenuItems.SequenceEqualNullable(rhs.MenuItems, (l, r) => ((TerminalMenuItemCommon)((ITerminalMenuItemGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)TerminalMenu_FieldIndex.MenuItems)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ITerminalMenuGetter)lhs, (ITerminalMenuGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ITerminalMenuGetter)lhs, (ITerminalMenuGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

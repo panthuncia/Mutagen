@@ -1059,6 +1059,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ILoadScreenGetter item,
+            ILoadScreenGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((LoadScreenCommon)((ILoadScreenGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static LoadScreen Duplicate(
             this ILoadScreenGetter item,
             FormKey formKey,
@@ -1657,6 +1675,122 @@ namespace Mutagen.Bethesda.Skyrim
             }
             yield return FormLinkInformation.Factory(obj.LoadingScreenNif);
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ILoadScreenGetter lhs,
+            ILoadScreenGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)LoadScreen_FieldIndex.Icons] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.Icons) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Icons, rhs.Icons, out var lhsIcons, out var rhsIcons, out var isIconsEqual))
+                    {
+                        if (!((IconsCommon)((IIconsGetter)lhsIcons).CommonInstance()!).Equals(lhsIcons, rhsIcons, equalsMask?.GetSubCrystal((int)LoadScreen_FieldIndex.Icons))) return false;
+                    }
+                    else if (!isIconsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)LoadScreen_FieldIndex.Description] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.Description) ?? true))
+                {
+                    if (!object.Equals(lhs.Description, rhs.Description)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)LoadScreen_FieldIndex.Conditions] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.Conditions) ?? true))
+                {
+                    if (!lhs.Conditions.SequenceEqual(rhs.Conditions, (l, r) => ((ConditionCommon)((IConditionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)LoadScreen_FieldIndex.Conditions)))) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)LoadScreen_FieldIndex.LoadingScreenNif] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.LoadingScreenNif) ?? true))
+                {
+                    if (!lhs.LoadingScreenNif.Equals(rhs.LoadingScreenNif)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)LoadScreen_FieldIndex.InitialScale] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.InitialScale) ?? true))
+                {
+                    if (!lhs.InitialScale.EqualsWithin(rhs.InitialScale)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)LoadScreen_FieldIndex.InitialRotation] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.InitialRotation) ?? true))
+                {
+                    if (!lhs.InitialRotation.Equals(rhs.InitialRotation)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)LoadScreen_FieldIndex.RotationOffsetConstraints] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.RotationOffsetConstraints) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.RotationOffsetConstraints, rhs.RotationOffsetConstraints, out var lhsRotationOffsetConstraints, out var rhsRotationOffsetConstraints, out var isRotationOffsetConstraintsEqual))
+                    {
+                        if (!((Int16MinMaxCommon)((IInt16MinMaxGetter)lhsRotationOffsetConstraints).CommonInstance()!).Equals(lhsRotationOffsetConstraints, rhsRotationOffsetConstraints, equalsMask?.GetSubCrystal((int)LoadScreen_FieldIndex.RotationOffsetConstraints))) return false;
+                    }
+                    else if (!isRotationOffsetConstraintsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)LoadScreen_FieldIndex.InitialTranslationOffset] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.InitialTranslationOffset) ?? true))
+                {
+                    if (!lhs.InitialTranslationOffset.Equals(rhs.InitialTranslationOffset)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)LoadScreen_FieldIndex.CameraPath] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.CameraPath) ?? true))
+                {
+                    if (!object.Equals(lhs.CameraPath, rhs.CameraPath)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILoadScreenGetter)lhs, (ILoadScreenGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILoadScreenGetter)lhs, (ILoadScreenGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(ILoadScreenGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

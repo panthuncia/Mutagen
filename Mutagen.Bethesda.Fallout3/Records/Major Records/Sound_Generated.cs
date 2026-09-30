@@ -948,6 +948,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ISoundGetter item,
+            ISoundGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((SoundCommon)((ISoundGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Sound Duplicate(
             this ISoundGetter item,
             FormKey formKey,
@@ -1481,6 +1499,105 @@ namespace Mutagen.Bethesda.Fallout3
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ISoundGetter lhs,
+            ISoundGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Sound_FieldIndex.ObjectBounds] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Sound_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)Sound_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Sound_FieldIndex.File] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Sound_FieldIndex.File) ?? true))
+                {
+                    if (!string.Equals(lhs.File, rhs.File)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Sound_FieldIndex.RandomChancePercent] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Sound_FieldIndex.RandomChancePercent) ?? true))
+                {
+                    if (lhs.RandomChancePercent != rhs.RandomChancePercent) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Sound_FieldIndex.Data] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Sound_FieldIndex.Data) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Data, rhs.Data, out var lhsData, out var rhsData, out var isDataEqual))
+                    {
+                        if (!((SoundDataCommon)((ISoundDataGetter)lhsData).CommonInstance()!).Equals(lhsData, rhsData, equalsMask?.GetSubCrystal((int)Sound_FieldIndex.Data))) return false;
+                    }
+                    else if (!isDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Sound_FieldIndex.AttenuationCurve] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Sound_FieldIndex.AttenuationCurve) ?? true))
+                {
+                    if (!ObjectExt.NullSame(lhs.AttenuationCurve, rhs.AttenuationCurve)) return false;
+                    if (!MemoryExtensions.SequenceEqual<Int16>(lhs.AttenuationCurve!.Value.Span!, rhs.AttenuationCurve!.Value.Span!)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Sound_FieldIndex.ReverbAttenuationControl] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Sound_FieldIndex.ReverbAttenuationControl) ?? true))
+                {
+                    if (lhs.ReverbAttenuationControl != rhs.ReverbAttenuationControl) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Sound_FieldIndex.Priority] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Sound_FieldIndex.Priority) ?? true))
+                {
+                    if (lhs.Priority != rhs.Priority) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISoundGetter)lhs, (ISoundGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISoundGetter)lhs, (ISoundGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

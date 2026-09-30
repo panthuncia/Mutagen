@@ -1272,6 +1272,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IArmorAddonGetter item,
+            IArmorAddonGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ArmorAddonCommon)((IArmorAddonGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ArmorAddon Duplicate(
             this IArmorAddonGetter item,
             FormKey formKey,
@@ -2055,6 +2073,172 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return ArtObjectInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IArmorAddonGetter lhs,
+            IArmorAddonGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ArmorAddon_FieldIndex.BodyTemplate] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.BodyTemplate) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.BodyTemplate, rhs.BodyTemplate, out var lhsBodyTemplate, out var rhsBodyTemplate, out var isBodyTemplateEqual))
+                    {
+                        if (!((BodyTemplateCommon)((IBodyTemplateGetter)lhsBodyTemplate).CommonInstance()!).Equals(lhsBodyTemplate, rhsBodyTemplate, equalsMask?.GetSubCrystal((int)ArmorAddon_FieldIndex.BodyTemplate))) return false;
+                    }
+                    else if (!isBodyTemplateEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)ArmorAddon_FieldIndex.Race] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.Race) ?? true))
+                {
+                    if (!lhs.Race.Equals(rhs.Race)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)ArmorAddon_FieldIndex.Priority] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.Priority) ?? true))
+                {
+                    if (!Equals(lhs.Priority, rhs.Priority)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)ArmorAddon_FieldIndex.WeightSliderEnabled] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.WeightSliderEnabled) ?? true))
+                {
+                    if (!Equals(lhs.WeightSliderEnabled, rhs.WeightSliderEnabled)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)ArmorAddon_FieldIndex.Unknown] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.Unknown) ?? true))
+                {
+                    if (lhs.Unknown != rhs.Unknown) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)ArmorAddon_FieldIndex.DetectionSoundValue] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.DetectionSoundValue) ?? true))
+                {
+                    if (lhs.DetectionSoundValue != rhs.DetectionSoundValue) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)ArmorAddon_FieldIndex.Unknown2] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.Unknown2) ?? true))
+                {
+                    if (lhs.Unknown2 != rhs.Unknown2) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)ArmorAddon_FieldIndex.WeaponAdjust] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.WeaponAdjust) ?? true))
+                {
+                    if (!lhs.WeaponAdjust.EqualsWithin(rhs.WeaponAdjust)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)ArmorAddon_FieldIndex.WorldModel] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.WorldModel) ?? true))
+                {
+                    if (!Equals(lhs.WorldModel, rhs.WorldModel)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)ArmorAddon_FieldIndex.FirstPersonModel] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.FirstPersonModel) ?? true))
+                {
+                    if (!Equals(lhs.FirstPersonModel, rhs.FirstPersonModel)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)ArmorAddon_FieldIndex.SkinTexture] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.SkinTexture) ?? true))
+                {
+                    if (!Equals(lhs.SkinTexture, rhs.SkinTexture)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)ArmorAddon_FieldIndex.TextureSwapList] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.TextureSwapList) ?? true))
+                {
+                    if (!Equals(lhs.TextureSwapList, rhs.TextureSwapList)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)ArmorAddon_FieldIndex.AdditionalRaces] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.AdditionalRaces) ?? true))
+                {
+                    if (!lhs.AdditionalRaces.SequenceEqualNullable(rhs.AdditionalRaces)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)ArmorAddon_FieldIndex.FootstepSound] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.FootstepSound) ?? true))
+                {
+                    if (!lhs.FootstepSound.Equals(rhs.FootstepSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)ArmorAddon_FieldIndex.ArtObject] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.ArtObject) ?? true))
+                {
+                    if (!lhs.ArtObject.Equals(rhs.ArtObject)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IArmorAddonGetter)lhs, (IArmorAddonGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IArmorAddonGetter)lhs, (IArmorAddonGetter)rhs, differs, equalsMask);
         }
         
         public static partial IEnumerable<IAssetLinkGetter> GetInferredAssetLinks(IArmorAddonGetter obj, Type? assetType);

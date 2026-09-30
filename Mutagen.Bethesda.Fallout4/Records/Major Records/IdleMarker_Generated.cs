@@ -1098,6 +1098,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IIdleMarkerGetter item,
+            IIdleMarkerGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((IdleMarkerCommon)((IIdleMarkerGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static IdleMarker Duplicate(
             this IIdleMarkerGetter item,
             FormKey formKey,
@@ -1660,6 +1678,104 @@ namespace Mutagen.Bethesda.Fallout4
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IIdleMarkerGetter lhs,
+            IIdleMarkerGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)IdleMarker_FieldIndex.ObjectBounds] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleMarker_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)IdleMarker_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)IdleMarker_FieldIndex.Keywords] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleMarker_FieldIndex.Keywords) ?? true))
+                {
+                    if (!lhs.Keywords.SequenceEqualNullable(rhs.Keywords)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)IdleMarker_FieldIndex.Flags] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleMarker_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)IdleMarker_FieldIndex.IdleTimer] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleMarker_FieldIndex.IdleTimer) ?? true))
+                {
+                    if (!lhs.IdleTimer.EqualsWithin(rhs.IdleTimer)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)IdleMarker_FieldIndex.Animations] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleMarker_FieldIndex.Animations) ?? true))
+                {
+                    if (!lhs.Animations.SequenceEqualNullable(rhs.Animations)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)IdleMarker_FieldIndex.Unknown] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleMarker_FieldIndex.Unknown) ?? true))
+                {
+                    if (!lhs.Unknown.Equals(rhs.Unknown)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)IdleMarker_FieldIndex.Model] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleMarker_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)IdleMarker_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IIdleMarkerGetter)lhs, (IIdleMarkerGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IIdleMarkerGetter)lhs, (IIdleMarkerGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

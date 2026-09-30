@@ -1937,6 +1937,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ITerminalGetter item,
+            ITerminalGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((TerminalCommon)((ITerminalGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Terminal Duplicate(
             this ITerminalGetter item,
             FormKey formKey,
@@ -2795,6 +2813,216 @@ namespace Mutagen.Bethesda.Fallout4
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ITerminalGetter lhs,
+            ITerminalGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Terminal_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Terminal_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterIndexedCommon)((IVirtualMachineAdapterIndexedGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)Terminal_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Terminal_FieldIndex.ObjectBounds] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Terminal_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)Terminal_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Terminal_FieldIndex.PreviewTransform] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Terminal_FieldIndex.PreviewTransform) ?? true))
+                {
+                    if (!lhs.PreviewTransform.Equals(rhs.PreviewTransform)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Terminal_FieldIndex.HeaderText] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Terminal_FieldIndex.HeaderText) ?? true))
+                {
+                    if (!object.Equals(lhs.HeaderText, rhs.HeaderText)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Terminal_FieldIndex.WelcomeText] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Terminal_FieldIndex.WelcomeText) ?? true))
+                {
+                    if (!object.Equals(lhs.WelcomeText, rhs.WelcomeText)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Terminal_FieldIndex.Name] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Terminal_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Terminal_FieldIndex.Model] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Terminal_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)Terminal_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Terminal_FieldIndex.Keywords] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Terminal_FieldIndex.Keywords) ?? true))
+                {
+                    if (!lhs.Keywords.SequenceEqualNullable(rhs.Keywords)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Terminal_FieldIndex.Properties] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Terminal_FieldIndex.Properties) ?? true))
+                {
+                    if (!lhs.Properties.SequenceEqualNullable(rhs.Properties, (l, r) => ((ObjectPropertyCommon)((IObjectPropertyGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Terminal_FieldIndex.Properties)))) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Terminal_FieldIndex.PNAM] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Terminal_FieldIndex.PNAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.PNAM, rhs.PNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Terminal_FieldIndex.LoopingSound] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Terminal_FieldIndex.LoopingSound) ?? true))
+                {
+                    if (!lhs.LoopingSound.Equals(rhs.LoopingSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Terminal_FieldIndex.FNAM] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Terminal_FieldIndex.FNAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.FNAM, rhs.FNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Terminal_FieldIndex.Holotapes] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Terminal_FieldIndex.Holotapes) ?? true))
+                {
+                    if (!lhs.Holotapes.SequenceEqualNullable(rhs.Holotapes, (l, r) => ((TerminalHolotapeEntryCommon)((ITerminalHolotapeEntryGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Terminal_FieldIndex.Holotapes)))) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Terminal_FieldIndex.Flags] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Terminal_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Terminal_FieldIndex.WorkbenchData] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Terminal_FieldIndex.WorkbenchData) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.WorkbenchData, rhs.WorkbenchData)) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)Terminal_FieldIndex.MarkerModel] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Terminal_FieldIndex.MarkerModel) ?? true))
+                {
+                    if (!string.Equals(lhs.MarkerModel, rhs.MarkerModel)) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)Terminal_FieldIndex.MarkerParameters] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Terminal_FieldIndex.MarkerParameters) ?? true))
+                {
+                    if (!lhs.MarkerParameters.SequenceEqualNullable(rhs.MarkerParameters, (l, r) => ((FurnitureMarkerParametersCommon)((IFurnitureMarkerParametersGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Terminal_FieldIndex.MarkerParameters)))) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)Terminal_FieldIndex.BodyTexts] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Terminal_FieldIndex.BodyTexts) ?? true))
+                {
+                    if (!lhs.BodyTexts.SequenceEqualNullable(rhs.BodyTexts, (l, r) => ((TerminalBodyTextCommon)((ITerminalBodyTextGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Terminal_FieldIndex.BodyTexts)))) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)Terminal_FieldIndex.MenuItems] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Terminal_FieldIndex.MenuItems) ?? true))
+                {
+                    if (!lhs.MenuItems.SequenceEqualNullable(rhs.MenuItems, (l, r) => ((TerminalMenuItemCommon)((ITerminalMenuItemGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Terminal_FieldIndex.MenuItems)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ITerminalGetter)lhs, (ITerminalGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ITerminalGetter)lhs, (ITerminalGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

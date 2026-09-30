@@ -2042,6 +2042,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IArmorGetter item,
+            IArmorGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ArmorCommon)((IArmorGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Armor Duplicate(
             this IArmorGetter item,
             FormKey formKey,
@@ -3070,6 +3088,349 @@ namespace Mutagen.Bethesda.Fallout3
                 yield return AnimationSoundsTemplateInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IArmorGetter lhs,
+            IArmorGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Armor_FieldIndex.ObjectBounds] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)Armor_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Armor_FieldIndex.Name] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.Name) ?? true))
+                {
+                    if (!string.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Armor_FieldIndex.Script] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.Script) ?? true))
+                {
+                    if (!lhs.Script.Equals(rhs.Script)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Armor_FieldIndex.ObjectEffect] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.ObjectEffect) ?? true))
+                {
+                    if (!lhs.ObjectEffect.Equals(rhs.ObjectEffect)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Armor_FieldIndex.BipedData] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.BipedData) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.BipedData, rhs.BipedData, out var lhsBipedData, out var rhsBipedData, out var isBipedDataEqual))
+                    {
+                        if (!((BipedDataCommon)((IBipedDataGetter)lhsBipedData).CommonInstance()!).Equals(lhsBipedData, rhsBipedData, equalsMask?.GetSubCrystal((int)Armor_FieldIndex.BipedData))) return false;
+                    }
+                    else if (!isBipedDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Armor_FieldIndex.MaleBipedModel] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.MaleBipedModel) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.MaleBipedModel, rhs.MaleBipedModel, out var lhsMaleBipedModel, out var rhsMaleBipedModel, out var isMaleBipedModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsMaleBipedModel).CommonInstance()!).Equals(lhsMaleBipedModel, rhsMaleBipedModel, equalsMask?.GetSubCrystal((int)Armor_FieldIndex.MaleBipedModel))) return false;
+                    }
+                    else if (!isMaleBipedModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Armor_FieldIndex.MaleWorldModel] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.MaleWorldModel) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.MaleWorldModel, rhs.MaleWorldModel, out var lhsMaleWorldModel, out var rhsMaleWorldModel, out var isMaleWorldModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsMaleWorldModel).CommonInstance()!).Equals(lhsMaleWorldModel, rhsMaleWorldModel, equalsMask?.GetSubCrystal((int)Armor_FieldIndex.MaleWorldModel))) return false;
+                    }
+                    else if (!isMaleWorldModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Armor_FieldIndex.MaleIcon] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.MaleIcon) ?? true))
+                {
+                    if (!string.Equals(lhs.MaleIcon, rhs.MaleIcon)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Armor_FieldIndex.MaleMessageIcon] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.MaleMessageIcon) ?? true))
+                {
+                    if (!string.Equals(lhs.MaleMessageIcon, rhs.MaleMessageIcon)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Armor_FieldIndex.FemaleBipedModel] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.FemaleBipedModel) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.FemaleBipedModel, rhs.FemaleBipedModel, out var lhsFemaleBipedModel, out var rhsFemaleBipedModel, out var isFemaleBipedModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsFemaleBipedModel).CommonInstance()!).Equals(lhsFemaleBipedModel, rhsFemaleBipedModel, equalsMask?.GetSubCrystal((int)Armor_FieldIndex.FemaleBipedModel))) return false;
+                    }
+                    else if (!isFemaleBipedModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Armor_FieldIndex.FemaleWorldModel] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.FemaleWorldModel) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.FemaleWorldModel, rhs.FemaleWorldModel, out var lhsFemaleWorldModel, out var rhsFemaleWorldModel, out var isFemaleWorldModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsFemaleWorldModel).CommonInstance()!).Equals(lhsFemaleWorldModel, rhsFemaleWorldModel, equalsMask?.GetSubCrystal((int)Armor_FieldIndex.FemaleWorldModel))) return false;
+                    }
+                    else if (!isFemaleWorldModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Armor_FieldIndex.FemaleIcon] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.FemaleIcon) ?? true))
+                {
+                    if (!string.Equals(lhs.FemaleIcon, rhs.FemaleIcon)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Armor_FieldIndex.FemaleMessageIcon] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.FemaleMessageIcon) ?? true))
+                {
+                    if (!string.Equals(lhs.FemaleMessageIcon, rhs.FemaleMessageIcon)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Armor_FieldIndex.RagdollConstraintTemplate] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.RagdollConstraintTemplate) ?? true))
+                {
+                    if (!string.Equals(lhs.RagdollConstraintTemplate, rhs.RagdollConstraintTemplate)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Armor_FieldIndex.Destructible] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.Destructible) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Destructible, rhs.Destructible, out var lhsDestructible, out var rhsDestructible, out var isDestructibleEqual))
+                    {
+                        if (!((DestructibleCommon)((IDestructibleGetter)lhsDestructible).CommonInstance()!).Equals(lhsDestructible, rhsDestructible, equalsMask?.GetSubCrystal((int)Armor_FieldIndex.Destructible))) return false;
+                    }
+                    else if (!isDestructibleEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)Armor_FieldIndex.RepairList] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.RepairList) ?? true))
+                {
+                    if (!lhs.RepairList.Equals(rhs.RepairList)) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)Armor_FieldIndex.BipedModelList] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.BipedModelList) ?? true))
+                {
+                    if (!lhs.BipedModelList.Equals(rhs.BipedModelList)) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)Armor_FieldIndex.EquipmentType] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.EquipmentType) ?? true))
+                {
+                    if (lhs.EquipmentType != rhs.EquipmentType) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)Armor_FieldIndex.PickUpSound] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.PickUpSound) ?? true))
+                {
+                    if (!lhs.PickUpSound.Equals(rhs.PickUpSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)Armor_FieldIndex.DropSound] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.DropSound) ?? true))
+                {
+                    if (!lhs.DropSound.Equals(rhs.DropSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)Armor_FieldIndex.Value] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.Value) ?? true))
+                {
+                    if (lhs.Value != rhs.Value) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)Armor_FieldIndex.Health] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.Health) ?? true))
+                {
+                    if (lhs.Health != rhs.Health) return false;
+                }
+                return true;
+            }
+            if (!Equal22()) differs[(int)Armor_FieldIndex.Weight] = true;
+            bool Equal22()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.Weight) ?? true))
+                {
+                    if (!lhs.Weight.EqualsWithin(rhs.Weight)) return false;
+                }
+                return true;
+            }
+            if (!Equal23()) differs[(int)Armor_FieldIndex.DamageResistance] = true;
+            bool Equal23()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.DamageResistance) ?? true))
+                {
+                    if (lhs.DamageResistance != rhs.DamageResistance) return false;
+                }
+                return true;
+            }
+            if (!Equal24()) differs[(int)Armor_FieldIndex.DnamSlot1] = true;
+            bool Equal24()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.DnamSlot1) ?? true))
+                {
+                    if (lhs.DnamSlot1 != rhs.DnamSlot1) return false;
+                }
+                return true;
+            }
+            if (!Equal25()) differs[(int)Armor_FieldIndex.DamageThreshold] = true;
+            bool Equal25()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.DamageThreshold) ?? true))
+                {
+                    if (!lhs.DamageThreshold.EqualsWithin(rhs.DamageThreshold)) return false;
+                }
+                return true;
+            }
+            if (!Equal26()) differs[(int)Armor_FieldIndex.DnamSlot2] = true;
+            bool Equal26()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.DnamSlot2) ?? true))
+                {
+                    if (lhs.DnamSlot2 != rhs.DnamSlot2) return false;
+                }
+                return true;
+            }
+            if (!Equal27()) differs[(int)Armor_FieldIndex.DnamUnused] = true;
+            bool Equal27()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.DnamUnused) ?? true))
+                {
+                    if (lhs.DnamUnused != rhs.DnamUnused) return false;
+                }
+                return true;
+            }
+            if (!Equal28()) differs[(int)Armor_FieldIndex.OverridesAnimationSounds] = true;
+            bool Equal28()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.OverridesAnimationSounds) ?? true))
+                {
+                    if (lhs.OverridesAnimationSounds != rhs.OverridesAnimationSounds) return false;
+                }
+                return true;
+            }
+            if (!Equal29()) differs[(int)Armor_FieldIndex.AnimationSounds] = true;
+            bool Equal29()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.AnimationSounds) ?? true))
+                {
+                    if (!lhs.AnimationSounds.SequenceEqual(rhs.AnimationSounds, (l, r) => ((ArmorAnimationSoundCommon)((IArmorAnimationSoundGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Armor_FieldIndex.AnimationSounds)))) return false;
+                }
+                return true;
+            }
+            if (!Equal30()) differs[(int)Armor_FieldIndex.AnimationSoundsTemplate] = true;
+            bool Equal30()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.AnimationSoundsTemplate) ?? true))
+                {
+                    if (!lhs.AnimationSoundsTemplate.Equals(rhs.AnimationSoundsTemplate)) return false;
+                }
+                return true;
+            }
+            if (!Equal31()) differs[(int)Armor_FieldIndex.DNAMDataTypeState] = true;
+            bool Equal31()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Armor_FieldIndex.DNAMDataTypeState) ?? true))
+                {
+                    if (lhs.DNAMDataTypeState != rhs.DNAMDataTypeState) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IArmorGetter)lhs, (IArmorGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IArmorGetter)lhs, (IArmorGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

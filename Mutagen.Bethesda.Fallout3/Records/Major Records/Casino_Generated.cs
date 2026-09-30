@@ -2015,6 +2015,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ICasinoGetter item,
+            ICasinoGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((CasinoCommon)((ICasinoGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Casino Duplicate(
             this ICasinoGetter item,
             FormKey formKey,
@@ -2965,6 +2983,375 @@ namespace Mutagen.Bethesda.Fallout3
             yield return FormLinkInformation.Factory(obj.Currency);
             yield return FormLinkInformation.Factory(obj.CasinoWinningsQuest);
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ICasinoGetter lhs,
+            ICasinoGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Casino_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Casino_FieldIndex.DecksPercentBeforeShuffle] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.DecksPercentBeforeShuffle) ?? true))
+                {
+                    if (!lhs.DecksPercentBeforeShuffle.EqualsWithin(rhs.DecksPercentBeforeShuffle)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Casino_FieldIndex.BlackJackPayoutRatio] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.BlackJackPayoutRatio) ?? true))
+                {
+                    if (!lhs.BlackJackPayoutRatio.EqualsWithin(rhs.BlackJackPayoutRatio)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Casino_FieldIndex.SlotReelSymbol1] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.SlotReelSymbol1) ?? true))
+                {
+                    if (lhs.SlotReelSymbol1 != rhs.SlotReelSymbol1) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Casino_FieldIndex.SlotReelSymbol2] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.SlotReelSymbol2) ?? true))
+                {
+                    if (lhs.SlotReelSymbol2 != rhs.SlotReelSymbol2) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Casino_FieldIndex.SlotReelSymbol3] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.SlotReelSymbol3) ?? true))
+                {
+                    if (lhs.SlotReelSymbol3 != rhs.SlotReelSymbol3) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Casino_FieldIndex.SlotReelSymbol4] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.SlotReelSymbol4) ?? true))
+                {
+                    if (lhs.SlotReelSymbol4 != rhs.SlotReelSymbol4) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Casino_FieldIndex.SlotReelSymbol5] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.SlotReelSymbol5) ?? true))
+                {
+                    if (lhs.SlotReelSymbol5 != rhs.SlotReelSymbol5) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Casino_FieldIndex.SlotReelSymbol6] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.SlotReelSymbol6) ?? true))
+                {
+                    if (lhs.SlotReelSymbol6 != rhs.SlotReelSymbol6) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Casino_FieldIndex.SlotReelSymbolW] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.SlotReelSymbolW) ?? true))
+                {
+                    if (lhs.SlotReelSymbolW != rhs.SlotReelSymbolW) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Casino_FieldIndex.NumberOfDecks] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.NumberOfDecks) ?? true))
+                {
+                    if (lhs.NumberOfDecks != rhs.NumberOfDecks) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Casino_FieldIndex.MaxWinnings] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.MaxWinnings) ?? true))
+                {
+                    if (lhs.MaxWinnings != rhs.MaxWinnings) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Casino_FieldIndex.Currency] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.Currency) ?? true))
+                {
+                    if (!lhs.Currency.Equals(rhs.Currency)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Casino_FieldIndex.CasinoWinningsQuest] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.CasinoWinningsQuest) ?? true))
+                {
+                    if (!lhs.CasinoWinningsQuest.Equals(rhs.CasinoWinningsQuest)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Casino_FieldIndex.DealerStayOnSoft17] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.DealerStayOnSoft17) ?? true))
+                {
+                    if (lhs.DealerStayOnSoft17 != rhs.DealerStayOnSoft17) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)Casino_FieldIndex.ChipModelOneDollar] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.ChipModelOneDollar) ?? true))
+                {
+                    if (!string.Equals(lhs.ChipModelOneDollar, rhs.ChipModelOneDollar)) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)Casino_FieldIndex.ChipModelFiveDollar] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.ChipModelFiveDollar) ?? true))
+                {
+                    if (!string.Equals(lhs.ChipModelFiveDollar, rhs.ChipModelFiveDollar)) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)Casino_FieldIndex.ChipModelTenDollar] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.ChipModelTenDollar) ?? true))
+                {
+                    if (!string.Equals(lhs.ChipModelTenDollar, rhs.ChipModelTenDollar)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)Casino_FieldIndex.ChipModelTwentyFiveDollar] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.ChipModelTwentyFiveDollar) ?? true))
+                {
+                    if (!string.Equals(lhs.ChipModelTwentyFiveDollar, rhs.ChipModelTwentyFiveDollar)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)Casino_FieldIndex.ChipModelOneHundredDollar] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.ChipModelOneHundredDollar) ?? true))
+                {
+                    if (!string.Equals(lhs.ChipModelOneHundredDollar, rhs.ChipModelOneHundredDollar)) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)Casino_FieldIndex.ChipModelFiveHundredDollar] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.ChipModelFiveHundredDollar) ?? true))
+                {
+                    if (!string.Equals(lhs.ChipModelFiveHundredDollar, rhs.ChipModelFiveHundredDollar)) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)Casino_FieldIndex.ChipModelRoulette] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.ChipModelRoulette) ?? true))
+                {
+                    if (!string.Equals(lhs.ChipModelRoulette, rhs.ChipModelRoulette)) return false;
+                }
+                return true;
+            }
+            if (!Equal22()) differs[(int)Casino_FieldIndex.SlotMachineModel] = true;
+            bool Equal22()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.SlotMachineModel) ?? true))
+                {
+                    if (!string.Equals(lhs.SlotMachineModel, rhs.SlotMachineModel)) return false;
+                }
+                return true;
+            }
+            if (!Equal23()) differs[(int)Casino_FieldIndex.SlotMachineModel2] = true;
+            bool Equal23()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.SlotMachineModel2) ?? true))
+                {
+                    if (!string.Equals(lhs.SlotMachineModel2, rhs.SlotMachineModel2)) return false;
+                }
+                return true;
+            }
+            if (!Equal24()) differs[(int)Casino_FieldIndex.BlackJackTableModel] = true;
+            bool Equal24()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.BlackJackTableModel) ?? true))
+                {
+                    if (!string.Equals(lhs.BlackJackTableModel, rhs.BlackJackTableModel)) return false;
+                }
+                return true;
+            }
+            if (!Equal25()) differs[(int)Casino_FieldIndex.BlackJackTableModelRelated] = true;
+            bool Equal25()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.BlackJackTableModelRelated) ?? true))
+                {
+                    if (!string.Equals(lhs.BlackJackTableModelRelated, rhs.BlackJackTableModelRelated)) return false;
+                }
+                return true;
+            }
+            if (!Equal26()) differs[(int)Casino_FieldIndex.RouletteTableModel] = true;
+            bool Equal26()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.RouletteTableModel) ?? true))
+                {
+                    if (!string.Equals(lhs.RouletteTableModel, rhs.RouletteTableModel)) return false;
+                }
+                return true;
+            }
+            if (!Equal27()) differs[(int)Casino_FieldIndex.SlotReelTextureSymbol1] = true;
+            bool Equal27()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.SlotReelTextureSymbol1) ?? true))
+                {
+                    if (!string.Equals(lhs.SlotReelTextureSymbol1, rhs.SlotReelTextureSymbol1)) return false;
+                }
+                return true;
+            }
+            if (!Equal28()) differs[(int)Casino_FieldIndex.SlotReelTextureSymbol2] = true;
+            bool Equal28()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.SlotReelTextureSymbol2) ?? true))
+                {
+                    if (!string.Equals(lhs.SlotReelTextureSymbol2, rhs.SlotReelTextureSymbol2)) return false;
+                }
+                return true;
+            }
+            if (!Equal29()) differs[(int)Casino_FieldIndex.SlotReelTextureSymbol3] = true;
+            bool Equal29()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.SlotReelTextureSymbol3) ?? true))
+                {
+                    if (!string.Equals(lhs.SlotReelTextureSymbol3, rhs.SlotReelTextureSymbol3)) return false;
+                }
+                return true;
+            }
+            if (!Equal30()) differs[(int)Casino_FieldIndex.SlotReelTextureSymbol4] = true;
+            bool Equal30()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.SlotReelTextureSymbol4) ?? true))
+                {
+                    if (!string.Equals(lhs.SlotReelTextureSymbol4, rhs.SlotReelTextureSymbol4)) return false;
+                }
+                return true;
+            }
+            if (!Equal31()) differs[(int)Casino_FieldIndex.SlotReelTextureSymbol5] = true;
+            bool Equal31()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.SlotReelTextureSymbol5) ?? true))
+                {
+                    if (!string.Equals(lhs.SlotReelTextureSymbol5, rhs.SlotReelTextureSymbol5)) return false;
+                }
+                return true;
+            }
+            if (!Equal32()) differs[(int)Casino_FieldIndex.SlotReelTextureSymbol6] = true;
+            bool Equal32()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.SlotReelTextureSymbol6) ?? true))
+                {
+                    if (!string.Equals(lhs.SlotReelTextureSymbol6, rhs.SlotReelTextureSymbol6)) return false;
+                }
+                return true;
+            }
+            if (!Equal33()) differs[(int)Casino_FieldIndex.SlotReelTextureSymbolW] = true;
+            bool Equal33()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.SlotReelTextureSymbolW) ?? true))
+                {
+                    if (!string.Equals(lhs.SlotReelTextureSymbolW, rhs.SlotReelTextureSymbolW)) return false;
+                }
+                return true;
+            }
+            if (!Equal34()) differs[(int)Casino_FieldIndex.BlackJackDeckTexture1] = true;
+            bool Equal34()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.BlackJackDeckTexture1) ?? true))
+                {
+                    if (!string.Equals(lhs.BlackJackDeckTexture1, rhs.BlackJackDeckTexture1)) return false;
+                }
+                return true;
+            }
+            if (!Equal35()) differs[(int)Casino_FieldIndex.BlackJackDeckTexture2] = true;
+            bool Equal35()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.BlackJackDeckTexture2) ?? true))
+                {
+                    if (!string.Equals(lhs.BlackJackDeckTexture2, rhs.BlackJackDeckTexture2)) return false;
+                }
+                return true;
+            }
+            if (!Equal36()) differs[(int)Casino_FieldIndex.BlackJackDeckTexture3] = true;
+            bool Equal36()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.BlackJackDeckTexture3) ?? true))
+                {
+                    if (!string.Equals(lhs.BlackJackDeckTexture3, rhs.BlackJackDeckTexture3)) return false;
+                }
+                return true;
+            }
+            if (!Equal37()) differs[(int)Casino_FieldIndex.BlackJackDeckTexture4] = true;
+            bool Equal37()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Casino_FieldIndex.BlackJackDeckTexture4) ?? true))
+                {
+                    if (!string.Equals(lhs.BlackJackDeckTexture4, rhs.BlackJackDeckTexture4)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ICasinoGetter)lhs, (ICasinoGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ICasinoGetter)lhs, (ICasinoGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

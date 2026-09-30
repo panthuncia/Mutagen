@@ -838,6 +838,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ILeveledSpellGetter item,
+            ILeveledSpellGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((LeveledSpellCommon)((ILeveledSpellGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static LeveledSpell Duplicate(
             this ILeveledSpellGetter item,
             FormKey formKey,
@@ -1304,6 +1322,73 @@ namespace Mutagen.Bethesda.Skyrim
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ILeveledSpellGetter lhs,
+            ILeveledSpellGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)LeveledSpell_FieldIndex.ObjectBounds] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LeveledSpell_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)LeveledSpell_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)LeveledSpell_FieldIndex.ChanceNone] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LeveledSpell_FieldIndex.ChanceNone) ?? true))
+                {
+                    if (!lhs.ChanceNone.Equals(rhs.ChanceNone)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)LeveledSpell_FieldIndex.Flags] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LeveledSpell_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)LeveledSpell_FieldIndex.Entries] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LeveledSpell_FieldIndex.Entries) ?? true))
+                {
+                    if (!lhs.Entries.SequenceEqualNullable(rhs.Entries, (l, r) => ((LeveledSpellEntryCommon)((ILeveledSpellEntryGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)LeveledSpell_FieldIndex.Entries)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILeveledSpellGetter)lhs, (ILeveledSpellGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILeveledSpellGetter)lhs, (ILeveledSpellGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

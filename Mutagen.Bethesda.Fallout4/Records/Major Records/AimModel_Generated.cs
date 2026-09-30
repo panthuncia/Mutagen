@@ -1140,6 +1140,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IAimModelGetter item,
+            IAimModelGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((AimModelCommon)((IAimModelGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static AimModel Duplicate(
             this IAimModelGetter item,
             FormKey formKey,
@@ -1718,6 +1736,177 @@ namespace Mutagen.Bethesda.Fallout4
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IAimModelGetter lhs,
+            IAimModelGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)AimModel_FieldIndex.ConeOfFireMinAngle] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimModel_FieldIndex.ConeOfFireMinAngle) ?? true))
+                {
+                    if (!lhs.ConeOfFireMinAngle.EqualsWithin(rhs.ConeOfFireMinAngle)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)AimModel_FieldIndex.ConeOfFireMaxAngle] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimModel_FieldIndex.ConeOfFireMaxAngle) ?? true))
+                {
+                    if (!lhs.ConeOfFireMaxAngle.EqualsWithin(rhs.ConeOfFireMaxAngle)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)AimModel_FieldIndex.ConeOfFireIncreasePerShot] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimModel_FieldIndex.ConeOfFireIncreasePerShot) ?? true))
+                {
+                    if (!lhs.ConeOfFireIncreasePerShot.EqualsWithin(rhs.ConeOfFireIncreasePerShot)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)AimModel_FieldIndex.ConeOfFireIncreasePerSec] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimModel_FieldIndex.ConeOfFireIncreasePerSec) ?? true))
+                {
+                    if (!lhs.ConeOfFireIncreasePerSec.EqualsWithin(rhs.ConeOfFireIncreasePerSec)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)AimModel_FieldIndex.ConeOfFireDecreaseDelayMilliseconds] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimModel_FieldIndex.ConeOfFireDecreaseDelayMilliseconds) ?? true))
+                {
+                    if (lhs.ConeOfFireDecreaseDelayMilliseconds != rhs.ConeOfFireDecreaseDelayMilliseconds) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)AimModel_FieldIndex.ConeOfFireSneakMult] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimModel_FieldIndex.ConeOfFireSneakMult) ?? true))
+                {
+                    if (!lhs.ConeOfFireSneakMult.EqualsWithin(rhs.ConeOfFireSneakMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)AimModel_FieldIndex.RecoilDiminishSpringForce] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimModel_FieldIndex.RecoilDiminishSpringForce) ?? true))
+                {
+                    if (!lhs.RecoilDiminishSpringForce.EqualsWithin(rhs.RecoilDiminishSpringForce)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)AimModel_FieldIndex.RecoilDiminishSightsMult] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimModel_FieldIndex.RecoilDiminishSightsMult) ?? true))
+                {
+                    if (!lhs.RecoilDiminishSightsMult.EqualsWithin(rhs.RecoilDiminishSightsMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)AimModel_FieldIndex.RecoilMaxPerShot] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimModel_FieldIndex.RecoilMaxPerShot) ?? true))
+                {
+                    if (!lhs.RecoilMaxPerShot.EqualsWithin(rhs.RecoilMaxPerShot)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)AimModel_FieldIndex.RecoilMinPerShot] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimModel_FieldIndex.RecoilMinPerShot) ?? true))
+                {
+                    if (!lhs.RecoilMinPerShot.EqualsWithin(rhs.RecoilMinPerShot)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)AimModel_FieldIndex.RecoilHipMult] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimModel_FieldIndex.RecoilHipMult) ?? true))
+                {
+                    if (!lhs.RecoilHipMult.EqualsWithin(rhs.RecoilHipMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)AimModel_FieldIndex.RunawayRecoilShots] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimModel_FieldIndex.RunawayRecoilShots) ?? true))
+                {
+                    if (lhs.RunawayRecoilShots != rhs.RunawayRecoilShots) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)AimModel_FieldIndex.RecoilArc] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimModel_FieldIndex.RecoilArc) ?? true))
+                {
+                    if (!lhs.RecoilArc.EqualsWithin(rhs.RecoilArc)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)AimModel_FieldIndex.RecoilArcRotate] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimModel_FieldIndex.RecoilArcRotate) ?? true))
+                {
+                    if (!lhs.RecoilArcRotate.EqualsWithin(rhs.RecoilArcRotate)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)AimModel_FieldIndex.ConeOfFireIronSightsMult] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimModel_FieldIndex.ConeOfFireIronSightsMult) ?? true))
+                {
+                    if (!lhs.ConeOfFireIronSightsMult.EqualsWithin(rhs.ConeOfFireIronSightsMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)AimModel_FieldIndex.BaseStability] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimModel_FieldIndex.BaseStability) ?? true))
+                {
+                    if (!lhs.BaseStability.EqualsWithin(rhs.BaseStability)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IAimModelGetter)lhs, (IAimModelGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IAimModelGetter)lhs, (IAimModelGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

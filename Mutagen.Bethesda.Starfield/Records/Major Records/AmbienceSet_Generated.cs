@@ -781,6 +781,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IAmbienceSetGetter item,
+            IAmbienceSetGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((AmbienceSetCommon)((IAmbienceSetGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static AmbienceSet Duplicate(
             this IAmbienceSetGetter item,
             FormKey formKey,
@@ -1252,6 +1270,64 @@ namespace Mutagen.Bethesda.Starfield
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IAmbienceSetGetter lhs,
+            IAmbienceSetGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)AmbienceSet_FieldIndex.Sounds] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AmbienceSet_FieldIndex.Sounds) ?? true))
+                {
+                    if (!lhs.Sounds.SequenceEqualNullable(rhs.Sounds, (l, r) => ((AmbientSoundEventCommon)((IAmbientSoundEventGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)AmbienceSet_FieldIndex.Sounds)))) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)AmbienceSet_FieldIndex.MergeBehavior] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AmbienceSet_FieldIndex.MergeBehavior) ?? true))
+                {
+                    if (lhs.MergeBehavior != rhs.MergeBehavior) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)AmbienceSet_FieldIndex.WallaExterior] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AmbienceSet_FieldIndex.WallaExterior) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.WallaExterior, rhs.WallaExterior, out var lhsWallaExterior, out var rhsWallaExterior, out var isWallaExteriorEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsWallaExterior).CommonInstance()!).Equals(lhsWallaExterior, rhsWallaExterior, equalsMask?.GetSubCrystal((int)AmbienceSet_FieldIndex.WallaExterior))) return false;
+                    }
+                    else if (!isWallaExteriorEqual) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IAmbienceSetGetter)lhs, (IAmbienceSetGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IAmbienceSetGetter)lhs, (IAmbienceSetGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

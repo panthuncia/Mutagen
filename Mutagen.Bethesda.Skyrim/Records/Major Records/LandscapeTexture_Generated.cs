@@ -926,6 +926,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ILandscapeTextureGetter item,
+            ILandscapeTextureGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((LandscapeTextureCommon)((ILandscapeTextureGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static LandscapeTexture Duplicate(
             this ILandscapeTextureGetter item,
             FormKey formKey,
@@ -1430,6 +1448,96 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ILandscapeTextureGetter lhs,
+            ILandscapeTextureGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)LandscapeTexture_FieldIndex.TextureSet] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LandscapeTexture_FieldIndex.TextureSet) ?? true))
+                {
+                    if (!lhs.TextureSet.Equals(rhs.TextureSet)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)LandscapeTexture_FieldIndex.MaterialType] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LandscapeTexture_FieldIndex.MaterialType) ?? true))
+                {
+                    if (!lhs.MaterialType.Equals(rhs.MaterialType)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)LandscapeTexture_FieldIndex.HavokFriction] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LandscapeTexture_FieldIndex.HavokFriction) ?? true))
+                {
+                    if (lhs.HavokFriction != rhs.HavokFriction) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)LandscapeTexture_FieldIndex.HavokRestitution] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LandscapeTexture_FieldIndex.HavokRestitution) ?? true))
+                {
+                    if (lhs.HavokRestitution != rhs.HavokRestitution) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)LandscapeTexture_FieldIndex.TextureSpecularExponent] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LandscapeTexture_FieldIndex.TextureSpecularExponent) ?? true))
+                {
+                    if (lhs.TextureSpecularExponent != rhs.TextureSpecularExponent) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)LandscapeTexture_FieldIndex.Grasses] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LandscapeTexture_FieldIndex.Grasses) ?? true))
+                {
+                    if (!lhs.Grasses.SequenceEqualNullable(rhs.Grasses)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)LandscapeTexture_FieldIndex.Flags] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LandscapeTexture_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILandscapeTextureGetter)lhs, (ILandscapeTextureGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILandscapeTextureGetter)lhs, (ILandscapeTextureGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

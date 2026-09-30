@@ -2471,6 +2471,24 @@ namespace Mutagen.Bethesda.Skyrim
                 .Select(m => (IMajorRecord)m);
         }
 
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ICellGetter item,
+            ICellGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((CellCommon)((ICellGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         [DebuggerStepThrough]
         public static void Remove(
             this ICellInternal obj,
@@ -4125,6 +4143,368 @@ namespace Mutagen.Bethesda.Skyrim
                         yield break;
                     }
             }
+        }
+        
+        public virtual void FillDifferingFields(
+            ICellGetter lhs,
+            ICellGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Cell_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Cell_FieldIndex.Flags] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Cell_FieldIndex.Grid] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.Grid) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Grid, rhs.Grid, out var lhsGrid, out var rhsGrid, out var isGridEqual))
+                    {
+                        if (!((CellGridCommon)((ICellGridGetter)lhsGrid).CommonInstance()!).Equals(lhsGrid, rhsGrid, equalsMask?.GetSubCrystal((int)Cell_FieldIndex.Grid))) return false;
+                    }
+                    else if (!isGridEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Cell_FieldIndex.Lighting] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.Lighting) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Lighting, rhs.Lighting, out var lhsLighting, out var rhsLighting, out var isLightingEqual))
+                    {
+                        if (!((CellLightingCommon)((ICellLightingGetter)lhsLighting).CommonInstance()!).Equals(lhsLighting, rhsLighting, equalsMask?.GetSubCrystal((int)Cell_FieldIndex.Lighting))) return false;
+                    }
+                    else if (!isLightingEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Cell_FieldIndex.OcclusionData] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.OcclusionData) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.OcclusionData, rhs.OcclusionData)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Cell_FieldIndex.MaxHeightData] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.MaxHeightData) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.MaxHeightData, rhs.MaxHeightData, out var lhsMaxHeightData, out var rhsMaxHeightData, out var isMaxHeightDataEqual))
+                    {
+                        if (!((CellMaxHeightDataCommon)((ICellMaxHeightDataGetter)lhsMaxHeightData).CommonInstance()!).Equals(lhsMaxHeightData, rhsMaxHeightData, equalsMask?.GetSubCrystal((int)Cell_FieldIndex.MaxHeightData))) return false;
+                    }
+                    else if (!isMaxHeightDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Cell_FieldIndex.LightingTemplate] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.LightingTemplate) ?? true))
+                {
+                    if (!lhs.LightingTemplate.Equals(rhs.LightingTemplate)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Cell_FieldIndex.LNAM] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.LNAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.LNAM, rhs.LNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Cell_FieldIndex.WaterHeight] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.WaterHeight) ?? true))
+                {
+                    if (!lhs.WaterHeight.EqualsWithin(rhs.WaterHeight)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Cell_FieldIndex.WaterNoiseTexture] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.WaterNoiseTexture) ?? true))
+                {
+                    if (!string.Equals(lhs.WaterNoiseTexture, rhs.WaterNoiseTexture)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Cell_FieldIndex.Regions] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.Regions) ?? true))
+                {
+                    if (!lhs.Regions.SequenceEqualNullable(rhs.Regions)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Cell_FieldIndex.Location] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.Location) ?? true))
+                {
+                    if (!lhs.Location.Equals(rhs.Location)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Cell_FieldIndex.XWCN] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.XWCN) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.XWCN, rhs.XWCN)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Cell_FieldIndex.XWCS] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.XWCS) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.XWCS, rhs.XWCS)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Cell_FieldIndex.WaterVelocity] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.WaterVelocity) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.WaterVelocity, rhs.WaterVelocity, out var lhsWaterVelocity, out var rhsWaterVelocity, out var isWaterVelocityEqual))
+                    {
+                        if (!((CellWaterVelocityCommon)((ICellWaterVelocityGetter)lhsWaterVelocity).CommonInstance()!).Equals(lhsWaterVelocity, rhsWaterVelocity, equalsMask?.GetSubCrystal((int)Cell_FieldIndex.WaterVelocity))) return false;
+                    }
+                    else if (!isWaterVelocityEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)Cell_FieldIndex.Water] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.Water) ?? true))
+                {
+                    if (!lhs.Water.Equals(rhs.Water)) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)Cell_FieldIndex.Owner] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.Owner) ?? true))
+                {
+                    if (!lhs.Owner.Equals(rhs.Owner)) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)Cell_FieldIndex.FactionRank] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.FactionRank) ?? true))
+                {
+                    if (lhs.FactionRank != rhs.FactionRank) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)Cell_FieldIndex.LockList] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.LockList) ?? true))
+                {
+                    if (!lhs.LockList.Equals(rhs.LockList)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)Cell_FieldIndex.WaterEnvironmentMap] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.WaterEnvironmentMap) ?? true))
+                {
+                    if (!string.Equals(lhs.WaterEnvironmentMap, rhs.WaterEnvironmentMap)) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)Cell_FieldIndex.SkyAndWeatherFromRegion] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.SkyAndWeatherFromRegion) ?? true))
+                {
+                    if (!lhs.SkyAndWeatherFromRegion.Equals(rhs.SkyAndWeatherFromRegion)) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)Cell_FieldIndex.AcousticSpace] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.AcousticSpace) ?? true))
+                {
+                    if (!lhs.AcousticSpace.Equals(rhs.AcousticSpace)) return false;
+                }
+                return true;
+            }
+            if (!Equal22()) differs[(int)Cell_FieldIndex.EncounterZone] = true;
+            bool Equal22()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.EncounterZone) ?? true))
+                {
+                    if (!lhs.EncounterZone.Equals(rhs.EncounterZone)) return false;
+                }
+                return true;
+            }
+            if (!Equal23()) differs[(int)Cell_FieldIndex.Music] = true;
+            bool Equal23()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.Music) ?? true))
+                {
+                    if (!lhs.Music.Equals(rhs.Music)) return false;
+                }
+                return true;
+            }
+            if (!Equal24()) differs[(int)Cell_FieldIndex.ImageSpace] = true;
+            bool Equal24()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.ImageSpace) ?? true))
+                {
+                    if (!lhs.ImageSpace.Equals(rhs.ImageSpace)) return false;
+                }
+                return true;
+            }
+            if (!Equal25()) differs[(int)Cell_FieldIndex.Landscape] = true;
+            bool Equal25()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.Landscape) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Landscape, rhs.Landscape, out var lhsLandscape, out var rhsLandscape, out var isLandscapeEqual))
+                    {
+                        if (!((LandscapeCommon)((ILandscapeGetter)lhsLandscape).CommonInstance()!).Equals(lhsLandscape, rhsLandscape, equalsMask?.GetSubCrystal((int)Cell_FieldIndex.Landscape))) return false;
+                    }
+                    else if (!isLandscapeEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal26()) differs[(int)Cell_FieldIndex.NavigationMeshes] = true;
+            bool Equal26()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.NavigationMeshes) ?? true))
+                {
+                    if (!lhs.NavigationMeshes.SequenceEqual(rhs.NavigationMeshes, (l, r) => ((NavigationMeshCommon)((INavigationMeshGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Cell_FieldIndex.NavigationMeshes)))) return false;
+                }
+                return true;
+            }
+            if (!Equal27()) differs[(int)Cell_FieldIndex.Timestamp] = true;
+            bool Equal27()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.Timestamp) ?? true))
+                {
+                    if (lhs.Timestamp != rhs.Timestamp) return false;
+                }
+                return true;
+            }
+            if (!Equal28()) differs[(int)Cell_FieldIndex.UnknownGroupData] = true;
+            bool Equal28()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.UnknownGroupData) ?? true))
+                {
+                    if (lhs.UnknownGroupData != rhs.UnknownGroupData) return false;
+                }
+                return true;
+            }
+            if (!Equal29()) differs[(int)Cell_FieldIndex.PersistentTimestamp] = true;
+            bool Equal29()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.PersistentTimestamp) ?? true))
+                {
+                    if (lhs.PersistentTimestamp != rhs.PersistentTimestamp) return false;
+                }
+                return true;
+            }
+            if (!Equal30()) differs[(int)Cell_FieldIndex.PersistentUnknownGroupData] = true;
+            bool Equal30()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.PersistentUnknownGroupData) ?? true))
+                {
+                    if (lhs.PersistentUnknownGroupData != rhs.PersistentUnknownGroupData) return false;
+                }
+                return true;
+            }
+            if (!Equal31()) differs[(int)Cell_FieldIndex.Persistent] = true;
+            bool Equal31()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.Persistent) ?? true))
+                {
+                    if (!lhs.Persistent.SequenceEqualNullable(rhs.Persistent)) return false;
+                }
+                return true;
+            }
+            if (!Equal32()) differs[(int)Cell_FieldIndex.TemporaryTimestamp] = true;
+            bool Equal32()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.TemporaryTimestamp) ?? true))
+                {
+                    if (lhs.TemporaryTimestamp != rhs.TemporaryTimestamp) return false;
+                }
+                return true;
+            }
+            if (!Equal33()) differs[(int)Cell_FieldIndex.TemporaryUnknownGroupData] = true;
+            bool Equal33()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.TemporaryUnknownGroupData) ?? true))
+                {
+                    if (lhs.TemporaryUnknownGroupData != rhs.TemporaryUnknownGroupData) return false;
+                }
+                return true;
+            }
+            if (!Equal34()) differs[(int)Cell_FieldIndex.Temporary] = true;
+            bool Equal34()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Cell_FieldIndex.Temporary) ?? true))
+                {
+                    if (!lhs.Temporary.SequenceEqualNullable(rhs.Temporary)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ICellGetter)lhs, (ICellGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ICellGetter)lhs, (ICellGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IModContext<ISkyrimMod, ISkyrimModGetter, IMajorRecord, IMajorRecordGetter>> EnumerateMajorRecordContexts(

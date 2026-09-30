@@ -4602,6 +4602,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IEffectShaderGetter item,
+            IEffectShaderGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((EffectShaderCommon)((IEffectShaderGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static EffectShader Duplicate(
             this IEffectShaderGetter item,
             FormKey formKey,
@@ -6335,6 +6353,987 @@ namespace Mutagen.Bethesda.Skyrim
             yield return FormLinkInformation.Factory(obj.AddonModels);
             yield return FormLinkInformation.Factory(obj.AmbientSound);
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IEffectShaderGetter lhs,
+            IEffectShaderGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)EffectShader_FieldIndex.FillTexture] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.FillTexture) ?? true))
+                {
+                    if (!object.Equals(lhs.FillTexture, rhs.FillTexture)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)EffectShader_FieldIndex.ParticleShaderTexture] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleShaderTexture) ?? true))
+                {
+                    if (!object.Equals(lhs.ParticleShaderTexture, rhs.ParticleShaderTexture)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)EffectShader_FieldIndex.HolesTexture] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.HolesTexture) ?? true))
+                {
+                    if (!object.Equals(lhs.HolesTexture, rhs.HolesTexture)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)EffectShader_FieldIndex.MembranePaletteTexture] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.MembranePaletteTexture) ?? true))
+                {
+                    if (!object.Equals(lhs.MembranePaletteTexture, rhs.MembranePaletteTexture)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)EffectShader_FieldIndex.ParticlePaletteTexture] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticlePaletteTexture) ?? true))
+                {
+                    if (!object.Equals(lhs.ParticlePaletteTexture, rhs.ParticlePaletteTexture)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)EffectShader_FieldIndex.Unknown] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.Unknown) ?? true))
+                {
+                    if (lhs.Unknown != rhs.Unknown) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)EffectShader_FieldIndex.MembraneSourceBlendMode] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.MembraneSourceBlendMode) ?? true))
+                {
+                    if (lhs.MembraneSourceBlendMode != rhs.MembraneSourceBlendMode) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)EffectShader_FieldIndex.MembraneBlendOperation] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.MembraneBlendOperation) ?? true))
+                {
+                    if (lhs.MembraneBlendOperation != rhs.MembraneBlendOperation) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)EffectShader_FieldIndex.MembraneZTest] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.MembraneZTest) ?? true))
+                {
+                    if (lhs.MembraneZTest != rhs.MembraneZTest) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)EffectShader_FieldIndex.FillColorKey1] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.FillColorKey1) ?? true))
+                {
+                    if (!lhs.FillColorKey1.ColorOnlyEquals(rhs.FillColorKey1)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)EffectShader_FieldIndex.FillAlphaFadeInTime] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.FillAlphaFadeInTime) ?? true))
+                {
+                    if (!lhs.FillAlphaFadeInTime.EqualsWithin(rhs.FillAlphaFadeInTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)EffectShader_FieldIndex.FillFullAlphaTime] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.FillFullAlphaTime) ?? true))
+                {
+                    if (!lhs.FillFullAlphaTime.EqualsWithin(rhs.FillFullAlphaTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)EffectShader_FieldIndex.FillFadeOutTime] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.FillFadeOutTime) ?? true))
+                {
+                    if (!lhs.FillFadeOutTime.EqualsWithin(rhs.FillFadeOutTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)EffectShader_FieldIndex.FillPersistentAlphaRatio] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.FillPersistentAlphaRatio) ?? true))
+                {
+                    if (!lhs.FillPersistentAlphaRatio.EqualsWithin(rhs.FillPersistentAlphaRatio)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)EffectShader_FieldIndex.FillAlphaPulseAmplitude] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.FillAlphaPulseAmplitude) ?? true))
+                {
+                    if (!lhs.FillAlphaPulseAmplitude.EqualsWithin(rhs.FillAlphaPulseAmplitude)) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)EffectShader_FieldIndex.FillAlphaPulseFrequency] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.FillAlphaPulseFrequency) ?? true))
+                {
+                    if (!lhs.FillAlphaPulseFrequency.EqualsWithin(rhs.FillAlphaPulseFrequency)) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)EffectShader_FieldIndex.FillTextureAnimationSpeedU] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.FillTextureAnimationSpeedU) ?? true))
+                {
+                    if (!lhs.FillTextureAnimationSpeedU.EqualsWithin(rhs.FillTextureAnimationSpeedU)) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)EffectShader_FieldIndex.FillTextureAnimationSpeedV] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.FillTextureAnimationSpeedV) ?? true))
+                {
+                    if (!lhs.FillTextureAnimationSpeedV.EqualsWithin(rhs.FillTextureAnimationSpeedV)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)EffectShader_FieldIndex.EdgeEffectFallOff] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.EdgeEffectFallOff) ?? true))
+                {
+                    if (!lhs.EdgeEffectFallOff.EqualsWithin(rhs.EdgeEffectFallOff)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)EffectShader_FieldIndex.EdgeEffectColor] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.EdgeEffectColor) ?? true))
+                {
+                    if (!lhs.EdgeEffectColor.ColorOnlyEquals(rhs.EdgeEffectColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)EffectShader_FieldIndex.EdgeEffectAlphaFadeInTime] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.EdgeEffectAlphaFadeInTime) ?? true))
+                {
+                    if (!lhs.EdgeEffectAlphaFadeInTime.EqualsWithin(rhs.EdgeEffectAlphaFadeInTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)EffectShader_FieldIndex.EdgeEffectFullAlphaTime] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.EdgeEffectFullAlphaTime) ?? true))
+                {
+                    if (!lhs.EdgeEffectFullAlphaTime.EqualsWithin(rhs.EdgeEffectFullAlphaTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal22()) differs[(int)EffectShader_FieldIndex.EdgeEffectAlphaFadeOutTime] = true;
+            bool Equal22()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.EdgeEffectAlphaFadeOutTime) ?? true))
+                {
+                    if (!lhs.EdgeEffectAlphaFadeOutTime.EqualsWithin(rhs.EdgeEffectAlphaFadeOutTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal23()) differs[(int)EffectShader_FieldIndex.EdgeEffectPersistentAlphaRatio] = true;
+            bool Equal23()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.EdgeEffectPersistentAlphaRatio) ?? true))
+                {
+                    if (!lhs.EdgeEffectPersistentAlphaRatio.EqualsWithin(rhs.EdgeEffectPersistentAlphaRatio)) return false;
+                }
+                return true;
+            }
+            if (!Equal24()) differs[(int)EffectShader_FieldIndex.EdgeEffectAlphaPulseAmplitude] = true;
+            bool Equal24()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.EdgeEffectAlphaPulseAmplitude) ?? true))
+                {
+                    if (!lhs.EdgeEffectAlphaPulseAmplitude.EqualsWithin(rhs.EdgeEffectAlphaPulseAmplitude)) return false;
+                }
+                return true;
+            }
+            if (!Equal25()) differs[(int)EffectShader_FieldIndex.EdgeEffectAlphaPulseFrequency] = true;
+            bool Equal25()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.EdgeEffectAlphaPulseFrequency) ?? true))
+                {
+                    if (!lhs.EdgeEffectAlphaPulseFrequency.EqualsWithin(rhs.EdgeEffectAlphaPulseFrequency)) return false;
+                }
+                return true;
+            }
+            if (!Equal26()) differs[(int)EffectShader_FieldIndex.FillFullAlphaRatio] = true;
+            bool Equal26()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.FillFullAlphaRatio) ?? true))
+                {
+                    if (!lhs.FillFullAlphaRatio.EqualsWithin(rhs.FillFullAlphaRatio)) return false;
+                }
+                return true;
+            }
+            if (!Equal27()) differs[(int)EffectShader_FieldIndex.EdgeEffectFullAlphaRatio] = true;
+            bool Equal27()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.EdgeEffectFullAlphaRatio) ?? true))
+                {
+                    if (!lhs.EdgeEffectFullAlphaRatio.EqualsWithin(rhs.EdgeEffectFullAlphaRatio)) return false;
+                }
+                return true;
+            }
+            if (!Equal28()) differs[(int)EffectShader_FieldIndex.MembraneDestBlendMode] = true;
+            bool Equal28()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.MembraneDestBlendMode) ?? true))
+                {
+                    if (lhs.MembraneDestBlendMode != rhs.MembraneDestBlendMode) return false;
+                }
+                return true;
+            }
+            if (!Equal29()) differs[(int)EffectShader_FieldIndex.ParticleSourceBlendMode] = true;
+            bool Equal29()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleSourceBlendMode) ?? true))
+                {
+                    if (lhs.ParticleSourceBlendMode != rhs.ParticleSourceBlendMode) return false;
+                }
+                return true;
+            }
+            if (!Equal30()) differs[(int)EffectShader_FieldIndex.ParticleBlendOperation] = true;
+            bool Equal30()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleBlendOperation) ?? true))
+                {
+                    if (lhs.ParticleBlendOperation != rhs.ParticleBlendOperation) return false;
+                }
+                return true;
+            }
+            if (!Equal31()) differs[(int)EffectShader_FieldIndex.ParticleZTest] = true;
+            bool Equal31()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleZTest) ?? true))
+                {
+                    if (lhs.ParticleZTest != rhs.ParticleZTest) return false;
+                }
+                return true;
+            }
+            if (!Equal32()) differs[(int)EffectShader_FieldIndex.ParticleDestBlendMode] = true;
+            bool Equal32()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleDestBlendMode) ?? true))
+                {
+                    if (lhs.ParticleDestBlendMode != rhs.ParticleDestBlendMode) return false;
+                }
+                return true;
+            }
+            if (!Equal33()) differs[(int)EffectShader_FieldIndex.ParticleBirthRampUpTime] = true;
+            bool Equal33()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleBirthRampUpTime) ?? true))
+                {
+                    if (!lhs.ParticleBirthRampUpTime.EqualsWithin(rhs.ParticleBirthRampUpTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal34()) differs[(int)EffectShader_FieldIndex.ParticleFullBirthTime] = true;
+            bool Equal34()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleFullBirthTime) ?? true))
+                {
+                    if (!lhs.ParticleFullBirthTime.EqualsWithin(rhs.ParticleFullBirthTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal35()) differs[(int)EffectShader_FieldIndex.ParticleBirthRampDownTime] = true;
+            bool Equal35()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleBirthRampDownTime) ?? true))
+                {
+                    if (!lhs.ParticleBirthRampDownTime.EqualsWithin(rhs.ParticleBirthRampDownTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal36()) differs[(int)EffectShader_FieldIndex.ParticleFullBirthRatio] = true;
+            bool Equal36()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleFullBirthRatio) ?? true))
+                {
+                    if (!lhs.ParticleFullBirthRatio.EqualsWithin(rhs.ParticleFullBirthRatio)) return false;
+                }
+                return true;
+            }
+            if (!Equal37()) differs[(int)EffectShader_FieldIndex.ParticlePeristentCount] = true;
+            bool Equal37()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticlePeristentCount) ?? true))
+                {
+                    if (!lhs.ParticlePeristentCount.EqualsWithin(rhs.ParticlePeristentCount)) return false;
+                }
+                return true;
+            }
+            if (!Equal38()) differs[(int)EffectShader_FieldIndex.ParticleLifetime] = true;
+            bool Equal38()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleLifetime) ?? true))
+                {
+                    if (!lhs.ParticleLifetime.EqualsWithin(rhs.ParticleLifetime)) return false;
+                }
+                return true;
+            }
+            if (!Equal39()) differs[(int)EffectShader_FieldIndex.ParticleLifetimePlusMinus] = true;
+            bool Equal39()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleLifetimePlusMinus) ?? true))
+                {
+                    if (!lhs.ParticleLifetimePlusMinus.EqualsWithin(rhs.ParticleLifetimePlusMinus)) return false;
+                }
+                return true;
+            }
+            if (!Equal40()) differs[(int)EffectShader_FieldIndex.ParticleInitialSpeedAlongNormal] = true;
+            bool Equal40()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleInitialSpeedAlongNormal) ?? true))
+                {
+                    if (!lhs.ParticleInitialSpeedAlongNormal.EqualsWithin(rhs.ParticleInitialSpeedAlongNormal)) return false;
+                }
+                return true;
+            }
+            if (!Equal41()) differs[(int)EffectShader_FieldIndex.ParticleAccelerationAlongNormal] = true;
+            bool Equal41()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleAccelerationAlongNormal) ?? true))
+                {
+                    if (!lhs.ParticleAccelerationAlongNormal.EqualsWithin(rhs.ParticleAccelerationAlongNormal)) return false;
+                }
+                return true;
+            }
+            if (!Equal42()) differs[(int)EffectShader_FieldIndex.ParticleInitialVelocity1] = true;
+            bool Equal42()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleInitialVelocity1) ?? true))
+                {
+                    if (!lhs.ParticleInitialVelocity1.EqualsWithin(rhs.ParticleInitialVelocity1)) return false;
+                }
+                return true;
+            }
+            if (!Equal43()) differs[(int)EffectShader_FieldIndex.ParticleInitialVelocity2] = true;
+            bool Equal43()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleInitialVelocity2) ?? true))
+                {
+                    if (!lhs.ParticleInitialVelocity2.EqualsWithin(rhs.ParticleInitialVelocity2)) return false;
+                }
+                return true;
+            }
+            if (!Equal44()) differs[(int)EffectShader_FieldIndex.ParticleInitialVelocity3] = true;
+            bool Equal44()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleInitialVelocity3) ?? true))
+                {
+                    if (!lhs.ParticleInitialVelocity3.EqualsWithin(rhs.ParticleInitialVelocity3)) return false;
+                }
+                return true;
+            }
+            if (!Equal45()) differs[(int)EffectShader_FieldIndex.ParticleAcceleration1] = true;
+            bool Equal45()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleAcceleration1) ?? true))
+                {
+                    if (!lhs.ParticleAcceleration1.EqualsWithin(rhs.ParticleAcceleration1)) return false;
+                }
+                return true;
+            }
+            if (!Equal46()) differs[(int)EffectShader_FieldIndex.ParticleAcceleration2] = true;
+            bool Equal46()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleAcceleration2) ?? true))
+                {
+                    if (!lhs.ParticleAcceleration2.EqualsWithin(rhs.ParticleAcceleration2)) return false;
+                }
+                return true;
+            }
+            if (!Equal47()) differs[(int)EffectShader_FieldIndex.ParticleAcceleration3] = true;
+            bool Equal47()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleAcceleration3) ?? true))
+                {
+                    if (!lhs.ParticleAcceleration3.EqualsWithin(rhs.ParticleAcceleration3)) return false;
+                }
+                return true;
+            }
+            if (!Equal48()) differs[(int)EffectShader_FieldIndex.ParticleScaleKey1] = true;
+            bool Equal48()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleScaleKey1) ?? true))
+                {
+                    if (!lhs.ParticleScaleKey1.EqualsWithin(rhs.ParticleScaleKey1)) return false;
+                }
+                return true;
+            }
+            if (!Equal49()) differs[(int)EffectShader_FieldIndex.ParticleScaleKey2] = true;
+            bool Equal49()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleScaleKey2) ?? true))
+                {
+                    if (!lhs.ParticleScaleKey2.EqualsWithin(rhs.ParticleScaleKey2)) return false;
+                }
+                return true;
+            }
+            if (!Equal50()) differs[(int)EffectShader_FieldIndex.ParticleScaleKey1Time] = true;
+            bool Equal50()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleScaleKey1Time) ?? true))
+                {
+                    if (!lhs.ParticleScaleKey1Time.EqualsWithin(rhs.ParticleScaleKey1Time)) return false;
+                }
+                return true;
+            }
+            if (!Equal51()) differs[(int)EffectShader_FieldIndex.ParticleScaleKey2Time] = true;
+            bool Equal51()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleScaleKey2Time) ?? true))
+                {
+                    if (!lhs.ParticleScaleKey2Time.EqualsWithin(rhs.ParticleScaleKey2Time)) return false;
+                }
+                return true;
+            }
+            if (!Equal52()) differs[(int)EffectShader_FieldIndex.ColorKey1] = true;
+            bool Equal52()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ColorKey1) ?? true))
+                {
+                    if (!lhs.ColorKey1.ColorOnlyEquals(rhs.ColorKey1)) return false;
+                }
+                return true;
+            }
+            if (!Equal53()) differs[(int)EffectShader_FieldIndex.ColorKey2] = true;
+            bool Equal53()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ColorKey2) ?? true))
+                {
+                    if (!lhs.ColorKey2.ColorOnlyEquals(rhs.ColorKey2)) return false;
+                }
+                return true;
+            }
+            if (!Equal54()) differs[(int)EffectShader_FieldIndex.ColorKey3] = true;
+            bool Equal54()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ColorKey3) ?? true))
+                {
+                    if (!lhs.ColorKey3.ColorOnlyEquals(rhs.ColorKey3)) return false;
+                }
+                return true;
+            }
+            if (!Equal55()) differs[(int)EffectShader_FieldIndex.ColorKey1Alpha] = true;
+            bool Equal55()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ColorKey1Alpha) ?? true))
+                {
+                    if (!lhs.ColorKey1Alpha.EqualsWithin(rhs.ColorKey1Alpha)) return false;
+                }
+                return true;
+            }
+            if (!Equal56()) differs[(int)EffectShader_FieldIndex.ColorKey2Alpha] = true;
+            bool Equal56()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ColorKey2Alpha) ?? true))
+                {
+                    if (!lhs.ColorKey2Alpha.EqualsWithin(rhs.ColorKey2Alpha)) return false;
+                }
+                return true;
+            }
+            if (!Equal57()) differs[(int)EffectShader_FieldIndex.ColorKey3Alpha] = true;
+            bool Equal57()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ColorKey3Alpha) ?? true))
+                {
+                    if (!lhs.ColorKey3Alpha.EqualsWithin(rhs.ColorKey3Alpha)) return false;
+                }
+                return true;
+            }
+            if (!Equal58()) differs[(int)EffectShader_FieldIndex.ColorKey1Time] = true;
+            bool Equal58()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ColorKey1Time) ?? true))
+                {
+                    if (!lhs.ColorKey1Time.EqualsWithin(rhs.ColorKey1Time)) return false;
+                }
+                return true;
+            }
+            if (!Equal59()) differs[(int)EffectShader_FieldIndex.ColorKey2Time] = true;
+            bool Equal59()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ColorKey2Time) ?? true))
+                {
+                    if (!lhs.ColorKey2Time.EqualsWithin(rhs.ColorKey2Time)) return false;
+                }
+                return true;
+            }
+            if (!Equal60()) differs[(int)EffectShader_FieldIndex.ColorKey3Time] = true;
+            bool Equal60()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ColorKey3Time) ?? true))
+                {
+                    if (!lhs.ColorKey3Time.EqualsWithin(rhs.ColorKey3Time)) return false;
+                }
+                return true;
+            }
+            if (!Equal61()) differs[(int)EffectShader_FieldIndex.ParticleInitialSpeedAlongNormalPlusMinus] = true;
+            bool Equal61()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleInitialSpeedAlongNormalPlusMinus) ?? true))
+                {
+                    if (!lhs.ParticleInitialSpeedAlongNormalPlusMinus.EqualsWithin(rhs.ParticleInitialSpeedAlongNormalPlusMinus)) return false;
+                }
+                return true;
+            }
+            if (!Equal62()) differs[(int)EffectShader_FieldIndex.ParticleInitialRotationDegree] = true;
+            bool Equal62()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleInitialRotationDegree) ?? true))
+                {
+                    if (!lhs.ParticleInitialRotationDegree.EqualsWithin(rhs.ParticleInitialRotationDegree)) return false;
+                }
+                return true;
+            }
+            if (!Equal63()) differs[(int)EffectShader_FieldIndex.ParticleInitialRotationDegreePlusMinus] = true;
+            bool Equal63()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleInitialRotationDegreePlusMinus) ?? true))
+                {
+                    if (!lhs.ParticleInitialRotationDegreePlusMinus.EqualsWithin(rhs.ParticleInitialRotationDegreePlusMinus)) return false;
+                }
+                return true;
+            }
+            if (!Equal64()) differs[(int)EffectShader_FieldIndex.ParticleRotationSpeedDegreePerSec] = true;
+            bool Equal64()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleRotationSpeedDegreePerSec) ?? true))
+                {
+                    if (!lhs.ParticleRotationSpeedDegreePerSec.EqualsWithin(rhs.ParticleRotationSpeedDegreePerSec)) return false;
+                }
+                return true;
+            }
+            if (!Equal65()) differs[(int)EffectShader_FieldIndex.ParticleRotationSpeedDegreePerSecPlusMinus] = true;
+            bool Equal65()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleRotationSpeedDegreePerSecPlusMinus) ?? true))
+                {
+                    if (!lhs.ParticleRotationSpeedDegreePerSecPlusMinus.EqualsWithin(rhs.ParticleRotationSpeedDegreePerSecPlusMinus)) return false;
+                }
+                return true;
+            }
+            if (!Equal66()) differs[(int)EffectShader_FieldIndex.AddonModels] = true;
+            bool Equal66()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.AddonModels) ?? true))
+                {
+                    if (!lhs.AddonModels.Equals(rhs.AddonModels)) return false;
+                }
+                return true;
+            }
+            if (!Equal67()) differs[(int)EffectShader_FieldIndex.HolesStartTime] = true;
+            bool Equal67()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.HolesStartTime) ?? true))
+                {
+                    if (!lhs.HolesStartTime.EqualsWithin(rhs.HolesStartTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal68()) differs[(int)EffectShader_FieldIndex.HolesEndTime] = true;
+            bool Equal68()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.HolesEndTime) ?? true))
+                {
+                    if (!lhs.HolesEndTime.EqualsWithin(rhs.HolesEndTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal69()) differs[(int)EffectShader_FieldIndex.HolesStartValue] = true;
+            bool Equal69()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.HolesStartValue) ?? true))
+                {
+                    if (!lhs.HolesStartValue.EqualsWithin(rhs.HolesStartValue)) return false;
+                }
+                return true;
+            }
+            if (!Equal70()) differs[(int)EffectShader_FieldIndex.HolesEndValue] = true;
+            bool Equal70()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.HolesEndValue) ?? true))
+                {
+                    if (!lhs.HolesEndValue.EqualsWithin(rhs.HolesEndValue)) return false;
+                }
+                return true;
+            }
+            if (!Equal71()) differs[(int)EffectShader_FieldIndex.EdgeWidth] = true;
+            bool Equal71()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.EdgeWidth) ?? true))
+                {
+                    if (!lhs.EdgeWidth.EqualsWithin(rhs.EdgeWidth)) return false;
+                }
+                return true;
+            }
+            if (!Equal72()) differs[(int)EffectShader_FieldIndex.EdgeColor] = true;
+            bool Equal72()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.EdgeColor) ?? true))
+                {
+                    if (!lhs.EdgeColor.ColorOnlyEquals(rhs.EdgeColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal73()) differs[(int)EffectShader_FieldIndex.ExplosionWindSpeed] = true;
+            bool Equal73()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ExplosionWindSpeed) ?? true))
+                {
+                    if (!lhs.ExplosionWindSpeed.EqualsWithin(rhs.ExplosionWindSpeed)) return false;
+                }
+                return true;
+            }
+            if (!Equal74()) differs[(int)EffectShader_FieldIndex.TextureCountU] = true;
+            bool Equal74()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.TextureCountU) ?? true))
+                {
+                    if (lhs.TextureCountU != rhs.TextureCountU) return false;
+                }
+                return true;
+            }
+            if (!Equal75()) differs[(int)EffectShader_FieldIndex.TextureCountV] = true;
+            bool Equal75()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.TextureCountV) ?? true))
+                {
+                    if (lhs.TextureCountV != rhs.TextureCountV) return false;
+                }
+                return true;
+            }
+            if (!Equal76()) differs[(int)EffectShader_FieldIndex.AddonModelsFadeInTime] = true;
+            bool Equal76()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.AddonModelsFadeInTime) ?? true))
+                {
+                    if (!lhs.AddonModelsFadeInTime.EqualsWithin(rhs.AddonModelsFadeInTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal77()) differs[(int)EffectShader_FieldIndex.AddonModelsFadeOutTime] = true;
+            bool Equal77()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.AddonModelsFadeOutTime) ?? true))
+                {
+                    if (!lhs.AddonModelsFadeOutTime.EqualsWithin(rhs.AddonModelsFadeOutTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal78()) differs[(int)EffectShader_FieldIndex.AddonModelsScaleStart] = true;
+            bool Equal78()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.AddonModelsScaleStart) ?? true))
+                {
+                    if (!lhs.AddonModelsScaleStart.EqualsWithin(rhs.AddonModelsScaleStart)) return false;
+                }
+                return true;
+            }
+            if (!Equal79()) differs[(int)EffectShader_FieldIndex.AddonModelsScaleEnd] = true;
+            bool Equal79()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.AddonModelsScaleEnd) ?? true))
+                {
+                    if (!lhs.AddonModelsScaleEnd.EqualsWithin(rhs.AddonModelsScaleEnd)) return false;
+                }
+                return true;
+            }
+            if (!Equal80()) differs[(int)EffectShader_FieldIndex.AddonModelsScaleInTime] = true;
+            bool Equal80()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.AddonModelsScaleInTime) ?? true))
+                {
+                    if (!lhs.AddonModelsScaleInTime.EqualsWithin(rhs.AddonModelsScaleInTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal81()) differs[(int)EffectShader_FieldIndex.AddonModelsScaleOutTime] = true;
+            bool Equal81()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.AddonModelsScaleOutTime) ?? true))
+                {
+                    if (!lhs.AddonModelsScaleOutTime.EqualsWithin(rhs.AddonModelsScaleOutTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal82()) differs[(int)EffectShader_FieldIndex.AmbientSound] = true;
+            bool Equal82()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.AmbientSound) ?? true))
+                {
+                    if (!lhs.AmbientSound.Equals(rhs.AmbientSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal83()) differs[(int)EffectShader_FieldIndex.FillColorKey2] = true;
+            bool Equal83()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.FillColorKey2) ?? true))
+                {
+                    if (!lhs.FillColorKey2.ColorOnlyEquals(rhs.FillColorKey2)) return false;
+                }
+                return true;
+            }
+            if (!Equal84()) differs[(int)EffectShader_FieldIndex.FillColorKey3] = true;
+            bool Equal84()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.FillColorKey3) ?? true))
+                {
+                    if (!lhs.FillColorKey3.ColorOnlyEquals(rhs.FillColorKey3)) return false;
+                }
+                return true;
+            }
+            if (!Equal85()) differs[(int)EffectShader_FieldIndex.FillColorKey1Scale] = true;
+            bool Equal85()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.FillColorKey1Scale) ?? true))
+                {
+                    if (!lhs.FillColorKey1Scale.EqualsWithin(rhs.FillColorKey1Scale)) return false;
+                }
+                return true;
+            }
+            if (!Equal86()) differs[(int)EffectShader_FieldIndex.FillColorKey2Scale] = true;
+            bool Equal86()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.FillColorKey2Scale) ?? true))
+                {
+                    if (!lhs.FillColorKey2Scale.EqualsWithin(rhs.FillColorKey2Scale)) return false;
+                }
+                return true;
+            }
+            if (!Equal87()) differs[(int)EffectShader_FieldIndex.FillColorKey3Scale] = true;
+            bool Equal87()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.FillColorKey3Scale) ?? true))
+                {
+                    if (!lhs.FillColorKey3Scale.EqualsWithin(rhs.FillColorKey3Scale)) return false;
+                }
+                return true;
+            }
+            if (!Equal88()) differs[(int)EffectShader_FieldIndex.FillColorKey1Time] = true;
+            bool Equal88()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.FillColorKey1Time) ?? true))
+                {
+                    if (!lhs.FillColorKey1Time.EqualsWithin(rhs.FillColorKey1Time)) return false;
+                }
+                return true;
+            }
+            if (!Equal89()) differs[(int)EffectShader_FieldIndex.FillColorKey2Time] = true;
+            bool Equal89()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.FillColorKey2Time) ?? true))
+                {
+                    if (!lhs.FillColorKey2Time.EqualsWithin(rhs.FillColorKey2Time)) return false;
+                }
+                return true;
+            }
+            if (!Equal90()) differs[(int)EffectShader_FieldIndex.FillColorKey3Time] = true;
+            bool Equal90()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.FillColorKey3Time) ?? true))
+                {
+                    if (!lhs.FillColorKey3Time.EqualsWithin(rhs.FillColorKey3Time)) return false;
+                }
+                return true;
+            }
+            if (!Equal91()) differs[(int)EffectShader_FieldIndex.ColorScale] = true;
+            bool Equal91()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ColorScale) ?? true))
+                {
+                    if (!lhs.ColorScale.EqualsWithin(rhs.ColorScale)) return false;
+                }
+                return true;
+            }
+            if (!Equal92()) differs[(int)EffectShader_FieldIndex.BirthPositionOffset] = true;
+            bool Equal92()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.BirthPositionOffset) ?? true))
+                {
+                    if (!lhs.BirthPositionOffset.EqualsWithin(rhs.BirthPositionOffset)) return false;
+                }
+                return true;
+            }
+            if (!Equal93()) differs[(int)EffectShader_FieldIndex.BirthPositionOffsetRangePlusMinus] = true;
+            bool Equal93()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.BirthPositionOffsetRangePlusMinus) ?? true))
+                {
+                    if (!lhs.BirthPositionOffsetRangePlusMinus.EqualsWithin(rhs.BirthPositionOffsetRangePlusMinus)) return false;
+                }
+                return true;
+            }
+            if (!Equal94()) differs[(int)EffectShader_FieldIndex.ParticleAnimatedStartFrame] = true;
+            bool Equal94()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleAnimatedStartFrame) ?? true))
+                {
+                    if (lhs.ParticleAnimatedStartFrame != rhs.ParticleAnimatedStartFrame) return false;
+                }
+                return true;
+            }
+            if (!Equal95()) differs[(int)EffectShader_FieldIndex.ParticleAnimatedStartFrameVariation] = true;
+            bool Equal95()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleAnimatedStartFrameVariation) ?? true))
+                {
+                    if (lhs.ParticleAnimatedStartFrameVariation != rhs.ParticleAnimatedStartFrameVariation) return false;
+                }
+                return true;
+            }
+            if (!Equal96()) differs[(int)EffectShader_FieldIndex.ParticleAnimatedEndFrame] = true;
+            bool Equal96()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleAnimatedEndFrame) ?? true))
+                {
+                    if (lhs.ParticleAnimatedEndFrame != rhs.ParticleAnimatedEndFrame) return false;
+                }
+                return true;
+            }
+            if (!Equal97()) differs[(int)EffectShader_FieldIndex.ParticleAnimatedLoopStartFrame] = true;
+            bool Equal97()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleAnimatedLoopStartFrame) ?? true))
+                {
+                    if (lhs.ParticleAnimatedLoopStartFrame != rhs.ParticleAnimatedLoopStartFrame) return false;
+                }
+                return true;
+            }
+            if (!Equal98()) differs[(int)EffectShader_FieldIndex.ParticleAnimatedLoopStartVariation] = true;
+            bool Equal98()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleAnimatedLoopStartVariation) ?? true))
+                {
+                    if (lhs.ParticleAnimatedLoopStartVariation != rhs.ParticleAnimatedLoopStartVariation) return false;
+                }
+                return true;
+            }
+            if (!Equal99()) differs[(int)EffectShader_FieldIndex.ParticleAnimatedFrameCount] = true;
+            bool Equal99()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleAnimatedFrameCount) ?? true))
+                {
+                    if (lhs.ParticleAnimatedFrameCount != rhs.ParticleAnimatedFrameCount) return false;
+                }
+                return true;
+            }
+            if (!Equal100()) differs[(int)EffectShader_FieldIndex.ParticleAnimatedFrameCountVariation] = true;
+            bool Equal100()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.ParticleAnimatedFrameCountVariation) ?? true))
+                {
+                    if (lhs.ParticleAnimatedFrameCountVariation != rhs.ParticleAnimatedFrameCountVariation) return false;
+                }
+                return true;
+            }
+            if (!Equal101()) differs[(int)EffectShader_FieldIndex.Flags] = true;
+            bool Equal101()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal102()) differs[(int)EffectShader_FieldIndex.FillTextureScaleU] = true;
+            bool Equal102()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.FillTextureScaleU) ?? true))
+                {
+                    if (!lhs.FillTextureScaleU.EqualsWithin(rhs.FillTextureScaleU)) return false;
+                }
+                return true;
+            }
+            if (!Equal103()) differs[(int)EffectShader_FieldIndex.FillTextureScaleV] = true;
+            bool Equal103()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.FillTextureScaleV) ?? true))
+                {
+                    if (!lhs.FillTextureScaleV.EqualsWithin(rhs.FillTextureScaleV)) return false;
+                }
+                return true;
+            }
+            if (!Equal104()) differs[(int)EffectShader_FieldIndex.SceneGraphEmitDepthLimit] = true;
+            bool Equal104()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.SceneGraphEmitDepthLimit) ?? true))
+                {
+                    if (lhs.SceneGraphEmitDepthLimit != rhs.SceneGraphEmitDepthLimit) return false;
+                }
+                return true;
+            }
+            if (!Equal105()) differs[(int)EffectShader_FieldIndex.DATADataTypeState] = true;
+            bool Equal105()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EffectShader_FieldIndex.DATADataTypeState) ?? true))
+                {
+                    if (lhs.DATADataTypeState != rhs.DATADataTypeState) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IEffectShaderGetter)lhs, (IEffectShaderGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IEffectShaderGetter)lhs, (IEffectShaderGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IEffectShaderGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

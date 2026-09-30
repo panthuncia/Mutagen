@@ -979,6 +979,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IFactionGetter item,
+            IFactionGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((FactionCommon)((IFactionGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Faction Duplicate(
             this IFactionGetter item,
             FormKey formKey,
@@ -1489,6 +1507,87 @@ namespace Mutagen.Bethesda.Fallout3
                 yield return ReputationInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IFactionGetter lhs,
+            IFactionGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Faction_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.Name) ?? true))
+                {
+                    if (!string.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Faction_FieldIndex.Relations] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.Relations) ?? true))
+                {
+                    if (!lhs.Relations.SequenceEqual(rhs.Relations, (l, r) => ((RelationCommon)((IRelationGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Faction_FieldIndex.Relations)))) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Faction_FieldIndex.Flags] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Faction_FieldIndex.CrimeGoldMultiplier] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.CrimeGoldMultiplier) ?? true))
+                {
+                    if (!lhs.CrimeGoldMultiplier.EqualsWithin(rhs.CrimeGoldMultiplier)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Faction_FieldIndex.Ranks] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.Ranks) ?? true))
+                {
+                    if (!lhs.Ranks.SequenceEqual(rhs.Ranks, (l, r) => ((RankCommon)((IRankGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Faction_FieldIndex.Ranks)))) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Faction_FieldIndex.Reputation] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.Reputation) ?? true))
+                {
+                    if (!lhs.Reputation.Equals(rhs.Reputation)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IFactionGetter)lhs, (IFactionGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IFactionGetter)lhs, (IFactionGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

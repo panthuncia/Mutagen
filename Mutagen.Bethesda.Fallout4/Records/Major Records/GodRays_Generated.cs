@@ -896,6 +896,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IGodRaysGetter item,
+            IGodRaysGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((GodRaysCommon)((IGodRaysGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static GodRays Duplicate(
             this IGodRaysGetter item,
             FormKey formKey,
@@ -1390,6 +1408,114 @@ namespace Mutagen.Bethesda.Fallout4
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IGodRaysGetter lhs,
+            IGodRaysGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)GodRays_FieldIndex.BackColor] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)GodRays_FieldIndex.BackColor) ?? true))
+                {
+                    if (!lhs.BackColor.ColorOnlyEquals(rhs.BackColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)GodRays_FieldIndex.ForwardColor] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)GodRays_FieldIndex.ForwardColor) ?? true))
+                {
+                    if (!lhs.ForwardColor.ColorOnlyEquals(rhs.ForwardColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)GodRays_FieldIndex.Intensity] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)GodRays_FieldIndex.Intensity) ?? true))
+                {
+                    if (!lhs.Intensity.EqualsWithin(rhs.Intensity)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)GodRays_FieldIndex.AirColorScale] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)GodRays_FieldIndex.AirColorScale) ?? true))
+                {
+                    if (!lhs.AirColorScale.EqualsWithin(rhs.AirColorScale)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)GodRays_FieldIndex.BackColorScale] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)GodRays_FieldIndex.BackColorScale) ?? true))
+                {
+                    if (!lhs.BackColorScale.EqualsWithin(rhs.BackColorScale)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)GodRays_FieldIndex.ForwardColorScale] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)GodRays_FieldIndex.ForwardColorScale) ?? true))
+                {
+                    if (!lhs.ForwardColorScale.EqualsWithin(rhs.ForwardColorScale)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)GodRays_FieldIndex.BackPhase] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)GodRays_FieldIndex.BackPhase) ?? true))
+                {
+                    if (!lhs.BackPhase.EqualsWithin(rhs.BackPhase)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)GodRays_FieldIndex.AirColor] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)GodRays_FieldIndex.AirColor) ?? true))
+                {
+                    if (!lhs.AirColor.ColorOnlyEquals(rhs.AirColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)GodRays_FieldIndex.ForwardPhase] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)GodRays_FieldIndex.ForwardPhase) ?? true))
+                {
+                    if (!lhs.ForwardPhase.EqualsWithin(rhs.ForwardPhase)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IGodRaysGetter)lhs, (IGodRaysGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IGodRaysGetter)lhs, (IGodRaysGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

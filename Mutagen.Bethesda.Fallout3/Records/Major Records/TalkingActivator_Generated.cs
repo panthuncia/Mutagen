@@ -1040,6 +1040,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ITalkingActivatorGetter item,
+            ITalkingActivatorGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((TalkingActivatorCommon)((ITalkingActivatorGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static TalkingActivator Duplicate(
             this ITalkingActivatorGetter item,
             FormKey formKey,
@@ -1610,6 +1628,117 @@ namespace Mutagen.Bethesda.Fallout3
                 yield return RadioTemplateInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ITalkingActivatorGetter lhs,
+            ITalkingActivatorGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)TalkingActivator_FieldIndex.ObjectBounds] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TalkingActivator_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)TalkingActivator_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)TalkingActivator_FieldIndex.Name] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TalkingActivator_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)TalkingActivator_FieldIndex.Model] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TalkingActivator_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)TalkingActivator_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)TalkingActivator_FieldIndex.Script] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TalkingActivator_FieldIndex.Script) ?? true))
+                {
+                    if (!lhs.Script.Equals(rhs.Script)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)TalkingActivator_FieldIndex.Destructible] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TalkingActivator_FieldIndex.Destructible) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Destructible, rhs.Destructible, out var lhsDestructible, out var rhsDestructible, out var isDestructibleEqual))
+                    {
+                        if (!((DestructibleCommon)((IDestructibleGetter)lhsDestructible).CommonInstance()!).Equals(lhsDestructible, rhsDestructible, equalsMask?.GetSubCrystal((int)TalkingActivator_FieldIndex.Destructible))) return false;
+                    }
+                    else if (!isDestructibleEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)TalkingActivator_FieldIndex.LoopingSound] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TalkingActivator_FieldIndex.LoopingSound) ?? true))
+                {
+                    if (!lhs.LoopingSound.Equals(rhs.LoopingSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)TalkingActivator_FieldIndex.VoiceType] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TalkingActivator_FieldIndex.VoiceType) ?? true))
+                {
+                    if (!lhs.VoiceType.Equals(rhs.VoiceType)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)TalkingActivator_FieldIndex.RadioTemplate] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TalkingActivator_FieldIndex.RadioTemplate) ?? true))
+                {
+                    if (!lhs.RadioTemplate.Equals(rhs.RadioTemplate)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ITalkingActivatorGetter)lhs, (ITalkingActivatorGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ITalkingActivatorGetter)lhs, (ITalkingActivatorGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

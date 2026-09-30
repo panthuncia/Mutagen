@@ -2199,6 +2199,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IIngestibleGetter item,
+            IIngestibleGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((IngestibleCommon)((IIngestibleGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Ingestible Duplicate(
             this IIngestibleGetter item,
             FormKey formKey,
@@ -3260,6 +3278,307 @@ namespace Mutagen.Bethesda.Starfield
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IIngestibleGetter lhs,
+            IIngestibleGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Ingestible_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)Ingestible_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Ingestible_FieldIndex.ObjectBounds] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)Ingestible_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Ingestible_FieldIndex.DirtinessScale] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.DirtinessScale) ?? true))
+                {
+                    if (!lhs.DirtinessScale.Equals(rhs.DirtinessScale)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Ingestible_FieldIndex.ObjectPaletteDefaults] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.ObjectPaletteDefaults) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectPaletteDefaults, rhs.ObjectPaletteDefaults, out var lhsObjectPaletteDefaults, out var rhsObjectPaletteDefaults, out var isObjectPaletteDefaultsEqual))
+                    {
+                        if (!((ObjectPaletteDefaultsCommon)((IObjectPaletteDefaultsGetter)lhsObjectPaletteDefaults).CommonInstance()!).Equals(lhsObjectPaletteDefaults, rhsObjectPaletteDefaults, equalsMask?.GetSubCrystal((int)Ingestible_FieldIndex.ObjectPaletteDefaults))) return false;
+                    }
+                    else if (!isObjectPaletteDefaultsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Ingestible_FieldIndex.Transforms] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.Transforms) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Transforms, rhs.Transforms, out var lhsTransforms, out var rhsTransforms, out var isTransformsEqual))
+                    {
+                        if (!((TransformsCommon)((ITransformsGetter)lhsTransforms).CommonInstance()!).Equals(lhsTransforms, rhsTransforms, equalsMask?.GetSubCrystal((int)Ingestible_FieldIndex.Transforms))) return false;
+                    }
+                    else if (!isTransformsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Ingestible_FieldIndex.Components] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Ingestible_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Ingestible_FieldIndex.XALG] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.XALG) ?? true))
+                {
+                    if (lhs.XALG != rhs.XALG) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Ingestible_FieldIndex.Name] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Ingestible_FieldIndex.Keywords] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.Keywords) ?? true))
+                {
+                    if (!lhs.Keywords.SequenceEqualNullable(rhs.Keywords)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Ingestible_FieldIndex.Model] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)Ingestible_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Ingestible_FieldIndex.Destructible] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.Destructible) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Destructible, rhs.Destructible, out var lhsDestructible, out var rhsDestructible, out var isDestructibleEqual))
+                    {
+                        if (!((DestructibleCommon)((IDestructibleGetter)lhsDestructible).CommonInstance()!).Equals(lhsDestructible, rhsDestructible, equalsMask?.GetSubCrystal((int)Ingestible_FieldIndex.Destructible))) return false;
+                    }
+                    else if (!isDestructibleEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Ingestible_FieldIndex.PickupSound] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.PickupSound) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.PickupSound, rhs.PickupSound, out var lhsPickupSound, out var rhsPickupSound, out var isPickupSoundEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsPickupSound).CommonInstance()!).Equals(lhsPickupSound, rhsPickupSound, equalsMask?.GetSubCrystal((int)Ingestible_FieldIndex.PickupSound))) return false;
+                    }
+                    else if (!isPickupSoundEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Ingestible_FieldIndex.DropdownSound] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.DropdownSound) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.DropdownSound, rhs.DropdownSound, out var lhsDropdownSound, out var rhsDropdownSound, out var isDropdownSoundEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsDropdownSound).CommonInstance()!).Equals(lhsDropdownSound, rhsDropdownSound, equalsMask?.GetSubCrystal((int)Ingestible_FieldIndex.DropdownSound))) return false;
+                    }
+                    else if (!isDropdownSoundEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Ingestible_FieldIndex.EquipmentType] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.EquipmentType) ?? true))
+                {
+                    if (!lhs.EquipmentType.Equals(rhs.EquipmentType)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Ingestible_FieldIndex.CraftingSound] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.CraftingSound) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.CraftingSound, rhs.CraftingSound, out var lhsCraftingSound, out var rhsCraftingSound, out var isCraftingSoundEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsCraftingSound).CommonInstance()!).Equals(lhsCraftingSound, rhsCraftingSound, equalsMask?.GetSubCrystal((int)Ingestible_FieldIndex.CraftingSound))) return false;
+                    }
+                    else if (!isCraftingSoundEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)Ingestible_FieldIndex.Description] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.Description) ?? true))
+                {
+                    if (!object.Equals(lhs.Description, rhs.Description)) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)Ingestible_FieldIndex.Resources] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.Resources) ?? true))
+                {
+                    if (!lhs.Resources.SequenceEqualNullable(rhs.Resources, (l, r) => ((ItemResourceCommon)((IItemResourceGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Ingestible_FieldIndex.Resources)))) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)Ingestible_FieldIndex.ComponentDisplayIndices] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.ComponentDisplayIndices) ?? true))
+                {
+                    if (!lhs.ComponentDisplayIndices.SequenceEqualNullable(rhs.ComponentDisplayIndices)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)Ingestible_FieldIndex.Weight] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.Weight) ?? true))
+                {
+                    if (!lhs.Weight.EqualsWithin(rhs.Weight)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)Ingestible_FieldIndex.Value] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.Value) ?? true))
+                {
+                    if (lhs.Value != rhs.Value) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)Ingestible_FieldIndex.Flags] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)Ingestible_FieldIndex.Addiction] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.Addiction) ?? true))
+                {
+                    if (!lhs.Addiction.Equals(rhs.Addiction)) return false;
+                }
+                return true;
+            }
+            if (!Equal22()) differs[(int)Ingestible_FieldIndex.AddictionChance] = true;
+            bool Equal22()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.AddictionChance) ?? true))
+                {
+                    if (!lhs.AddictionChance.EqualsWithin(rhs.AddictionChance)) return false;
+                }
+                return true;
+            }
+            if (!Equal23()) differs[(int)Ingestible_FieldIndex.ConsumeSound] = true;
+            bool Equal23()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.ConsumeSound) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ConsumeSound, rhs.ConsumeSound, out var lhsConsumeSound, out var rhsConsumeSound, out var isConsumeSoundEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsConsumeSound).CommonInstance()!).Equals(lhsConsumeSound, rhsConsumeSound, equalsMask?.GetSubCrystal((int)Ingestible_FieldIndex.ConsumeSound))) return false;
+                    }
+                    else if (!isConsumeSoundEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal24()) differs[(int)Ingestible_FieldIndex.AddictionName] = true;
+            bool Equal24()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.AddictionName) ?? true))
+                {
+                    if (!object.Equals(lhs.AddictionName, rhs.AddictionName)) return false;
+                }
+                return true;
+            }
+            if (!Equal25()) differs[(int)Ingestible_FieldIndex.Effects] = true;
+            bool Equal25()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingestible_FieldIndex.Effects) ?? true))
+                {
+                    if (!lhs.Effects.SequenceEqual(rhs.Effects, (l, r) => ((EffectCommon)((IEffectGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Ingestible_FieldIndex.Effects)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IIngestibleGetter)lhs, (IIngestibleGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IIngestibleGetter)lhs, (IIngestibleGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IIngestibleGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

@@ -1076,6 +1076,24 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IWeatherGetter item,
+            IWeatherGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((WeatherCommon)((IWeatherGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Weather Duplicate(
             this IWeatherGetter item,
             FormKey formKey,
@@ -1647,6 +1665,121 @@ namespace Mutagen.Bethesda.Oblivion
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IWeatherGetter lhs,
+            IWeatherGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IOblivionMajorRecordGetter)lhs, (IOblivionMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Weather_FieldIndex.TextureLowerLayer] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weather_FieldIndex.TextureLowerLayer) ?? true))
+                {
+                    if (!string.Equals(lhs.TextureLowerLayer, rhs.TextureLowerLayer)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Weather_FieldIndex.TextureUpperLayer] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weather_FieldIndex.TextureUpperLayer) ?? true))
+                {
+                    if (!string.Equals(lhs.TextureUpperLayer, rhs.TextureUpperLayer)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Weather_FieldIndex.Model] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weather_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)Weather_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Weather_FieldIndex.Colors] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weather_FieldIndex.Colors) ?? true))
+                {
+                    if (!lhs.Colors.SequenceEqualNullable(rhs.Colors, (l, r) => ((WeatherColorsCommon)((IWeatherColorsGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Weather_FieldIndex.Colors)))) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Weather_FieldIndex.FogDistance] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weather_FieldIndex.FogDistance) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.FogDistance, rhs.FogDistance, out var lhsFogDistance, out var rhsFogDistance, out var isFogDistanceEqual))
+                    {
+                        if (!((FogDistanceCommon)((IFogDistanceGetter)lhsFogDistance).CommonInstance()!).Equals(lhsFogDistance, rhsFogDistance, equalsMask?.GetSubCrystal((int)Weather_FieldIndex.FogDistance))) return false;
+                    }
+                    else if (!isFogDistanceEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Weather_FieldIndex.HDRData] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weather_FieldIndex.HDRData) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.HDRData, rhs.HDRData, out var lhsHDRData, out var rhsHDRData, out var isHDRDataEqual))
+                    {
+                        if (!((HDRDataCommon)((IHDRDataGetter)lhsHDRData).CommonInstance()!).Equals(lhsHDRData, rhsHDRData, equalsMask?.GetSubCrystal((int)Weather_FieldIndex.HDRData))) return false;
+                    }
+                    else if (!isHDRDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Weather_FieldIndex.Data] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weather_FieldIndex.Data) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Data, rhs.Data, out var lhsData, out var rhsData, out var isDataEqual))
+                    {
+                        if (!((WeatherDataCommon)((IWeatherDataGetter)lhsData).CommonInstance()!).Equals(lhsData, rhsData, equalsMask?.GetSubCrystal((int)Weather_FieldIndex.Data))) return false;
+                    }
+                    else if (!isDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Weather_FieldIndex.Sounds] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weather_FieldIndex.Sounds) ?? true))
+                {
+                    if (!lhs.Sounds.SequenceEqual(rhs.Sounds, (l, r) => ((WeatherSoundCommon)((IWeatherSoundGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Weather_FieldIndex.Sounds)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IOblivionMajorRecordGetter lhs,
+            IOblivionMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IWeatherGetter)lhs, (IWeatherGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IWeatherGetter)lhs, (IWeatherGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

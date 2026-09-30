@@ -737,6 +737,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IColorRecordGetter item,
+            IColorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ColorRecordCommon)((IColorRecordGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ColorRecord Duplicate(
             this IColorRecordGetter item,
             FormKey formKey,
@@ -1165,6 +1183,60 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IColorRecordGetter lhs,
+            IColorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ColorRecord_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ColorRecord_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)ColorRecord_FieldIndex.Color] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ColorRecord_FieldIndex.Color) ?? true))
+                {
+                    if (!lhs.Color.ColorOnlyEquals(rhs.Color)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)ColorRecord_FieldIndex.Playable] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ColorRecord_FieldIndex.Playable) ?? true))
+                {
+                    if (lhs.Playable != rhs.Playable) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IColorRecordGetter)lhs, (IColorRecordGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IColorRecordGetter)lhs, (IColorRecordGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

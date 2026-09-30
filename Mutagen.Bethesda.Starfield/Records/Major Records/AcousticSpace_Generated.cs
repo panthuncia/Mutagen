@@ -1293,6 +1293,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IAcousticSpaceGetter item,
+            IAcousticSpaceGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((AcousticSpaceCommon)((IAcousticSpaceGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static AcousticSpace Duplicate(
             this IAcousticSpaceGetter item,
             FormKey formKey,
@@ -2010,6 +2028,201 @@ namespace Mutagen.Bethesda.Starfield
                 yield return EnvironmentTypeInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IAcousticSpaceGetter lhs,
+            IAcousticSpaceGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)AcousticSpace_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AcousticSpace_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)AcousticSpace_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)AcousticSpace_FieldIndex.ObjectBounds] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AcousticSpace_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)AcousticSpace_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)AcousticSpace_FieldIndex.DirtinessScale] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AcousticSpace_FieldIndex.DirtinessScale) ?? true))
+                {
+                    if (!lhs.DirtinessScale.Equals(rhs.DirtinessScale)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)AcousticSpace_FieldIndex.ObjectPaletteDefaults] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AcousticSpace_FieldIndex.ObjectPaletteDefaults) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectPaletteDefaults, rhs.ObjectPaletteDefaults, out var lhsObjectPaletteDefaults, out var rhsObjectPaletteDefaults, out var isObjectPaletteDefaultsEqual))
+                    {
+                        if (!((ObjectPaletteDefaultsCommon)((IObjectPaletteDefaultsGetter)lhsObjectPaletteDefaults).CommonInstance()!).Equals(lhsObjectPaletteDefaults, rhsObjectPaletteDefaults, equalsMask?.GetSubCrystal((int)AcousticSpace_FieldIndex.ObjectPaletteDefaults))) return false;
+                    }
+                    else if (!isObjectPaletteDefaultsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)AcousticSpace_FieldIndex.LoopingSound] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AcousticSpace_FieldIndex.LoopingSound) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.LoopingSound, rhs.LoopingSound, out var lhsLoopingSound, out var rhsLoopingSound, out var isLoopingSoundEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsLoopingSound).CommonInstance()!).Equals(lhsLoopingSound, rhsLoopingSound, equalsMask?.GetSubCrystal((int)AcousticSpace_FieldIndex.LoopingSound))) return false;
+                    }
+                    else if (!isLoopingSoundEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)AcousticSpace_FieldIndex.InteriorSound] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AcousticSpace_FieldIndex.InteriorSound) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.InteriorSound, rhs.InteriorSound, out var lhsInteriorSound, out var rhsInteriorSound, out var isInteriorSoundEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsInteriorSound).CommonInstance()!).Equals(lhsInteriorSound, rhsInteriorSound, equalsMask?.GetSubCrystal((int)AcousticSpace_FieldIndex.InteriorSound))) return false;
+                    }
+                    else if (!isInteriorSoundEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)AcousticSpace_FieldIndex.ExteriorSound] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AcousticSpace_FieldIndex.ExteriorSound) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ExteriorSound, rhs.ExteriorSound, out var lhsExteriorSound, out var rhsExteriorSound, out var isExteriorSoundEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsExteriorSound).CommonInstance()!).Equals(lhsExteriorSound, rhsExteriorSound, equalsMask?.GetSubCrystal((int)AcousticSpace_FieldIndex.ExteriorSound))) return false;
+                    }
+                    else if (!isExteriorSoundEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)AcousticSpace_FieldIndex.AmbientSet] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AcousticSpace_FieldIndex.AmbientSet) ?? true))
+                {
+                    if (!lhs.AmbientSet.Equals(rhs.AmbientSet)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)AcousticSpace_FieldIndex.MusicType] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AcousticSpace_FieldIndex.MusicType) ?? true))
+                {
+                    if (!lhs.MusicType.Equals(rhs.MusicType)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)AcousticSpace_FieldIndex.EnvironmentType] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AcousticSpace_FieldIndex.EnvironmentType) ?? true))
+                {
+                    if (!lhs.EnvironmentType.Equals(rhs.EnvironmentType)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)AcousticSpace_FieldIndex.ExteriorWeatherAttenuation] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AcousticSpace_FieldIndex.ExteriorWeatherAttenuation) ?? true))
+                {
+                    if (!lhs.ExteriorWeatherAttenuation.EqualsWithin(rhs.ExteriorWeatherAttenuation)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)AcousticSpace_FieldIndex.InteriorExteriorRatio] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AcousticSpace_FieldIndex.InteriorExteriorRatio) ?? true))
+                {
+                    if (!lhs.InteriorExteriorRatio.EqualsWithin(rhs.InteriorExteriorRatio)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)AcousticSpace_FieldIndex.IsInterior] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AcousticSpace_FieldIndex.IsInterior) ?? true))
+                {
+                    if (lhs.IsInterior != rhs.IsInterior) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)AcousticSpace_FieldIndex.AllowExterior] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AcousticSpace_FieldIndex.AllowExterior) ?? true))
+                {
+                    if (lhs.AllowExterior != rhs.AllowExterior) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)AcousticSpace_FieldIndex.SoundDetectionLevel] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AcousticSpace_FieldIndex.SoundDetectionLevel) ?? true))
+                {
+                    if (lhs.SoundDetectionLevel != rhs.SoundDetectionLevel) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)AcousticSpace_FieldIndex.DisableFlags] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AcousticSpace_FieldIndex.DisableFlags) ?? true))
+                {
+                    if (lhs.DisableFlags != rhs.DisableFlags) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IAcousticSpaceGetter)lhs, (IAcousticSpaceGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IAcousticSpaceGetter)lhs, (IAcousticSpaceGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

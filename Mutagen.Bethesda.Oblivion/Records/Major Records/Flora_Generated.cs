@@ -830,6 +830,24 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IFloraGetter item,
+            IFloraGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((FloraCommon)((IFloraGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Flora Duplicate(
             this IFloraGetter item,
             FormKey formKey,
@@ -1312,6 +1330,86 @@ namespace Mutagen.Bethesda.Oblivion
                 yield return IngredientInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IFloraGetter lhs,
+            IFloraGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IOblivionMajorRecordGetter)lhs, (IOblivionMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Flora_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Flora_FieldIndex.Name) ?? true))
+                {
+                    if (!string.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Flora_FieldIndex.Model] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Flora_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)Flora_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Flora_FieldIndex.Script] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Flora_FieldIndex.Script) ?? true))
+                {
+                    if (!lhs.Script.Equals(rhs.Script)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Flora_FieldIndex.Ingredient] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Flora_FieldIndex.Ingredient) ?? true))
+                {
+                    if (!lhs.Ingredient.Equals(rhs.Ingredient)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Flora_FieldIndex.SeasonalIngredientProduction] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Flora_FieldIndex.SeasonalIngredientProduction) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.SeasonalIngredientProduction, rhs.SeasonalIngredientProduction, out var lhsSeasonalIngredientProduction, out var rhsSeasonalIngredientProduction, out var isSeasonalIngredientProductionEqual))
+                    {
+                        if (!((SeasonalIngredientProductionCommon)((ISeasonalIngredientProductionGetter)lhsSeasonalIngredientProduction).CommonInstance()!).Equals(lhsSeasonalIngredientProduction, rhsSeasonalIngredientProduction, equalsMask?.GetSubCrystal((int)Flora_FieldIndex.SeasonalIngredientProduction))) return false;
+                    }
+                    else if (!isSeasonalIngredientProductionEqual) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IOblivionMajorRecordGetter lhs,
+            IOblivionMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IFloraGetter)lhs, (IFloraGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IFloraGetter)lhs, (IFloraGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

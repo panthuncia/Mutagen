@@ -1329,6 +1329,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IMessageGetter item,
+            IMessageGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((MessageCommon)((IMessageGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Message Duplicate(
             this IMessageGetter item,
             FormKey formKey,
@@ -1965,6 +1983,177 @@ namespace Mutagen.Bethesda.Fallout3
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IMessageGetter lhs,
+            IMessageGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Message_FieldIndex.Description] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.Description) ?? true))
+                {
+                    if (!string.Equals(lhs.Description, rhs.Description)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Message_FieldIndex.Name] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.Name) ?? true))
+                {
+                    if (!string.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Message_FieldIndex.Icon] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.Icon) ?? true))
+                {
+                    if (!lhs.Icon.Equals(rhs.Icon)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Message_FieldIndex.NAM0] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.NAM0) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.NAM0, rhs.NAM0)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Message_FieldIndex.NAM1] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.NAM1) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.NAM1, rhs.NAM1)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Message_FieldIndex.NAM2] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.NAM2) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.NAM2, rhs.NAM2)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Message_FieldIndex.NAM3] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.NAM3) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.NAM3, rhs.NAM3)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Message_FieldIndex.NAM4] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.NAM4) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.NAM4, rhs.NAM4)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Message_FieldIndex.NAM5] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.NAM5) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.NAM5, rhs.NAM5)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Message_FieldIndex.NAM6] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.NAM6) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.NAM6, rhs.NAM6)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Message_FieldIndex.NAM7] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.NAM7) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.NAM7, rhs.NAM7)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Message_FieldIndex.NAM8] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.NAM8) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.NAM8, rhs.NAM8)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Message_FieldIndex.NAM9] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.NAM9) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.NAM9, rhs.NAM9)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Message_FieldIndex.Flags] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Message_FieldIndex.DisplayTime] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.DisplayTime) ?? true))
+                {
+                    if (lhs.DisplayTime != rhs.DisplayTime) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)Message_FieldIndex.MenuButtons] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.MenuButtons) ?? true))
+                {
+                    if (!lhs.MenuButtons.SequenceEqual(rhs.MenuButtons, (l, r) => ((MessageButtonCommon)((IMessageButtonGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Message_FieldIndex.MenuButtons)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMessageGetter)lhs, (IMessageGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMessageGetter)lhs, (IMessageGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

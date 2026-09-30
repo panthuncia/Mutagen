@@ -1179,6 +1179,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IBendableSplineGetter item,
+            IBendableSplineGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((BendableSplineCommon)((IBendableSplineGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static BendableSpline Duplicate(
             this IBendableSplineGetter item,
             FormKey formKey,
@@ -1796,6 +1814,149 @@ namespace Mutagen.Bethesda.Starfield
                 yield return MaterialPathInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IBendableSplineGetter lhs,
+            IBendableSplineGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)BendableSpline_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)BendableSpline_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)BendableSpline_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)BendableSpline_FieldIndex.ObjectBounds] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)BendableSpline_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)BendableSpline_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)BendableSpline_FieldIndex.DirtinessScale] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)BendableSpline_FieldIndex.DirtinessScale) ?? true))
+                {
+                    if (!lhs.DirtinessScale.Equals(rhs.DirtinessScale)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)BendableSpline_FieldIndex.Components] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)BendableSpline_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)BendableSpline_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)BendableSpline_FieldIndex.DefaultNumberOfTiles] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)BendableSpline_FieldIndex.DefaultNumberOfTiles) ?? true))
+                {
+                    if (!lhs.DefaultNumberOfTiles.EqualsWithin(rhs.DefaultNumberOfTiles)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)BendableSpline_FieldIndex.DefaultNumberOfSlices] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)BendableSpline_FieldIndex.DefaultNumberOfSlices) ?? true))
+                {
+                    if (lhs.DefaultNumberOfSlices != rhs.DefaultNumberOfSlices) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)BendableSpline_FieldIndex.DefaultNumberOfTilesIsRelativeToLength] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)BendableSpline_FieldIndex.DefaultNumberOfTilesIsRelativeToLength) ?? true))
+                {
+                    if (lhs.DefaultNumberOfTilesIsRelativeToLength != rhs.DefaultNumberOfTilesIsRelativeToLength) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)BendableSpline_FieldIndex.DefaultColor] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)BendableSpline_FieldIndex.DefaultColor) ?? true))
+                {
+                    if (!lhs.DefaultColor.ColorOnlyEquals(rhs.DefaultColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)BendableSpline_FieldIndex.WindSensibility] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)BendableSpline_FieldIndex.WindSensibility) ?? true))
+                {
+                    if (!lhs.WindSensibility.EqualsWithin(rhs.WindSensibility)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)BendableSpline_FieldIndex.WindFlexibility] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)BendableSpline_FieldIndex.WindFlexibility) ?? true))
+                {
+                    if (!lhs.WindFlexibility.EqualsWithin(rhs.WindFlexibility)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)BendableSpline_FieldIndex.MaterialPath] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)BendableSpline_FieldIndex.MaterialPath) ?? true))
+                {
+                    if (!lhs.MaterialPath.Equals(rhs.MaterialPath)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)BendableSpline_FieldIndex.DNAMDataTypeState] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)BendableSpline_FieldIndex.DNAMDataTypeState) ?? true))
+                {
+                    if (lhs.DNAMDataTypeState != rhs.DNAMDataTypeState) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IBendableSplineGetter)lhs, (IBendableSplineGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IBendableSplineGetter)lhs, (IBendableSplineGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IBendableSplineGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

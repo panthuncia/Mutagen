@@ -781,6 +781,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this INavigationMeshInfoMapGetter item,
+            INavigationMeshInfoMapGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((NavigationMeshInfoMapCommon)((INavigationMeshInfoMapGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static NavigationMeshInfoMap Duplicate(
             this INavigationMeshInfoMapGetter item,
             FormKey formKey,
@@ -1247,6 +1265,64 @@ namespace Mutagen.Bethesda.Starfield
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            INavigationMeshInfoMapGetter lhs,
+            INavigationMeshInfoMapGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)NavigationMeshInfoMap_FieldIndex.NavMeshVersion] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)NavigationMeshInfoMap_FieldIndex.NavMeshVersion) ?? true))
+                {
+                    if (lhs.NavMeshVersion != rhs.NavMeshVersion) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)NavigationMeshInfoMap_FieldIndex.MapInfos] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)NavigationMeshInfoMap_FieldIndex.MapInfos) ?? true))
+                {
+                    if (!lhs.MapInfos.SequenceEqual(rhs.MapInfos, (l, r) => ((NavigationMapInfoCommon)((INavigationMapInfoGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)NavigationMeshInfoMap_FieldIndex.MapInfos)))) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)NavigationMeshInfoMap_FieldIndex.PreferredPathing] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)NavigationMeshInfoMap_FieldIndex.PreferredPathing) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.PreferredPathing, rhs.PreferredPathing, out var lhsPreferredPathing, out var rhsPreferredPathing, out var isPreferredPathingEqual))
+                    {
+                        if (!((PreferredPathingCommon)((IPreferredPathingGetter)lhsPreferredPathing).CommonInstance()!).Equals(lhsPreferredPathing, rhsPreferredPathing, equalsMask?.GetSubCrystal((int)NavigationMeshInfoMap_FieldIndex.PreferredPathing))) return false;
+                    }
+                    else if (!isPreferredPathingEqual) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((INavigationMeshInfoMapGetter)lhs, (INavigationMeshInfoMapGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((INavigationMeshInfoMapGetter)lhs, (INavigationMeshInfoMapGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

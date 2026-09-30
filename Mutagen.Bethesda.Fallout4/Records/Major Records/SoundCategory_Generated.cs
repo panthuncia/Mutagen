@@ -938,6 +938,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ISoundCategoryGetter item,
+            ISoundCategoryGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((SoundCategoryCommon)((ISoundCategoryGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static SoundCategory Duplicate(
             this ISoundCategoryGetter item,
             FormKey formKey,
@@ -1457,6 +1475,105 @@ namespace Mutagen.Bethesda.Fallout4
                 yield return MenuSliderInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ISoundCategoryGetter lhs,
+            ISoundCategoryGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)SoundCategory_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundCategory_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)SoundCategory_FieldIndex.Flags] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundCategory_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)SoundCategory_FieldIndex.Parent] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundCategory_FieldIndex.Parent) ?? true))
+                {
+                    if (!lhs.Parent.Equals(rhs.Parent)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)SoundCategory_FieldIndex.MenuSlider] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundCategory_FieldIndex.MenuSlider) ?? true))
+                {
+                    if (!lhs.MenuSlider.Equals(rhs.MenuSlider)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)SoundCategory_FieldIndex.StaticVolumeMultiplier] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundCategory_FieldIndex.StaticVolumeMultiplier) ?? true))
+                {
+                    if (!lhs.StaticVolumeMultiplier.EqualsWithin(rhs.StaticVolumeMultiplier)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)SoundCategory_FieldIndex.DefaultMenuVolume] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundCategory_FieldIndex.DefaultMenuVolume) ?? true))
+                {
+                    if (!lhs.DefaultMenuVolume.EqualsWithin(rhs.DefaultMenuVolume)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)SoundCategory_FieldIndex.MinFrequencyMultiplier] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundCategory_FieldIndex.MinFrequencyMultiplier) ?? true))
+                {
+                    if (!lhs.MinFrequencyMultiplier.EqualsWithin(rhs.MinFrequencyMultiplier)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)SoundCategory_FieldIndex.SidechainTargetMultiplier] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundCategory_FieldIndex.SidechainTargetMultiplier) ?? true))
+                {
+                    if (!lhs.SidechainTargetMultiplier.EqualsWithin(rhs.SidechainTargetMultiplier)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISoundCategoryGetter)lhs, (ISoundCategoryGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISoundCategoryGetter)lhs, (ISoundCategoryGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

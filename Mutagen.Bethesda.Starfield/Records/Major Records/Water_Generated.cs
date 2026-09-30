@@ -1626,6 +1626,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IWaterGetter item,
+            IWaterGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((WaterCommon)((IWaterGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Water Duplicate(
             this IWaterGetter item,
             FormKey formKey,
@@ -2444,6 +2462,257 @@ namespace Mutagen.Bethesda.Starfield
                 yield return YelowMatterCurveInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IWaterGetter lhs,
+            IWaterGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Water_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)Water_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Water_FieldIndex.Name] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Water_FieldIndex.Opacity] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.Opacity) ?? true))
+                {
+                    if (lhs.Opacity != rhs.Opacity) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Water_FieldIndex.Flags] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Water_FieldIndex.WASH] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.WASH) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.WASH, rhs.WASH, out var lhsWASH, out var rhsWASH, out var isWASHEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsWASH).CommonInstance()!).Equals(lhsWASH, rhsWASH, equalsMask?.GetSubCrystal((int)Water_FieldIndex.WASH))) return false;
+                    }
+                    else if (!isWASHEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Water_FieldIndex.ConsumeSpell] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.ConsumeSpell) ?? true))
+                {
+                    if (!lhs.ConsumeSpell.Equals(rhs.ConsumeSpell)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Water_FieldIndex.ContactSpell] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.ContactSpell) ?? true))
+                {
+                    if (!lhs.ContactSpell.Equals(rhs.ContactSpell)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Water_FieldIndex.DATA] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.DATA) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.DATA, rhs.DATA)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Water_FieldIndex.DNAM] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.DNAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.DNAM, rhs.DNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Water_FieldIndex.GNAM] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.GNAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.GNAM, rhs.GNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Water_FieldIndex.LinearVelocity] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.LinearVelocity) ?? true))
+                {
+                    if (!lhs.LinearVelocity.Equals(rhs.LinearVelocity)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Water_FieldIndex.AngularVelocity] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.AngularVelocity) ?? true))
+                {
+                    if (!lhs.AngularVelocity.Equals(rhs.AngularVelocity)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Water_FieldIndex.NAM2] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.NAM2) ?? true))
+                {
+                    if (!string.Equals(lhs.NAM2, rhs.NAM2)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Water_FieldIndex.NAM3] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.NAM3) ?? true))
+                {
+                    if (!string.Equals(lhs.NAM3, rhs.NAM3)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Water_FieldIndex.NAM4] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.NAM4) ?? true))
+                {
+                    if (!string.Equals(lhs.NAM4, rhs.NAM4)) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)Water_FieldIndex.NAM5] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.NAM5) ?? true))
+                {
+                    if (lhs.NAM5 != rhs.NAM5) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)Water_FieldIndex.NAM6] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.NAM6) ?? true))
+                {
+                    if (lhs.NAM6 != rhs.NAM6) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)Water_FieldIndex.RiverAbsorptionCurve] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.RiverAbsorptionCurve) ?? true))
+                {
+                    if (!lhs.RiverAbsorptionCurve.Equals(rhs.RiverAbsorptionCurve)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)Water_FieldIndex.OceanAbsorptionCurve] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.OceanAbsorptionCurve) ?? true))
+                {
+                    if (!lhs.OceanAbsorptionCurve.Equals(rhs.OceanAbsorptionCurve)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)Water_FieldIndex.RiverScatteringCurve] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.RiverScatteringCurve) ?? true))
+                {
+                    if (!lhs.RiverScatteringCurve.Equals(rhs.RiverScatteringCurve)) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)Water_FieldIndex.OceanScatteringCurve] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.OceanScatteringCurve) ?? true))
+                {
+                    if (!lhs.OceanScatteringCurve.Equals(rhs.OceanScatteringCurve)) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)Water_FieldIndex.PhytoplanktonCurve] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.PhytoplanktonCurve) ?? true))
+                {
+                    if (!lhs.PhytoplanktonCurve.Equals(rhs.PhytoplanktonCurve)) return false;
+                }
+                return true;
+            }
+            if (!Equal22()) differs[(int)Water_FieldIndex.SedimentCurve] = true;
+            bool Equal22()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.SedimentCurve) ?? true))
+                {
+                    if (!lhs.SedimentCurve.Equals(rhs.SedimentCurve)) return false;
+                }
+                return true;
+            }
+            if (!Equal23()) differs[(int)Water_FieldIndex.YelowMatterCurve] = true;
+            bool Equal23()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.YelowMatterCurve) ?? true))
+                {
+                    if (!lhs.YelowMatterCurve.Equals(rhs.YelowMatterCurve)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IWaterGetter)lhs, (IWaterGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IWaterGetter)lhs, (IWaterGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

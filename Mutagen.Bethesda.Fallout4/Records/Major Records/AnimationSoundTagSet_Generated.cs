@@ -696,6 +696,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IAnimationSoundTagSetGetter item,
+            IAnimationSoundTagSetGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((AnimationSoundTagSetCommon)((IAnimationSoundTagSetGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static AnimationSoundTagSet Duplicate(
             this IAnimationSoundTagSetGetter item,
             FormKey formKey,
@@ -1112,6 +1130,42 @@ namespace Mutagen.Bethesda.Fallout4
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IAnimationSoundTagSetGetter lhs,
+            IAnimationSoundTagSetGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)AnimationSoundTagSet_FieldIndex.Tags] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AnimationSoundTagSet_FieldIndex.Tags) ?? true))
+                {
+                    if (!lhs.Tags.SequenceEqual(rhs.Tags, (l, r) => ((AnimationSoundTagCommon)((IAnimationSoundTagGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)AnimationSoundTagSet_FieldIndex.Tags)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IAnimationSoundTagSetGetter)lhs, (IAnimationSoundTagSetGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IAnimationSoundTagSetGetter)lhs, (IAnimationSoundTagSetGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

@@ -1542,6 +1542,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IImpactGetter item,
+            IImpactGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ImpactCommon)((IImpactGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Impact Duplicate(
             this IImpactGetter item,
             FormKey formKey,
@@ -2356,6 +2374,215 @@ namespace Mutagen.Bethesda.Starfield
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IImpactGetter lhs,
+            IImpactGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Impact_FieldIndex.Components] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Impact_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Impact_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Impact_FieldIndex.Model] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Impact_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)Impact_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Impact_FieldIndex.Duration] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Impact_FieldIndex.Duration) ?? true))
+                {
+                    if (!lhs.Duration.EqualsWithin(rhs.Duration)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Impact_FieldIndex.Orientation] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Impact_FieldIndex.Orientation) ?? true))
+                {
+                    if (lhs.Orientation != rhs.Orientation) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Impact_FieldIndex.AngleThreshold] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Impact_FieldIndex.AngleThreshold) ?? true))
+                {
+                    if (!lhs.AngleThreshold.EqualsWithin(rhs.AngleThreshold)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Impact_FieldIndex.PlacementRadius] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Impact_FieldIndex.PlacementRadius) ?? true))
+                {
+                    if (!lhs.PlacementRadius.EqualsWithin(rhs.PlacementRadius)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Impact_FieldIndex.SoundLevel] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Impact_FieldIndex.SoundLevel) ?? true))
+                {
+                    if (lhs.SoundLevel != rhs.SoundLevel) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Impact_FieldIndex.NoDecalData] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Impact_FieldIndex.NoDecalData) ?? true))
+                {
+                    if (lhs.NoDecalData != rhs.NoDecalData) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Impact_FieldIndex.Result] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Impact_FieldIndex.Result) ?? true))
+                {
+                    if (lhs.Result != rhs.Result) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Impact_FieldIndex.Unknown] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Impact_FieldIndex.Unknown) ?? true))
+                {
+                    if (lhs.Unknown != rhs.Unknown) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Impact_FieldIndex.ProjectedDecals] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Impact_FieldIndex.ProjectedDecals) ?? true))
+                {
+                    if (!lhs.ProjectedDecals.SequenceEqualNullable(rhs.ProjectedDecals)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Impact_FieldIndex.ScatterProjectedDecals] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Impact_FieldIndex.ScatterProjectedDecals) ?? true))
+                {
+                    if (!lhs.ScatterProjectedDecals.SequenceEqualNullable(rhs.ScatterProjectedDecals)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Impact_FieldIndex.Decal] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Impact_FieldIndex.Decal) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Decal, rhs.Decal, out var lhsDecal, out var rhsDecal, out var isDecalEqual))
+                    {
+                        if (!((DecalCommon)((IDecalGetter)lhsDecal).CommonInstance()!).Equals(lhsDecal, rhsDecal, equalsMask?.GetSubCrystal((int)Impact_FieldIndex.Decal))) return false;
+                    }
+                    else if (!isDecalEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Impact_FieldIndex.ImpactSoundDefault] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Impact_FieldIndex.ImpactSoundDefault) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ImpactSoundDefault, rhs.ImpactSoundDefault, out var lhsImpactSoundDefault, out var rhsImpactSoundDefault, out var isImpactSoundDefaultEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsImpactSoundDefault).CommonInstance()!).Equals(lhsImpactSoundDefault, rhsImpactSoundDefault, equalsMask?.GetSubCrystal((int)Impact_FieldIndex.ImpactSoundDefault))) return false;
+                    }
+                    else if (!isImpactSoundDefaultEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Impact_FieldIndex.ImpactSoundPlayerFirstShooter] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Impact_FieldIndex.ImpactSoundPlayerFirstShooter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ImpactSoundPlayerFirstShooter, rhs.ImpactSoundPlayerFirstShooter, out var lhsImpactSoundPlayerFirstShooter, out var rhsImpactSoundPlayerFirstShooter, out var isImpactSoundPlayerFirstShooterEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsImpactSoundPlayerFirstShooter).CommonInstance()!).Equals(lhsImpactSoundPlayerFirstShooter, rhsImpactSoundPlayerFirstShooter, equalsMask?.GetSubCrystal((int)Impact_FieldIndex.ImpactSoundPlayerFirstShooter))) return false;
+                    }
+                    else if (!isImpactSoundPlayerFirstShooterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)Impact_FieldIndex.ImpactSoundPlayerThirdTarget] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Impact_FieldIndex.ImpactSoundPlayerThirdTarget) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ImpactSoundPlayerThirdTarget, rhs.ImpactSoundPlayerThirdTarget, out var lhsImpactSoundPlayerThirdTarget, out var rhsImpactSoundPlayerThirdTarget, out var isImpactSoundPlayerThirdTargetEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsImpactSoundPlayerThirdTarget).CommonInstance()!).Equals(lhsImpactSoundPlayerThirdTarget, rhsImpactSoundPlayerThirdTarget, equalsMask?.GetSubCrystal((int)Impact_FieldIndex.ImpactSoundPlayerThirdTarget))) return false;
+                    }
+                    else if (!isImpactSoundPlayerThirdTargetEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)Impact_FieldIndex.FootstepParticleMaxDist] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Impact_FieldIndex.FootstepParticleMaxDist) ?? true))
+                {
+                    if (!lhs.FootstepParticleMaxDist.EqualsWithin(rhs.FootstepParticleMaxDist)) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)Impact_FieldIndex.DecalLifetime] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Impact_FieldIndex.DecalLifetime) ?? true))
+                {
+                    if (!lhs.DecalLifetime.EqualsWithin(rhs.DecalLifetime)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IImpactGetter)lhs, (IImpactGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IImpactGetter)lhs, (IImpactGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IImpactGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

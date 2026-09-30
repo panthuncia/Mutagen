@@ -668,6 +668,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IPlacedConeGetter item,
+            IPlacedConeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((PlacedConeCommon)((IPlacedConeGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static PlacedCone Duplicate(
             this IPlacedConeGetter item,
             FormKey formKey,
@@ -1172,6 +1190,51 @@ namespace Mutagen.Bethesda.Skyrim
             }
             yield return FormLinkInformation.Factory(obj.Projectile);
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IPlacedConeGetter lhs,
+            IPlacedConeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IAPlacedTrapGetter)lhs, (IAPlacedTrapGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)PlacedCone_FieldIndex.Projectile] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedCone_FieldIndex.Projectile) ?? true))
+                {
+                    if (!lhs.Projectile.Equals(rhs.Projectile)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IAPlacedTrapGetter lhs,
+            IAPlacedTrapGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPlacedConeGetter)lhs, (IPlacedConeGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPlacedConeGetter)lhs, (IPlacedConeGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPlacedConeGetter)lhs, (IPlacedConeGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

@@ -1358,6 +1358,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ISceneGetter item,
+            ISceneGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((SceneCommon)((ISceneGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Scene Duplicate(
             this ISceneGetter item,
             FormKey formKey,
@@ -2056,6 +2074,144 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ISceneGetter lhs,
+            ISceneGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Scene_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scene_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((SceneAdapterCommon)((ISceneAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)Scene_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Scene_FieldIndex.Flags] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scene_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Scene_FieldIndex.Phases] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scene_FieldIndex.Phases) ?? true))
+                {
+                    if (!lhs.Phases.SequenceEqual(rhs.Phases, (l, r) => ((ScenePhaseCommon)((IScenePhaseGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Scene_FieldIndex.Phases)))) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Scene_FieldIndex.Actors] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scene_FieldIndex.Actors) ?? true))
+                {
+                    if (!lhs.Actors.SequenceEqual(rhs.Actors, (l, r) => ((SceneActorCommon)((ISceneActorGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Scene_FieldIndex.Actors)))) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Scene_FieldIndex.Actions] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scene_FieldIndex.Actions) ?? true))
+                {
+                    if (!lhs.Actions.SequenceEqual(rhs.Actions, (l, r) => ((SceneActionCommon)((ISceneActionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Scene_FieldIndex.Actions)))) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Scene_FieldIndex.Unused] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scene_FieldIndex.Unused) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Unused, rhs.Unused, out var lhsUnused, out var rhsUnused, out var isUnusedEqual))
+                    {
+                        if (!((ScenePhaseUnusedDataCommon)((IScenePhaseUnusedDataGetter)lhsUnused).CommonInstance()!).Equals(lhsUnused, rhsUnused, equalsMask?.GetSubCrystal((int)Scene_FieldIndex.Unused))) return false;
+                    }
+                    else if (!isUnusedEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Scene_FieldIndex.Unused2] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scene_FieldIndex.Unused2) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Unused2, rhs.Unused2, out var lhsUnused2, out var rhsUnused2, out var isUnused2Equal))
+                    {
+                        if (!((ScenePhaseUnusedDataCommon)((IScenePhaseUnusedDataGetter)lhsUnused2).CommonInstance()!).Equals(lhsUnused2, rhsUnused2, equalsMask?.GetSubCrystal((int)Scene_FieldIndex.Unused2))) return false;
+                    }
+                    else if (!isUnused2Equal) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Scene_FieldIndex.Quest] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scene_FieldIndex.Quest) ?? true))
+                {
+                    if (!lhs.Quest.Equals(rhs.Quest)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Scene_FieldIndex.LastActionIndex] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scene_FieldIndex.LastActionIndex) ?? true))
+                {
+                    if (lhs.LastActionIndex != rhs.LastActionIndex) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Scene_FieldIndex.VNAM] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scene_FieldIndex.VNAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.VNAM, rhs.VNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Scene_FieldIndex.Conditions] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scene_FieldIndex.Conditions) ?? true))
+                {
+                    if (!lhs.Conditions.SequenceEqual(rhs.Conditions, (l, r) => ((ConditionCommon)((IConditionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Scene_FieldIndex.Conditions)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISceneGetter)lhs, (ISceneGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISceneGetter)lhs, (ISceneGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(ISceneGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

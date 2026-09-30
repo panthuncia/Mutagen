@@ -7167,6 +7167,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IWeaponGetter item,
+            IWeaponGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((WeaponCommon)((IWeaponGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Weapon Duplicate(
             this IWeaponGetter item,
             FormKey formKey,
@@ -9991,6 +10009,1551 @@ namespace Mutagen.Bethesda.Starfield
             yield return FormLinkInformation.Factory(obj.ImpactDataSet);
             yield return FormLinkInformation.Factory(obj.ImageSpaceAdapter);
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IWeaponGetter lhs,
+            IWeaponGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Weapon_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)Weapon_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Weapon_FieldIndex.ObjectBounds] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)Weapon_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Weapon_FieldIndex.DirtinessScale] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.DirtinessScale) ?? true))
+                {
+                    if (!lhs.DirtinessScale.Equals(rhs.DirtinessScale)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Weapon_FieldIndex.ObjectPaletteDefaults] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ObjectPaletteDefaults) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectPaletteDefaults, rhs.ObjectPaletteDefaults, out var lhsObjectPaletteDefaults, out var rhsObjectPaletteDefaults, out var isObjectPaletteDefaultsEqual))
+                    {
+                        if (!((ObjectPaletteDefaultsCommon)((IObjectPaletteDefaultsGetter)lhsObjectPaletteDefaults).CommonInstance()!).Equals(lhsObjectPaletteDefaults, rhsObjectPaletteDefaults, equalsMask?.GetSubCrystal((int)Weapon_FieldIndex.ObjectPaletteDefaults))) return false;
+                    }
+                    else if (!isObjectPaletteDefaultsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Weapon_FieldIndex.Transforms] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.Transforms) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Transforms, rhs.Transforms, out var lhsTransforms, out var rhsTransforms, out var isTransformsEqual))
+                    {
+                        if (!((TransformsCommon)((ITransformsGetter)lhsTransforms).CommonInstance()!).Equals(lhsTransforms, rhsTransforms, equalsMask?.GetSubCrystal((int)Weapon_FieldIndex.Transforms))) return false;
+                    }
+                    else if (!isTransformsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Weapon_FieldIndex.XALG] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.XALG) ?? true))
+                {
+                    if (lhs.XALG != rhs.XALG) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Weapon_FieldIndex.Components] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Weapon_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Weapon_FieldIndex.Name] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Weapon_FieldIndex.Model] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)Weapon_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Weapon_FieldIndex.ObjectEffect] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ObjectEffect) ?? true))
+                {
+                    if (!lhs.ObjectEffect.Equals(rhs.ObjectEffect)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Weapon_FieldIndex.EnchantmentAmount] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.EnchantmentAmount) ?? true))
+                {
+                    if (lhs.EnchantmentAmount != rhs.EnchantmentAmount) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Weapon_FieldIndex.EquipmentType] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.EquipmentType) ?? true))
+                {
+                    if (!lhs.EquipmentType.Equals(rhs.EquipmentType)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Weapon_FieldIndex.BlockBashImpactDataSet] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.BlockBashImpactDataSet) ?? true))
+                {
+                    if (!lhs.BlockBashImpactDataSet.Equals(rhs.BlockBashImpactDataSet)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Weapon_FieldIndex.AlternateBlockMaterial] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.AlternateBlockMaterial) ?? true))
+                {
+                    if (!lhs.AlternateBlockMaterial.Equals(rhs.AlternateBlockMaterial)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Weapon_FieldIndex.PickupSound] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.PickupSound) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.PickupSound, rhs.PickupSound, out var lhsPickupSound, out var rhsPickupSound, out var isPickupSoundEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsPickupSound).CommonInstance()!).Equals(lhsPickupSound, rhsPickupSound, equalsMask?.GetSubCrystal((int)Weapon_FieldIndex.PickupSound))) return false;
+                    }
+                    else if (!isPickupSoundEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)Weapon_FieldIndex.DropdownSound] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.DropdownSound) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.DropdownSound, rhs.DropdownSound, out var lhsDropdownSound, out var rhsDropdownSound, out var isDropdownSoundEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsDropdownSound).CommonInstance()!).Equals(lhsDropdownSound, rhsDropdownSound, equalsMask?.GetSubCrystal((int)Weapon_FieldIndex.DropdownSound))) return false;
+                    }
+                    else if (!isDropdownSoundEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)Weapon_FieldIndex.Keywords] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.Keywords) ?? true))
+                {
+                    if (!lhs.Keywords.SequenceEqualNullable(rhs.Keywords)) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)Weapon_FieldIndex.Description] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.Description) ?? true))
+                {
+                    if (!object.Equals(lhs.Description, rhs.Description)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)Weapon_FieldIndex.InstanceNaming] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.InstanceNaming) ?? true))
+                {
+                    if (!lhs.InstanceNaming.Equals(rhs.InstanceNaming)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)Weapon_FieldIndex.AttachParentSlots] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.AttachParentSlots) ?? true))
+                {
+                    if (!lhs.AttachParentSlots.SequenceEqualNullable(rhs.AttachParentSlots)) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)Weapon_FieldIndex.ObjectTemplates] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ObjectTemplates) ?? true))
+                {
+                    if (!lhs.ObjectTemplates.SequenceEqualNullable(rhs.ObjectTemplates, (l, r) => ((ObjectTemplateCommon<Weapon.Property>)((IObjectTemplateGetter<Weapon.Property>)l).CommonInstance(typeof(Weapon.Property))!).Equals(l, r, equalsMask?.GetSubCrystal((int)Weapon_FieldIndex.ObjectTemplates)))) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)Weapon_FieldIndex.EmbeddedWeaponMod] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.EmbeddedWeaponMod) ?? true))
+                {
+                    if (!lhs.EmbeddedWeaponMod.Equals(rhs.EmbeddedWeaponMod)) return false;
+                }
+                return true;
+            }
+            if (!Equal22()) differs[(int)Weapon_FieldIndex.BNAM] = true;
+            bool Equal22()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.BNAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.BNAM, rhs.BNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal23()) differs[(int)Weapon_FieldIndex.SightedTransitionSeconds] = true;
+            bool Equal23()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.SightedTransitionSeconds) ?? true))
+                {
+                    if (!lhs.SightedTransitionSeconds.EqualsWithin(rhs.SightedTransitionSeconds)) return false;
+                }
+                return true;
+            }
+            if (!Equal24()) differs[(int)Weapon_FieldIndex.AimDownSightTemplate] = true;
+            bool Equal24()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.AimDownSightTemplate) ?? true))
+                {
+                    if (!lhs.AimDownSightTemplate.Equals(rhs.AimDownSightTemplate)) return false;
+                }
+                return true;
+            }
+            if (!Equal25()) differs[(int)Weapon_FieldIndex.AimModel] = true;
+            bool Equal25()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.AimModel) ?? true))
+                {
+                    if (!lhs.AimModel.Equals(rhs.AimModel)) return false;
+                }
+                return true;
+            }
+            if (!Equal26()) differs[(int)Weapon_FieldIndex.AccuracyBonus] = true;
+            bool Equal26()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.AccuracyBonus) ?? true))
+                {
+                    if (lhs.AccuracyBonus != rhs.AccuracyBonus) return false;
+                }
+                return true;
+            }
+            if (!Equal27()) differs[(int)Weapon_FieldIndex.HasScope] = true;
+            bool Equal27()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.HasScope) ?? true))
+                {
+                    if (lhs.HasScope != rhs.HasScope) return false;
+                }
+                return true;
+            }
+            if (!Equal28()) differs[(int)Weapon_FieldIndex.AimAssistTemplate] = true;
+            bool Equal28()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.AimAssistTemplate) ?? true))
+                {
+                    if (!lhs.AimAssistTemplate.Equals(rhs.AimAssistTemplate)) return false;
+                }
+                return true;
+            }
+            if (!Equal29()) differs[(int)Weapon_FieldIndex.AimOpticalSightModel] = true;
+            bool Equal29()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.AimOpticalSightModel) ?? true))
+                {
+                    if (!lhs.AimOpticalSightModel.Equals(rhs.AimOpticalSightModel)) return false;
+                }
+                return true;
+            }
+            if (!Equal30()) differs[(int)Weapon_FieldIndex.MeleeAimAssistModel] = true;
+            bool Equal30()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.MeleeAimAssistModel) ?? true))
+                {
+                    if (!lhs.MeleeAimAssistModel.Equals(rhs.MeleeAimAssistModel)) return false;
+                }
+                return true;
+            }
+            if (!Equal31()) differs[(int)Weapon_FieldIndex.WAIMUnknown1] = true;
+            bool Equal31()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WAIMUnknown1) ?? true))
+                {
+                    if (lhs.WAIMUnknown1 != rhs.WAIMUnknown1) return false;
+                }
+                return true;
+            }
+            if (!Equal32()) differs[(int)Weapon_FieldIndex.WAIMUnknown2] = true;
+            bool Equal32()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WAIMUnknown2) ?? true))
+                {
+                    if (lhs.WAIMUnknown2 != rhs.WAIMUnknown2) return false;
+                }
+                return true;
+            }
+            if (!Equal33()) differs[(int)Weapon_FieldIndex.EnableMarkingTargets] = true;
+            bool Equal33()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.EnableMarkingTargets) ?? true))
+                {
+                    if (lhs.EnableMarkingTargets != rhs.EnableMarkingTargets) return false;
+                }
+                return true;
+            }
+            if (!Equal34()) differs[(int)Weapon_FieldIndex.ReticleType] = true;
+            bool Equal34()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ReticleType) ?? true))
+                {
+                    if (lhs.ReticleType != rhs.ReticleType) return false;
+                }
+                return true;
+            }
+            if (!Equal35()) differs[(int)Weapon_FieldIndex.WAIMUnknown3] = true;
+            bool Equal35()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WAIMUnknown3) ?? true))
+                {
+                    if (lhs.WAIMUnknown3 != rhs.WAIMUnknown3) return false;
+                }
+                return true;
+            }
+            if (!Equal36()) differs[(int)Weapon_FieldIndex.WAIMUnknown4] = true;
+            bool Equal36()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WAIMUnknown4) ?? true))
+                {
+                    if (lhs.WAIMUnknown4 != rhs.WAIMUnknown4) return false;
+                }
+                return true;
+            }
+            if (!Equal37()) differs[(int)Weapon_FieldIndex.AmmoType] = true;
+            bool Equal37()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.AmmoType) ?? true))
+                {
+                    if (!lhs.AmmoType.Equals(rhs.AmmoType)) return false;
+                }
+                return true;
+            }
+            if (!Equal38()) differs[(int)Weapon_FieldIndex.AmmoCapacity] = true;
+            bool Equal38()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.AmmoCapacity) ?? true))
+                {
+                    if (lhs.AmmoCapacity != rhs.AmmoCapacity) return false;
+                }
+                return true;
+            }
+            if (!Equal39()) differs[(int)Weapon_FieldIndex.AmmoList] = true;
+            bool Equal39()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.AmmoList) ?? true))
+                {
+                    if (!lhs.AmmoList.Equals(rhs.AmmoList)) return false;
+                }
+                return true;
+            }
+            if (!Equal40()) differs[(int)Weapon_FieldIndex.OverrideProjectile] = true;
+            bool Equal40()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.OverrideProjectile) ?? true))
+                {
+                    if (!lhs.OverrideProjectile.Equals(rhs.OverrideProjectile)) return false;
+                }
+                return true;
+            }
+            if (!Equal41()) differs[(int)Weapon_FieldIndex.OverrideShellCasing] = true;
+            bool Equal41()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.OverrideShellCasing) ?? true))
+                {
+                    if (!lhs.OverrideShellCasing.Equals(rhs.OverrideShellCasing)) return false;
+                }
+                return true;
+            }
+            if (!Equal42()) differs[(int)Weapon_FieldIndex.ProjectilesCount] = true;
+            bool Equal42()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ProjectilesCount) ?? true))
+                {
+                    if (lhs.ProjectilesCount != rhs.ProjectilesCount) return false;
+                }
+                return true;
+            }
+            if (!Equal43()) differs[(int)Weapon_FieldIndex.NpcsUseAmmo] = true;
+            bool Equal43()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.NpcsUseAmmo) ?? true))
+                {
+                    if (lhs.NpcsUseAmmo != rhs.NpcsUseAmmo) return false;
+                }
+                return true;
+            }
+            if (!Equal44()) differs[(int)Weapon_FieldIndex.WAM2Unknown1] = true;
+            bool Equal44()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WAM2Unknown1) ?? true))
+                {
+                    if (lhs.WAM2Unknown1 != rhs.WAM2Unknown1) return false;
+                }
+                return true;
+            }
+            if (!Equal45()) differs[(int)Weapon_FieldIndex.WAMM] = true;
+            bool Equal45()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WAMM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.WAMM, rhs.WAMM)) return false;
+                }
+                return true;
+            }
+            if (!Equal46()) differs[(int)Weapon_FieldIndex.MeleeOrCreature] = true;
+            bool Equal46()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.MeleeOrCreature) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.MeleeOrCreature, rhs.MeleeOrCreature, out var lhsMeleeOrCreature, out var rhsMeleeOrCreature, out var isMeleeOrCreatureEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsMeleeOrCreature).CommonInstance()!).Equals(lhsMeleeOrCreature, rhsMeleeOrCreature, equalsMask?.GetSubCrystal((int)Weapon_FieldIndex.MeleeOrCreature))) return false;
+                    }
+                    else if (!isMeleeOrCreatureEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal47()) differs[(int)Weapon_FieldIndex.PrimedExplosive] = true;
+            bool Equal47()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.PrimedExplosive) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.PrimedExplosive, rhs.PrimedExplosive, out var lhsPrimedExplosive, out var rhsPrimedExplosive, out var isPrimedExplosiveEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsPrimedExplosive).CommonInstance()!).Equals(lhsPrimedExplosive, rhsPrimedExplosive, equalsMask?.GetSubCrystal((int)Weapon_FieldIndex.PrimedExplosive))) return false;
+                    }
+                    else if (!isPrimedExplosiveEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal48()) differs[(int)Weapon_FieldIndex.DryFire] = true;
+            bool Equal48()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.DryFire) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.DryFire, rhs.DryFire, out var lhsDryFire, out var rhsDryFire, out var isDryFireEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsDryFire).CommonInstance()!).Equals(lhsDryFire, rhsDryFire, equalsMask?.GetSubCrystal((int)Weapon_FieldIndex.DryFire))) return false;
+                    }
+                    else if (!isDryFireEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal49()) differs[(int)Weapon_FieldIndex.Idle] = true;
+            bool Equal49()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.Idle) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Idle, rhs.Idle, out var lhsIdle, out var rhsIdle, out var isIdleEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsIdle).CommonInstance()!).Equals(lhsIdle, rhsIdle, equalsMask?.GetSubCrystal((int)Weapon_FieldIndex.Idle))) return false;
+                    }
+                    else if (!isIdleEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal50()) differs[(int)Weapon_FieldIndex.Equip] = true;
+            bool Equal50()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.Equip) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Equip, rhs.Equip, out var lhsEquip, out var rhsEquip, out var isEquipEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsEquip).CommonInstance()!).Equals(lhsEquip, rhsEquip, equalsMask?.GetSubCrystal((int)Weapon_FieldIndex.Equip))) return false;
+                    }
+                    else if (!isEquipEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal51()) differs[(int)Weapon_FieldIndex.Unequip] = true;
+            bool Equal51()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.Unequip) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Unequip, rhs.Unequip, out var lhsUnequip, out var rhsUnequip, out var isUnequipEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsUnequip).CommonInstance()!).Equals(lhsUnequip, rhsUnequip, equalsMask?.GetSubCrystal((int)Weapon_FieldIndex.Unequip))) return false;
+                    }
+                    else if (!isUnequipEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal52()) differs[(int)Weapon_FieldIndex.FastEquip] = true;
+            bool Equal52()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.FastEquip) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.FastEquip, rhs.FastEquip, out var lhsFastEquip, out var rhsFastEquip, out var isFastEquipEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsFastEquip).CommonInstance()!).Equals(lhsFastEquip, rhsFastEquip, equalsMask?.GetSubCrystal((int)Weapon_FieldIndex.FastEquip))) return false;
+                    }
+                    else if (!isFastEquipEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal53()) differs[(int)Weapon_FieldIndex.SoundLevel] = true;
+            bool Equal53()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.SoundLevel) ?? true))
+                {
+                    if (lhs.SoundLevel != rhs.SoundLevel) return false;
+                }
+                return true;
+            }
+            if (!Equal54()) differs[(int)Weapon_FieldIndex.WAUDUnknown2] = true;
+            bool Equal54()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WAUDUnknown2) ?? true))
+                {
+                    if (lhs.WAUDUnknown2 != rhs.WAUDUnknown2) return false;
+                }
+                return true;
+            }
+            if (!Equal55()) differs[(int)Weapon_FieldIndex.WTUR] = true;
+            bool Equal55()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WTUR) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.WTUR, rhs.WTUR)) return false;
+                }
+                return true;
+            }
+            if (!Equal56()) differs[(int)Weapon_FieldIndex.ChargeFullPowerSeconds] = true;
+            bool Equal56()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ChargeFullPowerSeconds) ?? true))
+                {
+                    if (!lhs.ChargeFullPowerSeconds.EqualsWithin(rhs.ChargeFullPowerSeconds)) return false;
+                }
+                return true;
+            }
+            if (!Equal57()) differs[(int)Weapon_FieldIndex.ChargeMinPowerPerShot] = true;
+            bool Equal57()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ChargeMinPowerPerShot) ?? true))
+                {
+                    if (!lhs.ChargeMinPowerPerShot.EqualsWithin(rhs.ChargeMinPowerPerShot)) return false;
+                }
+                return true;
+            }
+            if (!Equal58()) differs[(int)Weapon_FieldIndex.ChargeCritBonus] = true;
+            bool Equal58()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ChargeCritBonus) ?? true))
+                {
+                    if (!lhs.ChargeCritBonus.EqualsWithin(rhs.ChargeCritBonus)) return false;
+                }
+                return true;
+            }
+            if (!Equal59()) differs[(int)Weapon_FieldIndex.ChargeHoldInput] = true;
+            bool Equal59()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ChargeHoldInput) ?? true))
+                {
+                    if (lhs.ChargeHoldInput != rhs.ChargeHoldInput) return false;
+                }
+                return true;
+            }
+            if (!Equal60()) differs[(int)Weapon_FieldIndex.ChargingAttack] = true;
+            bool Equal60()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ChargingAttack) ?? true))
+                {
+                    if (lhs.ChargingAttack != rhs.ChargingAttack) return false;
+                }
+                return true;
+            }
+            if (!Equal61()) differs[(int)Weapon_FieldIndex.AttackDamage] = true;
+            bool Equal61()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.AttackDamage) ?? true))
+                {
+                    if (!lhs.AttackDamage.EqualsWithin(rhs.AttackDamage)) return false;
+                }
+                return true;
+            }
+            if (!Equal62()) differs[(int)Weapon_FieldIndex.MinRange] = true;
+            bool Equal62()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.MinRange) ?? true))
+                {
+                    if (!lhs.MinRange.EqualsWithin(rhs.MinRange)) return false;
+                }
+                return true;
+            }
+            if (!Equal63()) differs[(int)Weapon_FieldIndex.MaxRange] = true;
+            bool Equal63()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.MaxRange) ?? true))
+                {
+                    if (!lhs.MaxRange.EqualsWithin(rhs.MaxRange)) return false;
+                }
+                return true;
+            }
+            if (!Equal64()) differs[(int)Weapon_FieldIndex.OutOfRangeDamageMult] = true;
+            bool Equal64()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.OutOfRangeDamageMult) ?? true))
+                {
+                    if (!lhs.OutOfRangeDamageMult.EqualsWithin(rhs.OutOfRangeDamageMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal65()) differs[(int)Weapon_FieldIndex.CritDamageMult] = true;
+            bool Equal65()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.CritDamageMult) ?? true))
+                {
+                    if (!lhs.CritDamageMult.EqualsWithin(rhs.CritDamageMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal66()) differs[(int)Weapon_FieldIndex.CriticalHitSpell] = true;
+            bool Equal66()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.CriticalHitSpell) ?? true))
+                {
+                    if (!lhs.CriticalHitSpell.Equals(rhs.CriticalHitSpell)) return false;
+                }
+                return true;
+            }
+            if (!Equal67()) differs[(int)Weapon_FieldIndex.CritEffectOnDeathOnly] = true;
+            bool Equal67()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.CritEffectOnDeathOnly) ?? true))
+                {
+                    if (lhs.CritEffectOnDeathOnly != rhs.CritEffectOnDeathOnly) return false;
+                }
+                return true;
+            }
+            if (!Equal68()) differs[(int)Weapon_FieldIndex.HitBehavior] = true;
+            bool Equal68()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.HitBehavior) ?? true))
+                {
+                    if (lhs.HitBehavior != rhs.HitBehavior) return false;
+                }
+                return true;
+            }
+            if (!Equal69()) differs[(int)Weapon_FieldIndex.Resistance] = true;
+            bool Equal69()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.Resistance) ?? true))
+                {
+                    if (!lhs.Resistance.Equals(rhs.Resistance)) return false;
+                }
+                return true;
+            }
+            if (!Equal70()) differs[(int)Weapon_FieldIndex.Skill] = true;
+            bool Equal70()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.Skill) ?? true))
+                {
+                    if (!lhs.Skill.Equals(rhs.Skill)) return false;
+                }
+                return true;
+            }
+            if (!Equal71()) differs[(int)Weapon_FieldIndex.WDMGUnknown4] = true;
+            bool Equal71()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WDMGUnknown4) ?? true))
+                {
+                    if (!lhs.WDMGUnknown4.EqualsWithin(rhs.WDMGUnknown4)) return false;
+                }
+                return true;
+            }
+            if (!Equal72()) differs[(int)Weapon_FieldIndex.WDMGUnknown5] = true;
+            bool Equal72()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WDMGUnknown5) ?? true))
+                {
+                    if (!lhs.WDMGUnknown5.EqualsWithin(rhs.WDMGUnknown5)) return false;
+                }
+                return true;
+            }
+            if (!Equal73()) differs[(int)Weapon_FieldIndex.WDMGUnknown6] = true;
+            bool Equal73()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WDMGUnknown6) ?? true))
+                {
+                    if (!lhs.WDMGUnknown6.EqualsWithin(rhs.WDMGUnknown6)) return false;
+                }
+                return true;
+            }
+            if (!Equal74()) differs[(int)Weapon_FieldIndex.WDMGUnknown7] = true;
+            bool Equal74()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WDMGUnknown7) ?? true))
+                {
+                    if (!lhs.WDMGUnknown7.EqualsWithin(rhs.WDMGUnknown7)) return false;
+                }
+                return true;
+            }
+            if (!Equal75()) differs[(int)Weapon_FieldIndex.WDMGUnknown8] = true;
+            bool Equal75()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WDMGUnknown8) ?? true))
+                {
+                    if (!lhs.WDMGUnknown8.EqualsWithin(rhs.WDMGUnknown8)) return false;
+                }
+                return true;
+            }
+            if (!Equal76()) differs[(int)Weapon_FieldIndex.WDMGUnknown9] = true;
+            bool Equal76()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WDMGUnknown9) ?? true))
+                {
+                    if (!lhs.WDMGUnknown9.EqualsWithin(rhs.WDMGUnknown9)) return false;
+                }
+                return true;
+            }
+            if (!Equal77()) differs[(int)Weapon_FieldIndex.CritChanceIncMult] = true;
+            bool Equal77()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.CritChanceIncMult) ?? true))
+                {
+                    if (!lhs.CritChanceIncMult.EqualsWithin(rhs.CritChanceIncMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal78()) differs[(int)Weapon_FieldIndex.DamageTypes] = true;
+            bool Equal78()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.DamageTypes) ?? true))
+                {
+                    if (!lhs.DamageTypes.SequenceEqualNullable(rhs.DamageTypes, (l, r) => ((WeaponDamageTypeCommon)((IWeaponDamageTypeGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Weapon_FieldIndex.DamageTypes)))) return false;
+                }
+                return true;
+            }
+            if (!Equal79()) differs[(int)Weapon_FieldIndex.FiringType] = true;
+            bool Equal79()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.FiringType) ?? true))
+                {
+                    if (lhs.FiringType != rhs.FiringType) return false;
+                }
+                return true;
+            }
+            if (!Equal80()) differs[(int)Weapon_FieldIndex.BurstCount] = true;
+            bool Equal80()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.BurstCount) ?? true))
+                {
+                    if (lhs.BurstCount != rhs.BurstCount) return false;
+                }
+                return true;
+            }
+            if (!Equal81()) differs[(int)Weapon_FieldIndex.RepeatableFire] = true;
+            bool Equal81()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.RepeatableFire) ?? true))
+                {
+                    if (lhs.RepeatableFire != rhs.RepeatableFire) return false;
+                }
+                return true;
+            }
+            if (!Equal82()) differs[(int)Weapon_FieldIndex.AttackSeconds] = true;
+            bool Equal82()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.AttackSeconds) ?? true))
+                {
+                    if (!lhs.AttackSeconds.EqualsWithin(rhs.AttackSeconds)) return false;
+                }
+                return true;
+            }
+            if (!Equal83()) differs[(int)Weapon_FieldIndex.FireSeconds] = true;
+            bool Equal83()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.FireSeconds) ?? true))
+                {
+                    if (!lhs.FireSeconds.EqualsWithin(rhs.FireSeconds)) return false;
+                }
+                return true;
+            }
+            if (!Equal84()) differs[(int)Weapon_FieldIndex.AttackDelaySeconds] = true;
+            bool Equal84()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.AttackDelaySeconds) ?? true))
+                {
+                    if (!lhs.AttackDelaySeconds.EqualsWithin(rhs.AttackDelaySeconds)) return false;
+                }
+                return true;
+            }
+            if (!Equal85()) differs[(int)Weapon_FieldIndex.BoltChargeSeconds] = true;
+            bool Equal85()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.BoltChargeSeconds) ?? true))
+                {
+                    if (!lhs.BoltChargeSeconds.EqualsWithin(rhs.BoltChargeSeconds)) return false;
+                }
+                return true;
+            }
+            if (!Equal86()) differs[(int)Weapon_FieldIndex.BoltAction] = true;
+            bool Equal86()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.BoltAction) ?? true))
+                {
+                    if (lhs.BoltAction != rhs.BoltAction) return false;
+                }
+                return true;
+            }
+            if (!Equal87()) differs[(int)Weapon_FieldIndex.DisableShellCaseEject] = true;
+            bool Equal87()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.DisableShellCaseEject) ?? true))
+                {
+                    if (lhs.DisableShellCaseEject != rhs.DisableShellCaseEject) return false;
+                }
+                return true;
+            }
+            if (!Equal88()) differs[(int)Weapon_FieldIndex.ShotsPerSecond] = true;
+            bool Equal88()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ShotsPerSecond) ?? true))
+                {
+                    if (!lhs.ShotsPerSecond.EqualsWithin(rhs.ShotsPerSecond)) return false;
+                }
+                return true;
+            }
+            if (!Equal89()) differs[(int)Weapon_FieldIndex.WFIRUnknown7] = true;
+            bool Equal89()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WFIRUnknown7) ?? true))
+                {
+                    if (!lhs.WFIRUnknown7.EqualsWithin(rhs.WFIRUnknown7)) return false;
+                }
+                return true;
+            }
+            if (!Equal90()) differs[(int)Weapon_FieldIndex.OverrideRateOfFire] = true;
+            bool Equal90()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.OverrideRateOfFire) ?? true))
+                {
+                    if (lhs.OverrideRateOfFire != rhs.OverrideRateOfFire) return false;
+                }
+                return true;
+            }
+            if (!Equal91()) differs[(int)Weapon_FieldIndex.TriggerThresholdPrimaryTrigger] = true;
+            bool Equal91()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.TriggerThresholdPrimaryTrigger) ?? true))
+                {
+                    if (!lhs.TriggerThresholdPrimaryTrigger.EqualsWithin(rhs.TriggerThresholdPrimaryTrigger)) return false;
+                }
+                return true;
+            }
+            if (!Equal92()) differs[(int)Weapon_FieldIndex.WFIRUnknown10] = true;
+            bool Equal92()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WFIRUnknown10) ?? true))
+                {
+                    if (lhs.WFIRUnknown10 != rhs.WFIRUnknown10) return false;
+                }
+                return true;
+            }
+            if (!Equal93()) differs[(int)Weapon_FieldIndex.TriggerThresholdSecondStage] = true;
+            bool Equal93()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.TriggerThresholdSecondStage) ?? true))
+                {
+                    if (!lhs.TriggerThresholdSecondStage.EqualsWithin(rhs.TriggerThresholdSecondStage)) return false;
+                }
+                return true;
+            }
+            if (!Equal94()) differs[(int)Weapon_FieldIndex.HasStagedTrigger] = true;
+            bool Equal94()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.HasStagedTrigger) ?? true))
+                {
+                    if (lhs.HasStagedTrigger != rhs.HasStagedTrigger) return false;
+                }
+                return true;
+            }
+            if (!Equal95()) differs[(int)Weapon_FieldIndex.HasDualTrigger] = true;
+            bool Equal95()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.HasDualTrigger) ?? true))
+                {
+                    if (lhs.HasDualTrigger != rhs.HasDualTrigger) return false;
+                }
+                return true;
+            }
+            if (!Equal96()) differs[(int)Weapon_FieldIndex.BurstDelaySeconds] = true;
+            bool Equal96()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.BurstDelaySeconds) ?? true))
+                {
+                    if (!lhs.BurstDelaySeconds.EqualsWithin(rhs.BurstDelaySeconds)) return false;
+                }
+                return true;
+            }
+            if (!Equal97()) differs[(int)Weapon_FieldIndex.NonPlayable] = true;
+            bool Equal97()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.NonPlayable) ?? true))
+                {
+                    if (lhs.NonPlayable != rhs.NonPlayable) return false;
+                }
+                return true;
+            }
+            if (!Equal98()) differs[(int)Weapon_FieldIndex.PlayerOnly] = true;
+            bool Equal98()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.PlayerOnly) ?? true))
+                {
+                    if (lhs.PlayerOnly != rhs.PlayerOnly) return false;
+                }
+                return true;
+            }
+            if (!Equal99()) differs[(int)Weapon_FieldIndex.WFLGUnknown1] = true;
+            bool Equal99()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WFLGUnknown1) ?? true))
+                {
+                    if (lhs.WFLGUnknown1 != rhs.WFLGUnknown1) return false;
+                }
+                return true;
+            }
+            if (!Equal100()) differs[(int)Weapon_FieldIndex.WFLGUnknown2] = true;
+            bool Equal100()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WFLGUnknown2) ?? true))
+                {
+                    if (lhs.WFLGUnknown2 != rhs.WFLGUnknown2) return false;
+                }
+                return true;
+            }
+            if (!Equal101()) differs[(int)Weapon_FieldIndex.CannotDrop] = true;
+            bool Equal101()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.CannotDrop) ?? true))
+                {
+                    if (lhs.CannotDrop != rhs.CannotDrop) return false;
+                }
+                return true;
+            }
+            if (!Equal102()) differs[(int)Weapon_FieldIndex.MinorCrime] = true;
+            bool Equal102()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.MinorCrime) ?? true))
+                {
+                    if (lhs.MinorCrime != rhs.MinorCrime) return false;
+                }
+                return true;
+            }
+            if (!Equal103()) differs[(int)Weapon_FieldIndex.NonHostile] = true;
+            bool Equal103()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.NonHostile) ?? true))
+                {
+                    if (lhs.NonHostile != rhs.NonHostile) return false;
+                }
+                return true;
+            }
+            if (!Equal104()) differs[(int)Weapon_FieldIndex.WFLGUnknown3] = true;
+            bool Equal104()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WFLGUnknown3) ?? true))
+                {
+                    if (lhs.WFLGUnknown3 != rhs.WFLGUnknown3) return false;
+                }
+                return true;
+            }
+            if (!Equal105()) differs[(int)Weapon_FieldIndex.WFLGUnknown4] = true;
+            bool Equal105()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WFLGUnknown4) ?? true))
+                {
+                    if (lhs.WFLGUnknown4 != rhs.WFLGUnknown4) return false;
+                }
+                return true;
+            }
+            if (!Equal106()) differs[(int)Weapon_FieldIndex.WFLGUnknown5] = true;
+            bool Equal106()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WFLGUnknown5) ?? true))
+                {
+                    if (lhs.WFLGUnknown5 != rhs.WFLGUnknown5) return false;
+                }
+                return true;
+            }
+            if (!Equal107()) differs[(int)Weapon_FieldIndex.WFLGUnknown6] = true;
+            bool Equal107()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WFLGUnknown6) ?? true))
+                {
+                    if (lhs.WFLGUnknown6 != rhs.WFLGUnknown6) return false;
+                }
+                return true;
+            }
+            if (!Equal108()) differs[(int)Weapon_FieldIndex.WFLGUnknown7] = true;
+            bool Equal108()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WFLGUnknown7) ?? true))
+                {
+                    if (lhs.WFLGUnknown7 != rhs.WFLGUnknown7) return false;
+                }
+                return true;
+            }
+            if (!Equal109()) differs[(int)Weapon_FieldIndex.WGENUnknown1] = true;
+            bool Equal109()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WGENUnknown1) ?? true))
+                {
+                    if (lhs.WGENUnknown1 != rhs.WGENUnknown1) return false;
+                }
+                return true;
+            }
+            if (!Equal110()) differs[(int)Weapon_FieldIndex.BaseWeight] = true;
+            bool Equal110()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.BaseWeight) ?? true))
+                {
+                    if (!lhs.BaseWeight.EqualsWithin(rhs.BaseWeight)) return false;
+                }
+                return true;
+            }
+            if (!Equal111()) differs[(int)Weapon_FieldIndex.BaseValue] = true;
+            bool Equal111()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.BaseValue) ?? true))
+                {
+                    if (lhs.BaseValue != rhs.BaseValue) return false;
+                }
+                return true;
+            }
+            if (!Equal112()) differs[(int)Weapon_FieldIndex.BaseSpeed] = true;
+            bool Equal112()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.BaseSpeed) ?? true))
+                {
+                    if (!lhs.BaseSpeed.EqualsWithin(rhs.BaseSpeed)) return false;
+                }
+                return true;
+            }
+            if (!Equal113()) differs[(int)Weapon_FieldIndex.AttackOxygenCost] = true;
+            bool Equal113()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.AttackOxygenCost) ?? true))
+                {
+                    if (!lhs.AttackOxygenCost.EqualsWithin(rhs.AttackOxygenCost)) return false;
+                }
+                return true;
+            }
+            if (!Equal114()) differs[(int)Weapon_FieldIndex.WeaponBarrel] = true;
+            bool Equal114()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WeaponBarrel) ?? true))
+                {
+                    if (!lhs.WeaponBarrel.Equals(rhs.WeaponBarrel)) return false;
+                }
+                return true;
+            }
+            if (!Equal115()) differs[(int)Weapon_FieldIndex.General] = true;
+            bool Equal115()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.General) ?? true))
+                {
+                    if (!object.Equals(lhs.General, rhs.General)) return false;
+                }
+                return true;
+            }
+            if (!Equal116()) differs[(int)Weapon_FieldIndex.WMELUnknown1] = true;
+            bool Equal116()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WMELUnknown1) ?? true))
+                {
+                    if (lhs.WMELUnknown1 != rhs.WMELUnknown1) return false;
+                }
+                return true;
+            }
+            if (!Equal117()) differs[(int)Weapon_FieldIndex.MeleeBashDamage] = true;
+            bool Equal117()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.MeleeBashDamage) ?? true))
+                {
+                    if (!lhs.MeleeBashDamage.EqualsWithin(rhs.MeleeBashDamage)) return false;
+                }
+                return true;
+            }
+            if (!Equal118()) differs[(int)Weapon_FieldIndex.MeleeReach] = true;
+            bool Equal118()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.MeleeReach) ?? true))
+                {
+                    if (!lhs.MeleeReach.EqualsWithin(rhs.MeleeReach)) return false;
+                }
+                return true;
+            }
+            if (!Equal119()) differs[(int)Weapon_FieldIndex.MeleeStagger] = true;
+            bool Equal119()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.MeleeStagger) ?? true))
+                {
+                    if (lhs.MeleeStagger != rhs.MeleeStagger) return false;
+                }
+                return true;
+            }
+            if (!Equal120()) differs[(int)Weapon_FieldIndex.Power] = true;
+            bool Equal120()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.Power) ?? true))
+                {
+                    if (!lhs.Power.Equals(rhs.Power)) return false;
+                }
+                return true;
+            }
+            if (!Equal121()) differs[(int)Weapon_FieldIndex.PowerRechargeTime] = true;
+            bool Equal121()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.PowerRechargeTime) ?? true))
+                {
+                    if (!lhs.PowerRechargeTime.EqualsWithin(rhs.PowerRechargeTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal122()) differs[(int)Weapon_FieldIndex.PowerRechargeDelay] = true;
+            bool Equal122()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.PowerRechargeDelay) ?? true))
+                {
+                    if (!lhs.PowerRechargeDelay.EqualsWithin(rhs.PowerRechargeDelay)) return false;
+                }
+                return true;
+            }
+            if (!Equal123()) differs[(int)Weapon_FieldIndex.ConsumeAmmo] = true;
+            bool Equal123()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ConsumeAmmo) ?? true))
+                {
+                    if (lhs.ConsumeAmmo != rhs.ConsumeAmmo) return false;
+                }
+                return true;
+            }
+            if (!Equal124()) differs[(int)Weapon_FieldIndex.PowerBonus] = true;
+            bool Equal124()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.PowerBonus) ?? true))
+                {
+                    if (!lhs.PowerBonus.Equals(rhs.PowerBonus)) return false;
+                }
+                return true;
+            }
+            if (!Equal125()) differs[(int)Weapon_FieldIndex.UsePower] = true;
+            bool Equal125()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.UsePower) ?? true))
+                {
+                    if (lhs.UsePower != rhs.UsePower) return false;
+                }
+                return true;
+            }
+            if (!Equal126()) differs[(int)Weapon_FieldIndex.QNAMUnknown1] = true;
+            bool Equal126()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.QNAMUnknown1) ?? true))
+                {
+                    if (lhs.QNAMUnknown1 != rhs.QNAMUnknown1) return false;
+                }
+                return true;
+            }
+            if (!Equal127()) differs[(int)Weapon_FieldIndex.QNAMUnknown2] = true;
+            bool Equal127()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.QNAMUnknown2) ?? true))
+                {
+                    if (!lhs.QNAMUnknown2.EqualsWithin(rhs.QNAMUnknown2)) return false;
+                }
+                return true;
+            }
+            if (!Equal128()) differs[(int)Weapon_FieldIndex.QNAMUnknown3] = true;
+            bool Equal128()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.QNAMUnknown3) ?? true))
+                {
+                    if (lhs.QNAMUnknown3 != rhs.QNAMUnknown3) return false;
+                }
+                return true;
+            }
+            if (!Equal129()) differs[(int)Weapon_FieldIndex.QNAMUnknown4] = true;
+            bool Equal129()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.QNAMUnknown4) ?? true))
+                {
+                    if (!lhs.QNAMUnknown4.Equals(rhs.QNAMUnknown4)) return false;
+                }
+                return true;
+            }
+            if (!Equal130()) differs[(int)Weapon_FieldIndex.QNAMUnknown5] = true;
+            bool Equal130()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.QNAMUnknown5) ?? true))
+                {
+                    if (!lhs.QNAMUnknown5.EqualsWithin(rhs.QNAMUnknown5)) return false;
+                }
+                return true;
+            }
+            if (!Equal131()) differs[(int)Weapon_FieldIndex.PowerConsumption] = true;
+            bool Equal131()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.PowerConsumption) ?? true))
+                {
+                    if (!lhs.PowerConsumption.Equals(rhs.PowerConsumption)) return false;
+                }
+                return true;
+            }
+            if (!Equal132()) differs[(int)Weapon_FieldIndex.WRLOUnknown1] = true;
+            bool Equal132()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WRLOUnknown1) ?? true))
+                {
+                    if (!lhs.WRLOUnknown1.EqualsWithin(rhs.WRLOUnknown1)) return false;
+                }
+                return true;
+            }
+            if (!Equal133()) differs[(int)Weapon_FieldIndex.ReloadSpeed] = true;
+            bool Equal133()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ReloadSpeed) ?? true))
+                {
+                    if (!lhs.ReloadSpeed.EqualsWithin(rhs.ReloadSpeed)) return false;
+                }
+                return true;
+            }
+            if (!Equal134()) differs[(int)Weapon_FieldIndex.ReloadCharging] = true;
+            bool Equal134()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ReloadCharging) ?? true))
+                {
+                    if (lhs.ReloadCharging != rhs.ReloadCharging) return false;
+                }
+                return true;
+            }
+            if (!Equal135()) differs[(int)Weapon_FieldIndex.ReloadSingle] = true;
+            bool Equal135()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ReloadSingle) ?? true))
+                {
+                    if (lhs.ReloadSingle != rhs.ReloadSingle) return false;
+                }
+                return true;
+            }
+            if (!Equal136()) differs[(int)Weapon_FieldIndex.WRUM] = true;
+            bool Equal136()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WRUM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.WRUM, rhs.WRUM)) return false;
+                }
+                return true;
+            }
+            if (!Equal137()) differs[(int)Weapon_FieldIndex.ApertureValueMin] = true;
+            bool Equal137()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ApertureValueMin) ?? true))
+                {
+                    if (!lhs.ApertureValueMin.EqualsWithin(rhs.ApertureValueMin)) return false;
+                }
+                return true;
+            }
+            if (!Equal138()) differs[(int)Weapon_FieldIndex.ApertureValueMax] = true;
+            bool Equal138()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ApertureValueMax) ?? true))
+                {
+                    if (!lhs.ApertureValueMax.EqualsWithin(rhs.ApertureValueMax)) return false;
+                }
+                return true;
+            }
+            if (!Equal139()) differs[(int)Weapon_FieldIndex.ApertureInputMin] = true;
+            bool Equal139()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ApertureInputMin) ?? true))
+                {
+                    if (!lhs.ApertureInputMin.EqualsWithin(rhs.ApertureInputMin)) return false;
+                }
+                return true;
+            }
+            if (!Equal140()) differs[(int)Weapon_FieldIndex.ApertureInputMax] = true;
+            bool Equal140()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ApertureInputMax) ?? true))
+                {
+                    if (!lhs.ApertureInputMax.EqualsWithin(rhs.ApertureInputMax)) return false;
+                }
+                return true;
+            }
+            if (!Equal141()) differs[(int)Weapon_FieldIndex.ApertureAcceleration] = true;
+            bool Equal141()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ApertureAcceleration) ?? true))
+                {
+                    if (!lhs.ApertureAcceleration.EqualsWithin(rhs.ApertureAcceleration)) return false;
+                }
+                return true;
+            }
+            if (!Equal142()) differs[(int)Weapon_FieldIndex.ApertureDeceleration] = true;
+            bool Equal142()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ApertureDeceleration) ?? true))
+                {
+                    if (!lhs.ApertureDeceleration.EqualsWithin(rhs.ApertureDeceleration)) return false;
+                }
+                return true;
+            }
+            if (!Equal143()) differs[(int)Weapon_FieldIndex.DistanceValueMin] = true;
+            bool Equal143()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.DistanceValueMin) ?? true))
+                {
+                    if (!lhs.DistanceValueMin.EqualsWithin(rhs.DistanceValueMin)) return false;
+                }
+                return true;
+            }
+            if (!Equal144()) differs[(int)Weapon_FieldIndex.DistanceValueMax] = true;
+            bool Equal144()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.DistanceValueMax) ?? true))
+                {
+                    if (!lhs.DistanceValueMax.EqualsWithin(rhs.DistanceValueMax)) return false;
+                }
+                return true;
+            }
+            if (!Equal145()) differs[(int)Weapon_FieldIndex.DistanceInputMin] = true;
+            bool Equal145()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.DistanceInputMin) ?? true))
+                {
+                    if (!lhs.DistanceInputMin.EqualsWithin(rhs.DistanceInputMin)) return false;
+                }
+                return true;
+            }
+            if (!Equal146()) differs[(int)Weapon_FieldIndex.DistanceInputMax] = true;
+            bool Equal146()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.DistanceInputMax) ?? true))
+                {
+                    if (!lhs.DistanceInputMax.EqualsWithin(rhs.DistanceInputMax)) return false;
+                }
+                return true;
+            }
+            if (!Equal147()) differs[(int)Weapon_FieldIndex.DistanceAcceleration] = true;
+            bool Equal147()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.DistanceAcceleration) ?? true))
+                {
+                    if (!lhs.DistanceAcceleration.EqualsWithin(rhs.DistanceAcceleration)) return false;
+                }
+                return true;
+            }
+            if (!Equal148()) differs[(int)Weapon_FieldIndex.DistanceDeceleration] = true;
+            bool Equal148()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.DistanceDeceleration) ?? true))
+                {
+                    if (!lhs.DistanceDeceleration.EqualsWithin(rhs.DistanceDeceleration)) return false;
+                }
+                return true;
+            }
+            if (!Equal149()) differs[(int)Weapon_FieldIndex.UseVariableRange] = true;
+            bool Equal149()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.UseVariableRange) ?? true))
+                {
+                    if (lhs.UseVariableRange != rhs.UseVariableRange) return false;
+                }
+                return true;
+            }
+            if (!Equal150()) differs[(int)Weapon_FieldIndex.FirstPersonModel] = true;
+            bool Equal150()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.FirstPersonModel) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.FirstPersonModel, rhs.FirstPersonModel, out var lhsFirstPersonModel, out var rhsFirstPersonModel, out var isFirstPersonModelEqual))
+                    {
+                        if (!((FirstPersonModelCommon)((IFirstPersonModelGetter)lhsFirstPersonModel).CommonInstance()!).Equals(lhsFirstPersonModel, rhsFirstPersonModel, equalsMask?.GetSubCrystal((int)Weapon_FieldIndex.FirstPersonModel))) return false;
+                    }
+                    else if (!isFirstPersonModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal151()) differs[(int)Weapon_FieldIndex.WVISUnknown1] = true;
+            bool Equal151()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WVISUnknown1) ?? true))
+                {
+                    if (lhs.WVISUnknown1 != rhs.WVISUnknown1) return false;
+                }
+                return true;
+            }
+            if (!Equal152()) differs[(int)Weapon_FieldIndex.WVISUnknown2] = true;
+            bool Equal152()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WVISUnknown2) ?? true))
+                {
+                    if (lhs.WVISUnknown2 != rhs.WVISUnknown2) return false;
+                }
+                return true;
+            }
+            if (!Equal153()) differs[(int)Weapon_FieldIndex.WVISUnknown3] = true;
+            bool Equal153()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WVISUnknown3) ?? true))
+                {
+                    if (lhs.WVISUnknown3 != rhs.WVISUnknown3) return false;
+                }
+                return true;
+            }
+            if (!Equal154()) differs[(int)Weapon_FieldIndex.ImpactDataSet] = true;
+            bool Equal154()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ImpactDataSet) ?? true))
+                {
+                    if (!lhs.ImpactDataSet.Equals(rhs.ImpactDataSet)) return false;
+                }
+                return true;
+            }
+            if (!Equal155()) differs[(int)Weapon_FieldIndex.ColorRemappingIndex] = true;
+            bool Equal155()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ColorRemappingIndex) ?? true))
+                {
+                    if (!lhs.ColorRemappingIndex.EqualsWithin(rhs.ColorRemappingIndex)) return false;
+                }
+                return true;
+            }
+            if (!Equal156()) differs[(int)Weapon_FieldIndex.ImageSpaceAdapter] = true;
+            bool Equal156()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.ImageSpaceAdapter) ?? true))
+                {
+                    if (!lhs.ImageSpaceAdapter.Equals(rhs.ImageSpaceAdapter)) return false;
+                }
+                return true;
+            }
+            if (!Equal157()) differs[(int)Weapon_FieldIndex.WTRMUnknown1] = true;
+            bool Equal157()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WTRMUnknown1) ?? true))
+                {
+                    if (!lhs.WTRMUnknown1.EqualsWithin(rhs.WTRMUnknown1)) return false;
+                }
+                return true;
+            }
+            if (!Equal158()) differs[(int)Weapon_FieldIndex.WTRMUnknown2] = true;
+            bool Equal158()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WTRMUnknown2) ?? true))
+                {
+                    if (lhs.WTRMUnknown2 != rhs.WTRMUnknown2) return false;
+                }
+                return true;
+            }
+            if (!Equal159()) differs[(int)Weapon_FieldIndex.WTRMUnknown3] = true;
+            bool Equal159()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WTRMUnknown3) ?? true))
+                {
+                    if (!lhs.WTRMUnknown3.EqualsWithin(rhs.WTRMUnknown3)) return false;
+                }
+                return true;
+            }
+            if (!Equal160()) differs[(int)Weapon_FieldIndex.WTRMUnknown4] = true;
+            bool Equal160()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WTRMUnknown4) ?? true))
+                {
+                    if (!lhs.WTRMUnknown4.EqualsWithin(rhs.WTRMUnknown4)) return false;
+                }
+                return true;
+            }
+            if (!Equal161()) differs[(int)Weapon_FieldIndex.WTRMUnknown5] = true;
+            bool Equal161()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Weapon_FieldIndex.WTRMUnknown5) ?? true))
+                {
+                    if (!lhs.WTRMUnknown5.EqualsWithin(rhs.WTRMUnknown5)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IWeaponGetter)lhs, (IWeaponGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IWeaponGetter)lhs, (IWeaponGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IWeaponGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

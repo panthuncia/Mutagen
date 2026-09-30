@@ -1120,6 +1120,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IImpactDataSetGetter item,
+            IImpactDataSetGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ImpactDataSetCommon)((IImpactDataSetGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ImpactDataSet Duplicate(
             this IImpactDataSetGetter item,
             FormKey formKey,
@@ -1686,6 +1704,150 @@ namespace Mutagen.Bethesda.Fallout3
             yield return FormLinkInformation.Factory(obj.OrganicBug);
             yield return FormLinkInformation.Factory(obj.OrganicGlow);
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IImpactDataSetGetter lhs,
+            IImpactDataSetGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ImpactDataSet_FieldIndex.Stone] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImpactDataSet_FieldIndex.Stone) ?? true))
+                {
+                    if (!lhs.Stone.Equals(rhs.Stone)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)ImpactDataSet_FieldIndex.Dirt] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImpactDataSet_FieldIndex.Dirt) ?? true))
+                {
+                    if (!lhs.Dirt.Equals(rhs.Dirt)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)ImpactDataSet_FieldIndex.Grass] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImpactDataSet_FieldIndex.Grass) ?? true))
+                {
+                    if (!lhs.Grass.Equals(rhs.Grass)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)ImpactDataSet_FieldIndex.Glass] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImpactDataSet_FieldIndex.Glass) ?? true))
+                {
+                    if (!lhs.Glass.Equals(rhs.Glass)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)ImpactDataSet_FieldIndex.Metal] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImpactDataSet_FieldIndex.Metal) ?? true))
+                {
+                    if (!lhs.Metal.Equals(rhs.Metal)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)ImpactDataSet_FieldIndex.Wood] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImpactDataSet_FieldIndex.Wood) ?? true))
+                {
+                    if (!lhs.Wood.Equals(rhs.Wood)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)ImpactDataSet_FieldIndex.Organic] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImpactDataSet_FieldIndex.Organic) ?? true))
+                {
+                    if (!lhs.Organic.Equals(rhs.Organic)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)ImpactDataSet_FieldIndex.Cloth] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImpactDataSet_FieldIndex.Cloth) ?? true))
+                {
+                    if (!lhs.Cloth.Equals(rhs.Cloth)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)ImpactDataSet_FieldIndex.Water] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImpactDataSet_FieldIndex.Water) ?? true))
+                {
+                    if (!lhs.Water.Equals(rhs.Water)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)ImpactDataSet_FieldIndex.HollowMetal] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImpactDataSet_FieldIndex.HollowMetal) ?? true))
+                {
+                    if (!lhs.HollowMetal.Equals(rhs.HollowMetal)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)ImpactDataSet_FieldIndex.OrganicBug] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImpactDataSet_FieldIndex.OrganicBug) ?? true))
+                {
+                    if (!lhs.OrganicBug.Equals(rhs.OrganicBug)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)ImpactDataSet_FieldIndex.OrganicGlow] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImpactDataSet_FieldIndex.OrganicGlow) ?? true))
+                {
+                    if (!lhs.OrganicGlow.Equals(rhs.OrganicGlow)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)ImpactDataSet_FieldIndex.DATADataTypeState] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImpactDataSet_FieldIndex.DATADataTypeState) ?? true))
+                {
+                    if (lhs.DATADataTypeState != rhs.DATADataTypeState) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IImpactDataSetGetter)lhs, (IImpactDataSetGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IImpactDataSetGetter)lhs, (IImpactDataSetGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

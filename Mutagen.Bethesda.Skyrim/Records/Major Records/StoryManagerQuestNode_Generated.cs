@@ -846,6 +846,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IStoryManagerQuestNodeGetter item,
+            IStoryManagerQuestNodeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((StoryManagerQuestNodeCommon)((IStoryManagerQuestNodeGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static StoryManagerQuestNode Duplicate(
             this IStoryManagerQuestNodeGetter item,
             FormKey formKey,
@@ -1388,6 +1406,87 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IStoryManagerQuestNodeGetter lhs,
+            IStoryManagerQuestNodeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IAStoryManagerNodeGetter)lhs, (IAStoryManagerNodeGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)StoryManagerQuestNode_FieldIndex.Flags] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)StoryManagerQuestNode_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)StoryManagerQuestNode_FieldIndex.QuestFlags] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)StoryManagerQuestNode_FieldIndex.QuestFlags) ?? true))
+                {
+                    if (lhs.QuestFlags != rhs.QuestFlags) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)StoryManagerQuestNode_FieldIndex.MaxConcurrentQuests] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)StoryManagerQuestNode_FieldIndex.MaxConcurrentQuests) ?? true))
+                {
+                    if (lhs.MaxConcurrentQuests != rhs.MaxConcurrentQuests) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)StoryManagerQuestNode_FieldIndex.MaxNumQuestsToRun] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)StoryManagerQuestNode_FieldIndex.MaxNumQuestsToRun) ?? true))
+                {
+                    if (lhs.MaxNumQuestsToRun != rhs.MaxNumQuestsToRun) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)StoryManagerQuestNode_FieldIndex.Quests] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)StoryManagerQuestNode_FieldIndex.Quests) ?? true))
+                {
+                    if (!lhs.Quests.SequenceEqual(rhs.Quests, (l, r) => ((StoryManagerQuestCommon)((IStoryManagerQuestGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)StoryManagerQuestNode_FieldIndex.Quests)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IAStoryManagerNodeGetter lhs,
+            IAStoryManagerNodeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IStoryManagerQuestNodeGetter)lhs, (IStoryManagerQuestNodeGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IStoryManagerQuestNodeGetter)lhs, (IStoryManagerQuestNodeGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IStoryManagerQuestNodeGetter)lhs, (IStoryManagerQuestNodeGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

@@ -989,6 +989,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this INavigationMeshGetter item,
+            INavigationMeshGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((NavigationMeshCommon)((INavigationMeshGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static NavigationMesh Duplicate(
             this INavigationMeshGetter item,
             FormKey formKey,
@@ -1547,6 +1565,86 @@ namespace Mutagen.Bethesda.Starfield
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            INavigationMeshGetter lhs,
+            INavigationMeshGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)NavigationMesh_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)NavigationMesh_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)NavigationMesh_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)NavigationMesh_FieldIndex.Components] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)NavigationMesh_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)NavigationMesh_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)NavigationMesh_FieldIndex.NavmeshGeometry] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)NavigationMesh_FieldIndex.NavmeshGeometry) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.NavmeshGeometry, rhs.NavmeshGeometry, out var lhsNavmeshGeometry, out var rhsNavmeshGeometry, out var isNavmeshGeometryEqual))
+                    {
+                        if (!((NavmeshGeometryCommon)((INavmeshGeometryGetter)lhsNavmeshGeometry).CommonInstance()!).Equals(lhsNavmeshGeometry, rhsNavmeshGeometry, equalsMask?.GetSubCrystal((int)NavigationMesh_FieldIndex.NavmeshGeometry))) return false;
+                    }
+                    else if (!isNavmeshGeometryEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)NavigationMesh_FieldIndex.NNAM] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)NavigationMesh_FieldIndex.NNAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.NNAM, rhs.NNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)NavigationMesh_FieldIndex.PreCutMapEntries] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)NavigationMesh_FieldIndex.PreCutMapEntries) ?? true))
+                {
+                    if (!lhs.PreCutMapEntries.SequenceEqualNullable(rhs.PreCutMapEntries, (l, r) => ((PreCutMapEntryCommon)((IPreCutMapEntryGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)NavigationMesh_FieldIndex.PreCutMapEntries)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((INavigationMeshGetter)lhs, (INavigationMeshGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((INavigationMeshGetter)lhs, (INavigationMeshGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(INavigationMeshGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

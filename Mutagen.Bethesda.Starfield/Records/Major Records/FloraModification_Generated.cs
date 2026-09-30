@@ -743,6 +743,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IFloraModificationGetter item,
+            IFloraModificationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((FloraModificationCommon)((IFloraModificationGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static FloraModification Duplicate(
             this IFloraModificationGetter item,
             FormKey formKey,
@@ -1258,6 +1276,51 @@ namespace Mutagen.Bethesda.Starfield
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IFloraModificationGetter lhs,
+            IFloraModificationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IAObjectModificationGetter)lhs, (IAObjectModificationGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)FloraModification_FieldIndex.Properties] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)FloraModification_FieldIndex.Properties) ?? true))
+                {
+                    if (!lhs.Properties.SequenceEqual(rhs.Properties, (l, r) => ((AObjectModPropertyCommon<Flora.Property>)((IAObjectModPropertyGetter<Flora.Property>)l).CommonInstance(typeof(Flora.Property))!).Equals(l, r, equalsMask?.GetSubCrystal((int)FloraModification_FieldIndex.Properties)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IAObjectModificationGetter lhs,
+            IAObjectModificationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IFloraModificationGetter)lhs, (IFloraModificationGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IFloraModificationGetter)lhs, (IFloraModificationGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IFloraModificationGetter)lhs, (IFloraModificationGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

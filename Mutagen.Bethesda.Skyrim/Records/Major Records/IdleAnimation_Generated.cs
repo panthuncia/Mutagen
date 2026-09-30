@@ -1069,6 +1069,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IIdleAnimationGetter item,
+            IIdleAnimationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((IdleAnimationCommon)((IIdleAnimationGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static IdleAnimation Duplicate(
             this IIdleAnimationGetter item,
             FormKey formKey,
@@ -1639,6 +1657,114 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IIdleAnimationGetter lhs,
+            IIdleAnimationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)IdleAnimation_FieldIndex.Conditions] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleAnimation_FieldIndex.Conditions) ?? true))
+                {
+                    if (!lhs.Conditions.SequenceEqual(rhs.Conditions, (l, r) => ((ConditionCommon)((IConditionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)IdleAnimation_FieldIndex.Conditions)))) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)IdleAnimation_FieldIndex.Filename] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleAnimation_FieldIndex.Filename) ?? true))
+                {
+                    if (!object.Equals(lhs.Filename, rhs.Filename)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)IdleAnimation_FieldIndex.AnimationEvent] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleAnimation_FieldIndex.AnimationEvent) ?? true))
+                {
+                    if (!string.Equals(lhs.AnimationEvent, rhs.AnimationEvent)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)IdleAnimation_FieldIndex.RelatedIdles] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleAnimation_FieldIndex.RelatedIdles) ?? true))
+                {
+                    if (!lhs.RelatedIdles.SequenceEqualNullable(rhs.RelatedIdles)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)IdleAnimation_FieldIndex.LoopingSecondsMin] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleAnimation_FieldIndex.LoopingSecondsMin) ?? true))
+                {
+                    if (lhs.LoopingSecondsMin != rhs.LoopingSecondsMin) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)IdleAnimation_FieldIndex.LoopingSecondsMax] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleAnimation_FieldIndex.LoopingSecondsMax) ?? true))
+                {
+                    if (lhs.LoopingSecondsMax != rhs.LoopingSecondsMax) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)IdleAnimation_FieldIndex.Flags] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleAnimation_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)IdleAnimation_FieldIndex.AnimationGroupSection] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleAnimation_FieldIndex.AnimationGroupSection) ?? true))
+                {
+                    if (lhs.AnimationGroupSection != rhs.AnimationGroupSection) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)IdleAnimation_FieldIndex.ReplayDelay] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleAnimation_FieldIndex.ReplayDelay) ?? true))
+                {
+                    if (lhs.ReplayDelay != rhs.ReplayDelay) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IIdleAnimationGetter)lhs, (IIdleAnimationGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IIdleAnimationGetter)lhs, (IIdleAnimationGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IIdleAnimationGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

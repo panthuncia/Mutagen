@@ -722,6 +722,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IEyesGetter item,
+            IEyesGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((EyesCommon)((IEyesGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Eyes Duplicate(
             this IEyesGetter item,
             FormKey formKey,
@@ -1176,6 +1194,60 @@ namespace Mutagen.Bethesda.Fallout3
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IEyesGetter lhs,
+            IEyesGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Eyes_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Eyes_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Eyes_FieldIndex.Icon] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Eyes_FieldIndex.Icon) ?? true))
+                {
+                    if (!object.Equals(lhs.Icon, rhs.Icon)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Eyes_FieldIndex.Flags] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Eyes_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IEyesGetter)lhs, (IEyesGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IEyesGetter)lhs, (IEyesGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IEyesGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

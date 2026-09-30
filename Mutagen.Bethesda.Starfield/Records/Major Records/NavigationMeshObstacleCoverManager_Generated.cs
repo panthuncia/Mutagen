@@ -691,6 +691,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this INavigationMeshObstacleCoverManagerGetter item,
+            INavigationMeshObstacleCoverManagerGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((NavigationMeshObstacleCoverManagerCommon)((INavigationMeshObstacleCoverManagerGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static NavigationMeshObstacleCoverManager Duplicate(
             this INavigationMeshObstacleCoverManagerGetter item,
             FormKey formKey,
@@ -1105,6 +1123,42 @@ namespace Mutagen.Bethesda.Starfield
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            INavigationMeshObstacleCoverManagerGetter lhs,
+            INavigationMeshObstacleCoverManagerGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)NavigationMeshObstacleCoverManager_FieldIndex.SubObjects] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)NavigationMeshObstacleCoverManager_FieldIndex.SubObjects) ?? true))
+                {
+                    if (!lhs.SubObjects.SequenceEqual(rhs.SubObjects, (l, r) => ((NavigationMeshObstacleManagerSubObjectCommon)((INavigationMeshObstacleManagerSubObjectGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)NavigationMeshObstacleCoverManager_FieldIndex.SubObjects)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((INavigationMeshObstacleCoverManagerGetter)lhs, (INavigationMeshObstacleCoverManagerGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((INavigationMeshObstacleCoverManagerGetter)lhs, (INavigationMeshObstacleCoverManagerGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

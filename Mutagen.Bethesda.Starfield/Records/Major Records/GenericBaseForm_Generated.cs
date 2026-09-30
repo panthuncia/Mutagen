@@ -1283,6 +1283,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IGenericBaseFormGetter item,
+            IGenericBaseFormGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((GenericBaseFormCommon)((IGenericBaseFormGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static GenericBaseForm Duplicate(
             this IGenericBaseFormGetter item,
             FormKey formKey,
@@ -1947,6 +1965,139 @@ namespace Mutagen.Bethesda.Starfield
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IGenericBaseFormGetter lhs,
+            IGenericBaseFormGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)GenericBaseForm_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)GenericBaseForm_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)GenericBaseForm_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)GenericBaseForm_FieldIndex.ObjectBounds] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)GenericBaseForm_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)GenericBaseForm_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)GenericBaseForm_FieldIndex.DirtinessScale] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)GenericBaseForm_FieldIndex.DirtinessScale) ?? true))
+                {
+                    if (!lhs.DirtinessScale.Equals(rhs.DirtinessScale)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)GenericBaseForm_FieldIndex.ObjectPaletteDefaults] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)GenericBaseForm_FieldIndex.ObjectPaletteDefaults) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectPaletteDefaults, rhs.ObjectPaletteDefaults, out var lhsObjectPaletteDefaults, out var rhsObjectPaletteDefaults, out var isObjectPaletteDefaultsEqual))
+                    {
+                        if (!((ObjectPaletteDefaultsCommon)((IObjectPaletteDefaultsGetter)lhsObjectPaletteDefaults).CommonInstance()!).Equals(lhsObjectPaletteDefaults, rhsObjectPaletteDefaults, equalsMask?.GetSubCrystal((int)GenericBaseForm_FieldIndex.ObjectPaletteDefaults))) return false;
+                    }
+                    else if (!isObjectPaletteDefaultsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)GenericBaseForm_FieldIndex.Components] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)GenericBaseForm_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)GenericBaseForm_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)GenericBaseForm_FieldIndex.Filter] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)GenericBaseForm_FieldIndex.Filter) ?? true))
+                {
+                    if (!string.Equals(lhs.Filter, rhs.Filter)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)GenericBaseForm_FieldIndex.Template] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)GenericBaseForm_FieldIndex.Template) ?? true))
+                {
+                    if (!lhs.Template.Equals(rhs.Template)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)GenericBaseForm_FieldIndex.ObjectTemplateInstanceData] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)GenericBaseForm_FieldIndex.ObjectTemplateInstanceData) ?? true))
+                {
+                    if (!lhs.ObjectTemplateInstanceData.SequenceEqualNullable(rhs.ObjectTemplateInstanceData)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)GenericBaseForm_FieldIndex.ObjectTemplates] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)GenericBaseForm_FieldIndex.ObjectTemplates) ?? true))
+                {
+                    if (!lhs.ObjectTemplates.SequenceEqualNullable(rhs.ObjectTemplates, (l, r) => ((ObjectTemplateCommon<AObjectModification.NoneProperty>)((IObjectTemplateGetter<AObjectModification.NoneProperty>)l).CommonInstance(typeof(AObjectModification.NoneProperty))!).Equals(l, r, equalsMask?.GetSubCrystal((int)GenericBaseForm_FieldIndex.ObjectTemplates)))) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)GenericBaseForm_FieldIndex.NavmeshGeometry] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)GenericBaseForm_FieldIndex.NavmeshGeometry) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.NavmeshGeometry, rhs.NavmeshGeometry, out var lhsNavmeshGeometry, out var rhsNavmeshGeometry, out var isNavmeshGeometryEqual))
+                    {
+                        if (!((NavmeshGeometryCommon)((INavmeshGeometryGetter)lhsNavmeshGeometry).CommonInstance()!).Equals(lhsNavmeshGeometry, rhsNavmeshGeometry, equalsMask?.GetSubCrystal((int)GenericBaseForm_FieldIndex.NavmeshGeometry))) return false;
+                    }
+                    else if (!isNavmeshGeometryEqual) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IGenericBaseFormGetter)lhs, (IGenericBaseFormGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IGenericBaseFormGetter)lhs, (IGenericBaseFormGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IGenericBaseFormGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

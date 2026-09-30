@@ -737,6 +737,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IArmorModificationGetter item,
+            IArmorModificationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ArmorModificationCommon)((IArmorModificationGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ArmorModification Duplicate(
             this IArmorModificationGetter item,
             FormKey formKey,
@@ -1249,6 +1267,51 @@ namespace Mutagen.Bethesda.Fallout4
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IArmorModificationGetter lhs,
+            IArmorModificationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IAObjectModificationGetter)lhs, (IAObjectModificationGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ArmorModification_FieldIndex.Properties] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorModification_FieldIndex.Properties) ?? true))
+                {
+                    if (!lhs.Properties.SequenceEqual(rhs.Properties, (l, r) => ((AObjectModPropertyCommon<Armor.Property>)((IAObjectModPropertyGetter<Armor.Property>)l).CommonInstance(typeof(Armor.Property))!).Equals(l, r, equalsMask?.GetSubCrystal((int)ArmorModification_FieldIndex.Properties)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IAObjectModificationGetter lhs,
+            IAObjectModificationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IArmorModificationGetter)lhs, (IArmorModificationGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IArmorModificationGetter)lhs, (IArmorModificationGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IArmorModificationGetter)lhs, (IArmorModificationGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

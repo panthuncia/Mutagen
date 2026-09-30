@@ -1350,6 +1350,24 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IDialogItemGetter item,
+            IDialogItemGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((DialogItemCommon)((IDialogItemGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static DialogItem Duplicate(
             this IDialogItemGetter item,
             FormKey formKey,
@@ -1981,6 +1999,131 @@ namespace Mutagen.Bethesda.Oblivion
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IDialogItemGetter lhs,
+            IDialogItemGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IOblivionMajorRecordGetter)lhs, (IOblivionMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)DialogItem_FieldIndex.Data] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogItem_FieldIndex.Data) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Data, rhs.Data, out var lhsData, out var rhsData, out var isDataEqual))
+                    {
+                        if (!((DialogItemDataCommon)((IDialogItemDataGetter)lhsData).CommonInstance()!).Equals(lhsData, rhsData, equalsMask?.GetSubCrystal((int)DialogItem_FieldIndex.Data))) return false;
+                    }
+                    else if (!isDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)DialogItem_FieldIndex.Quest] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogItem_FieldIndex.Quest) ?? true))
+                {
+                    if (!lhs.Quest.Equals(rhs.Quest)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)DialogItem_FieldIndex.Topic] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogItem_FieldIndex.Topic) ?? true))
+                {
+                    if (!lhs.Topic.Equals(rhs.Topic)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)DialogItem_FieldIndex.PreviousItem] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogItem_FieldIndex.PreviousItem) ?? true))
+                {
+                    if (!lhs.PreviousItem.Equals(rhs.PreviousItem)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)DialogItem_FieldIndex.Topics] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogItem_FieldIndex.Topics) ?? true))
+                {
+                    if (!lhs.Topics.SequenceEqualNullable(rhs.Topics)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)DialogItem_FieldIndex.Responses] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogItem_FieldIndex.Responses) ?? true))
+                {
+                    if (!lhs.Responses.SequenceEqual(rhs.Responses, (l, r) => ((DialogResponseCommon)((IDialogResponseGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)DialogItem_FieldIndex.Responses)))) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)DialogItem_FieldIndex.Conditions] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogItem_FieldIndex.Conditions) ?? true))
+                {
+                    if (!lhs.Conditions.SequenceEqual(rhs.Conditions, (l, r) => ((ConditionCommon)((IConditionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)DialogItem_FieldIndex.Conditions)))) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)DialogItem_FieldIndex.Choices] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogItem_FieldIndex.Choices) ?? true))
+                {
+                    if (!lhs.Choices.SequenceEqualNullable(rhs.Choices)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)DialogItem_FieldIndex.LinkFrom] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogItem_FieldIndex.LinkFrom) ?? true))
+                {
+                    if (!lhs.LinkFrom.SequenceEqualNullable(rhs.LinkFrom)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)DialogItem_FieldIndex.Script] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogItem_FieldIndex.Script) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Script, rhs.Script, out var lhsScript, out var rhsScript, out var isScriptEqual))
+                    {
+                        if (!((ScriptFieldsCommon)((IScriptFieldsGetter)lhsScript).CommonInstance()!).Equals(lhsScript, rhsScript, equalsMask?.GetSubCrystal((int)DialogItem_FieldIndex.Script))) return false;
+                    }
+                    else if (!isScriptEqual) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IOblivionMajorRecordGetter lhs,
+            IOblivionMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IDialogItemGetter)lhs, (IDialogItemGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IDialogItemGetter)lhs, (IDialogItemGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

@@ -1244,6 +1244,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ISoundDescriptorGetter item,
+            ISoundDescriptorGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((SoundDescriptorCommon)((ISoundDescriptorGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static SoundDescriptor Duplicate(
             this ISoundDescriptorGetter item,
             FormKey formKey,
@@ -1885,6 +1903,154 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ISoundDescriptorGetter lhs,
+            ISoundDescriptorGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)SoundDescriptor_FieldIndex.Type] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundDescriptor_FieldIndex.Type) ?? true))
+                {
+                    if (lhs.Type != rhs.Type) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)SoundDescriptor_FieldIndex.Category] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundDescriptor_FieldIndex.Category) ?? true))
+                {
+                    if (!lhs.Category.Equals(rhs.Category)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)SoundDescriptor_FieldIndex.AlternateSoundFor] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundDescriptor_FieldIndex.AlternateSoundFor) ?? true))
+                {
+                    if (!lhs.AlternateSoundFor.Equals(rhs.AlternateSoundFor)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)SoundDescriptor_FieldIndex.SoundFiles] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundDescriptor_FieldIndex.SoundFiles) ?? true))
+                {
+                    if (!lhs.SoundFiles.SequenceEqualNullable(rhs.SoundFiles)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)SoundDescriptor_FieldIndex.OutputModel] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundDescriptor_FieldIndex.OutputModel) ?? true))
+                {
+                    if (!lhs.OutputModel.Equals(rhs.OutputModel)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)SoundDescriptor_FieldIndex.String] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundDescriptor_FieldIndex.String) ?? true))
+                {
+                    if (!object.Equals(lhs.String, rhs.String)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)SoundDescriptor_FieldIndex.Conditions] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundDescriptor_FieldIndex.Conditions) ?? true))
+                {
+                    if (!lhs.Conditions.SequenceEqual(rhs.Conditions, (l, r) => ((ConditionCommon)((IConditionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)SoundDescriptor_FieldIndex.Conditions)))) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)SoundDescriptor_FieldIndex.LoopAndRumble] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundDescriptor_FieldIndex.LoopAndRumble) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.LoopAndRumble, rhs.LoopAndRumble, out var lhsLoopAndRumble, out var rhsLoopAndRumble, out var isLoopAndRumbleEqual))
+                    {
+                        if (!((SoundLoopAndRumbleCommon)((ISoundLoopAndRumbleGetter)lhsLoopAndRumble).CommonInstance()!).Equals(lhsLoopAndRumble, rhsLoopAndRumble, equalsMask?.GetSubCrystal((int)SoundDescriptor_FieldIndex.LoopAndRumble))) return false;
+                    }
+                    else if (!isLoopAndRumbleEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)SoundDescriptor_FieldIndex.PercentFrequencyShift] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundDescriptor_FieldIndex.PercentFrequencyShift) ?? true))
+                {
+                    if (lhs.PercentFrequencyShift != rhs.PercentFrequencyShift) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)SoundDescriptor_FieldIndex.PercentFrequencyVariance] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundDescriptor_FieldIndex.PercentFrequencyVariance) ?? true))
+                {
+                    if (lhs.PercentFrequencyVariance != rhs.PercentFrequencyVariance) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)SoundDescriptor_FieldIndex.Priority] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundDescriptor_FieldIndex.Priority) ?? true))
+                {
+                    if (lhs.Priority != rhs.Priority) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)SoundDescriptor_FieldIndex.Variance] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundDescriptor_FieldIndex.Variance) ?? true))
+                {
+                    if (lhs.Variance != rhs.Variance) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)SoundDescriptor_FieldIndex.StaticAttenuation] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundDescriptor_FieldIndex.StaticAttenuation) ?? true))
+                {
+                    if (!lhs.StaticAttenuation.EqualsWithin(rhs.StaticAttenuation)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISoundDescriptorGetter)lhs, (ISoundDescriptorGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISoundDescriptorGetter)lhs, (ISoundDescriptorGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(ISoundDescriptorGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

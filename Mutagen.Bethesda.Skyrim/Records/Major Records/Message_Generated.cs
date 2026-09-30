@@ -975,6 +975,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IMessageGetter item,
+            IMessageGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((MessageCommon)((IMessageGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Message Duplicate(
             this IMessageGetter item,
             FormKey formKey,
@@ -1485,6 +1503,96 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IMessageGetter lhs,
+            IMessageGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Message_FieldIndex.Description] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.Description) ?? true))
+                {
+                    if (!object.Equals(lhs.Description, rhs.Description)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Message_FieldIndex.Name] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Message_FieldIndex.INAM] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.INAM) ?? true))
+                {
+                    if (!MemoryExtensions.SequenceEqual(lhs.INAM.Span, rhs.INAM.Span)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Message_FieldIndex.Quest] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.Quest) ?? true))
+                {
+                    if (!lhs.Quest.Equals(rhs.Quest)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Message_FieldIndex.Flags] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Message_FieldIndex.DisplayTime] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.DisplayTime) ?? true))
+                {
+                    if (lhs.DisplayTime != rhs.DisplayTime) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Message_FieldIndex.MenuButtons] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.MenuButtons) ?? true))
+                {
+                    if (!lhs.MenuButtons.SequenceEqual(rhs.MenuButtons, (l, r) => ((MessageButtonCommon)((IMessageButtonGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Message_FieldIndex.MenuButtons)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMessageGetter)lhs, (IMessageGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMessageGetter)lhs, (IMessageGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

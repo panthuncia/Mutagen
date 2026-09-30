@@ -735,6 +735,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IEquipTypeGetter item,
+            IEquipTypeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((EquipTypeCommon)((IEquipTypeGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static EquipType Duplicate(
             this IEquipTypeGetter item,
             FormKey formKey,
@@ -1172,6 +1190,51 @@ namespace Mutagen.Bethesda.Skyrim
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IEquipTypeGetter lhs,
+            IEquipTypeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)EquipType_FieldIndex.SlotParents] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EquipType_FieldIndex.SlotParents) ?? true))
+                {
+                    if (!lhs.SlotParents.SequenceEqualNullable(rhs.SlotParents)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)EquipType_FieldIndex.UseAllParents] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EquipType_FieldIndex.UseAllParents) ?? true))
+                {
+                    if (lhs.UseAllParents != rhs.UseAllParents) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IEquipTypeGetter)lhs, (IEquipTypeGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IEquipTypeGetter)lhs, (IEquipTypeGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

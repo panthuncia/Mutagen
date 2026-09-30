@@ -637,6 +637,24 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IGlobalUnknownGetter item,
+            IGlobalUnknownGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((GlobalUnknownCommon)((IGlobalUnknownGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static GlobalUnknown Duplicate(
             this IGlobalUnknownGetter item,
             FormKey formKey,
@@ -1097,6 +1115,60 @@ namespace Mutagen.Bethesda.Oblivion
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IGlobalUnknownGetter lhs,
+            IGlobalUnknownGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IGlobalGetter)lhs, (IGlobalGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)GlobalUnknown_FieldIndex.TypeChar] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)GlobalUnknown_FieldIndex.TypeChar) ?? true))
+                {
+                    if (lhs.TypeChar != rhs.TypeChar) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)GlobalUnknown_FieldIndex.Data] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)GlobalUnknown_FieldIndex.Data) ?? true))
+                {
+                    if (!lhs.Data.EqualsWithin(rhs.Data)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IGlobalGetter lhs,
+            IGlobalGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IGlobalUnknownGetter)lhs, (IGlobalUnknownGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IOblivionMajorRecordGetter lhs,
+            IOblivionMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IGlobalUnknownGetter)lhs, (IGlobalUnknownGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IGlobalUnknownGetter)lhs, (IGlobalUnknownGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

@@ -928,6 +928,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IConstructibleObjectGetter item,
+            IConstructibleObjectGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ConstructibleObjectCommon)((IConstructibleObjectGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ConstructibleObject Duplicate(
             this IConstructibleObjectGetter item,
             FormKey formKey,
@@ -1437,6 +1455,78 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return WorkbenchKeywordInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IConstructibleObjectGetter lhs,
+            IConstructibleObjectGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ConstructibleObject_FieldIndex.Items] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.Items) ?? true))
+                {
+                    if (!lhs.Items.SequenceEqualNullable(rhs.Items, (l, r) => ((ContainerEntryCommon)((IContainerEntryGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ConstructibleObject_FieldIndex.Items)))) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)ConstructibleObject_FieldIndex.Conditions] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.Conditions) ?? true))
+                {
+                    if (!lhs.Conditions.SequenceEqual(rhs.Conditions, (l, r) => ((ConditionCommon)((IConditionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ConstructibleObject_FieldIndex.Conditions)))) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)ConstructibleObject_FieldIndex.CreatedObject] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.CreatedObject) ?? true))
+                {
+                    if (!lhs.CreatedObject.Equals(rhs.CreatedObject)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)ConstructibleObject_FieldIndex.WorkbenchKeyword] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.WorkbenchKeyword) ?? true))
+                {
+                    if (!lhs.WorkbenchKeyword.Equals(rhs.WorkbenchKeyword)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)ConstructibleObject_FieldIndex.CreatedObjectCount] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.CreatedObjectCount) ?? true))
+                {
+                    if (lhs.CreatedObjectCount != rhs.CreatedObjectCount) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IConstructibleObjectGetter)lhs, (IConstructibleObjectGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IConstructibleObjectGetter)lhs, (IConstructibleObjectGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

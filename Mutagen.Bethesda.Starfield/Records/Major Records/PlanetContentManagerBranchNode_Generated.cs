@@ -1340,6 +1340,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IPlanetContentManagerBranchNodeGetter item,
+            IPlanetContentManagerBranchNodeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((PlanetContentManagerBranchNodeCommon)((IPlanetContentManagerBranchNodeGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static PlanetContentManagerBranchNode Duplicate(
             this IPlanetContentManagerBranchNodeGetter item,
             FormKey formKey,
@@ -2005,6 +2023,132 @@ namespace Mutagen.Bethesda.Starfield
                 yield return PreviousNodeInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IPlanetContentManagerBranchNodeGetter lhs,
+            IPlanetContentManagerBranchNodeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)PlanetContentManagerBranchNode_FieldIndex.Components] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlanetContentManagerBranchNode_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)PlanetContentManagerBranchNode_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)PlanetContentManagerBranchNode_FieldIndex.NodeType] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlanetContentManagerBranchNode_FieldIndex.NodeType) ?? true))
+                {
+                    if (lhs.NodeType != rhs.NodeType) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)PlanetContentManagerBranchNode_FieldIndex.ChildSelection] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlanetContentManagerBranchNode_FieldIndex.ChildSelection) ?? true))
+                {
+                    if (lhs.ChildSelection != rhs.ChildSelection) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)PlanetContentManagerBranchNode_FieldIndex.CountCurve] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlanetContentManagerBranchNode_FieldIndex.CountCurve) ?? true))
+                {
+                    if (!lhs.CountCurve.Equals(rhs.CountCurve)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)PlanetContentManagerBranchNode_FieldIndex.DistributionCurve] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlanetContentManagerBranchNode_FieldIndex.DistributionCurve) ?? true))
+                {
+                    if (!lhs.DistributionCurve.Equals(rhs.DistributionCurve)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)PlanetContentManagerBranchNode_FieldIndex.ConsumeRequestEvenOnFailure] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlanetContentManagerBranchNode_FieldIndex.ConsumeRequestEvenOnFailure) ?? true))
+                {
+                    if (lhs.ConsumeRequestEvenOnFailure != rhs.ConsumeRequestEvenOnFailure) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)PlanetContentManagerBranchNode_FieldIndex.Nodes] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlanetContentManagerBranchNode_FieldIndex.Nodes) ?? true))
+                {
+                    if (!lhs.Nodes.SequenceEqualNullable(rhs.Nodes)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)PlanetContentManagerBranchNode_FieldIndex.Conditions] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlanetContentManagerBranchNode_FieldIndex.Conditions) ?? true))
+                {
+                    if (!lhs.Conditions.SequenceEqualNullable(rhs.Conditions, (l, r) => ((ConditionCommon)((IConditionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)PlanetContentManagerBranchNode_FieldIndex.Conditions)))) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)PlanetContentManagerBranchNode_FieldIndex.Keywords] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlanetContentManagerBranchNode_FieldIndex.Keywords) ?? true))
+                {
+                    if (!lhs.Keywords.SequenceEqualNullable(rhs.Keywords)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)PlanetContentManagerBranchNode_FieldIndex.ParentNode] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlanetContentManagerBranchNode_FieldIndex.ParentNode) ?? true))
+                {
+                    if (!lhs.ParentNode.Equals(rhs.ParentNode)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)PlanetContentManagerBranchNode_FieldIndex.PreviousNode] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlanetContentManagerBranchNode_FieldIndex.PreviousNode) ?? true))
+                {
+                    if (!lhs.PreviousNode.Equals(rhs.PreviousNode)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPlanetContentManagerBranchNodeGetter)lhs, (IPlanetContentManagerBranchNodeGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPlanetContentManagerBranchNodeGetter)lhs, (IPlanetContentManagerBranchNodeGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IPlanetContentManagerBranchNodeGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

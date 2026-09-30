@@ -896,6 +896,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ILeveledNpcGetter item,
+            ILeveledNpcGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((LeveledNpcCommon)((ILeveledNpcGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static LeveledNpc Duplicate(
             this ILeveledNpcGetter item,
             FormKey formKey,
@@ -1394,6 +1412,86 @@ namespace Mutagen.Bethesda.Fallout3
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ILeveledNpcGetter lhs,
+            ILeveledNpcGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)LeveledNpc_FieldIndex.ObjectBounds] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LeveledNpc_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)LeveledNpc_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)LeveledNpc_FieldIndex.ChanceNone] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LeveledNpc_FieldIndex.ChanceNone) ?? true))
+                {
+                    if (!lhs.ChanceNone.Equals(rhs.ChanceNone)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)LeveledNpc_FieldIndex.Flags] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LeveledNpc_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)LeveledNpc_FieldIndex.Entries] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LeveledNpc_FieldIndex.Entries) ?? true))
+                {
+                    if (!lhs.Entries.SequenceEqual(rhs.Entries, (l, r) => ((LeveledNpcEntryCommon)((ILeveledNpcEntryGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)LeveledNpc_FieldIndex.Entries)))) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)LeveledNpc_FieldIndex.Model] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LeveledNpc_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)LeveledNpc_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILeveledNpcGetter)lhs, (ILeveledNpcGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILeveledNpcGetter)lhs, (ILeveledNpcGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

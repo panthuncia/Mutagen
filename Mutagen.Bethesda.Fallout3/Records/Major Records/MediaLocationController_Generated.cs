@@ -1676,6 +1676,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IMediaLocationControllerGetter item,
+            IMediaLocationControllerGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((MediaLocationControllerCommon)((IMediaLocationControllerGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static MediaLocationController Duplicate(
             this IMediaLocationControllerGetter item,
             FormKey formKey,
@@ -2418,6 +2436,177 @@ namespace Mutagen.Bethesda.Fallout3
                 yield return ConditionalFactionInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IMediaLocationControllerGetter lhs,
+            IMediaLocationControllerGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)MediaLocationController_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaLocationController_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)MediaLocationController_FieldIndex.NAM1] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaLocationController_FieldIndex.NAM1) ?? true))
+                {
+                    if (lhs.NAM1 != rhs.NAM1) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)MediaLocationController_FieldIndex.NAM2] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaLocationController_FieldIndex.NAM2) ?? true))
+                {
+                    if (lhs.NAM2 != rhs.NAM2) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)MediaLocationController_FieldIndex.NAM3] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaLocationController_FieldIndex.NAM3) ?? true))
+                {
+                    if (lhs.NAM3 != rhs.NAM3) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)MediaLocationController_FieldIndex.LocationDelay] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaLocationController_FieldIndex.LocationDelay) ?? true))
+                {
+                    if (!lhs.LocationDelay.EqualsWithin(rhs.LocationDelay)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)MediaLocationController_FieldIndex.DayStart] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaLocationController_FieldIndex.DayStart) ?? true))
+                {
+                    if (lhs.DayStart != rhs.DayStart) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)MediaLocationController_FieldIndex.NightStart] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaLocationController_FieldIndex.NightStart) ?? true))
+                {
+                    if (lhs.NightStart != rhs.NightStart) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)MediaLocationController_FieldIndex.RetriggerDelay] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaLocationController_FieldIndex.RetriggerDelay) ?? true))
+                {
+                    if (!lhs.RetriggerDelay.EqualsWithin(rhs.RetriggerDelay)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)MediaLocationController_FieldIndex.NeutralSets] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaLocationController_FieldIndex.NeutralSets) ?? true))
+                {
+                    if (!lhs.NeutralSets.SequenceEqualNullable(rhs.NeutralSets)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)MediaLocationController_FieldIndex.AllySets] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaLocationController_FieldIndex.AllySets) ?? true))
+                {
+                    if (!lhs.AllySets.SequenceEqualNullable(rhs.AllySets)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)MediaLocationController_FieldIndex.FriendSets] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaLocationController_FieldIndex.FriendSets) ?? true))
+                {
+                    if (!lhs.FriendSets.SequenceEqualNullable(rhs.FriendSets)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)MediaLocationController_FieldIndex.EnemySets] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaLocationController_FieldIndex.EnemySets) ?? true))
+                {
+                    if (!lhs.EnemySets.SequenceEqualNullable(rhs.EnemySets)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)MediaLocationController_FieldIndex.LocationSets] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaLocationController_FieldIndex.LocationSets) ?? true))
+                {
+                    if (!lhs.LocationSets.SequenceEqualNullable(rhs.LocationSets)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)MediaLocationController_FieldIndex.BattleSets] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaLocationController_FieldIndex.BattleSets) ?? true))
+                {
+                    if (!lhs.BattleSets.SequenceEqualNullable(rhs.BattleSets)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)MediaLocationController_FieldIndex.ConditionalFaction] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaLocationController_FieldIndex.ConditionalFaction) ?? true))
+                {
+                    if (!lhs.ConditionalFaction.Equals(rhs.ConditionalFaction)) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)MediaLocationController_FieldIndex.FNAM] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaLocationController_FieldIndex.FNAM) ?? true))
+                {
+                    if (lhs.FNAM != rhs.FNAM) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMediaLocationControllerGetter)lhs, (IMediaLocationControllerGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMediaLocationControllerGetter)lhs, (IMediaLocationControllerGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

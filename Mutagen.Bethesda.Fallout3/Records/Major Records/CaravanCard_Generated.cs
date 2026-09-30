@@ -1188,6 +1188,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ICaravanCardGetter item,
+            ICaravanCardGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((CaravanCardCommon)((ICaravanCardGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static CaravanCard Duplicate(
             this ICaravanCardGetter item,
             FormKey formKey,
@@ -1833,6 +1851,153 @@ namespace Mutagen.Bethesda.Fallout3
                 yield return DropSoundInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ICaravanCardGetter lhs,
+            ICaravanCardGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)CaravanCard_FieldIndex.ObjectBounds] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CaravanCard_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)CaravanCard_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)CaravanCard_FieldIndex.Name] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CaravanCard_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)CaravanCard_FieldIndex.Model] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CaravanCard_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)CaravanCard_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)CaravanCard_FieldIndex.Icons] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CaravanCard_FieldIndex.Icons) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Icons, rhs.Icons, out var lhsIcons, out var rhsIcons, out var isIconsEqual))
+                    {
+                        if (!((IconsCommon)((IIconsGetter)lhsIcons).CommonInstance()!).Equals(lhsIcons, rhsIcons, equalsMask?.GetSubCrystal((int)CaravanCard_FieldIndex.Icons))) return false;
+                    }
+                    else if (!isIconsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)CaravanCard_FieldIndex.Script] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CaravanCard_FieldIndex.Script) ?? true))
+                {
+                    if (!lhs.Script.Equals(rhs.Script)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)CaravanCard_FieldIndex.PickUpSound] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CaravanCard_FieldIndex.PickUpSound) ?? true))
+                {
+                    if (!lhs.PickUpSound.Equals(rhs.PickUpSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)CaravanCard_FieldIndex.DropSound] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CaravanCard_FieldIndex.DropSound) ?? true))
+                {
+                    if (!lhs.DropSound.Equals(rhs.DropSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)CaravanCard_FieldIndex.HighResFaceImage] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CaravanCard_FieldIndex.HighResFaceImage) ?? true))
+                {
+                    if (!string.Equals(lhs.HighResFaceImage, rhs.HighResFaceImage)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)CaravanCard_FieldIndex.HighResBackImage] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CaravanCard_FieldIndex.HighResBackImage) ?? true))
+                {
+                    if (!string.Equals(lhs.HighResBackImage, rhs.HighResBackImage)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)CaravanCard_FieldIndex.CardSuit] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CaravanCard_FieldIndex.CardSuit) ?? true))
+                {
+                    if (lhs.CardSuit != rhs.CardSuit) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)CaravanCard_FieldIndex.CardValue] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CaravanCard_FieldIndex.CardValue) ?? true))
+                {
+                    if (lhs.CardValue != rhs.CardValue) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)CaravanCard_FieldIndex.Value] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CaravanCard_FieldIndex.Value) ?? true))
+                {
+                    if (lhs.Value != rhs.Value) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ICaravanCardGetter)lhs, (ICaravanCardGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ICaravanCardGetter)lhs, (ICaravanCardGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(ICaravanCardGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

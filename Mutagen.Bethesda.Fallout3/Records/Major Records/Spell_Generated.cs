@@ -896,6 +896,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ISpellGetter item,
+            ISpellGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((SpellCommon)((ISpellGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Spell Duplicate(
             this ISpellGetter item,
             FormKey formKey,
@@ -1380,6 +1398,87 @@ namespace Mutagen.Bethesda.Fallout3
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ISpellGetter lhs,
+            ISpellGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Spell_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Spell_FieldIndex.Name) ?? true))
+                {
+                    if (!string.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Spell_FieldIndex.Type] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Spell_FieldIndex.Type) ?? true))
+                {
+                    if (lhs.Type != rhs.Type) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Spell_FieldIndex.Unused1] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Spell_FieldIndex.Unused1) ?? true))
+                {
+                    if (lhs.Unused1 != rhs.Unused1) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Spell_FieldIndex.Unused2] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Spell_FieldIndex.Unused2) ?? true))
+                {
+                    if (lhs.Unused2 != rhs.Unused2) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Spell_FieldIndex.Flags] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Spell_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Spell_FieldIndex.Effects] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Spell_FieldIndex.Effects) ?? true))
+                {
+                    if (!lhs.Effects.SequenceEqual(rhs.Effects, (l, r) => ((EffectCommon)((IEffectGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Spell_FieldIndex.Effects)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISpellGetter)lhs, (ISpellGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISpellGetter)lhs, (ISpellGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

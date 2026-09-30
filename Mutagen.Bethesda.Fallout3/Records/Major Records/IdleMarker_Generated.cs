@@ -846,6 +846,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IIdleMarkerGetter item,
+            IIdleMarkerGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((IdleMarkerCommon)((IIdleMarkerGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static IdleMarker Duplicate(
             this IIdleMarkerGetter item,
             FormKey formKey,
@@ -1326,6 +1344,73 @@ namespace Mutagen.Bethesda.Fallout3
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IIdleMarkerGetter lhs,
+            IIdleMarkerGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)IdleMarker_FieldIndex.ObjectBounds] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleMarker_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)IdleMarker_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)IdleMarker_FieldIndex.Flags] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleMarker_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)IdleMarker_FieldIndex.IdleTimer] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleMarker_FieldIndex.IdleTimer) ?? true))
+                {
+                    if (!lhs.IdleTimer.EqualsWithin(rhs.IdleTimer)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)IdleMarker_FieldIndex.Animations] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleMarker_FieldIndex.Animations) ?? true))
+                {
+                    if (!lhs.Animations.SequenceEqualNullable(rhs.Animations)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IIdleMarkerGetter)lhs, (IIdleMarkerGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IIdleMarkerGetter)lhs, (IIdleMarkerGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

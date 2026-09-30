@@ -1327,6 +1327,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ICombatStyleGetter item,
+            ICombatStyleGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((CombatStyleCommon)((ICombatStyleGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static CombatStyle Duplicate(
             this ICombatStyleGetter item,
             FormKey formKey,
@@ -1968,6 +1986,198 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ICombatStyleGetter lhs,
+            ICombatStyleGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)CombatStyle_FieldIndex.OffensiveMult] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.OffensiveMult) ?? true))
+                {
+                    if (!lhs.OffensiveMult.EqualsWithin(rhs.OffensiveMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)CombatStyle_FieldIndex.DefensiveMult] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.DefensiveMult) ?? true))
+                {
+                    if (!lhs.DefensiveMult.EqualsWithin(rhs.DefensiveMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)CombatStyle_FieldIndex.GroupOffensiveMult] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.GroupOffensiveMult) ?? true))
+                {
+                    if (!lhs.GroupOffensiveMult.EqualsWithin(rhs.GroupOffensiveMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)CombatStyle_FieldIndex.EquipmentScoreMultMelee] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.EquipmentScoreMultMelee) ?? true))
+                {
+                    if (!lhs.EquipmentScoreMultMelee.EqualsWithin(rhs.EquipmentScoreMultMelee)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)CombatStyle_FieldIndex.EquipmentScoreMultMagic] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.EquipmentScoreMultMagic) ?? true))
+                {
+                    if (!lhs.EquipmentScoreMultMagic.EqualsWithin(rhs.EquipmentScoreMultMagic)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)CombatStyle_FieldIndex.EquipmentScoreMultRanged] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.EquipmentScoreMultRanged) ?? true))
+                {
+                    if (!lhs.EquipmentScoreMultRanged.EqualsWithin(rhs.EquipmentScoreMultRanged)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)CombatStyle_FieldIndex.EquipmentScoreMultShout] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.EquipmentScoreMultShout) ?? true))
+                {
+                    if (!lhs.EquipmentScoreMultShout.EqualsWithin(rhs.EquipmentScoreMultShout)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)CombatStyle_FieldIndex.EquipmentScoreMultUnarmed] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.EquipmentScoreMultUnarmed) ?? true))
+                {
+                    if (!lhs.EquipmentScoreMultUnarmed.EqualsWithin(rhs.EquipmentScoreMultUnarmed)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)CombatStyle_FieldIndex.EquipmentScoreMultStaff] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.EquipmentScoreMultStaff) ?? true))
+                {
+                    if (!lhs.EquipmentScoreMultStaff.EqualsWithin(rhs.EquipmentScoreMultStaff)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)CombatStyle_FieldIndex.AvoidThreatChance] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.AvoidThreatChance) ?? true))
+                {
+                    if (!lhs.AvoidThreatChance.EqualsWithin(rhs.AvoidThreatChance)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)CombatStyle_FieldIndex.CSMD] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CSMD) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.CSMD, rhs.CSMD)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)CombatStyle_FieldIndex.Melee] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.Melee) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Melee, rhs.Melee, out var lhsMelee, out var rhsMelee, out var isMeleeEqual))
+                    {
+                        if (!((CombatStyleMeleeCommon)((ICombatStyleMeleeGetter)lhsMelee).CommonInstance()!).Equals(lhsMelee, rhsMelee, equalsMask?.GetSubCrystal((int)CombatStyle_FieldIndex.Melee))) return false;
+                    }
+                    else if (!isMeleeEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)CombatStyle_FieldIndex.CloseRange] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRange) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.CloseRange, rhs.CloseRange, out var lhsCloseRange, out var rhsCloseRange, out var isCloseRangeEqual))
+                    {
+                        if (!((CombatStyleCloseRangeCommon)((ICombatStyleCloseRangeGetter)lhsCloseRange).CommonInstance()!).Equals(lhsCloseRange, rhsCloseRange, equalsMask?.GetSubCrystal((int)CombatStyle_FieldIndex.CloseRange))) return false;
+                    }
+                    else if (!isCloseRangeEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)CombatStyle_FieldIndex.LongRangeStrafeMult] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.LongRangeStrafeMult) ?? true))
+                {
+                    if (!lhs.LongRangeStrafeMult.EqualsWithin(rhs.LongRangeStrafeMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)CombatStyle_FieldIndex.Flight] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.Flight) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Flight, rhs.Flight, out var lhsFlight, out var rhsFlight, out var isFlightEqual))
+                    {
+                        if (!((CombatStyleFlightCommon)((ICombatStyleFlightGetter)lhsFlight).CommonInstance()!).Equals(lhsFlight, rhsFlight, equalsMask?.GetSubCrystal((int)CombatStyle_FieldIndex.Flight))) return false;
+                    }
+                    else if (!isFlightEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)CombatStyle_FieldIndex.Flags] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)CombatStyle_FieldIndex.CSGDDataTypeState] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CSGDDataTypeState) ?? true))
+                {
+                    if (lhs.CSGDDataTypeState != rhs.CSGDDataTypeState) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ICombatStyleGetter)lhs, (ICombatStyleGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ICombatStyleGetter)lhs, (ICombatStyleGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

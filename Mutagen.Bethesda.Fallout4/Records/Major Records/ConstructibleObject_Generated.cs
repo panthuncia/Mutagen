@@ -1416,6 +1416,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IConstructibleObjectGetter item,
+            IConstructibleObjectGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ConstructibleObjectCommon)((IConstructibleObjectGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ConstructibleObject Duplicate(
             this IConstructibleObjectGetter item,
             FormKey formKey,
@@ -2081,6 +2099,150 @@ namespace Mutagen.Bethesda.Fallout4
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IConstructibleObjectGetter lhs,
+            IConstructibleObjectGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ConstructibleObject_FieldIndex.PickUpSound] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.PickUpSound) ?? true))
+                {
+                    if (!lhs.PickUpSound.Equals(rhs.PickUpSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)ConstructibleObject_FieldIndex.PutDownSound] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.PutDownSound) ?? true))
+                {
+                    if (!lhs.PutDownSound.Equals(rhs.PutDownSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)ConstructibleObject_FieldIndex.Components] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqualNullable(rhs.Components, (l, r) => ((ConstructibleObjectComponentCommon)((IConstructibleObjectComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ConstructibleObject_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)ConstructibleObject_FieldIndex.Description] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.Description) ?? true))
+                {
+                    if (!object.Equals(lhs.Description, rhs.Description)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)ConstructibleObject_FieldIndex.Conditions] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.Conditions) ?? true))
+                {
+                    if (!lhs.Conditions.SequenceEqual(rhs.Conditions, (l, r) => ((ConditionCommon)((IConditionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ConstructibleObject_FieldIndex.Conditions)))) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)ConstructibleObject_FieldIndex.CreatedObject] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.CreatedObject) ?? true))
+                {
+                    if (!lhs.CreatedObject.Equals(rhs.CreatedObject)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)ConstructibleObject_FieldIndex.WorkbenchKeyword] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.WorkbenchKeyword) ?? true))
+                {
+                    if (!lhs.WorkbenchKeyword.Equals(rhs.WorkbenchKeyword)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)ConstructibleObject_FieldIndex.NAM1] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.NAM1) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.NAM1, rhs.NAM1)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)ConstructibleObject_FieldIndex.NAM2] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.NAM2) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.NAM2, rhs.NAM2)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)ConstructibleObject_FieldIndex.NAM3] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.NAM3) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.NAM3, rhs.NAM3)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)ConstructibleObject_FieldIndex.MenuArtObject] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.MenuArtObject) ?? true))
+                {
+                    if (!lhs.MenuArtObject.Equals(rhs.MenuArtObject)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)ConstructibleObject_FieldIndex.Categories] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.Categories) ?? true))
+                {
+                    if (!lhs.Categories.SequenceEqualNullable(rhs.Categories)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)ConstructibleObject_FieldIndex.CreatedObjectCounts] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.CreatedObjectCounts) ?? true))
+                {
+                    if (!lhs.CreatedObjectCounts.SequenceEqualNullable(rhs.CreatedObjectCounts, (l, r) => ((ConstructibleCreatedObjectCountCommon)((IConstructibleCreatedObjectCountGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ConstructibleObject_FieldIndex.CreatedObjectCounts)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IConstructibleObjectGetter)lhs, (IConstructibleObjectGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IConstructibleObjectGetter)lhs, (IConstructibleObjectGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

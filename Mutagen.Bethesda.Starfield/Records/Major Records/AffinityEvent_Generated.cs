@@ -1020,6 +1020,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IAffinityEventGetter item,
+            IAffinityEventGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((AffinityEventCommon)((IAffinityEventGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static AffinityEvent Duplicate(
             this IAffinityEventGetter item,
             FormKey formKey,
@@ -1575,6 +1593,114 @@ namespace Mutagen.Bethesda.Starfield
                 yield return AddToEventInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IAffinityEventGetter lhs,
+            IAffinityEventGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)AffinityEvent_FieldIndex.Flags] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AffinityEvent_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)AffinityEvent_FieldIndex.ContextNotes] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AffinityEvent_FieldIndex.ContextNotes) ?? true))
+                {
+                    if (!string.Equals(lhs.ContextNotes, rhs.ContextNotes)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)AffinityEvent_FieldIndex.ActorReactions] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AffinityEvent_FieldIndex.ActorReactions) ?? true))
+                {
+                    if (!lhs.ActorReactions.SequenceEqual(rhs.ActorReactions, (l, r) => ((ActorReactionCommon)((IActorReactionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)AffinityEvent_FieldIndex.ActorReactions)))) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)AffinityEvent_FieldIndex.ActorValue] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AffinityEvent_FieldIndex.ActorValue) ?? true))
+                {
+                    if (!lhs.ActorValue.Equals(rhs.ActorValue)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)AffinityEvent_FieldIndex.EventSize] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AffinityEvent_FieldIndex.EventSize) ?? true))
+                {
+                    if (!lhs.EventSize.Equals(rhs.EventSize)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)AffinityEvent_FieldIndex.DistanceToPlayer] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AffinityEvent_FieldIndex.DistanceToPlayer) ?? true))
+                {
+                    if (!lhs.DistanceToPlayer.Equals(rhs.DistanceToPlayer)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)AffinityEvent_FieldIndex.CooldownInMinutes] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AffinityEvent_FieldIndex.CooldownInMinutes) ?? true))
+                {
+                    if (!lhs.CooldownInMinutes.Equals(rhs.CooldownInMinutes)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)AffinityEvent_FieldIndex.RequiredFaction] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AffinityEvent_FieldIndex.RequiredFaction) ?? true))
+                {
+                    if (!lhs.RequiredFaction.Equals(rhs.RequiredFaction)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)AffinityEvent_FieldIndex.AddToEvent] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AffinityEvent_FieldIndex.AddToEvent) ?? true))
+                {
+                    if (!lhs.AddToEvent.Equals(rhs.AddToEvent)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IAffinityEventGetter)lhs, (IAffinityEventGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IAffinityEventGetter)lhs, (IAffinityEventGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

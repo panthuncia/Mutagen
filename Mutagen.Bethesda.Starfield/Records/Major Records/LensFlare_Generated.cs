@@ -941,6 +941,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ILensFlareGetter item,
+            ILensFlareGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((LensFlareCommon)((ILensFlareGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static LensFlare Duplicate(
             this ILensFlareGetter item,
             FormKey formKey,
@@ -1454,6 +1472,100 @@ namespace Mutagen.Bethesda.Starfield
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ILensFlareGetter lhs,
+            ILensFlareGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)LensFlare_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LensFlare_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)LensFlare_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)LensFlare_FieldIndex.ColorInfluence] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LensFlare_FieldIndex.ColorInfluence) ?? true))
+                {
+                    if (!lhs.ColorInfluence.EqualsWithin(rhs.ColorInfluence)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)LensFlare_FieldIndex.FadeDistanceRadiusScale] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LensFlare_FieldIndex.FadeDistanceRadiusScale) ?? true))
+                {
+                    if (!lhs.FadeDistanceRadiusScale.EqualsWithin(rhs.FadeDistanceRadiusScale)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)LensFlare_FieldIndex.ExposureInfluence] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LensFlare_FieldIndex.ExposureInfluence) ?? true))
+                {
+                    if (!lhs.ExposureInfluence.EqualsWithin(rhs.ExposureInfluence)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)LensFlare_FieldIndex.MinEV100] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LensFlare_FieldIndex.MinEV100) ?? true))
+                {
+                    if (!lhs.MinEV100.EqualsWithin(rhs.MinEV100)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)LensFlare_FieldIndex.MaxEV100] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LensFlare_FieldIndex.MaxEV100) ?? true))
+                {
+                    if (!lhs.MaxEV100.EqualsWithin(rhs.MaxEV100)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)LensFlare_FieldIndex.Sprites] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LensFlare_FieldIndex.Sprites) ?? true))
+                {
+                    if (!lhs.Sprites.SequenceEqualNullable(rhs.Sprites, (l, r) => ((LensFlareSpriteCommon)((ILensFlareSpriteGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)LensFlare_FieldIndex.Sprites)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILensFlareGetter)lhs, (ILensFlareGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILensFlareGetter)lhs, (ILensFlareGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

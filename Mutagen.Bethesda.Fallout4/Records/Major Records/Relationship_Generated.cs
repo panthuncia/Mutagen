@@ -816,6 +816,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IRelationshipGetter item,
+            IRelationshipGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((RelationshipCommon)((IRelationshipGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Relationship Duplicate(
             this IRelationshipGetter item,
             FormKey formKey,
@@ -1280,6 +1298,87 @@ namespace Mutagen.Bethesda.Fallout4
             yield return FormLinkInformation.Factory(obj.Child);
             yield return FormLinkInformation.Factory(obj.AssociationType);
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IRelationshipGetter lhs,
+            IRelationshipGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Relationship_FieldIndex.Parent] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Relationship_FieldIndex.Parent) ?? true))
+                {
+                    if (!lhs.Parent.Equals(rhs.Parent)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Relationship_FieldIndex.Child] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Relationship_FieldIndex.Child) ?? true))
+                {
+                    if (!lhs.Child.Equals(rhs.Child)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Relationship_FieldIndex.Rank] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Relationship_FieldIndex.Rank) ?? true))
+                {
+                    if (lhs.Rank != rhs.Rank) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Relationship_FieldIndex.Unknown] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Relationship_FieldIndex.Unknown) ?? true))
+                {
+                    if (lhs.Unknown != rhs.Unknown) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Relationship_FieldIndex.Flags] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Relationship_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Relationship_FieldIndex.AssociationType] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Relationship_FieldIndex.AssociationType) ?? true))
+                {
+                    if (!lhs.AssociationType.Equals(rhs.AssociationType)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IRelationshipGetter)lhs, (IRelationshipGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IRelationshipGetter)lhs, (IRelationshipGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

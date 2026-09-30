@@ -737,6 +737,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IWeaponModificationGetter item,
+            IWeaponModificationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((WeaponModificationCommon)((IWeaponModificationGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static WeaponModification Duplicate(
             this IWeaponModificationGetter item,
             FormKey formKey,
@@ -1249,6 +1267,51 @@ namespace Mutagen.Bethesda.Fallout4
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IWeaponModificationGetter lhs,
+            IWeaponModificationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IAObjectModificationGetter)lhs, (IAObjectModificationGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)WeaponModification_FieldIndex.Properties] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)WeaponModification_FieldIndex.Properties) ?? true))
+                {
+                    if (!lhs.Properties.SequenceEqual(rhs.Properties, (l, r) => ((AObjectModPropertyCommon<Weapon.Property>)((IAObjectModPropertyGetter<Weapon.Property>)l).CommonInstance(typeof(Weapon.Property))!).Equals(l, r, equalsMask?.GetSubCrystal((int)WeaponModification_FieldIndex.Properties)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IAObjectModificationGetter lhs,
+            IAObjectModificationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IWeaponModificationGetter)lhs, (IWeaponModificationGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IWeaponModificationGetter)lhs, (IWeaponModificationGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IWeaponModificationGetter)lhs, (IWeaponModificationGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

@@ -1126,6 +1126,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IMovementTypeGetter item,
+            IMovementTypeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((MovementTypeCommon)((IMovementTypeGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static MovementType Duplicate(
             this IMovementTypeGetter item,
             FormKey formKey,
@@ -1698,6 +1716,163 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IMovementTypeGetter lhs,
+            IMovementTypeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)MovementType_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MovementType_FieldIndex.Name) ?? true))
+                {
+                    if (!string.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)MovementType_FieldIndex.LeftWalk] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MovementType_FieldIndex.LeftWalk) ?? true))
+                {
+                    if (!lhs.LeftWalk.EqualsWithin(rhs.LeftWalk)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)MovementType_FieldIndex.LeftRun] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MovementType_FieldIndex.LeftRun) ?? true))
+                {
+                    if (!lhs.LeftRun.EqualsWithin(rhs.LeftRun)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)MovementType_FieldIndex.RightWalk] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MovementType_FieldIndex.RightWalk) ?? true))
+                {
+                    if (!lhs.RightWalk.EqualsWithin(rhs.RightWalk)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)MovementType_FieldIndex.RightRun] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MovementType_FieldIndex.RightRun) ?? true))
+                {
+                    if (!lhs.RightRun.EqualsWithin(rhs.RightRun)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)MovementType_FieldIndex.ForwardWalk] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MovementType_FieldIndex.ForwardWalk) ?? true))
+                {
+                    if (!lhs.ForwardWalk.EqualsWithin(rhs.ForwardWalk)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)MovementType_FieldIndex.ForwardRun] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MovementType_FieldIndex.ForwardRun) ?? true))
+                {
+                    if (!lhs.ForwardRun.EqualsWithin(rhs.ForwardRun)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)MovementType_FieldIndex.BackWalk] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MovementType_FieldIndex.BackWalk) ?? true))
+                {
+                    if (!lhs.BackWalk.EqualsWithin(rhs.BackWalk)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)MovementType_FieldIndex.BackRun] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MovementType_FieldIndex.BackRun) ?? true))
+                {
+                    if (!lhs.BackRun.EqualsWithin(rhs.BackRun)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)MovementType_FieldIndex.RotateInPlaceWalk] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MovementType_FieldIndex.RotateInPlaceWalk) ?? true))
+                {
+                    if (!lhs.RotateInPlaceWalk.EqualsWithin(rhs.RotateInPlaceWalk)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)MovementType_FieldIndex.RotateInPlaceRun] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MovementType_FieldIndex.RotateInPlaceRun) ?? true))
+                {
+                    if (!lhs.RotateInPlaceRun.EqualsWithin(rhs.RotateInPlaceRun)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)MovementType_FieldIndex.RotateWhileMovingRun] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MovementType_FieldIndex.RotateWhileMovingRun) ?? true))
+                {
+                    if (!lhs.RotateWhileMovingRun.EqualsWithin(rhs.RotateWhileMovingRun)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)MovementType_FieldIndex.AnimationChangeThresholds] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MovementType_FieldIndex.AnimationChangeThresholds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.AnimationChangeThresholds, rhs.AnimationChangeThresholds, out var lhsAnimationChangeThresholds, out var rhsAnimationChangeThresholds, out var isAnimationChangeThresholdsEqual))
+                    {
+                        if (!((AnimationChangeThresholdsCommon)((IAnimationChangeThresholdsGetter)lhsAnimationChangeThresholds).CommonInstance()!).Equals(lhsAnimationChangeThresholds, rhsAnimationChangeThresholds, equalsMask?.GetSubCrystal((int)MovementType_FieldIndex.AnimationChangeThresholds))) return false;
+                    }
+                    else if (!isAnimationChangeThresholdsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)MovementType_FieldIndex.SPEDDataTypeState] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MovementType_FieldIndex.SPEDDataTypeState) ?? true))
+                {
+                    if (lhs.SPEDDataTypeState != rhs.SPEDDataTypeState) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMovementTypeGetter)lhs, (IMovementTypeGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMovementTypeGetter)lhs, (IMovementTypeGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

@@ -1389,6 +1389,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IResearchProjectGetter item,
+            IResearchProjectGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ResearchProjectCommon)((IResearchProjectGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ResearchProject Duplicate(
             this IResearchProjectGetter item,
             FormKey formKey,
@@ -2048,6 +2066,141 @@ namespace Mutagen.Bethesda.Starfield
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IResearchProjectGetter lhs,
+            IResearchProjectGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ResearchProject_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ResearchProject_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)ResearchProject_FieldIndex.Description] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ResearchProject_FieldIndex.Description) ?? true))
+                {
+                    if (!object.Equals(lhs.Description, rhs.Description)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)ResearchProject_FieldIndex.WorkbenchKeyword] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ResearchProject_FieldIndex.WorkbenchKeyword) ?? true))
+                {
+                    if (!lhs.WorkbenchKeyword.Equals(rhs.WorkbenchKeyword)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)ResearchProject_FieldIndex.Conditions] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ResearchProject_FieldIndex.Conditions) ?? true))
+                {
+                    if (!lhs.Conditions.SequenceEqualNullable(rhs.Conditions, (l, r) => ((ConditionCommon)((IConditionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ResearchProject_FieldIndex.Conditions)))) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)ResearchProject_FieldIndex.RequiredItems] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ResearchProject_FieldIndex.RequiredItems) ?? true))
+                {
+                    if (!lhs.RequiredItems.SequenceEqualNullable(rhs.RequiredItems, (l, r) => ((ResearchProjectRequiredItemCommon)((IResearchProjectRequiredItemGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ResearchProject_FieldIndex.RequiredItems)))) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)ResearchProject_FieldIndex.RequiredPerks] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ResearchProject_FieldIndex.RequiredPerks) ?? true))
+                {
+                    if (!lhs.RequiredPerks.SequenceEqualNullable(rhs.RequiredPerks, (l, r) => ((ResearchProjectRequiredPerkCommon)((IResearchProjectRequiredPerkGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ResearchProject_FieldIndex.RequiredPerks)))) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)ResearchProject_FieldIndex.CreatedItem] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ResearchProject_FieldIndex.CreatedItem) ?? true))
+                {
+                    if (!lhs.CreatedItem.Equals(rhs.CreatedItem)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)ResearchProject_FieldIndex.NumberCreated] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ResearchProject_FieldIndex.NumberCreated) ?? true))
+                {
+                    if (lhs.NumberCreated != rhs.NumberCreated) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)ResearchProject_FieldIndex.SortingPriority] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ResearchProject_FieldIndex.SortingPriority) ?? true))
+                {
+                    if (!lhs.SortingPriority.EqualsWithin(rhs.SortingPriority)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)ResearchProject_FieldIndex.Tier] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ResearchProject_FieldIndex.Tier) ?? true))
+                {
+                    if (lhs.Tier != rhs.Tier) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)ResearchProject_FieldIndex.CategoryKeyword] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ResearchProject_FieldIndex.CategoryKeyword) ?? true))
+                {
+                    if (!lhs.CategoryKeyword.Equals(rhs.CategoryKeyword)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)ResearchProject_FieldIndex.RequiredProjects] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ResearchProject_FieldIndex.RequiredProjects) ?? true))
+                {
+                    if (!lhs.RequiredProjects.SequenceEqualNullable(rhs.RequiredProjects)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IResearchProjectGetter)lhs, (IResearchProjectGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IResearchProjectGetter)lhs, (IResearchProjectGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

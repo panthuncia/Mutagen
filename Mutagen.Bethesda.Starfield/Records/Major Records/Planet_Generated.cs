@@ -1752,6 +1752,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IPlanetGetter item,
+            IPlanetGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((PlanetCommon)((IPlanetGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Planet Duplicate(
             this IPlanetGetter item,
             FormKey formKey,
@@ -2632,6 +2650,250 @@ namespace Mutagen.Bethesda.Starfield
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IPlanetGetter lhs,
+            IPlanetGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Planet_FieldIndex.Components] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Planet_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Planet_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Planet_FieldIndex.MasterWorldspaces] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Planet_FieldIndex.MasterWorldspaces) ?? true))
+                {
+                    if (!lhs.MasterWorldspaces.SequenceEqualNullable(rhs.MasterWorldspaces, (l, r) => ((MasterWorldspaceCommon)((IMasterWorldspaceGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Planet_FieldIndex.MasterWorldspaces)))) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Planet_FieldIndex.AddedWorldspaces] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Planet_FieldIndex.AddedWorldspaces) ?? true))
+                {
+                    if (!lhs.AddedWorldspaces.SequenceEqualNullable(rhs.AddedWorldspaces, (l, r) => ((AddedWorldspaceCommon)((IAddedWorldspaceGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Planet_FieldIndex.AddedWorldspaces)))) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Planet_FieldIndex.Biomes] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Planet_FieldIndex.Biomes) ?? true))
+                {
+                    if (!lhs.Biomes.SequenceEqual(rhs.Biomes, (l, r) => ((PlanetBiomeCommon)((IPlanetBiomeGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Planet_FieldIndex.Biomes)))) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Planet_FieldIndex.SurfaceTree] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Planet_FieldIndex.SurfaceTree) ?? true))
+                {
+                    if (!lhs.SurfaceTree.Equals(rhs.SurfaceTree)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Planet_FieldIndex.ScanWorldspaceMultiplier] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Planet_FieldIndex.ScanWorldspaceMultiplier) ?? true))
+                {
+                    if (!lhs.ScanWorldspaceMultiplier.EqualsWithin(rhs.ScanWorldspaceMultiplier)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Planet_FieldIndex.Name] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Planet_FieldIndex.Name) ?? true))
+                {
+                    if (!string.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Planet_FieldIndex.EnvironmentMap] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Planet_FieldIndex.EnvironmentMap) ?? true))
+                {
+                    if (!string.Equals(lhs.EnvironmentMap, rhs.EnvironmentMap)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Planet_FieldIndex.BodyType] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Planet_FieldIndex.BodyType) ?? true))
+                {
+                    if (lhs.BodyType != rhs.BodyType) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Planet_FieldIndex.SpaceCell] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Planet_FieldIndex.SpaceCell) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.SpaceCell, rhs.SpaceCell, out var lhsSpaceCell, out var rhsSpaceCell, out var isSpaceCellEqual))
+                    {
+                        if (!((SpaceCellCommon)((ISpaceCellGetter)lhsSpaceCell).CommonInstance()!).Equals(lhsSpaceCell, rhsSpaceCell, equalsMask?.GetSubCrystal((int)Planet_FieldIndex.SpaceCell))) return false;
+                    }
+                    else if (!isSpaceCellEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Planet_FieldIndex.OrbitalData] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Planet_FieldIndex.OrbitalData) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.OrbitalData, rhs.OrbitalData, out var lhsOrbitalData, out var rhsOrbitalData, out var isOrbitalDataEqual))
+                    {
+                        if (!((OrbitalDataCommon)((IOrbitalDataGetter)lhsOrbitalData).CommonInstance()!).Equals(lhsOrbitalData, rhsOrbitalData, equalsMask?.GetSubCrystal((int)Planet_FieldIndex.OrbitalData))) return false;
+                    }
+                    else if (!isOrbitalDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Planet_FieldIndex.OrbitedData] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Planet_FieldIndex.OrbitedData) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.OrbitedData, rhs.OrbitedData, out var lhsOrbitedData, out var rhsOrbitedData, out var isOrbitedDataEqual))
+                    {
+                        if (!((OrbitedDataCommon)((IOrbitedDataGetter)lhsOrbitedData).CommonInstance()!).Equals(lhsOrbitedData, rhsOrbitedData, equalsMask?.GetSubCrystal((int)Planet_FieldIndex.OrbitedData))) return false;
+                    }
+                    else if (!isOrbitedDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Planet_FieldIndex.GalaxyData] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Planet_FieldIndex.GalaxyData) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.GalaxyData, rhs.GalaxyData, out var lhsGalaxyData, out var rhsGalaxyData, out var isGalaxyDataEqual))
+                    {
+                        if (!((GalaxyDataCommon)((IGalaxyDataGetter)lhsGalaxyData).CommonInstance()!).Equals(lhsGalaxyData, rhsGalaxyData, equalsMask?.GetSubCrystal((int)Planet_FieldIndex.GalaxyData))) return false;
+                    }
+                    else if (!isGalaxyDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Planet_FieldIndex.Details] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Planet_FieldIndex.Details) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Details, rhs.Details, out var lhsDetails, out var rhsDetails, out var isDetailsEqual))
+                    {
+                        if (!((PlanetDetailsCommon)((IPlanetDetailsGetter)lhsDetails).CommonInstance()!).Equals(lhsDetails, rhsDetails, equalsMask?.GetSubCrystal((int)Planet_FieldIndex.Details))) return false;
+                    }
+                    else if (!isDetailsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Planet_FieldIndex.AtmosphereData] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Planet_FieldIndex.AtmosphereData) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.AtmosphereData, rhs.AtmosphereData, out var lhsAtmosphereData, out var rhsAtmosphereData, out var isAtmosphereDataEqual))
+                    {
+                        if (!((AtmosphereDataCommon)((IAtmosphereDataGetter)lhsAtmosphereData).CommonInstance()!).Equals(lhsAtmosphereData, rhsAtmosphereData, equalsMask?.GetSubCrystal((int)Planet_FieldIndex.AtmosphereData))) return false;
+                    }
+                    else if (!isAtmosphereDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)Planet_FieldIndex.BiomeNoise] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Planet_FieldIndex.BiomeNoise) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.BiomeNoise, rhs.BiomeNoise, out var lhsBiomeNoise, out var rhsBiomeNoise, out var isBiomeNoiseEqual))
+                    {
+                        if (!((BiomeNoiseCommon)((IBiomeNoiseGetter)lhsBiomeNoise).CommonInstance()!).Equals(lhsBiomeNoise, rhsBiomeNoise, equalsMask?.GetSubCrystal((int)Planet_FieldIndex.BiomeNoise))) return false;
+                    }
+                    else if (!isBiomeNoiseEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)Planet_FieldIndex.PlayerKnowledge] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Planet_FieldIndex.PlayerKnowledge) ?? true))
+                {
+                    if (lhs.PlayerKnowledge != rhs.PlayerKnowledge) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)Planet_FieldIndex.Temperature] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Planet_FieldIndex.Temperature) ?? true))
+                {
+                    if (!lhs.Temperature.EqualsWithin(rhs.Temperature)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)Planet_FieldIndex.Density] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Planet_FieldIndex.Density) ?? true))
+                {
+                    if (!lhs.Density.EqualsWithin(rhs.Density)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)Planet_FieldIndex.PerihelionAngleDegrees] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Planet_FieldIndex.PerihelionAngleDegrees) ?? true))
+                {
+                    if (!lhs.PerihelionAngleDegrees.EqualsWithin(rhs.PerihelionAngleDegrees)) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)Planet_FieldIndex.ResourceCreationSeed] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Planet_FieldIndex.ResourceCreationSeed) ?? true))
+                {
+                    if (lhs.ResourceCreationSeed != rhs.ResourceCreationSeed) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPlanetGetter)lhs, (IPlanetGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPlanetGetter)lhs, (IPlanetGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IPlanetGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

@@ -1241,6 +1241,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ILandscapeGetter item,
+            ILandscapeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((LandscapeCommon)((ILandscapeGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Landscape Duplicate(
             this ILandscapeGetter item,
             FormKey formKey,
@@ -1814,6 +1832,100 @@ namespace Mutagen.Bethesda.Fallout4
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ILandscapeGetter lhs,
+            ILandscapeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Landscape_FieldIndex.DATA] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Landscape_FieldIndex.DATA) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.DATA, rhs.DATA)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Landscape_FieldIndex.VertexNormals] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Landscape_FieldIndex.VertexNormals) ?? true))
+                {
+                    if (!lhs.VertexNormals.SequenceEqualNullable(rhs.VertexNormals)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Landscape_FieldIndex.VertexHeightMap] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Landscape_FieldIndex.VertexHeightMap) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VertexHeightMap, rhs.VertexHeightMap, out var lhsVertexHeightMap, out var rhsVertexHeightMap, out var isVertexHeightMapEqual))
+                    {
+                        if (!((LandscapeVertexHeightMapCommon)((ILandscapeVertexHeightMapGetter)lhsVertexHeightMap).CommonInstance()!).Equals(lhsVertexHeightMap, rhsVertexHeightMap, equalsMask?.GetSubCrystal((int)Landscape_FieldIndex.VertexHeightMap))) return false;
+                    }
+                    else if (!isVertexHeightMapEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Landscape_FieldIndex.VertexColors] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Landscape_FieldIndex.VertexColors) ?? true))
+                {
+                    if (!lhs.VertexColors.SequenceEqualNullable(rhs.VertexColors)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Landscape_FieldIndex.Layers] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Landscape_FieldIndex.Layers) ?? true))
+                {
+                    if (!lhs.Layers.SequenceEqual(rhs.Layers, (l, r) => ((BaseLayerCommon)((IBaseLayerGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Landscape_FieldIndex.Layers)))) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Landscape_FieldIndex.Textures] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Landscape_FieldIndex.Textures) ?? true))
+                {
+                    if (!lhs.Textures.SequenceEqualNullable(rhs.Textures)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Landscape_FieldIndex.MPCDs] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Landscape_FieldIndex.MPCDs) ?? true))
+                {
+                    if (!lhs.MPCDs.SequenceEqual(rhs.MPCDs, (l, r) => ((LandscapeMPCDCommon)((ILandscapeMPCDGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Landscape_FieldIndex.MPCDs)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILandscapeGetter)lhs, (ILandscapeGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILandscapeGetter)lhs, (ILandscapeGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

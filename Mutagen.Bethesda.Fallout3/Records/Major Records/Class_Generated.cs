@@ -1162,6 +1162,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IClassGetter item,
+            IClassGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ClassCommon)((IClassGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Class Duplicate(
             this IClassGetter item,
             FormKey formKey,
@@ -1712,6 +1730,123 @@ namespace Mutagen.Bethesda.Fallout3
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IClassGetter lhs,
+            IClassGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Class_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Class_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Class_FieldIndex.Description] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Class_FieldIndex.Description) ?? true))
+                {
+                    if (!object.Equals(lhs.Description, rhs.Description)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Class_FieldIndex.Icon] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Class_FieldIndex.Icon) ?? true))
+                {
+                    if (!string.Equals(lhs.Icon, rhs.Icon)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Class_FieldIndex.TagSkills] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Class_FieldIndex.TagSkills) ?? true))
+                {
+                    if (!lhs.TagSkills.SequenceEqualNullable(rhs.TagSkills)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Class_FieldIndex.Flags] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Class_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Class_FieldIndex.Services] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Class_FieldIndex.Services) ?? true))
+                {
+                    if (lhs.Services != rhs.Services) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Class_FieldIndex.Teaches] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Class_FieldIndex.Teaches) ?? true))
+                {
+                    if (lhs.Teaches != rhs.Teaches) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Class_FieldIndex.MaxTrainingLevel] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Class_FieldIndex.MaxTrainingLevel) ?? true))
+                {
+                    if (lhs.MaxTrainingLevel != rhs.MaxTrainingLevel) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Class_FieldIndex.Unknown] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Class_FieldIndex.Unknown) ?? true))
+                {
+                    if (lhs.Unknown != rhs.Unknown) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Class_FieldIndex.Attributes] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Class_FieldIndex.Attributes) ?? true))
+                {
+                    if (!lhs.Attributes.SequenceEqualNullable(rhs.Attributes)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IClassGetter)lhs, (IClassGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IClassGetter)lhs, (IClassGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

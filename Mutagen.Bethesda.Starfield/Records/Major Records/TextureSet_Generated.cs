@@ -1149,6 +1149,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ITextureSetGetter item,
+            ITextureSetGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((TextureSetCommon)((ITextureSetGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static TextureSet Duplicate(
             this ITextureSetGetter item,
             FormKey formKey,
@@ -1762,6 +1780,158 @@ namespace Mutagen.Bethesda.Starfield
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ITextureSetGetter lhs,
+            ITextureSetGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)TextureSet_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)TextureSet_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)TextureSet_FieldIndex.ObjectBounds] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)TextureSet_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)TextureSet_FieldIndex.ODTY] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.ODTY) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.ODTY, rhs.ODTY)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)TextureSet_FieldIndex.TX00] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.TX00) ?? true))
+                {
+                    if (!string.Equals(lhs.TX00, rhs.TX00)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)TextureSet_FieldIndex.TX01] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.TX01) ?? true))
+                {
+                    if (!string.Equals(lhs.TX01, rhs.TX01)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)TextureSet_FieldIndex.TX08] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.TX08) ?? true))
+                {
+                    if (!string.Equals(lhs.TX08, rhs.TX08)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)TextureSet_FieldIndex.TX09] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.TX09) ?? true))
+                {
+                    if (!string.Equals(lhs.TX09, rhs.TX09)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)TextureSet_FieldIndex.TX15] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.TX15) ?? true))
+                {
+                    if (!string.Equals(lhs.TX15, rhs.TX15)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)TextureSet_FieldIndex.TX17] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.TX17) ?? true))
+                {
+                    if (!string.Equals(lhs.TX17, rhs.TX17)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)TextureSet_FieldIndex.TX19] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.TX19) ?? true))
+                {
+                    if (!string.Equals(lhs.TX19, rhs.TX19)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)TextureSet_FieldIndex.DODT] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.DODT) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.DODT, rhs.DODT)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)TextureSet_FieldIndex.Flags] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)TextureSet_FieldIndex.Material] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.Material) ?? true))
+                {
+                    if (!string.Equals(lhs.Material, rhs.Material)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ITextureSetGetter)lhs, (ITextureSetGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ITextureSetGetter)lhs, (ITextureSetGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

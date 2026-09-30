@@ -1094,6 +1094,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IStarGetter item,
+            IStarGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((StarCommon)((IStarGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Star Duplicate(
             this IStarGetter item,
             FormKey formKey,
@@ -1672,6 +1690,105 @@ namespace Mutagen.Bethesda.Starfield
                 yield return SunPresetInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IStarGetter lhs,
+            IStarGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Star_FieldIndex.Components] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Star_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Star_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Star_FieldIndex.Keywords] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Star_FieldIndex.Keywords) ?? true))
+                {
+                    if (!lhs.Keywords.SequenceEqualNullable(rhs.Keywords)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Star_FieldIndex.Name] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Star_FieldIndex.Name) ?? true))
+                {
+                    if (!string.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Star_FieldIndex.BNAM] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Star_FieldIndex.BNAM) ?? true))
+                {
+                    if (!lhs.BNAM.Equals(rhs.BNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Star_FieldIndex.ONAM] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Star_FieldIndex.ONAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.ONAM, rhs.ONAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Star_FieldIndex.ID] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Star_FieldIndex.ID) ?? true))
+                {
+                    if (lhs.ID != rhs.ID) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Star_FieldIndex.Color] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Star_FieldIndex.Color) ?? true))
+                {
+                    if (!lhs.Color.ColorOnlyEquals(rhs.Color)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Star_FieldIndex.SunPreset] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Star_FieldIndex.SunPreset) ?? true))
+                {
+                    if (!lhs.SunPreset.Equals(rhs.SunPreset)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IStarGetter)lhs, (IStarGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IStarGetter)lhs, (IStarGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IStarGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

@@ -901,6 +901,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IWWiseKeywordMappingGetter item,
+            IWWiseKeywordMappingGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((WWiseKeywordMappingCommon)((IWWiseKeywordMappingGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static WWiseKeywordMapping Duplicate(
             this IWWiseKeywordMappingGetter item,
             FormKey formKey,
@@ -1387,6 +1405,69 @@ namespace Mutagen.Bethesda.Starfield
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IWWiseKeywordMappingGetter lhs,
+            IWWiseKeywordMappingGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)WWiseKeywordMapping_FieldIndex.WMTI] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)WWiseKeywordMapping_FieldIndex.WMTI) ?? true))
+                {
+                    if (lhs.WMTI != rhs.WMTI) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)WWiseKeywordMapping_FieldIndex.Keywords] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)WWiseKeywordMapping_FieldIndex.Keywords) ?? true))
+                {
+                    if (!lhs.Keywords.SequenceEqualNullable(rhs.Keywords)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)WWiseKeywordMapping_FieldIndex.WMSS] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)WWiseKeywordMapping_FieldIndex.WMSS) ?? true))
+                {
+                    if (lhs.WMSS != rhs.WMSS) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)WWiseKeywordMapping_FieldIndex.Items] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)WWiseKeywordMapping_FieldIndex.Items) ?? true))
+                {
+                    if (!lhs.Items.SequenceEqual(rhs.Items, (l, r) => ((WWiseKeywordMappingItemCommon)((IWWiseKeywordMappingItemGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)WWiseKeywordMapping_FieldIndex.Items)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IWWiseKeywordMappingGetter)lhs, (IWWiseKeywordMappingGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IWWiseKeywordMappingGetter)lhs, (IWWiseKeywordMappingGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

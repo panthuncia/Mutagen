@@ -1337,6 +1337,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ILightingTemplateGetter item,
+            ILightingTemplateGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((LightingTemplateCommon)((ILightingTemplateGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static LightingTemplate Duplicate(
             this ILightingTemplateGetter item,
             FormKey formKey,
@@ -1988,6 +2006,226 @@ namespace Mutagen.Bethesda.Starfield
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ILightingTemplateGetter lhs,
+            ILightingTemplateGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)LightingTemplate_FieldIndex.AmbientColor] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LightingTemplate_FieldIndex.AmbientColor) ?? true))
+                {
+                    if (!lhs.AmbientColor.ColorOnlyEquals(rhs.AmbientColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)LightingTemplate_FieldIndex.DirectionalColor] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LightingTemplate_FieldIndex.DirectionalColor) ?? true))
+                {
+                    if (!lhs.DirectionalColor.ColorOnlyEquals(rhs.DirectionalColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)LightingTemplate_FieldIndex.FogNearColor] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LightingTemplate_FieldIndex.FogNearColor) ?? true))
+                {
+                    if (!lhs.FogNearColor.ColorOnlyEquals(rhs.FogNearColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)LightingTemplate_FieldIndex.FogNear] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LightingTemplate_FieldIndex.FogNear) ?? true))
+                {
+                    if (!lhs.FogNear.EqualsWithin(rhs.FogNear)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)LightingTemplate_FieldIndex.FogFar] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LightingTemplate_FieldIndex.FogFar) ?? true))
+                {
+                    if (!lhs.FogFar.EqualsWithin(rhs.FogFar)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)LightingTemplate_FieldIndex.DirectionalRotationXY] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LightingTemplate_FieldIndex.DirectionalRotationXY) ?? true))
+                {
+                    if (lhs.DirectionalRotationXY != rhs.DirectionalRotationXY) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)LightingTemplate_FieldIndex.DirectionalRotationZ] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LightingTemplate_FieldIndex.DirectionalRotationZ) ?? true))
+                {
+                    if (lhs.DirectionalRotationZ != rhs.DirectionalRotationZ) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)LightingTemplate_FieldIndex.DirectionalFade] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LightingTemplate_FieldIndex.DirectionalFade) ?? true))
+                {
+                    if (!lhs.DirectionalFade.EqualsWithin(rhs.DirectionalFade)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)LightingTemplate_FieldIndex.FogClipDistance] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LightingTemplate_FieldIndex.FogClipDistance) ?? true))
+                {
+                    if (!lhs.FogClipDistance.EqualsWithin(rhs.FogClipDistance)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)LightingTemplate_FieldIndex.FogPower] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LightingTemplate_FieldIndex.FogPower) ?? true))
+                {
+                    if (!lhs.FogPower.EqualsWithin(rhs.FogPower)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)LightingTemplate_FieldIndex.Unused] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LightingTemplate_FieldIndex.Unused) ?? true))
+                {
+                    if (!MemoryExtensions.SequenceEqual(lhs.Unused.Span, rhs.Unused.Span)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)LightingTemplate_FieldIndex.FogFarColor] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LightingTemplate_FieldIndex.FogFarColor) ?? true))
+                {
+                    if (!lhs.FogFarColor.ColorOnlyEquals(rhs.FogFarColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)LightingTemplate_FieldIndex.FogMax] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LightingTemplate_FieldIndex.FogMax) ?? true))
+                {
+                    if (!lhs.FogMax.EqualsWithin(rhs.FogMax)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)LightingTemplate_FieldIndex.LightFadeStartDistance] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LightingTemplate_FieldIndex.LightFadeStartDistance) ?? true))
+                {
+                    if (!lhs.LightFadeStartDistance.EqualsWithin(rhs.LightFadeStartDistance)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)LightingTemplate_FieldIndex.LightFadeEndDistance] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LightingTemplate_FieldIndex.LightFadeEndDistance) ?? true))
+                {
+                    if (!lhs.LightFadeEndDistance.EqualsWithin(rhs.LightFadeEndDistance)) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)LightingTemplate_FieldIndex.Unknown] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LightingTemplate_FieldIndex.Unknown) ?? true))
+                {
+                    if (lhs.Unknown != rhs.Unknown) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)LightingTemplate_FieldIndex.NearHeightMid] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LightingTemplate_FieldIndex.NearHeightMid) ?? true))
+                {
+                    if (!lhs.NearHeightMid.EqualsWithin(rhs.NearHeightMid)) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)LightingTemplate_FieldIndex.NearHeightRange] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LightingTemplate_FieldIndex.NearHeightRange) ?? true))
+                {
+                    if (!lhs.NearHeightRange.EqualsWithin(rhs.NearHeightRange)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)LightingTemplate_FieldIndex.FogColorHighNear] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LightingTemplate_FieldIndex.FogColorHighNear) ?? true))
+                {
+                    if (!lhs.FogColorHighNear.ColorOnlyEquals(rhs.FogColorHighNear)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)LightingTemplate_FieldIndex.FogColorHighFar] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LightingTemplate_FieldIndex.FogColorHighFar) ?? true))
+                {
+                    if (!lhs.FogColorHighFar.ColorOnlyEquals(rhs.FogColorHighFar)) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)LightingTemplate_FieldIndex.DirectionalAmbientColors] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LightingTemplate_FieldIndex.DirectionalAmbientColors) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.DirectionalAmbientColors, rhs.DirectionalAmbientColors, out var lhsDirectionalAmbientColors, out var rhsDirectionalAmbientColors, out var isDirectionalAmbientColorsEqual))
+                    {
+                        if (!((AmbientColorsCommon)((IAmbientColorsGetter)lhsDirectionalAmbientColors).CommonInstance()!).Equals(lhsDirectionalAmbientColors, rhsDirectionalAmbientColors, equalsMask?.GetSubCrystal((int)LightingTemplate_FieldIndex.DirectionalAmbientColors))) return false;
+                    }
+                    else if (!isDirectionalAmbientColorsEqual) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILightingTemplateGetter)lhs, (ILightingTemplateGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILightingTemplateGetter)lhs, (ILightingTemplateGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

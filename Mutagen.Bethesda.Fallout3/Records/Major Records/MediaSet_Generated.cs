@@ -1675,6 +1675,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IMediaSetGetter item,
+            IMediaSetGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((MediaSetCommon)((IMediaSetGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static MediaSet Duplicate(
             this IMediaSetGetter item,
             FormKey formKey,
@@ -2535,6 +2553,285 @@ namespace Mutagen.Bethesda.Fallout3
                 yield return OutroNighttimeInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IMediaSetGetter lhs,
+            IMediaSetGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)MediaSet_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)MediaSet_FieldIndex.Type] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.Type) ?? true))
+                {
+                    if (lhs.Type != rhs.Type) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)MediaSet_FieldIndex.LoopBattleDayOuter] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.LoopBattleDayOuter) ?? true))
+                {
+                    if (!string.Equals(lhs.LoopBattleDayOuter, rhs.LoopBattleDayOuter)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)MediaSet_FieldIndex.ExploreDayMiddle] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.ExploreDayMiddle) ?? true))
+                {
+                    if (!string.Equals(lhs.ExploreDayMiddle, rhs.ExploreDayMiddle)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)MediaSet_FieldIndex.SuspenseDayInner] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.SuspenseDayInner) ?? true))
+                {
+                    if (!string.Equals(lhs.SuspenseDayInner, rhs.SuspenseDayInner)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)MediaSet_FieldIndex.NightOuter] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.NightOuter) ?? true))
+                {
+                    if (!string.Equals(lhs.NightOuter, rhs.NightOuter)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)MediaSet_FieldIndex.NightMiddle] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.NightMiddle) ?? true))
+                {
+                    if (!string.Equals(lhs.NightMiddle, rhs.NightMiddle)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)MediaSet_FieldIndex.NightInner] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.NightInner) ?? true))
+                {
+                    if (!string.Equals(lhs.NightInner, rhs.NightInner)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)MediaSet_FieldIndex.LoopBattleDayOuterDb] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.LoopBattleDayOuterDb) ?? true))
+                {
+                    if (!lhs.LoopBattleDayOuterDb.EqualsWithin(rhs.LoopBattleDayOuterDb)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)MediaSet_FieldIndex.ExploreDayMiddleDb] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.ExploreDayMiddleDb) ?? true))
+                {
+                    if (!lhs.ExploreDayMiddleDb.EqualsWithin(rhs.ExploreDayMiddleDb)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)MediaSet_FieldIndex.SuspenseDayInnerDb] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.SuspenseDayInnerDb) ?? true))
+                {
+                    if (!lhs.SuspenseDayInnerDb.EqualsWithin(rhs.SuspenseDayInnerDb)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)MediaSet_FieldIndex.NightOuterDb] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.NightOuterDb) ?? true))
+                {
+                    if (!lhs.NightOuterDb.EqualsWithin(rhs.NightOuterDb)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)MediaSet_FieldIndex.NightMiddleDb] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.NightMiddleDb) ?? true))
+                {
+                    if (!lhs.NightMiddleDb.EqualsWithin(rhs.NightMiddleDb)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)MediaSet_FieldIndex.NightInnerDb] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.NightInnerDb) ?? true))
+                {
+                    if (!lhs.NightInnerDb.EqualsWithin(rhs.NightInnerDb)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)MediaSet_FieldIndex.DayOuterBoundaryPercent] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.DayOuterBoundaryPercent) ?? true))
+                {
+                    if (!lhs.DayOuterBoundaryPercent.EqualsWithin(rhs.DayOuterBoundaryPercent)) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)MediaSet_FieldIndex.DayMiddleBoundaryPercent] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.DayMiddleBoundaryPercent) ?? true))
+                {
+                    if (!lhs.DayMiddleBoundaryPercent.EqualsWithin(rhs.DayMiddleBoundaryPercent)) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)MediaSet_FieldIndex.DayInnerBoundaryPercent] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.DayInnerBoundaryPercent) ?? true))
+                {
+                    if (!lhs.DayInnerBoundaryPercent.EqualsWithin(rhs.DayInnerBoundaryPercent)) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)MediaSet_FieldIndex.NightOuterBoundaryPercent] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.NightOuterBoundaryPercent) ?? true))
+                {
+                    if (!lhs.NightOuterBoundaryPercent.EqualsWithin(rhs.NightOuterBoundaryPercent)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)MediaSet_FieldIndex.NightMiddleBoundaryPercent] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.NightMiddleBoundaryPercent) ?? true))
+                {
+                    if (!lhs.NightMiddleBoundaryPercent.EqualsWithin(rhs.NightMiddleBoundaryPercent)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)MediaSet_FieldIndex.NightInnerBoundaryPercent] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.NightInnerBoundaryPercent) ?? true))
+                {
+                    if (!lhs.NightInnerBoundaryPercent.EqualsWithin(rhs.NightInnerBoundaryPercent)) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)MediaSet_FieldIndex.EnableFlags] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.EnableFlags) ?? true))
+                {
+                    if (lhs.EnableFlags != rhs.EnableFlags) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)MediaSet_FieldIndex.WaitTimeMinTimeOnDaytimeMin] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.WaitTimeMinTimeOnDaytimeMin) ?? true))
+                {
+                    if (!lhs.WaitTimeMinTimeOnDaytimeMin.EqualsWithin(rhs.WaitTimeMinTimeOnDaytimeMin)) return false;
+                }
+                return true;
+            }
+            if (!Equal22()) differs[(int)MediaSet_FieldIndex.LoopFadeOutCrossfadeOverlapNighttimeMin] = true;
+            bool Equal22()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.LoopFadeOutCrossfadeOverlapNighttimeMin) ?? true))
+                {
+                    if (!lhs.LoopFadeOutCrossfadeOverlapNighttimeMin.EqualsWithin(rhs.LoopFadeOutCrossfadeOverlapNighttimeMin)) return false;
+                }
+                return true;
+            }
+            if (!Equal23()) differs[(int)MediaSet_FieldIndex.RecoveryTimeCrossfadeTimeDaytimeMax] = true;
+            bool Equal23()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.RecoveryTimeCrossfadeTimeDaytimeMax) ?? true))
+                {
+                    if (!lhs.RecoveryTimeCrossfadeTimeDaytimeMax.EqualsWithin(rhs.RecoveryTimeCrossfadeTimeDaytimeMax)) return false;
+                }
+                return true;
+            }
+            if (!Equal24()) differs[(int)MediaSet_FieldIndex.NighttimeMax] = true;
+            bool Equal24()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.NighttimeMax) ?? true))
+                {
+                    if (!lhs.NighttimeMax.EqualsWithin(rhs.NighttimeMax)) return false;
+                }
+                return true;
+            }
+            if (!Equal25()) differs[(int)MediaSet_FieldIndex.IntroDaytime] = true;
+            bool Equal25()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.IntroDaytime) ?? true))
+                {
+                    if (!lhs.IntroDaytime.Equals(rhs.IntroDaytime)) return false;
+                }
+                return true;
+            }
+            if (!Equal26()) differs[(int)MediaSet_FieldIndex.OutroNighttime] = true;
+            bool Equal26()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.OutroNighttime) ?? true))
+                {
+                    if (!lhs.OutroNighttime.Equals(rhs.OutroNighttime)) return false;
+                }
+                return true;
+            }
+            if (!Equal27()) differs[(int)MediaSet_FieldIndex.DATA] = true;
+            bool Equal27()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MediaSet_FieldIndex.DATA) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.DATA, rhs.DATA)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMediaSetGetter)lhs, (IMediaSetGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMediaSetGetter)lhs, (IMediaSetGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

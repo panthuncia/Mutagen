@@ -1135,6 +1135,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IIngredientGetter item,
+            IIngredientGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((IngredientCommon)((IIngredientGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Ingredient Duplicate(
             this IIngredientGetter item,
             FormKey formKey,
@@ -1752,6 +1770,135 @@ namespace Mutagen.Bethesda.Fallout3
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IIngredientGetter lhs,
+            IIngredientGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Ingredient_FieldIndex.ObjectBounds] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingredient_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)Ingredient_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Ingredient_FieldIndex.Name] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingredient_FieldIndex.Name) ?? true))
+                {
+                    if (!string.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Ingredient_FieldIndex.Model] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingredient_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)Ingredient_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Ingredient_FieldIndex.Icons] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingredient_FieldIndex.Icons) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Icons, rhs.Icons, out var lhsIcons, out var rhsIcons, out var isIconsEqual))
+                    {
+                        if (!((IconsCommon)((IIconsGetter)lhsIcons).CommonInstance()!).Equals(lhsIcons, rhsIcons, equalsMask?.GetSubCrystal((int)Ingredient_FieldIndex.Icons))) return false;
+                    }
+                    else if (!isIconsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Ingredient_FieldIndex.Script] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingredient_FieldIndex.Script) ?? true))
+                {
+                    if (!lhs.Script.Equals(rhs.Script)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Ingredient_FieldIndex.EquipmentType] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingredient_FieldIndex.EquipmentType) ?? true))
+                {
+                    if (lhs.EquipmentType != rhs.EquipmentType) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Ingredient_FieldIndex.Weight] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingredient_FieldIndex.Weight) ?? true))
+                {
+                    if (!lhs.Weight.EqualsWithin(rhs.Weight)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Ingredient_FieldIndex.Value] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingredient_FieldIndex.Value) ?? true))
+                {
+                    if (lhs.Value != rhs.Value) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Ingredient_FieldIndex.Flags] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingredient_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Ingredient_FieldIndex.Effects] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ingredient_FieldIndex.Effects) ?? true))
+                {
+                    if (!lhs.Effects.SequenceEqual(rhs.Effects, (l, r) => ((EffectCommon)((IEffectGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Ingredient_FieldIndex.Effects)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IIngredientGetter)lhs, (IIngredientGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IIngredientGetter)lhs, (IIngredientGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IIngredientGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

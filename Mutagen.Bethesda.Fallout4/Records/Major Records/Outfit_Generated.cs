@@ -698,6 +698,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IOutfitGetter item,
+            IOutfitGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((OutfitCommon)((IOutfitGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Outfit Duplicate(
             this IOutfitGetter item,
             FormKey formKey,
@@ -1118,6 +1136,42 @@ namespace Mutagen.Bethesda.Fallout4
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IOutfitGetter lhs,
+            IOutfitGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Outfit_FieldIndex.Items] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Outfit_FieldIndex.Items) ?? true))
+                {
+                    if (!lhs.Items.SequenceEqualNullable(rhs.Items)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IOutfitGetter)lhs, (IOutfitGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IOutfitGetter)lhs, (IOutfitGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

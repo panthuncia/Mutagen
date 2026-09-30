@@ -1137,6 +1137,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ISurfaceTreeGetter item,
+            ISurfaceTreeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((SurfaceTreeCommon)((ISurfaceTreeGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static SurfaceTree Duplicate(
             this ISurfaceTreeGetter item,
             FormKey formKey,
@@ -1709,6 +1727,105 @@ namespace Mutagen.Bethesda.Starfield
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ISurfaceTreeGetter lhs,
+            ISurfaceTreeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)SurfaceTree_FieldIndex.Components] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceTree_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)SurfaceTree_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)SurfaceTree_FieldIndex.CNAM] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceTree_FieldIndex.CNAM) ?? true))
+                {
+                    if (!MemoryExtensions.SequenceEqual(lhs.CNAM.Span, rhs.CNAM.Span)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)SurfaceTree_FieldIndex.DNAM] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceTree_FieldIndex.DNAM) ?? true))
+                {
+                    if (!MemoryExtensions.SequenceEqual(lhs.DNAM.Span, rhs.DNAM.Span)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)SurfaceTree_FieldIndex.SurfacePatterns] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceTree_FieldIndex.SurfacePatterns) ?? true))
+                {
+                    if (!MemoryExtensions.SequenceEqual<IFormLinkGetter<ISurfacePatternGetter>>(lhs.SurfacePatterns.Span!, rhs.SurfacePatterns.Span!)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)SurfaceTree_FieldIndex.GNAM] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceTree_FieldIndex.GNAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.GNAM, rhs.GNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)SurfaceTree_FieldIndex.SurfacePatterns2] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceTree_FieldIndex.SurfacePatterns2) ?? true))
+                {
+                    if (!MemoryExtensions.SequenceEqual<IFormLinkGetter<ISurfacePatternGetter>>(lhs.SurfacePatterns2.Span!, rhs.SurfacePatterns2.Span!)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)SurfaceTree_FieldIndex.GNAM2] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceTree_FieldIndex.GNAM2) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.GNAM2, rhs.GNAM2)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)SurfaceTree_FieldIndex.Filter] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceTree_FieldIndex.Filter) ?? true))
+                {
+                    if (!string.Equals(lhs.Filter, rhs.Filter)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISurfaceTreeGetter)lhs, (ISurfaceTreeGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISurfaceTreeGetter)lhs, (ISurfaceTreeGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(ISurfaceTreeGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

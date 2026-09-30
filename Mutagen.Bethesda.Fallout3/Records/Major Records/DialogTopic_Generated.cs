@@ -1564,6 +1564,24 @@ namespace Mutagen.Bethesda.Fallout3
                 .Select(m => (IMajorRecord)m);
         }
 
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IDialogTopicGetter item,
+            IDialogTopicGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((DialogTopicCommon)((IDialogTopicGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         [DebuggerStepThrough]
         public static void Remove(
             this IDialogTopicInternal obj,
@@ -2608,6 +2626,150 @@ namespace Mutagen.Bethesda.Fallout3
                         yield break;
                     }
             }
+        }
+        
+        public virtual void FillDifferingFields(
+            IDialogTopicGetter lhs,
+            IDialogTopicGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)DialogTopic_FieldIndex.AssociatedQuests] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogTopic_FieldIndex.AssociatedQuests) ?? true))
+                {
+                    if (!lhs.AssociatedQuests.SequenceEqual(rhs.AssociatedQuests, (l, r) => ((DialogTopicAssociatedQuestCommon)((IDialogTopicAssociatedQuestGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)DialogTopic_FieldIndex.AssociatedQuests)))) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)DialogTopic_FieldIndex.RemovedQuests] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogTopic_FieldIndex.RemovedQuests) ?? true))
+                {
+                    if (!lhs.RemovedQuests.SequenceEqualNullable(rhs.RemovedQuests)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)DialogTopic_FieldIndex.Name] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogTopic_FieldIndex.Name) ?? true))
+                {
+                    if (!string.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)DialogTopic_FieldIndex.Priority] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogTopic_FieldIndex.Priority) ?? true))
+                {
+                    if (!lhs.Priority.EqualsWithin(rhs.Priority)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)DialogTopic_FieldIndex.DumbResponse] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogTopic_FieldIndex.DumbResponse) ?? true))
+                {
+                    if (!string.Equals(lhs.DumbResponse, rhs.DumbResponse)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)DialogTopic_FieldIndex.Type] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogTopic_FieldIndex.Type) ?? true))
+                {
+                    if (lhs.Type != rhs.Type) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)DialogTopic_FieldIndex.Flags] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogTopic_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)DialogTopic_FieldIndex.InfoOrderMastersOnly] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogTopic_FieldIndex.InfoOrderMastersOnly) ?? true))
+                {
+                    if (!lhs.InfoOrderMastersOnly.SequenceEqualNullable(rhs.InfoOrderMastersOnly)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)DialogTopic_FieldIndex.InfoOrderAllPreviousModules] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogTopic_FieldIndex.InfoOrderAllPreviousModules) ?? true))
+                {
+                    if (!lhs.InfoOrderAllPreviousModules.SequenceEqualNullable(rhs.InfoOrderAllPreviousModules)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)DialogTopic_FieldIndex.Timestamp] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogTopic_FieldIndex.Timestamp) ?? true))
+                {
+                    if (lhs.Timestamp != rhs.Timestamp) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)DialogTopic_FieldIndex.Unknown] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogTopic_FieldIndex.Unknown) ?? true))
+                {
+                    if (lhs.Unknown != rhs.Unknown) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)DialogTopic_FieldIndex.Responses] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogTopic_FieldIndex.Responses) ?? true))
+                {
+                    if (!lhs.Responses.SequenceEqual(rhs.Responses, (l, r) => ((DialogResponsesCommon)((IDialogResponsesGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)DialogTopic_FieldIndex.Responses)))) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)DialogTopic_FieldIndex.DATADataTypeState] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogTopic_FieldIndex.DATADataTypeState) ?? true))
+                {
+                    if (lhs.DATADataTypeState != rhs.DATADataTypeState) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IDialogTopicGetter)lhs, (IDialogTopicGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IDialogTopicGetter)lhs, (IDialogTopicGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IModContext<IFallout3Mod, IFallout3ModGetter, IMajorRecord, IMajorRecordGetter>> EnumerateMajorRecordContexts(

@@ -1011,6 +1011,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IPerkGetter item,
+            IPerkGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((PerkCommon)((IPerkGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Perk Duplicate(
             this IPerkGetter item,
             FormKey formKey,
@@ -1559,6 +1577,95 @@ namespace Mutagen.Bethesda.Fallout3
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IPerkGetter lhs,
+            IPerkGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Perk_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Perk_FieldIndex.Name) ?? true))
+                {
+                    if (!string.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Perk_FieldIndex.Description] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Perk_FieldIndex.Description) ?? true))
+                {
+                    if (!string.Equals(lhs.Description, rhs.Description)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Perk_FieldIndex.Icons] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Perk_FieldIndex.Icons) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Icons, rhs.Icons, out var lhsIcons, out var rhsIcons, out var isIconsEqual))
+                    {
+                        if (!((IconsCommon)((IIconsGetter)lhsIcons).CommonInstance()!).Equals(lhsIcons, rhsIcons, equalsMask?.GetSubCrystal((int)Perk_FieldIndex.Icons))) return false;
+                    }
+                    else if (!isIconsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Perk_FieldIndex.Conditions] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Perk_FieldIndex.Conditions) ?? true))
+                {
+                    if (!lhs.Conditions.SequenceEqual(rhs.Conditions, (l, r) => ((ConditionCommon)((IConditionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Perk_FieldIndex.Conditions)))) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Perk_FieldIndex.PerkData] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Perk_FieldIndex.PerkData) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.PerkData, rhs.PerkData, out var lhsPerkData, out var rhsPerkData, out var isPerkDataEqual))
+                    {
+                        if (!((PerkDataCommon)((IPerkDataGetter)lhsPerkData).CommonInstance()!).Equals(lhsPerkData, rhsPerkData, equalsMask?.GetSubCrystal((int)Perk_FieldIndex.PerkData))) return false;
+                    }
+                    else if (!isPerkDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Perk_FieldIndex.Effects] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Perk_FieldIndex.Effects) ?? true))
+                {
+                    if (!lhs.Effects.SequenceEqual(rhs.Effects, (l, r) => ((APerkEffectCommon)((IAPerkEffectGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Perk_FieldIndex.Effects)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPerkGetter)lhs, (IPerkGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPerkGetter)lhs, (IPerkGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IPerkGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

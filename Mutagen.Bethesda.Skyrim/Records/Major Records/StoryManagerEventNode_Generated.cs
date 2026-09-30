@@ -697,6 +697,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IStoryManagerEventNodeGetter item,
+            IStoryManagerEventNodeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((StoryManagerEventNodeCommon)((IStoryManagerEventNodeGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static StoryManagerEventNode Duplicate(
             this IStoryManagerEventNodeGetter item,
             FormKey formKey,
@@ -1240,6 +1258,69 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IStoryManagerEventNodeGetter lhs,
+            IStoryManagerEventNodeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IAStoryManagerNodeGetter)lhs, (IAStoryManagerNodeGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)StoryManagerEventNode_FieldIndex.Flags] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)StoryManagerEventNode_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)StoryManagerEventNode_FieldIndex.MaxConcurrentQuests] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)StoryManagerEventNode_FieldIndex.MaxConcurrentQuests) ?? true))
+                {
+                    if (lhs.MaxConcurrentQuests != rhs.MaxConcurrentQuests) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)StoryManagerEventNode_FieldIndex.Type] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)StoryManagerEventNode_FieldIndex.Type) ?? true))
+                {
+                    if (lhs.Type != rhs.Type) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IAStoryManagerNodeGetter lhs,
+            IAStoryManagerNodeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IStoryManagerEventNodeGetter)lhs, (IStoryManagerEventNodeGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IStoryManagerEventNodeGetter)lhs, (IStoryManagerEventNodeGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IStoryManagerEventNodeGetter)lhs, (IStoryManagerEventNodeGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

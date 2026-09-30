@@ -827,6 +827,24 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IMiscellaneousGetter item,
+            IMiscellaneousGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((MiscellaneousCommon)((IMiscellaneousGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Miscellaneous Duplicate(
             this IMiscellaneousGetter item,
             FormKey formKey,
@@ -1308,6 +1326,86 @@ namespace Mutagen.Bethesda.Oblivion
                 yield return ScriptInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IMiscellaneousGetter lhs,
+            IMiscellaneousGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IOblivionMajorRecordGetter)lhs, (IOblivionMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Miscellaneous_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Miscellaneous_FieldIndex.Name) ?? true))
+                {
+                    if (!string.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Miscellaneous_FieldIndex.Model] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Miscellaneous_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)Miscellaneous_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Miscellaneous_FieldIndex.Icon] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Miscellaneous_FieldIndex.Icon) ?? true))
+                {
+                    if (!string.Equals(lhs.Icon, rhs.Icon)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Miscellaneous_FieldIndex.Script] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Miscellaneous_FieldIndex.Script) ?? true))
+                {
+                    if (!lhs.Script.Equals(rhs.Script)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Miscellaneous_FieldIndex.Data] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Miscellaneous_FieldIndex.Data) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Data, rhs.Data, out var lhsData, out var rhsData, out var isDataEqual))
+                    {
+                        if (!((MiscellaneousDataCommon)((IMiscellaneousDataGetter)lhsData).CommonInstance()!).Equals(lhsData, rhsData, equalsMask?.GetSubCrystal((int)Miscellaneous_FieldIndex.Data))) return false;
+                    }
+                    else if (!isDataEqual) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IOblivionMajorRecordGetter lhs,
+            IOblivionMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMiscellaneousGetter)lhs, (IMiscellaneousGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMiscellaneousGetter)lhs, (IMiscellaneousGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

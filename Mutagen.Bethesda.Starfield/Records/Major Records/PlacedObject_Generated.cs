@@ -5045,6 +5045,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IPlacedObjectGetter item,
+            IPlacedObjectGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((PlacedObjectCommon)((IPlacedObjectGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static PlacedObject Duplicate(
             this IPlacedObjectGetter item,
             FormKey formKey,
@@ -7367,6 +7385,902 @@ namespace Mutagen.Bethesda.Starfield
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IPlacedObjectGetter lhs,
+            IPlacedObjectGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)PlacedObject_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)PlacedObject_FieldIndex.XALG] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.XALG) ?? true))
+                {
+                    if (lhs.XALG != rhs.XALG) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)PlacedObject_FieldIndex.Components] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)PlacedObject_FieldIndex.Base] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.Base) ?? true))
+                {
+                    if (!lhs.Base.Equals(rhs.Base)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)PlacedObject_FieldIndex.XMSP] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.XMSP) ?? true))
+                {
+                    if (!lhs.XMSP.Equals(rhs.XMSP)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)PlacedObject_FieldIndex.XPWR] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.XPWR) ?? true))
+                {
+                    if (!lhs.XPWR.Equals(rhs.XPWR)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)PlacedObject_FieldIndex.XLTW] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.XLTW) ?? true))
+                {
+                    if (!lhs.XLTW.Equals(rhs.XLTW)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)PlacedObject_FieldIndex.XTRV] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.XTRV) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.XTRV, rhs.XTRV, out var lhsXTRV, out var rhsXTRV, out var isXTRVEqual))
+                    {
+                        if (!((XTRVCommon)((IXTRVGetter)lhsXTRV).CommonInstance()!).Equals(lhsXTRV, rhsXTRV, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.XTRV))) return false;
+                    }
+                    else if (!isXTRVEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)PlacedObject_FieldIndex.VolumeData] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.VolumeData) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VolumeData, rhs.VolumeData, out var lhsVolumeData, out var rhsVolumeData, out var isVolumeDataEqual))
+                    {
+                        if (!((PlacedObjectVolumeDataCommon)((IPlacedObjectVolumeDataGetter)lhsVolumeData).CommonInstance()!).Equals(lhsVolumeData, rhsVolumeData, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.VolumeData))) return false;
+                    }
+                    else if (!isVolumeDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)PlacedObject_FieldIndex.ShipArrival] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.ShipArrival) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ShipArrival, rhs.ShipArrival, out var lhsShipArrival, out var rhsShipArrival, out var isShipArrivalEqual))
+                    {
+                        if (!((PlacedObjectShipArrivalCommon)((IPlacedObjectShipArrivalGetter)lhsShipArrival).CommonInstance()!).Equals(lhsShipArrival, rhsShipArrival, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.ShipArrival))) return false;
+                    }
+                    else if (!isShipArrivalEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)PlacedObject_FieldIndex.LevelModifier] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.LevelModifier) ?? true))
+                {
+                    if (lhs.LevelModifier != rhs.LevelModifier) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)PlacedObject_FieldIndex.Action] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.Action) ?? true))
+                {
+                    if (lhs.Action != rhs.Action) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)PlacedObject_FieldIndex.Primitive] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.Primitive) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Primitive, rhs.Primitive, out var lhsPrimitive, out var rhsPrimitive, out var isPrimitiveEqual))
+                    {
+                        if (!((PlacedPrimitiveCommon)((IPlacedPrimitiveGetter)lhsPrimitive).CommonInstance()!).Equals(lhsPrimitive, rhsPrimitive, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.Primitive))) return false;
+                    }
+                    else if (!isPrimitiveEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)PlacedObject_FieldIndex.PlacedObjectXCZRXCZA] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.PlacedObjectXCZRXCZA) ?? true))
+                {
+                    if (!lhs.PlacedObjectXCZRXCZA.SequenceEqual(rhs.PlacedObjectXCZRXCZA, (l, r) => ((PlacedObjectXCZRXCZACommon)((IPlacedObjectXCZRXCZAGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.PlacedObjectXCZRXCZA)))) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)PlacedObject_FieldIndex.VolumeReflectionProbeOffsetIntensity] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.VolumeReflectionProbeOffsetIntensity) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VolumeReflectionProbeOffsetIntensity, rhs.VolumeReflectionProbeOffsetIntensity, out var lhsVolumeReflectionProbeOffsetIntensity, out var rhsVolumeReflectionProbeOffsetIntensity, out var isVolumeReflectionProbeOffsetIntensityEqual))
+                    {
+                        if (!((VolumeReflectionProbeOffsetIntensityCommon)((IVolumeReflectionProbeOffsetIntensityGetter)lhsVolumeReflectionProbeOffsetIntensity).CommonInstance()!).Equals(lhsVolumeReflectionProbeOffsetIntensity, rhsVolumeReflectionProbeOffsetIntensity, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.VolumeReflectionProbeOffsetIntensity))) return false;
+                    }
+                    else if (!isVolumeReflectionProbeOffsetIntensityEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)PlacedObject_FieldIndex.DebugText] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.DebugText) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.DebugText, rhs.DebugText, out var lhsDebugText, out var rhsDebugText, out var isDebugTextEqual))
+                    {
+                        if (!((PlacedObjectDebugTextCommon)((IPlacedObjectDebugTextGetter)lhsDebugText).CommonInstance()!).Equals(lhsDebugText, rhsDebugText, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.DebugText))) return false;
+                    }
+                    else if (!isDebugTextEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)PlacedObject_FieldIndex.Emittance] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.Emittance) ?? true))
+                {
+                    if (!lhs.Emittance.Equals(rhs.Emittance)) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)PlacedObject_FieldIndex.Radius] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.Radius) ?? true))
+                {
+                    if (!lhs.Radius.EqualsWithin(rhs.Radius)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)PlacedObject_FieldIndex.Lighting] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.Lighting) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Lighting, rhs.Lighting, out var lhsLighting, out var rhsLighting, out var isLightingEqual))
+                    {
+                        if (!((PlacedObjectLightingCommon)((IPlacedObjectLightingGetter)lhsLighting).CommonInstance()!).Equals(lhsLighting, rhsLighting, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.Lighting))) return false;
+                    }
+                    else if (!isLightingEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)PlacedObject_FieldIndex.LightBarndoorData] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.LightBarndoorData) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.LightBarndoorData, rhs.LightBarndoorData, out var lhsLightBarndoorData, out var rhsLightBarndoorData, out var isLightBarndoorDataEqual))
+                    {
+                        if (!((PlacedObjectLightBarndoorDataCommon)((IPlacedObjectLightBarndoorDataGetter)lhsLightBarndoorData).CommonInstance()!).Equals(lhsLightBarndoorData, rhsLightBarndoorData, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.LightBarndoorData))) return false;
+                    }
+                    else if (!isLightBarndoorDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)PlacedObject_FieldIndex.LightArea] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.LightArea) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.LightArea, rhs.LightArea, out var lhsLightArea, out var rhsLightArea, out var isLightAreaEqual))
+                    {
+                        if (!((AreaLightCommon)((IAreaLightGetter)lhsLightArea).CommonInstance()!).Equals(lhsLightArea, rhsLightArea, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.LightArea))) return false;
+                    }
+                    else if (!isLightAreaEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)PlacedObject_FieldIndex.CurrentZoneCell] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.CurrentZoneCell) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.CurrentZoneCell, rhs.CurrentZoneCell, out var lhsCurrentZoneCell, out var rhsCurrentZoneCell, out var isCurrentZoneCellEqual))
+                    {
+                        if (!((PlacedObjectCurrentZoneCellCommon)((IPlacedObjectCurrentZoneCellGetter)lhsCurrentZoneCell).CommonInstance()!).Equals(lhsCurrentZoneCell, rhsCurrentZoneCell, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.CurrentZoneCell))) return false;
+                    }
+                    else if (!isCurrentZoneCellEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal22()) differs[(int)PlacedObject_FieldIndex.Patrol] = true;
+            bool Equal22()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.Patrol) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Patrol, rhs.Patrol, out var lhsPatrol, out var rhsPatrol, out var isPatrolEqual))
+                    {
+                        if (!((PatrolCommon)((IPatrolGetter)lhsPatrol).CommonInstance()!).Equals(lhsPatrol, rhsPatrol, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.Patrol))) return false;
+                    }
+                    else if (!isPatrolEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal23()) differs[(int)PlacedObject_FieldIndex.RagdollData] = true;
+            bool Equal23()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.RagdollData) ?? true))
+                {
+                    if (!lhs.RagdollData.SequenceEqualNullable(rhs.RagdollData, (l, r) => ((RagdollDataCommon)((IRagdollDataGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.RagdollData)))) return false;
+                }
+                return true;
+            }
+            if (!Equal24()) differs[(int)PlacedObject_FieldIndex.TeleportDestination] = true;
+            bool Equal24()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.TeleportDestination) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.TeleportDestination, rhs.TeleportDestination, out var lhsTeleportDestination, out var rhsTeleportDestination, out var isTeleportDestinationEqual))
+                    {
+                        if (!((TeleportDestinationCommon)((ITeleportDestinationGetter)lhsTeleportDestination).CommonInstance()!).Equals(lhsTeleportDestination, rhsTeleportDestination, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.TeleportDestination))) return false;
+                    }
+                    else if (!isTeleportDestinationEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal25()) differs[(int)PlacedObject_FieldIndex.TeleportName] = true;
+            bool Equal25()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.TeleportName) ?? true))
+                {
+                    if (!lhs.TeleportName.Equals(rhs.TeleportName)) return false;
+                }
+                return true;
+            }
+            if (!Equal26()) differs[(int)PlacedObject_FieldIndex.ReferenceGroup] = true;
+            bool Equal26()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.ReferenceGroup) ?? true))
+                {
+                    if (!lhs.ReferenceGroup.Equals(rhs.ReferenceGroup)) return false;
+                }
+                return true;
+            }
+            if (!Equal27()) differs[(int)PlacedObject_FieldIndex.LocationRefTypes] = true;
+            bool Equal27()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.LocationRefTypes) ?? true))
+                {
+                    if (!lhs.LocationRefTypes.SequenceEqualNullable(rhs.LocationRefTypes)) return false;
+                }
+                return true;
+            }
+            if (!Equal28()) differs[(int)PlacedObject_FieldIndex.LayeredMaterialSwaps] = true;
+            bool Equal28()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.LayeredMaterialSwaps) ?? true))
+                {
+                    if (!lhs.LayeredMaterialSwaps.SequenceEqualNullable(rhs.LayeredMaterialSwaps)) return false;
+                }
+                return true;
+            }
+            if (!Equal29()) differs[(int)PlacedObject_FieldIndex.XPCK] = true;
+            bool Equal29()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.XPCK) ?? true))
+                {
+                    if (!lhs.XPCK.Equals(rhs.XPCK)) return false;
+                }
+                return true;
+            }
+            if (!Equal30()) differs[(int)PlacedObject_FieldIndex.SourcePackIn] = true;
+            bool Equal30()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.SourcePackIn) ?? true))
+                {
+                    if (!lhs.SourcePackIn.Equals(rhs.SourcePackIn)) return false;
+                }
+                return true;
+            }
+            if (!Equal31()) differs[(int)PlacedObject_FieldIndex.PersistentLocation] = true;
+            bool Equal31()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.PersistentLocation) ?? true))
+                {
+                    if (!lhs.PersistentLocation.Equals(rhs.PersistentLocation)) return false;
+                }
+                return true;
+            }
+            if (!Equal32()) differs[(int)PlacedObject_FieldIndex.ProjectedDecal] = true;
+            bool Equal32()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.ProjectedDecal) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ProjectedDecal, rhs.ProjectedDecal, out var lhsProjectedDecal, out var rhsProjectedDecal, out var isProjectedDecalEqual))
+                    {
+                        if (!((PlacedObjectProjectedDecalCommon)((IPlacedObjectProjectedDecalGetter)lhsProjectedDecal).CommonInstance()!).Equals(lhsProjectedDecal, rhsProjectedDecal, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.ProjectedDecal))) return false;
+                    }
+                    else if (!isProjectedDecalEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal33()) differs[(int)PlacedObject_FieldIndex.ProjectedDecalReferences] = true;
+            bool Equal33()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.ProjectedDecalReferences) ?? true))
+                {
+                    if (!lhs.ProjectedDecalReferences.SequenceEqualNullable(rhs.ProjectedDecalReferences)) return false;
+                }
+                return true;
+            }
+            if (!Equal34()) differs[(int)PlacedObject_FieldIndex.ConstrainedDecal] = true;
+            bool Equal34()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.ConstrainedDecal) ?? true))
+                {
+                    if (!lhs.ConstrainedDecal.Equals(rhs.ConstrainedDecal)) return false;
+                }
+                return true;
+            }
+            if (!Equal35()) differs[(int)PlacedObject_FieldIndex.IsIgnoredBySandbox] = true;
+            bool Equal35()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.IsIgnoredBySandbox) ?? true))
+                {
+                    if (lhs.IsIgnoredBySandbox != rhs.IsIgnoredBySandbox) return false;
+                }
+                return true;
+            }
+            if (!Equal36()) differs[(int)PlacedObject_FieldIndex.FactionRank] = true;
+            bool Equal36()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.FactionRank) ?? true))
+                {
+                    if (lhs.FactionRank != rhs.FactionRank) return false;
+                }
+                return true;
+            }
+            if (!Equal37()) differs[(int)PlacedObject_FieldIndex.GoboAnimatedProperties] = true;
+            bool Equal37()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.GoboAnimatedProperties) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.GoboAnimatedProperties, rhs.GoboAnimatedProperties, out var lhsGoboAnimatedProperties, out var rhsGoboAnimatedProperties, out var isGoboAnimatedPropertiesEqual))
+                    {
+                        if (!((PlacedObjectGoboAnimatedPropertiesCommon)((IPlacedObjectGoboAnimatedPropertiesGetter)lhsGoboAnimatedProperties).CommonInstance()!).Equals(lhsGoboAnimatedProperties, rhsGoboAnimatedProperties, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.GoboAnimatedProperties))) return false;
+                    }
+                    else if (!isGoboAnimatedPropertiesEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal38()) differs[(int)PlacedObject_FieldIndex.Collision] = true;
+            bool Equal38()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.Collision) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Collision, rhs.Collision, out var lhsCollision, out var rhsCollision, out var isCollisionEqual))
+                    {
+                        if (!((PlacedObjectCollisionCommon)((IPlacedObjectCollisionGetter)lhsCollision).CommonInstance()!).Equals(lhsCollision, rhsCollision, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.Collision))) return false;
+                    }
+                    else if (!isCollisionEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal39()) differs[(int)PlacedObject_FieldIndex.PowerLinks] = true;
+            bool Equal39()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.PowerLinks) ?? true))
+                {
+                    if (!lhs.PowerLinks.SequenceEqual(rhs.PowerLinks, (l, r) => ((PowerLinkCommon)((IPowerLinkGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.PowerLinks)))) return false;
+                }
+                return true;
+            }
+            if (!Equal40()) differs[(int)PlacedObject_FieldIndex.Count] = true;
+            bool Equal40()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.Count) ?? true))
+                {
+                    if (lhs.Count != rhs.Count) return false;
+                }
+                return true;
+            }
+            if (!Equal41()) differs[(int)PlacedObject_FieldIndex.XFLG] = true;
+            bool Equal41()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.XFLG) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.XFLG, rhs.XFLG)) return false;
+                }
+                return true;
+            }
+            if (!Equal42()) differs[(int)PlacedObject_FieldIndex.LightFlicker] = true;
+            bool Equal42()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.LightFlicker) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.LightFlicker, rhs.LightFlicker, out var lhsLightFlicker, out var rhsLightFlicker, out var isLightFlickerEqual))
+                    {
+                        if (!((PlacedObjectLightFlickerCommon)((IPlacedObjectLightFlickerGetter)lhsLightFlicker).CommonInstance()!).Equals(lhsLightFlicker, rhsLightFlicker, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.LightFlicker))) return false;
+                    }
+                    else if (!isLightFlickerEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal43()) differs[(int)PlacedObject_FieldIndex.MapMarker] = true;
+            bool Equal43()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.MapMarker) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.MapMarker, rhs.MapMarker, out var lhsMapMarker, out var rhsMapMarker, out var isMapMarkerEqual))
+                    {
+                        if (!((PlacedObjectMapMarkerCommon)((IPlacedObjectMapMarkerGetter)lhsMapMarker).CommonInstance()!).Equals(lhsMapMarker, rhsMapMarker, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.MapMarker))) return false;
+                    }
+                    else if (!isMapMarkerEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal44()) differs[(int)PlacedObject_FieldIndex.LightLayerData] = true;
+            bool Equal44()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.LightLayerData) ?? true))
+                {
+                    if (lhs.LightLayerData != rhs.LightLayerData) return false;
+                }
+                return true;
+            }
+            if (!Equal45()) differs[(int)PlacedObject_FieldIndex.LightStaticShadowMap] = true;
+            bool Equal45()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.LightStaticShadowMap) ?? true))
+                {
+                    if (lhs.LightStaticShadowMap != rhs.LightStaticShadowMap) return false;
+                }
+                return true;
+            }
+            if (!Equal46()) differs[(int)PlacedObject_FieldIndex.LightVolumetricData] = true;
+            bool Equal46()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.LightVolumetricData) ?? true))
+                {
+                    if (!lhs.LightVolumetricData.EqualsWithin(rhs.LightVolumetricData)) return false;
+                }
+                return true;
+            }
+            if (!Equal47()) differs[(int)PlacedObject_FieldIndex.LightRadiusFalloutExponent] = true;
+            bool Equal47()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.LightRadiusFalloutExponent) ?? true))
+                {
+                    if (!lhs.LightRadiusFalloutExponent.EqualsWithin(rhs.LightRadiusFalloutExponent)) return false;
+                }
+                return true;
+            }
+            if (!Equal48()) differs[(int)PlacedObject_FieldIndex.Ownership] = true;
+            bool Equal48()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.Ownership) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Ownership, rhs.Ownership, out var lhsOwnership, out var rhsOwnership, out var isOwnershipEqual))
+                    {
+                        if (!((OwnershipCommon)((IOwnershipGetter)lhsOwnership).CommonInstance()!).Equals(lhsOwnership, rhsOwnership, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.Ownership))) return false;
+                    }
+                    else if (!isOwnershipEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal49()) differs[(int)PlacedObject_FieldIndex.LightColors] = true;
+            bool Equal49()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.LightColors) ?? true))
+                {
+                    if (!lhs.LightColors.SequenceEqual(rhs.LightColors, (l, r) => ((PlacedObjectLightColorCommon)((IPlacedObjectLightColorGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.LightColors)))) return false;
+                }
+                return true;
+            }
+            if (!Equal50()) differs[(int)PlacedObject_FieldIndex.GroupedPackIn] = true;
+            bool Equal50()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.GroupedPackIn) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.GroupedPackIn, rhs.GroupedPackIn, out var lhsGroupedPackIn, out var rhsGroupedPackIn, out var isGroupedPackInEqual))
+                    {
+                        if (!((GroupedPackInCommon)((IGroupedPackInGetter)lhsGroupedPackIn).CommonInstance()!).Equals(lhsGroupedPackIn, rhsGroupedPackIn, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.GroupedPackIn))) return false;
+                    }
+                    else if (!isGroupedPackInEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal51()) differs[(int)PlacedObject_FieldIndex.BlueprintPartOrigin] = true;
+            bool Equal51()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.BlueprintPartOrigin) ?? true))
+                {
+                    if (lhs.BlueprintPartOrigin != rhs.BlueprintPartOrigin) return false;
+                }
+                return true;
+            }
+            if (!Equal52()) differs[(int)PlacedObject_FieldIndex.Layer] = true;
+            bool Equal52()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.Layer) ?? true))
+                {
+                    if (!lhs.Layer.Equals(rhs.Layer)) return false;
+                }
+                return true;
+            }
+            if (!Equal53()) differs[(int)PlacedObject_FieldIndex.BOLV] = true;
+            bool Equal53()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.BOLV) ?? true))
+                {
+                    if (lhs.BOLV != rhs.BOLV) return false;
+                }
+                return true;
+            }
+            if (!Equal54()) differs[(int)PlacedObject_FieldIndex.XWCN] = true;
+            bool Equal54()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.XWCN) ?? true))
+                {
+                    if (!lhs.XWCN.Equals(rhs.XWCN)) return false;
+                }
+                return true;
+            }
+            if (!Equal55()) differs[(int)PlacedObject_FieldIndex.XWCU] = true;
+            bool Equal55()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.XWCU) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.XWCU, rhs.XWCU)) return false;
+                }
+                return true;
+            }
+            if (!Equal56()) differs[(int)PlacedObject_FieldIndex.Location] = true;
+            bool Equal56()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.Location) ?? true))
+                {
+                    if (!lhs.Location.Equals(rhs.Location)) return false;
+                }
+                return true;
+            }
+            if (!Equal57()) differs[(int)PlacedObject_FieldIndex.XTRI] = true;
+            bool Equal57()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.XTRI) ?? true))
+                {
+                    if (lhs.XTRI != rhs.XTRI) return false;
+                }
+                return true;
+            }
+            if (!Equal58()) differs[(int)PlacedObject_FieldIndex.LightRoundedness] = true;
+            bool Equal58()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.LightRoundedness) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.LightRoundedness, rhs.LightRoundedness, out var lhsLightRoundedness, out var rhsLightRoundedness, out var isLightRoundednessEqual))
+                    {
+                        if (!((LightRoundnessCommon)((ILightRoundnessGetter)lhsLightRoundedness).CommonInstance()!).Equals(lhsLightRoundedness, rhsLightRoundedness, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.LightRoundedness))) return false;
+                    }
+                    else if (!isLightRoundednessEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal59()) differs[(int)PlacedObject_FieldIndex.LinkedReferences] = true;
+            bool Equal59()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.LinkedReferences) ?? true))
+                {
+                    if (!lhs.LinkedReferences.SequenceEqual(rhs.LinkedReferences, (l, r) => ((LinkedReferencesCommon)((ILinkedReferencesGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.LinkedReferences)))) return false;
+                }
+                return true;
+            }
+            if (!Equal60()) differs[(int)PlacedObject_FieldIndex.IsLinkedRefTransient] = true;
+            bool Equal60()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.IsLinkedRefTransient) ?? true))
+                {
+                    if (lhs.IsLinkedRefTransient != rhs.IsLinkedRefTransient) return false;
+                }
+                return true;
+            }
+            if (!Equal61()) differs[(int)PlacedObject_FieldIndex.XLIB] = true;
+            bool Equal61()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.XLIB) ?? true))
+                {
+                    if (!lhs.XLIB.Equals(rhs.XLIB)) return false;
+                }
+                return true;
+            }
+            if (!Equal62()) differs[(int)PlacedObject_FieldIndex.SnapLinks] = true;
+            bool Equal62()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.SnapLinks) ?? true))
+                {
+                    if (!lhs.SnapLinks.SequenceEqualNullable(rhs.SnapLinks, (l, r) => ((SnapLinkCommon)((ISnapLinkGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.SnapLinks)))) return false;
+                }
+                return true;
+            }
+            if (!Equal63()) differs[(int)PlacedObject_FieldIndex.EncounterZone] = true;
+            bool Equal63()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.EncounterZone) ?? true))
+                {
+                    if (!lhs.EncounterZone.Equals(rhs.EncounterZone)) return false;
+                }
+                return true;
+            }
+            if (!Equal64()) differs[(int)PlacedObject_FieldIndex.GeometryDirtinessScale] = true;
+            bool Equal64()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.GeometryDirtinessScale) ?? true))
+                {
+                    if (!lhs.GeometryDirtinessScale.EqualsWithin(rhs.GeometryDirtinessScale)) return false;
+                }
+                return true;
+            }
+            if (!Equal65()) differs[(int)PlacedObject_FieldIndex.Lock] = true;
+            bool Equal65()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.Lock) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Lock, rhs.Lock, out var lhsLock, out var rhsLock, out var isLockEqual))
+                    {
+                        if (!((LockDataCommon)((ILockDataGetter)lhsLock).CommonInstance()!).Equals(lhsLock, rhsLock, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.Lock))) return false;
+                    }
+                    else if (!isLockEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal66()) differs[(int)PlacedObject_FieldIndex.Properties] = true;
+            bool Equal66()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.Properties) ?? true))
+                {
+                    if (!lhs.Properties.SequenceEqualNullable(rhs.Properties, (l, r) => ((ObjectPropertyCommon)((IObjectPropertyGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.Properties)))) return false;
+                }
+                return true;
+            }
+            if (!Equal67()) differs[(int)PlacedObject_FieldIndex.ExternalEmittance] = true;
+            bool Equal67()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.ExternalEmittance) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ExternalEmittance, rhs.ExternalEmittance, out var lhsExternalEmittance, out var rhsExternalEmittance, out var isExternalEmittanceEqual))
+                    {
+                        if (!((ExternalEmittanceCommon)((IExternalEmittanceGetter)lhsExternalEmittance).CommonInstance()!).Equals(lhsExternalEmittance, rhsExternalEmittance, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.ExternalEmittance))) return false;
+                    }
+                    else if (!isExternalEmittanceEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal68()) differs[(int)PlacedObject_FieldIndex.HeadTrackingWeight] = true;
+            bool Equal68()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.HeadTrackingWeight) ?? true))
+                {
+                    if (!lhs.HeadTrackingWeight.EqualsWithin(rhs.HeadTrackingWeight)) return false;
+                }
+                return true;
+            }
+            if (!Equal69()) differs[(int)PlacedObject_FieldIndex.Spline] = true;
+            bool Equal69()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.Spline) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Spline, rhs.Spline, out var lhsSpline, out var rhsSpline, out var isSplineEqual))
+                    {
+                        if (!((PlacedObjectSplineCommon)((IPlacedObjectSplineGetter)lhsSpline).CommonInstance()!).Equals(lhsSpline, rhsSpline, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.Spline))) return false;
+                    }
+                    else if (!isSplineEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal70()) differs[(int)PlacedObject_FieldIndex.XNSE] = true;
+            bool Equal70()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.XNSE) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.XNSE, rhs.XNSE)) return false;
+                }
+                return true;
+            }
+            if (!Equal71()) differs[(int)PlacedObject_FieldIndex.AttachRef] = true;
+            bool Equal71()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.AttachRef) ?? true))
+                {
+                    if (!lhs.AttachRef.Equals(rhs.AttachRef)) return false;
+                }
+                return true;
+            }
+            if (!Equal72()) differs[(int)PlacedObject_FieldIndex.RagdollBipedRotation] = true;
+            bool Equal72()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.RagdollBipedRotation) ?? true))
+                {
+                    if (!lhs.RagdollBipedRotation.Equals(rhs.RagdollBipedRotation)) return false;
+                }
+                return true;
+            }
+            if (!Equal73()) differs[(int)PlacedObject_FieldIndex.HealthPercent] = true;
+            bool Equal73()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.HealthPercent) ?? true))
+                {
+                    if (!lhs.HealthPercent.Equals(rhs.HealthPercent)) return false;
+                }
+                return true;
+            }
+            if (!Equal74()) differs[(int)PlacedObject_FieldIndex.TimeOfDay] = true;
+            bool Equal74()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.TimeOfDay) ?? true))
+                {
+                    if (!lhs.TimeOfDay.Equals(rhs.TimeOfDay)) return false;
+                }
+                return true;
+            }
+            if (!Equal75()) differs[(int)PlacedObject_FieldIndex.EnableParent] = true;
+            bool Equal75()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.EnableParent) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.EnableParent, rhs.EnableParent, out var lhsEnableParent, out var rhsEnableParent, out var isEnableParentEqual))
+                    {
+                        if (!((EnableParentCommon)((IEnableParentGetter)lhsEnableParent).CommonInstance()!).Equals(lhsEnableParent, rhsEnableParent, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.EnableParent))) return false;
+                    }
+                    else if (!isEnableParentEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal76()) differs[(int)PlacedObject_FieldIndex.Traversals] = true;
+            bool Equal76()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.Traversals) ?? true))
+                {
+                    if (!lhs.Traversals.SequenceEqualNullable(rhs.Traversals, (l, r) => ((TraversalReferenceCommon)((ITraversalReferenceGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.Traversals)))) return false;
+                }
+                return true;
+            }
+            if (!Equal77()) differs[(int)PlacedObject_FieldIndex.NumTraversalFluffBytes] = true;
+            bool Equal77()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.NumTraversalFluffBytes) ?? true))
+                {
+                    if (lhs.NumTraversalFluffBytes != rhs.NumTraversalFluffBytes) return false;
+                }
+                return true;
+            }
+            if (!Equal78()) differs[(int)PlacedObject_FieldIndex.NavigationDoorLink] = true;
+            bool Equal78()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.NavigationDoorLink) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.NavigationDoorLink, rhs.NavigationDoorLink, out var lhsNavigationDoorLink, out var rhsNavigationDoorLink, out var isNavigationDoorLinkEqual))
+                    {
+                        if (!((NavigationDoorLinkCommon)((INavigationDoorLinkGetter)lhsNavigationDoorLink).CommonInstance()!).Equals(lhsNavigationDoorLink, rhsNavigationDoorLink, equalsMask?.GetSubCrystal((int)PlacedObject_FieldIndex.NavigationDoorLink))) return false;
+                    }
+                    else if (!isNavigationDoorLinkEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal79()) differs[(int)PlacedObject_FieldIndex.IsActivationPoint] = true;
+            bool Equal79()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.IsActivationPoint) ?? true))
+                {
+                    if (lhs.IsActivationPoint != rhs.IsActivationPoint) return false;
+                }
+                return true;
+            }
+            if (!Equal80()) differs[(int)PlacedObject_FieldIndex.Scale] = true;
+            bool Equal80()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.Scale) ?? true))
+                {
+                    if (!lhs.Scale.EqualsWithin(rhs.Scale)) return false;
+                }
+                return true;
+            }
+            if (!Equal81()) differs[(int)PlacedObject_FieldIndex.OpenByDefault] = true;
+            bool Equal81()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.OpenByDefault) ?? true))
+                {
+                    if (lhs.OpenByDefault != rhs.OpenByDefault) return false;
+                }
+                return true;
+            }
+            if (!Equal82()) differs[(int)PlacedObject_FieldIndex.Position] = true;
+            bool Equal82()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.Position) ?? true))
+                {
+                    if (!lhs.Position.Equals(rhs.Position)) return false;
+                }
+                return true;
+            }
+            if (!Equal83()) differs[(int)PlacedObject_FieldIndex.Rotation] = true;
+            bool Equal83()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.Rotation) ?? true))
+                {
+                    if (!lhs.Rotation.Equals(rhs.Rotation)) return false;
+                }
+                return true;
+            }
+            if (!Equal84()) differs[(int)PlacedObject_FieldIndex.Comments] = true;
+            bool Equal84()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedObject_FieldIndex.Comments) ?? true))
+                {
+                    if (!string.Equals(lhs.Comments, rhs.Comments)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPlacedObjectGetter)lhs, (IPlacedObjectGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPlacedObjectGetter)lhs, (IPlacedObjectGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IPlacedObjectGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

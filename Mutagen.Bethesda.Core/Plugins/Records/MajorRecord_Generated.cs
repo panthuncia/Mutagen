@@ -823,6 +823,24 @@ namespace Mutagen.Bethesda.Plugins.Records
                 .Select(m => (IMajorRecord)m);
         }
 
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IMajorRecordGetter item,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((MajorRecordCommon)((IMajorRecordGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         [DebuggerStepThrough]
         public static void Remove(
             this IMajorRecordInternal obj,
@@ -1441,6 +1459,50 @@ namespace Mutagen.Bethesda.Plugins.Records
                     {
                         yield break;
                     }
+            }
+        }
+        
+        public virtual void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            if (!Equal0()) differs[(int)MajorRecord_FieldIndex.MajorRecordFlagsRaw] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MajorRecord_FieldIndex.MajorRecordFlagsRaw) ?? true))
+                {
+                    if (lhs.MajorRecordFlagsRaw != rhs.MajorRecordFlagsRaw) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)MajorRecord_FieldIndex.FormKey] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MajorRecord_FieldIndex.FormKey) ?? true))
+                {
+                    if (lhs.FormKey != rhs.FormKey) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)MajorRecord_FieldIndex.VersionControl] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MajorRecord_FieldIndex.VersionControl) ?? true))
+                {
+                    if (lhs.VersionControl != rhs.VersionControl) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)MajorRecord_FieldIndex.EditorID] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MajorRecord_FieldIndex.EditorID) ?? true))
+                {
+                    if (!string.Equals(lhs.EditorID, rhs.EditorID)) return false;
+                }
+                return true;
             }
         }
         

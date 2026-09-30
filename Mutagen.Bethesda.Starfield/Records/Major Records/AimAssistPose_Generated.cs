@@ -802,6 +802,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IAimAssistPoseGetter item,
+            IAimAssistPoseGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((AimAssistPoseCommon)((IAimAssistPoseGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static AimAssistPose Duplicate(
             this IAimAssistPoseGetter item,
             FormKey formKey,
@@ -1244,6 +1262,51 @@ namespace Mutagen.Bethesda.Starfield
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IAimAssistPoseGetter lhs,
+            IAimAssistPoseGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)AimAssistPose_FieldIndex.AttachPoints] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistPose_FieldIndex.AttachPoints) ?? true))
+                {
+                    if (!lhs.AttachPoints.SequenceEqual(rhs.AttachPoints, (l, r) => ((AimAssistPosePointCommon)((IAimAssistPosePointGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)AimAssistPose_FieldIndex.AttachPoints)))) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)AimAssistPose_FieldIndex.Connections] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistPose_FieldIndex.Connections) ?? true))
+                {
+                    if (!lhs.Connections.SequenceEqualNullable(rhs.Connections, (l, r) => ((AimAssistPosePointCommon)((IAimAssistPosePointGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)AimAssistPose_FieldIndex.Connections)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IAimAssistPoseGetter)lhs, (IAimAssistPoseGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IAimAssistPoseGetter)lhs, (IAimAssistPoseGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

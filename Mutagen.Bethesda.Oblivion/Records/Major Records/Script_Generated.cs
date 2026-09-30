@@ -615,6 +615,24 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IScriptGetter item,
+            IScriptGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ScriptCommon)((IScriptGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Script Duplicate(
             this IScriptGetter item,
             FormKey formKey,
@@ -1019,6 +1037,46 @@ namespace Mutagen.Bethesda.Oblivion
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IScriptGetter lhs,
+            IScriptGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IOblivionMajorRecordGetter)lhs, (IOblivionMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Script_FieldIndex.Fields] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Script_FieldIndex.Fields) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Fields, rhs.Fields, out var lhsFields, out var rhsFields, out var isFieldsEqual))
+                    {
+                        if (!((ScriptFieldsCommon)((IScriptFieldsGetter)lhsFields).CommonInstance()!).Equals(lhsFields, rhsFields, equalsMask?.GetSubCrystal((int)Script_FieldIndex.Fields))) return false;
+                    }
+                    else if (!isFieldsEqual) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IOblivionMajorRecordGetter lhs,
+            IOblivionMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IScriptGetter)lhs, (IScriptGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IScriptGetter)lhs, (IScriptGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

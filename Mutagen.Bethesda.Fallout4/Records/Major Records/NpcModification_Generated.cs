@@ -737,6 +737,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this INpcModificationGetter item,
+            INpcModificationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((NpcModificationCommon)((INpcModificationGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static NpcModification Duplicate(
             this INpcModificationGetter item,
             FormKey formKey,
@@ -1249,6 +1267,51 @@ namespace Mutagen.Bethesda.Fallout4
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            INpcModificationGetter lhs,
+            INpcModificationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IAObjectModificationGetter)lhs, (IAObjectModificationGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)NpcModification_FieldIndex.Properties] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)NpcModification_FieldIndex.Properties) ?? true))
+                {
+                    if (!lhs.Properties.SequenceEqual(rhs.Properties, (l, r) => ((AObjectModPropertyCommon<Npc.Property>)((IAObjectModPropertyGetter<Npc.Property>)l).CommonInstance(typeof(Npc.Property))!).Equals(l, r, equalsMask?.GetSubCrystal((int)NpcModification_FieldIndex.Properties)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IAObjectModificationGetter lhs,
+            IAObjectModificationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((INpcModificationGetter)lhs, (INpcModificationGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((INpcModificationGetter)lhs, (INpcModificationGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((INpcModificationGetter)lhs, (INpcModificationGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate
