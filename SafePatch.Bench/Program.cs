@@ -11,6 +11,7 @@ using SafePatch.Authoring.Index;
 //   SafePatch.Bench <Data folder> <plugins.txt> [runs=3] [only=<step name part>|-] [label]
 //   SafePatch.Bench check <Data folder> <plugin,...> [label]
 //   SafePatch.Bench check-threads <Data folder> <plugin>
+//   SafePatch.Bench memory <Data folder> <plugins.txt> open|keep|keep-read|full [label]
 //   SafePatch.Bench check-hash <Data folder> <plugin,...> [label]
 //   SafePatch.Bench diag|diag-self|diag-hash <Data folder> <plugin> <record type> [max=3]
 if (args is ["check", var checkData, var checkPlugins, .. var checkRest])
@@ -24,6 +25,10 @@ if (args is ["diag" or "diag-self" or "diag-hash", var diagData, var diagPlugin,
 if (args is ["check-hash", var hashData, var hashPlugins, .. var hashRest])
 {
     return CheckHash(hashData, hashPlugins.Split(','), hashRest is [var hashLabel] ? hashLabel : "");
+}
+if (args is ["memory", var memoryData, var memoryPlugins, var memoryScenario, .. var memoryRest])
+{
+    return Memory.Run(memoryData, memoryPlugins, memoryScenario, memoryRest is [var memoryLabel] ? memoryLabel : "");
 }
 if (args is ["check-threads", var threadData, var threadPlugin])
 {
