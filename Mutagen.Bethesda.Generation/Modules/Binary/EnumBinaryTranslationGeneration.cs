@@ -245,7 +245,7 @@ public class EnumBinaryTranslationGeneration : BinaryTranslationGeneration
             {
                 if (data.IsAfterBreak)
                 {
-                    sb.AppendLine($"public {eType.TypeName(getter: true)} {eType.Name} => {structDataAccessor}.Span.Length <= {posStr} ? default : {getType};");
+                    sb.AppendLine($"public {eType.TypeName(getter: true)} {eType.Name} => {structDataAccessor}.Span.Length <= {posStr} ? {OverlayDefault(objGen, typeGen, "default")} : {getType};");
                 }
                 else
                 {
@@ -254,7 +254,7 @@ public class EnumBinaryTranslationGeneration : BinaryTranslationGeneration
             }
             else
             {
-                sb.AppendLine($"public {eType.TypeName(getter: true)} {eType.Name} => _{typeGen.Name}_IsSet ? {getType} : default;");
+                sb.AppendLine($"public {eType.TypeName(getter: true)} {eType.Name} => _{typeGen.Name}_IsSet ? {getType} : {OverlayDefault(objGen, typeGen, "default")};");
             }
         }
 

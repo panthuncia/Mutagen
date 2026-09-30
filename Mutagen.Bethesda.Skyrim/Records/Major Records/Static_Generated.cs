@@ -2175,7 +2175,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region MaxAngle
         private int _MaxAngleLocation => _DNAMLocation!.Value.Min;
         private bool _MaxAngle_IsSet => _DNAMLocation.HasValue;
-        public Single MaxAngle => _MaxAngle_IsSet ? _recordData.Slice(_MaxAngleLocation, 4).Float() : default(Single);
+        public Single MaxAngle => _MaxAngle_IsSet ? _recordData.Slice(_MaxAngleLocation, 4).Float() : Static.MaxAngleDefault;
         #endregion
         #region Material
         private int _MaterialLocation => _DNAMLocation!.Value.Min + 0x4;
@@ -2190,7 +2190,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region Unused
         private int _UnusedLocation => _DNAMLocation!.Value.Min + 0x9;
         private bool _Unused_IsSet => _DNAMLocation.HasValue && !DNAMDataTypeState.HasFlag(Static.DNAMDataType.Break0);
-        public ReadOnlyMemorySlice<Byte> Unused => _Unused_IsSet ? _recordData.Span.Slice(_UnusedLocation, 3).ToArray() : ReadOnlyMemorySlice<byte>.Empty;
+        public ReadOnlyMemorySlice<Byte> Unused => _Unused_IsSet ? _recordData.Span.Slice(_UnusedLocation, 3).ToArray() : UtilityTranslation.Zeros.Slice(0, 3);
         #endregion
         #region Lod
         private RangeInt32? _LodLocation;

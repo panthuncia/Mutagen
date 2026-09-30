@@ -2656,7 +2656,7 @@ namespace Mutagen.Bethesda.Starfield
         #region Unused
         private int _UnusedLocation => _DATALocation!.Value.Min + 0x28;
         private bool _Unused_IsSet => _DATALocation.HasValue;
-        public ReadOnlyMemorySlice<Byte> Unused => _Unused_IsSet ? _recordData.Span.Slice(_UnusedLocation, 32).ToArray() : ReadOnlyMemorySlice<byte>.Empty;
+        public ReadOnlyMemorySlice<Byte> Unused => _Unused_IsSet ? _recordData.Span.Slice(_UnusedLocation, 32).ToArray() : new byte[32];
         #endregion
         #region FogFarColor
         private int _FogFarColorLocation => _DATALocation!.Value.Min + 0x48;

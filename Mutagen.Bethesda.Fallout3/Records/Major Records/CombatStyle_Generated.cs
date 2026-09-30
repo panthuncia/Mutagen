@@ -5486,7 +5486,7 @@ namespace Mutagen.Bethesda.Fallout3
         #region StandardUnused1
         private int _StandardUnused1Location => _CSTDLocation!.Value.Min + 0x2;
         private bool _StandardUnused1_IsSet => _CSTDLocation.HasValue;
-        public ReadOnlyMemorySlice<Byte> StandardUnused1 => _StandardUnused1_IsSet ? _recordData.Span.Slice(_StandardUnused1Location, 2).ToArray() : ReadOnlyMemorySlice<byte>.Empty;
+        public ReadOnlyMemorySlice<Byte> StandardUnused1 => _StandardUnused1_IsSet ? _recordData.Span.Slice(_StandardUnused1Location, 2).ToArray() : UtilityTranslation.Zeros.Slice(0, 2);
         #endregion
         #region StandardManeuverDecisionDodgeLRTimerMin
         private int _StandardManeuverDecisionDodgeLRTimerMinLocation => _CSTDLocation!.Value.Min + 0x4;
@@ -5541,7 +5541,7 @@ namespace Mutagen.Bethesda.Fallout3
         #region StandardUnused2
         private int _StandardUnused2Location => _CSTDLocation!.Value.Min + 0x26;
         private bool _StandardUnused2_IsSet => _CSTDLocation.HasValue;
-        public ReadOnlyMemorySlice<Byte> StandardUnused2 => _StandardUnused2_IsSet ? _recordData.Span.Slice(_StandardUnused2Location, 2).ToArray() : ReadOnlyMemorySlice<byte>.Empty;
+        public ReadOnlyMemorySlice<Byte> StandardUnused2 => _StandardUnused2_IsSet ? _recordData.Span.Slice(_StandardUnused2Location, 2).ToArray() : UtilityTranslation.Zeros.Slice(0, 2);
         #endregion
         #region StandardMeleeDecisionRecoilStaggerBonusToAttack
         private int _StandardMeleeDecisionRecoilStaggerBonusToAttackLocation => _CSTDLocation!.Value.Min + 0x28;
@@ -5566,7 +5566,7 @@ namespace Mutagen.Bethesda.Fallout3
         #region StandardUnused3
         private int _StandardUnused3Location => _CSTDLocation!.Value.Min + 0x35;
         private bool _StandardUnused3_IsSet => _CSTDLocation.HasValue;
-        public ReadOnlyMemorySlice<Byte> StandardUnused3 => _StandardUnused3_IsSet ? _recordData.Span.Slice(_StandardUnused3Location, 3).ToArray() : ReadOnlyMemorySlice<byte>.Empty;
+        public ReadOnlyMemorySlice<Byte> StandardUnused3 => _StandardUnused3_IsSet ? _recordData.Span.Slice(_StandardUnused3Location, 3).ToArray() : UtilityTranslation.Zeros.Slice(0, 3);
         #endregion
         #region StandardMeleeDecisionRecoilStaggerBonusToPowerAttack
         private int _StandardMeleeDecisionRecoilStaggerBonusToPowerAttackLocation => _CSTDLocation!.Value.Min + 0x38;
@@ -5606,7 +5606,7 @@ namespace Mutagen.Bethesda.Fallout3
         #region StandardUnused4
         private int _StandardUnused4Location => _CSTDLocation!.Value.Min + 0x45;
         private bool _StandardUnused4_IsSet => _CSTDLocation.HasValue;
-        public ReadOnlyMemorySlice<Byte> StandardUnused4 => _StandardUnused4_IsSet ? _recordData.Span.Slice(_StandardUnused4Location, 3).ToArray() : ReadOnlyMemorySlice<byte>.Empty;
+        public ReadOnlyMemorySlice<Byte> StandardUnused4 => _StandardUnused4_IsSet ? _recordData.Span.Slice(_StandardUnused4Location, 3).ToArray() : UtilityTranslation.Zeros.Slice(0, 3);
         #endregion
         #region StandardMeleeDecisionHoldTimerMin
         private int _StandardMeleeDecisionHoldTimerMinLocation => _CSTDLocation!.Value.Min + 0x48;
@@ -5626,7 +5626,7 @@ namespace Mutagen.Bethesda.Fallout3
         #region StandardUnused5
         private int _StandardUnused5Location => _CSTDLocation!.Value.Min + 0x52;
         private bool _StandardUnused5_IsSet => _CSTDLocation.HasValue;
-        public ReadOnlyMemorySlice<Byte> StandardUnused5 => _StandardUnused5_IsSet ? _recordData.Span.Slice(_StandardUnused5Location, 2).ToArray() : ReadOnlyMemorySlice<byte>.Empty;
+        public ReadOnlyMemorySlice<Byte> StandardUnused5 => _StandardUnused5_IsSet ? _recordData.Span.Slice(_StandardUnused5Location, 2).ToArray() : UtilityTranslation.Zeros.Slice(0, 2);
         #endregion
         #region StandardMeleeDecisionAcrobaticDodgeChance
         private int _StandardMeleeDecisionAcrobaticDodgeChanceLocation => _CSTDLocation!.Value.Min + 0x54;
@@ -5641,7 +5641,7 @@ namespace Mutagen.Bethesda.Fallout3
         #region StandardUnused6
         private int _StandardUnused6Location => _CSTDLocation!.Value.Min + 0x56;
         private bool _StandardUnused6_IsSet => _CSTDLocation.HasValue;
-        public ReadOnlyMemorySlice<Byte> StandardUnused6 => _StandardUnused6_IsSet ? _recordData.Span.Slice(_StandardUnused6Location, 2).ToArray() : ReadOnlyMemorySlice<byte>.Empty;
+        public ReadOnlyMemorySlice<Byte> StandardUnused6 => _StandardUnused6_IsSet ? _recordData.Span.Slice(_StandardUnused6Location, 2).ToArray() : UtilityTranslation.Zeros.Slice(0, 2);
         #endregion
         #region StandardMeleeDecisionRushingAttackDistanceMult
         private int _StandardMeleeDecisionRushingAttackDistanceMultLocation => _CSTDLocation!.Value.Min + 0x58;
@@ -5803,7 +5803,7 @@ namespace Mutagen.Bethesda.Fallout3
         #region SimpleUnused
         private int _SimpleUnusedLocation => _CSSDLocation!.Value.Min + 0x24;
         private bool _SimpleUnused_IsSet => _CSSDLocation.HasValue;
-        public ReadOnlyMemorySlice<Byte> SimpleUnused => _SimpleUnused_IsSet ? _recordData.Span.Slice(_SimpleUnusedLocation, 4).ToArray() : ReadOnlyMemorySlice<byte>.Empty;
+        public ReadOnlyMemorySlice<Byte> SimpleUnused => _SimpleUnused_IsSet ? _recordData.Span.Slice(_SimpleUnusedLocation, 4).ToArray() : UtilityTranslation.Zeros.Slice(0, 4);
         #endregion
         #region SimpleWeaponRestrictions
         private int _SimpleWeaponRestrictionsLocation => _CSSDLocation!.Value.Min + 0x28;

@@ -5378,7 +5378,7 @@ namespace Mutagen.Bethesda.Starfield
         #region Unknown2
         private int _Unknown2Location => _DATALocation!.Value.Min + 0x88;
         private bool _Unknown2_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(MagicEffect.DATADataType.Break0);
-        public ReadOnlyMemorySlice<Byte> Unknown2 => _Unknown2_IsSet ? _recordData.Span.Slice(_Unknown2Location, 6).ToArray() : ReadOnlyMemorySlice<byte>.Empty;
+        public ReadOnlyMemorySlice<Byte> Unknown2 => _Unknown2_IsSet ? _recordData.Span.Slice(_Unknown2Location, 6).ToArray() : UtilityTranslation.Zeros.Slice(0, 6);
         #endregion
         public IReadOnlyList<IFormLinkGetter<IMagicEffectGetter>> CounterEffects { get; private set; } = [];
         public IReadOnlyList<IMagicEffectSoundGetter> Sounds { get; private set; } = [];

@@ -1899,7 +1899,7 @@ namespace Mutagen.Bethesda.Starfield
         #region UnusedISET2
         private int _UnusedISET2Location => _ISETLocation!.Value.Min + 0x5;
         private bool _UnusedISET2_IsSet => _ISETLocation.HasValue;
-        public ReadOnlyMemorySlice<Byte> UnusedISET2 => _UnusedISET2_IsSet ? _recordData.Span.Slice(_UnusedISET2Location, 3).ToArray() : ReadOnlyMemorySlice<byte>.Empty;
+        public ReadOnlyMemorySlice<Byte> UnusedISET2 => _UnusedISET2_IsSet ? _recordData.Span.Slice(_UnusedISET2Location, 3).ToArray() : UtilityTranslation.Zeros.Slice(0, 3);
         #endregion
         #region ID
         private int? _IDLocation;

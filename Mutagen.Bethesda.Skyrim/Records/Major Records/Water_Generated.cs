@@ -5759,7 +5759,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region Unknown
         private int _UnknownLocation => _DNAMLocation!.Value.Min;
         private bool _Unknown_IsSet => _DNAMLocation.HasValue;
-        public ReadOnlyMemorySlice<Byte> Unknown => _Unknown_IsSet ? _recordData.Span.Slice(_UnknownLocation, 16).ToArray() : ReadOnlyMemorySlice<byte>.Empty;
+        public ReadOnlyMemorySlice<Byte> Unknown => _Unknown_IsSet ? _recordData.Span.Slice(_UnknownLocation, 16).ToArray() : UtilityTranslation.Zeros.Slice(0, 16);
         #endregion
         #region SpecularSunPower
         private int _SpecularSunPowerLocation => _DNAMLocation!.Value.Min + 0x10;
@@ -5809,7 +5809,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region Unknown3
         private int _Unknown3Location => _DNAMLocation!.Value.Min + 0x34;
         private bool _Unknown3_IsSet => _DNAMLocation.HasValue;
-        public ReadOnlyMemorySlice<Byte> Unknown3 => _Unknown3_IsSet ? _recordData.Span.Slice(_Unknown3Location, 20).ToArray() : ReadOnlyMemorySlice<byte>.Empty;
+        public ReadOnlyMemorySlice<Byte> Unknown3 => _Unknown3_IsSet ? _recordData.Span.Slice(_Unknown3Location, 20).ToArray() : new byte[20];
         #endregion
         #region DisplacementStartingSize
         private int _DisplacementStartingSizeLocation => _DNAMLocation!.Value.Min + 0x48;
@@ -5879,7 +5879,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region Unknown5
         private int _Unknown5Location => _DNAMLocation!.Value.Min + 0x7C;
         private bool _Unknown5_IsSet => _DNAMLocation.HasValue;
-        public ReadOnlyMemorySlice<Byte> Unknown5 => _Unknown5_IsSet ? _recordData.Span.Slice(_Unknown5Location, 8).ToArray() : ReadOnlyMemorySlice<byte>.Empty;
+        public ReadOnlyMemorySlice<Byte> Unknown5 => _Unknown5_IsSet ? _recordData.Span.Slice(_Unknown5Location, 8).ToArray() : UtilityTranslation.Zeros.Slice(0, 8);
         #endregion
         #region FogAboveWaterAmount
         private int _FogAboveWaterAmountLocation => _DNAMLocation!.Value.Min + 0x84;
