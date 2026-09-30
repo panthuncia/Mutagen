@@ -281,6 +281,7 @@
         <Compile Include="Plugins\Cache\Internals\Implementations\Internal\InternalImmutableLoadOrderLinkCache.cs" />
         <Compile Include="Plugins\Cache\Internals\Implementations\Internal\InternalImmutableModLinkCache.cs" />
         <Compile Include="Plugins\Cache\Internals\Implementations\Internal\LinkCacheItem.cs" />
+        <Compile Include="Plugins\Cache\Internals\Implementations\Internal\TopLevelRecordLookup.cs" />
         <Compile Include="Plugins\Cache\Internals\Implementations\MutableLoadOrderLinkCache.cs" />
         <Compile Include="Plugins\Cache\Internals\Implementations\MutableModLinkCache.cs" />
         <Compile Include="Plugins\Cache\Internals\OverrideMaskRegistrations.cs" />
