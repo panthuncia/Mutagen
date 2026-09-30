@@ -3510,77 +3510,107 @@ namespace Mutagen.Bethesda.Starfield
         public DialogResponses.MajorFlag MajorFlags => (DialogResponses.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IDialogResponsesAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? DialogResponsesAdapterBinaryOverlay.DialogResponsesAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
         #region Flags
-        private RangeInt32? _FlagsLocation;
+        private RangeInt32? _FlagsLocationStore;
+        private RangeInt32? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public IDialogResponseFlagsGetter? Flags => _FlagsLocation.HasValue ? DialogResponseFlagsBinaryOverlay.DialogResponseFlagsFactory(_recordData.Slice(_FlagsLocation!.Value.Min), _package) : default;
         #endregion
         #region TPIC
-        private int? _TPICLocation;
+        private int? _TPICLocationStore;
+        private int? _TPICLocation { get { EnsureFilled(); return _TPICLocationStore; } set => _TPICLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? TPIC => _TPICLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _TPICLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region SharedDialog
-        private int? _SharedDialogLocation;
+        private int? _SharedDialogLocationStore;
+        private int? _SharedDialogLocation { get { EnsureFilled(); return _SharedDialogLocationStore; } set => _SharedDialogLocationStore = value; }
         public IFormLinkNullableGetter<IDialogResponsesGetter> SharedDialog => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogResponsesGetter>(_package, _recordData, _SharedDialogLocation);
         #endregion
         #region DialogGroup
-        private int? _DialogGroupLocation;
+        private int? _DialogGroupLocationStore;
+        private int? _DialogGroupLocation { get { EnsureFilled(); return _DialogGroupLocationStore; } set => _DialogGroupLocationStore = value; }
         public IFormLinkNullableGetter<IDialogResponsesGetter> DialogGroup => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogResponsesGetter>(_package, _recordData, _DialogGroupLocation);
         #endregion
-        public IReadOnlyList<IDialogResponseGetter> Responses { get; private set; } = [];
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Responses
+        private IReadOnlyList<IDialogResponseGetter> ResponsesStore = [];
+        public IReadOnlyList<IDialogResponseGetter> Responses { get { EnsureFilled(); return ResponsesStore; } private set => ResponsesStore = value; }
+        #endregion
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region Prompt
-        private int? _PromptLocation;
+        private int? _PromptLocationStore;
+        private int? _PromptLocation { get { EnsureFilled(); return _PromptLocationStore; } set => _PromptLocationStore = value; }
         public ITranslatedStringGetter? Prompt => _PromptLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _PromptLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         #region Speaker
-        private int? _SpeakerLocation;
+        private int? _SpeakerLocationStore;
+        private int? _SpeakerLocation { get { EnsureFilled(); return _SpeakerLocationStore; } set => _SpeakerLocationStore = value; }
         public IFormLinkNullableGetter<INpcGetter> Speaker => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<INpcGetter>(_package, _recordData, _SpeakerLocation);
         #endregion
         #region StartScene
-        private int? _StartSceneLocation;
+        private int? _StartSceneLocationStore;
+        private int? _StartSceneLocation { get { EnsureFilled(); return _StartSceneLocationStore; } set => _StartSceneLocationStore = value; }
         public IFormLinkNullableGetter<ISceneGetter> StartScene => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISceneGetter>(_package, _recordData, _StartSceneLocation);
         #endregion
         #region INTV
-        private int? _INTVLocation;
+        private int? _INTVLocationStore;
+        private int? _INTVLocation { get { EnsureFilled(); return _INTVLocationStore; } set => _INTVLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? INTV => _INTVLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _INTVLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
-        public ISoundReferenceGetter? WED0 { get; private set; }
+        #region WED0
+        private ISoundReferenceGetter? WED0Store;
+        public ISoundReferenceGetter? WED0 { get { EnsureFilled(); return WED0Store; } private set => WED0Store = value; }
+        #endregion
         #region SetParentQuestStage
-        private RangeInt32? _SetParentQuestStageLocation;
+        private RangeInt32? _SetParentQuestStageLocationStore;
+        private RangeInt32? _SetParentQuestStageLocation { get { EnsureFilled(); return _SetParentQuestStageLocationStore; } set => _SetParentQuestStageLocationStore = value; }
         public IDialogSetParentQuestStageGetter? SetParentQuestStage => _SetParentQuestStageLocation.HasValue ? DialogSetParentQuestStageBinaryOverlay.DialogSetParentQuestStageFactory(_recordData.Slice(_SetParentQuestStageLocation!.Value.Min), _package) : default;
         #endregion
         #region StartScenePhase
-        private int? _StartScenePhaseLocation;
+        private int? _StartScenePhaseLocationStore;
+        private int? _StartScenePhaseLocation { get { EnsureFilled(); return _StartScenePhaseLocationStore; } set => _StartScenePhaseLocationStore = value; }
         public String StartScenePhase => _StartScenePhaseLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _StartScenePhaseLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region ResetGlobal
-        private int? _ResetGlobalLocation;
+        private int? _ResetGlobalLocationStore;
+        private int? _ResetGlobalLocation { get { EnsureFilled(); return _ResetGlobalLocationStore; } set => _ResetGlobalLocationStore = value; }
         public IFormLinkNullableGetter<IGlobalGetter> ResetGlobal => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IGlobalGetter>(_package, _recordData, _ResetGlobalLocation);
         #endregion
         #region SubtitlePriority
-        private int? _SubtitlePriorityLocation;
+        private int? _SubtitlePriorityLocationStore;
+        private int? _SubtitlePriorityLocation { get { EnsureFilled(); return _SubtitlePriorityLocationStore; } set => _SubtitlePriorityLocationStore = value; }
         public DialogResponses.SubtitlePriorityLevel? SubtitlePriority => EnumBinaryTranslation<DialogResponses.SubtitlePriorityLevel, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_SubtitlePriorityLocation, _recordData, _package, 4);
         #endregion
         #region COCT
-        private int? _COCTLocation;
+        private int? _COCTLocationStore;
+        private int? _COCTLocation { get { EnsureFilled(); return _COCTLocationStore; } set => _COCTLocationStore = value; }
         public Boolean COCT => _COCTLocation.HasValue ? true : default(Boolean);
         #endregion
         #region AffinityEvent
-        private int? _AffinityEventLocation;
+        private int? _AffinityEventLocationStore;
+        private int? _AffinityEventLocation { get { EnsureFilled(); return _AffinityEventLocationStore; } set => _AffinityEventLocationStore = value; }
         public IFormLinkNullableGetter<IAffinityEventGetter> AffinityEvent => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IAffinityEventGetter>(_package, _recordData, _AffinityEventLocation);
         #endregion
         #region SpeechChallenge
-        private int? _SpeechChallengeLocation;
+        private int? _SpeechChallengeLocationStore;
+        private int? _SpeechChallengeLocation { get { EnsureFilled(); return _SpeechChallengeLocationStore; } set => _SpeechChallengeLocationStore = value; }
         public IFormLinkNullableGetter<ISpeechChallengeGetter> SpeechChallenge => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISpeechChallengeGetter>(_package, _recordData, _SpeechChallengeLocation);
         #endregion
         #region Perk
-        private int? _PerkLocation;
+        private int? _PerkLocationStore;
+        private int? _PerkLocation { get { EnsureFilled(); return _PerkLocationStore; } set => _PerkLocationStore = value; }
         public IFormLinkNullableGetter<IPerkGetter> Perk => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IPerkGetter>(_package, _recordData, _PerkLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -3604,6 +3634,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new DialogResponsesBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => DialogResponsesFill((DialogResponsesBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void DialogResponsesFill(
+            DialogResponsesBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -3611,9 +3658,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new DialogResponsesBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -3626,7 +3671,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IDialogResponsesGetter DialogResponsesFactory(

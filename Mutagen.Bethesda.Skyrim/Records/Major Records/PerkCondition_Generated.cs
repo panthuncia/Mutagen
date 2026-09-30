@@ -1274,10 +1274,14 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region RunOnTabIndex
-        private int? _RunOnTabIndexLocation;
+        private int? _RunOnTabIndexLocationStore;
+        private int? _RunOnTabIndexLocation { get { EnsureFilled(); return _RunOnTabIndexLocationStore; } set => _RunOnTabIndexLocationStore = value; }
         public Byte RunOnTabIndex => _RunOnTabIndexLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _RunOnTabIndexLocation.Value, _package.MetaData.Constants)[0] : default(Byte);
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

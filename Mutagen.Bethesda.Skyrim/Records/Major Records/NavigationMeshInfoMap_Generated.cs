@@ -1814,16 +1814,22 @@ namespace Mutagen.Bethesda.Skyrim
 
 
         #region NavMeshVersion
-        private int? _NavMeshVersionLocation;
+        private int? _NavMeshVersionLocationStore;
+        private int? _NavMeshVersionLocation { get { EnsureFilled(); return _NavMeshVersionLocationStore; } set => _NavMeshVersionLocationStore = value; }
         public UInt32? NavMeshVersion => _NavMeshVersionLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NavMeshVersionLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
-        public IReadOnlyList<INavigationMapInfoGetter> MapInfos { get; private set; } = [];
+        #region MapInfos
+        private IReadOnlyList<INavigationMapInfoGetter> MapInfosStore = [];
+        public IReadOnlyList<INavigationMapInfoGetter> MapInfos { get { EnsureFilled(); return MapInfosStore; } private set => MapInfosStore = value; }
+        #endregion
         #region PreferredPathing
-        private RangeInt32? _PreferredPathingLocation;
+        private RangeInt32? _PreferredPathingLocationStore;
+        private RangeInt32? _PreferredPathingLocation { get { EnsureFilled(); return _PreferredPathingLocationStore; } set => _PreferredPathingLocationStore = value; }
         public IPreferredPathingGetter? PreferredPathing => _PreferredPathingLocation.HasValue ? PreferredPathingBinaryOverlay.PreferredPathingFactory(_recordData.Slice(_PreferredPathingLocation!.Value.Min), _package) : default;
         #endregion
         #region NVSI
-        private int? _NVSILocation;
+        private int? _NVSILocationStore;
+        private int? _NVSILocation { get { EnsureFilled(); return _NVSILocationStore; } set => _NVSILocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? NVSI => _NVSILocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NVSILocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(
@@ -1847,6 +1853,23 @@ namespace Mutagen.Bethesda.Skyrim
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new NavigationMeshInfoMapBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => NavigationMeshInfoMapFill((NavigationMeshInfoMapBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void NavigationMeshInfoMapFill(
+            NavigationMeshInfoMapBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1854,9 +1877,7 @@ namespace Mutagen.Bethesda.Skyrim
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new NavigationMeshInfoMapBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1869,7 +1890,6 @@ namespace Mutagen.Bethesda.Skyrim
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static INavigationMeshInfoMapGetter NavigationMeshInfoMapFactory(

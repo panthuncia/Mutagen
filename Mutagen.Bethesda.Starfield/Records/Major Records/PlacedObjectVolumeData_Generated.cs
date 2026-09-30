@@ -2296,7 +2296,8 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public PlacedObjectVolumeData.VersioningBreaks Versioning { get; private set; }
+        private PlacedObjectVolumeData.VersioningBreaks VersioningStore;
+        public PlacedObjectVolumeData.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public Int32 Unknown1 => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x0, 0x4));
         public Int32 Unknown2 => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x4, 0x4));
         public IFormLinkGetter<IImageSpaceGetter> ImageSpace => FormLinkBinaryTranslation.Instance.OverlayFactory<IImageSpaceGetter>(_package, _structData.Span.Slice(0x8, 0x4));

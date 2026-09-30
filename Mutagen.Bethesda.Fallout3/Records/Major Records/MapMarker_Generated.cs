@@ -1336,11 +1336,13 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public MapMarker.Flag Flags => EnumBinaryTranslation<MapMarker.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_FlagsLocation, _recordData, _package, 1);
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -1348,11 +1350,13 @@ namespace Mutagen.Bethesda.Fallout3
         #endregion
         #endregion
         #region Type
-        private int? _TypeLocation;
+        private int? _TypeLocationStore;
+        private int? _TypeLocation { get { EnsureFilled(); return _TypeLocationStore; } set => _TypeLocationStore = value; }
         public MapMarker.MarkerType? Type => EnumBinaryTranslation<MapMarker.MarkerType, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_TypeLocation, _recordData, _package, 2);
         #endregion
         #region Reputation
-        private int? _ReputationLocation;
+        private int? _ReputationLocationStore;
+        private int? _ReputationLocation { get { EnsureFilled(); return _ReputationLocationStore; } set => _ReputationLocationStore = value; }
         public IFormLinkNullableGetter<IReputationGetter> Reputation => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IReputationGetter>(_package, _recordData, _ReputationLocation);
         #endregion
         partial void CustomFactoryEnd(

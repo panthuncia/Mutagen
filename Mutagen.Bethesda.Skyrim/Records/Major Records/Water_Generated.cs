@@ -5704,7 +5704,8 @@ namespace Mutagen.Bethesda.Skyrim
 
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -5715,41 +5716,54 @@ namespace Mutagen.Bethesda.Skyrim
         ITranslatedStringGetter ITranslatedNamedRequiredGetter.Name => this.Name ?? TranslatedString.Empty;
         #endregion
         #endregion
-        public IReadOnlyList<String> UnusedNoisemaps { get; private set; } = [];
+        #region UnusedNoisemaps
+        private IReadOnlyList<String> UnusedNoisemapsStore = [];
+        public IReadOnlyList<String> UnusedNoisemaps { get { EnsureFilled(); return UnusedNoisemapsStore; } private set => UnusedNoisemapsStore = value; }
+        #endregion
         #region Opacity
-        private int? _OpacityLocation;
+        private int? _OpacityLocationStore;
+        private int? _OpacityLocation { get { EnsureFilled(); return _OpacityLocationStore; } set => _OpacityLocationStore = value; }
         public Byte Opacity => _OpacityLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _OpacityLocation.Value, _package.MetaData.Constants)[0] : default(Byte);
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public Water.Flag? Flags => EnumBinaryTranslation<Water.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 1);
         #endregion
         #region MNAM
-        private int? _MNAMLocation;
+        private int? _MNAMLocationStore;
+        private int? _MNAMLocation { get { EnsureFilled(); return _MNAMLocationStore; } set => _MNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? MNAM => _MNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region Material
-        private int? _MaterialLocation;
+        private int? _MaterialLocationStore;
+        private int? _MaterialLocation { get { EnsureFilled(); return _MaterialLocationStore; } set => _MaterialLocationStore = value; }
         public IFormLinkNullableGetter<IMaterialTypeGetter> Material => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMaterialTypeGetter>(_package, _recordData, _MaterialLocation);
         #endregion
         #region OpenSound
-        private int? _OpenSoundLocation;
+        private int? _OpenSoundLocationStore;
+        private int? _OpenSoundLocation { get { EnsureFilled(); return _OpenSoundLocationStore; } set => _OpenSoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundDescriptorGetter> OpenSound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundDescriptorGetter>(_package, _recordData, _OpenSoundLocation);
         #endregion
         #region Spell
-        private int? _SpellLocation;
+        private int? _SpellLocationStore;
+        private int? _SpellLocation { get { EnsureFilled(); return _SpellLocationStore; } set => _SpellLocationStore = value; }
         public IFormLinkNullableGetter<ISpellGetter> Spell => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISpellGetter>(_package, _recordData, _SpellLocation);
         #endregion
         #region ImageSpace
-        private int? _ImageSpaceLocation;
+        private int? _ImageSpaceLocationStore;
+        private int? _ImageSpaceLocation { get { EnsureFilled(); return _ImageSpaceLocationStore; } set => _ImageSpaceLocationStore = value; }
         public IFormLinkNullableGetter<IImageSpaceGetter> ImageSpace => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IImageSpaceGetter>(_package, _recordData, _ImageSpaceLocation);
         #endregion
         #region DamagePerSecond
-        private int? _DamagePerSecondLocation;
+        private int? _DamagePerSecondLocationStore;
+        private int? _DamagePerSecondLocation { get { EnsureFilled(); return _DamagePerSecondLocationStore; } set => _DamagePerSecondLocationStore = value; }
         public UInt16? DamagePerSecond => _DamagePerSecondLocation.HasValue ? BinaryPrimitives.ReadUInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DamagePerSecondLocation.Value, _package.MetaData.Constants)) : default(UInt16?);
         #endregion
-        private RangeInt32? _DNAMLocation;
-        public Water.DNAMDataType DNAMDataTypeState { get; private set; }
+        private RangeInt32? _DNAMLocationStore;
+        private RangeInt32? _DNAMLocation { get { EnsureFilled(); return _DNAMLocationStore; } set => _DNAMLocationStore = value; }
+        private Water.DNAMDataType DNAMDataTypeStateStore;
+        public Water.DNAMDataType DNAMDataTypeState { get { EnsureFilled(); return DNAMDataTypeStateStore; } private set => DNAMDataTypeStateStore = value; }
         #region Unknown
         private int _UnknownLocation => _DNAMLocation!.Value.Min;
         private bool _Unknown_IsSet => _DNAMLocation.HasValue;
@@ -6001,31 +6015,38 @@ namespace Mutagen.Bethesda.Skyrim
         public Single NoiseFlowmapScale => _NoiseFlowmapScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_NoiseFlowmapScaleLocation, 4)) : default(Single);
         #endregion
         #region GNAM
-        private int? _GNAMLocation;
+        private int? _GNAMLocationStore;
+        private int? _GNAMLocation { get { EnsureFilled(); return _GNAMLocationStore; } set => _GNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? GNAM => _GNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _GNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region LinearVelocity
-        private int? _LinearVelocityLocation;
+        private int? _LinearVelocityLocationStore;
+        private int? _LinearVelocityLocation { get { EnsureFilled(); return _LinearVelocityLocationStore; } set => _LinearVelocityLocationStore = value; }
         public P3Float? LinearVelocity => _LinearVelocityLocation.HasValue ? P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LinearVelocityLocation.Value, _package.MetaData.Constants)) : default(P3Float?);
         #endregion
         #region AngularVelocity
-        private int? _AngularVelocityLocation;
+        private int? _AngularVelocityLocationStore;
+        private int? _AngularVelocityLocation { get { EnsureFilled(); return _AngularVelocityLocationStore; } set => _AngularVelocityLocationStore = value; }
         public P3Float? AngularVelocity => _AngularVelocityLocation.HasValue ? P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AngularVelocityLocation.Value, _package.MetaData.Constants)) : default(P3Float?);
         #endregion
         #region NoiseLayerOneTexture
-        private int? _NoiseLayerOneTextureLocation;
+        private int? _NoiseLayerOneTextureLocationStore;
+        private int? _NoiseLayerOneTextureLocation { get { EnsureFilled(); return _NoiseLayerOneTextureLocationStore; } set => _NoiseLayerOneTextureLocationStore = value; }
         public AssetLinkGetter<SkyrimTextureAssetType>? NoiseLayerOneTexture => _NoiseLayerOneTextureLocation.HasValue ? new AssetLinkGetter<SkyrimTextureAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NoiseLayerOneTextureLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<SkyrimTextureAssetType>?);
         #endregion
         #region NoiseLayerTwoTexture
-        private int? _NoiseLayerTwoTextureLocation;
+        private int? _NoiseLayerTwoTextureLocationStore;
+        private int? _NoiseLayerTwoTextureLocation { get { EnsureFilled(); return _NoiseLayerTwoTextureLocationStore; } set => _NoiseLayerTwoTextureLocationStore = value; }
         public AssetLinkGetter<SkyrimTextureAssetType>? NoiseLayerTwoTexture => _NoiseLayerTwoTextureLocation.HasValue ? new AssetLinkGetter<SkyrimTextureAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NoiseLayerTwoTextureLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<SkyrimTextureAssetType>?);
         #endregion
         #region NoiseLayerThreeTexture
-        private int? _NoiseLayerThreeTextureLocation;
+        private int? _NoiseLayerThreeTextureLocationStore;
+        private int? _NoiseLayerThreeTextureLocation { get { EnsureFilled(); return _NoiseLayerThreeTextureLocationStore; } set => _NoiseLayerThreeTextureLocationStore = value; }
         public AssetLinkGetter<SkyrimTextureAssetType>? NoiseLayerThreeTexture => _NoiseLayerThreeTextureLocation.HasValue ? new AssetLinkGetter<SkyrimTextureAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NoiseLayerThreeTextureLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<SkyrimTextureAssetType>?);
         #endregion
         #region FlowNormalsNoiseTexture
-        private int? _FlowNormalsNoiseTextureLocation;
+        private int? _FlowNormalsNoiseTextureLocationStore;
+        private int? _FlowNormalsNoiseTextureLocation { get { EnsureFilled(); return _FlowNormalsNoiseTextureLocationStore; } set => _FlowNormalsNoiseTextureLocationStore = value; }
         public AssetLinkGetter<SkyrimTextureAssetType>? FlowNormalsNoiseTexture => _FlowNormalsNoiseTextureLocation.HasValue ? new AssetLinkGetter<SkyrimTextureAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FlowNormalsNoiseTextureLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<SkyrimTextureAssetType>?);
         #endregion
         partial void CustomFactoryEnd(
@@ -6049,6 +6070,23 @@ namespace Mutagen.Bethesda.Skyrim
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new WaterBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => WaterFill((WaterBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void WaterFill(
+            WaterBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -6056,9 +6094,7 @@ namespace Mutagen.Bethesda.Skyrim
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new WaterBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -6071,7 +6107,6 @@ namespace Mutagen.Bethesda.Skyrim
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IWaterGetter WaterFactory(

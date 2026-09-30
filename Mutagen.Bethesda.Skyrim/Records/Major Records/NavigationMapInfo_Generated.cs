@@ -2069,20 +2069,24 @@ namespace Mutagen.Bethesda.Skyrim
         public UInt32 PreferredMergesFlag => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0x14, 0x4));
         #region MergedTo
         public IReadOnlyList<IFormLinkGetter<INavigationMeshGetter>> MergedTo => BinaryOverlayList.FactoryByCountLength<IFormLinkGetter<INavigationMeshGetter>>(_structData.Slice(0x18), _package, 4, countLength: 4, (s, p) => FormLinkBinaryTranslation.Instance.OverlayFactory<INavigationMeshGetter>(p, s));
-        protected int MergedToEndingPos;
+        private int MergedToEndingPosStore;
+        protected int MergedToEndingPos { get { EnsureFilled(); return MergedToEndingPosStore; } private set => MergedToEndingPosStore = value; }
         #endregion
         #region PreferredMerges
         public IReadOnlyList<IFormLinkGetter<INavigationMeshGetter>> PreferredMerges => BinaryOverlayList.FactoryByCountLength<IFormLinkGetter<INavigationMeshGetter>>(_structData.Slice(MergedToEndingPos), _package, 4, countLength: 4, (s, p) => FormLinkBinaryTranslation.Instance.OverlayFactory<INavigationMeshGetter>(p, s));
-        protected int PreferredMergesEndingPos;
+        private int PreferredMergesEndingPosStore;
+        protected int PreferredMergesEndingPos { get { EnsureFilled(); return PreferredMergesEndingPosStore; } private set => PreferredMergesEndingPosStore = value; }
         #endregion
         #region LinkedDoors
         public IReadOnlyList<ILinkedDoorGetter> LinkedDoors => BinaryOverlayList.FactoryByCountLength<ILinkedDoorGetter>(_structData.Slice(PreferredMergesEndingPos), _package, 8, countLength: 4, (s, p) => LinkedDoorBinaryOverlay.LinkedDoorFactory(s, p));
-        protected int LinkedDoorsEndingPos;
+        private int LinkedDoorsEndingPosStore;
+        protected int LinkedDoorsEndingPos { get { EnsureFilled(); return LinkedDoorsEndingPosStore; } private set => LinkedDoorsEndingPosStore = value; }
         #endregion
         #region Island
         public partial IIslandDataGetter? GetIslandCustom(int location);
         public IIslandDataGetter? Island => GetIslandCustom(location: LinkedDoorsEndingPos);
-        protected int IslandEndingPos;
+        private int IslandEndingPosStore;
+        protected int IslandEndingPos { get { EnsureFilled(); return IslandEndingPosStore; } private set => IslandEndingPosStore = value; }
         partial void CustomIslandEndPos();
         #endregion
         public Int32 Unknown2 => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(IslandEndingPos, 0x4));
@@ -2090,7 +2094,8 @@ namespace Mutagen.Bethesda.Skyrim
         partial void ParentParseLogicCustomParse(
             OverlayStream stream,
             int offset);
-        protected int ParentParseLogicEndingPos;
+        private int ParentParseLogicEndingPosStore;
+        protected int ParentParseLogicEndingPos { get { EnsureFilled(); return ParentParseLogicEndingPosStore; } private set => ParentParseLogicEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

@@ -2082,7 +2082,8 @@ namespace Mutagen.Bethesda.Fallout3
 
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2090,27 +2091,33 @@ namespace Mutagen.Bethesda.Fallout3
         #endregion
         #endregion
         #region NoiseMap
-        private int? _NoiseMapLocation;
+        private int? _NoiseMapLocationStore;
+        private int? _NoiseMapLocation { get { EnsureFilled(); return _NoiseMapLocationStore; } set => _NoiseMapLocationStore = value; }
         public String NoiseMap => _NoiseMapLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NoiseMapLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region Opacity
-        private int? _OpacityLocation;
+        private int? _OpacityLocationStore;
+        private int? _OpacityLocation { get { EnsureFilled(); return _OpacityLocationStore; } set => _OpacityLocationStore = value; }
         public Byte Opacity => _OpacityLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _OpacityLocation.Value, _package.MetaData.Constants)[0] : default(Byte);
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public Water.Flag Flags => EnumBinaryTranslation<Water.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_FlagsLocation, _recordData, _package, 1);
         #endregion
         #region MaterialId
-        private int? _MaterialIdLocation;
+        private int? _MaterialIdLocationStore;
+        private int? _MaterialIdLocation { get { EnsureFilled(); return _MaterialIdLocationStore; } set => _MaterialIdLocationStore = value; }
         public String MaterialId => _MaterialIdLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaterialIdLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region Sound
-        private int? _SoundLocation;
+        private int? _SoundLocationStore;
+        private int? _SoundLocation { get { EnsureFilled(); return _SoundLocationStore; } set => _SoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> Sound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _SoundLocation);
         #endregion
         #region ActorEffect
-        private int? _ActorEffectLocation;
+        private int? _ActorEffectLocationStore;
+        private int? _ActorEffectLocation { get { EnsureFilled(); return _ActorEffectLocationStore; } set => _ActorEffectLocationStore = value; }
         public IFormLinkNullableGetter<ISpellGetter> ActorEffect => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISpellGetter>(_package, _recordData, _ActorEffectLocation);
         #endregion
         #region DataParse
@@ -2120,7 +2127,8 @@ namespace Mutagen.Bethesda.Fallout3
             PreviousParse lastParsed);
         #endregion
         #region RelatedWaters
-        private RangeInt32? _RelatedWatersLocation;
+        private RangeInt32? _RelatedWatersLocationStore;
+        private RangeInt32? _RelatedWatersLocation { get { EnsureFilled(); return _RelatedWatersLocationStore; } set => _RelatedWatersLocationStore = value; }
         private IRelatedWatersGetter? _RelatedWaters => _RelatedWatersLocation.HasValue ? RelatedWatersBinaryOverlay.RelatedWatersFactory(_recordData.Slice(_RelatedWatersLocation!.Value.Min), _package) : default;
         public IRelatedWatersGetter RelatedWaters => _RelatedWaters ?? new RelatedWaters();
         #endregion

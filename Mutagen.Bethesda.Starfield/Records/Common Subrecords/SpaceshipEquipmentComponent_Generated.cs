@@ -1118,7 +1118,8 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region ESSF
-        private int? _ESSFLocation;
+        private int? _ESSFLocationStore;
+        private int? _ESSFLocation { get { EnsureFilled(); return _ESSFLocationStore; } set => _ESSFLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? ESSF => _ESSFLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ESSFLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

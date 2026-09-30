@@ -1808,18 +1808,22 @@ namespace Mutagen.Bethesda.Starfield
         public ISoundReferenceGetter Sound => SoundReferenceBinaryOverlay.SoundReferenceFactory(_structData, _package, default(TypedParseParams));
         #region WeatherKeywords
         public IReadOnlyList<IFormLinkGetter<IKeywordGetter>> WeatherKeywords => BinaryOverlayList.FactoryByCountLength<IFormLinkGetter<IKeywordGetter>>(_structData.Slice(0x28), _package, 4, countLength: 4, (s, p) => FormLinkBinaryTranslation.Instance.OverlayFactory<IKeywordGetter>(p, s));
-        protected int WeatherKeywordsEndingPos;
+        private int WeatherKeywordsEndingPosStore;
+        protected int WeatherKeywordsEndingPos { get { EnsureFilled(); return WeatherKeywordsEndingPosStore; } private set => WeatherKeywordsEndingPosStore = value; }
         #endregion
         #region MarkerKeywords
         public IReadOnlyList<IFormLinkGetter<IKeywordGetter>> MarkerKeywords => BinaryOverlayList.FactoryByCountLength<IFormLinkGetter<IKeywordGetter>>(_structData.Slice(WeatherKeywordsEndingPos), _package, 4, countLength: 4, (s, p) => FormLinkBinaryTranslation.Instance.OverlayFactory<IKeywordGetter>(p, s));
-        protected int MarkerKeywordsEndingPos;
+        private int MarkerKeywordsEndingPosStore;
+        protected int MarkerKeywordsEndingPos { get { EnsureFilled(); return MarkerKeywordsEndingPosStore; } private set => MarkerKeywordsEndingPosStore = value; }
         #endregion
         public Guid SwitchGroup => new Guid(_structData.Slice(MarkerKeywordsEndingPos, 0x10).Slice(0, 16));
         public Boolean ReEvaluateIntervalUseCustom => _structData.Slice(MarkerKeywordsEndingPos + 0x10, 0x1)[0] >= 1;
         public Single ReEvaluateIntervalSeconds => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(MarkerKeywordsEndingPos + 0x11, 0x4));
         #region PlanetCustomizations
-        public IReadOnlyList<IAmbientSoundPlanetCustomizationGetter> PlanetCustomizations { get; private set; } = null!;
-        protected int PlanetCustomizationsEndingPos;
+        private IReadOnlyList<IAmbientSoundPlanetCustomizationGetter> PlanetCustomizationsStore = null!;
+        public IReadOnlyList<IAmbientSoundPlanetCustomizationGetter> PlanetCustomizations { get { EnsureFilled(); return PlanetCustomizationsStore; } private set => PlanetCustomizationsStore = value; }
+        private int PlanetCustomizationsEndingPosStore;
+        protected int PlanetCustomizationsEndingPos { get { EnsureFilled(); return PlanetCustomizationsEndingPosStore; } private set => PlanetCustomizationsEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

@@ -1,4 +1,4 @@
-﻿using Loqui.Generation;
+using Loqui.Generation;
 using Mutagen.Bethesda.Generation.Modules.Plugin;
 using Mutagen.Bethesda.Plugins.Binary.Translations;
 using Noggog.StructuredStrings;
@@ -25,6 +25,6 @@ public class OverflowGenerationHelper
 
     public static void GenerateWrapperOverflowMember(StructuredStringBuilder sb, TypeGeneration typeGen)
     {
-        sb.AppendLine($"private int? _{typeGen.Name}LengthOverride;");
+        LazyFill.Field(sb, "int?", $"_{typeGen.Name}LengthOverride");
     }
 }

@@ -1619,7 +1619,8 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        public Condition.VersioningBreaks Versioning { get; private set; }
+        private Condition.VersioningBreaks VersioningStore;
+        public Condition.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         #region InitialParser
         partial void InitialParserCustomParse(
             OverlayStream stream,

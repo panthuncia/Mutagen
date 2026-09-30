@@ -1167,11 +1167,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Texture
-        private int? _TextureLocation;
+        private int? _TextureLocationStore;
+        private int? _TextureLocation { get { EnsureFilled(); return _TextureLocationStore; } set => _TextureLocationStore = value; }
         public IFormLinkNullableGetter<IMorphableObjectGetter> Texture => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMorphableObjectGetter>(_package, _recordData, _TextureLocation);
         #endregion
         #region SwapList
-        private int? _SwapListLocation;
+        private int? _SwapListLocationStore;
+        private int? _SwapListLocation { get { EnsureFilled(); return _SwapListLocationStore; } set => _SwapListLocationStore = value; }
         public IFormLinkNullableGetter<IFormListGetter> SwapList => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IFormListGetter>(_package, _recordData, _SwapListLocation);
         #endregion
         partial void CustomFactoryEnd(

@@ -1243,7 +1243,10 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Slots { get; private set; }
+        #region Slots
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? SlotsStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Slots { get { EnsureFilled(); return SlotsStore; } private set => SlotsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

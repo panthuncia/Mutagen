@@ -1746,19 +1746,23 @@ namespace Mutagen.Bethesda.Starfield
         public ReadOnlyMemorySlice<Byte> Data => _structData.Span.Slice(0x4, 0x14).ToArray();
         #region MergedTo
         public IReadOnlyList<IFormLinkGetter<INavigationMeshGetter>> MergedTo => BinaryOverlayList.FactoryByCountLength<IFormLinkGetter<INavigationMeshGetter>>(_structData.Slice(0x18), _package, 4, countLength: 4, (s, p) => FormLinkBinaryTranslation.Instance.OverlayFactory<INavigationMeshGetter>(p, s));
-        protected int MergedToEndingPos;
+        private int MergedToEndingPosStore;
+        protected int MergedToEndingPos { get { EnsureFilled(); return MergedToEndingPosStore; } private set => MergedToEndingPosStore = value; }
         #endregion
         #region PreferredMerges
         public IReadOnlyList<IFormLinkGetter<INavigationMeshGetter>> PreferredMerges => BinaryOverlayList.FactoryByCountLength<IFormLinkGetter<INavigationMeshGetter>>(_structData.Slice(MergedToEndingPos), _package, 4, countLength: 4, (s, p) => FormLinkBinaryTranslation.Instance.OverlayFactory<INavigationMeshGetter>(p, s));
-        protected int PreferredMergesEndingPos;
+        private int PreferredMergesEndingPosStore;
+        protected int PreferredMergesEndingPos { get { EnsureFilled(); return PreferredMergesEndingPosStore; } private set => PreferredMergesEndingPosStore = value; }
         #endregion
         #region LinkedDoors
         public IReadOnlyList<ILinkedDoorGetter> LinkedDoors => BinaryOverlayList.FactoryByCountLength<ILinkedDoorGetter>(_structData.Slice(PreferredMergesEndingPos), _package, 8, countLength: 4, (s, p) => LinkedDoorBinaryOverlay.LinkedDoorFactory(s, p));
-        protected int LinkedDoorsEndingPos;
+        private int LinkedDoorsEndingPosStore;
+        protected int LinkedDoorsEndingPos { get { EnsureFilled(); return LinkedDoorsEndingPosStore; } private set => LinkedDoorsEndingPosStore = value; }
         #endregion
         #region Unknown
         public ReadOnlyMemorySlice<Byte> Unknown => _structData.Span.Slice(LinkedDoorsEndingPos).ToArray();
-        protected int UnknownEndingPos;
+        private int UnknownEndingPosStore;
+        protected int UnknownEndingPos { get { EnsureFilled(); return UnknownEndingPosStore; } private set => UnknownEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

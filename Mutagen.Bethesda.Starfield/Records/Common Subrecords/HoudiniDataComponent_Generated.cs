@@ -1125,8 +1125,10 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region PCCC
-        private int? _PCCCLocation;
-        private int? _PCCCLengthOverride;
+        private int? _PCCCLocationStore;
+        private int? _PCCCLocation { get { EnsureFilled(); return _PCCCLocationStore; } set => _PCCCLocationStore = value; }
+        private int? _PCCCLengthOverrideStore;
+        private int? _PCCCLengthOverride { get { EnsureFilled(); return _PCCCLengthOverrideStore; } set => _PCCCLengthOverrideStore = value; }
         public ReadOnlyMemorySlice<Byte>? PCCC => PluginUtilityTranslation.ReadByteArrayWithOverflow(
             _recordData,
             _package.MetaData.Constants,

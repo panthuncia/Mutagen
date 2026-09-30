@@ -2744,13 +2744,16 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2762,41 +2765,56 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #endregion
         #region Keywords
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get; private set; }
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? KeywordsStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get { EnsureFilled(); return KeywordsStore; } private set => KeywordsStore = value; }
         IReadOnlyList<IFormLinkGetter<IKeywordCommonGetter>>? IKeywordedGetter.Keywords => this.Keywords;
         #endregion
-        public ISoundReferenceGetter? CraftingSound { get; private set; }
+        #region CraftingSound
+        private ISoundReferenceGetter? CraftingSoundStore;
+        public ISoundReferenceGetter? CraftingSound { get { EnsureFilled(); return CraftingSoundStore; } private set => CraftingSoundStore = value; }
+        #endregion
         #region List
-        private int? _ListLocation;
+        private int? _ListLocationStore;
+        private int? _ListLocation { get { EnsureFilled(); return _ListLocationStore; } set => _ListLocationStore = value; }
         public IFormLinkNullableGetter<ILeveledItemGetter> List => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ILeveledItemGetter>(_package, _recordData, _ListLocation);
         #endregion
         #region Rarity
-        private int? _RarityLocation;
+        private int? _RarityLocationStore;
+        private int? _RarityLocation { get { EnsureFilled(); return _RarityLocationStore; } set => _RarityLocationStore = value; }
         public Resource.RarityEnum? Rarity => EnumBinaryTranslation<Resource.RarityEnum, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_RarityLocation, _recordData, _package, 4);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IResourceGetter>> NextRarities { get; private set; } = [];
+        #region NextRarities
+        private IReadOnlyList<IFormLinkGetter<IResourceGetter>> NextRaritiesStore = [];
+        public IReadOnlyList<IFormLinkGetter<IResourceGetter>> NextRarities { get { EnsureFilled(); return NextRaritiesStore; } private set => NextRaritiesStore = value; }
+        #endregion
         #region SurfaceColor
-        private int? _SurfaceColorLocation;
+        private int? _SurfaceColorLocationStore;
+        private int? _SurfaceColorLocation { get { EnsureFilled(); return _SurfaceColorLocationStore; } set => _SurfaceColorLocationStore = value; }
         public Color? SurfaceColor => _SurfaceColorLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SurfaceColorLocation.Value, _package.MetaData.Constants).ReadColor(ColorBinaryType.Alpha) : default(Color?);
         #endregion
         #region ShortName
-        private int? _ShortNameLocation;
+        private int? _ShortNameLocationStore;
+        private int? _ShortNameLocation { get { EnsureFilled(); return _ShortNameLocationStore; } set => _ShortNameLocationStore = value; }
         public ITranslatedStringGetter? ShortName => _ShortNameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ShortNameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         #region ResourceType
-        private int? _ResourceTypeLocation;
+        private int? _ResourceTypeLocationStore;
+        private int? _ResourceTypeLocation { get { EnsureFilled(); return _ResourceTypeLocationStore; } set => _ResourceTypeLocationStore = value; }
         public String? ResourceType => _ResourceTypeLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ResourceTypeLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ActorValue
-        private int? _ActorValueLocation;
+        private int? _ActorValueLocationStore;
+        private int? _ActorValueLocation { get { EnsureFilled(); return _ActorValueLocationStore; } set => _ActorValueLocationStore = value; }
         public IFormLinkNullableGetter<IActorValueInformationGetter> ActorValue => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IActorValueInformationGetter>(_package, _recordData, _ActorValueLocation);
         #endregion
         #region Produce
-        private int? _ProduceLocation;
+        private int? _ProduceLocationStore;
+        private int? _ProduceLocation { get { EnsureFilled(); return _ProduceLocationStore; } set => _ProduceLocationStore = value; }
         public IFormLinkNullableGetter<IResourceTargetGetter> Produce => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IResourceTargetGetter>(_package, _recordData, _ProduceLocation);
         #endregion
         #region Interval
-        private int? _IntervalLocation;
+        private int? _IntervalLocationStore;
+        private int? _IntervalLocation { get { EnsureFilled(); return _IntervalLocationStore; } set => _IntervalLocationStore = value; }
         public IFormLinkNullableGetter<IGlobalGetter> Interval => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IGlobalGetter>(_package, _recordData, _IntervalLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -2820,6 +2838,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ResourceBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ResourceFill((ResourceBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ResourceFill(
+            ResourceBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2827,9 +2862,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ResourceBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2842,7 +2875,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IResourceGetter ResourceFactory(

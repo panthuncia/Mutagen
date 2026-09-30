@@ -1554,15 +1554,23 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region XpAwarded
-        private int? _XpAwardedLocation;
+        private int? _XpAwardedLocationStore;
+        private int? _XpAwardedLocation { get { EnsureFilled(); return _XpAwardedLocationStore; } set => _XpAwardedLocationStore = value; }
         public IFormLinkNullableGetter<IGlobalGetter> XpAwarded => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IGlobalGetter>(_package, _recordData, _XpAwardedLocation);
         #endregion
         #region BonusCredits
-        private int? _BonusCreditsLocation;
+        private int? _BonusCreditsLocationStore;
+        private int? _BonusCreditsLocation { get { EnsureFilled(); return _BonusCreditsLocationStore; } set => _BonusCreditsLocationStore = value; }
         public IFormLinkNullableGetter<IGlobalGetter> BonusCredits => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IGlobalGetter>(_package, _recordData, _BonusCreditsLocation);
         #endregion
-        public IReadOnlyList<IQuestStageRewardGetter> Rewards { get; private set; } = [];
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Rewards
+        private IReadOnlyList<IQuestStageRewardGetter> RewardsStore = [];
+        public IReadOnlyList<IQuestStageRewardGetter> Rewards { get { EnsureFilled(); return RewardsStore; } private set => RewardsStore = value; }
+        #endregion
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

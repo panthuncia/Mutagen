@@ -1123,7 +1123,8 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region AnimationSound
-        private int? _AnimationSoundLocation;
+        private int? _AnimationSoundLocationStore;
+        private int? _AnimationSoundLocation { get { EnsureFilled(); return _AnimationSoundLocationStore; } set => _AnimationSoundLocationStore = value; }
         public IFormLinkNullableGetter<IAnimationSoundTagSetGetter> AnimationSound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IAnimationSoundTagSetGetter>(_package, _recordData, _AnimationSoundLocation);
         #endregion
         partial void CustomFactoryEnd(

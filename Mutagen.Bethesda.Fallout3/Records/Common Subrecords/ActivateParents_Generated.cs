@@ -1272,10 +1272,14 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region ParentActivateOnly
-        private int? _ParentActivateOnlyLocation;
+        private int? _ParentActivateOnlyLocationStore;
+        private int? _ParentActivateOnlyLocation { get { EnsureFilled(); return _ParentActivateOnlyLocationStore; } set => _ParentActivateOnlyLocationStore = value; }
         public Boolean ParentActivateOnly => _ParentActivateOnlyLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ParentActivateOnlyLocation.Value, _package.MetaData.Constants)[0] >= 1 : default(Boolean);
         #endregion
-        public IReadOnlyList<IActivateParentGetter> Parents { get; private set; } = [];
+        #region Parents
+        private IReadOnlyList<IActivateParentGetter> ParentsStore = [];
+        public IReadOnlyList<IActivateParentGetter> Parents { get { EnsureFilled(); return ParentsStore; } private set => ParentsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

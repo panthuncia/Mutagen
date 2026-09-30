@@ -1699,13 +1699,18 @@ namespace Mutagen.Bethesda.Starfield
         protected override Type LinkType => typeof(IConditionRecordGetter);
 
 
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region OwnerQuest
-        private int? _OwnerQuestLocation;
+        private int? _OwnerQuestLocationStore;
+        private int? _OwnerQuestLocation { get { EnsureFilled(); return _OwnerQuestLocationStore; } set => _OwnerQuestLocationStore = value; }
         public IFormLinkNullableGetter<IQuestGetter> OwnerQuest => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IQuestGetter>(_package, _recordData, _OwnerQuestLocation);
         #endregion
         #region OwnerPackage
-        private int? _OwnerPackageLocation;
+        private int? _OwnerPackageLocationStore;
+        private int? _OwnerPackageLocation { get { EnsureFilled(); return _OwnerPackageLocationStore; } set => _OwnerPackageLocationStore = value; }
         public IFormLinkNullableGetter<IPackageGetter> OwnerPackage => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IPackageGetter>(_package, _recordData, _OwnerPackageLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -1729,6 +1734,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ConditionRecordBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ConditionRecordFill((ConditionRecordBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ConditionRecordFill(
+            ConditionRecordBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1736,9 +1758,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ConditionRecordBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1751,7 +1771,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IConditionRecordGetter ConditionRecordFactory(

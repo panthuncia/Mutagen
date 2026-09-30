@@ -1472,15 +1472,23 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public LogEntry.Flag? Flags => EnumBinaryTranslation<LogEntry.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 1);
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region Entry
-        private int? _EntryLocation;
+        private int? _EntryLocationStore;
+        private int? _EntryLocation { get { EnsureFilled(); return _EntryLocationStore; } set => _EntryLocationStore = value; }
         public String? Entry => _EntryLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EntryLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        public IScriptFieldsGetter? ResultScript { get; private set; }
+        #region ResultScript
+        private IScriptFieldsGetter? ResultScriptStore;
+        public IScriptFieldsGetter? ResultScript { get { EnsureFilled(); return ResultScriptStore; } private set => ResultScriptStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

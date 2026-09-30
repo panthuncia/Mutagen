@@ -3158,52 +3158,67 @@ namespace Mutagen.Bethesda.Fallout3
 
 
         #region ImageSpaceSunrise
-        private int? _ImageSpaceSunriseLocation;
+        private int? _ImageSpaceSunriseLocationStore;
+        private int? _ImageSpaceSunriseLocation { get { EnsureFilled(); return _ImageSpaceSunriseLocationStore; } set => _ImageSpaceSunriseLocationStore = value; }
         public IFormLinkNullableGetter<IImageSpaceAdapterGetter> ImageSpaceSunrise => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IImageSpaceAdapterGetter>(_package, _recordData, _ImageSpaceSunriseLocation);
         #endregion
         #region ImageSpaceDay
-        private int? _ImageSpaceDayLocation;
+        private int? _ImageSpaceDayLocationStore;
+        private int? _ImageSpaceDayLocation { get { EnsureFilled(); return _ImageSpaceDayLocationStore; } set => _ImageSpaceDayLocationStore = value; }
         public IFormLinkNullableGetter<IImageSpaceAdapterGetter> ImageSpaceDay => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IImageSpaceAdapterGetter>(_package, _recordData, _ImageSpaceDayLocation);
         #endregion
         #region ImageSpaceSunset
-        private int? _ImageSpaceSunsetLocation;
+        private int? _ImageSpaceSunsetLocationStore;
+        private int? _ImageSpaceSunsetLocation { get { EnsureFilled(); return _ImageSpaceSunsetLocationStore; } set => _ImageSpaceSunsetLocationStore = value; }
         public IFormLinkNullableGetter<IImageSpaceAdapterGetter> ImageSpaceSunset => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IImageSpaceAdapterGetter>(_package, _recordData, _ImageSpaceSunsetLocation);
         #endregion
         #region ImageSpaceNight
-        private int? _ImageSpaceNightLocation;
+        private int? _ImageSpaceNightLocationStore;
+        private int? _ImageSpaceNightLocation { get { EnsureFilled(); return _ImageSpaceNightLocationStore; } set => _ImageSpaceNightLocationStore = value; }
         public IFormLinkNullableGetter<IImageSpaceAdapterGetter> ImageSpaceNight => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IImageSpaceAdapterGetter>(_package, _recordData, _ImageSpaceNightLocation);
         #endregion
         #region ImageSpaceHighNoon
-        private int? _ImageSpaceHighNoonLocation;
+        private int? _ImageSpaceHighNoonLocationStore;
+        private int? _ImageSpaceHighNoonLocation { get { EnsureFilled(); return _ImageSpaceHighNoonLocationStore; } set => _ImageSpaceHighNoonLocationStore = value; }
         public IFormLinkNullableGetter<IImageSpaceAdapterGetter> ImageSpaceHighNoon => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IImageSpaceAdapterGetter>(_package, _recordData, _ImageSpaceHighNoonLocation);
         #endregion
         #region ImageSpaceMidnight
-        private int? _ImageSpaceMidnightLocation;
+        private int? _ImageSpaceMidnightLocationStore;
+        private int? _ImageSpaceMidnightLocation { get { EnsureFilled(); return _ImageSpaceMidnightLocationStore; } set => _ImageSpaceMidnightLocationStore = value; }
         public IFormLinkNullableGetter<IImageSpaceAdapterGetter> ImageSpaceMidnight => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IImageSpaceAdapterGetter>(_package, _recordData, _ImageSpaceMidnightLocation);
         #endregion
         #region CloudTextureLayer0
-        private int? _CloudTextureLayer0Location;
+        private int? _CloudTextureLayer0LocationStore;
+        private int? _CloudTextureLayer0Location { get { EnsureFilled(); return _CloudTextureLayer0LocationStore; } set => _CloudTextureLayer0LocationStore = value; }
         public String? CloudTextureLayer0 => _CloudTextureLayer0Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _CloudTextureLayer0Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region CloudTextureLayer1
-        private int? _CloudTextureLayer1Location;
+        private int? _CloudTextureLayer1LocationStore;
+        private int? _CloudTextureLayer1Location { get { EnsureFilled(); return _CloudTextureLayer1LocationStore; } set => _CloudTextureLayer1LocationStore = value; }
         public String? CloudTextureLayer1 => _CloudTextureLayer1Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _CloudTextureLayer1Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region CloudTextureLayer2
-        private int? _CloudTextureLayer2Location;
+        private int? _CloudTextureLayer2LocationStore;
+        private int? _CloudTextureLayer2Location { get { EnsureFilled(); return _CloudTextureLayer2LocationStore; } set => _CloudTextureLayer2LocationStore = value; }
         public String? CloudTextureLayer2 => _CloudTextureLayer2Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _CloudTextureLayer2Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region CloudTextureLayer3
-        private int? _CloudTextureLayer3Location;
+        private int? _CloudTextureLayer3LocationStore;
+        private int? _CloudTextureLayer3Location { get { EnsureFilled(); return _CloudTextureLayer3LocationStore; } set => _CloudTextureLayer3LocationStore = value; }
         public String? CloudTextureLayer3 => _CloudTextureLayer3Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _CloudTextureLayer3Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        public IModelGetter? Model { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
         #region LNAM
-        private int? _LNAMLocation;
+        private int? _LNAMLocationStore;
+        private int? _LNAMLocation { get { EnsureFilled(); return _LNAMLocationStore; } set => _LNAMLocationStore = value; }
         public UInt32 LNAM => _LNAMLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LNAMLocation.Value, _package.MetaData.Constants)) : default(UInt32);
         #endregion
         #region CloudSpeeds
-        private RangeInt32? _CloudSpeedsLocation;
+        private RangeInt32? _CloudSpeedsLocationStore;
+        private RangeInt32? _CloudSpeedsLocation { get { EnsureFilled(); return _CloudSpeedsLocationStore; } set => _CloudSpeedsLocationStore = value; }
         public IWeatherCloudSpeedsGetter? CloudSpeeds => _CloudSpeedsLocation.HasValue ? WeatherCloudSpeedsBinaryOverlay.WeatherCloudSpeedsFactory(_recordData.Slice(_CloudSpeedsLocation!.Value.Min), _package) : default;
         #endregion
         #region CloudLayerColors
@@ -3223,18 +3238,24 @@ namespace Mutagen.Bethesda.Fallout3
         public IWeatherColorsGetter? Colors => GetColorsCustom();
         #endregion
         #region FogDistance
-        private RangeInt32? _FogDistanceLocation;
+        private RangeInt32? _FogDistanceLocationStore;
+        private RangeInt32? _FogDistanceLocation { get { EnsureFilled(); return _FogDistanceLocationStore; } set => _FogDistanceLocationStore = value; }
         public IWeatherFogDistanceGetter? FogDistance => _FogDistanceLocation.HasValue ? WeatherFogDistanceBinaryOverlay.WeatherFogDistanceFactory(_recordData.Slice(_FogDistanceLocation!.Value.Min), _package) : default;
         #endregion
         #region INAM
-        private int? _INAMLocation;
+        private int? _INAMLocationStore;
+        private int? _INAMLocation { get { EnsureFilled(); return _INAMLocationStore; } set => _INAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? INAM => _INAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _INAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public IWeatherDataGetter? Data => _DataLocation.HasValue ? WeatherDataBinaryOverlay.WeatherDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         #endregion
-        public IReadOnlyList<IWeatherSoundGetter> Sounds { get; private set; } = [];
+        #region Sounds
+        private IReadOnlyList<IWeatherSoundGetter> SoundsStore = [];
+        public IReadOnlyList<IWeatherSoundGetter> Sounds { get { EnsureFilled(); return SoundsStore; } private set => SoundsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

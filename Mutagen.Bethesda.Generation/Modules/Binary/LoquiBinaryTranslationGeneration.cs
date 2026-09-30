@@ -394,11 +394,18 @@ public class LoquiBinaryTranslationGeneration : BinaryTranslationGeneration
                     if (loqui.Singleton
                         || isRequiredRecord)
                     {
-                        sb.AppendLine($"private {loqui.Interface(getter: true, internalInterface: true)}? _{typeGen.Name};");
+                        if (objGen.GetObjectType() == ObjectType.Mod)
+                        {
+                            sb.AppendLine($"private {loqui.Interface(getter: true, internalInterface: true)}? _{typeGen.Name};");
+                        }
+                        else
+                        {
+                            LazyFill.Field(sb, $"{loqui.Interface(getter: true, internalInterface: true)}?", $"_{typeGen.Name}");
+                        }
                     }
                     else if (loqui.Nullable)
                     {
-                        sb.AppendLine($"public {loqui.Interface(getter: true, internalInterface: true)}? {typeGen.Name} {{ get; private set; }}");
+                        LazyFill.Property(sb, "public", $"{loqui.Interface(getter: true, internalInterface: true)}?", typeGen.Name);
                     }
                 }
                 else
@@ -410,14 +417,22 @@ public class LoquiBinaryTranslationGeneration : BinaryTranslationGeneration
                         .CountGreaterThan(1);
                     if (severalSubTypes)
                     {
-                        sb.AppendLine($"private {nameof(RecordType)} _{typeGen.Name}Type;");
+                        LazyFill.Field(sb, nameof(RecordType), $"_{typeGen.Name}Type");
                     }
 
                     if (data.OverflowRecordType.HasValue)
                     {
                         OverflowGenerationHelper.GenerateWrapperOverflowMember(sb, typeGen);
                     }
-                    sb.AppendLine($"private {GetLocationObjectString(objGen)}? _{typeGen.Name}Location;");
+                    if (objGen.GetObjectType() == ObjectType.Mod)
+                    {
+                        // A mod's groups are located eagerly when it is opened; only records defer their fill.
+                        sb.AppendLine($"private {GetLocationObjectString(objGen)}? _{typeGen.Name}Location;");
+                    }
+                    else
+                    {
+                        LazyFill.Field(sb, $"{GetLocationObjectString(objGen)}?", $"_{typeGen.Name}Location");
+                    }
                     using (sb.Line())
                     {
                         if (loqui.IsNullable)
@@ -492,7 +507,7 @@ public class LoquiBinaryTranslationGeneration : BinaryTranslationGeneration
             {
                 if (loqui.Singleton)
                 {
-                    sb.AppendLine($"private {loqui.Interface(getter: true, internalInterface: true)} _{typeGen.Name} {{ get; private set; }}");
+                    LazyFill.Property(sb, "private", $"{loqui.Interface(getter: true, internalInterface: true)}", $"_{typeGen.Name}");
                 }
                 else
                 {

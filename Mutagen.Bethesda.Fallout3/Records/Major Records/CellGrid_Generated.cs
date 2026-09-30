@@ -1238,7 +1238,8 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        public CellGrid.VersioningBreaks Versioning { get; private set; }
+        private CellGrid.VersioningBreaks VersioningStore;
+        public CellGrid.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public Int32 GridX => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x0, 0x4));
         public Int32 GridY => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x4, 0x4));
         public Cell.LandFlag LandFlags => _structData.Span.Length <= 0x8 ? default : (Cell.LandFlag)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x8, 0x4));

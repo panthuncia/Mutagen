@@ -1237,15 +1237,18 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Header
-        private int? _HeaderLocation;
+        private int? _HeaderLocationStore;
+        private int? _HeaderLocation { get { EnsureFilled(); return _HeaderLocationStore; } set => _HeaderLocationStore = value; }
         public ITranslatedStringGetter? Header => _HeaderLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HeaderLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         #region Line1
-        private int? _Line1Location;
+        private int? _Line1LocationStore;
+        private int? _Line1Location { get { EnsureFilled(); return _Line1LocationStore; } set => _Line1LocationStore = value; }
         public ITranslatedStringGetter? Line1 => _Line1Location.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _Line1Location.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         #region Line2
-        private int? _Line2Location;
+        private int? _Line2LocationStore;
+        private int? _Line2Location { get { EnsureFilled(); return _Line2LocationStore; } set => _Line2LocationStore = value; }
         public ITranslatedStringGetter? Line2 => _Line2Location.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _Line2Location.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         partial void CustomFactoryEnd(

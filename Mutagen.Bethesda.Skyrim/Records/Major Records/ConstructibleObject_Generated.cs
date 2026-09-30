@@ -1974,18 +1974,27 @@ namespace Mutagen.Bethesda.Skyrim
         protected override Type LinkType => typeof(IConstructibleObjectGetter);
 
 
-        public IReadOnlyList<IContainerEntryGetter>? Items { get; private set; }
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Items
+        private IReadOnlyList<IContainerEntryGetter>? ItemsStore;
+        public IReadOnlyList<IContainerEntryGetter>? Items { get { EnsureFilled(); return ItemsStore; } private set => ItemsStore = value; }
+        #endregion
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region CreatedObject
-        private int? _CreatedObjectLocation;
+        private int? _CreatedObjectLocationStore;
+        private int? _CreatedObjectLocation { get { EnsureFilled(); return _CreatedObjectLocationStore; } set => _CreatedObjectLocationStore = value; }
         public IFormLinkNullableGetter<IConstructibleGetter> CreatedObject => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IConstructibleGetter>(_package, _recordData, _CreatedObjectLocation);
         #endregion
         #region WorkbenchKeyword
-        private int? _WorkbenchKeywordLocation;
+        private int? _WorkbenchKeywordLocationStore;
+        private int? _WorkbenchKeywordLocation { get { EnsureFilled(); return _WorkbenchKeywordLocationStore; } set => _WorkbenchKeywordLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> WorkbenchKeyword => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _WorkbenchKeywordLocation);
         #endregion
         #region CreatedObjectCount
-        private int? _CreatedObjectCountLocation;
+        private int? _CreatedObjectCountLocationStore;
+        private int? _CreatedObjectCountLocation { get { EnsureFilled(); return _CreatedObjectCountLocationStore; } set => _CreatedObjectCountLocationStore = value; }
         public UInt16? CreatedObjectCount => _CreatedObjectCountLocation.HasValue ? BinaryPrimitives.ReadUInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _CreatedObjectCountLocation.Value, _package.MetaData.Constants)) : default(UInt16?);
         #endregion
         partial void CustomFactoryEnd(
@@ -2009,6 +2018,23 @@ namespace Mutagen.Bethesda.Skyrim
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ConstructibleObjectBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ConstructibleObjectFill((ConstructibleObjectBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ConstructibleObjectFill(
+            ConstructibleObjectBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2016,9 +2042,7 @@ namespace Mutagen.Bethesda.Skyrim
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ConstructibleObjectBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2031,7 +2055,6 @@ namespace Mutagen.Bethesda.Skyrim
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IConstructibleObjectGetter ConstructibleObjectFactory(

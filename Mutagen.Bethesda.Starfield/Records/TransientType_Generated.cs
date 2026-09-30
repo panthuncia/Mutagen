@@ -1246,7 +1246,8 @@ namespace Mutagen.Bethesda.Starfield
         public UInt32 FormType => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0x0, 0x4));
         #region Links
         public IReadOnlyList<IFormLinkGetter<IStarfieldMajorRecordGetter>> Links => BinaryOverlayList.FactoryByStartIndex<IFormLinkGetter<IStarfieldMajorRecordGetter>>(_structData.Slice(0x4), _package, 4, (s, p) => FormLinkBinaryTranslation.Instance.OverlayFactory<IStarfieldMajorRecordGetter>(p, s));
-        protected int LinksEndingPos;
+        private int LinksEndingPosStore;
+        protected int LinksEndingPos { get { EnsureFilled(); return LinksEndingPosStore; } private set => LinksEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

@@ -1616,7 +1616,8 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        public CrimeValues.VersioningBreaks Versioning { get; private set; }
+        private CrimeValues.VersioningBreaks VersioningStore;
+        public CrimeValues.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public Boolean Arrest => _structData.Slice(0x0, 0x1)[0] >= 1;
         public Boolean AttackOnSight => _structData.Slice(0x1, 0x1)[0] >= 1;
         public UInt16 Murder => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x2, 0x2));

@@ -1259,7 +1259,8 @@ namespace Mutagen.Bethesda.Starfield
         public P2Int16 GridPosition => P2Int16BinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(0x0, 0x4), swapCoords: true);
         #region References
         public IReadOnlyList<IWorldspaceReferenceGetter> References => BinaryOverlayList.FactoryByCountLength<IWorldspaceReferenceGetter>(_structData.Slice(0x4), _package, 8, countLength: 4, (s, p) => WorldspaceReferenceBinaryOverlay.WorldspaceReferenceFactory(s, p));
-        protected int ReferencesEndingPos;
+        private int ReferencesEndingPosStore;
+        protected int ReferencesEndingPos { get { EnsureFilled(); return ReferencesEndingPosStore; } private set => ReferencesEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

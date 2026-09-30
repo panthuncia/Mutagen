@@ -1681,7 +1681,8 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        private RangeInt32? _LVLOLocation;
+        private RangeInt32? _LVLOLocationStore;
+        private RangeInt32? _LVLOLocation { get { EnsureFilled(); return _LVLOLocationStore; } set => _LVLOLocationStore = value; }
         #region Level
         private int _LevelLocation => _LVLOLocation!.Value.Min;
         private bool _Level_IsSet => _LVLOLocation.HasValue;
@@ -1713,10 +1714,14 @@ namespace Mutagen.Bethesda.Starfield
         public SByte Unused2 => _Unused2_IsSet ? (sbyte)_recordData.Slice(_Unused2Location, 1)[0] : default(SByte);
         #endregion
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public IExtraDataGetter? Data => _DataLocation.HasValue ? ExtraDataBinaryOverlay.ExtraDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

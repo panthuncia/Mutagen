@@ -1540,9 +1540,11 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        private RangeInt32? _PRKELocation;
+        private RangeInt32? _PRKELocationStore;
+        private RangeInt32? _PRKELocation { get { EnsureFilled(); return _PRKELocationStore; } set => _PRKELocationStore = value; }
         #region PerkEntryID
-        private int? _PerkEntryIDLocation;
+        private int? _PerkEntryIDLocationStore;
+        private int? _PerkEntryIDLocation { get { EnsureFilled(); return _PerkEntryIDLocationStore; } set => _PerkEntryIDLocationStore = value; }
         public UInt16? PerkEntryID => _PerkEntryIDLocation.HasValue ? BinaryPrimitives.ReadUInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _PerkEntryIDLocation.Value, _package.MetaData.Constants)) : default(UInt16?);
         #endregion
         #region FunctionParameters
@@ -1552,11 +1554,13 @@ namespace Mutagen.Bethesda.Fallout4
             PreviousParse lastParsed);
         #endregion
         #region ButtonLabel
-        private int? _ButtonLabelLocation;
+        private int? _ButtonLabelLocationStore;
+        private int? _ButtonLabelLocation { get { EnsureFilled(); return _ButtonLabelLocationStore; } set => _ButtonLabelLocationStore = value; }
         public ITranslatedStringGetter? ButtonLabel => _ButtonLabelLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ButtonLabelLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public APerkEffect.Flag? Flags => EnumBinaryTranslation<APerkEffect.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 2);
         #endregion
         partial void CustomFactoryEnd(

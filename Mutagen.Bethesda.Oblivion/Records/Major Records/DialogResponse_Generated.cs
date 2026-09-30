@@ -1267,15 +1267,18 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public IDialogResponseDataGetter? Data => _DataLocation.HasValue ? DialogResponseDataBinaryOverlay.DialogResponseDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         #endregion
         #region ResponseText
-        private int? _ResponseTextLocation;
+        private int? _ResponseTextLocationStore;
+        private int? _ResponseTextLocation { get { EnsureFilled(); return _ResponseTextLocationStore; } set => _ResponseTextLocationStore = value; }
         public String? ResponseText => _ResponseTextLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ResponseTextLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ActorNotes
-        private int? _ActorNotesLocation;
+        private int? _ActorNotesLocationStore;
+        private int? _ActorNotesLocation { get { EnsureFilled(); return _ActorNotesLocationStore; } set => _ActorNotesLocationStore = value; }
         public String? ActorNotes => _ActorNotesLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ActorNotesLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(

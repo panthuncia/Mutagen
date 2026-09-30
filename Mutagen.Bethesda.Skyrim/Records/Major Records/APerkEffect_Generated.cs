@@ -1454,7 +1454,8 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        private RangeInt32? _PRKELocation;
+        private RangeInt32? _PRKELocationStore;
+        private RangeInt32? _PRKELocation { get { EnsureFilled(); return _PRKELocationStore; } set => _PRKELocationStore = value; }
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

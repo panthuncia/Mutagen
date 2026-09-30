@@ -1209,8 +1209,10 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Structs
-        public IReadOnlyList<IScriptEntryStructsGetter> Structs { get; private set; } = null!;
-        protected int StructsEndingPos;
+        private IReadOnlyList<IScriptEntryStructsGetter> StructsStore = null!;
+        public IReadOnlyList<IScriptEntryStructsGetter> Structs { get { EnsureFilled(); return StructsStore; } private set => StructsStore = value; }
+        private int StructsEndingPosStore;
+        protected int StructsEndingPos { get { EnsureFilled(); return StructsEndingPosStore; } private set => StructsEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

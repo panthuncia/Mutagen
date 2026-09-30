@@ -2495,8 +2495,12 @@ namespace Mutagen.Bethesda.Skyrim
         protected override Type LinkType => typeof(IImpactGetter);
 
 
-        public IModelGetter? Model { get; private set; }
-        private RangeInt32? _DATALocation;
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         #region Duration
         private int _DurationLocation => _DATALocation!.Value.Min;
         private bool _Duration_IsSet => _DATALocation.HasValue;
@@ -2538,27 +2542,33 @@ namespace Mutagen.Bethesda.Skyrim
         public Int16 Unknown => _Unknown_IsSet ? BinaryPrimitives.ReadInt16LittleEndian(_recordData.Slice(_UnknownLocation, 2)) : default(Int16);
         #endregion
         #region Decal
-        private RangeInt32? _DecalLocation;
+        private RangeInt32? _DecalLocationStore;
+        private RangeInt32? _DecalLocation { get { EnsureFilled(); return _DecalLocationStore; } set => _DecalLocationStore = value; }
         public IDecalGetter? Decal => _DecalLocation.HasValue ? DecalBinaryOverlay.DecalFactory(_recordData.Slice(_DecalLocation!.Value.Min), _package) : default;
         #endregion
         #region TextureSet
-        private int? _TextureSetLocation;
+        private int? _TextureSetLocationStore;
+        private int? _TextureSetLocation { get { EnsureFilled(); return _TextureSetLocationStore; } set => _TextureSetLocationStore = value; }
         public IFormLinkNullableGetter<ITextureSetGetter> TextureSet => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ITextureSetGetter>(_package, _recordData, _TextureSetLocation);
         #endregion
         #region SecondaryTextureSet
-        private int? _SecondaryTextureSetLocation;
+        private int? _SecondaryTextureSetLocationStore;
+        private int? _SecondaryTextureSetLocation { get { EnsureFilled(); return _SecondaryTextureSetLocationStore; } set => _SecondaryTextureSetLocationStore = value; }
         public IFormLinkNullableGetter<ITextureSetGetter> SecondaryTextureSet => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ITextureSetGetter>(_package, _recordData, _SecondaryTextureSetLocation);
         #endregion
         #region Sound1
-        private int? _Sound1Location;
+        private int? _Sound1LocationStore;
+        private int? _Sound1Location { get { EnsureFilled(); return _Sound1LocationStore; } set => _Sound1LocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> Sound1 => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _Sound1Location);
         #endregion
         #region Sound2
-        private int? _Sound2Location;
+        private int? _Sound2LocationStore;
+        private int? _Sound2Location { get { EnsureFilled(); return _Sound2LocationStore; } set => _Sound2LocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> Sound2 => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _Sound2Location);
         #endregion
         #region Hazard
-        private int? _HazardLocation;
+        private int? _HazardLocationStore;
+        private int? _HazardLocation { get { EnsureFilled(); return _HazardLocationStore; } set => _HazardLocationStore = value; }
         public IFormLinkNullableGetter<IHazardGetter> Hazard => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IHazardGetter>(_package, _recordData, _HazardLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -2582,6 +2592,23 @@ namespace Mutagen.Bethesda.Skyrim
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ImpactBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ImpactFill((ImpactBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ImpactFill(
+            ImpactBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2589,9 +2616,7 @@ namespace Mutagen.Bethesda.Skyrim
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ImpactBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2604,7 +2629,6 @@ namespace Mutagen.Bethesda.Skyrim
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IImpactGetter ImpactFactory(

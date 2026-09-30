@@ -1322,7 +1322,8 @@ namespace Mutagen.Bethesda.Fallout4
         partial void CustomLogicCustomParse(
             OverlayStream stream,
             int offset);
-        protected int CustomLogicEndingPos;
+        private int CustomLogicEndingPosStore;
+        protected int CustomLogicEndingPos { get { EnsureFilled(); return CustomLogicEndingPosStore; } private set => CustomLogicEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

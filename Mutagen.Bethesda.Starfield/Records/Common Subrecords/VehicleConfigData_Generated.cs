@@ -9007,35 +9007,43 @@ namespace Mutagen.Bethesda.Starfield
 
         #region NodeNamesSuspensionFrontLeft
         public String NodeNamesSuspensionFrontLeft => BinaryStringUtility.ParsePrependedString(_structData.Slice(0x0), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int NodeNamesSuspensionFrontLeftEndingPos;
+        private int NodeNamesSuspensionFrontLeftEndingPosStore;
+        protected int NodeNamesSuspensionFrontLeftEndingPos { get { EnsureFilled(); return NodeNamesSuspensionFrontLeftEndingPosStore; } private set => NodeNamesSuspensionFrontLeftEndingPosStore = value; }
         #endregion
         #region NodeNamesSuspensionFrontRight
         public String NodeNamesSuspensionFrontRight => BinaryStringUtility.ParsePrependedString(_structData.Slice(NodeNamesSuspensionFrontLeftEndingPos), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int NodeNamesSuspensionFrontRightEndingPos;
+        private int NodeNamesSuspensionFrontRightEndingPosStore;
+        protected int NodeNamesSuspensionFrontRightEndingPos { get { EnsureFilled(); return NodeNamesSuspensionFrontRightEndingPosStore; } private set => NodeNamesSuspensionFrontRightEndingPosStore = value; }
         #endregion
         #region NodeNamesSuspensionRearLeft
         public String NodeNamesSuspensionRearLeft => BinaryStringUtility.ParsePrependedString(_structData.Slice(NodeNamesSuspensionFrontRightEndingPos), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int NodeNamesSuspensionRearLeftEndingPos;
+        private int NodeNamesSuspensionRearLeftEndingPosStore;
+        protected int NodeNamesSuspensionRearLeftEndingPos { get { EnsureFilled(); return NodeNamesSuspensionRearLeftEndingPosStore; } private set => NodeNamesSuspensionRearLeftEndingPosStore = value; }
         #endregion
         #region NodeNamesSuspensionRearRight
         public String NodeNamesSuspensionRearRight => BinaryStringUtility.ParsePrependedString(_structData.Slice(NodeNamesSuspensionRearLeftEndingPos), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int NodeNamesSuspensionRearRightEndingPos;
+        private int NodeNamesSuspensionRearRightEndingPosStore;
+        protected int NodeNamesSuspensionRearRightEndingPos { get { EnsureFilled(); return NodeNamesSuspensionRearRightEndingPosStore; } private set => NodeNamesSuspensionRearRightEndingPosStore = value; }
         #endregion
         #region NodeNamesWheelFrontLeft
         public String NodeNamesWheelFrontLeft => BinaryStringUtility.ParsePrependedString(_structData.Slice(NodeNamesSuspensionRearRightEndingPos), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int NodeNamesWheelFrontLeftEndingPos;
+        private int NodeNamesWheelFrontLeftEndingPosStore;
+        protected int NodeNamesWheelFrontLeftEndingPos { get { EnsureFilled(); return NodeNamesWheelFrontLeftEndingPosStore; } private set => NodeNamesWheelFrontLeftEndingPosStore = value; }
         #endregion
         #region NodeNamesWheelFrontRight
         public String NodeNamesWheelFrontRight => BinaryStringUtility.ParsePrependedString(_structData.Slice(NodeNamesWheelFrontLeftEndingPos), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int NodeNamesWheelFrontRightEndingPos;
+        private int NodeNamesWheelFrontRightEndingPosStore;
+        protected int NodeNamesWheelFrontRightEndingPos { get { EnsureFilled(); return NodeNamesWheelFrontRightEndingPosStore; } private set => NodeNamesWheelFrontRightEndingPosStore = value; }
         #endregion
         #region NodeNamesWheelRearLeft
         public String NodeNamesWheelRearLeft => BinaryStringUtility.ParsePrependedString(_structData.Slice(NodeNamesWheelFrontRightEndingPos), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int NodeNamesWheelRearLeftEndingPos;
+        private int NodeNamesWheelRearLeftEndingPosStore;
+        protected int NodeNamesWheelRearLeftEndingPos { get { EnsureFilled(); return NodeNamesWheelRearLeftEndingPosStore; } private set => NodeNamesWheelRearLeftEndingPosStore = value; }
         #endregion
         #region NodeNamesWheelRearRight
         public String NodeNamesWheelRearRight => BinaryStringUtility.ParsePrependedString(_structData.Slice(NodeNamesWheelRearLeftEndingPos), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int NodeNamesWheelRearRightEndingPos;
+        private int NodeNamesWheelRearRightEndingPosStore;
+        protected int NodeNamesWheelRearRightEndingPos { get { EnsureFilled(); return NodeNamesWheelRearRightEndingPosStore; } private set => NodeNamesWheelRearRightEndingPosStore = value; }
         #endregion
         public UInt32 ChassisForwardAxis => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(NodeNamesWheelRearRightEndingPos, 0x4));
         public UInt32 ChassisUpAxis => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(NodeNamesWheelRearRightEndingPos + 0x4, 0x4));

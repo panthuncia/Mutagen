@@ -1258,11 +1258,13 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public ILeveledNpcEntryDataGetter? Data => _DataLocation.HasValue ? LeveledNpcEntryDataBinaryOverlay.LeveledNpcEntryDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         #endregion
         #region ExtraData
-        private RangeInt32? _ExtraDataLocation;
+        private RangeInt32? _ExtraDataLocationStore;
+        private RangeInt32? _ExtraDataLocation { get { EnsureFilled(); return _ExtraDataLocationStore; } set => _ExtraDataLocationStore = value; }
         public IExtraDataGetter? ExtraData => _ExtraDataLocation.HasValue ? ExtraDataBinaryOverlay.ExtraDataFactory(_recordData.Slice(_ExtraDataLocation!.Value.Min), _package) : default;
         #endregion
         partial void CustomFactoryEnd(

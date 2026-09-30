@@ -1995,8 +1995,14 @@ namespace Mutagen.Bethesda.Oblivion
             RecordType type,
             PreviousParse lastParsed);
         #endregion
-        public IReadOnlyList<IInterCellPointGetter>? InterCellConnections { get; private set; }
-        public IReadOnlyList<IPointToReferenceMappingGetter> PointToReferenceMappings { get; private set; } = [];
+        #region InterCellConnections
+        private IReadOnlyList<IInterCellPointGetter>? InterCellConnectionsStore;
+        public IReadOnlyList<IInterCellPointGetter>? InterCellConnections { get { EnsureFilled(); return InterCellConnectionsStore; } private set => InterCellConnectionsStore = value; }
+        #endregion
+        #region PointToReferenceMappings
+        private IReadOnlyList<IPointToReferenceMappingGetter> PointToReferenceMappingsStore = [];
+        public IReadOnlyList<IPointToReferenceMappingGetter> PointToReferenceMappings { get { EnsureFilled(); return PointToReferenceMappingsStore; } private set => PointToReferenceMappingsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

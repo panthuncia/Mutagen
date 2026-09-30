@@ -1118,7 +1118,8 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region DATA
-        private int? _DATALocation;
+        private int? _DATALocationStore;
+        private int? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? DATA => _DATALocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DATALocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

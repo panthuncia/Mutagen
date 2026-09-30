@@ -1210,7 +1210,8 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        public LinkedReferences.VersioningBreaks Versioning { get; private set; }
+        private LinkedReferences.VersioningBreaks VersioningStore;
+        public LinkedReferences.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public IFormLinkGetter<IKeywordLinkedReferenceGetter> KeywordOrReference => FormLinkBinaryTranslation.Instance.OverlayFactory<IKeywordLinkedReferenceGetter>(_package, _structData.Span.Slice(0x0, 0x4));
         public IFormLinkGetter<IPlacedGetter> Reference => _structData.Length <= 0x4 ? FormLink<IPlacedGetter>.Null : FormLinkBinaryTranslation.Instance.OverlayFactory<IPlacedGetter>(_package, _structData.Span.Slice(0x4, 0x4));
         partial void CustomFactoryEnd(

@@ -1170,7 +1170,8 @@ namespace Mutagen.Bethesda.Fallout4
 
         #region Members
         public IReadOnlyList<IScriptPropertyGetter> Members => BinaryOverlayList.FactoryByCountLength<IScriptPropertyGetter>(_structData, _package, 0, countLength: 4, (s, p) => ScriptPropertyBinaryOverlay.ScriptPropertyFactory(s, p));
-        protected int MembersEndingPos;
+        private int MembersEndingPosStore;
+        protected int MembersEndingPos { get { EnsureFilled(); return MembersEndingPosStore; } private set => MembersEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

@@ -1869,7 +1869,8 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -1892,10 +1893,17 @@ namespace Mutagen.Bethesda.Skyrim
             RecordType type,
             PreviousParse lastParsed);
         #endregion
-        public IScenePhaseUnusedDataGetter? Unused { get; private set; }
-        public IScenePhaseUnusedDataGetter? Unused2 { get; private set; }
+        #region Unused
+        private IScenePhaseUnusedDataGetter? UnusedStore;
+        public IScenePhaseUnusedDataGetter? Unused { get { EnsureFilled(); return UnusedStore; } private set => UnusedStore = value; }
+        #endregion
+        #region Unused2
+        private IScenePhaseUnusedDataGetter? Unused2Store;
+        public IScenePhaseUnusedDataGetter? Unused2 { get { EnsureFilled(); return Unused2Store; } private set => Unused2Store = value; }
+        #endregion
         #region EditorWidth
-        private int? _EditorWidthLocation;
+        private int? _EditorWidthLocationStore;
+        private int? _EditorWidthLocation { get { EnsureFilled(); return _EditorWidthLocationStore; } set => _EditorWidthLocationStore = value; }
         public UInt32? EditorWidth => _EditorWidthLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EditorWidthLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         partial void CustomFactoryEnd(

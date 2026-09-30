@@ -1964,19 +1964,28 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region NAM1
-        private int? _NAM1Location;
+        private int? _NAM1LocationStore;
+        private int? _NAM1Location { get { EnsureFilled(); return _NAM1LocationStore; } set => _NAM1LocationStore = value; }
         public ReadOnlyMemorySlice<Byte> NAM1 => _NAM1Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM1Location.Value, _package.MetaData.Constants) : ReadOnlyMemorySlice<byte>.Empty;
         #endregion
         #region NAM2
-        private int? _NAM2Location;
+        private int? _NAM2LocationStore;
+        private int? _NAM2Location { get { EnsureFilled(); return _NAM2LocationStore; } set => _NAM2LocationStore = value; }
         public ReadOnlyMemorySlice<Byte> NAM2 => _NAM2Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM2Location.Value, _package.MetaData.Constants) : ReadOnlyMemorySlice<byte>.Empty;
         #endregion
         #region NAM5
-        private int? _NAM5Location;
+        private int? _NAM5LocationStore;
+        private int? _NAM5Location { get { EnsureFilled(); return _NAM5LocationStore; } set => _NAM5LocationStore = value; }
         public ReadOnlyMemorySlice<Byte> NAM5 => _NAM5Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM5Location.Value, _package.MetaData.Constants) : ReadOnlyMemorySlice<byte>.Empty;
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IPlanetContentManagerBranchNodeGetter>> Nodes { get; private set; } = [];
-        public IReadOnlyList<IConditionGetter>? Conditions { get; private set; }
+        #region Nodes
+        private IReadOnlyList<IFormLinkGetter<IPlanetContentManagerBranchNodeGetter>> NodesStore = [];
+        public IReadOnlyList<IFormLinkGetter<IPlanetContentManagerBranchNodeGetter>> Nodes { get { EnsureFilled(); return NodesStore; } private set => NodesStore = value; }
+        #endregion
+        #region Conditions
+        private IReadOnlyList<IConditionGetter>? ConditionsStore;
+        public IReadOnlyList<IConditionGetter>? Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -1998,6 +2007,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new PlanetContentManagerTreeBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => PlanetContentManagerTreeFill((PlanetContentManagerTreeBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void PlanetContentManagerTreeFill(
+            PlanetContentManagerTreeBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2005,9 +2031,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new PlanetContentManagerTreeBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2020,7 +2044,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IPlanetContentManagerTreeGetter PlanetContentManagerTreeFactory(

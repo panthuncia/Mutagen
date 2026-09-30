@@ -1343,7 +1343,8 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        private RangeInt32? _ONAMLocation;
+        private RangeInt32? _ONAMLocationStore;
+        private RangeInt32? _ONAMLocation { get { EnsureFilled(); return _ONAMLocationStore; } set => _ONAMLocationStore = value; }
         #region Static
         private int _StaticLocation => _ONAMLocation!.Value.Min;
         private bool _Static_IsSet => _ONAMLocation.HasValue;
@@ -1354,7 +1355,10 @@ namespace Mutagen.Bethesda.Starfield
         private bool _Unknown_IsSet => _ONAMLocation.HasValue;
         public Int32 Unknown => _Unknown_IsSet ? BinaryPrimitives.ReadInt32LittleEndian(_recordData.Slice(_UnknownLocation, 4)) : default(Int32);
         #endregion
-        public IReadOnlyList<IStaticPlacementGetter>? Placements { get; private set; }
+        #region Placements
+        private IReadOnlyList<IStaticPlacementGetter>? PlacementsStore;
+        public IReadOnlyList<IStaticPlacementGetter>? Placements { get { EnsureFilled(); return PlacementsStore; } private set => PlacementsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

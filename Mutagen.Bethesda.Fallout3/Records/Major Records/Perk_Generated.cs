@@ -2174,7 +2174,8 @@ namespace Mutagen.Bethesda.Fallout3
 
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2182,13 +2183,21 @@ namespace Mutagen.Bethesda.Fallout3
         #endregion
         #endregion
         #region Description
-        private int? _DescriptionLocation;
+        private int? _DescriptionLocationStore;
+        private int? _DescriptionLocation { get { EnsureFilled(); return _DescriptionLocationStore; } set => _DescriptionLocationStore = value; }
         public String Description => _DescriptionLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DescriptionLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
-        public IIconsGetter? Icons { get; private set; }
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Icons
+        private IIconsGetter? IconsStore;
+        public IIconsGetter? Icons { get { EnsureFilled(); return IconsStore; } private set => IconsStore = value; }
+        #endregion
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region PerkData
-        private RangeInt32? _PerkDataLocation;
+        private RangeInt32? _PerkDataLocationStore;
+        private RangeInt32? _PerkDataLocation { get { EnsureFilled(); return _PerkDataLocationStore; } set => _PerkDataLocationStore = value; }
         private IPerkDataGetter? _PerkData => _PerkDataLocation.HasValue ? PerkDataBinaryOverlay.PerkDataFactory(_recordData.Slice(_PerkDataLocation!.Value.Min), _package) : default;
         public IPerkDataGetter PerkData => _PerkData ?? new PerkData();
         #endregion

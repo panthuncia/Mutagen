@@ -1516,13 +1516,15 @@ namespace Mutagen.Bethesda.Fallout3
         #region Island
         public partial IIslandDataGetter? GetIslandCustom(int location);
         public IIslandDataGetter? Island => GetIslandCustom(location: 0x1C);
-        protected int IslandEndingPos;
+        private int IslandEndingPosStore;
+        protected int IslandEndingPos { get { EnsureFilled(); return IslandEndingPosStore; } private set => IslandEndingPosStore = value; }
         partial void CustomIslandEndPos();
         #endregion
         #region PreferredPercent
         public partial Single GetPreferredPercentCustom(int location);
         public Single PreferredPercent => GetPreferredPercentCustom(location: IslandEndingPos);
-        protected int PreferredPercentEndingPos;
+        private int PreferredPercentEndingPosStore;
+        protected int PreferredPercentEndingPos { get { EnsureFilled(); return PreferredPercentEndingPosStore; } private set => PreferredPercentEndingPosStore = value; }
         partial void CustomPreferredPercentEndPos();
         #endregion
         partial void CustomFactoryEnd(

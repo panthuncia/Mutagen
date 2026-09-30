@@ -1217,15 +1217,18 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region ID
-        private int? _IDLocation;
+        private int? _IDLocationStore;
+        private int? _IDLocation { get { EnsureFilled(); return _IDLocationStore; } set => _IDLocationStore = value; }
         public UInt32 ID => _IDLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IDLocation.Value, _package.MetaData.Constants)) : default(UInt32);
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public SceneActor.Flag? Flags => EnumBinaryTranslation<SceneActor.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 4);
         #endregion
         #region BehaviorFlags
-        private int? _BehaviorFlagsLocation;
+        private int? _BehaviorFlagsLocationStore;
+        private int? _BehaviorFlagsLocation { get { EnsureFilled(); return _BehaviorFlagsLocationStore; } set => _BehaviorFlagsLocationStore = value; }
         public SceneActor.BehaviorFlag? BehaviorFlags => EnumBinaryTranslation<SceneActor.BehaviorFlag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_BehaviorFlagsLocation, _recordData, _package, 4);
         #endregion
         partial void CustomFactoryEnd(

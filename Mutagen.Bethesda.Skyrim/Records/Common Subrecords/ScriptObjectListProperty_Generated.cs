@@ -1222,7 +1222,8 @@ namespace Mutagen.Bethesda.Skyrim
 
         #region Objects
         public IReadOnlyList<IScriptObjectPropertyGetter> Objects => BinaryOverlayList.FactoryByCountLength<IScriptObjectPropertyGetter>(_structData, _package, 8, countLength: 4, (s, p) => ScriptObjectPropertyBinaryOverlay.ScriptObjectPropertyFactory(s, p));
-        protected int ObjectsEndingPos;
+        private int ObjectsEndingPosStore;
+        protected int ObjectsEndingPos { get { EnsureFilled(); return ObjectsEndingPosStore; } private set => ObjectsEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

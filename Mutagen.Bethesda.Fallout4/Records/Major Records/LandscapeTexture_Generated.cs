@@ -1871,14 +1871,17 @@ namespace Mutagen.Bethesda.Fallout4
 
 
         #region TextureSet
-        private int? _TextureSetLocation;
+        private int? _TextureSetLocationStore;
+        private int? _TextureSetLocation { get { EnsureFilled(); return _TextureSetLocationStore; } set => _TextureSetLocationStore = value; }
         public IFormLinkNullableGetter<ITextureSetGetter> TextureSet => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ITextureSetGetter>(_package, _recordData, _TextureSetLocation);
         #endregion
         #region MaterialType
-        private int? _MaterialTypeLocation;
+        private int? _MaterialTypeLocationStore;
+        private int? _MaterialTypeLocation { get { EnsureFilled(); return _MaterialTypeLocationStore; } set => _MaterialTypeLocationStore = value; }
         public IFormLinkGetter<IMaterialTypeGetter> MaterialType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMaterialTypeGetter>(_package, _recordData, _MaterialTypeLocation);
         #endregion
-        private RangeInt32? _HNAMLocation;
+        private RangeInt32? _HNAMLocationStore;
+        private RangeInt32? _HNAMLocation { get { EnsureFilled(); return _HNAMLocationStore; } set => _HNAMLocationStore = value; }
         #region HavokFriction
         private int _HavokFrictionLocation => _HNAMLocation!.Value.Min;
         private bool _HavokFriction_IsSet => _HNAMLocation.HasValue;
@@ -1890,10 +1893,14 @@ namespace Mutagen.Bethesda.Fallout4
         public Byte HavokRestitution => _HavokRestitution_IsSet ? _recordData.Span[_HavokRestitutionLocation] : default;
         #endregion
         #region TextureSpecularExponent
-        private int? _TextureSpecularExponentLocation;
+        private int? _TextureSpecularExponentLocationStore;
+        private int? _TextureSpecularExponentLocation { get { EnsureFilled(); return _TextureSpecularExponentLocationStore; } set => _TextureSpecularExponentLocationStore = value; }
         public Byte TextureSpecularExponent => _TextureSpecularExponentLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _TextureSpecularExponentLocation.Value, _package.MetaData.Constants)[0] : default(Byte);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IGrassGetter>> Grasses { get; private set; } = [];
+        #region Grasses
+        private IReadOnlyList<IFormLinkGetter<IGrassGetter>> GrassesStore = [];
+        public IReadOnlyList<IFormLinkGetter<IGrassGetter>> Grasses { get { EnsureFilled(); return GrassesStore; } private set => GrassesStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -1915,6 +1922,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new LandscapeTextureBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => LandscapeTextureFill((LandscapeTextureBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void LandscapeTextureFill(
+            LandscapeTextureBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1922,9 +1946,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new LandscapeTextureBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1937,7 +1959,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ILandscapeTextureGetter LandscapeTextureFactory(

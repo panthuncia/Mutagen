@@ -2349,35 +2349,43 @@ namespace Mutagen.Bethesda.Starfield
         public Int32 Unknown1 => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x0, 0x4));
         #region SpectralClass
         public String SpectralClass => BinaryStringUtility.ParsePrependedString(_structData.Slice(0x4), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int SpectralClassEndingPos;
+        private int SpectralClassEndingPosStore;
+        protected int SpectralClassEndingPos { get { EnsureFilled(); return SpectralClassEndingPosStore; } private set => SpectralClassEndingPosStore = value; }
         #endregion
         #region CatalogueId
         public String CatalogueId => BinaryStringUtility.ParsePrependedString(_structData.Slice(SpectralClassEndingPos), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int CatalogueIdEndingPos;
+        private int CatalogueIdEndingPosStore;
+        protected int CatalogueIdEndingPos { get { EnsureFilled(); return CatalogueIdEndingPosStore; } private set => CatalogueIdEndingPosStore = value; }
         #endregion
         #region Life
         public String Life => BinaryStringUtility.ParsePrependedString(_structData.Slice(CatalogueIdEndingPos), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int LifeEndingPos;
+        private int LifeEndingPosStore;
+        protected int LifeEndingPos { get { EnsureFilled(); return LifeEndingPosStore; } private set => LifeEndingPosStore = value; }
         #endregion
         #region Magnetosphere
         public String Magnetosphere => BinaryStringUtility.ParsePrependedString(_structData.Slice(LifeEndingPos), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int MagnetosphereEndingPos;
+        private int MagnetosphereEndingPosStore;
+        protected int MagnetosphereEndingPos { get { EnsureFilled(); return MagnetosphereEndingPosStore; } private set => MagnetosphereEndingPosStore = value; }
         #endregion
         #region MassInKg
         public String MassInKg => BinaryStringUtility.ParsePrependedString(_structData.Slice(MagnetosphereEndingPos), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int MassInKgEndingPos;
+        private int MassInKgEndingPosStore;
+        protected int MassInKgEndingPos { get { EnsureFilled(); return MassInKgEndingPosStore; } private set => MassInKgEndingPosStore = value; }
         #endregion
         #region Type
         public String Type => BinaryStringUtility.ParsePrependedString(_structData.Slice(MassInKgEndingPos), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int TypeEndingPos;
+        private int TypeEndingPosStore;
+        protected int TypeEndingPos { get { EnsureFilled(); return TypeEndingPosStore; } private set => TypeEndingPosStore = value; }
         #endregion
         #region SettledStar
         public String SettledStar => BinaryStringUtility.ParsePrependedString(_structData.Slice(TypeEndingPos), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int SettledStarEndingPos;
+        private int SettledStarEndingPosStore;
+        protected int SettledStarEndingPos { get { EnsureFilled(); return SettledStarEndingPosStore; } private set => SettledStarEndingPosStore = value; }
         #endregion
         #region Special
         public String Special => BinaryStringUtility.ParsePrependedString(_structData.Slice(SettledStarEndingPos), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int SpecialEndingPos;
+        private int SpecialEndingPosStore;
+        protected int SpecialEndingPos { get { EnsureFilled(); return SpecialEndingPosStore; } private set => SpecialEndingPosStore = value; }
         #endregion
         public Double Perihelion => BinaryPrimitives.ReadDoubleLittleEndian(_structData.Slice(SpecialEndingPos, 0x8));
         public Double StarDistance => BinaryPrimitives.ReadDoubleLittleEndian(_structData.Slice(SpecialEndingPos + 0x8, 0x8));

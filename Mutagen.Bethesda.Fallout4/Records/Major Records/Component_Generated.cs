@@ -1900,12 +1900,14 @@ namespace Mutagen.Bethesda.Fallout4
 
 
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         private IObjectBoundsGetter? _ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         public IObjectBoundsGetter ObjectBounds => _ObjectBounds ?? new ObjectBounds();
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -1917,19 +1919,23 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #endregion
         #region CraftingSound
-        private int? _CraftingSoundLocation;
+        private int? _CraftingSoundLocationStore;
+        private int? _CraftingSoundLocation { get { EnsureFilled(); return _CraftingSoundLocationStore; } set => _CraftingSoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundDescriptorGetter> CraftingSound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundDescriptorGetter>(_package, _recordData, _CraftingSoundLocation);
         #endregion
         #region AutoCalcValue
-        private int? _AutoCalcValueLocation;
+        private int? _AutoCalcValueLocationStore;
+        private int? _AutoCalcValueLocation { get { EnsureFilled(); return _AutoCalcValueLocationStore; } set => _AutoCalcValueLocationStore = value; }
         public UInt32? AutoCalcValue => _AutoCalcValueLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AutoCalcValueLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region ScrapItem
-        private int? _ScrapItemLocation;
+        private int? _ScrapItemLocationStore;
+        private int? _ScrapItemLocation { get { EnsureFilled(); return _ScrapItemLocationStore; } set => _ScrapItemLocationStore = value; }
         public IFormLinkNullableGetter<IMiscItemGetter> ScrapItem => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMiscItemGetter>(_package, _recordData, _ScrapItemLocation);
         #endregion
         #region ModScrapScalar
-        private int? _ModScrapScalarLocation;
+        private int? _ModScrapScalarLocationStore;
+        private int? _ModScrapScalarLocation { get { EnsureFilled(); return _ModScrapScalarLocationStore; } set => _ModScrapScalarLocationStore = value; }
         public IFormLinkNullableGetter<IGlobalGetter> ModScrapScalar => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IGlobalGetter>(_package, _recordData, _ModScrapScalarLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -1953,6 +1959,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ComponentBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ComponentFill((ComponentBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ComponentFill(
+            ComponentBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1960,9 +1983,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ComponentBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1975,7 +1996,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IComponentGetter ComponentFactory(

@@ -1149,11 +1149,13 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region FromEvent
-        private int? _FromEventLocation;
+        private int? _FromEventLocationStore;
+        private int? _FromEventLocation { get { EnsureFilled(); return _FromEventLocationStore; } set => _FromEventLocationStore = value; }
         public RecordType? FromEvent => _FromEventLocation.HasValue ? new RecordType(BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FromEventLocation.Value, _package.MetaData.Constants))) : default(RecordType?);
         #endregion
         #region EventData
-        private int? _EventDataLocation;
+        private int? _EventDataLocationStore;
+        private int? _EventDataLocation { get { EnsureFilled(); return _EventDataLocationStore; } set => _EventDataLocationStore = value; }
         public GetEventDataConditionData.EventMember? EventData => EnumBinaryTranslation<GetEventDataConditionData.EventMember, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_EventDataLocation, _recordData, _package, 4);
         #endregion
         partial void CustomFactoryEnd(

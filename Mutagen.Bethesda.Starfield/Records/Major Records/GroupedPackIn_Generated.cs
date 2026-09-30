@@ -1456,27 +1456,33 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region GNAM
-        private int? _GNAMLocation;
+        private int? _GNAMLocationStore;
+        private int? _GNAMLocation { get { EnsureFilled(); return _GNAMLocationStore; } set => _GNAMLocationStore = value; }
         public IFormLinkNullableGetter<IPackInGetter> GNAM => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IPackInGetter>(_package, _recordData, _GNAMLocation);
         #endregion
         #region HNAM
-        private int? _HNAMLocation;
+        private int? _HNAMLocationStore;
+        private int? _HNAMLocation { get { EnsureFilled(); return _HNAMLocationStore; } set => _HNAMLocationStore = value; }
         public IFormLinkNullableGetter<IPlacedObjectGetter> HNAM => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IPlacedObjectGetter>(_package, _recordData, _HNAMLocation);
         #endregion
         #region INAM
-        private int? _INAMLocation;
+        private int? _INAMLocationStore;
+        private int? _INAMLocation { get { EnsureFilled(); return _INAMLocationStore; } set => _INAMLocationStore = value; }
         public Boolean? INAM => _INAMLocation.HasValue ? BinaryPrimitives.ReadUInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _INAMLocation.Value, _package.MetaData.Constants)) >= 1 : default(Boolean?);
         #endregion
         #region JNAM
-        private int? _JNAMLocation;
+        private int? _JNAMLocationStore;
+        private int? _JNAMLocation { get { EnsureFilled(); return _JNAMLocationStore; } set => _JNAMLocationStore = value; }
         public IFormLinkNullableGetter<IPackInGetter> JNAM => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IPackInGetter>(_package, _recordData, _JNAMLocation);
         #endregion
         #region LNAM
-        private int? _LNAMLocation;
+        private int? _LNAMLocationStore;
+        private int? _LNAMLocation { get { EnsureFilled(); return _LNAMLocationStore; } set => _LNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte> LNAM => _LNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _LNAMLocation.Value, _package.MetaData.Constants) : ReadOnlyMemorySlice<byte>.Empty;
         #endregion
         #region XGOM
-        private int? _XGOMLocation;
+        private int? _XGOMLocationStore;
+        private int? _XGOMLocation { get { EnsureFilled(); return _XGOMLocationStore; } set => _XGOMLocationStore = value; }
         public Boolean XGOM => _XGOMLocation.HasValue ? true : default(Boolean);
         #endregion
         partial void CustomFactoryEnd(

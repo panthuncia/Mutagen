@@ -1647,20 +1647,29 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region MetadataSummary
-        private RangeInt32? _MetadataSummaryLocation;
+        private RangeInt32? _MetadataSummaryLocationStore;
+        private RangeInt32? _MetadataSummaryLocation { get { EnsureFilled(); return _MetadataSummaryLocationStore; } set => _MetadataSummaryLocationStore = value; }
         private IScriptMetaSummaryGetter? _MetadataSummary => _MetadataSummaryLocation.HasValue ? ScriptMetaSummaryBinaryOverlay.ScriptMetaSummaryFactory(_recordData.Slice(_MetadataSummaryLocation!.Value.Min), _package) : default;
         public IScriptMetaSummaryGetter MetadataSummary => _MetadataSummary ?? new ScriptMetaSummary();
         #endregion
         #region CompiledScript
-        private int? _CompiledScriptLocation;
+        private int? _CompiledScriptLocationStore;
+        private int? _CompiledScriptLocation { get { EnsureFilled(); return _CompiledScriptLocationStore; } set => _CompiledScriptLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? CompiledScript => _CompiledScriptLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _CompiledScriptLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region SourceCode
-        private int? _SourceCodeLocation;
+        private int? _SourceCodeLocationStore;
+        private int? _SourceCodeLocation { get { EnsureFilled(); return _SourceCodeLocationStore; } set => _SourceCodeLocationStore = value; }
         public String? SourceCode => _SourceCodeLocation.HasValue ? BinaryStringUtility.ToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SourceCodeLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        public IReadOnlyList<ILocalVariableGetter> LocalVariables { get; private set; } = [];
-        public IReadOnlyList<IAScriptReferenceGetter> References { get; private set; } = [];
+        #region LocalVariables
+        private IReadOnlyList<ILocalVariableGetter> LocalVariablesStore = [];
+        public IReadOnlyList<ILocalVariableGetter> LocalVariables { get { EnsureFilled(); return LocalVariablesStore; } private set => LocalVariablesStore = value; }
+        #endregion
+        #region References
+        private IReadOnlyList<IAScriptReferenceGetter> ReferencesStore = [];
+        public IReadOnlyList<IAScriptReferenceGetter> References { get { EnsureFilled(); return ReferencesStore; } private set => ReferencesStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

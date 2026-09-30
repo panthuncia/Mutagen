@@ -1531,11 +1531,18 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public IDestructableDataGetter? Data => _DataLocation.HasValue ? DestructableDataBinaryOverlay.DestructableDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         #endregion
-        public IReadOnlyList<IResistanceDestructibleGetter>? Resistances { get; private set; }
-        public IReadOnlyList<IDestructionStageGetter> Stages { get; private set; } = [];
+        #region Resistances
+        private IReadOnlyList<IResistanceDestructibleGetter>? ResistancesStore;
+        public IReadOnlyList<IResistanceDestructibleGetter>? Resistances { get { EnsureFilled(); return ResistancesStore; } private set => ResistancesStore = value; }
+        #endregion
+        #region Stages
+        private IReadOnlyList<IDestructionStageGetter> StagesStore = [];
+        public IReadOnlyList<IDestructionStageGetter> Stages { get { EnsureFilled(); return StagesStore; } private set => StagesStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

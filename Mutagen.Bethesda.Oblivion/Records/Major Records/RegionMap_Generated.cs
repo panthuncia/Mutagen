@@ -1132,7 +1132,8 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region Map
-        private int? _MapLocation;
+        private int? _MapLocationStore;
+        private int? _MapLocation { get { EnsureFilled(); return _MapLocationStore; } set => _MapLocationStore = value; }
         public String? Map => _MapLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MapLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(

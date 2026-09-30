@@ -1288,9 +1288,13 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region PcmTypeKeyword
-        private int? _PcmTypeKeywordLocation;
+        private int? _PcmTypeKeywordLocationStore;
+        private int? _PcmTypeKeywordLocation { get { EnsureFilled(); return _PcmTypeKeywordLocationStore; } set => _PcmTypeKeywordLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> PcmTypeKeyword => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _PcmTypeKeywordLocation);
         #endregion
         partial void CustomFactoryEnd(

@@ -3817,7 +3817,8 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        public WaterData.VersioningBreaks Versioning { get; private set; }
+        private WaterData.VersioningBreaks VersioningStore;
+        public WaterData.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public UInt32 Unused1 => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0x0, 0x4));
         public UInt32 Unused2 => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0x4, 0x4));
         public UInt32 Unused3 => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0x8, 0x4));

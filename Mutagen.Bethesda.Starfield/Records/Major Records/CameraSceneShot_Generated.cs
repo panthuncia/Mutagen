@@ -1983,54 +1983,69 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region CameraShot
-        private int? _CameraShotLocation;
+        private int? _CameraShotLocationStore;
+        private int? _CameraShotLocation { get { EnsureFilled(); return _CameraShotLocationStore; } set => _CameraShotLocationStore = value; }
         public IFormLinkNullableGetter<ICameraShotGetter> CameraShot => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ICameraShotGetter>(_package, _recordData, _CameraShotLocation);
         #endregion
         #region ALLA
-        private int? _ALLALocation;
+        private int? _ALLALocationStore;
+        private int? _ALLALocation { get { EnsureFilled(); return _ALLALocationStore; } set => _ALLALocationStore = value; }
         public Int32 ALLA => _ALLALocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ALLALocation.Value, _package.MetaData.Constants)) : default(Int32);
         #endregion
         #region REPL
-        private int? _REPLLocation;
+        private int? _REPLLocationStore;
+        private int? _REPLLocation { get { EnsureFilled(); return _REPLLocationStore; } set => _REPLLocationStore = value; }
         public IFormLinkGetter<IPlacedGetter> REPL => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IPlacedGetter>(_package, _recordData, _REPLLocation);
         #endregion
         #region HNAM
-        private int? _HNAMLocation;
+        private int? _HNAMLocationStore;
+        private int? _HNAMLocation { get { EnsureFilled(); return _HNAMLocationStore; } set => _HNAMLocationStore = value; }
         public Int32 HNAM => _HNAMLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HNAMLocation.Value, _package.MetaData.Constants)) : default(Int32);
         #endregion
         #region VCLR
-        private int? _VCLRLocation;
+        private int? _VCLRLocationStore;
+        private int? _VCLRLocation { get { EnsureFilled(); return _VCLRLocationStore; } set => _VCLRLocationStore = value; }
         public Int32 VCLR => _VCLRLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _VCLRLocation.Value, _package.MetaData.Constants)) : default(Int32);
         #endregion
         #region LVCR
-        private int? _LVCRLocation;
+        private int? _LVCRLocationStore;
+        private int? _LVCRLocation { get { EnsureFilled(); return _LVCRLocationStore; } set => _LVCRLocationStore = value; }
         public Int32 LVCR => _LVCRLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LVCRLocation.Value, _package.MetaData.Constants)) : default(Int32);
         #endregion
         #region BTXT
-        private int? _BTXTLocation;
+        private int? _BTXTLocationStore;
+        private int? _BTXTLocation { get { EnsureFilled(); return _BTXTLocationStore; } set => _BTXTLocationStore = value; }
         public Boolean BTXT => _BTXTLocation.HasValue ? true : default(Boolean);
         #endregion
         #region ATXT
-        private int? _ATXTLocation;
+        private int? _ATXTLocationStore;
+        private int? _ATXTLocation { get { EnsureFilled(); return _ATXTLocationStore; } set => _ATXTLocationStore = value; }
         public Boolean ATXT => _ATXTLocation.HasValue ? true : default(Boolean);
         #endregion
         #region VTXT
-        private int? _VTXTLocation;
+        private int? _VTXTLocationStore;
+        private int? _VTXTLocation { get { EnsureFilled(); return _VTXTLocationStore; } set => _VTXTLocationStore = value; }
         public Boolean VTXT => _VTXTLocation.HasValue ? true : default(Boolean);
         #endregion
         #region AIDT
-        private int? _AIDTLocation;
+        private int? _AIDTLocationStore;
+        private int? _AIDTLocation { get { EnsureFilled(); return _AIDTLocationStore; } set => _AIDTLocationStore = value; }
         public Boolean AIDT => _AIDTLocation.HasValue ? true : default(Boolean);
         #endregion
         #region MPCD
-        private int? _MPCDLocation;
+        private int? _MPCDLocationStore;
+        private int? _MPCDLocation { get { EnsureFilled(); return _MPCDLocationStore; } set => _MPCDLocationStore = value; }
         public Boolean MPCD => _MPCDLocation.HasValue ? true : default(Boolean);
         #endregion
         #region VNAM
-        private int? _VNAMLocation;
+        private int? _VNAMLocationStore;
+        private int? _VNAMLocation { get { EnsureFilled(); return _VNAMLocationStore; } set => _VNAMLocationStore = value; }
         public Boolean VNAM => _VNAMLocation.HasValue ? true : default(Boolean);
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

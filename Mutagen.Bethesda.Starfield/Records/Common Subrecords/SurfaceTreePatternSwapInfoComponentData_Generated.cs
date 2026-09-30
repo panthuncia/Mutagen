@@ -1263,11 +1263,13 @@ namespace Mutagen.Bethesda.Starfield
 
         #region Data
         public IReadOnlyList<ISurfaceTreePatternSwapInfoItemGetter> Data => BinaryOverlayList.FactoryByCountLength<ISurfaceTreePatternSwapInfoItemGetter>(_structData, _package, 5, countLength: 4, (s, p) => SurfaceTreePatternSwapInfoItemBinaryOverlay.SurfaceTreePatternSwapInfoItemFactory(s, p));
-        protected int DataEndingPos;
+        private int DataEndingPosStore;
+        protected int DataEndingPos { get { EnsureFilled(); return DataEndingPosStore; } private set => DataEndingPosStore = value; }
         #endregion
         #region Unknown
         public ReadOnlyMemorySlice<Byte> Unknown => _structData.Span.Slice(DataEndingPos).ToArray();
-        protected int UnknownEndingPos;
+        private int UnknownEndingPosStore;
+        protected int UnknownEndingPos { get { EnsureFilled(); return UnknownEndingPosStore; } private set => UnknownEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

@@ -3886,30 +3886,37 @@ namespace Mutagen.Bethesda.Fallout4
         public Terminal.MajorFlag MajorFlags => (Terminal.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterIndexedGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterIndexedBinaryOverlay.VirtualMachineAdapterIndexedFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         private IObjectBoundsGetter? _ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         public IObjectBoundsGetter ObjectBounds => _ObjectBounds ?? new ObjectBounds();
         #endregion
         #region PreviewTransform
-        private int? _PreviewTransformLocation;
+        private int? _PreviewTransformLocationStore;
+        private int? _PreviewTransformLocation { get { EnsureFilled(); return _PreviewTransformLocationStore; } set => _PreviewTransformLocationStore = value; }
         public IFormLinkNullableGetter<ITransformGetter> PreviewTransform => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ITransformGetter>(_package, _recordData, _PreviewTransformLocation);
         #endregion
         #region HeaderText
-        private int? _HeaderTextLocation;
+        private int? _HeaderTextLocationStore;
+        private int? _HeaderTextLocation { get { EnsureFilled(); return _HeaderTextLocationStore; } set => _HeaderTextLocationStore = value; }
         public ITranslatedStringGetter? HeaderText => _HeaderTextLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HeaderTextLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         #region WelcomeText
-        private int? _WelcomeTextLocation;
+        private int? _WelcomeTextLocationStore;
+        private int? _WelcomeTextLocation { get { EnsureFilled(); return _WelcomeTextLocationStore; } set => _WelcomeTextLocationStore = value; }
         public ITranslatedStringGetter? WelcomeText => _WelcomeTextLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _WelcomeTextLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -3920,27 +3927,40 @@ namespace Mutagen.Bethesda.Fallout4
         ITranslatedStringGetter ITranslatedNamedRequiredGetter.Name => this.Name ?? TranslatedString.Empty;
         #endregion
         #endregion
-        public IModelGetter? Model { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
         #region Keywords
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get; private set; }
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? KeywordsStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get { EnsureFilled(); return KeywordsStore; } private set => KeywordsStore = value; }
         IReadOnlyList<IFormLinkGetter<IKeywordCommonGetter>>? IKeywordedGetter.Keywords => this.Keywords;
         #endregion
-        public IReadOnlyList<IObjectPropertyGetter>? Properties { get; private set; }
+        #region Properties
+        private IReadOnlyList<IObjectPropertyGetter>? PropertiesStore;
+        public IReadOnlyList<IObjectPropertyGetter>? Properties { get { EnsureFilled(); return PropertiesStore; } private set => PropertiesStore = value; }
+        #endregion
         #region PNAM
-        private int? _PNAMLocation;
+        private int? _PNAMLocationStore;
+        private int? _PNAMLocation { get { EnsureFilled(); return _PNAMLocationStore; } set => _PNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? PNAM => _PNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _PNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region LoopingSoundExport
         partial void LoopingSoundExportCustomParse(
             OverlayStream stream,
             int offset);
-        protected int LoopingSoundExportEndingPos;
+        private int LoopingSoundExportEndingPosStore;
+        protected int LoopingSoundExportEndingPos { get { EnsureFilled(); return LoopingSoundExportEndingPosStore; } private set => LoopingSoundExportEndingPosStore = value; }
         #endregion
         #region FNAM
-        private int? _FNAMLocation;
+        private int? _FNAMLocationStore;
+        private int? _FNAMLocation { get { EnsureFilled(); return _FNAMLocationStore; } set => _FNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? FNAM => _FNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
-        public IReadOnlyList<ITerminalHolotapeEntryGetter>? Holotapes { get; private set; }
+        #region Holotapes
+        private IReadOnlyList<ITerminalHolotapeEntryGetter>? HolotapesStore;
+        public IReadOnlyList<ITerminalHolotapeEntryGetter>? Holotapes { get { EnsureFilled(); return HolotapesStore; } private set => HolotapesStore = value; }
+        #endregion
         #region Flags
         partial void FlagsCustomParse(
             OverlayStream stream,
@@ -3950,11 +3970,13 @@ namespace Mutagen.Bethesda.Fallout4
         public Terminal.Flag? Flags => GetFlagsCustom();
         #endregion
         #region WorkbenchData
-        private int? _WorkbenchDataLocation;
+        private int? _WorkbenchDataLocationStore;
+        private int? _WorkbenchDataLocation { get { EnsureFilled(); return _WorkbenchDataLocationStore; } set => _WorkbenchDataLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? WorkbenchData => _WorkbenchDataLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _WorkbenchDataLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region MarkerModel
-        private int? _MarkerModelLocation;
+        private int? _MarkerModelLocationStore;
+        private int? _MarkerModelLocation { get { EnsureFilled(); return _MarkerModelLocationStore; } set => _MarkerModelLocationStore = value; }
         public String? MarkerModel => _MarkerModelLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MarkerModelLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region MarkerParameters
@@ -3965,8 +3987,14 @@ namespace Mutagen.Bethesda.Fallout4
             RecordType type,
             PreviousParse lastParsed);
         #endregion
-        public IReadOnlyList<ITerminalBodyTextGetter>? BodyTexts { get; private set; }
-        public IReadOnlyList<ITerminalMenuItemGetter>? MenuItems { get; private set; }
+        #region BodyTexts
+        private IReadOnlyList<ITerminalBodyTextGetter>? BodyTextsStore;
+        public IReadOnlyList<ITerminalBodyTextGetter>? BodyTexts { get { EnsureFilled(); return BodyTextsStore; } private set => BodyTextsStore = value; }
+        #endregion
+        #region MenuItems
+        private IReadOnlyList<ITerminalMenuItemGetter>? MenuItemsStore;
+        public IReadOnlyList<ITerminalMenuItemGetter>? MenuItems { get { EnsureFilled(); return MenuItemsStore; } private set => MenuItemsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

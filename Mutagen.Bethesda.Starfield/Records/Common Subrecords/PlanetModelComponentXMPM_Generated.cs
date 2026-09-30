@@ -1364,11 +1364,14 @@ namespace Mutagen.Bethesda.Starfield
 
         #region UnknownStrings
         public IReadOnlyList<String> UnknownStrings => BinaryOverlayList.FactoryByCountLengthWithItemLength<String>(_structData, _package, countLength: 2, itemLengthLength: 2, (s, p) => BinaryStringUtility.ParsePrependedString(s, lengthLength: 2, encoding: p.MetaData.Encodings.NonTranslated));
-        protected int UnknownStringsEndingPos;
+        private int UnknownStringsEndingPosStore;
+        protected int UnknownStringsEndingPos { get { EnsureFilled(); return UnknownStringsEndingPosStore; } private set => UnknownStringsEndingPosStore = value; }
         #endregion
         #region UnknownSubItems
-        public IReadOnlyList<IPlanetModelComponentXMPMSubItemGetter> UnknownSubItems { get; private set; } = null!;
-        protected int UnknownSubItemsEndingPos;
+        private IReadOnlyList<IPlanetModelComponentXMPMSubItemGetter> UnknownSubItemsStore = null!;
+        public IReadOnlyList<IPlanetModelComponentXMPMSubItemGetter> UnknownSubItems { get { EnsureFilled(); return UnknownSubItemsStore; } private set => UnknownSubItemsStore = value; }
+        private int UnknownSubItemsEndingPosStore;
+        protected int UnknownSubItemsEndingPos { get { EnsureFilled(); return UnknownSubItemsEndingPosStore; } private set => UnknownSubItemsEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

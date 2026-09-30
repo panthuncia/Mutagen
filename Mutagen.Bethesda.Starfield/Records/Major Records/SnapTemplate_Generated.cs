@@ -2596,30 +2596,47 @@ namespace Mutagen.Bethesda.Starfield
         protected override Type LinkType => typeof(ISnapTemplateGetter);
 
 
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
         #region Parent
-        private int? _ParentLocation;
+        private int? _ParentLocationStore;
+        private int? _ParentLocation { get { EnsureFilled(); return _ParentLocationStore; } set => _ParentLocationStore = value; }
         public IFormLinkNullableGetter<ISnapTemplateGetter> Parent => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISnapTemplateGetter>(_package, _recordData, _ParentLocation);
         #endregion
-        public IReadOnlyList<ISnapNodeEntryGetter> Nodes { get; private set; } = [];
-        public IReadOnlyList<ISnapParentNodeEntryGetter> ParentNodes { get; private set; } = [];
+        #region Nodes
+        private IReadOnlyList<ISnapNodeEntryGetter> NodesStore = [];
+        public IReadOnlyList<ISnapNodeEntryGetter> Nodes { get { EnsureFilled(); return NodesStore; } private set => NodesStore = value; }
+        #endregion
+        #region ParentNodes
+        private IReadOnlyList<ISnapParentNodeEntryGetter> ParentNodesStore = [];
+        public IReadOnlyList<ISnapParentNodeEntryGetter> ParentNodes { get { EnsureFilled(); return ParentNodesStore; } private set => ParentNodesStore = value; }
+        #endregion
         #region BNAM
-        private int? _BNAMLocation;
+        private int? _BNAMLocationStore;
+        private int? _BNAMLocation { get { EnsureFilled(); return _BNAMLocationStore; } set => _BNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Single>? BNAM => _BNAMLocation.HasValue ? BinaryOverlayArrayHelper.FloatSliceFromFixedSize(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BNAMLocation.Value, _package.MetaData.Constants), amount: 6) : default(ReadOnlyMemorySlice<Single>?);
         #endregion
         #region NextNodeID
-        private int? _NextNodeIDLocation;
+        private int? _NextNodeIDLocationStore;
+        private int? _NextNodeIDLocation { get { EnsureFilled(); return _NextNodeIDLocationStore; } set => _NextNodeIDLocationStore = value; }
         public UInt32? NextNodeID => _NextNodeIDLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NextNodeIDLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region STPT
-        private int? _STPTLocation;
+        private int? _STPTLocationStore;
+        private int? _STPTLocation { get { EnsureFilled(); return _STPTLocationStore; } set => _STPTLocationStore = value; }
         public UInt32? STPT => _STPTLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _STPTLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region CNAM
-        private int? _CNAMLocation;
+        private int? _CNAMLocationStore;
+        private int? _CNAMLocation { get { EnsureFilled(); return _CNAMLocationStore; } set => _CNAMLocationStore = value; }
         public String? CNAM => _CNAMLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _CNAMLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        public IReadOnlyList<ISnapTemplateRnamTraversalGetter> SnapTemplateRnamTraversal { get; private set; } = [];
+        #region SnapTemplateRnamTraversal
+        private IReadOnlyList<ISnapTemplateRnamTraversalGetter> SnapTemplateRnamTraversalStore = [];
+        public IReadOnlyList<ISnapTemplateRnamTraversalGetter> SnapTemplateRnamTraversal { get { EnsureFilled(); return SnapTemplateRnamTraversalStore; } private set => SnapTemplateRnamTraversalStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -2641,6 +2658,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new SnapTemplateBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => SnapTemplateFill((SnapTemplateBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void SnapTemplateFill(
+            SnapTemplateBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2648,9 +2682,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new SnapTemplateBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2663,7 +2695,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ISnapTemplateGetter SnapTemplateFactory(

@@ -1488,31 +1488,38 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region SceneNotes
-        private int? _SceneNotesLocation;
+        private int? _SceneNotesLocationStore;
+        private int? _SceneNotesLocation { get { EnsureFilled(); return _SceneNotesLocationStore; } set => _SceneNotesLocationStore = value; }
         public String? SceneNotes => _SceneNotesLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SceneNotesLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region AliasID
-        private int? _AliasIDLocation;
+        private int? _AliasIDLocationStore;
+        private int? _AliasIDLocation { get { EnsureFilled(); return _AliasIDLocationStore; } set => _AliasIDLocationStore = value; }
         public Int32? AliasID => _AliasIDLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AliasIDLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region Index
-        private int? _IndexLocation;
+        private int? _IndexLocationStore;
+        private int? _IndexLocation { get { EnsureFilled(); return _IndexLocationStore; } set => _IndexLocationStore = value; }
         public UInt32? Index => _IndexLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IndexLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public ASceneAction.Flag? Flags => EnumBinaryTranslation<ASceneAction.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 4);
         #endregion
         #region StartPhase
-        private int? _StartPhaseLocation;
+        private int? _StartPhaseLocationStore;
+        private int? _StartPhaseLocation { get { EnsureFilled(); return _StartPhaseLocationStore; } set => _StartPhaseLocationStore = value; }
         public UInt32 StartPhase => _StartPhaseLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _StartPhaseLocation.Value, _package.MetaData.Constants)) : default(UInt32);
         #endregion
         #region EndPhase
-        private int? _EndPhaseLocation;
+        private int? _EndPhaseLocationStore;
+        private int? _EndPhaseLocation { get { EnsureFilled(); return _EndPhaseLocationStore; } set => _EndPhaseLocationStore = value; }
         public UInt32 EndPhase => _EndPhaseLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EndPhaseLocation.Value, _package.MetaData.Constants)) : default(UInt32);
         #endregion
         partial void CustomFactoryEnd(

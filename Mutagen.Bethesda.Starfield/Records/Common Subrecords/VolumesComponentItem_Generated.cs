@@ -1635,7 +1635,8 @@ namespace Mutagen.Bethesda.Starfield
         #region Ender
         public partial IAVolumesUnknownEnderGetter GetEnderCustom(int location);
         public IAVolumesUnknownEnderGetter Ender => GetEnderCustom(location: 0x50);
-        protected int EnderEndingPos;
+        private int EnderEndingPosStore;
+        protected int EnderEndingPos { get { EnsureFilled(); return EnderEndingPosStore; } private set => EnderEndingPosStore = value; }
         partial void CustomEnderEndPos();
         #endregion
         partial void CustomFactoryEnd(

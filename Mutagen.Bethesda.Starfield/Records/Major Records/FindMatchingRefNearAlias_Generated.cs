@@ -1260,11 +1260,13 @@ namespace Mutagen.Bethesda.Starfield
         public Int16? AliasID => GetAliasIDCustom();
         #endregion
         #region Type
-        private int? _TypeLocation;
+        private int? _TypeLocationStore;
+        private int? _TypeLocation { get { EnsureFilled(); return _TypeLocationStore; } set => _TypeLocationStore = value; }
         public FindMatchingRefNearAlias.TypeEnum? Type => EnumBinaryTranslation<FindMatchingRefNearAlias.TypeEnum, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_TypeLocation, _recordData, _package, 4);
         #endregion
         #region RefType
-        private int? _RefTypeLocation;
+        private int? _RefTypeLocationStore;
+        private int? _RefTypeLocation { get { EnsureFilled(); return _RefTypeLocationStore; } set => _RefTypeLocationStore = value; }
         public IFormLinkNullableGetter<ILocationReferenceTypeGetter> RefType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ILocationReferenceTypeGetter>(_package, _recordData, _RefTypeLocation);
         #endregion
         partial void CustomFactoryEnd(

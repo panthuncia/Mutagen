@@ -2501,7 +2501,8 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2513,14 +2514,17 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #endregion
         #region PartNode
-        private int? _PartNodeLocation;
+        private int? _PartNodeLocationStore;
+        private int? _PartNodeLocation { get { EnsureFilled(); return _PartNodeLocationStore; } set => _PartNodeLocationStore = value; }
         public String PartNode => _PartNodeLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _PartNodeLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region VatsTarget
-        private int? _VatsTargetLocation;
+        private int? _VatsTargetLocationStore;
+        private int? _VatsTargetLocation { get { EnsureFilled(); return _VatsTargetLocationStore; } set => _VatsTargetLocationStore = value; }
         public String VatsTarget => _VatsTargetLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _VatsTargetLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
-        private RangeInt32? _BPD2Location;
+        private RangeInt32? _BPD2LocationStore;
+        private RangeInt32? _BPD2Location { get { EnsureFilled(); return _BPD2LocationStore; } set => _BPD2LocationStore = value; }
         #region DamageMult
         private int _DamageMultLocation => _BPD2Location!.Value.Min;
         private bool _DamageMult_IsSet => _BPD2Location.HasValue;
@@ -2587,27 +2591,33 @@ namespace Mutagen.Bethesda.Starfield
         public Byte OnCrippleDecalCount => _OnCrippleDecalCount_IsSet ? _recordData.Span[_OnCrippleDecalCountLocation] : default;
         #endregion
         #region GoreTargetBone
-        private int? _GoreTargetBoneLocation;
+        private int? _GoreTargetBoneLocationStore;
+        private int? _GoreTargetBoneLocation { get { EnsureFilled(); return _GoreTargetBoneLocationStore; } set => _GoreTargetBoneLocationStore = value; }
         public String GoreTargetBone => _GoreTargetBoneLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _GoreTargetBoneLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region HitReactionStart
-        private int? _HitReactionStartLocation;
+        private int? _HitReactionStartLocationStore;
+        private int? _HitReactionStartLocation { get { EnsureFilled(); return _HitReactionStartLocationStore; } set => _HitReactionStartLocationStore = value; }
         public String? HitReactionStart => _HitReactionStartLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HitReactionStartLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region HitReactionEnd
-        private int? _HitReactionEndLocation;
+        private int? _HitReactionEndLocationStore;
+        private int? _HitReactionEndLocation { get { EnsureFilled(); return _HitReactionEndLocationStore; } set => _HitReactionEndLocationStore = value; }
         public String? HitReactionEnd => _HitReactionEndLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HitReactionEndLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region GoreEffectsBloodImpactMaterialType
-        private int? _GoreEffectsBloodImpactMaterialTypeLocation;
+        private int? _GoreEffectsBloodImpactMaterialTypeLocationStore;
+        private int? _GoreEffectsBloodImpactMaterialTypeLocation { get { EnsureFilled(); return _GoreEffectsBloodImpactMaterialTypeLocationStore; } set => _GoreEffectsBloodImpactMaterialTypeLocationStore = value; }
         public IFormLinkNullableGetter<IMaterialTypeGetter> GoreEffectsBloodImpactMaterialType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMaterialTypeGetter>(_package, _recordData, _GoreEffectsBloodImpactMaterialTypeLocation);
         #endregion
         #region OnCrippleBloodImpactMaterialType
-        private int? _OnCrippleBloodImpactMaterialTypeLocation;
+        private int? _OnCrippleBloodImpactMaterialTypeLocationStore;
+        private int? _OnCrippleBloodImpactMaterialTypeLocation { get { EnsureFilled(); return _OnCrippleBloodImpactMaterialTypeLocationStore; } set => _OnCrippleBloodImpactMaterialTypeLocationStore = value; }
         public IFormLinkNullableGetter<IMaterialTypeGetter> OnCrippleBloodImpactMaterialType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMaterialTypeGetter>(_package, _recordData, _OnCrippleBloodImpactMaterialTypeLocation);
         #endregion
         #region TwistVariablePrefix
-        private int? _TwistVariablePrefixLocation;
+        private int? _TwistVariablePrefixLocationStore;
+        private int? _TwistVariablePrefixLocation { get { EnsureFilled(); return _TwistVariablePrefixLocationStore; } set => _TwistVariablePrefixLocationStore = value; }
         public String? TwistVariablePrefix => _TwistVariablePrefixLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TwistVariablePrefixLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(

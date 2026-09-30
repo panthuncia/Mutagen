@@ -2327,25 +2327,30 @@ namespace Mutagen.Bethesda.Skyrim
         #endregion
         #region Vertices
         public IReadOnlyList<P3Float> Vertices => BinaryOverlayList.FactoryByCountLength<P3Float>(_structData.Slice(0x10), _package, 12, countLength: 4, (s, p) => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(s));
-        protected int VerticesEndingPos;
+        private int VerticesEndingPosStore;
+        protected int VerticesEndingPos { get { EnsureFilled(); return VerticesEndingPosStore; } private set => VerticesEndingPosStore = value; }
         #endregion
         #region Triangles
-        protected int TrianglesEndingPos;
+        private int TrianglesEndingPosStore;
+        protected int TrianglesEndingPos { get { EnsureFilled(); return TrianglesEndingPosStore; } private set => TrianglesEndingPosStore = value; }
         partial void CustomTrianglesEndPos();
         #endregion
         #region EdgeLinks
         public IReadOnlyList<IEdgeLinkGetter> EdgeLinks => BinaryOverlayList.FactoryByCountLength<IEdgeLinkGetter>(_structData.Slice(TrianglesEndingPos), _package, 10, countLength: 4, (s, p) => EdgeLinkBinaryOverlay.EdgeLinkFactory(s, p));
-        protected int EdgeLinksEndingPos;
+        private int EdgeLinksEndingPosStore;
+        protected int EdgeLinksEndingPos { get { EnsureFilled(); return EdgeLinksEndingPosStore; } private set => EdgeLinksEndingPosStore = value; }
         #endregion
         #region DoorTriangles
         public IReadOnlyList<IDoorTriangleGetter> DoorTriangles => BinaryOverlayList.FactoryByCountLength<IDoorTriangleGetter>(_structData.Slice(EdgeLinksEndingPos), _package, 10, countLength: 4, (s, p) => DoorTriangleBinaryOverlay.DoorTriangleFactory(s, p));
-        protected int DoorTrianglesEndingPos;
+        private int DoorTrianglesEndingPosStore;
+        protected int DoorTrianglesEndingPos { get { EnsureFilled(); return DoorTrianglesEndingPosStore; } private set => DoorTrianglesEndingPosStore = value; }
         #endregion
         #region CoverTrianglesLogic
         partial void CoverTrianglesLogicCustomParse(
             OverlayStream stream,
             int offset);
-        protected int CoverTrianglesLogicEndingPos;
+        private int CoverTrianglesLogicEndingPosStore;
+        protected int CoverTrianglesLogicEndingPos { get { EnsureFilled(); return CoverTrianglesLogicEndingPosStore; } private set => CoverTrianglesLogicEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

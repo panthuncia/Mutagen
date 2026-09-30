@@ -1486,15 +1486,23 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region HeadPartNumber
-        private int? _HeadPartNumberLocation;
+        private int? _HeadPartNumberLocationStore;
+        private int? _HeadPartNumberLocation { get { EnsureFilled(); return _HeadPartNumberLocationStore; } set => _HeadPartNumberLocationStore = value; }
         public Race.HeadPart? HeadPartNumber => EnumBinaryTranslation<Race.HeadPart, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_HeadPartNumberLocation, _recordData, _package, 4);
         #endregion
         #region Head
-        private int? _HeadLocation;
+        private int? _HeadLocationStore;
+        private int? _HeadLocation { get { EnsureFilled(); return _HeadLocationStore; } set => _HeadLocationStore = value; }
         public IFormLinkNullableGetter<IHeadPartGetter> Head => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IHeadPartGetter>(_package, _recordData, _HeadLocation);
         #endregion
-        public IModelGetter? Model { get; private set; }
-        public IIconsGetter? Icons { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
+        #region Icons
+        private IIconsGetter? IconsStore;
+        public IIconsGetter? Icons { get { EnsureFilled(); return IconsStore; } private set => IconsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

@@ -1352,12 +1352,17 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Text
-        private int? _TextLocation;
+        private int? _TextLocationStore;
+        private int? _TextLocation { get { EnsureFilled(); return _TextLocationStore; } set => _TextLocationStore = value; }
         public ITranslatedStringGetter Text => _TextLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TextLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : TranslatedString.Empty;
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region UseTemplatedText
-        private int? _UseTemplatedTextLocation;
+        private int? _UseTemplatedTextLocationStore;
+        private int? _UseTemplatedTextLocation { get { EnsureFilled(); return _UseTemplatedTextLocationStore; } set => _UseTemplatedTextLocationStore = value; }
         public Boolean? UseTemplatedText => _UseTemplatedTextLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _UseTemplatedTextLocation.Value, _package.MetaData.Constants)[0] >= 1 : default(Boolean?);
         #endregion
         partial void CustomFactoryEnd(

@@ -1614,15 +1614,18 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Index
-        private int? _IndexLocation;
+        private int? _IndexLocationStore;
+        private int? _IndexLocation { get { EnsureFilled(); return _IndexLocationStore; } set => _IndexLocationStore = value; }
         public UInt32? Index => _IndexLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IndexLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region FMRU
-        private int? _FMRULocation;
+        private int? _FMRULocationStore;
+        private int? _FMRULocation { get { EnsureFilled(); return _FMRULocationStore; } set => _FMRULocationStore = value; }
         public String? FMRU => _FMRULocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FMRULocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -1634,10 +1637,14 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #endregion
         #region FMRS
-        private int? _FMRSLocation;
+        private int? _FMRSLocationStore;
+        private int? _FMRSLocation { get { EnsureFilled(); return _FMRSLocationStore; } set => _FMRSLocationStore = value; }
         public String? FMRS => _FMRSLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FMRSLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        public IReadOnlyList<IFaceMorphItemGetter> Items { get; private set; } = [];
+        #region Items
+        private IReadOnlyList<IFaceMorphItemGetter> ItemsStore = [];
+        public IReadOnlyList<IFaceMorphItemGetter> Items { get { EnsureFilled(); return ItemsStore; } private set => ItemsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

@@ -1136,7 +1136,8 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Map
-        private int? _MapLocation;
+        private int? _MapLocationStore;
+        private int? _MapLocation { get { EnsureFilled(); return _MapLocationStore; } set => _MapLocationStore = value; }
         public ITranslatedStringGetter? Map => _MapLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MapLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         partial void CustomFactoryEnd(

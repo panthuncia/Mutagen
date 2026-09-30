@@ -709,7 +709,7 @@ public class PluginListBinaryTranslationGeneration : BinaryTranslationGeneration
                         {
                             DataBinaryTranslationGeneration.GenerateWrapperExtraMembers(sb, dataType, objGen, typeGen, passedLengthAccessor);
                         }
-                        sb.AppendLine($"public {list.ListTypeName(getter: true, internalInterface: true)}{typeGen.NullChar} {typeGen.Name} {{ get; private set; }} = null!;");
+                        LazyFill.Property(sb, "public", $"{list.ListTypeName(getter: true, internalInterface: true)}{typeGen.NullChar}", typeGen.Name, "null!");
                     }
                     break;
                 default:
@@ -722,7 +722,7 @@ public class PluginListBinaryTranslationGeneration : BinaryTranslationGeneration
                         }
                         else
                         {
-                            sb.AppendLine($"public {list.ListTypeName(getter: true, internalInterface: true)}{typeGen.NullChar} {typeGen.Name} {{ get; private set; }}{(typeGen.Nullable ? null : $" = [];")}");
+                            LazyFill.Property(sb, "public", $"{list.ListTypeName(getter: true, internalInterface: true)}{typeGen.NullChar}", typeGen.Name, typeGen.Nullable ? null : "[]");
                         }
                     }
                     else
@@ -734,7 +734,7 @@ public class PluginListBinaryTranslationGeneration : BinaryTranslationGeneration
         }
         else if (data.HasTrigger)
         {
-            sb.AppendLine($"public {list.ListTypeName(getter: true, internalInterface: true)}{typeGen.NullChar} {typeGen.Name} {{ get; private set; }}{(typeGen.Nullable ? null : $" = [];")}");
+            LazyFill.Property(sb, "public", $"{list.ListTypeName(getter: true, internalInterface: true)}{typeGen.NullChar}", typeGen.Name, typeGen.Nullable ? null : "[]");
         }
         else
         {

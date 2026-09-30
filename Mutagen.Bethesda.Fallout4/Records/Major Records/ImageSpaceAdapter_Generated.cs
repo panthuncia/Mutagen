@@ -12810,8 +12810,10 @@ namespace Mutagen.Bethesda.Fallout4
         protected override Type LinkType => typeof(IImageSpaceAdapterGetter);
 
 
-        private RangeInt32? _DNAMLocation;
-        public ImageSpaceAdapter.DNAMDataType DNAMDataTypeState { get; private set; }
+        private RangeInt32? _DNAMLocationStore;
+        private RangeInt32? _DNAMLocation { get { EnsureFilled(); return _DNAMLocationStore; } set => _DNAMLocationStore = value; }
+        private ImageSpaceAdapter.DNAMDataType DNAMDataTypeStateStore;
+        public ImageSpaceAdapter.DNAMDataType DNAMDataTypeState { get { EnsureFilled(); return DNAMDataTypeStateStore; } private set => DNAMDataTypeStateStore = value; }
         #region Animatable
         private int _AnimatableLocation => _DNAMLocation!.Value.Min;
         private bool _Animatable_IsSet => _DNAMLocation.HasValue;
@@ -12863,63 +12865,234 @@ namespace Mutagen.Bethesda.Fallout4
         private bool _Unknown_IsSet => _DNAMLocation.HasValue && !DNAMDataTypeState.HasFlag(ImageSpaceAdapter.DNAMDataType.Break0);
         public UInt64 Unknown => _Unknown_IsSet ? BinaryPrimitives.ReadUInt64LittleEndian(_recordData.Slice(_UnknownLocation, 8)) : default(UInt64);
         #endregion
-        public IReadOnlyList<IKeyFrameGetter>? BlurRadius { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? DoubleVisionStrength { get; private set; }
-        public IReadOnlyList<IColorFrameGetter>? TintColor { get; private set; }
-        public IReadOnlyList<IColorFrameGetter>? FadeColor { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? RadialBlurStrength { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? RadialBlurRampUp { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? RadialBlurStart { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? RadialBlurRampDown { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? RadialBlurDownStart { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? DepthOfFieldStrength { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? DepthOfFieldDistance { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? DepthOfFieldRange { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? DepthOfFieldVignetteRadius { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? DepthOfFieldVignetteStrength { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? MotionBlurStrength { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? HdrEyeAdaptSpeedMult { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? HdrEyeAdaptSpeedAdd { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? HdrBloomBlurRadiusMult { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? HdrBloomBlurRadiusAdd { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? HdrBloomThresholdMult { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? HdrBloomThresholdAdd { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? HdrBloomScaleMult { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? HdrBloomScaleAdd { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? HdrTargetLumMinMult { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? HdrTargetLumMinAdd { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? HdrTargetLumMaxMult { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? HdrTargetLumMaxAdd { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? HdrSunlightScaleMult { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? HdrSunlightScaleAdd { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? HdrSkyScaleMult { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? HdrSkyScaleAdd { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? Unknown08 { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? Unknown48 { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? Unknown09 { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? Unknown49 { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? Unknown0A { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? Unknown4A { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? Unknown0B { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? Unknown4B { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? Unknown0C { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? Unknown4C { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? Unknown0D { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? Unknown4D { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? Unknown0E { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? Unknown4E { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? Unknown0F { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? Unknown4F { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? Unknown10 { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? Unknown50 { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? CinematicSaturationMult { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? CinematicSaturationAdd { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? CinematicBrightnessMult { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? CinematicBrightnessAdd { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? CinematicContrastMult { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? CinematicContrastAdd { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? Unknown14 { get; private set; }
-        public IReadOnlyList<IKeyFrameGetter>? Unknown54 { get; private set; }
+        #region BlurRadius
+        private IReadOnlyList<IKeyFrameGetter>? BlurRadiusStore;
+        public IReadOnlyList<IKeyFrameGetter>? BlurRadius { get { EnsureFilled(); return BlurRadiusStore; } private set => BlurRadiusStore = value; }
+        #endregion
+        #region DoubleVisionStrength
+        private IReadOnlyList<IKeyFrameGetter>? DoubleVisionStrengthStore;
+        public IReadOnlyList<IKeyFrameGetter>? DoubleVisionStrength { get { EnsureFilled(); return DoubleVisionStrengthStore; } private set => DoubleVisionStrengthStore = value; }
+        #endregion
+        #region TintColor
+        private IReadOnlyList<IColorFrameGetter>? TintColorStore;
+        public IReadOnlyList<IColorFrameGetter>? TintColor { get { EnsureFilled(); return TintColorStore; } private set => TintColorStore = value; }
+        #endregion
+        #region FadeColor
+        private IReadOnlyList<IColorFrameGetter>? FadeColorStore;
+        public IReadOnlyList<IColorFrameGetter>? FadeColor { get { EnsureFilled(); return FadeColorStore; } private set => FadeColorStore = value; }
+        #endregion
+        #region RadialBlurStrength
+        private IReadOnlyList<IKeyFrameGetter>? RadialBlurStrengthStore;
+        public IReadOnlyList<IKeyFrameGetter>? RadialBlurStrength { get { EnsureFilled(); return RadialBlurStrengthStore; } private set => RadialBlurStrengthStore = value; }
+        #endregion
+        #region RadialBlurRampUp
+        private IReadOnlyList<IKeyFrameGetter>? RadialBlurRampUpStore;
+        public IReadOnlyList<IKeyFrameGetter>? RadialBlurRampUp { get { EnsureFilled(); return RadialBlurRampUpStore; } private set => RadialBlurRampUpStore = value; }
+        #endregion
+        #region RadialBlurStart
+        private IReadOnlyList<IKeyFrameGetter>? RadialBlurStartStore;
+        public IReadOnlyList<IKeyFrameGetter>? RadialBlurStart { get { EnsureFilled(); return RadialBlurStartStore; } private set => RadialBlurStartStore = value; }
+        #endregion
+        #region RadialBlurRampDown
+        private IReadOnlyList<IKeyFrameGetter>? RadialBlurRampDownStore;
+        public IReadOnlyList<IKeyFrameGetter>? RadialBlurRampDown { get { EnsureFilled(); return RadialBlurRampDownStore; } private set => RadialBlurRampDownStore = value; }
+        #endregion
+        #region RadialBlurDownStart
+        private IReadOnlyList<IKeyFrameGetter>? RadialBlurDownStartStore;
+        public IReadOnlyList<IKeyFrameGetter>? RadialBlurDownStart { get { EnsureFilled(); return RadialBlurDownStartStore; } private set => RadialBlurDownStartStore = value; }
+        #endregion
+        #region DepthOfFieldStrength
+        private IReadOnlyList<IKeyFrameGetter>? DepthOfFieldStrengthStore;
+        public IReadOnlyList<IKeyFrameGetter>? DepthOfFieldStrength { get { EnsureFilled(); return DepthOfFieldStrengthStore; } private set => DepthOfFieldStrengthStore = value; }
+        #endregion
+        #region DepthOfFieldDistance
+        private IReadOnlyList<IKeyFrameGetter>? DepthOfFieldDistanceStore;
+        public IReadOnlyList<IKeyFrameGetter>? DepthOfFieldDistance { get { EnsureFilled(); return DepthOfFieldDistanceStore; } private set => DepthOfFieldDistanceStore = value; }
+        #endregion
+        #region DepthOfFieldRange
+        private IReadOnlyList<IKeyFrameGetter>? DepthOfFieldRangeStore;
+        public IReadOnlyList<IKeyFrameGetter>? DepthOfFieldRange { get { EnsureFilled(); return DepthOfFieldRangeStore; } private set => DepthOfFieldRangeStore = value; }
+        #endregion
+        #region DepthOfFieldVignetteRadius
+        private IReadOnlyList<IKeyFrameGetter>? DepthOfFieldVignetteRadiusStore;
+        public IReadOnlyList<IKeyFrameGetter>? DepthOfFieldVignetteRadius { get { EnsureFilled(); return DepthOfFieldVignetteRadiusStore; } private set => DepthOfFieldVignetteRadiusStore = value; }
+        #endregion
+        #region DepthOfFieldVignetteStrength
+        private IReadOnlyList<IKeyFrameGetter>? DepthOfFieldVignetteStrengthStore;
+        public IReadOnlyList<IKeyFrameGetter>? DepthOfFieldVignetteStrength { get { EnsureFilled(); return DepthOfFieldVignetteStrengthStore; } private set => DepthOfFieldVignetteStrengthStore = value; }
+        #endregion
+        #region MotionBlurStrength
+        private IReadOnlyList<IKeyFrameGetter>? MotionBlurStrengthStore;
+        public IReadOnlyList<IKeyFrameGetter>? MotionBlurStrength { get { EnsureFilled(); return MotionBlurStrengthStore; } private set => MotionBlurStrengthStore = value; }
+        #endregion
+        #region HdrEyeAdaptSpeedMult
+        private IReadOnlyList<IKeyFrameGetter>? HdrEyeAdaptSpeedMultStore;
+        public IReadOnlyList<IKeyFrameGetter>? HdrEyeAdaptSpeedMult { get { EnsureFilled(); return HdrEyeAdaptSpeedMultStore; } private set => HdrEyeAdaptSpeedMultStore = value; }
+        #endregion
+        #region HdrEyeAdaptSpeedAdd
+        private IReadOnlyList<IKeyFrameGetter>? HdrEyeAdaptSpeedAddStore;
+        public IReadOnlyList<IKeyFrameGetter>? HdrEyeAdaptSpeedAdd { get { EnsureFilled(); return HdrEyeAdaptSpeedAddStore; } private set => HdrEyeAdaptSpeedAddStore = value; }
+        #endregion
+        #region HdrBloomBlurRadiusMult
+        private IReadOnlyList<IKeyFrameGetter>? HdrBloomBlurRadiusMultStore;
+        public IReadOnlyList<IKeyFrameGetter>? HdrBloomBlurRadiusMult { get { EnsureFilled(); return HdrBloomBlurRadiusMultStore; } private set => HdrBloomBlurRadiusMultStore = value; }
+        #endregion
+        #region HdrBloomBlurRadiusAdd
+        private IReadOnlyList<IKeyFrameGetter>? HdrBloomBlurRadiusAddStore;
+        public IReadOnlyList<IKeyFrameGetter>? HdrBloomBlurRadiusAdd { get { EnsureFilled(); return HdrBloomBlurRadiusAddStore; } private set => HdrBloomBlurRadiusAddStore = value; }
+        #endregion
+        #region HdrBloomThresholdMult
+        private IReadOnlyList<IKeyFrameGetter>? HdrBloomThresholdMultStore;
+        public IReadOnlyList<IKeyFrameGetter>? HdrBloomThresholdMult { get { EnsureFilled(); return HdrBloomThresholdMultStore; } private set => HdrBloomThresholdMultStore = value; }
+        #endregion
+        #region HdrBloomThresholdAdd
+        private IReadOnlyList<IKeyFrameGetter>? HdrBloomThresholdAddStore;
+        public IReadOnlyList<IKeyFrameGetter>? HdrBloomThresholdAdd { get { EnsureFilled(); return HdrBloomThresholdAddStore; } private set => HdrBloomThresholdAddStore = value; }
+        #endregion
+        #region HdrBloomScaleMult
+        private IReadOnlyList<IKeyFrameGetter>? HdrBloomScaleMultStore;
+        public IReadOnlyList<IKeyFrameGetter>? HdrBloomScaleMult { get { EnsureFilled(); return HdrBloomScaleMultStore; } private set => HdrBloomScaleMultStore = value; }
+        #endregion
+        #region HdrBloomScaleAdd
+        private IReadOnlyList<IKeyFrameGetter>? HdrBloomScaleAddStore;
+        public IReadOnlyList<IKeyFrameGetter>? HdrBloomScaleAdd { get { EnsureFilled(); return HdrBloomScaleAddStore; } private set => HdrBloomScaleAddStore = value; }
+        #endregion
+        #region HdrTargetLumMinMult
+        private IReadOnlyList<IKeyFrameGetter>? HdrTargetLumMinMultStore;
+        public IReadOnlyList<IKeyFrameGetter>? HdrTargetLumMinMult { get { EnsureFilled(); return HdrTargetLumMinMultStore; } private set => HdrTargetLumMinMultStore = value; }
+        #endregion
+        #region HdrTargetLumMinAdd
+        private IReadOnlyList<IKeyFrameGetter>? HdrTargetLumMinAddStore;
+        public IReadOnlyList<IKeyFrameGetter>? HdrTargetLumMinAdd { get { EnsureFilled(); return HdrTargetLumMinAddStore; } private set => HdrTargetLumMinAddStore = value; }
+        #endregion
+        #region HdrTargetLumMaxMult
+        private IReadOnlyList<IKeyFrameGetter>? HdrTargetLumMaxMultStore;
+        public IReadOnlyList<IKeyFrameGetter>? HdrTargetLumMaxMult { get { EnsureFilled(); return HdrTargetLumMaxMultStore; } private set => HdrTargetLumMaxMultStore = value; }
+        #endregion
+        #region HdrTargetLumMaxAdd
+        private IReadOnlyList<IKeyFrameGetter>? HdrTargetLumMaxAddStore;
+        public IReadOnlyList<IKeyFrameGetter>? HdrTargetLumMaxAdd { get { EnsureFilled(); return HdrTargetLumMaxAddStore; } private set => HdrTargetLumMaxAddStore = value; }
+        #endregion
+        #region HdrSunlightScaleMult
+        private IReadOnlyList<IKeyFrameGetter>? HdrSunlightScaleMultStore;
+        public IReadOnlyList<IKeyFrameGetter>? HdrSunlightScaleMult { get { EnsureFilled(); return HdrSunlightScaleMultStore; } private set => HdrSunlightScaleMultStore = value; }
+        #endregion
+        #region HdrSunlightScaleAdd
+        private IReadOnlyList<IKeyFrameGetter>? HdrSunlightScaleAddStore;
+        public IReadOnlyList<IKeyFrameGetter>? HdrSunlightScaleAdd { get { EnsureFilled(); return HdrSunlightScaleAddStore; } private set => HdrSunlightScaleAddStore = value; }
+        #endregion
+        #region HdrSkyScaleMult
+        private IReadOnlyList<IKeyFrameGetter>? HdrSkyScaleMultStore;
+        public IReadOnlyList<IKeyFrameGetter>? HdrSkyScaleMult { get { EnsureFilled(); return HdrSkyScaleMultStore; } private set => HdrSkyScaleMultStore = value; }
+        #endregion
+        #region HdrSkyScaleAdd
+        private IReadOnlyList<IKeyFrameGetter>? HdrSkyScaleAddStore;
+        public IReadOnlyList<IKeyFrameGetter>? HdrSkyScaleAdd { get { EnsureFilled(); return HdrSkyScaleAddStore; } private set => HdrSkyScaleAddStore = value; }
+        #endregion
+        #region Unknown08
+        private IReadOnlyList<IKeyFrameGetter>? Unknown08Store;
+        public IReadOnlyList<IKeyFrameGetter>? Unknown08 { get { EnsureFilled(); return Unknown08Store; } private set => Unknown08Store = value; }
+        #endregion
+        #region Unknown48
+        private IReadOnlyList<IKeyFrameGetter>? Unknown48Store;
+        public IReadOnlyList<IKeyFrameGetter>? Unknown48 { get { EnsureFilled(); return Unknown48Store; } private set => Unknown48Store = value; }
+        #endregion
+        #region Unknown09
+        private IReadOnlyList<IKeyFrameGetter>? Unknown09Store;
+        public IReadOnlyList<IKeyFrameGetter>? Unknown09 { get { EnsureFilled(); return Unknown09Store; } private set => Unknown09Store = value; }
+        #endregion
+        #region Unknown49
+        private IReadOnlyList<IKeyFrameGetter>? Unknown49Store;
+        public IReadOnlyList<IKeyFrameGetter>? Unknown49 { get { EnsureFilled(); return Unknown49Store; } private set => Unknown49Store = value; }
+        #endregion
+        #region Unknown0A
+        private IReadOnlyList<IKeyFrameGetter>? Unknown0AStore;
+        public IReadOnlyList<IKeyFrameGetter>? Unknown0A { get { EnsureFilled(); return Unknown0AStore; } private set => Unknown0AStore = value; }
+        #endregion
+        #region Unknown4A
+        private IReadOnlyList<IKeyFrameGetter>? Unknown4AStore;
+        public IReadOnlyList<IKeyFrameGetter>? Unknown4A { get { EnsureFilled(); return Unknown4AStore; } private set => Unknown4AStore = value; }
+        #endregion
+        #region Unknown0B
+        private IReadOnlyList<IKeyFrameGetter>? Unknown0BStore;
+        public IReadOnlyList<IKeyFrameGetter>? Unknown0B { get { EnsureFilled(); return Unknown0BStore; } private set => Unknown0BStore = value; }
+        #endregion
+        #region Unknown4B
+        private IReadOnlyList<IKeyFrameGetter>? Unknown4BStore;
+        public IReadOnlyList<IKeyFrameGetter>? Unknown4B { get { EnsureFilled(); return Unknown4BStore; } private set => Unknown4BStore = value; }
+        #endregion
+        #region Unknown0C
+        private IReadOnlyList<IKeyFrameGetter>? Unknown0CStore;
+        public IReadOnlyList<IKeyFrameGetter>? Unknown0C { get { EnsureFilled(); return Unknown0CStore; } private set => Unknown0CStore = value; }
+        #endregion
+        #region Unknown4C
+        private IReadOnlyList<IKeyFrameGetter>? Unknown4CStore;
+        public IReadOnlyList<IKeyFrameGetter>? Unknown4C { get { EnsureFilled(); return Unknown4CStore; } private set => Unknown4CStore = value; }
+        #endregion
+        #region Unknown0D
+        private IReadOnlyList<IKeyFrameGetter>? Unknown0DStore;
+        public IReadOnlyList<IKeyFrameGetter>? Unknown0D { get { EnsureFilled(); return Unknown0DStore; } private set => Unknown0DStore = value; }
+        #endregion
+        #region Unknown4D
+        private IReadOnlyList<IKeyFrameGetter>? Unknown4DStore;
+        public IReadOnlyList<IKeyFrameGetter>? Unknown4D { get { EnsureFilled(); return Unknown4DStore; } private set => Unknown4DStore = value; }
+        #endregion
+        #region Unknown0E
+        private IReadOnlyList<IKeyFrameGetter>? Unknown0EStore;
+        public IReadOnlyList<IKeyFrameGetter>? Unknown0E { get { EnsureFilled(); return Unknown0EStore; } private set => Unknown0EStore = value; }
+        #endregion
+        #region Unknown4E
+        private IReadOnlyList<IKeyFrameGetter>? Unknown4EStore;
+        public IReadOnlyList<IKeyFrameGetter>? Unknown4E { get { EnsureFilled(); return Unknown4EStore; } private set => Unknown4EStore = value; }
+        #endregion
+        #region Unknown0F
+        private IReadOnlyList<IKeyFrameGetter>? Unknown0FStore;
+        public IReadOnlyList<IKeyFrameGetter>? Unknown0F { get { EnsureFilled(); return Unknown0FStore; } private set => Unknown0FStore = value; }
+        #endregion
+        #region Unknown4F
+        private IReadOnlyList<IKeyFrameGetter>? Unknown4FStore;
+        public IReadOnlyList<IKeyFrameGetter>? Unknown4F { get { EnsureFilled(); return Unknown4FStore; } private set => Unknown4FStore = value; }
+        #endregion
+        #region Unknown10
+        private IReadOnlyList<IKeyFrameGetter>? Unknown10Store;
+        public IReadOnlyList<IKeyFrameGetter>? Unknown10 { get { EnsureFilled(); return Unknown10Store; } private set => Unknown10Store = value; }
+        #endregion
+        #region Unknown50
+        private IReadOnlyList<IKeyFrameGetter>? Unknown50Store;
+        public IReadOnlyList<IKeyFrameGetter>? Unknown50 { get { EnsureFilled(); return Unknown50Store; } private set => Unknown50Store = value; }
+        #endregion
+        #region CinematicSaturationMult
+        private IReadOnlyList<IKeyFrameGetter>? CinematicSaturationMultStore;
+        public IReadOnlyList<IKeyFrameGetter>? CinematicSaturationMult { get { EnsureFilled(); return CinematicSaturationMultStore; } private set => CinematicSaturationMultStore = value; }
+        #endregion
+        #region CinematicSaturationAdd
+        private IReadOnlyList<IKeyFrameGetter>? CinematicSaturationAddStore;
+        public IReadOnlyList<IKeyFrameGetter>? CinematicSaturationAdd { get { EnsureFilled(); return CinematicSaturationAddStore; } private set => CinematicSaturationAddStore = value; }
+        #endregion
+        #region CinematicBrightnessMult
+        private IReadOnlyList<IKeyFrameGetter>? CinematicBrightnessMultStore;
+        public IReadOnlyList<IKeyFrameGetter>? CinematicBrightnessMult { get { EnsureFilled(); return CinematicBrightnessMultStore; } private set => CinematicBrightnessMultStore = value; }
+        #endregion
+        #region CinematicBrightnessAdd
+        private IReadOnlyList<IKeyFrameGetter>? CinematicBrightnessAddStore;
+        public IReadOnlyList<IKeyFrameGetter>? CinematicBrightnessAdd { get { EnsureFilled(); return CinematicBrightnessAddStore; } private set => CinematicBrightnessAddStore = value; }
+        #endregion
+        #region CinematicContrastMult
+        private IReadOnlyList<IKeyFrameGetter>? CinematicContrastMultStore;
+        public IReadOnlyList<IKeyFrameGetter>? CinematicContrastMult { get { EnsureFilled(); return CinematicContrastMultStore; } private set => CinematicContrastMultStore = value; }
+        #endregion
+        #region CinematicContrastAdd
+        private IReadOnlyList<IKeyFrameGetter>? CinematicContrastAddStore;
+        public IReadOnlyList<IKeyFrameGetter>? CinematicContrastAdd { get { EnsureFilled(); return CinematicContrastAddStore; } private set => CinematicContrastAddStore = value; }
+        #endregion
+        #region Unknown14
+        private IReadOnlyList<IKeyFrameGetter>? Unknown14Store;
+        public IReadOnlyList<IKeyFrameGetter>? Unknown14 { get { EnsureFilled(); return Unknown14Store; } private set => Unknown14Store = value; }
+        #endregion
+        #region Unknown54
+        private IReadOnlyList<IKeyFrameGetter>? Unknown54Store;
+        public IReadOnlyList<IKeyFrameGetter>? Unknown54 { get { EnsureFilled(); return Unknown54Store; } private set => Unknown54Store = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -12941,6 +13114,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ImageSpaceAdapterBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ImageSpaceAdapterFill((ImageSpaceAdapterBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ImageSpaceAdapterFill(
+            ImageSpaceAdapterBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -12948,9 +13138,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ImageSpaceAdapterBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -12963,7 +13151,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IImageSpaceAdapterGetter ImageSpaceAdapterFactory(

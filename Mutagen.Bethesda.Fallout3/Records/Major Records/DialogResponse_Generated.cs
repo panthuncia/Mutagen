@@ -1498,23 +1498,28 @@ namespace Mutagen.Bethesda.Fallout3
         public IDialogResponseDataGetter ResponseData => GetResponseDataCustom();
         #endregion
         #region ResponseText
-        private int? _ResponseTextLocation;
+        private int? _ResponseTextLocationStore;
+        private int? _ResponseTextLocation { get { EnsureFilled(); return _ResponseTextLocationStore; } set => _ResponseTextLocationStore = value; }
         public String ResponseText => _ResponseTextLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ResponseTextLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region ScriptNotes
-        private int? _ScriptNotesLocation;
+        private int? _ScriptNotesLocationStore;
+        private int? _ScriptNotesLocation { get { EnsureFilled(); return _ScriptNotesLocationStore; } set => _ScriptNotesLocationStore = value; }
         public String ScriptNotes => _ScriptNotesLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ScriptNotesLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region Edits
-        private int? _EditsLocation;
+        private int? _EditsLocationStore;
+        private int? _EditsLocation { get { EnsureFilled(); return _EditsLocationStore; } set => _EditsLocationStore = value; }
         public String? Edits => _EditsLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EditsLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region SpeakerAnimation
-        private int? _SpeakerAnimationLocation;
+        private int? _SpeakerAnimationLocationStore;
+        private int? _SpeakerAnimationLocation { get { EnsureFilled(); return _SpeakerAnimationLocationStore; } set => _SpeakerAnimationLocationStore = value; }
         public IFormLinkNullableGetter<IIdleAnimationGetter> SpeakerAnimation => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IIdleAnimationGetter>(_package, _recordData, _SpeakerAnimationLocation);
         #endregion
         #region ListenerAnimation
-        private int? _ListenerAnimationLocation;
+        private int? _ListenerAnimationLocationStore;
+        private int? _ListenerAnimationLocation { get { EnsureFilled(); return _ListenerAnimationLocationStore; } set => _ListenerAnimationLocationStore = value; }
         public IFormLinkNullableGetter<IIdleAnimationGetter> ListenerAnimation => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IIdleAnimationGetter>(_package, _recordData, _ListenerAnimationLocation);
         #endregion
         partial void CustomFactoryEnd(

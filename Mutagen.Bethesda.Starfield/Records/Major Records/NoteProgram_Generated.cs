@@ -1070,8 +1070,10 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region File
-        public String? File { get; private set; } = string.Empty;
-        protected int FileEndingPos;
+        private String? FileStore = string.Empty;
+        public String? File { get { EnsureFilled(); return FileStore; } private set => FileStore = value; }
+        private int FileEndingPosStore;
+        protected int FileEndingPos { get { EnsureFilled(); return FileEndingPosStore; } private set => FileEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

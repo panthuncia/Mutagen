@@ -1584,21 +1584,28 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public IModelGetter? Model { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
         #region XMPM
-        private RangeInt32? _XMPMLocation;
+        private RangeInt32? _XMPMLocationStore;
+        private RangeInt32? _XMPMLocation { get { EnsureFilled(); return _XMPMLocationStore; } set => _XMPMLocationStore = value; }
         public IPlanetModelComponentXMPMGetter? XMPM => _XMPMLocation.HasValue ? PlanetModelComponentXMPMBinaryOverlay.PlanetModelComponentXMPMFactory(_recordData.Slice(_XMPMLocation!.Value.Min), _package) : default;
         #endregion
         #region RingModel
-        private int? _RingModelLocation;
+        private int? _RingModelLocationStore;
+        private int? _RingModelLocation { get { EnsureFilled(); return _RingModelLocationStore; } set => _RingModelLocationStore = value; }
         public String? RingModel => _RingModelLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _RingModelLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region RingMaterial
-        private int? _RingMaterialLocation;
+        private int? _RingMaterialLocationStore;
+        private int? _RingMaterialLocation { get { EnsureFilled(); return _RingMaterialLocationStore; } set => _RingMaterialLocationStore = value; }
         public String? RingMaterial => _RingMaterialLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _RingMaterialLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region RingId
-        private int? _RingIdLocation;
+        private int? _RingIdLocationStore;
+        private int? _RingIdLocation { get { EnsureFilled(); return _RingIdLocationStore; } set => _RingIdLocationStore = value; }
         public String? RingId => _RingIdLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _RingIdLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(

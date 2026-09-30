@@ -1163,11 +1163,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Value1
-        private int? _Value1Location;
+        private int? _Value1LocationStore;
+        private int? _Value1Location { get { EnsureFilled(); return _Value1LocationStore; } set => _Value1LocationStore = value; }
         public Boolean? Value1 => _Value1Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _Value1Location.Value, _package.MetaData.Constants)[0] >= 1 : default(Boolean?);
         #endregion
         #region Value2
-        private int? _Value2Location;
+        private int? _Value2LocationStore;
+        private int? _Value2Location { get { EnsureFilled(); return _Value2LocationStore; } set => _Value2LocationStore = value; }
         public Boolean? Value2 => _Value2Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _Value2Location.Value, _package.MetaData.Constants)[0] >= 1 : default(Boolean?);
         #endregion
         partial void CustomFactoryEnd(

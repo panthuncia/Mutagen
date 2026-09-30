@@ -1276,7 +1276,10 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IWeatherTypeGetter>? Weathers { get; private set; }
+        #region Weathers
+        private IReadOnlyList<IWeatherTypeGetter>? WeathersStore;
+        public IReadOnlyList<IWeatherTypeGetter>? Weathers { get { EnsureFilled(); return WeathersStore; } private set => WeathersStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

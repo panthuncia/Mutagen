@@ -1161,11 +1161,13 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Item
-        private int? _ItemLocation;
+        private int? _ItemLocationStore;
+        private int? _ItemLocation { get { EnsureFilled(); return _ItemLocationStore; } set => _ItemLocationStore = value; }
         public IFormLinkNullableGetter<IRecipeItemGetter> Item => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IRecipeItemGetter>(_package, _recordData, _ItemLocation);
         #endregion
         #region Quantity
-        private int? _QuantityLocation;
+        private int? _QuantityLocationStore;
+        private int? _QuantityLocation { get { EnsureFilled(); return _QuantityLocationStore; } set => _QuantityLocationStore = value; }
         public UInt32? Quantity => _QuantityLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _QuantityLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         partial void CustomFactoryEnd(

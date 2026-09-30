@@ -1246,7 +1246,8 @@ namespace Mutagen.Bethesda.Fallout4
         public UInt32 FormType => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0x0, 0x4));
         #region Links
         public IReadOnlyList<IFormLinkGetter<IFallout4MajorRecordGetter>> Links => BinaryOverlayList.FactoryByStartIndex<IFormLinkGetter<IFallout4MajorRecordGetter>>(_structData.Slice(0x4), _package, 4, (s, p) => FormLinkBinaryTranslation.Instance.OverlayFactory<IFallout4MajorRecordGetter>(p, s));
-        protected int LinksEndingPos;
+        private int LinksEndingPosStore;
+        protected int LinksEndingPos { get { EnsureFilled(); return LinksEndingPosStore; } private set => LinksEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

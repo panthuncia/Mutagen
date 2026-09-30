@@ -1350,9 +1350,13 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IStartSceneGetter> StartScenes { get; private set; } = [];
+        #region StartScenes
+        private IReadOnlyList<IStartSceneGetter> StartScenesStore = [];
+        public IReadOnlyList<IStartSceneGetter> StartScenes { get { EnsureFilled(); return StartScenesStore; } private set => StartScenesStore = value; }
+        #endregion
         #region HTID
-        private int? _HTIDLocation;
+        private int? _HTIDLocationStore;
+        private int? _HTIDLocation { get { EnsureFilled(); return _HTIDLocationStore; } set => _HTIDLocationStore = value; }
         public Boolean HTID => _HTIDLocation.HasValue ? true : default(Boolean);
         #endregion
         partial void CustomFactoryEnd(

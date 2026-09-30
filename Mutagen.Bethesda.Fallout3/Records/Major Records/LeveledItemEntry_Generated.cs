@@ -1238,12 +1238,14 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         private ILeveledItemEntryDataGetter? _Data => _DataLocation.HasValue ? LeveledItemEntryDataBinaryOverlay.LeveledItemEntryDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         public ILeveledItemEntryDataGetter Data => _Data ?? new LeveledItemEntryData();
         #endregion
         #region ExtraData
-        private RangeInt32? _ExtraDataLocation;
+        private RangeInt32? _ExtraDataLocationStore;
+        private RangeInt32? _ExtraDataLocation { get { EnsureFilled(); return _ExtraDataLocationStore; } set => _ExtraDataLocationStore = value; }
         public IExtraDataGetter? ExtraData => _ExtraDataLocation.HasValue ? ExtraDataBinaryOverlay.ExtraDataFactory(_recordData.Slice(_ExtraDataLocation!.Value.Min), _package) : default;
         #endregion
         partial void CustomFactoryEnd(

@@ -1123,7 +1123,8 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region ImageSpaceAdapter
-        private int? _ImageSpaceAdapterLocation;
+        private int? _ImageSpaceAdapterLocationStore;
+        private int? _ImageSpaceAdapterLocation { get { EnsureFilled(); return _ImageSpaceAdapterLocationStore; } set => _ImageSpaceAdapterLocationStore = value; }
         public IFormLinkNullableGetter<IImageSpaceAdapterGetter> ImageSpaceAdapter => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IImageSpaceAdapterGetter>(_package, _recordData, _ImageSpaceAdapterLocation);
         #endregion
         partial void CustomFactoryEnd(

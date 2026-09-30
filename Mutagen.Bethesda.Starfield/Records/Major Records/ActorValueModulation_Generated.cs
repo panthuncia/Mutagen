@@ -2139,26 +2139,37 @@ namespace Mutagen.Bethesda.Starfield
         protected override Type LinkType => typeof(IActorValueModulationGetter);
 
 
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
         #region Type
-        private int? _TypeLocation;
+        private int? _TypeLocationStore;
+        private int? _TypeLocation { get { EnsureFilled(); return _TypeLocationStore; } set => _TypeLocationStore = value; }
         public ActorValueModulation.GroupType Type => EnumBinaryTranslation<ActorValueModulation.GroupType, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_TypeLocation, _recordData, _package, 4);
         #endregion
         #region YNAM
-        private int? _YNAMLocation;
+        private int? _YNAMLocationStore;
+        private int? _YNAMLocation { get { EnsureFilled(); return _YNAMLocationStore; } set => _YNAMLocationStore = value; }
         public String YNAM => _YNAMLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _YNAMLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region TNAM
-        private int? _TNAMLocation;
+        private int? _TNAMLocationStore;
+        private int? _TNAMLocation { get { EnsureFilled(); return _TNAMLocationStore; } set => _TNAMLocationStore = value; }
         public String TNAM => _TNAMLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TNAMLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
-        public IReadOnlyList<IActorValueModulationEntryGetter>? Entries { get; private set; }
+        #region Entries
+        private IReadOnlyList<IActorValueModulationEntryGetter>? EntriesStore;
+        public IReadOnlyList<IActorValueModulationEntryGetter>? Entries { get { EnsureFilled(); return EntriesStore; } private set => EntriesStore = value; }
+        #endregion
         #region TextureType
-        private int? _TextureTypeLocation;
+        private int? _TextureTypeLocationStore;
+        private int? _TextureTypeLocation { get { EnsureFilled(); return _TextureTypeLocationStore; } set => _TextureTypeLocationStore = value; }
         public ActorValueModulation.TextureTypeEnum? TextureType => EnumBinaryTranslation<ActorValueModulation.TextureTypeEnum, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_TextureTypeLocation, _recordData, _package, 4);
         #endregion
         #region Parent
-        private int? _ParentLocation;
+        private int? _ParentLocationStore;
+        private int? _ParentLocation { get { EnsureFilled(); return _ParentLocationStore; } set => _ParentLocationStore = value; }
         public IFormLinkNullableGetter<IActorValueModulationGetter> Parent => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IActorValueModulationGetter>(_package, _recordData, _ParentLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -2182,6 +2193,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ActorValueModulationBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ActorValueModulationFill((ActorValueModulationBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ActorValueModulationFill(
+            ActorValueModulationBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2189,9 +2217,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ActorValueModulationBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2204,7 +2230,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IActorValueModulationGetter ActorValueModulationFactory(

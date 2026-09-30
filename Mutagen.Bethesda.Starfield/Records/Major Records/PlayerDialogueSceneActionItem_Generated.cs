@@ -1531,31 +1531,38 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region PlayerChoice
-        private int? _PlayerChoiceLocation;
+        private int? _PlayerChoiceLocationStore;
+        private int? _PlayerChoiceLocation { get { EnsureFilled(); return _PlayerChoiceLocationStore; } set => _PlayerChoiceLocationStore = value; }
         public IFormLinkNullableGetter<IDialogTopicGetter> PlayerChoice => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogTopicGetter>(_package, _recordData, _PlayerChoiceLocation);
         #endregion
         #region PPST
-        private int? _PPSTLocation;
+        private int? _PPSTLocationStore;
+        private int? _PPSTLocation { get { EnsureFilled(); return _PPSTLocationStore; } set => _PPSTLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> PPST => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _PPSTLocation);
         #endregion
         #region PNST
-        private int? _PNSTLocation;
+        private int? _PNSTLocationStore;
+        private int? _PNSTLocation { get { EnsureFilled(); return _PNSTLocationStore; } set => _PNSTLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> PNST => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _PNSTLocation);
         #endregion
         #region StartScene
-        private int? _StartSceneLocation;
+        private int? _StartSceneLocationStore;
+        private int? _StartSceneLocation { get { EnsureFilled(); return _StartSceneLocationStore; } set => _StartSceneLocationStore = value; }
         public IFormLinkNullableGetter<ISceneGetter> StartScene => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISceneGetter>(_package, _recordData, _StartSceneLocation);
         #endregion
         #region PhaseIndex
-        private int? _PhaseIndexLocation;
+        private int? _PhaseIndexLocationStore;
+        private int? _PhaseIndexLocation { get { EnsureFilled(); return _PhaseIndexLocationStore; } set => _PhaseIndexLocationStore = value; }
         public UInt32? PhaseIndex => _PhaseIndexLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _PhaseIndexLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region PAPN
-        private int? _PAPNLocation;
+        private int? _PAPNLocationStore;
+        private int? _PAPNLocation { get { EnsureFilled(); return _PAPNLocationStore; } set => _PAPNLocationStore = value; }
         public String? PAPN => _PAPNLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _PAPNLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region NpcResponse
-        private int? _NpcResponseLocation;
+        private int? _NpcResponseLocationStore;
+        private int? _NpcResponseLocation { get { EnsureFilled(); return _NpcResponseLocationStore; } set => _NpcResponseLocationStore = value; }
         public IFormLinkGetter<IDialogTopicGetter> NpcResponse => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogTopicGetter>(_package, _recordData, _NpcResponseLocation);
         #endregion
         partial void CustomFactoryEnd(

@@ -1360,16 +1360,20 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        private RangeInt32? _DATALocation;
-        public DebrisModel.DATADataType DATADataTypeState { get; private set; }
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
+        private DebrisModel.DATADataType DATADataTypeStateStore;
+        public DebrisModel.DATADataType DATADataTypeState { get { EnsureFilled(); return DATADataTypeStateStore; } private set => DATADataTypeStateStore = value; }
         #region Percentage
         private int _PercentageLocation => _DATALocation!.Value.Min;
         private bool _Percentage_IsSet => _DATALocation.HasValue;
         public Byte Percentage => _Percentage_IsSet ? _recordData.Span[_PercentageLocation] : default;
         #endregion
         #region ModelFileName
-        public String ModelFileName { get; private set; } = string.Empty;
-        protected int ModelFileNameEndingPos;
+        private String ModelFileNameStore = string.Empty;
+        public String ModelFileName { get { EnsureFilled(); return ModelFileNameStore; } private set => ModelFileNameStore = value; }
+        private int ModelFileNameEndingPosStore;
+        protected int ModelFileNameEndingPos { get { EnsureFilled(); return ModelFileNameEndingPosStore; } private set => ModelFileNameEndingPosStore = value; }
         #endregion
         #region HasCollision
         private int _HasCollisionLocation => ModelFileNameEndingPos;
@@ -1377,7 +1381,8 @@ namespace Mutagen.Bethesda.Fallout3
         public Boolean HasCollision => _HasCollision_IsSet ? _recordData.Slice(_HasCollisionLocation, 1)[0] >= 1 : default(Boolean);
         #endregion
         #region TextureFileHashes
-        private int? _TextureFileHashesLocation;
+        private int? _TextureFileHashesLocationStore;
+        private int? _TextureFileHashesLocation { get { EnsureFilled(); return _TextureFileHashesLocationStore; } set => _TextureFileHashesLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? TextureFileHashes => _TextureFileHashesLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _TextureFileHashesLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

@@ -1233,15 +1233,18 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region SCHR
-        private int? _SCHRLocation;
+        private int? _SCHRLocationStore;
+        private int? _SCHRLocation { get { EnsureFilled(); return _SCHRLocationStore; } set => _SCHRLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? SCHR => _SCHRLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SCHRLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region QNAM
-        private int? _QNAMLocation;
+        private int? _QNAMLocationStore;
+        private int? _QNAMLocation { get { EnsureFilled(); return _QNAMLocationStore; } set => _QNAMLocationStore = value; }
         public IFormLinkNullableGetter<ISkyrimMajorRecordGetter> QNAM => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISkyrimMajorRecordGetter>(_package, _recordData, _QNAMLocation);
         #endregion
         #region NEXT
-        private int? _NEXTLocation;
+        private int? _NEXTLocationStore;
+        private int? _NEXTLocation { get { EnsureFilled(); return _NEXTLocationStore; } set => _NEXTLocationStore = value; }
         public Boolean NEXT => _NEXTLocation.HasValue ? true : default(Boolean);
         #endregion
         partial void CustomFactoryEnd(

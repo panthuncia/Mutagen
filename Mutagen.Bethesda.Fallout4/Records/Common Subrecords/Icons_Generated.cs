@@ -1154,11 +1154,13 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region InventoryImage
-        private int? _InventoryImageLocation;
+        private int? _InventoryImageLocationStore;
+        private int? _InventoryImageLocation { get { EnsureFilled(); return _InventoryImageLocationStore; } set => _InventoryImageLocationStore = value; }
         public String? InventoryImage => _InventoryImageLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _InventoryImageLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region MessageIcon
-        private int? _MessageIconLocation;
+        private int? _MessageIconLocationStore;
+        private int? _MessageIconLocation { get { EnsureFilled(); return _MessageIconLocationStore; } set => _MessageIconLocationStore = value; }
         public String? MessageIcon => _MessageIconLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MessageIconLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(

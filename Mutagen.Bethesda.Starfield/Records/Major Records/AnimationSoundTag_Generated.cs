@@ -1189,11 +1189,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Tag
-        private int? _TagLocation;
+        private int? _TagLocationStore;
+        private int? _TagLocation { get { EnsureFilled(); return _TagLocationStore; } set => _TagLocationStore = value; }
         public String Tag => _TagLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TagLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region Sound
-        private ISoundReferenceGetter? _Sound;
+        private ISoundReferenceGetter? _SoundStore;
+        private ISoundReferenceGetter? _Sound { get { EnsureFilled(); return _SoundStore; } set => _SoundStore = value; }
         public ISoundReferenceGetter Sound => _Sound ?? new SoundReference();
         #endregion
         partial void CustomFactoryEnd(

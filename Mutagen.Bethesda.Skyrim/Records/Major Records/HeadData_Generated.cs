@@ -2334,17 +2334,39 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IHeadPartReferenceGetter> HeadParts { get; private set; } = [];
-        public IAvailableMorphsGetter? AvailableMorphs { get; private set; }
-        public IReadOnlyList<IFormLinkGetter<INpcGetter>> RacePresets { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<IColorRecordGetter>> AvailableHairColors { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<ITextureSetGetter>> FaceDetails { get; private set; } = [];
+        #region HeadParts
+        private IReadOnlyList<IHeadPartReferenceGetter> HeadPartsStore = [];
+        public IReadOnlyList<IHeadPartReferenceGetter> HeadParts { get { EnsureFilled(); return HeadPartsStore; } private set => HeadPartsStore = value; }
+        #endregion
+        #region AvailableMorphs
+        private IAvailableMorphsGetter? AvailableMorphsStore;
+        public IAvailableMorphsGetter? AvailableMorphs { get { EnsureFilled(); return AvailableMorphsStore; } private set => AvailableMorphsStore = value; }
+        #endregion
+        #region RacePresets
+        private IReadOnlyList<IFormLinkGetter<INpcGetter>> RacePresetsStore = [];
+        public IReadOnlyList<IFormLinkGetter<INpcGetter>> RacePresets { get { EnsureFilled(); return RacePresetsStore; } private set => RacePresetsStore = value; }
+        #endregion
+        #region AvailableHairColors
+        private IReadOnlyList<IFormLinkGetter<IColorRecordGetter>> AvailableHairColorsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IColorRecordGetter>> AvailableHairColors { get { EnsureFilled(); return AvailableHairColorsStore; } private set => AvailableHairColorsStore = value; }
+        #endregion
+        #region FaceDetails
+        private IReadOnlyList<IFormLinkGetter<ITextureSetGetter>> FaceDetailsStore = [];
+        public IReadOnlyList<IFormLinkGetter<ITextureSetGetter>> FaceDetails { get { EnsureFilled(); return FaceDetailsStore; } private set => FaceDetailsStore = value; }
+        #endregion
         #region DefaultFaceTexture
-        private int? _DefaultFaceTextureLocation;
+        private int? _DefaultFaceTextureLocationStore;
+        private int? _DefaultFaceTextureLocation { get { EnsureFilled(); return _DefaultFaceTextureLocationStore; } set => _DefaultFaceTextureLocationStore = value; }
         public IFormLinkNullableGetter<ITextureSetGetter> DefaultFaceTexture => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ITextureSetGetter>(_package, _recordData, _DefaultFaceTextureLocation);
         #endregion
-        public IReadOnlyList<ITintAssetsGetter> TintMasks { get; private set; } = [];
-        public IModelGetter? Model { get; private set; }
+        #region TintMasks
+        private IReadOnlyList<ITintAssetsGetter> TintMasksStore = [];
+        public IReadOnlyList<ITintAssetsGetter> TintMasks { get { EnsureFilled(); return TintMasksStore; } private set => TintMasksStore = value; }
+        #endregion
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

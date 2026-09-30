@@ -1266,7 +1266,10 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IAlternateTextureGetter>? AlternateTextures { get; private set; }
+        #region AlternateTextures
+        private IReadOnlyList<IAlternateTextureGetter>? AlternateTexturesStore;
+        public IReadOnlyList<IAlternateTextureGetter>? AlternateTextures { get { EnsureFilled(); return AlternateTexturesStore; } private set => AlternateTexturesStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

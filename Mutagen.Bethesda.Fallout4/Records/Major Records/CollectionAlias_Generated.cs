@@ -1143,11 +1143,13 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region AliasID
-        private int? _AliasIDLocation;
+        private int? _AliasIDLocationStore;
+        private int? _AliasIDLocation { get { EnsureFilled(); return _AliasIDLocationStore; } set => _AliasIDLocationStore = value; }
         public Int32 AliasID => _AliasIDLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AliasIDLocation.Value, _package.MetaData.Constants)) : default(Int32);
         #endregion
         #region MaxInitialFillCount
-        private int? _MaxInitialFillCountLocation;
+        private int? _MaxInitialFillCountLocationStore;
+        private int? _MaxInitialFillCountLocation { get { EnsureFilled(); return _MaxInitialFillCountLocationStore; } set => _MaxInitialFillCountLocationStore = value; }
         public Byte? MaxInitialFillCount => _MaxInitialFillCountLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaxInitialFillCountLocation.Value, _package.MetaData.Constants)[0] : default(Byte?);
         #endregion
         partial void CustomFactoryEnd(

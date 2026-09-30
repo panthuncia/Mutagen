@@ -2491,52 +2491,78 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region ID
-        private int? _IDLocation;
+        private int? _IDLocationStore;
+        private int? _IDLocation { get { EnsureFilled(); return _IDLocationStore; } set => _IDLocationStore = value; }
         public UInt32 ID => _IDLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IDLocation.Value, _package.MetaData.Constants)) : default(UInt32);
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public AQuestAlias.Flag? Flags => EnumBinaryTranslation<AQuestAlias.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 4);
         #endregion
         #region ALFG
-        private int? _ALFGLocation;
+        private int? _ALFGLocationStore;
+        private int? _ALFGLocation { get { EnsureFilled(); return _ALFGLocationStore; } set => _ALFGLocationStore = value; }
         public Int32? ALFG => _ALFGLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ALFGLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region AliasIDToForceIntoWhenFilled
-        private int? _AliasIDToForceIntoWhenFilledLocation;
+        private int? _AliasIDToForceIntoWhenFilledLocationStore;
+        private int? _AliasIDToForceIntoWhenFilledLocation { get { EnsureFilled(); return _AliasIDToForceIntoWhenFilledLocationStore; } set => _AliasIDToForceIntoWhenFilledLocationStore = value; }
         public Int32? AliasIDToForceIntoWhenFilled => _AliasIDToForceIntoWhenFilledLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AliasIDToForceIntoWhenFilledLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region SpecificLocation
-        private int? _SpecificLocationLocation;
+        private int? _SpecificLocationLocationStore;
+        private int? _SpecificLocationLocation { get { EnsureFilled(); return _SpecificLocationLocationStore; } set => _SpecificLocationLocationStore = value; }
         public IFormLinkNullableGetter<ILocationGetter> SpecificLocation => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ILocationGetter>(_package, _recordData, _SpecificLocationLocation);
         #endregion
-        public IReferenceAliasLocationGetter? ReferenceAliasLocation { get; private set; }
-        public IExternalAliasLocationGetter? ExternalAliasLocation { get; private set; }
-        public IFindMatchingRefFromEventGetter? FindMatchingRefFromEvent { get; private set; }
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
-        public IQuestLocationAliasALPSGetter? ALPS { get; private set; }
+        #region ReferenceAliasLocation
+        private IReferenceAliasLocationGetter? ReferenceAliasLocationStore;
+        public IReferenceAliasLocationGetter? ReferenceAliasLocation { get { EnsureFilled(); return ReferenceAliasLocationStore; } private set => ReferenceAliasLocationStore = value; }
+        #endregion
+        #region ExternalAliasLocation
+        private IExternalAliasLocationGetter? ExternalAliasLocationStore;
+        public IExternalAliasLocationGetter? ExternalAliasLocation { get { EnsureFilled(); return ExternalAliasLocationStore; } private set => ExternalAliasLocationStore = value; }
+        #endregion
+        #region FindMatchingRefFromEvent
+        private IFindMatchingRefFromEventGetter? FindMatchingRefFromEventStore;
+        public IFindMatchingRefFromEventGetter? FindMatchingRefFromEvent { get { EnsureFilled(); return FindMatchingRefFromEventStore; } private set => FindMatchingRefFromEventStore = value; }
+        #endregion
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
+        #region ALPS
+        private IQuestLocationAliasALPSGetter? ALPSStore;
+        public IQuestLocationAliasALPSGetter? ALPS { get { EnsureFilled(); return ALPSStore; } private set => ALPSStore = value; }
+        #endregion
         #region ClosestToAlias
-        private int? _ClosestToAliasLocation;
+        private int? _ClosestToAliasLocationStore;
+        private int? _ClosestToAliasLocation { get { EnsureFilled(); return _ClosestToAliasLocationStore; } set => _ClosestToAliasLocationStore = value; }
         public Int32? ClosestToAlias => _ClosestToAliasLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ClosestToAliasLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region SystemLocationAliasID
-        private int? _SystemLocationAliasIDLocation;
+        private int? _SystemLocationAliasIDLocationStore;
+        private int? _SystemLocationAliasIDLocation { get { EnsureFilled(); return _SystemLocationAliasIDLocationStore; } set => _SystemLocationAliasIDLocationStore = value; }
         public Int32? SystemLocationAliasID => _SystemLocationAliasIDLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SystemLocationAliasIDLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region ParentSystemLocationAliasID
-        private int? _ParentSystemLocationAliasIDLocation;
+        private int? _ParentSystemLocationAliasIDLocationStore;
+        private int? _ParentSystemLocationAliasIDLocation { get { EnsureFilled(); return _ParentSystemLocationAliasIDLocationStore; } set => _ParentSystemLocationAliasIDLocationStore = value; }
         public Int32? ParentSystemLocationAliasID => _ParentSystemLocationAliasIDLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ParentSystemLocationAliasIDLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region LocationTypeKeyword
-        private int? _LocationTypeKeywordLocation;
+        private int? _LocationTypeKeywordLocationStore;
+        private int? _LocationTypeKeywordLocation { get { EnsureFilled(); return _LocationTypeKeywordLocationStore; } set => _LocationTypeKeywordLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> LocationTypeKeyword => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _LocationTypeKeywordLocation);
         #endregion
         #region DisplayName
-        private int? _DisplayNameLocation;
+        private int? _DisplayNameLocationStore;
+        private int? _DisplayNameLocation { get { EnsureFilled(); return _DisplayNameLocationStore; } set => _DisplayNameLocationStore = value; }
         public IFormLinkNullableGetter<IMessageGetter> DisplayName => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMessageGetter>(_package, _recordData, _DisplayNameLocation);
         #endregion
         partial void CustomFactoryEnd(

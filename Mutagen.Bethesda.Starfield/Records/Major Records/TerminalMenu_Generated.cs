@@ -2341,13 +2341,16 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterIndexedGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterIndexedBinaryOverlay.VirtualMachineAdapterIndexedFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2359,23 +2362,33 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #endregion
         #region ShowBodyText
-        private int? _ShowBodyTextLocation;
+        private int? _ShowBodyTextLocationStore;
+        private int? _ShowBodyTextLocation { get { EnsureFilled(); return _ShowBodyTextLocationStore; } set => _ShowBodyTextLocationStore = value; }
         public TerminalMenu.ShowBodyTextOption? ShowBodyText => EnumBinaryTranslation<TerminalMenu.ShowBodyTextOption, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_ShowBodyTextLocation, _recordData, _package, 4);
         #endregion
         #region MenuButtonStyle
-        private int? _MenuButtonStyleLocation;
+        private int? _MenuButtonStyleLocationStore;
+        private int? _MenuButtonStyleLocation { get { EnsureFilled(); return _MenuButtonStyleLocationStore; } set => _MenuButtonStyleLocationStore = value; }
         public TerminalMenu.MenuButtonStyleOption? MenuButtonStyle => EnumBinaryTranslation<TerminalMenu.MenuButtonStyleOption, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_MenuButtonStyleLocation, _recordData, _package, 1);
         #endregion
         #region Style
-        private int? _StyleLocation;
+        private int? _StyleLocationStore;
+        private int? _StyleLocation { get { EnsureFilled(); return _StyleLocationStore; } set => _StyleLocationStore = value; }
         public TerminalMenu.StyleOption? Style => EnumBinaryTranslation<TerminalMenu.StyleOption, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_StyleLocation, _recordData, _package, 4);
         #endregion
         #region INAM
-        private int? _INAMLocation;
+        private int? _INAMLocationStore;
+        private int? _INAMLocation { get { EnsureFilled(); return _INAMLocationStore; } set => _INAMLocationStore = value; }
         public ITranslatedStringGetter? INAM => _INAMLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _INAMLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
-        public IReadOnlyList<ITerminalMenuBodyTextGetter>? BodyTexts { get; private set; }
-        public IReadOnlyList<ITerminalMenuItemGetter>? MenuItems { get; private set; }
+        #region BodyTexts
+        private IReadOnlyList<ITerminalMenuBodyTextGetter>? BodyTextsStore;
+        public IReadOnlyList<ITerminalMenuBodyTextGetter>? BodyTexts { get { EnsureFilled(); return BodyTextsStore; } private set => BodyTextsStore = value; }
+        #endregion
+        #region MenuItems
+        private IReadOnlyList<ITerminalMenuItemGetter>? MenuItemsStore;
+        public IReadOnlyList<ITerminalMenuItemGetter>? MenuItems { get { EnsureFilled(); return MenuItemsStore; } private set => MenuItemsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -2397,6 +2410,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new TerminalMenuBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => TerminalMenuFill((TerminalMenuBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void TerminalMenuFill(
+            TerminalMenuBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2404,9 +2434,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new TerminalMenuBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2419,7 +2447,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ITerminalMenuGetter TerminalMenuFactory(

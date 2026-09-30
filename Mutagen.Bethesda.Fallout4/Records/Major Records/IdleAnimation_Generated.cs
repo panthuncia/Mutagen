@@ -2236,17 +2236,26 @@ namespace Mutagen.Bethesda.Fallout4
         protected override Type LinkType => typeof(IIdleAnimationGetter);
 
 
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region BehaviorGraph
-        private int? _BehaviorGraphLocation;
+        private int? _BehaviorGraphLocationStore;
+        private int? _BehaviorGraphLocation { get { EnsureFilled(); return _BehaviorGraphLocationStore; } set => _BehaviorGraphLocationStore = value; }
         public String? BehaviorGraph => _BehaviorGraphLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BehaviorGraphLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region AnimationEvent
-        private int? _AnimationEventLocation;
+        private int? _AnimationEventLocationStore;
+        private int? _AnimationEventLocation { get { EnsureFilled(); return _AnimationEventLocationStore; } set => _AnimationEventLocationStore = value; }
         public String? AnimationEvent => _AnimationEventLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AnimationEventLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IIdleRelationGetter>> RelatedIdles { get; private set; } = [];
-        private RangeInt32? _DATALocation;
+        #region RelatedIdles
+        private IReadOnlyList<IFormLinkGetter<IIdleRelationGetter>> RelatedIdlesStore = [];
+        public IReadOnlyList<IFormLinkGetter<IIdleRelationGetter>> RelatedIdles { get { EnsureFilled(); return RelatedIdlesStore; } private set => RelatedIdlesStore = value; }
+        #endregion
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         #region LoopingSecondsMin
         private int _LoopingSecondsMinLocation => _DATALocation!.Value.Min;
         private bool _LoopingSecondsMin_IsSet => _DATALocation.HasValue;
@@ -2273,7 +2282,8 @@ namespace Mutagen.Bethesda.Fallout4
         public UInt16 ReplayDelay => _ReplayDelay_IsSet ? BinaryPrimitives.ReadUInt16LittleEndian(_recordData.Slice(_ReplayDelayLocation, 2)) : default(UInt16);
         #endregion
         #region AnimationFile
-        private int? _AnimationFileLocation;
+        private int? _AnimationFileLocationStore;
+        private int? _AnimationFileLocation { get { EnsureFilled(); return _AnimationFileLocationStore; } set => _AnimationFileLocationStore = value; }
         public String? AnimationFile => _AnimationFileLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AnimationFileLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(
@@ -2297,6 +2307,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new IdleAnimationBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => IdleAnimationFill((IdleAnimationBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void IdleAnimationFill(
+            IdleAnimationBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2304,9 +2331,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new IdleAnimationBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2319,7 +2344,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IIdleAnimationGetter IdleAnimationFactory(

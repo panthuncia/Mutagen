@@ -1243,7 +1243,10 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IFormLinkGetter<IObjectModificationGetter>>? QualityMods { get; private set; }
+        #region QualityMods
+        private IReadOnlyList<IFormLinkGetter<IObjectModificationGetter>>? QualityModsStore;
+        public IReadOnlyList<IFormLinkGetter<IObjectModificationGetter>>? QualityMods { get { EnsureFilled(); return QualityModsStore; } private set => QualityModsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

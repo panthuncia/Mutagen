@@ -1256,7 +1256,10 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IFormLinkComponentLinkGetter>? Links { get; private set; }
+        #region Links
+        private IReadOnlyList<IFormLinkComponentLinkGetter>? LinksStore;
+        public IReadOnlyList<IFormLinkComponentLinkGetter>? Links { get { EnsureFilled(); return LinksStore; } private set => LinksStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

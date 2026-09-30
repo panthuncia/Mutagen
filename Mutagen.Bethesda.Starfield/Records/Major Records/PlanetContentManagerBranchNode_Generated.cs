@@ -2701,39 +2701,56 @@ namespace Mutagen.Bethesda.Starfield
         protected override Type LinkType => typeof(IPlanetContentManagerBranchNodeGetter);
 
 
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
         #region NodeType
-        private int? _NodeTypeLocation;
+        private int? _NodeTypeLocationStore;
+        private int? _NodeTypeLocation { get { EnsureFilled(); return _NodeTypeLocationStore; } set => _NodeTypeLocationStore = value; }
         public PlanetContentManagerBranchNode.NodeTypeOption? NodeType => EnumBinaryTranslation<PlanetContentManagerBranchNode.NodeTypeOption, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_NodeTypeLocation, _recordData, _package, 4);
         #endregion
         #region ChildSelection
-        private int? _ChildSelectionLocation;
+        private int? _ChildSelectionLocationStore;
+        private int? _ChildSelectionLocation { get { EnsureFilled(); return _ChildSelectionLocationStore; } set => _ChildSelectionLocationStore = value; }
         public Int32 ChildSelection => _ChildSelectionLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ChildSelectionLocation.Value, _package.MetaData.Constants)) : default(Int32);
         #endregion
         #region CountCurve
-        private int? _CountCurveLocation;
+        private int? _CountCurveLocationStore;
+        private int? _CountCurveLocation { get { EnsureFilled(); return _CountCurveLocationStore; } set => _CountCurveLocationStore = value; }
         public IFormLinkNullableGetter<ICurveTableGetter> CountCurve => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ICurveTableGetter>(_package, _recordData, _CountCurveLocation);
         #endregion
         #region DistributionCurve
-        private int? _DistributionCurveLocation;
+        private int? _DistributionCurveLocationStore;
+        private int? _DistributionCurveLocation { get { EnsureFilled(); return _DistributionCurveLocationStore; } set => _DistributionCurveLocationStore = value; }
         public IFormLinkNullableGetter<ICurveTableGetter> DistributionCurve => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ICurveTableGetter>(_package, _recordData, _DistributionCurveLocation);
         #endregion
         #region ConsumeRequestEvenOnFailure
-        private int? _ConsumeRequestEvenOnFailureLocation;
+        private int? _ConsumeRequestEvenOnFailureLocationStore;
+        private int? _ConsumeRequestEvenOnFailureLocation { get { EnsureFilled(); return _ConsumeRequestEvenOnFailureLocationStore; } set => _ConsumeRequestEvenOnFailureLocationStore = value; }
         public Boolean? ConsumeRequestEvenOnFailure => _ConsumeRequestEvenOnFailureLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ConsumeRequestEvenOnFailureLocation.Value, _package.MetaData.Constants)[0] >= 1 : default(Boolean?);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IPlanetNodeGetter>> Nodes { get; private set; } = [];
-        public IReadOnlyList<IConditionGetter>? Conditions { get; private set; }
+        #region Nodes
+        private IReadOnlyList<IFormLinkGetter<IPlanetNodeGetter>> NodesStore = [];
+        public IReadOnlyList<IFormLinkGetter<IPlanetNodeGetter>> Nodes { get { EnsureFilled(); return NodesStore; } private set => NodesStore = value; }
+        #endregion
+        #region Conditions
+        private IReadOnlyList<IConditionGetter>? ConditionsStore;
+        public IReadOnlyList<IConditionGetter>? Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region Keywords
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get; private set; }
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? KeywordsStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get { EnsureFilled(); return KeywordsStore; } private set => KeywordsStore = value; }
         IReadOnlyList<IFormLinkGetter<IKeywordCommonGetter>>? IKeywordedGetter.Keywords => this.Keywords;
         #endregion
         #region ParentNode
-        private int? _ParentNodeLocation;
+        private int? _ParentNodeLocationStore;
+        private int? _ParentNodeLocation { get { EnsureFilled(); return _ParentNodeLocationStore; } set => _ParentNodeLocationStore = value; }
         public IFormLinkNullableGetter<IPlanetParentNodeGetter> ParentNode => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IPlanetParentNodeGetter>(_package, _recordData, _ParentNodeLocation);
         #endregion
         #region PreviousNode
-        private int? _PreviousNodeLocation;
+        private int? _PreviousNodeLocationStore;
+        private int? _PreviousNodeLocation { get { EnsureFilled(); return _PreviousNodeLocationStore; } set => _PreviousNodeLocationStore = value; }
         public IFormLinkNullableGetter<IPlanetContentManagerBranchNodeGetter> PreviousNode => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IPlanetContentManagerBranchNodeGetter>(_package, _recordData, _PreviousNodeLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -2757,6 +2774,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new PlanetContentManagerBranchNodeBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => PlanetContentManagerBranchNodeFill((PlanetContentManagerBranchNodeBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void PlanetContentManagerBranchNodeFill(
+            PlanetContentManagerBranchNodeBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2764,9 +2798,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new PlanetContentManagerBranchNodeBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2779,7 +2811,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IPlanetContentManagerBranchNodeGetter PlanetContentManagerBranchNodeFactory(

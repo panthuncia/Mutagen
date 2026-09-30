@@ -1565,18 +1565,21 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        private RangeInt32? _DATALocation;
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         #region CatalogueId
         private int _CatalogueIdLocation => _DATALocation!.Value.Min;
         private bool _CatalogueId_IsSet => _DATALocation.HasValue;
         public String CatalogueId => _CatalogueId_IsSet ? BinaryStringUtility.ParsePrependedString(_recordData.Slice(_CatalogueIdLocation), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
-        protected int CatalogueIdEndingPos;
+        private int CatalogueIdEndingPosStore;
+        protected int CatalogueIdEndingPos { get { EnsureFilled(); return CatalogueIdEndingPosStore; } private set => CatalogueIdEndingPosStore = value; }
         #endregion
         #region SpectralClass
         private int _SpectralClassLocation => CatalogueIdEndingPos;
         private bool _SpectralClass_IsSet => _DATALocation.HasValue;
         public String SpectralClass => _SpectralClass_IsSet ? BinaryStringUtility.ParsePrependedString(_recordData.Slice(_SpectralClassLocation), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
-        protected int SpectralClassEndingPos;
+        private int SpectralClassEndingPosStore;
+        protected int SpectralClassEndingPos { get { EnsureFilled(); return SpectralClassEndingPosStore; } private set => SpectralClassEndingPosStore = value; }
         #endregion
         #region Magnitude
         private int _MagnitudeLocation => SpectralClassEndingPos;

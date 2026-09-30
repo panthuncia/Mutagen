@@ -2635,20 +2635,46 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        public INeckFatAdjustmentsScaleGetter? NeckFatAdjustmentsScale { get; private set; }
-        public IReadOnlyList<IHeadPartReferenceGetter> HeadParts { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<INpcGetter>> RacePresets { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<IColorRecordGetter>> AvailableHairColors { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<ITextureSetGetter>> FaceDetails { get; private set; } = [];
+        #region NeckFatAdjustmentsScale
+        private INeckFatAdjustmentsScaleGetter? NeckFatAdjustmentsScaleStore;
+        public INeckFatAdjustmentsScaleGetter? NeckFatAdjustmentsScale { get { EnsureFilled(); return NeckFatAdjustmentsScaleStore; } private set => NeckFatAdjustmentsScaleStore = value; }
+        #endregion
+        #region HeadParts
+        private IReadOnlyList<IHeadPartReferenceGetter> HeadPartsStore = [];
+        public IReadOnlyList<IHeadPartReferenceGetter> HeadParts { get { EnsureFilled(); return HeadPartsStore; } private set => HeadPartsStore = value; }
+        #endregion
+        #region RacePresets
+        private IReadOnlyList<IFormLinkGetter<INpcGetter>> RacePresetsStore = [];
+        public IReadOnlyList<IFormLinkGetter<INpcGetter>> RacePresets { get { EnsureFilled(); return RacePresetsStore; } private set => RacePresetsStore = value; }
+        #endregion
+        #region AvailableHairColors
+        private IReadOnlyList<IFormLinkGetter<IColorRecordGetter>> AvailableHairColorsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IColorRecordGetter>> AvailableHairColors { get { EnsureFilled(); return AvailableHairColorsStore; } private set => AvailableHairColorsStore = value; }
+        #endregion
+        #region FaceDetails
+        private IReadOnlyList<IFormLinkGetter<ITextureSetGetter>> FaceDetailsStore = [];
+        public IReadOnlyList<IFormLinkGetter<ITextureSetGetter>> FaceDetails { get { EnsureFilled(); return FaceDetailsStore; } private set => FaceDetailsStore = value; }
+        #endregion
         #region DefaultFaceTexture
-        private int? _DefaultFaceTextureLocation;
+        private int? _DefaultFaceTextureLocationStore;
+        private int? _DefaultFaceTextureLocation { get { EnsureFilled(); return _DefaultFaceTextureLocationStore; } set => _DefaultFaceTextureLocationStore = value; }
         public IFormLinkNullableGetter<ITextureSetGetter> DefaultFaceTexture => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ITextureSetGetter>(_package, _recordData, _DefaultFaceTextureLocation);
         #endregion
-        public IReadOnlyList<ITintGroupGetter> TintLayers { get; private set; } = [];
-        public IReadOnlyList<IMorphGroupGetter> MorphGroups { get; private set; } = [];
-        public IReadOnlyList<IFaceMorphGetter> FaceMorphs { get; private set; } = [];
+        #region TintLayers
+        private IReadOnlyList<ITintGroupGetter> TintLayersStore = [];
+        public IReadOnlyList<ITintGroupGetter> TintLayers { get { EnsureFilled(); return TintLayersStore; } private set => TintLayersStore = value; }
+        #endregion
+        #region MorphGroups
+        private IReadOnlyList<IMorphGroupGetter> MorphGroupsStore = [];
+        public IReadOnlyList<IMorphGroupGetter> MorphGroups { get { EnsureFilled(); return MorphGroupsStore; } private set => MorphGroupsStore = value; }
+        #endregion
+        #region FaceMorphs
+        private IReadOnlyList<IFaceMorphGetter> FaceMorphsStore = [];
+        public IReadOnlyList<IFaceMorphGetter> FaceMorphs { get { EnsureFilled(); return FaceMorphsStore; } private set => FaceMorphsStore = value; }
+        #endregion
         #region MaleWrinkleMapPath
-        private int? _MaleWrinkleMapPathLocation;
+        private int? _MaleWrinkleMapPathLocationStore;
+        private int? _MaleWrinkleMapPathLocation { get { EnsureFilled(); return _MaleWrinkleMapPathLocationStore; } set => _MaleWrinkleMapPathLocationStore = value; }
         public String? MaleWrinkleMapPath => _MaleWrinkleMapPathLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaleWrinkleMapPathLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(

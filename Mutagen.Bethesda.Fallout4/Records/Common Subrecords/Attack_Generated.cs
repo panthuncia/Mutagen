@@ -1434,23 +1434,28 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region AttackData
-        private RangeInt32? _AttackDataLocation;
+        private RangeInt32? _AttackDataLocationStore;
+        private RangeInt32? _AttackDataLocation { get { EnsureFilled(); return _AttackDataLocationStore; } set => _AttackDataLocationStore = value; }
         public IAttackDataGetter? AttackData => _AttackDataLocation.HasValue ? AttackDataBinaryOverlay.AttackDataFactory(_recordData.Slice(_AttackDataLocation!.Value.Min), _package) : default;
         #endregion
         #region AttackEvent
-        private int? _AttackEventLocation;
+        private int? _AttackEventLocationStore;
+        private int? _AttackEventLocation { get { EnsureFilled(); return _AttackEventLocationStore; } set => _AttackEventLocationStore = value; }
         public String? AttackEvent => _AttackEventLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AttackEventLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region WeaponSlot
-        private int? _WeaponSlotLocation;
+        private int? _WeaponSlotLocationStore;
+        private int? _WeaponSlotLocation { get { EnsureFilled(); return _WeaponSlotLocationStore; } set => _WeaponSlotLocationStore = value; }
         public IFormLinkNullableGetter<IEquipTypeGetter> WeaponSlot => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IEquipTypeGetter>(_package, _recordData, _WeaponSlotLocation);
         #endregion
         #region RequiredSlot
-        private int? _RequiredSlotLocation;
+        private int? _RequiredSlotLocationStore;
+        private int? _RequiredSlotLocation { get { EnsureFilled(); return _RequiredSlotLocationStore; } set => _RequiredSlotLocationStore = value; }
         public IFormLinkNullableGetter<IEquipTypeGetter> RequiredSlot => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IEquipTypeGetter>(_package, _recordData, _RequiredSlotLocation);
         #endregion
         #region Description
-        private int? _DescriptionLocation;
+        private int? _DescriptionLocationStore;
+        private int? _DescriptionLocation { get { EnsureFilled(); return _DescriptionLocationStore; } set => _DescriptionLocationStore = value; }
         public String? Description => _DescriptionLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DescriptionLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(

@@ -1840,36 +1840,47 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region BaseEffect
-        private int? _BaseEffectLocation;
+        private int? _BaseEffectLocationStore;
+        private int? _BaseEffectLocation { get { EnsureFilled(); return _BaseEffectLocationStore; } set => _BaseEffectLocationStore = value; }
         public IFormLinkNullableGetter<IMagicEffectGetter> BaseEffect => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMagicEffectGetter>(_package, _recordData, _BaseEffectLocation);
         #endregion
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public IEffectDataGetter? Data => _DataLocation.HasValue ? EffectDataBinaryOverlay.EffectDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region Magnitude
-        private int? _MagnitudeLocation;
+        private int? _MagnitudeLocationStore;
+        private int? _MagnitudeLocation { get { EnsureFilled(); return _MagnitudeLocationStore; } set => _MagnitudeLocationStore = value; }
         public IFormLinkNullableGetter<IGlobalGetter> Magnitude => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IGlobalGetter>(_package, _recordData, _MagnitudeLocation);
         #endregion
         #region Area
-        private int? _AreaLocation;
+        private int? _AreaLocationStore;
+        private int? _AreaLocation { get { EnsureFilled(); return _AreaLocationStore; } set => _AreaLocationStore = value; }
         public IFormLinkNullableGetter<IGlobalGetter> Area => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IGlobalGetter>(_package, _recordData, _AreaLocation);
         #endregion
         #region Duration
-        private int? _DurationLocation;
+        private int? _DurationLocationStore;
+        private int? _DurationLocation { get { EnsureFilled(); return _DurationLocationStore; } set => _DurationLocationStore = value; }
         public IFormLinkNullableGetter<IGlobalGetter> Duration => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IGlobalGetter>(_package, _recordData, _DurationLocation);
         #endregion
         #region MAGF
-        private int? _MAGFLocation;
+        private int? _MAGFLocationStore;
+        private int? _MAGFLocation { get { EnsureFilled(); return _MAGFLocationStore; } set => _MAGFLocationStore = value; }
         public Int32? MAGF => _MAGFLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MAGFLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region EFIF
-        private int? _EFIFLocation;
+        private int? _EFIFLocationStore;
+        private int? _EFIFLocation { get { EnsureFilled(); return _EFIFLocationStore; } set => _EFIFLocationStore = value; }
         public Int32? EFIF => _EFIFLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EFIFLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region MUID
-        private int? _MUIDLocation;
+        private int? _MUIDLocationStore;
+        private int? _MUIDLocation { get { EnsureFilled(); return _MUIDLocationStore; } set => _MUIDLocationStore = value; }
         public Int32? MUID => _MUIDLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MUIDLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         partial void CustomFactoryEnd(

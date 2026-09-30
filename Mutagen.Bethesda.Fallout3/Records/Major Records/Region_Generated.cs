@@ -2630,16 +2630,24 @@ namespace Mutagen.Bethesda.Fallout3
 
         public Region.MajorFlag MajorFlags => (Region.MajorFlag)this.MajorRecordFlagsRaw;
 
-        public IIconsGetter? Icons { get; private set; }
+        #region Icons
+        private IIconsGetter? IconsStore;
+        public IIconsGetter? Icons { get { EnsureFilled(); return IconsStore; } private set => IconsStore = value; }
+        #endregion
         #region MapColor
-        private int? _MapColorLocation;
+        private int? _MapColorLocationStore;
+        private int? _MapColorLocation { get { EnsureFilled(); return _MapColorLocationStore; } set => _MapColorLocationStore = value; }
         public Color? MapColor => _MapColorLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MapColorLocation.Value, _package.MetaData.Constants).ReadColor(ColorBinaryType.Alpha) : default(Color?);
         #endregion
         #region Worldspace
-        private int? _WorldspaceLocation;
+        private int? _WorldspaceLocationStore;
+        private int? _WorldspaceLocation { get { EnsureFilled(); return _WorldspaceLocationStore; } set => _WorldspaceLocationStore = value; }
         public IFormLinkNullableGetter<IWorldspaceGetter> Worldspace => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IWorldspaceGetter>(_package, _recordData, _WorldspaceLocation);
         #endregion
-        public IReadOnlyList<IRegionAreaGetter> Areas { get; private set; } = [];
+        #region Areas
+        private IReadOnlyList<IRegionAreaGetter> AreasStore = [];
+        public IReadOnlyList<IRegionAreaGetter> Areas { get { EnsureFilled(); return AreasStore; } private set => AreasStore = value; }
+        #endregion
         #region RegionAreaLogic
         public partial ParseResult RegionAreaLogicCustomParse(
             OverlayStream stream,

@@ -1428,8 +1428,14 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        public IModelGetter? Model { get; private set; }
-        public IReadOnlyList<IBodyPartItemGetter> BodyParts { get; private set; } = [];
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
+        #region BodyParts
+        private IReadOnlyList<IBodyPartItemGetter> BodyPartsStore = [];
+        public IReadOnlyList<IBodyPartItemGetter> BodyParts { get { EnsureFilled(); return BodyPartsStore; } private set => BodyPartsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

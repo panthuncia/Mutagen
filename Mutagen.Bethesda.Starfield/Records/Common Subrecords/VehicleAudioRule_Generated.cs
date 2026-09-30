@@ -1104,7 +1104,8 @@ namespace Mutagen.Bethesda.Starfield
 
         #region Rule
         public String Rule => BinaryStringUtility.ParsePrependedString(_structData.Slice(0x0), lengthLength: 1, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int RuleEndingPos;
+        private int RuleEndingPosStore;
+        protected int RuleEndingPos { get { EnsureFilled(); return RuleEndingPosStore; } private set => RuleEndingPosStore = value; }
         #endregion
         public Guid Sound => new Guid(_structData.Slice(RuleEndingPos, 0x10).Slice(0, 16));
         partial void CustomFactoryEnd(

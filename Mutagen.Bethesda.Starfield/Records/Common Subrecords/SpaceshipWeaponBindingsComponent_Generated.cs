@@ -1218,7 +1218,8 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        private RangeInt32? _SHWBLocation;
+        private RangeInt32? _SHWBLocationStore;
+        private RangeInt32? _SHWBLocation { get { EnsureFilled(); return _SHWBLocationStore; } set => _SHWBLocationStore = value; }
         #region Slot1
         private int _Slot1Location => _SHWBLocation!.Value.Min;
         private bool _Slot1_IsSet => _SHWBLocation.HasValue;

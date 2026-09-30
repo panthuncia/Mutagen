@@ -1146,11 +1146,13 @@ namespace Mutagen.Bethesda.Starfield
 
         #region Driver
         public String Driver => BinaryStringUtility.ParsePrependedString(_structData.Slice(0x0), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int DriverEndingPos;
+        private int DriverEndingPosStore;
+        protected int DriverEndingPos { get { EnsureFilled(); return DriverEndingPosStore; } private set => DriverEndingPosStore = value; }
         #endregion
         #region Target
         public String Target => BinaryStringUtility.ParsePrependedString(_structData.Slice(DriverEndingPos), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int TargetEndingPos;
+        private int TargetEndingPosStore;
+        protected int TargetEndingPos { get { EnsureFilled(); return TargetEndingPosStore; } private set => TargetEndingPosStore = value; }
         #endregion
         public Single MaxAnimationDistance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(TargetEndingPos, 0x4));
         partial void CustomFactoryEnd(

@@ -1249,7 +1249,10 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IHeadPartItemGetter> HeadParts { get; private set; } = [];
+        #region HeadParts
+        private IReadOnlyList<IHeadPartItemGetter> HeadPartsStore = [];
+        public IReadOnlyList<IHeadPartItemGetter> HeadParts { get { EnsureFilled(); return HeadPartsStore; } private set => HeadPartsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

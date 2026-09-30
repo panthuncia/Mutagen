@@ -1469,7 +1469,8 @@ namespace Mutagen.Bethesda.Fallout3
         public P3Float Min => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(0xC, 0xC));
         public P3Float Max => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(0x18, 0xC));
         #region Cells
-        protected int CellsEndingPos;
+        private int CellsEndingPosStore;
+        protected int CellsEndingPos { get { EnsureFilled(); return CellsEndingPosStore; } private set => CellsEndingPosStore = value; }
         partial void CustomCellsEndPos();
         #endregion
         partial void CustomFactoryEnd(

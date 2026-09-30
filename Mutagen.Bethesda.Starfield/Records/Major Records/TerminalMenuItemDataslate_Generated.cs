@@ -1107,7 +1107,8 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Dataslate
-        private int? _DataslateLocation;
+        private int? _DataslateLocationStore;
+        private int? _DataslateLocation { get { EnsureFilled(); return _DataslateLocationStore; } set => _DataslateLocationStore = value; }
         public IFormLinkNullableGetter<IBookGetter> Dataslate => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IBookGetter>(_package, _recordData, _DataslateLocation);
         #endregion
         partial void CustomFactoryEnd(

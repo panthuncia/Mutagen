@@ -2817,17 +2817,39 @@ namespace Mutagen.Bethesda.Starfield
         protected override Type LinkType => typeof(ISurfacePatternGetter);
 
 
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
         #region SurfacePatternStyle
-        private int? _SurfacePatternStyleLocation;
+        private int? _SurfacePatternStyleLocationStore;
+        private int? _SurfacePatternStyleLocation { get { EnsureFilled(); return _SurfacePatternStyleLocationStore; } set => _SurfacePatternStyleLocationStore = value; }
         public IFormLinkGetter<ISurfacePatternStyleGetter> SurfacePatternStyle => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISurfacePatternStyleGetter>(_package, _recordData, _SurfacePatternStyleLocation);
         #endregion
-        public IReadOnlyArray2d<IFormLinkGetter<ISurfaceBlockGetter>>? Blocks { get; private set; }
-        public IReadOnlyArray2d<IFormLinkGetter<ISurfaceBlockGetter>>? MasterBlocks { get; private set; }
-        public IReadOnlyArray2d<SByte>? MasterBlockRotations { get; private set; }
-        public IReadOnlyArray2d<IFormLinkGetter<ISurfaceBlockGetter>>? OverrideBlocks { get; private set; }
-        public IReadOnlyArray2d<SByte>? OverrideBlockRotations { get; private set; }
-        public IReadOnlyList<IFormLinkGetter<IWorldspaceGetter>>? Worldspaces { get; private set; }
+        #region Blocks
+        private IReadOnlyArray2d<IFormLinkGetter<ISurfaceBlockGetter>>? BlocksStore;
+        public IReadOnlyArray2d<IFormLinkGetter<ISurfaceBlockGetter>>? Blocks { get { EnsureFilled(); return BlocksStore; } private set => BlocksStore = value; }
+        #endregion
+        #region MasterBlocks
+        private IReadOnlyArray2d<IFormLinkGetter<ISurfaceBlockGetter>>? MasterBlocksStore;
+        public IReadOnlyArray2d<IFormLinkGetter<ISurfaceBlockGetter>>? MasterBlocks { get { EnsureFilled(); return MasterBlocksStore; } private set => MasterBlocksStore = value; }
+        #endregion
+        #region MasterBlockRotations
+        private IReadOnlyArray2d<SByte>? MasterBlockRotationsStore;
+        public IReadOnlyArray2d<SByte>? MasterBlockRotations { get { EnsureFilled(); return MasterBlockRotationsStore; } private set => MasterBlockRotationsStore = value; }
+        #endregion
+        #region OverrideBlocks
+        private IReadOnlyArray2d<IFormLinkGetter<ISurfaceBlockGetter>>? OverrideBlocksStore;
+        public IReadOnlyArray2d<IFormLinkGetter<ISurfaceBlockGetter>>? OverrideBlocks { get { EnsureFilled(); return OverrideBlocksStore; } private set => OverrideBlocksStore = value; }
+        #endregion
+        #region OverrideBlockRotations
+        private IReadOnlyArray2d<SByte>? OverrideBlockRotationsStore;
+        public IReadOnlyArray2d<SByte>? OverrideBlockRotations { get { EnsureFilled(); return OverrideBlockRotationsStore; } private set => OverrideBlockRotationsStore = value; }
+        #endregion
+        #region Worldspaces
+        private IReadOnlyList<IFormLinkGetter<IWorldspaceGetter>>? WorldspacesStore;
+        public IReadOnlyList<IFormLinkGetter<IWorldspaceGetter>>? Worldspaces { get { EnsureFilled(); return WorldspacesStore; } private set => WorldspacesStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -2849,6 +2871,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new SurfacePatternBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => SurfacePatternFill((SurfacePatternBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void SurfacePatternFill(
+            SurfacePatternBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2856,9 +2895,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new SurfacePatternBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2871,7 +2908,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ISurfacePatternGetter SurfacePatternFactory(

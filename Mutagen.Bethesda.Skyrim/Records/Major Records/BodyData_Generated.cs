@@ -1254,10 +1254,14 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Index
-        private int? _IndexLocation;
+        private int? _IndexLocationStore;
+        private int? _IndexLocation { get { EnsureFilled(); return _IndexLocationStore; } set => _IndexLocationStore = value; }
         public BodyData.PartIndex? Index => EnumBinaryTranslation<BodyData.PartIndex, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_IndexLocation, _recordData, _package, 4);
         #endregion
-        public IModelBodyTextureGetter? Model { get; private set; }
+        #region Model
+        private IModelBodyTextureGetter? ModelStore;
+        public IModelBodyTextureGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

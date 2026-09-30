@@ -1234,15 +1234,18 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region HasWater
-        private int? _HasWaterLocation;
+        private int? _HasWaterLocationStore;
+        private int? _HasWaterLocation { get { EnsureFilled(); return _HasWaterLocationStore; } set => _HasWaterLocationStore = value; }
         public Boolean? HasWater => _HasWaterLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _HasWaterLocation.Value, _package.MetaData.Constants)[0] >= 1 : default(Boolean?);
         #endregion
         #region Water
-        private int? _WaterLocation;
+        private int? _WaterLocationStore;
+        private int? _WaterLocation { get { EnsureFilled(); return _WaterLocationStore; } set => _WaterLocationStore = value; }
         public IFormLinkNullableGetter<IWaterGetter> Water => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IWaterGetter>(_package, _recordData, _WaterLocation);
         #endregion
         #region WaterMaterial
-        private int? _WaterMaterialLocation;
+        private int? _WaterMaterialLocationStore;
+        private int? _WaterMaterialLocation { get { EnsureFilled(); return _WaterMaterialLocationStore; } set => _WaterMaterialLocationStore = value; }
         public String? WaterMaterial => _WaterMaterialLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _WaterMaterialLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(

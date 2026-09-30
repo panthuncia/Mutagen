@@ -2271,14 +2271,23 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
-        public IReadOnlyList<IWeatherTypeGetter>? Weathers { get; private set; }
-        public IReadOnlyList<IClimateWeatherSettingsGetter>? WeatherSettings { get; private set; }
-        private RangeInt32? _TNAMLocation;
+        #region Weathers
+        private IReadOnlyList<IWeatherTypeGetter>? WeathersStore;
+        public IReadOnlyList<IWeatherTypeGetter>? Weathers { get { EnsureFilled(); return WeathersStore; } private set => WeathersStore = value; }
+        #endregion
+        #region WeatherSettings
+        private IReadOnlyList<IClimateWeatherSettingsGetter>? WeatherSettingsStore;
+        public IReadOnlyList<IClimateWeatherSettingsGetter>? WeatherSettings { get { EnsureFilled(); return WeatherSettingsStore; } private set => WeatherSettingsStore = value; }
+        #endregion
+        private RangeInt32? _TNAMLocationStore;
+        private RangeInt32? _TNAMLocation { get { EnsureFilled(); return _TNAMLocationStore; } set => _TNAMLocationStore = value; }
         #region SunriseBegin
         private int _SunriseBeginLocation => _TNAMLocation!.Value.Min;
         public partial TimeOnly GetSunriseBeginCustom();
@@ -2325,6 +2334,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ClimateBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ClimateFill((ClimateBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ClimateFill(
+            ClimateBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2332,9 +2358,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ClimateBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2347,7 +2371,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IClimateGetter ClimateFactory(

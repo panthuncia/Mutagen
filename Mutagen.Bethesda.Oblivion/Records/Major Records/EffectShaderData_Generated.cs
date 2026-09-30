@@ -4182,7 +4182,8 @@ namespace Mutagen.Bethesda.Oblivion
                 translationParams: translationParams);
         }
 
-        public EffectShaderData.VersioningBreaks Versioning { get; private set; }
+        private EffectShaderData.VersioningBreaks VersioningStore;
+        public EffectShaderData.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public EffectShader.Flag Flags => (EffectShader.Flag)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x0, 0x4));
         public EffectShader.SourceBlendMode MembraneShaderSourceBlendMode => (EffectShader.SourceBlendMode)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x4, 0x4));
         public EffectShader.BlendOperation MembraneShaderBlendOperation => (EffectShader.BlendOperation)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x8, 0x4));

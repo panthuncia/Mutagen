@@ -1272,10 +1272,14 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region RunOnTabIndex
-        private int? _RunOnTabIndexLocation;
+        private int? _RunOnTabIndexLocationStore;
+        private int? _RunOnTabIndexLocation { get { EnsureFilled(); return _RunOnTabIndexLocationStore; } set => _RunOnTabIndexLocationStore = value; }
         public SByte RunOnTabIndex => _RunOnTabIndexLocation.HasValue ? (sbyte)HeaderTranslation.ExtractSubrecordMemory(_recordData, _RunOnTabIndexLocation.Value, _package.MetaData.Constants)[0] : default(SByte);
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

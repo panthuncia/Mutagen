@@ -1442,13 +1442,15 @@ namespace Mutagen.Bethesda.Skyrim
         #region Property
         public partial IScriptObjectPropertyGetter GetPropertyCustom(int location);
         public IScriptObjectPropertyGetter Property => GetPropertyCustom(location: 0x0);
-        protected int PropertyEndingPos;
+        private int PropertyEndingPosStore;
+        protected int PropertyEndingPos { get { EnsureFilled(); return PropertyEndingPosStore; } private set => PropertyEndingPosStore = value; }
         partial void CustomPropertyEndPos();
         #endregion
         public Int16 Version => BinaryPrimitives.ReadInt16LittleEndian(_structData.Slice(PropertyEndingPos, 0x2));
         public UInt16 ObjectFormat => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(PropertyEndingPos + 0x2, 0x2));
         #region Scripts
-        protected int ScriptsEndingPos;
+        private int ScriptsEndingPosStore;
+        protected int ScriptsEndingPos { get { EnsureFilled(); return ScriptsEndingPosStore; } private set => ScriptsEndingPosStore = value; }
         partial void CustomScriptsEndPos();
         #endregion
         partial void CustomFactoryEnd(

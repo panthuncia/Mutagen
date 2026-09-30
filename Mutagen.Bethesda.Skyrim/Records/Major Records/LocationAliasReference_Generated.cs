@@ -1236,15 +1236,18 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region AliasID
-        private int? _AliasIDLocation;
+        private int? _AliasIDLocationStore;
+        private int? _AliasIDLocation { get { EnsureFilled(); return _AliasIDLocationStore; } set => _AliasIDLocationStore = value; }
         public Int32? AliasID => _AliasIDLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AliasIDLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region Keyword
-        private int? _KeywordLocation;
+        private int? _KeywordLocationStore;
+        private int? _KeywordLocation { get { EnsureFilled(); return _KeywordLocationStore; } set => _KeywordLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> Keyword => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _KeywordLocation);
         #endregion
         #region RefType
-        private int? _RefTypeLocation;
+        private int? _RefTypeLocationStore;
+        private int? _RefTypeLocation { get { EnsureFilled(); return _RefTypeLocationStore; } set => _RefTypeLocationStore = value; }
         public IFormLinkNullableGetter<ILocationReferenceTypeGetter> RefType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ILocationReferenceTypeGetter>(_package, _recordData, _RefTypeLocation);
         #endregion
         partial void CustomFactoryEnd(

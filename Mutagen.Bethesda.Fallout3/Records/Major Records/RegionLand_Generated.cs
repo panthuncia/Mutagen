@@ -1132,7 +1132,8 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region LandIcon
-        private int? _LandIconLocation;
+        private int? _LandIconLocationStore;
+        private int? _LandIconLocation { get { EnsureFilled(); return _LandIconLocationStore; } set => _LandIconLocationStore = value; }
         public String? LandIcon => _LandIconLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LandIconLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(

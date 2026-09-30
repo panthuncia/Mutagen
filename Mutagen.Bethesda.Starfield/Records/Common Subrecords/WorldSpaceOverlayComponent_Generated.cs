@@ -1286,15 +1286,18 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region SNAM
-        private int? _SNAMLocation;
+        private int? _SNAMLocationStore;
+        private int? _SNAMLocation { get { EnsureFilled(); return _SNAMLocationStore; } set => _SNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? SNAM => _SNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region PNAM
-        private int? _PNAMLocation;
+        private int? _PNAMLocationStore;
+        private int? _PNAMLocation { get { EnsureFilled(); return _PNAMLocationStore; } set => _PNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? PNAM => _PNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _PNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region SurfaceBlock
-        private int? _SurfaceBlockLocation;
+        private int? _SurfaceBlockLocationStore;
+        private int? _SurfaceBlockLocation { get { EnsureFilled(); return _SurfaceBlockLocationStore; } set => _SurfaceBlockLocationStore = value; }
         public IFormLinkNullableGetter<ISurfaceBlockGetter> SurfaceBlock => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISurfaceBlockGetter>(_package, _recordData, _SurfaceBlockLocation);
         #endregion
         partial void CustomFactoryEnd(

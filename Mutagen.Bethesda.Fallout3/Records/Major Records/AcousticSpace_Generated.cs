@@ -2115,7 +2115,8 @@ namespace Mutagen.Bethesda.Fallout3
 
 
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         private IObjectBoundsGetter? _ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         public IObjectBoundsGetter ObjectBounds => _ObjectBounds ?? new ObjectBounds();
         #endregion
@@ -2126,19 +2127,23 @@ namespace Mutagen.Bethesda.Fallout3
             PreviousParse lastParsed);
         #endregion
         #region WallaTriggerCount
-        private int? _WallaTriggerCountLocation;
+        private int? _WallaTriggerCountLocationStore;
+        private int? _WallaTriggerCountLocation { get { EnsureFilled(); return _WallaTriggerCountLocationStore; } set => _WallaTriggerCountLocationStore = value; }
         public UInt32? WallaTriggerCount => _WallaTriggerCountLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _WallaTriggerCountLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region UseSoundFromRegion
-        private int? _UseSoundFromRegionLocation;
+        private int? _UseSoundFromRegionLocationStore;
+        private int? _UseSoundFromRegionLocation { get { EnsureFilled(); return _UseSoundFromRegionLocationStore; } set => _UseSoundFromRegionLocationStore = value; }
         public IFormLinkNullableGetter<IRegionGetter> UseSoundFromRegion => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IRegionGetter>(_package, _recordData, _UseSoundFromRegionLocation);
         #endregion
         #region EnvironmentType
-        private int? _EnvironmentTypeLocation;
+        private int? _EnvironmentTypeLocationStore;
+        private int? _EnvironmentTypeLocation { get { EnsureFilled(); return _EnvironmentTypeLocationStore; } set => _EnvironmentTypeLocationStore = value; }
         public AcousticSpace.EnvironmentTypeEnum? EnvironmentType => EnumBinaryTranslation<AcousticSpace.EnvironmentTypeEnum, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_EnvironmentTypeLocation, _recordData, _package, 4);
         #endregion
         #region IsInterior
-        private int? _IsInteriorLocation;
+        private int? _IsInteriorLocationStore;
+        private int? _IsInteriorLocation { get { EnsureFilled(); return _IsInteriorLocationStore; } set => _IsInteriorLocationStore = value; }
         public Boolean? IsInterior => _IsInteriorLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IsInteriorLocation.Value, _package.MetaData.Constants)) >= 1 : default(Boolean?);
         #endregion
         partial void CustomFactoryEnd(

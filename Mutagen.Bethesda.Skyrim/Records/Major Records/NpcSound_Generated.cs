@@ -1161,11 +1161,13 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Sound
-        private int? _SoundLocation;
+        private int? _SoundLocationStore;
+        private int? _SoundLocation { get { EnsureFilled(); return _SoundLocationStore; } set => _SoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundDescriptorGetter> Sound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundDescriptorGetter>(_package, _recordData, _SoundLocation);
         #endregion
         #region SoundChance
-        private int? _SoundChanceLocation;
+        private int? _SoundChanceLocationStore;
+        private int? _SoundChanceLocation { get { EnsureFilled(); return _SoundChanceLocationStore; } set => _SoundChanceLocationStore = value; }
         public Byte? SoundChance => _SoundChanceLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SoundChanceLocation.Value, _package.MetaData.Constants)[0] : default(Byte?);
         #endregion
         partial void CustomFactoryEnd(

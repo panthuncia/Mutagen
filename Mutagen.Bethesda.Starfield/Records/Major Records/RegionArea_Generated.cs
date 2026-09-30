@@ -1256,10 +1256,14 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region EdgeFallOff
-        private int? _EdgeFallOffLocation;
+        private int? _EdgeFallOffLocationStore;
+        private int? _EdgeFallOffLocation { get { EnsureFilled(); return _EdgeFallOffLocationStore; } set => _EdgeFallOffLocationStore = value; }
         public UInt32 EdgeFallOff => _EdgeFallOffLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EdgeFallOffLocation.Value, _package.MetaData.Constants)) : default(UInt32);
         #endregion
-        public IReadOnlyList<P2Float>? RegionPointListData { get; private set; }
+        #region RegionPointListData
+        private IReadOnlyList<P2Float>? RegionPointListDataStore;
+        public IReadOnlyList<P2Float>? RegionPointListData { get { EnsureFilled(); return RegionPointListDataStore; } private set => RegionPointListDataStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

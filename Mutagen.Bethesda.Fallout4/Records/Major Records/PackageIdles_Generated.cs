@@ -1448,7 +1448,8 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Type
-        private int? _TypeLocation;
+        private int? _TypeLocationStore;
+        private int? _TypeLocation { get { EnsureFilled(); return _TypeLocationStore; } set => _TypeLocationStore = value; }
         public PackageIdles.Types Type => EnumBinaryTranslation<PackageIdles.Types, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_TypeLocation, _recordData, _package, 1);
         #endregion
         #region TimerSetting
@@ -1468,7 +1469,8 @@ namespace Mutagen.Bethesda.Fallout4
             PreviousParse lastParsed);
         #endregion
         #region IDLB
-        private int? _IDLBLocation;
+        private int? _IDLBLocationStore;
+        private int? _IDLBLocation { get { EnsureFilled(); return _IDLBLocationStore; } set => _IDLBLocationStore = value; }
         public Int32? IDLB => _IDLBLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IDLBLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         partial void CustomFactoryEnd(

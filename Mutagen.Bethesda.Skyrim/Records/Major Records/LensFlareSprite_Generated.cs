@@ -1308,15 +1308,18 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region LensFlareSpriteId
-        private int? _LensFlareSpriteIdLocation;
+        private int? _LensFlareSpriteIdLocationStore;
+        private int? _LensFlareSpriteIdLocation { get { EnsureFilled(); return _LensFlareSpriteIdLocationStore; } set => _LensFlareSpriteIdLocationStore = value; }
         public String? LensFlareSpriteId => _LensFlareSpriteIdLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LensFlareSpriteIdLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Texture
-        private int? _TextureLocation;
+        private int? _TextureLocationStore;
+        private int? _TextureLocation { get { EnsureFilled(); return _TextureLocationStore; } set => _TextureLocationStore = value; }
         public AssetLinkGetter<SkyrimTextureAssetType>? Texture => _TextureLocation.HasValue ? new AssetLinkGetter<SkyrimTextureAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TextureLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<SkyrimTextureAssetType>?);
         #endregion
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public ILensFlareSpriteDataGetter? Data => _DataLocation.HasValue ? LensFlareSpriteDataBinaryOverlay.LensFlareSpriteDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         #endregion
         partial void CustomFactoryEnd(

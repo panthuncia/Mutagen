@@ -1123,7 +1123,8 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region SpaceshipAIActor
-        private int? _SpaceshipAIActorLocation;
+        private int? _SpaceshipAIActorLocationStore;
+        private int? _SpaceshipAIActorLocation { get { EnsureFilled(); return _SpaceshipAIActorLocationStore; } set => _SpaceshipAIActorLocationStore = value; }
         public IFormLinkNullableGetter<INpcGetter> SpaceshipAIActor => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<INpcGetter>(_package, _recordData, _SpaceshipAIActorLocation);
         #endregion
         partial void CustomFactoryEnd(

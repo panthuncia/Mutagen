@@ -5451,7 +5451,8 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        public EffectShaderData.VersioningBreaks Versioning { get; private set; }
+        private EffectShaderData.VersioningBreaks VersioningStore;
+        public EffectShaderData.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public EffectShaderData.Flag Flags => (EffectShaderData.Flag)_structData.Span.Slice(0x0, 0x1)[0];
         public ReadOnlyMemorySlice<Byte> Unused1 => _structData.Span.Slice(0x1, 0x3).ToArray();
         public EffectShaderData.BlendMode MembraneShaderSourceBlendMode => (EffectShaderData.BlendMode)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x4, 0x4));

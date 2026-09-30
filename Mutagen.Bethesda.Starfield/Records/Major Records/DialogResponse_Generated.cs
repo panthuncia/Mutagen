@@ -2101,7 +2101,8 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        private RangeInt32? _TRDALocation;
+        private RangeInt32? _TRDALocationStore;
+        private RangeInt32? _TRDALocation { get { EnsureFilled(); return _TRDALocationStore; } set => _TRDALocationStore = value; }
         #region Emotion
         private int _EmotionLocation => _TRDALocation!.Value.Min;
         private bool _Emotion_IsSet => _TRDALocation.HasValue;
@@ -2117,30 +2118,47 @@ namespace Mutagen.Bethesda.Starfield
         private bool _EmotionOut_IsSet => _TRDALocation.HasValue;
         public Single EmotionOut => _EmotionOut_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EmotionOutLocation, 4)) : default(Single);
         #endregion
-        public IReadOnlyList<IDialogResponseTROTGetter> TROTs { get; private set; } = [];
+        #region TROTs
+        private IReadOnlyList<IDialogResponseTROTGetter> TROTsStore = [];
+        public IReadOnlyList<IDialogResponseTROTGetter> TROTs { get { EnsureFilled(); return TROTsStore; } private set => TROTsStore = value; }
+        #endregion
         #region ResponseText
-        private int? _ResponseTextLocation;
+        private int? _ResponseTextLocationStore;
+        private int? _ResponseTextLocation { get { EnsureFilled(); return _ResponseTextLocationStore; } set => _ResponseTextLocationStore = value; }
         public ITranslatedStringGetter ResponseText => _ResponseTextLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ResponseTextLocation.Value, _package.MetaData.Constants), StringsSource.IL, parsingBundle: _package.MetaData, eager: false) : TranslatedString.Empty;
         #endregion
         #region ScriptNotes
-        private int? _ScriptNotesLocation;
+        private int? _ScriptNotesLocationStore;
+        private int? _ScriptNotesLocation { get { EnsureFilled(); return _ScriptNotesLocationStore; } set => _ScriptNotesLocationStore = value; }
         public String ScriptNotes => _ScriptNotesLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ScriptNotesLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region Edits
-        private int? _EditsLocation;
+        private int? _EditsLocationStore;
+        private int? _EditsLocation { get { EnsureFilled(); return _EditsLocationStore; } set => _EditsLocationStore = value; }
         public String Edits => _EditsLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EditsLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region AlternateLipText
-        private int? _AlternateLipTextLocation;
+        private int? _AlternateLipTextLocationStore;
+        private int? _AlternateLipTextLocation { get { EnsureFilled(); return _AlternateLipTextLocationStore; } set => _AlternateLipTextLocationStore = value; }
         public String AlternateLipText => _AlternateLipTextLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AlternateLipTextLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region TextHash
-        private int? _TextHashLocation;
+        private int? _TextHashLocationStore;
+        private int? _TextHashLocation { get { EnsureFilled(); return _TextHashLocationStore; } set => _TextHashLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? TextHash => _TextHashLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _TextHashLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
-        public IAnimationGetter? Animation { get; private set; }
-        public IHeadTrackingGetter? HeadTracking { get; private set; }
-        public ISoundReferenceGetter? RVSH { get; private set; }
+        #region Animation
+        private IAnimationGetter? AnimationStore;
+        public IAnimationGetter? Animation { get { EnsureFilled(); return AnimationStore; } private set => AnimationStore = value; }
+        #endregion
+        #region HeadTracking
+        private IHeadTrackingGetter? HeadTrackingStore;
+        public IHeadTrackingGetter? HeadTracking { get { EnsureFilled(); return HeadTrackingStore; } private set => HeadTrackingStore = value; }
+        #endregion
+        #region RVSH
+        private ISoundReferenceGetter? RVSHStore;
+        public ISoundReferenceGetter? RVSH { get { EnsureFilled(); return RVSHStore; } private set => RVSHStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

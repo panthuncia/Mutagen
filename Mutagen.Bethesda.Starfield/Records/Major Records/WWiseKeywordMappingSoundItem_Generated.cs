@@ -1286,7 +1286,8 @@ namespace Mutagen.Bethesda.Starfield
         public ISoundReferenceGetter Sound => SoundReferenceBinaryOverlay.SoundReferenceFactory(_structData, _package, default(TypedParseParams));
         #region GuidPairs
         public IReadOnlyList<IWWiseKeywordMappingSoundItemGuidPairGetter> GuidPairs => BinaryOverlayList.FactoryByCountLength<IWWiseKeywordMappingSoundItemGuidPairGetter>(_structData.Slice(0x28), _package, 32, countLength: 4, (s, p) => WWiseKeywordMappingSoundItemGuidPairBinaryOverlay.WWiseKeywordMappingSoundItemGuidPairFactory(s, p));
-        protected int GuidPairsEndingPos;
+        private int GuidPairsEndingPosStore;
+        protected int GuidPairsEndingPos { get { EnsureFilled(); return GuidPairsEndingPosStore; } private set => GuidPairsEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

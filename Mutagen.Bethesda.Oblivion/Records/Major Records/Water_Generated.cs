@@ -1945,23 +1945,28 @@ namespace Mutagen.Bethesda.Oblivion
 
 
         #region Texture
-        private int? _TextureLocation;
+        private int? _TextureLocationStore;
+        private int? _TextureLocation { get { EnsureFilled(); return _TextureLocationStore; } set => _TextureLocationStore = value; }
         public String? Texture => _TextureLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TextureLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Opacity
-        private int? _OpacityLocation;
+        private int? _OpacityLocationStore;
+        private int? _OpacityLocation { get { EnsureFilled(); return _OpacityLocationStore; } set => _OpacityLocationStore = value; }
         public Byte? Opacity => _OpacityLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _OpacityLocation.Value, _package.MetaData.Constants)[0] : default(Byte?);
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public Water.Flag? Flags => EnumBinaryTranslation<Water.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 1);
         #endregion
         #region MaterialID
-        private int? _MaterialIDLocation;
+        private int? _MaterialIDLocationStore;
+        private int? _MaterialIDLocation { get { EnsureFilled(); return _MaterialIDLocationStore; } set => _MaterialIDLocationStore = value; }
         public String? MaterialID => _MaterialIDLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaterialIDLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Sound
-        private int? _SoundLocation;
+        private int? _SoundLocationStore;
+        private int? _SoundLocation { get { EnsureFilled(); return _SoundLocationStore; } set => _SoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> Sound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _SoundLocation);
         #endregion
         #region Data
@@ -1973,7 +1978,8 @@ namespace Mutagen.Bethesda.Oblivion
         public IWaterDataGetter? Data => GetDataCustom();
         #endregion
         #region RelatedWaters
-        private RangeInt32? _RelatedWatersLocation;
+        private RangeInt32? _RelatedWatersLocationStore;
+        private RangeInt32? _RelatedWatersLocation { get { EnsureFilled(); return _RelatedWatersLocationStore; } set => _RelatedWatersLocationStore = value; }
         public IRelatedWatersGetter? RelatedWaters => _RelatedWatersLocation.HasValue ? RelatedWatersBinaryOverlay.RelatedWatersFactory(_recordData.Slice(_RelatedWatersLocation!.Value.Min), _package) : default;
         #endregion
         partial void CustomFactoryEnd(

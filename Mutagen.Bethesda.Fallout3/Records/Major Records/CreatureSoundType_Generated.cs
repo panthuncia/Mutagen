@@ -1284,10 +1284,14 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Type
-        private int? _TypeLocation;
+        private int? _TypeLocationStore;
+        private int? _TypeLocation { get { EnsureFilled(); return _TypeLocationStore; } set => _TypeLocationStore = value; }
         public Creature.SoundType? Type => EnumBinaryTranslation<Creature.SoundType, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_TypeLocation, _recordData, _package, 4);
         #endregion
-        public IReadOnlyList<ICreatureSoundItemGetter> Sounds { get; private set; } = [];
+        #region Sounds
+        private IReadOnlyList<ICreatureSoundItemGetter> SoundsStore = [];
+        public IReadOnlyList<ICreatureSoundItemGetter> Sounds { get { EnsureFilled(); return SoundsStore; } private set => SoundsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

@@ -1104,7 +1104,8 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Reference
-        private int? _ReferenceLocation;
+        private int? _ReferenceLocationStore;
+        private int? _ReferenceLocation { get { EnsureFilled(); return _ReferenceLocationStore; } set => _ReferenceLocationStore = value; }
         public IFormLinkGetter<IFallout3MajorRecordGetter> Reference => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IFallout3MajorRecordGetter>(_package, _recordData, _ReferenceLocation);
         #endregion
         partial void CustomFactoryEnd(

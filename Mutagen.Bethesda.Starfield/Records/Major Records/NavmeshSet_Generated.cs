@@ -1170,7 +1170,8 @@ namespace Mutagen.Bethesda.Starfield
 
         #region Navmeshes
         public IReadOnlyList<IFormLinkGetter<INavigationMeshGetter>> Navmeshes => BinaryOverlayList.FactoryByCountLength<IFormLinkGetter<INavigationMeshGetter>>(_structData, _package, 4, countLength: 4, (s, p) => FormLinkBinaryTranslation.Instance.OverlayFactory<INavigationMeshGetter>(p, s));
-        protected int NavmeshesEndingPos;
+        private int NavmeshesEndingPosStore;
+        protected int NavmeshesEndingPos { get { EnsureFilled(); return NavmeshesEndingPosStore; } private set => NavmeshesEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

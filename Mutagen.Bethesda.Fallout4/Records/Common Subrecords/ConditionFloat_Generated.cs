@@ -1246,7 +1246,8 @@ namespace Mutagen.Bethesda.Fallout4
 
         public Single ComparisonValue => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
         #region Data
-        protected int DataEndingPos;
+        private int DataEndingPosStore;
+        protected int DataEndingPos { get { EnsureFilled(); return DataEndingPosStore; } private set => DataEndingPosStore = value; }
         partial void CustomDataEndPos();
         #endregion
         partial void CustomFactoryEnd(

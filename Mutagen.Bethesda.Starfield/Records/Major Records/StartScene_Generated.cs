@@ -1585,26 +1585,34 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region LCEPScene
-        private int? _LCEPSceneLocation;
+        private int? _LCEPSceneLocationStore;
+        private int? _LCEPSceneLocation { get { EnsureFilled(); return _LCEPSceneLocationStore; } set => _LCEPSceneLocationStore = value; }
         public IFormLinkNullableGetter<ISceneGetter> LCEPScene => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISceneGetter>(_package, _recordData, _LCEPSceneLocation);
         #endregion
         #region STSCScene
-        private int? _STSCSceneLocation;
+        private int? _STSCSceneLocationStore;
+        private int? _STSCSceneLocation { get { EnsureFilled(); return _STSCSceneLocationStore; } set => _STSCSceneLocationStore = value; }
         public IFormLinkNullableGetter<ISceneGetter> STSCScene => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISceneGetter>(_package, _recordData, _STSCSceneLocation);
         #endregion
         #region INTTPhaseIndex
-        private int? _INTTPhaseIndexLocation;
+        private int? _INTTPhaseIndexLocationStore;
+        private int? _INTTPhaseIndexLocation { get { EnsureFilled(); return _INTTPhaseIndexLocationStore; } set => _INTTPhaseIndexLocationStore = value; }
         public UInt16 INTTPhaseIndex => _INTTPhaseIndexLocation.HasValue ? BinaryPrimitives.ReadUInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _INTTPhaseIndexLocation.Value, _package.MetaData.Constants)) : default(UInt16);
         #endregion
         #region ACTVPhaseIndex
-        private int? _ACTVPhaseIndexLocation;
+        private int? _ACTVPhaseIndexLocationStore;
+        private int? _ACTVPhaseIndexLocation { get { EnsureFilled(); return _ACTVPhaseIndexLocationStore; } set => _ACTVPhaseIndexLocationStore = value; }
         public UInt16? ACTVPhaseIndex => _ACTVPhaseIndexLocation.HasValue ? BinaryPrimitives.ReadUInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ACTVPhaseIndexLocation.Value, _package.MetaData.Constants)) : default(UInt16?);
         #endregion
         #region StartPhaseForScene
-        private int? _StartPhaseForSceneLocation;
+        private int? _StartPhaseForSceneLocationStore;
+        private int? _StartPhaseForSceneLocation { get { EnsureFilled(); return _StartPhaseForSceneLocationStore; } set => _StartPhaseForSceneLocationStore = value; }
         public String? StartPhaseForScene => _StartPhaseForSceneLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _StartPhaseForSceneLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        public IReadOnlyList<IConditionGetter>? Conditions { get; private set; }
+        #region Conditions
+        private IReadOnlyList<IConditionGetter>? ConditionsStore;
+        public IReadOnlyList<IConditionGetter>? Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

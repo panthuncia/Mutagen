@@ -1329,10 +1329,12 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
-        private RangeInt32? _BODVLocation;
+        private RangeInt32? _BODVLocationStore;
+        private RangeInt32? _BODVLocation { get { EnsureFilled(); return _BODVLocationStore; } set => _BODVLocationStore = value; }
         #region Color1
         private int _Color1Location => _BODVLocation!.Value.Min;
         private bool _Color1_IsSet => _BODVLocation.HasValue;

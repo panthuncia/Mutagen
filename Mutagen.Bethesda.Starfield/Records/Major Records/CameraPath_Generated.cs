@@ -1938,8 +1938,12 @@ namespace Mutagen.Bethesda.Starfield
         protected override Type LinkType => typeof(ICameraPathGetter);
 
 
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
-        private RangeInt32? _ANAMLocation;
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
+        private RangeInt32? _ANAMLocationStore;
+        private RangeInt32? _ANAMLocation { get { EnsureFilled(); return _ANAMLocationStore; } set => _ANAMLocationStore = value; }
         #region Parent
         private int _ParentLocation => _ANAMLocation!.Value.Min;
         private bool _Parent_IsSet => _ANAMLocation.HasValue;
@@ -1951,10 +1955,14 @@ namespace Mutagen.Bethesda.Starfield
         public IFormLinkGetter<ICameraPathGetter> Previous => _Previous_IsSet ? FormLinkBinaryTranslation.Instance.OverlayFactory<ICameraPathGetter>(_package, _recordData.Span.Slice(_PreviousLocation, 0x4), isSet: _Previous_IsSet) : FormLink<ICameraPathGetter>.Null;
         #endregion
         #region Zoom
-        private int? _ZoomLocation;
+        private int? _ZoomLocationStore;
+        private int? _ZoomLocation { get { EnsureFilled(); return _ZoomLocationStore; } set => _ZoomLocationStore = value; }
         public CameraPath.Flags Zoom => EnumBinaryTranslation<CameraPath.Flags, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_ZoomLocation, _recordData, _package, 1);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<ICameraShotGetter>> Shots { get; private set; } = [];
+        #region Shots
+        private IReadOnlyList<IFormLinkGetter<ICameraShotGetter>> ShotsStore = [];
+        public IReadOnlyList<IFormLinkGetter<ICameraShotGetter>> Shots { get { EnsureFilled(); return ShotsStore; } private set => ShotsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -1976,6 +1984,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new CameraPathBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => CameraPathFill((CameraPathBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void CameraPathFill(
+            CameraPathBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1983,9 +2008,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new CameraPathBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1998,7 +2021,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ICameraPathGetter CameraPathFactory(

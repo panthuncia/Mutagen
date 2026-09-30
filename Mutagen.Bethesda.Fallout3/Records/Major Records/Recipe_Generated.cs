@@ -2329,7 +2329,8 @@ namespace Mutagen.Bethesda.Fallout3
 
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2340,8 +2341,12 @@ namespace Mutagen.Bethesda.Fallout3
         ITranslatedStringGetter ITranslatedNamedRequiredGetter.Name => this.Name ?? TranslatedString.Empty;
         #endregion
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
-        private RangeInt32? _DATALocation;
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         #region Skill
         private int _SkillLocation => _DATALocation!.Value.Min;
         private bool _Skill_IsSet => _DATALocation.HasValue;
@@ -2362,8 +2367,14 @@ namespace Mutagen.Bethesda.Fallout3
         private bool _SubCategory_IsSet => _DATALocation.HasValue;
         public IFormLinkGetter<IRecipeCategoryGetter> SubCategory => _SubCategory_IsSet ? FormLinkBinaryTranslation.Instance.OverlayFactory<IRecipeCategoryGetter>(_package, _recordData.Span.Slice(_SubCategoryLocation, 0x4), isSet: _SubCategory_IsSet) : FormLink<IRecipeCategoryGetter>.Null;
         #endregion
-        public IReadOnlyList<IRecipeIngredientGetter> Ingredients { get; private set; } = [];
-        public IReadOnlyList<IRecipeOutputGetter> Outputs { get; private set; } = [];
+        #region Ingredients
+        private IReadOnlyList<IRecipeIngredientGetter> IngredientsStore = [];
+        public IReadOnlyList<IRecipeIngredientGetter> Ingredients { get { EnsureFilled(); return IngredientsStore; } private set => IngredientsStore = value; }
+        #endregion
+        #region Outputs
+        private IReadOnlyList<IRecipeOutputGetter> OutputsStore = [];
+        public IReadOnlyList<IRecipeOutputGetter> Outputs { get { EnsureFilled(); return OutputsStore; } private set => OutputsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -2385,6 +2396,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new RecipeBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => RecipeFill((RecipeBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void RecipeFill(
+            RecipeBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2392,9 +2420,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new RecipeBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2407,7 +2433,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IRecipeGetter RecipeFactory(

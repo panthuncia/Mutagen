@@ -1404,14 +1404,19 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region File
-        private int? _FileLocation;
+        private int? _FileLocationStore;
+        private int? _FileLocation { get { EnsureFilled(); return _FileLocationStore; } set => _FileLocationStore = value; }
         public AssetLinkGetter<SkyrimBodyTextureAssetType> File => _FileLocation.HasValue ? new AssetLinkGetter<SkyrimBodyTextureAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FileLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : AssetLinkGetter<SkyrimBodyTextureAssetType>.Null;
         #endregion
         #region Data
-        private int? _DataLocation;
+        private int? _DataLocationStore;
+        private int? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? Data => _DataLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DataLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
-        public IReadOnlyList<IAlternateTextureGetter>? AlternateTextures { get; private set; }
+        #region AlternateTextures
+        private IReadOnlyList<IAlternateTextureGetter>? AlternateTexturesStore;
+        public IReadOnlyList<IAlternateTextureGetter>? AlternateTextures { get { EnsureFilled(); return AlternateTexturesStore; } private set => AlternateTexturesStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

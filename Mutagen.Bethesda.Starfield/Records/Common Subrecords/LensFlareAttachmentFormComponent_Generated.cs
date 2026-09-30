@@ -1118,7 +1118,8 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region REFL
-        private int? _REFLLocation;
+        private int? _REFLLocationStore;
+        private int? _REFLLocation { get { EnsureFilled(); return _REFLLocationStore; } set => _REFLLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? REFL => _REFLLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _REFLLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

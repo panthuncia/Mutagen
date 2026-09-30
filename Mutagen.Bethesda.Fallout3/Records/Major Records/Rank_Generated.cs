@@ -1322,19 +1322,23 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region RankNumber
-        private int? _RankNumberLocation;
+        private int? _RankNumberLocationStore;
+        private int? _RankNumberLocation { get { EnsureFilled(); return _RankNumberLocationStore; } set => _RankNumberLocationStore = value; }
         public Int32? RankNumber => _RankNumberLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _RankNumberLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region Name
-        private IGenderedItemGetter<String?>? _NameOverlay;
+        private IGenderedItemGetter<String?>? _NameOverlayStore;
+        private IGenderedItemGetter<String?>? _NameOverlay { get { EnsureFilled(); return _NameOverlayStore; } set => _NameOverlayStore = value; }
         public IGenderedItemGetter<String?>? Name => _NameOverlay;
         #endregion
         #region Insignia
-        private int? _InsigniaLocation;
+        private int? _InsigniaLocationStore;
+        private int? _InsigniaLocation { get { EnsureFilled(); return _InsigniaLocationStore; } set => _InsigniaLocationStore = value; }
         public String? Insignia => _InsigniaLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _InsigniaLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region XNAM
-        private int? _XNAMLocation;
+        private int? _XNAMLocationStore;
+        private int? _XNAMLocation { get { EnsureFilled(); return _XNAMLocationStore; } set => _XNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? XNAM => _XNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _XNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

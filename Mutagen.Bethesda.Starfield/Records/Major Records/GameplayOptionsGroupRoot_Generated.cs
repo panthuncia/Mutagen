@@ -1214,7 +1214,10 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IFormLinkGetter<IGameplayOptionsGroupGetter>> GameplayOptionGroups { get; private set; } = [];
+        #region GameplayOptionGroups
+        private IReadOnlyList<IFormLinkGetter<IGameplayOptionsGroupGetter>> GameplayOptionGroupsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IGameplayOptionsGroupGetter>> GameplayOptionGroups { get { EnsureFilled(); return GameplayOptionGroupsStore; } private set => GameplayOptionGroupsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

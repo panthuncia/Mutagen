@@ -1371,7 +1371,8 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public WeatherMagic.VersioningBreaks Versioning { get; private set; }
+        private WeatherMagic.VersioningBreaks VersioningStore;
+        public WeatherMagic.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public IFormLinkGetter<ISpellGetter> OnLightningStrikeSpell => FormLinkBinaryTranslation.Instance.OverlayFactory<ISpellGetter>(_package, _structData.Span.Slice(0x0, 0x4));
         public Single OnLightningStrikeThreshold => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
         public IFormLinkGetter<ISpellGetter> OnWeatherActivateSpell => FormLinkBinaryTranslation.Instance.OverlayFactory<ISpellGetter>(_package, _structData.Span.Slice(0x8, 0x4));

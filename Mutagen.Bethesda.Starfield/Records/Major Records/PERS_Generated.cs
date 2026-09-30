@@ -1644,7 +1644,8 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region DATA
-        private int? _DATALocation;
+        private int? _DATALocationStore;
+        private int? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         public UInt32? DATA => _DATALocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DATALocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region ItemsParse

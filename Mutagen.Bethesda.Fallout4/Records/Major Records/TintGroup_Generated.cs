@@ -1415,7 +1415,8 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -1426,9 +1427,13 @@ namespace Mutagen.Bethesda.Fallout4
         ITranslatedStringGetter ITranslatedNamedRequiredGetter.Name => this.Name ?? TranslatedString.Empty;
         #endregion
         #endregion
-        public IReadOnlyList<ITintTemplateOptionGetter> Options { get; private set; } = [];
+        #region Options
+        private IReadOnlyList<ITintTemplateOptionGetter> OptionsStore = [];
+        public IReadOnlyList<ITintTemplateOptionGetter> Options { get { EnsureFilled(); return OptionsStore; } private set => OptionsStore = value; }
+        #endregion
         #region CategoryIndex
-        private int? _CategoryIndexLocation;
+        private int? _CategoryIndexLocationStore;
+        private int? _CategoryIndexLocation { get { EnsureFilled(); return _CategoryIndexLocationStore; } set => _CategoryIndexLocationStore = value; }
         public UInt32? CategoryIndex => _CategoryIndexLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _CategoryIndexLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         partial void CustomFactoryEnd(

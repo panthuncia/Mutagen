@@ -1243,7 +1243,10 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IFormLinkGetter<ILocationReferenceTypeGetter>>? ForcedLocations { get; private set; }
+        #region ForcedLocations
+        private IReadOnlyList<IFormLinkGetter<ILocationReferenceTypeGetter>>? ForcedLocationsStore;
+        public IReadOnlyList<IFormLinkGetter<ILocationReferenceTypeGetter>>? ForcedLocations { get { EnsureFilled(); return ForcedLocationsStore; } private set => ForcedLocationsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

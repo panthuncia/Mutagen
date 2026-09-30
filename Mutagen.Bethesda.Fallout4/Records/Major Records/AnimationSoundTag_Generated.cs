@@ -1140,8 +1140,10 @@ namespace Mutagen.Bethesda.Fallout4
 
         public IFormLinkGetter<ISoundDescriptorGetter> Sound => FormLinkBinaryTranslation.Instance.OverlayFactory<ISoundDescriptorGetter>(_package, _structData.Span.Slice(0x0, 0x4));
         #region Action
-        public String Action { get; private set; } = string.Empty;
-        protected int ActionEndingPos;
+        private String ActionStore = string.Empty;
+        public String Action { get { EnsureFilled(); return ActionStore; } private set => ActionStore = value; }
+        private int ActionEndingPosStore;
+        protected int ActionEndingPos { get { EnsureFilled(); return ActionEndingPosStore; } private set => ActionEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

@@ -1368,7 +1368,8 @@ namespace Mutagen.Bethesda.Starfield
         #region Traversal
         public partial IFormLinkNullableGetter<ITraversalGetter> GetTraversalCustom(int location);
         public IFormLinkNullableGetter<ITraversalGetter> Traversal => GetTraversalCustom(location: 0x28);
-        protected int TraversalEndingPos;
+        private int TraversalEndingPosStore;
+        protected int TraversalEndingPos { get { EnsureFilled(); return TraversalEndingPosStore; } private set => TraversalEndingPosStore = value; }
         partial void CustomTraversalEndPos();
         #endregion
         partial void CustomFactoryEnd(

@@ -1264,7 +1264,10 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IActivityGetter>? Activities { get; private set; }
+        #region Activities
+        private IReadOnlyList<IActivityGetter>? ActivitiesStore;
+        public IReadOnlyList<IActivityGetter>? Activities { get { EnsureFilled(); return ActivitiesStore; } private set => ActivitiesStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

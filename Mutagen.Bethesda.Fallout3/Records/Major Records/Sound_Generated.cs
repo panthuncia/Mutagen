@@ -2039,20 +2039,25 @@ namespace Mutagen.Bethesda.Fallout3
 
 
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         public IObjectBoundsGetter? ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         #endregion
         #region File
-        private int? _FileLocation;
+        private int? _FileLocationStore;
+        private int? _FileLocation { get { EnsureFilled(); return _FileLocationStore; } set => _FileLocationStore = value; }
         public String? File => _FileLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FileLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region RandomChancePercent
-        private int? _RandomChancePercentLocation;
+        private int? _RandomChancePercentLocationStore;
+        private int? _RandomChancePercentLocation { get { EnsureFilled(); return _RandomChancePercentLocationStore; } set => _RandomChancePercentLocationStore = value; }
         public Byte? RandomChancePercent => _RandomChancePercentLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _RandomChancePercentLocation.Value, _package.MetaData.Constants)[0] : default(Byte?);
         #endregion
         #region Data
-        private RecordType _DataType;
-        private RangeInt32? _DataLocation;
+        private RecordType _DataTypeStore;
+        private RecordType _DataType { get { EnsureFilled(); return _DataTypeStore; } set => _DataTypeStore = value; }
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public ISoundDataGetter? Data
         {
             get
@@ -2071,15 +2076,18 @@ namespace Mutagen.Bethesda.Fallout3
         }
         #endregion
         #region AttenuationCurve
-        private int? _AttenuationCurveLocation;
+        private int? _AttenuationCurveLocationStore;
+        private int? _AttenuationCurveLocation { get { EnsureFilled(); return _AttenuationCurveLocationStore; } set => _AttenuationCurveLocationStore = value; }
         public ReadOnlyMemorySlice<Int16>? AttenuationCurve => _AttenuationCurveLocation.HasValue ? BinaryOverlayArrayHelper.Int16SliceFromFixedSize(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AttenuationCurveLocation.Value, _package.MetaData.Constants), amount: 5) : default(ReadOnlyMemorySlice<Int16>?);
         #endregion
         #region ReverbAttenuationControl
-        private int? _ReverbAttenuationControlLocation;
+        private int? _ReverbAttenuationControlLocationStore;
+        private int? _ReverbAttenuationControlLocation { get { EnsureFilled(); return _ReverbAttenuationControlLocationStore; } set => _ReverbAttenuationControlLocationStore = value; }
         public Int16? ReverbAttenuationControl => _ReverbAttenuationControlLocation.HasValue ? BinaryPrimitives.ReadInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ReverbAttenuationControlLocation.Value, _package.MetaData.Constants)) : default(Int16?);
         #endregion
         #region Priority
-        private int? _PriorityLocation;
+        private int? _PriorityLocationStore;
+        private int? _PriorityLocation { get { EnsureFilled(); return _PriorityLocationStore; } set => _PriorityLocationStore = value; }
         public Int32? Priority => _PriorityLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _PriorityLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         partial void CustomFactoryEnd(
@@ -2103,6 +2111,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new SoundBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => SoundFill((SoundBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void SoundFill(
+            SoundBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2110,9 +2135,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new SoundBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2125,7 +2148,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ISoundGetter SoundFactory(

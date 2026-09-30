@@ -2334,38 +2334,50 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
         #region QuestStageOnWin
-        private int? _QuestStageOnWinLocation;
+        private int? _QuestStageOnWinLocationStore;
+        private int? _QuestStageOnWinLocation { get { EnsureFilled(); return _QuestStageOnWinLocationStore; } set => _QuestStageOnWinLocationStore = value; }
         public Int16? QuestStageOnWin => _QuestStageOnWinLocation.HasValue ? BinaryPrimitives.ReadInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _QuestStageOnWinLocation.Value, _package.MetaData.Constants)) : default(Int16?);
         #endregion
         #region QuestStageOnLoss
-        private int? _QuestStageOnLossLocation;
+        private int? _QuestStageOnLossLocationStore;
+        private int? _QuestStageOnLossLocation { get { EnsureFilled(); return _QuestStageOnLossLocationStore; } set => _QuestStageOnLossLocationStore = value; }
         public Int16? QuestStageOnLoss => _QuestStageOnLossLocation.HasValue ? BinaryPrimitives.ReadInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _QuestStageOnLossLocation.Value, _package.MetaData.Constants)) : default(Int16?);
         #endregion
         #region SRAN
-        private int? _SRANLocation;
+        private int? _SRANLocationStore;
+        private int? _SRANLocation { get { EnsureFilled(); return _SRANLocationStore; } set => _SRANLocationStore = value; }
         public Boolean SRAN => _SRANLocation.HasValue ? true : default(Boolean);
         #endregion
         #region SGEN
-        private int? _SGENLocation;
+        private int? _SGENLocationStore;
+        private int? _SGENLocation { get { EnsureFilled(); return _SGENLocationStore; } set => _SGENLocationStore = value; }
         public Boolean SGEN => _SGENLocation.HasValue ? true : default(Boolean);
         #endregion
         #region Quest
-        private int? _QuestLocation;
+        private int? _QuestLocationStore;
+        private int? _QuestLocation { get { EnsureFilled(); return _QuestLocationStore; } set => _QuestLocationStore = value; }
         public IFormLinkNullableGetter<IQuestGetter> Quest => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IQuestGetter>(_package, _recordData, _QuestLocation);
         #endregion
         #region Keywords
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get; private set; }
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? KeywordsStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get { EnsureFilled(); return KeywordsStore; } private set => KeywordsStore = value; }
         IReadOnlyList<IFormLinkGetter<IKeywordCommonGetter>>? IKeywordedGetter.Keywords => this.Keywords;
         #endregion
-        public IReadOnlyList<IFormLinkGetter<ISceneGetter>>? Scenes { get; private set; }
+        #region Scenes
+        private IReadOnlyList<IFormLinkGetter<ISceneGetter>>? ScenesStore;
+        public IReadOnlyList<IFormLinkGetter<ISceneGetter>>? Scenes { get { EnsureFilled(); return ScenesStore; } private set => ScenesStore = value; }
+        #endregion
         #region DIFF
-        private int? _DIFFLocation;
+        private int? _DIFFLocationStore;
+        private int? _DIFFLocation { get { EnsureFilled(); return _DIFFLocationStore; } set => _DIFFLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? DIFF => _DIFFLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DIFFLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(
@@ -2389,6 +2401,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new SpeechChallengeBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => SpeechChallengeFill((SpeechChallengeBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void SpeechChallengeFill(
+            SpeechChallengeBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2396,9 +2425,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new SpeechChallengeBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2411,7 +2438,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ISpeechChallengeGetter SpeechChallengeFactory(

@@ -1172,11 +1172,13 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region RotationsPerMinute
-        private int? _RotationsPerMinuteLocation;
+        private int? _RotationsPerMinuteLocationStore;
+        private int? _RotationsPerMinuteLocation { get { EnsureFilled(); return _RotationsPerMinuteLocationStore; } set => _RotationsPerMinuteLocationStore = value; }
         public UInt32? RotationsPerMinute => _RotationsPerMinuteLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _RotationsPerMinuteLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region File
-        private int? _FileLocation;
+        private int? _FileLocationStore;
+        private int? _FileLocation { get { EnsureFilled(); return _FileLocationStore; } set => _FileLocationStore = value; }
         public String? File => _FileLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FileLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(

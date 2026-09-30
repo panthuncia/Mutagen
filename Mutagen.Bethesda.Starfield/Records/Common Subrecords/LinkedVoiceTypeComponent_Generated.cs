@@ -1123,7 +1123,8 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region VoiceType
-        private int? _VoiceTypeLocation;
+        private int? _VoiceTypeLocationStore;
+        private int? _VoiceTypeLocation { get { EnsureFilled(); return _VoiceTypeLocationStore; } set => _VoiceTypeLocationStore = value; }
         public IFormLinkNullableGetter<IVoiceTypeGetter> VoiceType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IVoiceTypeGetter>(_package, _recordData, _VoiceTypeLocation);
         #endregion
         partial void CustomFactoryEnd(

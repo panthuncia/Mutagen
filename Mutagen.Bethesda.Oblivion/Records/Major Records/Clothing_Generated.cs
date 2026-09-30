@@ -2511,7 +2511,8 @@ namespace Mutagen.Bethesda.Oblivion
 
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2519,35 +2520,54 @@ namespace Mutagen.Bethesda.Oblivion
         #endregion
         #endregion
         #region Script
-        private int? _ScriptLocation;
+        private int? _ScriptLocationStore;
+        private int? _ScriptLocation { get { EnsureFilled(); return _ScriptLocationStore; } set => _ScriptLocationStore = value; }
         public IFormLinkNullableGetter<IScriptGetter> Script => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IScriptGetter>(_package, _recordData, _ScriptLocation);
         #endregion
         #region Enchantment
-        private int? _EnchantmentLocation;
+        private int? _EnchantmentLocationStore;
+        private int? _EnchantmentLocation { get { EnsureFilled(); return _EnchantmentLocationStore; } set => _EnchantmentLocationStore = value; }
         public IFormLinkNullableGetter<IEnchantmentGetter> Enchantment => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IEnchantmentGetter>(_package, _recordData, _EnchantmentLocation);
         #endregion
         #region EnchantmentPoints
-        private int? _EnchantmentPointsLocation;
+        private int? _EnchantmentPointsLocationStore;
+        private int? _EnchantmentPointsLocation { get { EnsureFilled(); return _EnchantmentPointsLocationStore; } set => _EnchantmentPointsLocationStore = value; }
         public UInt16? EnchantmentPoints => _EnchantmentPointsLocation.HasValue ? BinaryPrimitives.ReadUInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EnchantmentPointsLocation.Value, _package.MetaData.Constants)) : default(UInt16?);
         #endregion
         #region ClothingFlags
-        private RangeInt32? _ClothingFlagsLocation;
+        private RangeInt32? _ClothingFlagsLocationStore;
+        private RangeInt32? _ClothingFlagsLocation { get { EnsureFilled(); return _ClothingFlagsLocationStore; } set => _ClothingFlagsLocationStore = value; }
         public IClothingFlagsGetter? ClothingFlags => _ClothingFlagsLocation.HasValue ? ClothingFlagsBinaryOverlay.ClothingFlagsFactory(_recordData.Slice(_ClothingFlagsLocation!.Value.Min), _package) : default;
         #endregion
-        public IModelGetter? MaleBipedModel { get; private set; }
-        public IModelGetter? MaleWorldModel { get; private set; }
+        #region MaleBipedModel
+        private IModelGetter? MaleBipedModelStore;
+        public IModelGetter? MaleBipedModel { get { EnsureFilled(); return MaleBipedModelStore; } private set => MaleBipedModelStore = value; }
+        #endregion
+        #region MaleWorldModel
+        private IModelGetter? MaleWorldModelStore;
+        public IModelGetter? MaleWorldModel { get { EnsureFilled(); return MaleWorldModelStore; } private set => MaleWorldModelStore = value; }
+        #endregion
         #region MaleIcon
-        private int? _MaleIconLocation;
+        private int? _MaleIconLocationStore;
+        private int? _MaleIconLocation { get { EnsureFilled(); return _MaleIconLocationStore; } set => _MaleIconLocationStore = value; }
         public String? MaleIcon => _MaleIconLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaleIconLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        public IModelGetter? FemaleBipedModel { get; private set; }
-        public IModelGetter? FemaleWorldModel { get; private set; }
+        #region FemaleBipedModel
+        private IModelGetter? FemaleBipedModelStore;
+        public IModelGetter? FemaleBipedModel { get { EnsureFilled(); return FemaleBipedModelStore; } private set => FemaleBipedModelStore = value; }
+        #endregion
+        #region FemaleWorldModel
+        private IModelGetter? FemaleWorldModelStore;
+        public IModelGetter? FemaleWorldModel { get { EnsureFilled(); return FemaleWorldModelStore; } private set => FemaleWorldModelStore = value; }
+        #endregion
         #region FemaleIcon
-        private int? _FemaleIconLocation;
+        private int? _FemaleIconLocationStore;
+        private int? _FemaleIconLocation { get { EnsureFilled(); return _FemaleIconLocationStore; } set => _FemaleIconLocationStore = value; }
         public String? FemaleIcon => _FemaleIconLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FemaleIconLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public IClothingDataGetter? Data => _DataLocation.HasValue ? ClothingDataBinaryOverlay.ClothingDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         #endregion
         partial void CustomFactoryEnd(
@@ -2571,6 +2591,23 @@ namespace Mutagen.Bethesda.Oblivion
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ClothingBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ClothingFill((ClothingBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ClothingFill(
+            ClothingBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2578,9 +2615,7 @@ namespace Mutagen.Bethesda.Oblivion
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ClothingBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2593,7 +2628,6 @@ namespace Mutagen.Bethesda.Oblivion
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IClothingGetter ClothingFactory(

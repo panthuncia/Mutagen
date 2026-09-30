@@ -2095,25 +2095,33 @@ namespace Mutagen.Bethesda.Starfield
         protected override Type LinkType => typeof(IPlanetContentManagerContentNodeGetter);
 
 
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
         #region Content
-        private int? _ContentLocation;
+        private int? _ContentLocationStore;
+        private int? _ContentLocation { get { EnsureFilled(); return _ContentLocationStore; } set => _ContentLocationStore = value; }
         public IFormLinkNullableGetter<IPlanetContentTargetGetter> Content => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IPlanetContentTargetGetter>(_package, _recordData, _ContentLocation);
         #endregion
         #region OverrideContentPlacementPropertiesAndConditions
-        private int? _OverrideContentPlacementPropertiesAndConditionsLocation;
+        private int? _OverrideContentPlacementPropertiesAndConditionsLocationStore;
+        private int? _OverrideContentPlacementPropertiesAndConditionsLocation { get { EnsureFilled(); return _OverrideContentPlacementPropertiesAndConditionsLocationStore; } set => _OverrideContentPlacementPropertiesAndConditionsLocationStore = value; }
         public Boolean OverrideContentPlacementPropertiesAndConditions => _OverrideContentPlacementPropertiesAndConditionsLocation.HasValue ? true : default(Boolean);
         #endregion
         #region Keywords
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get; private set; }
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? KeywordsStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get { EnsureFilled(); return KeywordsStore; } private set => KeywordsStore = value; }
         IReadOnlyList<IFormLinkGetter<IKeywordCommonGetter>>? IKeywordedGetter.Keywords => this.Keywords;
         #endregion
         #region ParentNode
-        private int? _ParentNodeLocation;
+        private int? _ParentNodeLocationStore;
+        private int? _ParentNodeLocation { get { EnsureFilled(); return _ParentNodeLocationStore; } set => _ParentNodeLocationStore = value; }
         public IFormLinkNullableGetter<IPlanetContentManagerBranchNodeGetter> ParentNode => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IPlanetContentManagerBranchNodeGetter>(_package, _recordData, _ParentNodeLocation);
         #endregion
         #region PreviousNode
-        private int? _PreviousNodeLocation;
+        private int? _PreviousNodeLocationStore;
+        private int? _PreviousNodeLocation { get { EnsureFilled(); return _PreviousNodeLocationStore; } set => _PreviousNodeLocationStore = value; }
         public IFormLinkNullableGetter<IPlanetContentManagerContentNodeGetter> PreviousNode => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IPlanetContentManagerContentNodeGetter>(_package, _recordData, _PreviousNodeLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -2137,6 +2145,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new PlanetContentManagerContentNodeBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => PlanetContentManagerContentNodeFill((PlanetContentManagerContentNodeBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void PlanetContentManagerContentNodeFill(
+            PlanetContentManagerContentNodeBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2144,9 +2169,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new PlanetContentManagerContentNodeBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2159,7 +2182,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IPlanetContentManagerContentNodeGetter PlanetContentManagerContentNodeFactory(

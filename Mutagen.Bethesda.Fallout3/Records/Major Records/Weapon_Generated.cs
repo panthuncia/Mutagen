@@ -10345,203 +10345,266 @@ namespace Mutagen.Bethesda.Fallout3
         public Weapon.MajorFlag MajorFlags => (Weapon.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         public IObjectBoundsGetter? ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         string INamedRequiredGetter.Name => this.Name ?? string.Empty;
         #endregion
         #endregion
-        public IModelGetter? Model { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
         #region LargeIconFilename
-        private int? _LargeIconFilenameLocation;
+        private int? _LargeIconFilenameLocationStore;
+        private int? _LargeIconFilenameLocation { get { EnsureFilled(); return _LargeIconFilenameLocationStore; } set => _LargeIconFilenameLocationStore = value; }
         public String? LargeIconFilename => _LargeIconFilenameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LargeIconFilenameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region SmallIconFilename
-        private int? _SmallIconFilenameLocation;
+        private int? _SmallIconFilenameLocationStore;
+        private int? _SmallIconFilenameLocation { get { EnsureFilled(); return _SmallIconFilenameLocationStore; } set => _SmallIconFilenameLocationStore = value; }
         public String? SmallIconFilename => _SmallIconFilenameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SmallIconFilenameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Script
-        private int? _ScriptLocation;
+        private int? _ScriptLocationStore;
+        private int? _ScriptLocation { get { EnsureFilled(); return _ScriptLocationStore; } set => _ScriptLocationStore = value; }
         public IFormLinkNullableGetter<IScriptGetter> Script => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IScriptGetter>(_package, _recordData, _ScriptLocation);
         #endregion
         #region ObjectEffect
-        private int? _ObjectEffectLocation;
+        private int? _ObjectEffectLocationStore;
+        private int? _ObjectEffectLocation { get { EnsureFilled(); return _ObjectEffectLocationStore; } set => _ObjectEffectLocationStore = value; }
         public IFormLinkNullableGetter<IObjectEffectGetter> ObjectEffect => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IObjectEffectGetter>(_package, _recordData, _ObjectEffectLocation);
         #endregion
         #region EnchantmentChargeAmount
-        private int? _EnchantmentChargeAmountLocation;
+        private int? _EnchantmentChargeAmountLocationStore;
+        private int? _EnchantmentChargeAmountLocation { get { EnsureFilled(); return _EnchantmentChargeAmountLocationStore; } set => _EnchantmentChargeAmountLocationStore = value; }
         public UInt16? EnchantmentChargeAmount => _EnchantmentChargeAmountLocation.HasValue ? BinaryPrimitives.ReadUInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EnchantmentChargeAmountLocation.Value, _package.MetaData.Constants)) : default(UInt16?);
         #endregion
         #region Ammo
-        private int? _AmmoLocation;
+        private int? _AmmoLocationStore;
+        private int? _AmmoLocation { get { EnsureFilled(); return _AmmoLocationStore; } set => _AmmoLocationStore = value; }
         public IFormLinkNullableGetter<IAmmoOrListGetter> Ammo => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IAmmoOrListGetter>(_package, _recordData, _AmmoLocation);
         #endregion
-        public IDestructibleGetter? Destructible { get; private set; }
+        #region Destructible
+        private IDestructibleGetter? DestructibleStore;
+        public IDestructibleGetter? Destructible { get { EnsureFilled(); return DestructibleStore; } private set => DestructibleStore = value; }
+        #endregion
         #region RepairList
-        private int? _RepairListLocation;
+        private int? _RepairListLocationStore;
+        private int? _RepairListLocation { get { EnsureFilled(); return _RepairListLocationStore; } set => _RepairListLocationStore = value; }
         public IFormLinkNullableGetter<IFormListGetter> RepairList => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IFormListGetter>(_package, _recordData, _RepairListLocation);
         #endregion
         #region EquipmentType
-        private int? _EquipmentTypeLocation;
+        private int? _EquipmentTypeLocationStore;
+        private int? _EquipmentTypeLocation { get { EnsureFilled(); return _EquipmentTypeLocationStore; } set => _EquipmentTypeLocationStore = value; }
         public EquipType EquipmentType => EnumBinaryTranslation<EquipType, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_EquipmentTypeLocation, _recordData, _package, 4);
         #endregion
         #region BipedModelList
-        private int? _BipedModelListLocation;
+        private int? _BipedModelListLocationStore;
+        private int? _BipedModelListLocation { get { EnsureFilled(); return _BipedModelListLocationStore; } set => _BipedModelListLocationStore = value; }
         public IFormLinkNullableGetter<IFormListGetter> BipedModelList => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IFormListGetter>(_package, _recordData, _BipedModelListLocation);
         #endregion
         #region PickUpSound
-        private int? _PickUpSoundLocation;
+        private int? _PickUpSoundLocationStore;
+        private int? _PickUpSoundLocation { get { EnsureFilled(); return _PickUpSoundLocationStore; } set => _PickUpSoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> PickUpSound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _PickUpSoundLocation);
         #endregion
         #region DropSound
-        private int? _DropSoundLocation;
+        private int? _DropSoundLocationStore;
+        private int? _DropSoundLocation { get { EnsureFilled(); return _DropSoundLocationStore; } set => _DropSoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> DropSound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _DropSoundLocation);
         #endregion
-        public IModelGetter? ShellCasingModel { get; private set; }
-        public IModelGetter? ScopeModel { get; private set; }
+        #region ShellCasingModel
+        private IModelGetter? ShellCasingModelStore;
+        public IModelGetter? ShellCasingModel { get { EnsureFilled(); return ShellCasingModelStore; } private set => ShellCasingModelStore = value; }
+        #endregion
+        #region ScopeModel
+        private IModelGetter? ScopeModelStore;
+        public IModelGetter? ScopeModel { get { EnsureFilled(); return ScopeModelStore; } private set => ScopeModelStore = value; }
+        #endregion
         #region ScopeEffect
-        private int? _ScopeEffectLocation;
+        private int? _ScopeEffectLocationStore;
+        private int? _ScopeEffectLocation { get { EnsureFilled(); return _ScopeEffectLocationStore; } set => _ScopeEffectLocationStore = value; }
         public IFormLinkNullableGetter<IEffectShaderGetter> ScopeEffect => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IEffectShaderGetter>(_package, _recordData, _ScopeEffectLocation);
         #endregion
-        public IModelGetter? WorldModel { get; private set; }
+        #region WorldModel
+        private IModelGetter? WorldModelStore;
+        public IModelGetter? WorldModel { get { EnsureFilled(); return WorldModelStore; } private set => WorldModelStore = value; }
+        #endregion
         #region ModelMod1
-        private int? _ModelMod1Location;
+        private int? _ModelMod1LocationStore;
+        private int? _ModelMod1Location { get { EnsureFilled(); return _ModelMod1LocationStore; } set => _ModelMod1LocationStore = value; }
         public String? ModelMod1 => _ModelMod1Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ModelMod1Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ModelMod2
-        private int? _ModelMod2Location;
+        private int? _ModelMod2LocationStore;
+        private int? _ModelMod2Location { get { EnsureFilled(); return _ModelMod2LocationStore; } set => _ModelMod2LocationStore = value; }
         public String? ModelMod2 => _ModelMod2Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ModelMod2Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ModelMod1And2
-        private int? _ModelMod1And2Location;
+        private int? _ModelMod1And2LocationStore;
+        private int? _ModelMod1And2Location { get { EnsureFilled(); return _ModelMod1And2LocationStore; } set => _ModelMod1And2LocationStore = value; }
         public String? ModelMod1And2 => _ModelMod1And2Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ModelMod1And2Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ModelMod3
-        private int? _ModelMod3Location;
+        private int? _ModelMod3LocationStore;
+        private int? _ModelMod3Location { get { EnsureFilled(); return _ModelMod3LocationStore; } set => _ModelMod3LocationStore = value; }
         public String? ModelMod3 => _ModelMod3Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ModelMod3Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ModelMod1And3
-        private int? _ModelMod1And3Location;
+        private int? _ModelMod1And3LocationStore;
+        private int? _ModelMod1And3Location { get { EnsureFilled(); return _ModelMod1And3LocationStore; } set => _ModelMod1And3LocationStore = value; }
         public String? ModelMod1And3 => _ModelMod1And3Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ModelMod1And3Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ModelMod2And3
-        private int? _ModelMod2And3Location;
+        private int? _ModelMod2And3LocationStore;
+        private int? _ModelMod2And3Location { get { EnsureFilled(); return _ModelMod2And3LocationStore; } set => _ModelMod2And3LocationStore = value; }
         public String? ModelMod2And3 => _ModelMod2And3Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ModelMod2And3Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ModelMod1And2And3
-        private int? _ModelMod1And2And3Location;
+        private int? _ModelMod1And2And3LocationStore;
+        private int? _ModelMod1And2And3Location { get { EnsureFilled(); return _ModelMod1And2And3LocationStore; } set => _ModelMod1And2And3LocationStore = value; }
         public String? ModelMod1And2And3 => _ModelMod1And2And3Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ModelMod1And2And3Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region VatsAttackName
-        private int? _VatsAttackNameLocation;
+        private int? _VatsAttackNameLocationStore;
+        private int? _VatsAttackNameLocation { get { EnsureFilled(); return _VatsAttackNameLocationStore; } set => _VatsAttackNameLocationStore = value; }
         public String? VatsAttackName => _VatsAttackNameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _VatsAttackNameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region EmbeddedWeaponNode
-        private int? _EmbeddedWeaponNodeLocation;
+        private int? _EmbeddedWeaponNodeLocationStore;
+        private int? _EmbeddedWeaponNodeLocation { get { EnsureFilled(); return _EmbeddedWeaponNodeLocationStore; } set => _EmbeddedWeaponNodeLocationStore = value; }
         public String? EmbeddedWeaponNode => _EmbeddedWeaponNodeLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EmbeddedWeaponNodeLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ImpactDataSet
-        private int? _ImpactDataSetLocation;
+        private int? _ImpactDataSetLocationStore;
+        private int? _ImpactDataSetLocation { get { EnsureFilled(); return _ImpactDataSetLocationStore; } set => _ImpactDataSetLocationStore = value; }
         public IFormLinkNullableGetter<IImpactDataSetGetter> ImpactDataSet => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IImpactDataSetGetter>(_package, _recordData, _ImpactDataSetLocation);
         #endregion
         #region FirstPersonModel
-        private int? _FirstPersonModelLocation;
+        private int? _FirstPersonModelLocationStore;
+        private int? _FirstPersonModelLocation { get { EnsureFilled(); return _FirstPersonModelLocationStore; } set => _FirstPersonModelLocationStore = value; }
         public IFormLinkNullableGetter<IStaticGetter> FirstPersonModel => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IStaticGetter>(_package, _recordData, _FirstPersonModelLocation);
         #endregion
         #region FirstPersonModelMod1
-        private int? _FirstPersonModelMod1Location;
+        private int? _FirstPersonModelMod1LocationStore;
+        private int? _FirstPersonModelMod1Location { get { EnsureFilled(); return _FirstPersonModelMod1LocationStore; } set => _FirstPersonModelMod1LocationStore = value; }
         public IFormLinkNullableGetter<IStaticGetter> FirstPersonModelMod1 => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IStaticGetter>(_package, _recordData, _FirstPersonModelMod1Location);
         #endregion
         #region FirstPersonModelMod2
-        private int? _FirstPersonModelMod2Location;
+        private int? _FirstPersonModelMod2LocationStore;
+        private int? _FirstPersonModelMod2Location { get { EnsureFilled(); return _FirstPersonModelMod2LocationStore; } set => _FirstPersonModelMod2LocationStore = value; }
         public IFormLinkNullableGetter<IStaticGetter> FirstPersonModelMod2 => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IStaticGetter>(_package, _recordData, _FirstPersonModelMod2Location);
         #endregion
         #region FirstPersonModelMod1And2
-        private int? _FirstPersonModelMod1And2Location;
+        private int? _FirstPersonModelMod1And2LocationStore;
+        private int? _FirstPersonModelMod1And2Location { get { EnsureFilled(); return _FirstPersonModelMod1And2LocationStore; } set => _FirstPersonModelMod1And2LocationStore = value; }
         public IFormLinkNullableGetter<IStaticGetter> FirstPersonModelMod1And2 => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IStaticGetter>(_package, _recordData, _FirstPersonModelMod1And2Location);
         #endregion
         #region FirstPersonModelMod3
-        private int? _FirstPersonModelMod3Location;
+        private int? _FirstPersonModelMod3LocationStore;
+        private int? _FirstPersonModelMod3Location { get { EnsureFilled(); return _FirstPersonModelMod3LocationStore; } set => _FirstPersonModelMod3LocationStore = value; }
         public IFormLinkNullableGetter<IStaticGetter> FirstPersonModelMod3 => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IStaticGetter>(_package, _recordData, _FirstPersonModelMod3Location);
         #endregion
         #region FirstPersonModelMod1And3
-        private int? _FirstPersonModelMod1And3Location;
+        private int? _FirstPersonModelMod1And3LocationStore;
+        private int? _FirstPersonModelMod1And3Location { get { EnsureFilled(); return _FirstPersonModelMod1And3LocationStore; } set => _FirstPersonModelMod1And3LocationStore = value; }
         public IFormLinkNullableGetter<IStaticGetter> FirstPersonModelMod1And3 => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IStaticGetter>(_package, _recordData, _FirstPersonModelMod1And3Location);
         #endregion
         #region FirstPersonModelMod2And3
-        private int? _FirstPersonModelMod2And3Location;
+        private int? _FirstPersonModelMod2And3LocationStore;
+        private int? _FirstPersonModelMod2And3Location { get { EnsureFilled(); return _FirstPersonModelMod2And3LocationStore; } set => _FirstPersonModelMod2And3LocationStore = value; }
         public IFormLinkNullableGetter<IStaticGetter> FirstPersonModelMod2And3 => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IStaticGetter>(_package, _recordData, _FirstPersonModelMod2And3Location);
         #endregion
         #region FirstPersonModelMod1And2And3
-        private int? _FirstPersonModelMod1And2And3Location;
+        private int? _FirstPersonModelMod1And2And3LocationStore;
+        private int? _FirstPersonModelMod1And2And3Location { get { EnsureFilled(); return _FirstPersonModelMod1And2And3LocationStore; } set => _FirstPersonModelMod1And2And3LocationStore = value; }
         public IFormLinkNullableGetter<IStaticGetter> FirstPersonModelMod1And2And3 => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IStaticGetter>(_package, _recordData, _FirstPersonModelMod1And2And3Location);
         #endregion
         #region WeaponMod1
-        private int? _WeaponMod1Location;
+        private int? _WeaponMod1LocationStore;
+        private int? _WeaponMod1Location { get { EnsureFilled(); return _WeaponMod1LocationStore; } set => _WeaponMod1LocationStore = value; }
         public IFormLinkNullableGetter<IItemModGetter> WeaponMod1 => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IItemModGetter>(_package, _recordData, _WeaponMod1Location);
         #endregion
         #region WeaponMod2
-        private int? _WeaponMod2Location;
+        private int? _WeaponMod2LocationStore;
+        private int? _WeaponMod2Location { get { EnsureFilled(); return _WeaponMod2LocationStore; } set => _WeaponMod2LocationStore = value; }
         public IFormLinkNullableGetter<IItemModGetter> WeaponMod2 => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IItemModGetter>(_package, _recordData, _WeaponMod2Location);
         #endregion
         #region WeaponMod3
-        private int? _WeaponMod3Location;
+        private int? _WeaponMod3LocationStore;
+        private int? _WeaponMod3Location { get { EnsureFilled(); return _WeaponMod3LocationStore; } set => _WeaponMod3LocationStore = value; }
         public IFormLinkNullableGetter<IItemModGetter> WeaponMod3 => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IItemModGetter>(_package, _recordData, _WeaponMod3Location);
         #endregion
         #region SoundGunShoot3D
-        private int? _SoundGunShoot3DLocation;
+        private int? _SoundGunShoot3DLocationStore;
+        private int? _SoundGunShoot3DLocation { get { EnsureFilled(); return _SoundGunShoot3DLocationStore; } set => _SoundGunShoot3DLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> SoundGunShoot3D => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _SoundGunShoot3DLocation);
         #endregion
         #region SoundGunShootDist
-        private int? _SoundGunShootDistLocation;
+        private int? _SoundGunShootDistLocationStore;
+        private int? _SoundGunShootDistLocation { get { EnsureFilled(); return _SoundGunShootDistLocationStore; } set => _SoundGunShootDistLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> SoundGunShootDist => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _SoundGunShootDistLocation);
         #endregion
         #region SoundGunShoot2D
-        private int? _SoundGunShoot2DLocation;
+        private int? _SoundGunShoot2DLocationStore;
+        private int? _SoundGunShoot2DLocation { get { EnsureFilled(); return _SoundGunShoot2DLocationStore; } set => _SoundGunShoot2DLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> SoundGunShoot2D => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _SoundGunShoot2DLocation);
         #endregion
         #region SoundGunShoot3DLooping
-        private int? _SoundGunShoot3DLoopingLocation;
+        private int? _SoundGunShoot3DLoopingLocationStore;
+        private int? _SoundGunShoot3DLoopingLocation { get { EnsureFilled(); return _SoundGunShoot3DLoopingLocationStore; } set => _SoundGunShoot3DLoopingLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> SoundGunShoot3DLooping => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _SoundGunShoot3DLoopingLocation);
         #endregion
         #region SoundMeleeSwingGunNoAmmo
-        private int? _SoundMeleeSwingGunNoAmmoLocation;
+        private int? _SoundMeleeSwingGunNoAmmoLocationStore;
+        private int? _SoundMeleeSwingGunNoAmmoLocation { get { EnsureFilled(); return _SoundMeleeSwingGunNoAmmoLocationStore; } set => _SoundMeleeSwingGunNoAmmoLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> SoundMeleeSwingGunNoAmmo => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _SoundMeleeSwingGunNoAmmoLocation);
         #endregion
         #region SoundBlock
-        private int? _SoundBlockLocation;
+        private int? _SoundBlockLocationStore;
+        private int? _SoundBlockLocation { get { EnsureFilled(); return _SoundBlockLocationStore; } set => _SoundBlockLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> SoundBlock => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _SoundBlockLocation);
         #endregion
         #region SoundIdle
-        private int? _SoundIdleLocation;
+        private int? _SoundIdleLocationStore;
+        private int? _SoundIdleLocation { get { EnsureFilled(); return _SoundIdleLocationStore; } set => _SoundIdleLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> SoundIdle => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _SoundIdleLocation);
         #endregion
         #region SoundEquip
-        private int? _SoundEquipLocation;
+        private int? _SoundEquipLocationStore;
+        private int? _SoundEquipLocation { get { EnsureFilled(); return _SoundEquipLocationStore; } set => _SoundEquipLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> SoundEquip => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _SoundEquipLocation);
         #endregion
         #region SoundUnequip
-        private int? _SoundUnequipLocation;
+        private int? _SoundUnequipLocationStore;
+        private int? _SoundUnequipLocation { get { EnsureFilled(); return _SoundUnequipLocationStore; } set => _SoundUnequipLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> SoundUnequip => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _SoundUnequipLocation);
         #endregion
         #region SoundMod1Shoot3D
-        private int? _SoundMod1Shoot3DLocation;
+        private int? _SoundMod1Shoot3DLocationStore;
+        private int? _SoundMod1Shoot3DLocation { get { EnsureFilled(); return _SoundMod1Shoot3DLocationStore; } set => _SoundMod1Shoot3DLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> SoundMod1Shoot3D => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _SoundMod1Shoot3DLocation);
         #endregion
         #region SoundMod1ShootDist
-        private int? _SoundMod1ShootDistLocation;
+        private int? _SoundMod1ShootDistLocationStore;
+        private int? _SoundMod1ShootDistLocation { get { EnsureFilled(); return _SoundMod1ShootDistLocationStore; } set => _SoundMod1ShootDistLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> SoundMod1ShootDist => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _SoundMod1ShootDistLocation);
         #endregion
         #region SoundMod1Shoot2D
-        private int? _SoundMod1Shoot2DLocation;
+        private int? _SoundMod1Shoot2DLocationStore;
+        private int? _SoundMod1Shoot2DLocation { get { EnsureFilled(); return _SoundMod1Shoot2DLocationStore; } set => _SoundMod1Shoot2DLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> SoundMod1Shoot2D => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _SoundMod1Shoot2DLocation);
         #endregion
-        private RangeInt32? _DATALocation;
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         #region Value
         private int _ValueLocation => _DATALocation!.Value.Min;
         private bool _Value_IsSet => _DATALocation.HasValue;
@@ -10567,8 +10630,10 @@ namespace Mutagen.Bethesda.Fallout3
         private bool _ClipSize_IsSet => _DATALocation.HasValue;
         public Byte ClipSize => _ClipSize_IsSet ? _recordData.Span[_ClipSizeLocation] : default;
         #endregion
-        private RangeInt32? _DNAMLocation;
-        public Weapon.DNAMDataType DNAMDataTypeState { get; private set; }
+        private RangeInt32? _DNAMLocationStore;
+        private RangeInt32? _DNAMLocation { get { EnsureFilled(); return _DNAMLocationStore; } set => _DNAMLocationStore = value; }
+        private Weapon.DNAMDataType DNAMDataTypeStateStore;
+        public Weapon.DNAMDataType DNAMDataTypeState { get { EnsureFilled(); return DNAMDataTypeStateStore; } private set => DNAMDataTypeStateStore = value; }
         #region AnimationType
         private int _AnimationTypeLocation => _DNAMLocation!.Value.Min;
         private bool _AnimationType_IsSet => _DNAMLocation.HasValue;
@@ -10866,7 +10931,8 @@ namespace Mutagen.Bethesda.Fallout3
         private bool _SkillReq_IsSet => _DNAMLocation.HasValue && !DNAMDataTypeState.HasFlag(Weapon.DNAMDataType.Break7);
         public UInt32 SkillReq => _SkillReq_IsSet ? BinaryPrimitives.ReadUInt32LittleEndian(_recordData.Slice(_SkillReqLocation, 4)) : default(UInt32);
         #endregion
-        private RangeInt32? _CRDTLocation;
+        private RangeInt32? _CRDTLocationStore;
+        private RangeInt32? _CRDTLocation { get { EnsureFilled(); return _CRDTLocationStore; } set => _CRDTLocationStore = value; }
         #region CriticalDamage
         private int _CriticalDamageLocation => _CRDTLocation!.Value.Min;
         private bool _CriticalDamage_IsSet => _CRDTLocation.HasValue;
@@ -10901,7 +10967,8 @@ namespace Mutagen.Bethesda.Fallout3
         public IWeaponVatsGetter? Vats => GetVatsCustom();
         #endregion
         #region SoundLevel
-        private int? _SoundLevelLocation;
+        private int? _SoundLevelLocationStore;
+        private int? _SoundLevelLocation { get { EnsureFilled(); return _SoundLevelLocationStore; } set => _SoundLevelLocationStore = value; }
         public SoundLevel SoundLevel => EnumBinaryTranslation<SoundLevel, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_SoundLevelLocation, _recordData, _package, 4);
         #endregion
         partial void CustomFactoryEnd(

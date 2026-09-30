@@ -1400,16 +1400,22 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Index
-        private int? _IndexLocation;
+        private int? _IndexLocationStore;
+        private int? _IndexLocation { get { EnsureFilled(); return _IndexLocationStore; } set => _IndexLocationStore = value; }
         public UInt32? Index => _IndexLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IndexLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
-        public IReadOnlyList<UInt64> DATAs { get; private set; } = [];
+        #region DATAs
+        private IReadOnlyList<UInt64> DATAsStore = [];
+        public IReadOnlyList<UInt64> DATAs { get { EnsureFilled(); return DATAsStore; } private set => DATAsStore = value; }
+        #endregion
         #region INTV
-        private int? _INTVLocation;
+        private int? _INTVLocationStore;
+        private int? _INTVLocation { get { EnsureFilled(); return _INTVLocationStore; } set => _INTVLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? INTV => _INTVLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _INTVLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region Model
-        private int? _ModelLocation;
+        private int? _ModelLocationStore;
+        private int? _ModelLocation { get { EnsureFilled(); return _ModelLocationStore; } set => _ModelLocationStore = value; }
         public String? Model => _ModelLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ModelLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(

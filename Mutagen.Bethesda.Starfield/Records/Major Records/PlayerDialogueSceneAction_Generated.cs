@@ -1775,26 +1775,37 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public ISoundReferenceGetter? WED0 { get; private set; }
+        #region WED0
+        private ISoundReferenceGetter? WED0Store;
+        public ISoundReferenceGetter? WED0 { get { EnsureFilled(); return WED0Store; } private set => WED0Store = value; }
+        #endregion
         #region HNAM
-        private IHeadTrackingGetter? _HNAM;
+        private IHeadTrackingGetter? _HNAMStore;
+        private IHeadTrackingGetter? _HNAM { get { EnsureFilled(); return _HNAMStore; } set => _HNAMStore = value; }
         public IHeadTrackingGetter HNAM => _HNAM ?? new HeadTracking();
         #endregion
         #region DialogueTargetActor
-        private int? _DialogueTargetActorLocation;
+        private int? _DialogueTargetActorLocationStore;
+        private int? _DialogueTargetActorLocation { get { EnsureFilled(); return _DialogueTargetActorLocationStore; } set => _DialogueTargetActorLocationStore = value; }
         public Int32? DialogueTargetActor => _DialogueTargetActorLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DialogueTargetActorLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
-        public IReadOnlyList<IPlayerDialogueSceneActionItemGetter> DialogueList { get; private set; } = [];
+        #region DialogueList
+        private IReadOnlyList<IPlayerDialogueSceneActionItemGetter> DialogueListStore = [];
+        public IReadOnlyList<IPlayerDialogueSceneActionItemGetter> DialogueList { get { EnsureFilled(); return DialogueListStore; } private set => DialogueListStore = value; }
+        #endregion
         #region ATTR
-        private int? _ATTRLocation;
+        private int? _ATTRLocationStore;
+        private int? _ATTRLocation { get { EnsureFilled(); return _ATTRLocationStore; } set => _ATTRLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? ATTR => _ATTRLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ATTRLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region ACBS
-        private int? _ACBSLocation;
+        private int? _ACBSLocationStore;
+        private int? _ACBSLocation { get { EnsureFilled(); return _ACBSLocationStore; } set => _ACBSLocationStore = value; }
         public Boolean ACBS => _ACBSLocation.HasValue ? true : default(Boolean);
         #endregion
         #region JAIL
-        private int? _JAILLocation;
+        private int? _JAILLocationStore;
+        private int? _JAILLocation { get { EnsureFilled(); return _JAILLocationStore; } set => _JAILLocationStore = value; }
         public Boolean JAIL => _JAILLocation.HasValue ? true : default(Boolean);
         #endregion
         partial void CustomFactoryEnd(

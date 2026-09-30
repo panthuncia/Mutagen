@@ -1518,7 +1518,8 @@ namespace Mutagen.Bethesda.Oblivion
                 translationParams: translationParams);
         }
 
-        public LightData.VersioningBreaks Versioning { get; private set; }
+        private LightData.VersioningBreaks VersioningStore;
+        public LightData.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public Int32 Time => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x0, 0x4));
         public UInt32 Radius => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0x4, 0x4));
         public Color Color => _structData.Slice(0x8, 0x4).ReadColor(ColorBinaryType.Alpha);

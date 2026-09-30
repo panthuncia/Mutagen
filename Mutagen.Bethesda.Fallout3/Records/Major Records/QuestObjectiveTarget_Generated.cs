@@ -1401,7 +1401,8 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        private RangeInt32? _QSTALocation;
+        private RangeInt32? _QSTALocationStore;
+        private RangeInt32? _QSTALocation { get { EnsureFilled(); return _QSTALocationStore; } set => _QSTALocationStore = value; }
         #region Target
         private int _TargetLocation => _QSTALocation!.Value.Min;
         private bool _Target_IsSet => _QSTALocation.HasValue;
@@ -1417,7 +1418,10 @@ namespace Mutagen.Bethesda.Fallout3
         private bool _Unused_IsSet => _QSTALocation.HasValue;
         public ReadOnlyMemorySlice<Byte> Unused => _Unused_IsSet ? _recordData.Span.Slice(_UnusedLocation, 3).ToArray() : UtilityTranslation.Zeros.Slice(0, 3);
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

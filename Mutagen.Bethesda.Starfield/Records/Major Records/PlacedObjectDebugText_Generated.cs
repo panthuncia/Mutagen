@@ -1194,11 +1194,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region String
-        private int? _StringLocation;
+        private int? _StringLocationStore;
+        private int? _StringLocation { get { EnsureFilled(); return _StringLocationStore; } set => _StringLocationStore = value; }
         public String? String => _StringLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _StringLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Format
-        private RangeInt32? _FormatLocation;
+        private RangeInt32? _FormatLocationStore;
+        private RangeInt32? _FormatLocation { get { EnsureFilled(); return _FormatLocationStore; } set => _FormatLocationStore = value; }
         public IPlacedObjectDebugTextFormatGetter? Format => _FormatLocation.HasValue ? PlacedObjectDebugTextFormatBinaryOverlay.PlacedObjectDebugTextFormatFactory(_recordData.Slice(_FormatLocation!.Value.Min), _package) : default;
         #endregion
         partial void CustomFactoryEnd(

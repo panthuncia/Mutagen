@@ -364,15 +364,14 @@ public class GenderedTypeBinaryTranslationGeneration : BinaryTranslationGenerati
         {
             if (data.HasTrigger)
             {
-                sb.AppendLine($"private int? _{typeGen.Name}Location;");
+                LazyFill.Field(sb, "int?", $"_{typeGen.Name}Location");
             }
 
             if (gendered.GenderEnumRecord.HasValue)
             {
                 if (data.HasTrigger)
                 {
-                    sb.AppendLine(
-                        $"private IGenderedItemGetter<{gendered.SubTypeGeneration.TypeName(getter: true, needsCovariance: true)}{gendered.SubTypeGeneration.NullChar}>? _{typeGen.Name}Overlay;");
+                    LazyFill.Field(sb, $"IGenderedItemGetter<{gendered.SubTypeGeneration.TypeName(getter: true, needsCovariance: true)}{gendered.SubTypeGeneration.NullChar}>?", $"_{typeGen.Name}Overlay");
                 }
 
                 sb.AppendLine(
@@ -476,8 +475,7 @@ public class GenderedTypeBinaryTranslationGeneration : BinaryTranslationGenerati
         {
             if (data.HasTrigger)
             {
-                sb.AppendLine(
-                    $"private IGenderedItemGetter<{gendered.SubTypeGeneration.TypeName(getter: true, needsCovariance: true)}{gendered.SubTypeGeneration.NullChar}>? _{typeGen.Name}Overlay;");
+                LazyFill.Field(sb, $"IGenderedItemGetter<{gendered.SubTypeGeneration.TypeName(getter: true, needsCovariance: true)}{gendered.SubTypeGeneration.NullChar}>?", $"_{typeGen.Name}Overlay");
             }
 
             sb.AppendLine(

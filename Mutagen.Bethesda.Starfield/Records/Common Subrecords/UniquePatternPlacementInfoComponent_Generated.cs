@@ -1238,7 +1238,8 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        private RangeInt32? _DATALocation;
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         #region Planet
         private int _PlanetLocation => _DATALocation!.Value.Min;
         private bool _Planet_IsSet => _DATALocation.HasValue;

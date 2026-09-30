@@ -1422,7 +1422,8 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        private RangeInt32? _TETILocation;
+        private RangeInt32? _TETILocationStore;
+        private RangeInt32? _TETILocation { get { EnsureFilled(); return _TETILocationStore; } set => _TETILocationStore = value; }
         #region DataType
         private int _DataTypeLocation => _TETILocation!.Value.Min;
         private bool _DataType_IsSet => _TETILocation.HasValue;
@@ -1433,8 +1434,10 @@ namespace Mutagen.Bethesda.Fallout4
         private bool _Index_IsSet => _TETILocation.HasValue;
         public UInt16 Index => _Index_IsSet ? BinaryPrimitives.ReadUInt16LittleEndian(_recordData.Slice(_IndexLocation, 2)) : default(UInt16);
         #endregion
-        private RangeInt32? _TENDLocation;
-        public NpcFaceTintingLayer.TENDDataType TENDDataTypeState { get; private set; }
+        private RangeInt32? _TENDLocationStore;
+        private RangeInt32? _TENDLocation { get { EnsureFilled(); return _TENDLocationStore; } set => _TENDLocationStore = value; }
+        private NpcFaceTintingLayer.TENDDataType TENDDataTypeStateStore;
+        public NpcFaceTintingLayer.TENDDataType TENDDataTypeState { get { EnsureFilled(); return TENDDataTypeStateStore; } private set => TENDDataTypeStateStore = value; }
         #region Value
         private int _ValueLocation => _TENDLocation!.Value.Min;
         private bool _Value_IsSet => _TENDLocation.HasValue;

@@ -1707,34 +1707,44 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region ItemText
-        private int? _ItemTextLocation;
+        private int? _ItemTextLocationStore;
+        private int? _ItemTextLocation { get { EnsureFilled(); return _ItemTextLocationStore; } set => _ItemTextLocationStore = value; }
         public ITranslatedStringGetter ItemText => _ItemTextLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ItemTextLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : TranslatedString.Empty;
         #endregion
         #region ResponseText
-        private int? _ResponseTextLocation;
+        private int? _ResponseTextLocationStore;
+        private int? _ResponseTextLocation { get { EnsureFilled(); return _ResponseTextLocationStore; } set => _ResponseTextLocationStore = value; }
         public ITranslatedStringGetter? ResponseText => _ResponseTextLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ResponseTextLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         #region Type
-        private int? _TypeLocation;
+        private int? _TypeLocationStore;
+        private int? _TypeLocation { get { EnsureFilled(); return _TypeLocationStore; } set => _TypeLocationStore = value; }
         public TerminalMenuItem.Types Type => EnumBinaryTranslation<TerminalMenuItem.Types, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_TypeLocation, _recordData, _package, 1);
         #endregion
         #region ItemId
-        private int? _ItemIdLocation;
+        private int? _ItemIdLocationStore;
+        private int? _ItemIdLocation { get { EnsureFilled(); return _ItemIdLocationStore; } set => _ItemIdLocationStore = value; }
         public UInt16 ItemId => _ItemIdLocation.HasValue ? BinaryPrimitives.ReadUInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ItemIdLocation.Value, _package.MetaData.Constants)) : default(UInt16);
         #endregion
         #region DisplayText
-        private int? _DisplayTextLocation;
+        private int? _DisplayTextLocationStore;
+        private int? _DisplayTextLocation { get { EnsureFilled(); return _DisplayTextLocationStore; } set => _DisplayTextLocationStore = value; }
         public ITranslatedStringGetter? DisplayText => _DisplayTextLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DisplayTextLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         #region ImageFile
-        private int? _ImageFileLocation;
+        private int? _ImageFileLocationStore;
+        private int? _ImageFileLocation { get { EnsureFilled(); return _ImageFileLocationStore; } set => _ImageFileLocationStore = value; }
         public String? ImageFile => _ImageFileLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ImageFileLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Submenu
-        private int? _SubmenuLocation;
+        private int? _SubmenuLocationStore;
+        private int? _SubmenuLocation { get { EnsureFilled(); return _SubmenuLocationStore; } set => _SubmenuLocationStore = value; }
         public IFormLinkNullableGetter<ITerminalGetter> Submenu => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ITerminalGetter>(_package, _recordData, _SubmenuLocation);
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

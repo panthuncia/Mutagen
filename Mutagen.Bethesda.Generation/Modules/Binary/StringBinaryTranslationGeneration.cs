@@ -212,6 +212,22 @@ public class StringBinaryTranslationGeneration : PrimitiveBinaryTranslationGener
     {  
         StringType str = typeGen as StringType;  
         var data = str.GetFieldData();  
+        if (data.HasTrigger && objGen.Name == "MajorRecord" && typeGen.Name == "EditorID")
+        {
+            // While a record's fill is deferred, its EditorID is read from its first subrecord without the fill
+            // (MajorRecordBinaryOverlay.TryPeekEditorID): it is what enumerating records reads most.
+            var getter = new StructuredStringBuilder();
+            await base.GenerateWrapperFields(getter, objGen, typeGen, structDataAccessor, recordDataAccessor, currentPosition, passedLengthAccessor, dataType);
+            var property = $"public {typeGen.TypeName(getter: true)}{str.NullChar} {typeGen.Name} => ";
+            foreach (var line in getter.ToString().Split(Environment.NewLine))
+            {
+                if (line.Length == 0) continue;
+                sb.AppendLine(line.Trim().StartsWith(property)
+                    ? line.Trim().Replace(property, $"{property}IsFillPending && TryPeekEditorID(out var peeked) ? peeked : ")
+                    : line.Trim());
+            }
+            return;
+        }
         if (data.HasTrigger)  
         {  
             await base.GenerateWrapperFields(sb, objGen, typeGen, structDataAccessor, recordDataAccessor, currentPosition, passedLengthAccessor, dataType);  
@@ -220,7 +236,7 @@ public class StringBinaryTranslationGeneration : PrimitiveBinaryTranslationGener
         switch (str.BinaryType)  
         {  
             case StringBinaryType.NullTerminate:  
-                sb.AppendLine($"public {typeGen.TypeName(getter: true)}{str.NullChar} {typeGen.Name} {{ get; private set; }} = {(str.Translated.HasValue ? $"{nameof(TranslatedString)}.{nameof(TranslatedString.Empty)}" : "string.Empty")};");  
+                LazyFill.Property(sb, "public", $"{typeGen.TypeName(getter: true)}{str.NullChar}", typeGen.Name, str.Translated.HasValue ? $"{nameof(TranslatedString)}.{nameof(TranslatedString.Empty)}" : "string.Empty");  
                 break;  
             default:  
                 await base.GenerateWrapperFields(sb, objGen, typeGen, structDataAccessor, recordDataAccessor, currentPosition, passedLengthAccessor, dataType);  

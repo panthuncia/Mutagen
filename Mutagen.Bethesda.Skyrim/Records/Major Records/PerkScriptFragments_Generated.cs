@@ -1282,10 +1282,12 @@ namespace Mutagen.Bethesda.Skyrim
         public Byte ExtraBindDataVersion => _structData.Span[0x0];
         #region FileName
         public String FileName => BinaryStringUtility.ParsePrependedString(_structData.Slice(0x1), lengthLength: 2, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int FileNameEndingPos;
+        private int FileNameEndingPosStore;
+        protected int FileNameEndingPos { get { EnsureFilled(); return FileNameEndingPosStore; } private set => FileNameEndingPosStore = value; }
         #endregion
         #region Fragments
-        protected int FragmentsEndingPos;
+        private int FragmentsEndingPosStore;
+        protected int FragmentsEndingPos { get { EnsureFilled(); return FragmentsEndingPosStore; } private set => FragmentsEndingPosStore = value; }
         partial void CustomFragmentsEndPos();
         #endregion
         partial void CustomFactoryEnd(

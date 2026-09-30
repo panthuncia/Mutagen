@@ -1682,14 +1682,19 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Parent
-        private int? _ParentLocation;
+        private int? _ParentLocationStore;
+        private int? _ParentLocation { get { EnsureFilled(); return _ParentLocationStore; } set => _ParentLocationStore = value; }
         public IFormLinkNullableGetter<IAStoryManagerNodeGetter> Parent => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IAStoryManagerNodeGetter>(_package, _recordData, _ParentLocation);
         #endregion
         #region PreviousSibling
-        private int? _PreviousSiblingLocation;
+        private int? _PreviousSiblingLocationStore;
+        private int? _PreviousSiblingLocation { get { EnsureFilled(); return _PreviousSiblingLocationStore; } set => _PreviousSiblingLocationStore = value; }
         public IFormLinkNullableGetter<IAStoryManagerNodeGetter> PreviousSibling => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IAStoryManagerNodeGetter>(_package, _recordData, _PreviousSiblingLocation);
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

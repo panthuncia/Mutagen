@@ -1306,15 +1306,18 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        private RangeInt32? _DATALocation;
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         #region Percentage
         private int _PercentageLocation => _DATALocation!.Value.Min;
         private bool _Percentage_IsSet => _DATALocation.HasValue;
         public Byte Percentage => _Percentage_IsSet ? _recordData.Span[_PercentageLocation] : default;
         #endregion
         #region ModelFilename
-        public AssetLinkGetter<StarfieldModelAssetType> ModelFilename { get; private set; } = null!;
-        protected int ModelFilenameEndingPos;
+        private AssetLinkGetter<StarfieldModelAssetType> ModelFilenameStore = null!;
+        public AssetLinkGetter<StarfieldModelAssetType> ModelFilename { get { EnsureFilled(); return ModelFilenameStore; } private set => ModelFilenameStore = value; }
+        private int ModelFilenameEndingPosStore;
+        protected int ModelFilenameEndingPos { get { EnsureFilled(); return ModelFilenameEndingPosStore; } private set => ModelFilenameEndingPosStore = value; }
         #endregion
         #region HasCollision
         private int _HasCollisionLocation => ModelFilenameEndingPos;
@@ -1322,7 +1325,8 @@ namespace Mutagen.Bethesda.Starfield
         public Boolean HasCollision => _HasCollision_IsSet ? _recordData.Slice(_HasCollisionLocation, 1)[0] >= 1 : default(Boolean);
         #endregion
         #region TextureFileHashes
-        private int? _TextureFileHashesLocation;
+        private int? _TextureFileHashesLocationStore;
+        private int? _TextureFileHashesLocation { get { EnsureFilled(); return _TextureFileHashesLocationStore; } set => _TextureFileHashesLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? TextureFileHashes => _TextureFileHashesLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _TextureFileHashesLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

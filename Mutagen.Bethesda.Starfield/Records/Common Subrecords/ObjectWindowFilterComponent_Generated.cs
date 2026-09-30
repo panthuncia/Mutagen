@@ -1197,11 +1197,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region INTV
-        private int? _INTVLocation;
+        private int? _INTVLocationStore;
+        private int? _INTVLocation { get { EnsureFilled(); return _INTVLocationStore; } set => _INTVLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? INTV => _INTVLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _INTVLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region FLTR
-        private int? _FLTRLocation;
+        private int? _FLTRLocationStore;
+        private int? _FLTRLocation { get { EnsureFilled(); return _FLTRLocationStore; } set => _FLTRLocationStore = value; }
         public String? FLTR => _FLTRLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FLTRLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(

@@ -8241,7 +8241,8 @@ namespace Mutagen.Bethesda.Starfield
 
         public CombatStyle.MajorFlag MajorFlags => (CombatStyle.MajorFlag)this.MajorRecordFlagsRaw;
 
-        private RangeInt32? _CSGDLocation;
+        private RangeInt32? _CSGDLocationStore;
+        private RangeInt32? _CSGDLocation { get { EnsureFilled(); return _CSGDLocationStore; } set => _CSGDLocationStore = value; }
         #region OffensiveMult
         private int _OffensiveMultLocation => _CSGDLocation!.Value.Min;
         private bool _OffensiveMult_IsSet => _CSGDLocation.HasValue;
@@ -8317,7 +8318,8 @@ namespace Mutagen.Bethesda.Starfield
         private bool _TauntDelayMult_IsSet => _CSGDLocation.HasValue;
         public Single TauntDelayMult => _TauntDelayMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TauntDelayMultLocation, 4)) : default(Single);
         #endregion
-        private RangeInt32? _CSMELocation;
+        private RangeInt32? _CSMELocationStore;
+        private RangeInt32? _CSMELocation { get { EnsureFilled(); return _CSMELocationStore; } set => _CSMELocationStore = value; }
         #region MeleeAttackStaggeredMult
         private int _MeleeAttackStaggeredMultLocation => _CSMELocation!.Value.Min;
         private bool _MeleeAttackStaggeredMult_IsSet => _CSMELocation.HasValue;
@@ -8368,7 +8370,8 @@ namespace Mutagen.Bethesda.Starfield
         private bool _MeleeAttackWhenStaggeredMult_IsSet => _CSMELocation.HasValue;
         public Single MeleeAttackWhenStaggeredMult => _MeleeAttackWhenStaggeredMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MeleeAttackWhenStaggeredMultLocation, 4)) : default(Single);
         #endregion
-        private RangeInt32? _CSRALocation;
+        private RangeInt32? _CSRALocationStore;
+        private RangeInt32? _CSRALocation { get { EnsureFilled(); return _CSRALocationStore; } set => _CSRALocationStore = value; }
         #region RangedAccuracyMult
         private int _RangedAccuracyMultLocation => _CSRALocation!.Value.Min;
         private bool _RangedAccuracyMult_IsSet => _CSRALocation.HasValue;
@@ -8399,7 +8402,8 @@ namespace Mutagen.Bethesda.Starfield
         private bool _RangedGrenadeCloseRangeAttackChanceMult_IsSet => _CSRALocation.HasValue;
         public Percent RangedGrenadeCloseRangeAttackChanceMult => _RangedGrenadeCloseRangeAttackChanceMult_IsSet ? PercentBinaryTranslation.GetPercent(_recordData.Slice(_RangedGrenadeCloseRangeAttackChanceMultLocation, 4), FloatIntegerType.UInt) : default(Percent);
         #endregion
-        private RangeInt32? _CSCRLocation;
+        private RangeInt32? _CSCRLocationStore;
+        private RangeInt32? _CSCRLocation { get { EnsureFilled(); return _CSCRLocationStore; } set => _CSCRLocationStore = value; }
         #region CloseRangeDuelingCircleMult
         private int _CloseRangeDuelingCircleMultLocation => _CSCRLocation!.Value.Min;
         private bool _CloseRangeDuelingCircleMult_IsSet => _CSCRLocation.HasValue;
@@ -8465,7 +8469,8 @@ namespace Mutagen.Bethesda.Starfield
         private bool _CloseRangeRetreatDistanceMult_IsSet => _CSCRLocation.HasValue;
         public Percent CloseRangeRetreatDistanceMult => _CloseRangeRetreatDistanceMult_IsSet ? PercentBinaryTranslation.GetPercent(_recordData.Slice(_CloseRangeRetreatDistanceMultLocation, 4), FloatIntegerType.UInt) : default(Percent);
         #endregion
-        private RangeInt32? _CSLRLocation;
+        private RangeInt32? _CSLRLocationStore;
+        private RangeInt32? _CSLRLocation { get { EnsureFilled(); return _CSLRLocationStore; } set => _CSLRLocationStore = value; }
         #region LongRangeStrafeMult
         private int _LongRangeStrafeMultLocation => _CSLRLocation!.Value.Min;
         private bool _LongRangeStrafeMult_IsSet => _CSLRLocation.HasValue;
@@ -8511,7 +8516,8 @@ namespace Mutagen.Bethesda.Starfield
         private bool _LongRangeRetreatDistanceMult_IsSet => _CSLRLocation.HasValue;
         public Percent LongRangeRetreatDistanceMult => _LongRangeRetreatDistanceMult_IsSet ? PercentBinaryTranslation.GetPercent(_recordData.Slice(_LongRangeRetreatDistanceMultLocation, 4), FloatIntegerType.UInt) : default(Percent);
         #endregion
-        private RangeInt32? _CSCVLocation;
+        private RangeInt32? _CSCVLocationStore;
+        private RangeInt32? _CSCVLocation { get { EnsureFilled(); return _CSCVLocationStore; } set => _CSCVLocationStore = value; }
         #region CoverSearchDistanceMult
         private int _CoverSearchDistanceMultLocation => _CSCVLocation!.Value.Min;
         private bool _CoverSearchDistanceMult_IsSet => _CSCVLocation.HasValue;
@@ -8522,7 +8528,8 @@ namespace Mutagen.Bethesda.Starfield
         private bool _CoverSearchSuppressionSensitivity_IsSet => _CSCVLocation.HasValue;
         public Percent CoverSearchSuppressionSensitivity => _CoverSearchSuppressionSensitivity_IsSet ? PercentBinaryTranslation.GetPercent(_recordData.Slice(_CoverSearchSuppressionSensitivityLocation, 4), FloatIntegerType.UInt) : default(Percent);
         #endregion
-        private RangeInt32? _CSFLLocation;
+        private RangeInt32? _CSFLLocationStore;
+        private RangeInt32? _CSFLLocation { get { EnsureFilled(); return _CSFLLocationStore; } set => _CSFLLocationStore = value; }
         #region FlightHoverChance
         private int _FlightHoverChanceLocation => _CSFLLocation!.Value.Min;
         private bool _FlightHoverChance_IsSet => _CSFLLocation.HasValue;
@@ -8563,7 +8570,8 @@ namespace Mutagen.Bethesda.Starfield
         private bool _FlightFlyingAttackChance_IsSet => _CSFLLocation.HasValue;
         public Percent FlightFlyingAttackChance => _FlightFlyingAttackChance_IsSet ? PercentBinaryTranslation.GetPercent(_recordData.Slice(_FlightFlyingAttackChanceLocation, 4), FloatIntegerType.UInt) : default(Percent);
         #endregion
-        private RangeInt32? _CSTNLocation;
+        private RangeInt32? _CSTNLocationStore;
+        private RangeInt32? _CSTNLocation { get { EnsureFilled(); return _CSTNLocationStore; } set => _CSTNLocationStore = value; }
         #region TunnelCostMult
         private int _TunnelCostMultLocation => _CSTNLocation!.Value.Min;
         private bool _TunnelCostMult_IsSet => _CSTNLocation.HasValue;
@@ -8604,7 +8612,8 @@ namespace Mutagen.Bethesda.Starfield
         private bool _TunnelCooldown_IsSet => _CSTNLocation.HasValue;
         public Single TunnelCooldown => _TunnelCooldown_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TunnelCooldownLocation, 4)) : default(Single);
         #endregion
-        private RangeInt32? _CSSGLocation;
+        private RangeInt32? _CSSGLocationStore;
+        private RangeInt32? _CSSGLocation { get { EnsureFilled(); return _CSSGLocationStore; } set => _CSSGLocationStore = value; }
         #region SpaceGeneralPilotSkill
         private int _SpaceGeneralPilotSkillLocation => _CSSGLocation!.Value.Min;
         private bool _SpaceGeneralPilotSkill_IsSet => _CSSGLocation.HasValue;
@@ -8726,7 +8735,8 @@ namespace Mutagen.Bethesda.Starfield
         private ICombatStylePowerWeightingGetter? _SpaceGeneralPowerWeighting => _SpaceGeneralPowerWeighting_IsSet ? CombatStylePowerWeightingBinaryOverlay.CombatStylePowerWeightingFactory(_recordData.Slice(_SpaceGeneralPowerWeightingLocation), _package) : default;
         public ICombatStylePowerWeightingGetter SpaceGeneralPowerWeighting => _SpaceGeneralPowerWeighting ?? new CombatStylePowerWeighting();
         #endregion
-        private RangeInt32? _CSSMLocation;
+        private RangeInt32? _CSSMLocationStore;
+        private RangeInt32? _CSSMLocation { get { EnsureFilled(); return _CSSMLocationStore; } set => _CSSMLocationStore = value; }
         #region SpaceManeuverTypesMaxTime
         private int _SpaceManeuverTypesMaxTimeLocation => _CSSMLocation!.Value.Min;
         private bool _SpaceManeuverTypesMaxTime_IsSet => _CSSMLocation.HasValue;
@@ -8739,7 +8749,8 @@ namespace Mutagen.Bethesda.Starfield
         private ICombatStyleManeuverTimingGetter? _SpaceManeuverTypesReentryDelays => _SpaceManeuverTypesReentryDelays_IsSet ? CombatStyleManeuverTimingBinaryOverlay.CombatStyleManeuverTimingFactory(_recordData.Slice(_SpaceManeuverTypesReentryDelaysLocation), _package) : default;
         public ICombatStyleManeuverTimingGetter SpaceManeuverTypesReentryDelays => _SpaceManeuverTypesReentryDelays ?? new CombatStyleManeuverTiming();
         #endregion
-        private RangeInt32? _CSSRLocation;
+        private RangeInt32? _CSSRLocationStore;
+        private RangeInt32? _CSSRLocation { get { EnsureFilled(); return _CSSRLocationStore; } set => _CSSRLocationStore = value; }
         #region SpaceRepairDamageThreshold
         private int _SpaceRepairDamageThresholdLocation => _CSSRLocation!.Value.Min;
         private bool _SpaceRepairDamageThreshold_IsSet => _CSSRLocation.HasValue;
@@ -8767,7 +8778,8 @@ namespace Mutagen.Bethesda.Starfield
         private ICombatStylePowerWeightingGetter? _SpaceRepairFarawayPowerWeightingTables => _SpaceRepairFarawayPowerWeightingTables_IsSet ? CombatStylePowerWeightingBinaryOverlay.CombatStylePowerWeightingFactory(_recordData.Slice(_SpaceRepairFarawayPowerWeightingTablesLocation), _package) : default;
         public ICombatStylePowerWeightingGetter SpaceRepairFarawayPowerWeightingTables => _SpaceRepairFarawayPowerWeightingTables ?? new CombatStylePowerWeighting();
         #endregion
-        private RangeInt32? _CSSALocation;
+        private RangeInt32? _CSSALocationStore;
+        private RangeInt32? _CSSALocation { get { EnsureFilled(); return _CSSALocationStore; } set => _CSSALocationStore = value; }
         #region SpaceApproachingMinDistance
         private int _SpaceApproachingMinDistanceLocation => _CSSALocation!.Value.Min;
         private bool _SpaceApproachingMinDistance_IsSet => _CSSALocation.HasValue;
@@ -8779,7 +8791,8 @@ namespace Mutagen.Bethesda.Starfield
         private ICombatStylePowerWeightingGetter? _SpaceApproachingWeighting => _SpaceApproachingWeighting_IsSet ? CombatStylePowerWeightingBinaryOverlay.CombatStylePowerWeightingFactory(_recordData.Slice(_SpaceApproachingWeightingLocation), _package) : default;
         public ICombatStylePowerWeightingGetter SpaceApproachingWeighting => _SpaceApproachingWeighting ?? new CombatStylePowerWeighting();
         #endregion
-        private RangeInt32? _CSSDLocation;
+        private RangeInt32? _CSSDLocationStore;
+        private RangeInt32? _CSSDLocation { get { EnsureFilled(); return _CSSDLocationStore; } set => _CSSDLocationStore = value; }
         #region SpaceDetectionRating1
         private int _SpaceDetectionRating1Location => _CSSDLocation!.Value.Min;
         private bool _SpaceDetectionRating1_IsSet => _CSSDLocation.HasValue;
@@ -8796,19 +8809,23 @@ namespace Mutagen.Bethesda.Starfield
         public Single SpaceDetectionRating3 => _SpaceDetectionRating3_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SpaceDetectionRating3Location, 4)) : default(Single);
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public CombatStyle.Flag? Flags => EnumBinaryTranslation<CombatStyle.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 4);
         #endregion
         #region FNAM
-        private int? _FNAMLocation;
+        private int? _FNAMLocationStore;
+        private int? _FNAMLocation { get { EnsureFilled(); return _FNAMLocationStore; } set => _FNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? FNAM => _FNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region TemplateDefaultCombatStyle
-        private int? _TemplateDefaultCombatStyleLocation;
+        private int? _TemplateDefaultCombatStyleLocationStore;
+        private int? _TemplateDefaultCombatStyleLocation { get { EnsureFilled(); return _TemplateDefaultCombatStyleLocationStore; } set => _TemplateDefaultCombatStyleLocationStore = value; }
         public IFormLinkNullableGetter<ICombatStyleGetter> TemplateDefaultCombatStyle => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ICombatStyleGetter>(_package, _recordData, _TemplateDefaultCombatStyleLocation);
         #endregion
         #region Templates
-        private RangeInt32? _TemplatesLocation;
+        private RangeInt32? _TemplatesLocationStore;
+        private RangeInt32? _TemplatesLocation { get { EnsureFilled(); return _TemplatesLocationStore; } set => _TemplatesLocationStore = value; }
         public ICombatStyleTemplatesGetter? Templates => _TemplatesLocation.HasValue ? CombatStyleTemplatesBinaryOverlay.CombatStyleTemplatesFactory(_recordData.Slice(_TemplatesLocation!.Value.Min), _package) : default;
         #endregion
         partial void CustomFactoryEnd(
@@ -8832,6 +8849,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new CombatStyleBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => CombatStyleFill((CombatStyleBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void CombatStyleFill(
+            CombatStyleBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -8839,9 +8873,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new CombatStyleBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -8854,7 +8886,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ICombatStyleGetter CombatStyleFactory(

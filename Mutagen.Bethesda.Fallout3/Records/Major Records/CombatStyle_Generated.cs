@@ -5472,7 +5472,8 @@ namespace Mutagen.Bethesda.Fallout3
         protected override Type LinkType => typeof(ICombatStyleGetter);
 
 
-        private RangeInt32? _CSTDLocation;
+        private RangeInt32? _CSTDLocationStore;
+        private RangeInt32? _CSTDLocation { get { EnsureFilled(); return _CSTDLocationStore; } set => _CSTDLocationStore = value; }
         #region StandardManeuverDecisionDodgeChance
         private int _StandardManeuverDecisionDodgeChanceLocation => _CSTDLocation!.Value.Min;
         private bool _StandardManeuverDecisionDodgeChance_IsSet => _CSTDLocation.HasValue;
@@ -5648,7 +5649,8 @@ namespace Mutagen.Bethesda.Fallout3
         private bool _StandardMeleeDecisionRushingAttackDistanceMult_IsSet => _CSTDLocation.HasValue;
         public Single StandardMeleeDecisionRushingAttackDistanceMult => _StandardMeleeDecisionRushingAttackDistanceMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_StandardMeleeDecisionRushingAttackDistanceMultLocation, 4)) : default(Single);
         #endregion
-        private RangeInt32? _CSADLocation;
+        private RangeInt32? _CSADLocationStore;
+        private RangeInt32? _CSADLocation { get { EnsureFilled(); return _CSADLocationStore; } set => _CSADLocationStore = value; }
         #region AdvancedDodgeFatigueModMult
         private int _AdvancedDodgeFatigueModMultLocation => _CSADLocation!.Value.Min;
         private bool _AdvancedDodgeFatigueModMult_IsSet => _CSADLocation.HasValue;
@@ -5754,7 +5756,8 @@ namespace Mutagen.Bethesda.Fallout3
         private bool _AdvancedPowerAttackFatigueModMult_IsSet => _CSADLocation.HasValue;
         public Single AdvancedPowerAttackFatigueModMult => _AdvancedPowerAttackFatigueModMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AdvancedPowerAttackFatigueModMultLocation, 4)) : default(Single);
         #endregion
-        private RangeInt32? _CSSDLocation;
+        private RangeInt32? _CSSDLocationStore;
+        private RangeInt32? _CSSDLocation { get { EnsureFilled(); return _CSSDLocationStore; } set => _CSSDLocationStore = value; }
         #region SimpleCoverSearchRadius
         private int _SimpleCoverSearchRadiusLocation => _CSSDLocation!.Value.Min;
         private bool _SimpleCoverSearchRadius_IsSet => _CSSDLocation.HasValue;
@@ -5856,6 +5859,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new CombatStyleBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => CombatStyleFill((CombatStyleBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void CombatStyleFill(
+            CombatStyleBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -5863,9 +5883,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new CombatStyleBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -5878,7 +5896,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ICombatStyleGetter CombatStyleFactory(

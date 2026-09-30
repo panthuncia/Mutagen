@@ -1183,7 +1183,8 @@ namespace Mutagen.Bethesda.Skyrim
         public P2Int16 Max => P2Int16BinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(0x4, 0x4));
         #region CellData
         public ReadOnlyMemorySlice<Byte> CellData => _structData.Span.Slice(0x8).ToArray();
-        protected int CellDataEndingPos;
+        private int CellDataEndingPosStore;
+        protected int CellDataEndingPos { get { EnsureFilled(); return CellDataEndingPosStore; } private set => CellDataEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

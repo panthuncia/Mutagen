@@ -1121,12 +1121,16 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Name
-        public String Name { get; private set; } = string.Empty;
-        protected int NameEndingPos;
+        private String NameStore = string.Empty;
+        public String Name { get { EnsureFilled(); return NameStore; } private set => NameStore = value; }
+        private int NameEndingPosStore;
+        protected int NameEndingPos { get { EnsureFilled(); return NameEndingPosStore; } private set => NameEndingPosStore = value; }
         #endregion
         #region ModelFilename
-        public String ModelFilename { get; private set; } = string.Empty;
-        protected int ModelFilenameEndingPos;
+        private String ModelFilenameStore = string.Empty;
+        public String ModelFilename { get { EnsureFilled(); return ModelFilenameStore; } private set => ModelFilenameStore = value; }
+        private int ModelFilenameEndingPosStore;
+        protected int ModelFilenameEndingPos { get { EnsureFilled(); return ModelFilenameEndingPosStore; } private set => ModelFilenameEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

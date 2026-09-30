@@ -1174,7 +1174,8 @@ namespace Mutagen.Bethesda.Starfield
 
         #region Items
         public IReadOnlyList<IPERSItemGetter> Items => BinaryOverlayList.FactoryByLazyParse<IPERSItemGetter>(_structData, _package, (s, p) => PERSItemBinaryOverlay.PERSItemFactory(s, p));
-        protected int ItemsEndingPos;
+        private int ItemsEndingPosStore;
+        protected int ItemsEndingPos { get { EnsureFilled(); return ItemsEndingPosStore; } private set => ItemsEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

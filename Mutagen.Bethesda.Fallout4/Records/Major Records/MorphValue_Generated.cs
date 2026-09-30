@@ -1223,15 +1223,18 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Index
-        private int? _IndexLocation;
+        private int? _IndexLocationStore;
+        private int? _IndexLocation { get { EnsureFilled(); return _IndexLocationStore; } set => _IndexLocationStore = value; }
         public Int32? Index => _IndexLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IndexLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region MinName
-        private int? _MinNameLocation;
+        private int? _MinNameLocationStore;
+        private int? _MinNameLocation { get { EnsureFilled(); return _MinNameLocationStore; } set => _MinNameLocationStore = value; }
         public String? MinName => _MinNameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MinNameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region MaxName
-        private int? _MaxNameLocation;
+        private int? _MaxNameLocationStore;
+        private int? _MaxNameLocation { get { EnsureFilled(); return _MaxNameLocationStore; } set => _MaxNameLocationStore = value; }
         public String? MaxName => _MaxNameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaxNameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(

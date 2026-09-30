@@ -50,7 +50,7 @@ public class ByteBinaryTranslationGeneration : PrimitiveBinaryTranslationGenerat
         }
         if (data.HasTrigger)
         {
-            sb.AppendLine($"private int? _{typeGen.Name}Location;");
+            LazyFill.Field(sb, "int?", $"_{typeGen.Name}Location");
             if (typeGen.CanBeNullable(getter: true))
             {
                 recordDataAccessor = $"{nameof(HeaderTranslation)}.{nameof(HeaderTranslation.ExtractSubrecordMemory)}({recordDataAccessor}, _{typeGen.Name}Location.Value, _package.{nameof(BinaryOverlayFactoryPackage.MetaData)}.{nameof(ParsingMeta.Constants)})";

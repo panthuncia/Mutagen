@@ -1516,7 +1516,8 @@ namespace Mutagen.Bethesda.Fallout4
         partial void ParameterParsingCustomParse(
             OverlayStream stream,
             int offset);
-        protected int ParameterParsingEndingPos;
+        private int ParameterParsingEndingPosStore;
+        protected int ParameterParsingEndingPos { get { EnsureFilled(); return ParameterParsingEndingPosStore; } private set => ParameterParsingEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

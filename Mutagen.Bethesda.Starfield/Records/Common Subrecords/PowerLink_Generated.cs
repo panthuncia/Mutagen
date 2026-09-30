@@ -1197,7 +1197,8 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public PowerLink.VersioningBreaks Versioning { get; private set; }
+        private PowerLink.VersioningBreaks VersioningStore;
+        public PowerLink.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public IFormLinkGetter<IPlacedSimpleGetter> Ref => FormLinkBinaryTranslation.Instance.OverlayFactory<IPlacedSimpleGetter>(_package, _structData.Span.Slice(0x0, 0x4));
         public Int32 Unknown => _structData.Length <= 0x4 ? default : BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x4, 0x4));
         partial void CustomFactoryEnd(

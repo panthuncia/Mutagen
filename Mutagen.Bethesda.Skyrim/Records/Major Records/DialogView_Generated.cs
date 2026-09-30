@@ -1943,17 +1943,26 @@ namespace Mutagen.Bethesda.Skyrim
 
 
         #region Quest
-        private int? _QuestLocation;
+        private int? _QuestLocationStore;
+        private int? _QuestLocation { get { EnsureFilled(); return _QuestLocationStore; } set => _QuestLocationStore = value; }
         public IFormLinkGetter<IQuestGetter> Quest => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IQuestGetter>(_package, _recordData, _QuestLocation);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IDialogBranchGetter>> Branches { get; private set; } = [];
-        public IReadOnlyList<ReadOnlyMemorySlice<Byte>> TNAMs { get; private set; } = [];
+        #region Branches
+        private IReadOnlyList<IFormLinkGetter<IDialogBranchGetter>> BranchesStore = [];
+        public IReadOnlyList<IFormLinkGetter<IDialogBranchGetter>> Branches { get { EnsureFilled(); return BranchesStore; } private set => BranchesStore = value; }
+        #endregion
+        #region TNAMs
+        private IReadOnlyList<ReadOnlyMemorySlice<Byte>> TNAMsStore = [];
+        public IReadOnlyList<ReadOnlyMemorySlice<Byte>> TNAMs { get { EnsureFilled(); return TNAMsStore; } private set => TNAMsStore = value; }
+        #endregion
         #region ENAM
-        private int? _ENAMLocation;
+        private int? _ENAMLocationStore;
+        private int? _ENAMLocation { get { EnsureFilled(); return _ENAMLocationStore; } set => _ENAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? ENAM => _ENAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ENAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region DNAM
-        private int? _DNAMLocation;
+        private int? _DNAMLocationStore;
+        private int? _DNAMLocation { get { EnsureFilled(); return _DNAMLocationStore; } set => _DNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? DNAM => _DNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(
@@ -1977,6 +1986,23 @@ namespace Mutagen.Bethesda.Skyrim
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new DialogViewBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => DialogViewFill((DialogViewBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void DialogViewFill(
+            DialogViewBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1984,9 +2010,7 @@ namespace Mutagen.Bethesda.Skyrim
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new DialogViewBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1999,7 +2023,6 @@ namespace Mutagen.Bethesda.Skyrim
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IDialogViewGetter DialogViewFactory(

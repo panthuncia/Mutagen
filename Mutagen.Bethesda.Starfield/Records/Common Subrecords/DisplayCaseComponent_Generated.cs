@@ -1436,8 +1436,14 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IDisplayCaseComponentItemGetter>? Items { get; private set; }
-        public IReadOnlyList<UInt32>? DCED { get; private set; }
+        #region Items
+        private IReadOnlyList<IDisplayCaseComponentItemGetter>? ItemsStore;
+        public IReadOnlyList<IDisplayCaseComponentItemGetter>? Items { get { EnsureFilled(); return ItemsStore; } private set => ItemsStore = value; }
+        #endregion
+        #region DCED
+        private IReadOnlyList<UInt32>? DCEDStore;
+        public IReadOnlyList<UInt32>? DCED { get { EnsureFilled(); return DCEDStore; } private set => DCEDStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

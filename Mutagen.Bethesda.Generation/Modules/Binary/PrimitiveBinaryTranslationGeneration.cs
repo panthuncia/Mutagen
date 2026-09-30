@@ -254,7 +254,7 @@ public class PrimitiveBinaryTranslationGeneration<T> : BinaryTranslationGenerati
         }
         if (data.HasTrigger)
         {
-            sb.AppendLine($"private int? _{typeGen.Name}Location;");
+            LazyFill.Field(sb, "int?", $"_{typeGen.Name}Location");
         }
         if (data.RecordType.HasValue)
         {

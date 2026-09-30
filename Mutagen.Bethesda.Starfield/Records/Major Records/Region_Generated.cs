@@ -1843,10 +1843,14 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region MapColor
-        private int? _MapColorLocation;
+        private int? _MapColorLocationStore;
+        private int? _MapColorLocation { get { EnsureFilled(); return _MapColorLocationStore; } set => _MapColorLocationStore = value; }
         public Color MapColor => _MapColorLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MapColorLocation.Value, _package.MetaData.Constants).ReadColor(ColorBinaryType.Alpha) : default(Color);
         #endregion
-        public IReadOnlyList<IRegionAreaGetter> RegionAreas { get; private set; } = [];
+        #region RegionAreas
+        private IReadOnlyList<IRegionAreaGetter> RegionAreasStore = [];
+        public IReadOnlyList<IRegionAreaGetter> RegionAreas { get { EnsureFilled(); return RegionAreasStore; } private set => RegionAreasStore = value; }
+        #endregion
         #region RegionAreaLogic
         public partial ParseResult RegionAreaLogicCustomParse(
             OverlayStream stream,

@@ -1490,20 +1490,26 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         string INamedRequiredGetter.Name => this.Name ?? string.Empty;
         #endregion
         #endregion
-        public IReadOnlyList<IMorphPresetGetter>? MorphPresets { get; private set; }
+        #region MorphPresets
+        private IReadOnlyList<IMorphPresetGetter>? MorphPresetsStore;
+        public IReadOnlyList<IMorphPresetGetter>? MorphPresets { get { EnsureFilled(); return MorphPresetsStore; } private set => MorphPresetsStore = value; }
+        #endregion
         #region UnknownMPPK
-        private int? _UnknownMPPKLocation;
+        private int? _UnknownMPPKLocationStore;
+        private int? _UnknownMPPKLocation { get { EnsureFilled(); return _UnknownMPPKLocationStore; } set => _UnknownMPPKLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? UnknownMPPK => _UnknownMPPKLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _UnknownMPPKLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region UnknownMPGS
-        private int? _UnknownMPGSLocation;
+        private int? _UnknownMPGSLocationStore;
+        private int? _UnknownMPGSLocation { get { EnsureFilled(); return _UnknownMPGSLocationStore; } set => _UnknownMPGSLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? UnknownMPGS => _UnknownMPGSLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _UnknownMPGSLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

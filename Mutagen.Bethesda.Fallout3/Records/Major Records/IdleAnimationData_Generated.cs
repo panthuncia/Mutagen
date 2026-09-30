@@ -1568,7 +1568,8 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        public IdleAnimationData.VersioningBreaks Versioning { get; private set; }
+        private IdleAnimationData.VersioningBreaks VersioningStore;
+        public IdleAnimationData.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         #region GroupSectionParser
         partial void GroupSectionParserCustomParse(
             OverlayStream stream,

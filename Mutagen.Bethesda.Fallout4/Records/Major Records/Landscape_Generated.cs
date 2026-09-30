@@ -2504,18 +2504,35 @@ namespace Mutagen.Bethesda.Fallout4
 
 
         #region DATA
-        private int? _DATALocation;
+        private int? _DATALocationStore;
+        private int? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? DATA => _DATALocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DATALocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
-        public IReadOnlyArray2d<P3UInt8>? VertexNormals { get; private set; }
+        #region VertexNormals
+        private IReadOnlyArray2d<P3UInt8>? VertexNormalsStore;
+        public IReadOnlyArray2d<P3UInt8>? VertexNormals { get { EnsureFilled(); return VertexNormalsStore; } private set => VertexNormalsStore = value; }
+        #endregion
         #region VertexHeightMap
-        private RangeInt32? _VertexHeightMapLocation;
+        private RangeInt32? _VertexHeightMapLocationStore;
+        private RangeInt32? _VertexHeightMapLocation { get { EnsureFilled(); return _VertexHeightMapLocationStore; } set => _VertexHeightMapLocationStore = value; }
         public ILandscapeVertexHeightMapGetter? VertexHeightMap => _VertexHeightMapLocation.HasValue ? LandscapeVertexHeightMapBinaryOverlay.LandscapeVertexHeightMapFactory(_recordData.Slice(_VertexHeightMapLocation!.Value.Min), _package) : default;
         #endregion
-        public IReadOnlyArray2d<P3UInt8>? VertexColors { get; private set; }
-        public IReadOnlyList<IBaseLayerGetter> Layers { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<ILandscapeTextureGetter>>? Textures { get; private set; }
-        public IReadOnlyList<ILandscapeMPCDGetter> MPCDs { get; private set; } = [];
+        #region VertexColors
+        private IReadOnlyArray2d<P3UInt8>? VertexColorsStore;
+        public IReadOnlyArray2d<P3UInt8>? VertexColors { get { EnsureFilled(); return VertexColorsStore; } private set => VertexColorsStore = value; }
+        #endregion
+        #region Layers
+        private IReadOnlyList<IBaseLayerGetter> LayersStore = [];
+        public IReadOnlyList<IBaseLayerGetter> Layers { get { EnsureFilled(); return LayersStore; } private set => LayersStore = value; }
+        #endregion
+        #region Textures
+        private IReadOnlyList<IFormLinkGetter<ILandscapeTextureGetter>>? TexturesStore;
+        public IReadOnlyList<IFormLinkGetter<ILandscapeTextureGetter>>? Textures { get { EnsureFilled(); return TexturesStore; } private set => TexturesStore = value; }
+        #endregion
+        #region MPCDs
+        private IReadOnlyList<ILandscapeMPCDGetter> MPCDsStore = [];
+        public IReadOnlyList<ILandscapeMPCDGetter> MPCDs { get { EnsureFilled(); return MPCDsStore; } private set => MPCDsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -2537,6 +2554,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new LandscapeBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => LandscapeFill((LandscapeBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void LandscapeFill(
+            LandscapeBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2544,9 +2578,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new LandscapeBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2559,7 +2591,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ILandscapeGetter LandscapeFactory(

@@ -1853,7 +1853,8 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        private RangeInt32? _TRDTLocation;
+        private RangeInt32? _TRDTLocationStore;
+        private RangeInt32? _TRDTLocation { get { EnsureFilled(); return _TRDTLocationStore; } set => _TRDTLocationStore = value; }
         #region Emotion
         private int _EmotionLocation => _TRDTLocation!.Value.Min;
         private bool _Emotion_IsSet => _TRDTLocation.HasValue;
@@ -1895,23 +1896,28 @@ namespace Mutagen.Bethesda.Skyrim
         public ReadOnlyMemorySlice<Byte> Unknown3 => _Unknown3_IsSet ? _recordData.Span.Slice(_Unknown3Location, 3).ToArray() : UtilityTranslation.Zeros.Slice(0, 3);
         #endregion
         #region Text
-        private int? _TextLocation;
+        private int? _TextLocationStore;
+        private int? _TextLocation { get { EnsureFilled(); return _TextLocationStore; } set => _TextLocationStore = value; }
         public ITranslatedStringGetter Text => _TextLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TextLocation.Value, _package.MetaData.Constants), StringsSource.IL, parsingBundle: _package.MetaData, eager: false) : TranslatedString.Empty;
         #endregion
         #region ScriptNotes
-        private int? _ScriptNotesLocation;
+        private int? _ScriptNotesLocationStore;
+        private int? _ScriptNotesLocation { get { EnsureFilled(); return _ScriptNotesLocationStore; } set => _ScriptNotesLocationStore = value; }
         public String ScriptNotes => _ScriptNotesLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ScriptNotesLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region Edits
-        private int? _EditsLocation;
+        private int? _EditsLocationStore;
+        private int? _EditsLocation { get { EnsureFilled(); return _EditsLocationStore; } set => _EditsLocationStore = value; }
         public String Edits => _EditsLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EditsLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region SpeakerIdleAnimation
-        private int? _SpeakerIdleAnimationLocation;
+        private int? _SpeakerIdleAnimationLocationStore;
+        private int? _SpeakerIdleAnimationLocation { get { EnsureFilled(); return _SpeakerIdleAnimationLocationStore; } set => _SpeakerIdleAnimationLocationStore = value; }
         public IFormLinkNullableGetter<IIdleAnimationGetter> SpeakerIdleAnimation => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IIdleAnimationGetter>(_package, _recordData, _SpeakerIdleAnimationLocation);
         #endregion
         #region ListenerIdleAnimation
-        private int? _ListenerIdleAnimationLocation;
+        private int? _ListenerIdleAnimationLocationStore;
+        private int? _ListenerIdleAnimationLocation { get { EnsureFilled(); return _ListenerIdleAnimationLocationStore; } set => _ListenerIdleAnimationLocationStore = value; }
         public IFormLinkNullableGetter<IIdleAnimationGetter> ListenerIdleAnimation => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IIdleAnimationGetter>(_package, _recordData, _ListenerIdleAnimationLocation);
         #endregion
         partial void CustomFactoryEnd(

@@ -1871,14 +1871,17 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Text
-        private int? _TextLocation;
+        private int? _TextLocationStore;
+        private int? _TextLocation { get { EnsureFilled(); return _TextLocationStore; } set => _TextLocationStore = value; }
         public ITranslatedStringGetter Text => _TextLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TextLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : TranslatedString.Empty;
         #endregion
         #region ShortText
-        private int? _ShortTextLocation;
+        private int? _ShortTextLocationStore;
+        private int? _ShortTextLocation { get { EnsureFilled(); return _ShortTextLocationStore; } set => _ShortTextLocationStore = value; }
         public ITranslatedStringGetter? ShortText => _ShortTextLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ShortTextLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
-        private RangeInt32? _ISETLocation;
+        private RangeInt32? _ISETLocationStore;
+        private RangeInt32? _ISETLocation { get { EnsureFilled(); return _ISETLocationStore; } set => _ISETLocationStore = value; }
         #region TypeParse
         private int _TypeParseLocation => _ISETLocation!.Value.Min;
         private bool _TypeParse_IsSet => _ISETLocation.HasValue;
@@ -1902,11 +1905,13 @@ namespace Mutagen.Bethesda.Starfield
         public ReadOnlyMemorySlice<Byte> UnusedISET2 => _UnusedISET2_IsSet ? _recordData.Span.Slice(_UnusedISET2Location, 3).ToArray() : UtilityTranslation.Zeros.Slice(0, 3);
         #endregion
         #region ID
-        private int? _IDLocation;
+        private int? _IDLocationStore;
+        private int? _IDLocation { get { EnsureFilled(); return _IDLocationStore; } set => _IDLocationStore = value; }
         public UInt16 ID => _IDLocation.HasValue ? BinaryPrimitives.ReadUInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IDLocation.Value, _package.MetaData.Constants)) : default(UInt16);
         #endregion
         #region Lock
-        private RangeInt32? _LockLocation;
+        private RangeInt32? _LockLocationStore;
+        private RangeInt32? _LockLocation { get { EnsureFilled(); return _LockLocationStore; } set => _LockLocationStore = value; }
         public ILockDataGetter? Lock => _LockLocation.HasValue ? LockDataBinaryOverlay.LockDataFactory(_recordData.Slice(_LockLocation!.Value.Min), _package) : default;
         #endregion
         #region TargetParse
@@ -1915,7 +1920,10 @@ namespace Mutagen.Bethesda.Starfield
             int offset,
             PreviousParse lastParsed);
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

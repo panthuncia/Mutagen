@@ -1107,7 +1107,8 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Submenu
-        private int? _SubmenuLocation;
+        private int? _SubmenuLocationStore;
+        private int? _SubmenuLocation { get { EnsureFilled(); return _SubmenuLocationStore; } set => _SubmenuLocationStore = value; }
         public IFormLinkNullableGetter<ITerminalGetter> Submenu => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ITerminalGetter>(_package, _recordData, _SubmenuLocation);
         #endregion
         partial void CustomFactoryEnd(

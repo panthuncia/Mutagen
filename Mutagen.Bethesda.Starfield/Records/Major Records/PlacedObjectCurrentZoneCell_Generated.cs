@@ -1171,11 +1171,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region CurrentZoneCell
-        private int? _CurrentZoneCellLocation;
+        private int? _CurrentZoneCellLocationStore;
+        private int? _CurrentZoneCellLocation { get { EnsureFilled(); return _CurrentZoneCellLocationStore; } set => _CurrentZoneCellLocationStore = value; }
         public IFormLinkNullableGetter<ICellGetter> CurrentZoneCell => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ICellGetter>(_package, _recordData, _CurrentZoneCellLocation);
         #endregion
         #region XCZA
-        private int? _XCZALocation;
+        private int? _XCZALocationStore;
+        private int? _XCZALocation { get { EnsureFilled(); return _XCZALocationStore; } set => _XCZALocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? XCZA => _XCZALocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _XCZALocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

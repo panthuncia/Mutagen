@@ -1423,7 +1423,8 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        public FurnitureMarkerParameters.VersioningBreaks Versioning { get; private set; }
+        private FurnitureMarkerParameters.VersioningBreaks VersioningStore;
+        public FurnitureMarkerParameters.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public P3Float Offset => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(0x0, 0xC));
         public Single RotationZ => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4)) * 57.2958f;
         public IFormLinkGetter<IKeywordGetter> Keyword => _structData.Length <= 0x10 ? FormLink<IKeywordGetter>.Null : FormLinkBinaryTranslation.Instance.OverlayFactory<IKeywordGetter>(_package, _structData.Span.Slice(0x10, 0x4));

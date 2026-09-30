@@ -1132,7 +1132,8 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region AlphaLayerData
-        private int? _AlphaLayerDataLocation;
+        private int? _AlphaLayerDataLocationStore;
+        private int? _AlphaLayerDataLocation { get { EnsureFilled(); return _AlphaLayerDataLocationStore; } set => _AlphaLayerDataLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? AlphaLayerData => _AlphaLayerDataLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _AlphaLayerDataLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

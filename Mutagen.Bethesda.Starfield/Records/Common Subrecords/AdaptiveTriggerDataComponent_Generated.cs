@@ -1203,11 +1203,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region WFIR
-        private int? _WFIRLocation;
+        private int? _WFIRLocationStore;
+        private int? _WFIRLocation { get { EnsureFilled(); return _WFIRLocationStore; } set => _WFIRLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? WFIR => _WFIRLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _WFIRLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region WAIM
-        private int? _WAIMLocation;
+        private int? _WAIMLocationStore;
+        private int? _WAIMLocation { get { EnsureFilled(); return _WAIMLocationStore; } set => _WAIMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? WAIM => _WAIMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _WAIMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

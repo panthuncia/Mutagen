@@ -1057,8 +1057,10 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mesh
-        public String Mesh { get; private set; } = string.Empty;
-        protected int MeshEndingPos;
+        private String MeshStore = string.Empty;
+        public String Mesh { get { EnsureFilled(); return MeshStore; } private set => MeshStore = value; }
+        private int MeshEndingPosStore;
+        protected int MeshEndingPos { get { EnsureFilled(); return MeshEndingPosStore; } private set => MeshEndingPosStore = value; }
         partial void CustomMeshEndPos();
         #endregion
         partial void CustomFactoryEnd(

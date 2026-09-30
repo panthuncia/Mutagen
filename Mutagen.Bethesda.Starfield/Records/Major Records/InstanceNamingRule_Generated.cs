@@ -1111,19 +1111,23 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Text
-        private int? _TextLocation;
+        private int? _TextLocationStore;
+        private int? _TextLocation { get { EnsureFilled(); return _TextLocationStore; } set => _TextLocationStore = value; }
         public ITranslatedStringGetter? Text => _TextLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TextLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         #region Keywords
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get; private set; }
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? KeywordsStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get { EnsureFilled(); return KeywordsStore; } private set => KeywordsStore = value; }
         IReadOnlyList<IFormLinkGetter<IKeywordCommonGetter>>? IKeywordedGetter.Keywords => this.Keywords;
         #endregion
         #region Property
-        private RangeInt32? _PropertyLocation;
+        private RangeInt32? _PropertyLocationStore;
+        private RangeInt32? _PropertyLocation { get { EnsureFilled(); return _PropertyLocationStore; } set => _PropertyLocationStore = value; }
         public IInstanceNamingRulePropertyGetter<T>? Property => _PropertyLocation.HasValue ? InstanceNamingRulePropertyBinaryOverlay<T>.InstanceNamingRulePropertyFactory(_recordData.Slice(_PropertyLocation!.Value.Min), _package) : default;
         #endregion
         #region Index
-        private int? _IndexLocation;
+        private int? _IndexLocationStore;
+        private int? _IndexLocation { get { EnsureFilled(); return _IndexLocationStore; } set => _IndexLocationStore = value; }
         public UInt16? Index => _IndexLocation.HasValue ? BinaryPrimitives.ReadUInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IndexLocation.Value, _package.MetaData.Constants)) : default(UInt16?);
         #endregion
         partial void CustomFactoryEnd(

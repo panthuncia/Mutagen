@@ -1263,10 +1263,14 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Traversal
-        private int? _TraversalLocation;
+        private int? _TraversalLocationStore;
+        private int? _TraversalLocation { get { EnsureFilled(); return _TraversalLocationStore; } set => _TraversalLocationStore = value; }
         public IFormLinkNullableGetter<ITraversalGetter> Traversal => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ITraversalGetter>(_package, _recordData, _TraversalLocation);
         #endregion
-        public IReadOnlyList<UInt32> NodeIDs { get; private set; } = [];
+        #region NodeIDs
+        private IReadOnlyList<UInt32> NodeIDsStore = [];
+        public IReadOnlyList<UInt32> NodeIDs { get { EnsureFilled(); return NodeIDsStore; } private set => NodeIDsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

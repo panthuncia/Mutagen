@@ -1176,7 +1176,8 @@ namespace Mutagen.Bethesda.Fallout4
         public Int16? AliasID => GetAliasIDCustom();
         #endregion
         #region Type
-        private int? _TypeLocation;
+        private int? _TypeLocationStore;
+        private int? _TypeLocation { get { EnsureFilled(); return _TypeLocationStore; } set => _TypeLocationStore = value; }
         public FindMatchingRefNearAlias.TypeEnum? Type => EnumBinaryTranslation<FindMatchingRefNearAlias.TypeEnum, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_TypeLocation, _recordData, _package, 4);
         #endregion
         partial void CustomFactoryEnd(

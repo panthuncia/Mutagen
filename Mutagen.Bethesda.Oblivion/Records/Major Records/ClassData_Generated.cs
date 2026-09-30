@@ -1660,7 +1660,8 @@ namespace Mutagen.Bethesda.Oblivion
                 translationParams: translationParams);
         }
 
-        public ClassData.VersioningBreaks Versioning { get; private set; }
+        private ClassData.VersioningBreaks VersioningStore;
+        public ClassData.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public ReadOnlyMemorySlice<ActorValue> PrimaryAttributes => BinaryOverlayArrayHelper.EnumSliceFromFixedSize<ActorValue>(_structData.Slice(0x0), amount: 2, enumLength: 4);
         public Class.SpecializationFlag Specialization => (Class.SpecializationFlag)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x8, 0x4));
         public ReadOnlyMemorySlice<ActorValue> SecondaryAttributes => BinaryOverlayArrayHelper.EnumSliceFromFixedSize<ActorValue>(_structData.Slice(0xC), amount: 7, enumLength: 4);
@@ -1668,7 +1669,8 @@ namespace Mutagen.Bethesda.Oblivion
         public ClassService ClassServices => (ClassService)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x2C, 0x4));
         #region Training
         public IClassTrainingGetter Training => _structData.Length > 0x30 ? ClassTrainingBinaryOverlay.ClassTrainingFactory(_structData.Slice(0x30), _package, default(TypedParseParams)) : new ClassTraining();
-        protected int TrainingEndingPos;
+        private int TrainingEndingPosStore;
+        protected int TrainingEndingPos { get { EnsureFilled(); return TrainingEndingPosStore; } private set => TrainingEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

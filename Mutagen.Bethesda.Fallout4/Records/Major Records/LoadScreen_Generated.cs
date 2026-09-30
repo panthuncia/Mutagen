@@ -2084,22 +2084,35 @@ namespace Mutagen.Bethesda.Fallout4
         public LoadScreen.MajorFlag MajorFlags => (LoadScreen.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region Description
-        private int? _DescriptionLocation;
+        private int? _DescriptionLocationStore;
+        private int? _DescriptionLocation { get { EnsureFilled(); return _DescriptionLocationStore; } set => _DescriptionLocationStore = value; }
         public ITranslatedStringGetter Description => _DescriptionLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DescriptionLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : TranslatedString.Empty;
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region LoadingScreenNif
-        private int? _LoadingScreenNifLocation;
+        private int? _LoadingScreenNifLocationStore;
+        private int? _LoadingScreenNifLocation { get { EnsureFilled(); return _LoadingScreenNifLocationStore; } set => _LoadingScreenNifLocationStore = value; }
         public IFormLinkGetter<IStaticObjectGetter> LoadingScreenNif => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IStaticObjectGetter>(_package, _recordData, _LoadingScreenNifLocation);
         #endregion
         #region Transform
-        private int? _TransformLocation;
+        private int? _TransformLocationStore;
+        private int? _TransformLocation { get { EnsureFilled(); return _TransformLocationStore; } set => _TransformLocationStore = value; }
         public IFormLinkNullableGetter<ITransformGetter> Transform => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ITransformGetter>(_package, _recordData, _TransformLocation);
         #endregion
-        public ILoadScreenRotationGetter? Rotation { get; private set; }
-        public ILoadScreenZoomGetter? Zoom { get; private set; }
+        #region Rotation
+        private ILoadScreenRotationGetter? RotationStore;
+        public ILoadScreenRotationGetter? Rotation { get { EnsureFilled(); return RotationStore; } private set => RotationStore = value; }
+        #endregion
+        #region Zoom
+        private ILoadScreenZoomGetter? ZoomStore;
+        public ILoadScreenZoomGetter? Zoom { get { EnsureFilled(); return ZoomStore; } private set => ZoomStore = value; }
+        #endregion
         #region CameraPath
-        private int? _CameraPathLocation;
+        private int? _CameraPathLocationStore;
+        private int? _CameraPathLocation { get { EnsureFilled(); return _CameraPathLocationStore; } set => _CameraPathLocationStore = value; }
         public String? CameraPath => _CameraPathLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _CameraPathLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(
@@ -2123,6 +2136,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new LoadScreenBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => LoadScreenFill((LoadScreenBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void LoadScreenFill(
+            LoadScreenBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2130,9 +2160,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new LoadScreenBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2145,7 +2173,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ILoadScreenGetter LoadScreenFactory(

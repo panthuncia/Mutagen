@@ -1453,18 +1453,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Scene
-        private int? _SceneLocation;
+        private int? _SceneLocationStore;
+        private int? _SceneLocation { get { EnsureFilled(); return _SceneLocationStore; } set => _SceneLocationStore = value; }
         public IFormLinkNullableGetter<ISceneGetter> Scene => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISceneGetter>(_package, _recordData, _SceneLocation);
         #endregion
         #region PhaseIndex
-        private int? _PhaseIndexLocation;
+        private int? _PhaseIndexLocationStore;
+        private int? _PhaseIndexLocation { get { EnsureFilled(); return _PhaseIndexLocationStore; } set => _PhaseIndexLocationStore = value; }
         public UInt16? PhaseIndex => _PhaseIndexLocation.HasValue ? BinaryPrimitives.ReadUInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _PhaseIndexLocation.Value, _package.MetaData.Constants)) : default(UInt16?);
         #endregion
         #region StartPhaseForScene
-        private int? _StartPhaseForSceneLocation;
+        private int? _StartPhaseForSceneLocationStore;
+        private int? _StartPhaseForSceneLocation { get { EnsureFilled(); return _StartPhaseForSceneLocationStore; } set => _StartPhaseForSceneLocationStore = value; }
         public String? StartPhaseForScene => _StartPhaseForSceneLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _StartPhaseForSceneLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        public IReadOnlyList<IConditionGetter>? Conditions { get; private set; }
+        #region Conditions
+        private IReadOnlyList<IConditionGetter>? ConditionsStore;
+        public IReadOnlyList<IConditionGetter>? Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

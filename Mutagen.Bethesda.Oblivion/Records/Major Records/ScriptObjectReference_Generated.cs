@@ -1104,7 +1104,8 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region Reference
-        private int? _ReferenceLocation;
+        private int? _ReferenceLocationStore;
+        private int? _ReferenceLocation { get { EnsureFilled(); return _ReferenceLocationStore; } set => _ReferenceLocationStore = value; }
         public IFormLinkGetter<IOblivionMajorRecordGetter> Reference => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IOblivionMajorRecordGetter>(_package, _recordData, _ReferenceLocation);
         #endregion
         partial void CustomFactoryEnd(

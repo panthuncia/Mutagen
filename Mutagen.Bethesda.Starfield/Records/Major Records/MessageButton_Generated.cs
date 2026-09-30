@@ -1441,16 +1441,22 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Text
-        private int? _TextLocation;
+        private int? _TextLocationStore;
+        private int? _TextLocation { get { EnsureFilled(); return _TextLocationStore; } set => _TextLocationStore = value; }
         public ITranslatedStringGetter? Text => _TextLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TextLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         #region ButtonText
-        private int? _ButtonTextLocation;
+        private int? _ButtonTextLocationStore;
+        private int? _ButtonTextLocation { get { EnsureFilled(); return _ButtonTextLocationStore; } set => _ButtonTextLocationStore = value; }
         public String? ButtonText => _ButtonTextLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ButtonTextLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region Reference
-        private int? _ReferenceLocation;
+        private int? _ReferenceLocationStore;
+        private int? _ReferenceLocation { get { EnsureFilled(); return _ReferenceLocationStore; } set => _ReferenceLocationStore = value; }
         public IFormLinkNullableGetter<IPlacedObjectGetter> Reference => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IPlacedObjectGetter>(_package, _recordData, _ReferenceLocation);
         #endregion
         partial void CustomFactoryEnd(

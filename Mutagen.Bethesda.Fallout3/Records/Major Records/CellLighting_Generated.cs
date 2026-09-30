@@ -1641,7 +1641,8 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        public CellLighting.VersioningBreaks Versioning { get; private set; }
+        private CellLighting.VersioningBreaks VersioningStore;
+        public CellLighting.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public Color AmbientColor => _structData.Slice(0x0, 0x4).ReadColor(ColorBinaryType.Alpha);
         public Color DirectionalColor => _structData.Slice(0x4, 0x4).ReadColor(ColorBinaryType.Alpha);
         public Color FogColor => _structData.Slice(0x8, 0x4).ReadColor(ColorBinaryType.Alpha);

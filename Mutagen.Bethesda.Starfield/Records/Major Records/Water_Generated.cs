@@ -3274,13 +3274,16 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -3292,88 +3295,112 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #endregion
         #region Opacity
-        private int? _OpacityLocation;
+        private int? _OpacityLocationStore;
+        private int? _OpacityLocation { get { EnsureFilled(); return _OpacityLocationStore; } set => _OpacityLocationStore = value; }
         public Byte Opacity => _OpacityLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _OpacityLocation.Value, _package.MetaData.Constants)[0] : default(Byte);
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public Water.Flag Flags => EnumBinaryTranslation<Water.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_FlagsLocation, _recordData, _package, 1);
         #endregion
-        public ISoundReferenceGetter? WASH { get; private set; }
+        #region WASH
+        private ISoundReferenceGetter? WASHStore;
+        public ISoundReferenceGetter? WASH { get { EnsureFilled(); return WASHStore; } private set => WASHStore = value; }
+        #endregion
         #region ConsumeSpell
-        private int? _ConsumeSpellLocation;
+        private int? _ConsumeSpellLocationStore;
+        private int? _ConsumeSpellLocation { get { EnsureFilled(); return _ConsumeSpellLocationStore; } set => _ConsumeSpellLocationStore = value; }
         public IFormLinkNullableGetter<ISpellGetter> ConsumeSpell => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISpellGetter>(_package, _recordData, _ConsumeSpellLocation);
         #endregion
         #region ContactSpell
-        private int? _ContactSpellLocation;
+        private int? _ContactSpellLocationStore;
+        private int? _ContactSpellLocation { get { EnsureFilled(); return _ContactSpellLocationStore; } set => _ContactSpellLocationStore = value; }
         public IFormLinkNullableGetter<ISpellGetter> ContactSpell => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISpellGetter>(_package, _recordData, _ContactSpellLocation);
         #endregion
         #region DATA
-        private int? _DATALocation;
+        private int? _DATALocationStore;
+        private int? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? DATA => _DATALocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DATALocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region DNAM
-        private int? _DNAMLocation;
+        private int? _DNAMLocationStore;
+        private int? _DNAMLocation { get { EnsureFilled(); return _DNAMLocationStore; } set => _DNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? DNAM => _DNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region GNAM
-        private int? _GNAMLocation;
+        private int? _GNAMLocationStore;
+        private int? _GNAMLocation { get { EnsureFilled(); return _GNAMLocationStore; } set => _GNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? GNAM => _GNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _GNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region LinearVelocity
-        private int? _LinearVelocityLocation;
+        private int? _LinearVelocityLocationStore;
+        private int? _LinearVelocityLocation { get { EnsureFilled(); return _LinearVelocityLocationStore; } set => _LinearVelocityLocationStore = value; }
         public P3Float? LinearVelocity => _LinearVelocityLocation.HasValue ? P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LinearVelocityLocation.Value, _package.MetaData.Constants)) : default(P3Float?);
         #endregion
         #region AngularVelocity
-        private int? _AngularVelocityLocation;
+        private int? _AngularVelocityLocationStore;
+        private int? _AngularVelocityLocation { get { EnsureFilled(); return _AngularVelocityLocationStore; } set => _AngularVelocityLocationStore = value; }
         public P3Float? AngularVelocity => _AngularVelocityLocation.HasValue ? P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AngularVelocityLocation.Value, _package.MetaData.Constants)) : default(P3Float?);
         #endregion
         #region NAM2
-        private int? _NAM2Location;
+        private int? _NAM2LocationStore;
+        private int? _NAM2Location { get { EnsureFilled(); return _NAM2LocationStore; } set => _NAM2LocationStore = value; }
         public String? NAM2 => _NAM2Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM2Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region NAM3
-        private int? _NAM3Location;
+        private int? _NAM3LocationStore;
+        private int? _NAM3Location { get { EnsureFilled(); return _NAM3LocationStore; } set => _NAM3LocationStore = value; }
         public String? NAM3 => _NAM3Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM3Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region NAM4
-        private int? _NAM4Location;
+        private int? _NAM4LocationStore;
+        private int? _NAM4Location { get { EnsureFilled(); return _NAM4LocationStore; } set => _NAM4LocationStore = value; }
         public String? NAM4 => _NAM4Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM4Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region NAM5
-        private int? _NAM5Location;
+        private int? _NAM5LocationStore;
+        private int? _NAM5Location { get { EnsureFilled(); return _NAM5LocationStore; } set => _NAM5LocationStore = value; }
         public Byte? NAM5 => _NAM5Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM5Location.Value, _package.MetaData.Constants)[0] : default(Byte?);
         #endregion
         #region NAM6
-        private int? _NAM6Location;
+        private int? _NAM6LocationStore;
+        private int? _NAM6Location { get { EnsureFilled(); return _NAM6LocationStore; } set => _NAM6LocationStore = value; }
         public Byte? NAM6 => _NAM6Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM6Location.Value, _package.MetaData.Constants)[0] : default(Byte?);
         #endregion
         #region RiverAbsorptionCurve
-        private int? _RiverAbsorptionCurveLocation;
+        private int? _RiverAbsorptionCurveLocationStore;
+        private int? _RiverAbsorptionCurveLocation { get { EnsureFilled(); return _RiverAbsorptionCurveLocationStore; } set => _RiverAbsorptionCurveLocationStore = value; }
         public IFormLinkNullableGetter<ICurve3DGetter> RiverAbsorptionCurve => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ICurve3DGetter>(_package, _recordData, _RiverAbsorptionCurveLocation);
         #endregion
         #region OceanAbsorptionCurve
-        private int? _OceanAbsorptionCurveLocation;
+        private int? _OceanAbsorptionCurveLocationStore;
+        private int? _OceanAbsorptionCurveLocation { get { EnsureFilled(); return _OceanAbsorptionCurveLocationStore; } set => _OceanAbsorptionCurveLocationStore = value; }
         public IFormLinkNullableGetter<ICurve3DGetter> OceanAbsorptionCurve => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ICurve3DGetter>(_package, _recordData, _OceanAbsorptionCurveLocation);
         #endregion
         #region RiverScatteringCurve
-        private int? _RiverScatteringCurveLocation;
+        private int? _RiverScatteringCurveLocationStore;
+        private int? _RiverScatteringCurveLocation { get { EnsureFilled(); return _RiverScatteringCurveLocationStore; } set => _RiverScatteringCurveLocationStore = value; }
         public IFormLinkNullableGetter<ICurve3DGetter> RiverScatteringCurve => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ICurve3DGetter>(_package, _recordData, _RiverScatteringCurveLocation);
         #endregion
         #region OceanScatteringCurve
-        private int? _OceanScatteringCurveLocation;
+        private int? _OceanScatteringCurveLocationStore;
+        private int? _OceanScatteringCurveLocation { get { EnsureFilled(); return _OceanScatteringCurveLocationStore; } set => _OceanScatteringCurveLocationStore = value; }
         public IFormLinkNullableGetter<ICurve3DGetter> OceanScatteringCurve => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ICurve3DGetter>(_package, _recordData, _OceanScatteringCurveLocation);
         #endregion
         #region PhytoplanktonCurve
-        private int? _PhytoplanktonCurveLocation;
+        private int? _PhytoplanktonCurveLocationStore;
+        private int? _PhytoplanktonCurveLocation { get { EnsureFilled(); return _PhytoplanktonCurveLocationStore; } set => _PhytoplanktonCurveLocationStore = value; }
         public IFormLinkNullableGetter<ICurve3DGetter> PhytoplanktonCurve => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ICurve3DGetter>(_package, _recordData, _PhytoplanktonCurveLocation);
         #endregion
         #region SedimentCurve
-        private int? _SedimentCurveLocation;
+        private int? _SedimentCurveLocationStore;
+        private int? _SedimentCurveLocation { get { EnsureFilled(); return _SedimentCurveLocationStore; } set => _SedimentCurveLocationStore = value; }
         public IFormLinkNullableGetter<ICurve3DGetter> SedimentCurve => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ICurve3DGetter>(_package, _recordData, _SedimentCurveLocation);
         #endregion
         #region YelowMatterCurve
-        private int? _YelowMatterCurveLocation;
+        private int? _YelowMatterCurveLocationStore;
+        private int? _YelowMatterCurveLocation { get { EnsureFilled(); return _YelowMatterCurveLocationStore; } set => _YelowMatterCurveLocationStore = value; }
         public IFormLinkNullableGetter<ICurve3DGetter> YelowMatterCurve => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ICurve3DGetter>(_package, _recordData, _YelowMatterCurveLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -3397,6 +3424,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new WaterBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => WaterFill((WaterBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void WaterFill(
+            WaterBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -3404,9 +3448,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new WaterBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -3419,7 +3461,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IWaterGetter WaterFactory(

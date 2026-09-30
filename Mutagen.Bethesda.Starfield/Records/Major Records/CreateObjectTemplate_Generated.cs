@@ -1146,11 +1146,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region TemplateAlias
-        private int? _TemplateAliasLocation;
+        private int? _TemplateAliasLocationStore;
+        private int? _TemplateAliasLocation { get { EnsureFilled(); return _TemplateAliasLocationStore; } set => _TemplateAliasLocationStore = value; }
         public Int32? TemplateAlias => _TemplateAliasLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TemplateAliasLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region TargetOverrideAlias
-        private int? _TargetOverrideAliasLocation;
+        private int? _TargetOverrideAliasLocationStore;
+        private int? _TargetOverrideAliasLocation { get { EnsureFilled(); return _TargetOverrideAliasLocationStore; } set => _TargetOverrideAliasLocationStore = value; }
         public Int32? TargetOverrideAlias => _TargetOverrideAliasLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TargetOverrideAliasLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         partial void CustomFactoryEnd(

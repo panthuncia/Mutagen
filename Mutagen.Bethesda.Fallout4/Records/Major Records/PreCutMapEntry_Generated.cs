@@ -1229,7 +1229,8 @@ namespace Mutagen.Bethesda.Fallout4
         public IFormLinkGetter<IPreCutMapEntryReferenceGetter> Reference => FormLinkBinaryTranslation.Instance.OverlayFactory<IPreCutMapEntryReferenceGetter>(_package, _structData.Span.Slice(0x0, 0x4));
         #region Triangles
         public IReadOnlyList<UInt16> Triangles => BinaryOverlayList.FactoryByCountLength<UInt16>(_structData.Slice(0x4), _package, 2, countLength: 2, (s, p) => BinaryPrimitives.ReadUInt16LittleEndian(s));
-        protected int TrianglesEndingPos;
+        private int TrianglesEndingPosStore;
+        protected int TrianglesEndingPos { get { EnsureFilled(); return TrianglesEndingPosStore; } private set => TrianglesEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

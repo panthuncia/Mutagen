@@ -1100,7 +1100,8 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region DisplayText
-        private int? _DisplayTextLocation;
+        private int? _DisplayTextLocationStore;
+        private int? _DisplayTextLocation { get { EnsureFilled(); return _DisplayTextLocationStore; } set => _DisplayTextLocationStore = value; }
         public ITranslatedStringGetter? DisplayText => _DisplayTextLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DisplayTextLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         partial void CustomFactoryEnd(

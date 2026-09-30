@@ -1321,19 +1321,23 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region ID
-        private int? _IDLocation;
+        private int? _IDLocationStore;
+        private int? _IDLocation { get { EnsureFilled(); return _IDLocationStore; } set => _IDLocationStore = value; }
         public UInt32? ID => _IDLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IDLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region MaxInitialFillCount
-        private int? _MaxInitialFillCountLocation;
+        private int? _MaxInitialFillCountLocationStore;
+        private int? _MaxInitialFillCountLocation { get { EnsureFilled(); return _MaxInitialFillCountLocationStore; } set => _MaxInitialFillCountLocationStore = value; }
         public Byte MaxInitialFillCount => _MaxInitialFillCountLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaxInitialFillCountLocation.Value, _package.MetaData.Constants)[0] : default(Byte);
         #endregion
         #region ALAM
-        private int? _ALAMLocation;
+        private int? _ALAMLocationStore;
+        private int? _ALAMLocation { get { EnsureFilled(); return _ALAMLocationStore; } set => _ALAMLocationStore = value; }
         public Int32? ALAM => _ALAMLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ALAMLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region ReferenceAlias
-        private IQuestReferenceAliasGetter? _ReferenceAlias;
+        private IQuestReferenceAliasGetter? _ReferenceAliasStore;
+        private IQuestReferenceAliasGetter? _ReferenceAlias { get { EnsureFilled(); return _ReferenceAliasStore; } set => _ReferenceAliasStore = value; }
         public IQuestReferenceAliasGetter ReferenceAlias => _ReferenceAlias ?? new QuestReferenceAlias();
         #endregion
         partial void CustomFactoryEnd(

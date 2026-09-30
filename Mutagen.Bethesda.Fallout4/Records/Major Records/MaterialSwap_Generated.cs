@@ -1703,7 +1703,8 @@ namespace Mutagen.Bethesda.Fallout4
         partial void FNAMParsingCustomParse(
             OverlayStream stream,
             int offset);
-        protected int FNAMParsingEndingPos;
+        private int FNAMParsingEndingPosStore;
+        protected int FNAMParsingEndingPos { get { EnsureFilled(); return FNAMParsingEndingPosStore; } private set => FNAMParsingEndingPosStore = value; }
         #endregion
         #region TreeFolder
         partial void TreeFolderCustomParse(
@@ -1713,7 +1714,10 @@ namespace Mutagen.Bethesda.Fallout4
         public partial String? GetTreeFolderCustom();
         public String? TreeFolder => GetTreeFolderCustom();
         #endregion
-        public IReadOnlyList<IMaterialSubstitutionGetter> Substitutions { get; private set; } = [];
+        #region Substitutions
+        private IReadOnlyList<IMaterialSubstitutionGetter> SubstitutionsStore = [];
+        public IReadOnlyList<IMaterialSubstitutionGetter> Substitutions { get { EnsureFilled(); return SubstitutionsStore; } private set => SubstitutionsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

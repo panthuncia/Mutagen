@@ -1173,11 +1173,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region Source
-        private int? _SourceLocation;
+        private int? _SourceLocationStore;
+        private int? _SourceLocation { get { EnsureFilled(); return _SourceLocationStore; } set => _SourceLocationStore = value; }
         public IFormLinkGetter<IExternalBaseTemplateGetter> Source => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IExternalBaseTemplateGetter>(_package, _recordData, _SourceLocation);
         #endregion
         partial void CustomFactoryEnd(

@@ -2694,11 +2694,13 @@ namespace Mutagen.Bethesda.Fallout3
 
 
         #region Description
-        private int? _DescriptionLocation;
+        private int? _DescriptionLocationStore;
+        private int? _DescriptionLocation { get { EnsureFilled(); return _DescriptionLocationStore; } set => _DescriptionLocationStore = value; }
         public String Description => _DescriptionLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DescriptionLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2706,58 +2708,74 @@ namespace Mutagen.Bethesda.Fallout3
         #endregion
         #endregion
         #region Icon
-        private int? _IconLocation;
+        private int? _IconLocationStore;
+        private int? _IconLocation { get { EnsureFilled(); return _IconLocationStore; } set => _IconLocationStore = value; }
         public IFormLinkGetter<IMenuIconGetter> Icon => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMenuIconGetter>(_package, _recordData, _IconLocation);
         #endregion
         #region NAM0
-        private int? _NAM0Location;
+        private int? _NAM0LocationStore;
+        private int? _NAM0Location { get { EnsureFilled(); return _NAM0LocationStore; } set => _NAM0LocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? NAM0 => _NAM0Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM0Location.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region NAM1
-        private int? _NAM1Location;
+        private int? _NAM1LocationStore;
+        private int? _NAM1Location { get { EnsureFilled(); return _NAM1LocationStore; } set => _NAM1LocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? NAM1 => _NAM1Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM1Location.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region NAM2
-        private int? _NAM2Location;
+        private int? _NAM2LocationStore;
+        private int? _NAM2Location { get { EnsureFilled(); return _NAM2LocationStore; } set => _NAM2LocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? NAM2 => _NAM2Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM2Location.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region NAM3
-        private int? _NAM3Location;
+        private int? _NAM3LocationStore;
+        private int? _NAM3Location { get { EnsureFilled(); return _NAM3LocationStore; } set => _NAM3LocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? NAM3 => _NAM3Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM3Location.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region NAM4
-        private int? _NAM4Location;
+        private int? _NAM4LocationStore;
+        private int? _NAM4Location { get { EnsureFilled(); return _NAM4LocationStore; } set => _NAM4LocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? NAM4 => _NAM4Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM4Location.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region NAM5
-        private int? _NAM5Location;
+        private int? _NAM5LocationStore;
+        private int? _NAM5Location { get { EnsureFilled(); return _NAM5LocationStore; } set => _NAM5LocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? NAM5 => _NAM5Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM5Location.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region NAM6
-        private int? _NAM6Location;
+        private int? _NAM6LocationStore;
+        private int? _NAM6Location { get { EnsureFilled(); return _NAM6LocationStore; } set => _NAM6LocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? NAM6 => _NAM6Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM6Location.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region NAM7
-        private int? _NAM7Location;
+        private int? _NAM7LocationStore;
+        private int? _NAM7Location { get { EnsureFilled(); return _NAM7LocationStore; } set => _NAM7LocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? NAM7 => _NAM7Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM7Location.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region NAM8
-        private int? _NAM8Location;
+        private int? _NAM8LocationStore;
+        private int? _NAM8Location { get { EnsureFilled(); return _NAM8LocationStore; } set => _NAM8LocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? NAM8 => _NAM8Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM8Location.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region NAM9
-        private int? _NAM9Location;
+        private int? _NAM9LocationStore;
+        private int? _NAM9Location { get { EnsureFilled(); return _NAM9LocationStore; } set => _NAM9LocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? NAM9 => _NAM9Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM9Location.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public Message.Flag? Flags => EnumBinaryTranslation<Message.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 4);
         #endregion
         #region DisplayTime
-        private int? _DisplayTimeLocation;
+        private int? _DisplayTimeLocationStore;
+        private int? _DisplayTimeLocation { get { EnsureFilled(); return _DisplayTimeLocationStore; } set => _DisplayTimeLocationStore = value; }
         public UInt32? DisplayTime => _DisplayTimeLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DisplayTimeLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
-        public IReadOnlyList<IMessageButtonGetter> MenuButtons { get; private set; } = [];
+        #region MenuButtons
+        private IReadOnlyList<IMessageButtonGetter> MenuButtonsStore = [];
+        public IReadOnlyList<IMessageButtonGetter> MenuButtons { get { EnsureFilled(); return MenuButtonsStore; } private set => MenuButtonsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -2779,6 +2797,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new MessageBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => MessageFill((MessageBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void MessageFill(
+            MessageBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2786,9 +2821,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new MessageBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2801,7 +2834,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IMessageGetter MessageFactory(

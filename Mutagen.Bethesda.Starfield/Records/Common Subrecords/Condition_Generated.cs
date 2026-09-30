@@ -1357,7 +1357,8 @@ namespace Mutagen.Bethesda.Starfield
         partial void FunctionParseCustomParse(
             OverlayStream stream,
             int offset);
-        protected int FunctionParseEndingPos;
+        private int FunctionParseEndingPosStore;
+        protected int FunctionParseEndingPos { get { EnsureFilled(); return FunctionParseEndingPosStore; } private set => FunctionParseEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

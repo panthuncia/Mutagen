@@ -1167,11 +1167,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Keyword
-        private int? _KeywordLocation;
+        private int? _KeywordLocationStore;
+        private int? _KeywordLocation { get { EnsureFilled(); return _KeywordLocationStore; } set => _KeywordLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> Keyword => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _KeywordLocation);
         #endregion
         #region LinkedForm
-        private int? _LinkedFormLocation;
+        private int? _LinkedFormLocationStore;
+        private int? _LinkedFormLocation { get { EnsureFilled(); return _LinkedFormLocationStore; } set => _LinkedFormLocationStore = value; }
         public IFormLinkNullableGetter<IStarfieldMajorRecordGetter> LinkedForm => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IStarfieldMajorRecordGetter>(_package, _recordData, _LinkedFormLocation);
         #endregion
         partial void CustomFactoryEnd(

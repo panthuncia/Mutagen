@@ -1396,7 +1396,8 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        private RangeInt32? _INDXLocation;
+        private RangeInt32? _INDXLocationStore;
+        private RangeInt32? _INDXLocation { get { EnsureFilled(); return _INDXLocationStore; } set => _INDXLocationStore = value; }
         #region Index
         private int _IndexLocation => _INDXLocation!.Value.Min;
         private bool _Index_IsSet => _INDXLocation.HasValue;
@@ -1412,7 +1413,10 @@ namespace Mutagen.Bethesda.Fallout4
         private bool _Unknown_IsSet => _INDXLocation.HasValue;
         public Byte Unknown => _Unknown_IsSet ? _recordData.Span[_UnknownLocation] : default;
         #endregion
-        public IReadOnlyList<IQuestLogEntryGetter> LogEntries { get; private set; } = [];
+        #region LogEntries
+        private IReadOnlyList<IQuestLogEntryGetter> LogEntriesStore = [];
+        public IReadOnlyList<IQuestLogEntryGetter> LogEntries { get { EnsureFilled(); return LogEntriesStore; } private set => LogEntriesStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

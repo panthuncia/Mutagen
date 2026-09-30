@@ -2435,10 +2435,12 @@ namespace Mutagen.Bethesda.Fallout3
 
 
         #region Version
-        private int? _VersionLocation;
+        private int? _VersionLocationStore;
+        private int? _VersionLocation { get { EnsureFilled(); return _VersionLocationStore; } set => _VersionLocationStore = value; }
         public UInt32 Version => _VersionLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _VersionLocation.Value, _package.MetaData.Constants)) : default(UInt32);
         #endregion
-        private RangeInt32? _DATALocation;
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         #region DynamicBoneCount
         private int _DynamicBoneCountLocation => _DATALocation!.Value.Min;
         private bool _DynamicBoneCount_IsSet => _DATALocation.HasValue;
@@ -2480,26 +2482,34 @@ namespace Mutagen.Bethesda.Fallout3
         public Byte Unused2 => _Unused2_IsSet ? _recordData.Span[_Unused2Location] : default;
         #endregion
         #region ActorBase
-        private int? _ActorBaseLocation;
+        private int? _ActorBaseLocationStore;
+        private int? _ActorBaseLocation { get { EnsureFilled(); return _ActorBaseLocationStore; } set => _ActorBaseLocationStore = value; }
         public IFormLinkNullableGetter<IActorBaseGetter> ActorBase => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IActorBaseGetter>(_package, _recordData, _ActorBaseLocation);
         #endregion
         #region BodyPartData
-        private int? _BodyPartDataLocation;
+        private int? _BodyPartDataLocationStore;
+        private int? _BodyPartDataLocation { get { EnsureFilled(); return _BodyPartDataLocationStore; } set => _BodyPartDataLocationStore = value; }
         public IFormLinkGetter<IBodyPartDataGetter> BodyPartData => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IBodyPartDataGetter>(_package, _recordData, _BodyPartDataLocation);
         #endregion
         #region FeedbackData
-        private RangeInt32? _FeedbackDataLocation;
+        private RangeInt32? _FeedbackDataLocationStore;
+        private RangeInt32? _FeedbackDataLocation { get { EnsureFilled(); return _FeedbackDataLocationStore; } set => _FeedbackDataLocationStore = value; }
         private IRagdollFeedbackDataGetter? _FeedbackData => _FeedbackDataLocation.HasValue ? RagdollFeedbackDataBinaryOverlay.RagdollFeedbackDataFactory(_recordData.Slice(_FeedbackDataLocation!.Value.Min), _package) : default;
         public IRagdollFeedbackDataGetter FeedbackData => _FeedbackData ?? new RagdollFeedbackData();
         #endregion
-        public IReadOnlyList<UInt16>? FeedbackDynamicBones { get; private set; }
+        #region FeedbackDynamicBones
+        private IReadOnlyList<UInt16>? FeedbackDynamicBonesStore;
+        public IReadOnlyList<UInt16>? FeedbackDynamicBones { get { EnsureFilled(); return FeedbackDynamicBonesStore; } private set => FeedbackDynamicBonesStore = value; }
+        #endregion
         #region PoseMatchingData
-        private RangeInt32? _PoseMatchingDataLocation;
+        private RangeInt32? _PoseMatchingDataLocationStore;
+        private RangeInt32? _PoseMatchingDataLocation { get { EnsureFilled(); return _PoseMatchingDataLocationStore; } set => _PoseMatchingDataLocationStore = value; }
         private IRagdollPoseMatchingDataGetter? _PoseMatchingData => _PoseMatchingDataLocation.HasValue ? RagdollPoseMatchingDataBinaryOverlay.RagdollPoseMatchingDataFactory(_recordData.Slice(_PoseMatchingDataLocation!.Value.Min), _package) : default;
         public IRagdollPoseMatchingDataGetter PoseMatchingData => _PoseMatchingData ?? new RagdollPoseMatchingData();
         #endregion
         #region DeathPose
-        private int? _DeathPoseLocation;
+        private int? _DeathPoseLocationStore;
+        private int? _DeathPoseLocation { get { EnsureFilled(); return _DeathPoseLocationStore; } set => _DeathPoseLocationStore = value; }
         public String? DeathPose => _DeathPoseLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DeathPoseLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(
@@ -2523,6 +2533,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new RagdollBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => RagdollFill((RagdollBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void RagdollFill(
+            RagdollBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2530,9 +2557,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new RagdollBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2545,7 +2570,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IRagdollGetter RagdollFactory(

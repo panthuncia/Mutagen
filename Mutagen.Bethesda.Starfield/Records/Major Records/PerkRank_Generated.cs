@@ -1784,14 +1784,22 @@ namespace Mutagen.Bethesda.Starfield
             RecordType type,
             PreviousParse lastParsed);
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
-        public IReadOnlyList<IActivityGetter>? Activities { get; private set; }
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
+        #region Activities
+        private IReadOnlyList<IActivityGetter>? ActivitiesStore;
+        public IReadOnlyList<IActivityGetter>? Activities { get { EnsureFilled(); return ActivitiesStore; } private set => ActivitiesStore = value; }
+        #endregion
         #region Description
-        private int? _DescriptionLocation;
+        private int? _DescriptionLocationStore;
+        private int? _DescriptionLocation { get { EnsureFilled(); return _DescriptionLocationStore; } set => _DescriptionLocationStore = value; }
         public ITranslatedStringGetter Description => _DescriptionLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DescriptionLocation.Value, _package.MetaData.Constants), StringsSource.DL, parsingBundle: _package.MetaData, eager: false) : TranslatedString.Empty;
         #endregion
         #region UnknownStatic
-        private int? _UnknownStaticLocation;
+        private int? _UnknownStaticLocationStore;
+        private int? _UnknownStaticLocation { get { EnsureFilled(); return _UnknownStaticLocationStore; } set => _UnknownStaticLocationStore = value; }
         public IFormLinkNullableGetter<IStaticGetter> UnknownStatic => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IStaticGetter>(_package, _recordData, _UnknownStaticLocation);
         #endregion
         partial void CustomFactoryEnd(

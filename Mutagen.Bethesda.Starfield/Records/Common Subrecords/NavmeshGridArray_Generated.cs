@@ -1147,7 +1147,8 @@ namespace Mutagen.Bethesda.Starfield
 
         #region GridCell
         public IReadOnlyList<Int16> GridCell => BinaryOverlayList.FactoryByStartIndex<Int16>(_structData, _package, 2, (s, p) => BinaryPrimitives.ReadInt16LittleEndian(s));
-        protected int GridCellEndingPos;
+        private int GridCellEndingPosStore;
+        protected int GridCellEndingPos { get { EnsureFilled(); return GridCellEndingPosStore; } private set => GridCellEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

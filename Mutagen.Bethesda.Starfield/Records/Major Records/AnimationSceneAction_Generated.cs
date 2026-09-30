@@ -1300,7 +1300,10 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IAnimationGetter> Animations { get; private set; } = [];
+        #region Animations
+        private IReadOnlyList<IAnimationGetter> AnimationsStore = [];
+        public IReadOnlyList<IAnimationGetter> Animations { get { EnsureFilled(); return AnimationsStore; } private set => AnimationsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

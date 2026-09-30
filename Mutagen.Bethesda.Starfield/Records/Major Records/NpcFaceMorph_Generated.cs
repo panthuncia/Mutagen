@@ -1267,10 +1267,14 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Index
-        private int? _IndexLocation;
+        private int? _IndexLocationStore;
+        private int? _IndexLocation { get { EnsureFilled(); return _IndexLocationStore; } set => _IndexLocationStore = value; }
         public UInt32? Index => _IndexLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IndexLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
-        public IReadOnlyList<INpcMorphGroupGetter> MorphGroups { get; private set; } = [];
+        #region MorphGroups
+        private IReadOnlyList<INpcMorphGroupGetter> MorphGroupsStore = [];
+        public IReadOnlyList<INpcMorphGroupGetter> MorphGroups { get { EnsureFilled(); return MorphGroupsStore; } private set => MorphGroupsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

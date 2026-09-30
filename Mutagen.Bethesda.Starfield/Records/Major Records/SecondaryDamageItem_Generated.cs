@@ -1164,11 +1164,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region DamageType
-        private int? _DamageTypeLocation;
+        private int? _DamageTypeLocationStore;
+        private int? _DamageTypeLocation { get { EnsureFilled(); return _DamageTypeLocationStore; } set => _DamageTypeLocationStore = value; }
         public IFormLinkGetter<IDamageTypeGetter> DamageType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDamageTypeGetter>(_package, _recordData, _DamageTypeLocation);
         #endregion
         #region ActorValue
-        private int? _ActorValueLocation;
+        private int? _ActorValueLocationStore;
+        private int? _ActorValueLocation { get { EnsureFilled(); return _ActorValueLocationStore; } set => _ActorValueLocationStore = value; }
         public IFormLinkGetter<IActorValueInformationGetter> ActorValue => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IActorValueInformationGetter>(_package, _recordData, _ActorValueLocation);
         #endregion
         partial void CustomFactoryEnd(
