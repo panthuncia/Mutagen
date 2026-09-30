@@ -97,7 +97,9 @@ public class PluginTranslationModule : BinaryTranslationModule
         _typeGenerations[typeof(RecordTypeType)] = new RecordTypeBinaryTranslationGeneration();
         _typeGenerations[typeof(FormLinkType)] = new FormLinkBinaryTranslationGeneration();
         _typeGenerations[typeof(FormLinkOrIndexType)] = new FormLinkOrIndexTranslationGeneration();
-        _typeGenerations[typeof(ListType)] = new PluginListBinaryTranslationGeneration();
+        var list = new PluginListBinaryTranslationGeneration();
+        _typeGenerations[typeof(ListType)] = list;
+        _typeGenerations[typeof(MutagenListType)] = list;
         _typeGenerations[typeof(Array2dType)] = new Array2dBinaryTranslationGeneration();
         _typeGenerations[typeof(ArrayType)] = new PluginArrayBinaryTranslationGeneration();
         _typeGenerations[typeof(DictType)] = new DictBinaryTranslationGeneration();

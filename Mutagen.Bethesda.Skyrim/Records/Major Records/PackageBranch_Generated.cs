@@ -1530,7 +1530,7 @@ namespace Mutagen.Bethesda.Skyrim
             }
             if ((equalsMask?.GetShouldTranslate((int)PackageBranch_FieldIndex.Unknown) ?? true))
             {
-                if (!lhs.Unknown.SequenceEqualNullable(rhs.Unknown)) return false;
+                if (!lhs.Unknown.SequenceEqualNullable(rhs.Unknown, (l, r) => MemoryExtensions.SequenceEqual(l.Span, r.Span))) return false;
             }
             return true;
         }

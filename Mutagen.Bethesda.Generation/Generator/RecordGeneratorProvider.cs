@@ -63,6 +63,7 @@ public class RecordGeneratorProvider : IGenerationConstructor
         gen.ReplaceTypeAssociation<Loqui.Generation.FloatType, FloatType>();
         gen.ReplaceTypeAssociation<Loqui.Generation.PercentType, PercentType>();
         gen.ReplaceTypeAssociation<Loqui.Generation.DictType, DictType>();
+        gen.AddTypeAssociation<MutagenListType>("List", overrideExisting: true);
         gen.ReplaceTypeAssociation<Loqui.Generation.BoolType, BoolType>();
 
         var bethesdaProto = gen.AddProtocol(

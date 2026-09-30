@@ -1034,7 +1034,7 @@ namespace Mutagen.Bethesda.Starfield
             }
             if ((equalsMask?.GetShouldTranslate((int)NavigationMeshObstacleManagerSubObject_FieldIndex.DATAs) ?? true))
             {
-                if (!lhs.DATAs.SequenceEqualNullable(rhs.DATAs)) return false;
+                if (!lhs.DATAs.SequenceEqualNullable(rhs.DATAs, (l, r) => MemoryExtensions.SequenceEqual(l.Span, r.Span))) return false;
             }
             if ((equalsMask?.GetShouldTranslate((int)NavigationMeshObstacleManagerSubObject_FieldIndex.INTV) ?? true))
             {
