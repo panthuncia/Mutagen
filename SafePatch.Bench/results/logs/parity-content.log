@@ -1,0 +1,26 @@
+1,178,543 records in Skyrim.esm, Update.esm, Dawnguard.esm, HearthFires.esm, Dragonborn.esm; differing from the full parse: Armor 3564, ArmorAddon 1112, AssociationType 20, CombatStyle 47, DialogResponses 5, DialogTopic 3, EffectShader 9, Explosion 6, Faction 16, MaterialObject 3, Package 5081, Projectile 4, Quest 316, Race 204, Static 11915, Weapon 18, Weather 1
+Unequal to a second full parse of themselves: Armor 3564, ArmorAddon 1112, AssociationType 20, Faction 14, Race 204
+Of those, EditorID differs: never
+PARITY|fix-content-equality|Armor|3564
+PARITY|fix-content-equality|ArmorAddon|1112
+PARITY|fix-content-equality|AssociationType|20
+PARITY|fix-content-equality|CombatStyle|47
+PARITY|fix-content-equality|DialogResponses|5
+PARITY|fix-content-equality|DialogTopic|3
+PARITY|fix-content-equality|EffectShader|9
+PARITY|fix-content-equality|Explosion|6
+PARITY|fix-content-equality|Faction|16
+PARITY|fix-content-equality|MaterialObject|3
+PARITY|fix-content-equality|Package|5081
+PARITY|fix-content-equality|Projectile|4
+PARITY|fix-content-equality|Quest|316
+PARITY|fix-content-equality|Race|204
+PARITY|fix-content-equality|Static|11915
+PARITY|fix-content-equality|Weapon|18
+PARITY|fix-content-equality|Weather|1
+SELF|fix-content-equality|Armor|3564
+SELF|fix-content-equality|ArmorAddon|1112
+SELF|fix-content-equality|AssociationType|20
+SELF|fix-content-equality|Faction|14
+SELF|fix-content-equality|Race|204
+PARITY|fix-content-equality|(total records)|1178543

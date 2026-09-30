@@ -1,0 +1,2 @@
+== threads combined
+2,297,232 concurrent reads of Dawnguard.esm records: 0 differed from a single-threaded read.
