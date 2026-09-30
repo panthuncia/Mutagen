@@ -11,6 +11,7 @@ using SafePatch.Authoring.Index;
 //   SafePatch.Bench <Data folder> <plugins.txt> [runs=3] [only=<step name part>|-] [label]
 //   SafePatch.Bench check <Data folder> <plugin,...> [label]
 //   SafePatch.Bench check-threads <Data folder> <plugin>
+//   SafePatch.Bench check-hash <Data folder> <plugin,...> [label]
 //   SafePatch.Bench diag|diag-self <Data folder> <plugin> <record type> [max=3]
 if (args is ["check", var checkData, var checkPlugins, .. var checkRest])
 {
@@ -19,6 +20,10 @@ if (args is ["check", var checkData, var checkPlugins, .. var checkRest])
 if (args is ["diag" or "diag-self", var diagData, var diagPlugin, var diagType, .. var diagRest])
 {
     return Diag.Run(diagData, diagPlugin, diagType, diagRest is [var n] ? int.Parse(n) : 3, self: args[0] == "diag-self");
+}
+if (args is ["check-hash", var hashData, var hashPlugins, .. var hashRest])
+{
+    return CheckHash(hashData, hashPlugins.Split(','), hashRest is [var hashLabel] ? hashLabel : "");
 }
 if (args is ["check-threads", var threadData, var threadPlugin])
 {
@@ -248,6 +253,35 @@ static int Check(string data, IReadOnlyList<string> plugins, string label)
     foreach (var (type, count) in differing) Console.WriteLine($"PARITY|{label}|{type}|{count}");
     foreach (var (type, count) in unequalToItself) Console.WriteLine($"SELF|{label}|{type}|{count}");
     Console.WriteLine($"PARITY|{label}|(total records)|{total}");
+    return 0;
+}
+
+// Records equal by Equals must have equal hash codes: a second full parse, and the overlay, against the full parse.
+static int CheckHash(string data, IReadOnlyList<string> plugins, string label)
+{
+    var differing = new SortedDictionary<string, int>(StringComparer.Ordinal);
+    long equal = 0;
+    foreach (var plugin in plugins)
+    {
+        var path = new ModPath(Path.Combine(data, plugin));
+        var reference = SkyrimMod.CreateFromBinary(path, SkyrimRelease.SkyrimSE).EnumerateMajorRecords()
+            .GroupBy(r => r.FormKey).ToDictionary(g => g.Key, g => g.First());
+        using var overlay = SkyrimMod.CreateFromBinaryOverlay(path, SkyrimRelease.SkyrimSE);
+        var again = SkyrimMod.CreateFromBinary(path, SkyrimRelease.SkyrimSE);
+        foreach (var record in again.EnumerateMajorRecords().Concat(overlay.EnumerateMajorRecords()))
+        {
+            var expected = reference[record.FormKey];
+            if (!expected.Equals(record)) continue;
+            equal++;
+            if (expected.GetHashCode() == record.GetHashCode()) continue;
+            var type = record.GetType().Name.Replace("BinaryOverlay", "");
+            differing[type] = differing.GetValueOrDefault(type) + 1;
+        }
+    }
+    Console.WriteLine($"{equal:N0} equal pairs (second full parse and overlay) in {string.Join(", ", plugins)}; hash differs: " +
+                      (differing.Count == 0 ? "never" : string.Join(", ", differing.Select(d => $"{d.Key} {d.Value}"))));
+    foreach (var (type, count) in differing) Console.WriteLine($"HASH|{label}|{type}|{count}");
+    Console.WriteLine($"HASH|{label}|(equal pairs)|{equal}");
     return 0;
 }
 
