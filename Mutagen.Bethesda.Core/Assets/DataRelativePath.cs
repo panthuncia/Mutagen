@@ -24,7 +24,9 @@ public readonly struct DataRelativePath : IEquatable<DataRelativePath>, ICompara
 
     public DataRelativePath(string rawPath)
     {
-        if (System.IO.Path.IsPathRooted(rawPath))
+        // Only a fully qualified path (a drive or share on Windows) lies outside the Data folder unless it names one. A
+        // path rooted without a drive, as plugins sometimes store them (\meshes\x.nif), is relative to the Data folder.
+        if (System.IO.Path.IsPathFullyQualified(rawPath))
         {
             AssertHasDataDirectory(rawPath);
         }
