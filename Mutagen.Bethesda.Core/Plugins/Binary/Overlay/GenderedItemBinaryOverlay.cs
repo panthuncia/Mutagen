@@ -43,6 +43,10 @@ internal sealed class GenderedItemBinaryOverlay<T> : PluginBinaryOverlay, IGende
 
     public void Print(StructuredStringBuilder fg, string? name) => GenderedItem.Print(this, fg, name);
 
+    public override bool Equals(object? obj) => GenderedItem.Equals(this, obj);
+
+    public override int GetHashCode() => GenderedItem.GetHashCode(this);
+
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
 

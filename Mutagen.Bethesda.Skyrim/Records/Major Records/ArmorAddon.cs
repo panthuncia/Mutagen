@@ -65,6 +65,10 @@ internal class ArmorAddonWeightSliderContainer : IGenderedItem<bool>
         GenderedItem.Print(this, fg, name);
     }
 
+    public override bool Equals(object? obj) => GenderedItem.Equals(this, obj);
+
+    public override int GetHashCode() => GenderedItem.GetHashCode(this);
+
     IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
 }
 
