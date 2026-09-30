@@ -101,6 +101,11 @@ public class EnumBinaryTranslationGeneration : BinaryTranslationGeneration
                     .And($"length: {(data.HasTrigger ? "contentLength" : eType.ByteLength.ToString())}"),
                 SkipErrorMask = !this.DoErrorMasks
             });
+        if (typeGen.Nullable && eType.NullableFallbackInt != null)
+        {
+            // The value written for null reads back as null, as the overlay reads it.
+            sb.AppendLine($"if (((int?){itemAccessor}) == {eType.NullableFallbackInt}) {itemAccessor} = null;");
+        }
     }
 
     public override async Task GenerateCopyInRet(

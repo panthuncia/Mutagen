@@ -2509,6 +2509,7 @@ namespace Mutagen.Bethesda.Fallout3
                     item.Skill = EnumBinaryTranslation<Skill, MutagenFrame, MutagenWriter>.Instance.Parse(
                         reader: dataFrame,
                         length: 1);
+                    if (((int?)item.Skill) == -1) item.Skill = null;
                     if (dataFrame.Remaining < 4) return null;
                     item.Value = dataFrame.ReadInt32();
                     if (dataFrame.Remaining < 4) return null;

@@ -2193,6 +2193,7 @@ namespace Mutagen.Bethesda.Fallout3
                     item.Teaches = EnumBinaryTranslation<Skill, MutagenFrame, MutagenWriter>.Instance.Parse(
                         reader: dataFrame,
                         length: 1);
+                    if (((int?)item.Teaches) == -1) item.Teaches = null;
                     if (dataFrame.Remaining < 1) return null;
                     item.MaxTrainingLevel = dataFrame.ReadUInt8();
                     if (dataFrame.Remaining < 2) return null;

@@ -1380,6 +1380,7 @@ namespace Mutagen.Bethesda.Oblivion
             item.Teaches = EnumBinaryTranslation<Skill, MutagenFrame, MutagenWriter>.Instance.Parse(
                 reader: frame,
                 length: 1);
+            if (((int?)item.Teaches) == -1) item.Teaches = null;
             item.MaximumTrainingLevel = frame.ReadUInt8();
             item.Unused = frame.ReadInt16();
         }
