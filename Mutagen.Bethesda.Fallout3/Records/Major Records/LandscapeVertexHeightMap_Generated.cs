@@ -893,7 +893,7 @@ namespace Mutagen.Bethesda.Fallout3
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Offset = item.Offset.EqualsWithin(rhs.Offset);
-            ret.HeightMap = item.HeightMap.Array2dEqualsHelper(
+            ret.HeightMap = item.HeightMap.Array2dEqualsMask(
                 rhs.HeightMap,
                 (l, r) => l == r,
                 include);
@@ -980,7 +980,7 @@ namespace Mutagen.Bethesda.Fallout3
             }
             if ((equalsMask?.GetShouldTranslate((int)LandscapeVertexHeightMap_FieldIndex.HeightMap) ?? true))
             {
-                if (!lhs.HeightMap.SequenceEqualNullable(rhs.HeightMap)) return false;
+                if (!lhs.HeightMap.Array2dEquals(rhs.HeightMap)) return false;
             }
             if ((equalsMask?.GetShouldTranslate((int)LandscapeVertexHeightMap_FieldIndex.Unknown) ?? true))
             {

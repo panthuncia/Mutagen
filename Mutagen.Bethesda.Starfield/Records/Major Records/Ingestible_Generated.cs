@@ -2595,13 +2595,13 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.Transforms,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.XALG = item.XALG == rhs.XALG;
             ret.Name = object.Equals(item.Name, rhs.Name);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -2632,11 +2632,11 @@ namespace Mutagen.Bethesda.Starfield
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Description = object.Equals(item.Description, rhs.Description);
-            ret.Resources = item.Resources.CollectionEqualsHelper(
+            ret.Resources = item.Resources.ListEqualsMask(
                 rhs.Resources,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.ComponentDisplayIndices = item.ComponentDisplayIndices.CollectionEqualsHelper(
+            ret.ComponentDisplayIndices = item.ComponentDisplayIndices.ListEqualsMask(
                 rhs.ComponentDisplayIndices,
                 (l, r) => l == r,
                 include);
@@ -2647,9 +2647,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.AddictionChance = item.AddictionChance.EqualsWithin(rhs.AddictionChance);
             ret.ConsumeSound = MaskItemExt.Factory(item.ConsumeSound.GetEqualsMask(rhs.ConsumeSound, include), include);
             ret.AddictionName = object.Equals(item.AddictionName, rhs.AddictionName);
-            ret.Effects = item.Effects.CollectionEqualsHelper(
+            ret.Effects = item.Effects.ListEqualsMask(
                 rhs.Effects,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

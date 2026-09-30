@@ -4797,9 +4797,9 @@ namespace Mutagen.Bethesda.Fallout4
                 rhs.Primitive,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Portals = item.Portals.CollectionEqualsHelper(
+            ret.Portals = item.Portals.ListEqualsMask(
                 rhs.Portals,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.RoomPortal = EqualsMaskHelper.EqualsHelper(
                 item.RoomPortal,
@@ -4815,14 +4815,14 @@ namespace Mutagen.Bethesda.Fallout4
             ret.Unknown = item.Unknown == rhs.Unknown;
             ret.LightingTemplate = item.LightingTemplate.Equals(rhs.LightingTemplate);
             ret.ImageSpace = item.ImageSpace.Equals(rhs.ImageSpace);
-            ret.LinkedRooms = item.LinkedRooms.CollectionEqualsHelper(
+            ret.LinkedRooms = item.LinkedRooms.ListEqualsMask(
                 rhs.LinkedRooms,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.IsMultiBoundPrimitive = item.IsMultiBoundPrimitive == rhs.IsMultiBoundPrimitive;
-            ret.RagdollData = item.RagdollData.CollectionEqualsHelper(
+            ret.RagdollData = item.RagdollData.ListEqualsMask(
                 rhs.RagdollData,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.RagdollBipedRotation = item.RagdollBipedRotation.Equals(rhs.RagdollBipedRotation);
             ret.Radius = item.Radius.EqualsWithin(rhs.Radius);
@@ -4832,7 +4832,7 @@ namespace Mutagen.Bethesda.Fallout4
                 rhs.Lighting,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.LitWater = item.LitWater.CollectionEqualsHelper(
+            ret.LitWater = item.LitWater.ListEqualsMask(
                 rhs.LitWater,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -4899,7 +4899,7 @@ namespace Mutagen.Bethesda.Fallout4
                 include);
             ret.LocationReference = item.LocationReference.Equals(rhs.LocationReference);
             ret.LocationRefType = item.LocationRefType.Equals(rhs.LocationRefType);
-            ret.LocationRefTypes = item.LocationRefTypes.CollectionEqualsHelper(
+            ret.LocationRefTypes = item.LocationRefTypes.ListEqualsMask(
                 rhs.LocationRefTypes,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -4917,9 +4917,9 @@ namespace Mutagen.Bethesda.Fallout4
                 rhs.EnableParent,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.LinkedReferences = item.LinkedReferences.CollectionEqualsHelper(
+            ret.LinkedReferences = item.LinkedReferences.ListEqualsMask(
                 rhs.LinkedReferences,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Patrol = EqualsMaskHelper.EqualsHelper(
                 item.Patrol,
@@ -4936,13 +4936,13 @@ namespace Mutagen.Bethesda.Fallout4
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.AttachRef = item.AttachRef.Equals(rhs.AttachRef);
-            ret.SplineConnections = item.SplineConnections.CollectionEqualsHelper(
+            ret.SplineConnections = item.SplineConnections.ListEqualsMask(
                 rhs.SplineConnections,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.PowerGridConnections = item.PowerGridConnections.CollectionEqualsHelper(
+            ret.PowerGridConnections = item.PowerGridConnections.ListEqualsMask(
                 rhs.PowerGridConnections,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.XCVR = MemorySliceExt.SequenceEqual(item.XCVR, rhs.XCVR);
             ret.XCVL = MemorySliceExt.SequenceEqual(item.XCVL, rhs.XCVL);
@@ -4950,7 +4950,7 @@ namespace Mutagen.Bethesda.Fallout4
             ret.XCZA = MemorySliceExt.SequenceEqual(item.XCZA, rhs.XCZA);
             ret.CurrentZoneCell = item.CurrentZoneCell.Equals(rhs.CurrentZoneCell);
             ret.Scale = item.Scale.EqualsWithin(rhs.Scale);
-            ret.DistantLodData = item.DistantLodData.CollectionEqualsHelper(
+            ret.DistantLodData = item.DistantLodData.ListEqualsMask(
                 rhs.DistantLodData,
                 (l, r) => l.EqualsWithin(r),
                 include);

@@ -1719,7 +1719,7 @@ namespace Mutagen.Bethesda.Skyrim
         {
             ret.ObjectBounds = MaskItemExt.Factory(item.ObjectBounds.GetEqualsMask(rhs.ObjectBounds, include), include);
             ret.Name = object.Equals(item.Name, rhs.Name);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -1735,9 +1735,9 @@ namespace Mutagen.Bethesda.Skyrim
             ret.CastDuration = item.CastDuration.EqualsWithin(rhs.CastDuration);
             ret.Range = item.Range.EqualsWithin(rhs.Range);
             ret.HalfCostPerk = item.HalfCostPerk.Equals(rhs.HalfCostPerk);
-            ret.Effects = item.Effects.CollectionEqualsHelper(
+            ret.Effects = item.Effects.ListEqualsMask(
                 rhs.Effects,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

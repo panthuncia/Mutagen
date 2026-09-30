@@ -1256,9 +1256,9 @@ namespace Mutagen.Bethesda.Starfield
         {
             ret.BranchType = string.Equals(item.BranchType, rhs.BranchType);
             ret.Note = string.Equals(item.Note, rhs.Note);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Root = EqualsMaskHelper.EqualsHelper(
                 item.Root,
@@ -1267,7 +1267,7 @@ namespace Mutagen.Bethesda.Starfield
                 include);
             ret.ProcedureType = string.Equals(item.ProcedureType, rhs.ProcedureType);
             ret.Flags = item.Flags == rhs.Flags;
-            ret.DataInputIndices = item.DataInputIndices.CollectionEqualsHelper(
+            ret.DataInputIndices = item.DataInputIndices.ListEqualsMask(
                 rhs.DataInputIndices,
                 (l, r) => l == r,
                 include);

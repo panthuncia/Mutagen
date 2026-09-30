@@ -1394,23 +1394,23 @@ namespace Mutagen.Bethesda.Skyrim
             FootstepSet.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.WalkForwardFootsteps = item.WalkForwardFootsteps.CollectionEqualsHelper(
+            ret.WalkForwardFootsteps = item.WalkForwardFootsteps.ListEqualsMask(
                 rhs.WalkForwardFootsteps,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.RunForwardFootsteps = item.RunForwardFootsteps.CollectionEqualsHelper(
+            ret.RunForwardFootsteps = item.RunForwardFootsteps.ListEqualsMask(
                 rhs.RunForwardFootsteps,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.WalkForwardAlternateFootsteps = item.WalkForwardAlternateFootsteps.CollectionEqualsHelper(
+            ret.WalkForwardAlternateFootsteps = item.WalkForwardAlternateFootsteps.ListEqualsMask(
                 rhs.WalkForwardAlternateFootsteps,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.RunForwardAlternateFootsteps = item.RunForwardAlternateFootsteps.CollectionEqualsHelper(
+            ret.RunForwardAlternateFootsteps = item.RunForwardAlternateFootsteps.ListEqualsMask(
                 rhs.RunForwardAlternateFootsteps,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.WalkForwardAlternateFootsteps2 = item.WalkForwardAlternateFootsteps2.CollectionEqualsHelper(
+            ret.WalkForwardAlternateFootsteps2 = item.WalkForwardAlternateFootsteps2.ListEqualsMask(
                 rhs.WalkForwardAlternateFootsteps2,
                 (l, r) => object.Equals(l, r),
                 include);

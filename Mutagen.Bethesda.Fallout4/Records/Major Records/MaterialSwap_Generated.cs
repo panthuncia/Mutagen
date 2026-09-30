@@ -978,9 +978,9 @@ namespace Mutagen.Bethesda.Fallout4
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.TreeFolder = string.Equals(item.TreeFolder, rhs.TreeFolder);
-            ret.Substitutions = item.Substitutions.CollectionEqualsHelper(
+            ret.Substitutions = item.Substitutions.ListEqualsMask(
                 rhs.Substitutions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

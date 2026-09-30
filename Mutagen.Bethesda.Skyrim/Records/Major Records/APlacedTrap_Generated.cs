@@ -2017,13 +2017,13 @@ namespace Mutagen.Bethesda.Skyrim
             ret.FactionRank = item.FactionRank == rhs.FactionRank;
             ret.HeadTrackingWeight = item.HeadTrackingWeight.EqualsWithin(rhs.HeadTrackingWeight);
             ret.FavorCost = item.FavorCost.EqualsWithin(rhs.FavorCost);
-            ret.Reflections = item.Reflections.CollectionEqualsHelper(
+            ret.Reflections = item.Reflections.ListEqualsMask(
                 rhs.Reflections,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.LinkedReferences = item.LinkedReferences.CollectionEqualsHelper(
+            ret.LinkedReferences = item.LinkedReferences.ListEqualsMask(
                 rhs.LinkedReferences,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.ActivateParents = EqualsMaskHelper.EqualsHelper(
                 item.ActivateParents,
@@ -2038,12 +2038,12 @@ namespace Mutagen.Bethesda.Skyrim
             ret.Emittance = item.Emittance.Equals(rhs.Emittance);
             ret.MultiBoundReference = item.MultiBoundReference.Equals(rhs.MultiBoundReference);
             ret.IgnoredBySandbox = MemorySliceExt.SequenceEqual(item.IgnoredBySandbox, rhs.IgnoredBySandbox);
-            ret.LocationRefTypes = item.LocationRefTypes.CollectionEqualsHelper(
+            ret.LocationRefTypes = item.LocationRefTypes.ListEqualsMask(
                 rhs.LocationRefTypes,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.LocationReference = item.LocationReference.Equals(rhs.LocationReference);
-            ret.DistantLodData = item.DistantLodData.CollectionEqualsHelper(
+            ret.DistantLodData = item.DistantLodData.ListEqualsMask(
                 rhs.DistantLodData,
                 (l, r) => l.EqualsWithin(r),
                 include);

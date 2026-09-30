@@ -1623,9 +1623,9 @@ namespace Mutagen.Bethesda.Fallout3
             ret.NAM9 = MemorySliceExt.SequenceEqual(item.NAM9, rhs.NAM9);
             ret.Flags = item.Flags == rhs.Flags;
             ret.DisplayTime = item.DisplayTime == rhs.DisplayTime;
-            ret.MenuButtons = item.MenuButtons.CollectionEqualsHelper(
+            ret.MenuButtons = item.MenuButtons.ListEqualsMask(
                 rhs.MenuButtons,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

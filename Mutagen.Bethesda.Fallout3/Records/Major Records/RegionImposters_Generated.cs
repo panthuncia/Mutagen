@@ -810,7 +810,7 @@ namespace Mutagen.Bethesda.Fallout3
             RegionImposters.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Imposters = item.Imposters.CollectionEqualsHelper(
+            ret.Imposters = item.Imposters.ListEqualsMask(
                 rhs.Imposters,
                 (l, r) => object.Equals(l, r),
                 include);

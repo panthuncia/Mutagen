@@ -1750,7 +1750,7 @@ namespace Mutagen.Bethesda.Fallout3
                 include);
             ret.ShortName = string.Equals(item.ShortName, rhs.ShortName);
             ret.Abbreviation = string.Equals(item.Abbreviation, rhs.Abbreviation);
-            ret.AmmoEffects = item.AmmoEffects.CollectionEqualsHelper(
+            ret.AmmoEffects = item.AmmoEffects.ListEqualsMask(
                 rhs.AmmoEffects,
                 (l, r) => object.Equals(l, r),
                 include);

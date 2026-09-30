@@ -1011,9 +1011,9 @@ namespace Mutagen.Bethesda.Fallout4
         {
             ret.Parent = item.Parent.Equals(rhs.Parent);
             ret.PreviousSibling = item.PreviousSibling.Equals(rhs.PreviousSibling);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

@@ -1605,11 +1605,11 @@ namespace Mutagen.Bethesda.Starfield
             ret.Restriction = item.Restriction.Equals(rhs.Restriction);
             ret.PerkIcon = object.Equals(item.PerkIcon, rhs.PerkIcon);
             ret.Training = item.Training.Equals(rhs.Training);
-            ret.Ranks = item.Ranks.CollectionEqualsHelper(
+            ret.Ranks = item.Ranks.ListEqualsMask(
                 rhs.Ranks,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.BackgroundSkills = item.BackgroundSkills.CollectionEqualsHelper(
+            ret.BackgroundSkills = item.BackgroundSkills.ListEqualsMask(
                 rhs.BackgroundSkills,
                 (l, r) => object.Equals(l, r),
                 include);

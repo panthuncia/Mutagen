@@ -1723,9 +1723,9 @@ namespace Mutagen.Bethesda.Fallout4
                 rhs.W,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Unknowns = item.Unknowns.CollectionEqualsHelper(
+            ret.Unknowns = item.Unknowns.ListEqualsMask(
                 rhs.Unknowns,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

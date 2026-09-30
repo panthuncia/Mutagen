@@ -1049,7 +1049,7 @@ namespace Mutagen.Bethesda.Fallout3
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Name = object.Equals(item.Name, rhs.Name);
-            ret.Cards = item.Cards.CollectionEqualsHelper(
+            ret.Cards = item.Cards.ListEqualsMask(
                 rhs.Cards,
                 (l, r) => object.Equals(l, r),
                 include);

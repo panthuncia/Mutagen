@@ -1155,13 +1155,13 @@ namespace Mutagen.Bethesda.Skyrim
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Name = string.Equals(item.Name, rhs.Name);
-            ret.StartConditions = item.StartConditions.CollectionEqualsHelper(
+            ret.StartConditions = item.StartConditions.ListEqualsMask(
                 rhs.StartConditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.CompletionConditions = item.CompletionConditions.CollectionEqualsHelper(
+            ret.CompletionConditions = item.CompletionConditions.ListEqualsMask(
                 rhs.CompletionConditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Unused = EqualsMaskHelper.EqualsHelper(
                 item.Unused,

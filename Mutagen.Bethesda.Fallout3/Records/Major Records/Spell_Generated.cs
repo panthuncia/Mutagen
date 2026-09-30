@@ -1147,9 +1147,9 @@ namespace Mutagen.Bethesda.Fallout3
             ret.Unused1 = item.Unused1 == rhs.Unused1;
             ret.Unused2 = item.Unused2 == rhs.Unused2;
             ret.Flags = item.Flags == rhs.Flags;
-            ret.Effects = item.Effects.CollectionEqualsHelper(
+            ret.Effects = item.Effects.ListEqualsMask(
                 rhs.Effects,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

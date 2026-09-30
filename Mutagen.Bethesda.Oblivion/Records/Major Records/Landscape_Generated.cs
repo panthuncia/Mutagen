@@ -1219,11 +1219,11 @@ namespace Mutagen.Bethesda.Oblivion
             ret.VertexNormals = MemorySliceExt.SequenceEqual(item.VertexNormals, rhs.VertexNormals);
             ret.VertexHeightMap = MemorySliceExt.SequenceEqual(item.VertexHeightMap, rhs.VertexHeightMap);
             ret.VertexColors = MemorySliceExt.SequenceEqual(item.VertexColors, rhs.VertexColors);
-            ret.Layers = item.Layers.CollectionEqualsHelper(
+            ret.Layers = item.Layers.ListEqualsMask(
                 rhs.Layers,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Textures = item.Textures.CollectionEqualsHelper(
+            ret.Textures = item.Textures.ListEqualsMask(
                 rhs.Textures,
                 (l, r) => object.Equals(l, r),
                 include);

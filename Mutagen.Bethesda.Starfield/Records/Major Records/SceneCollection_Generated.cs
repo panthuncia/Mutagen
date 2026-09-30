@@ -1170,12 +1170,12 @@ namespace Mutagen.Bethesda.Starfield
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Quest = item.Quest.Equals(rhs.Quest);
-            ret.Scenes = item.Scenes.CollectionEqualsHelper(
+            ret.Scenes = item.Scenes.ListEqualsMask(
                 rhs.Scenes,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.VNAM = item.VNAM == rhs.VNAM;
-            ret.XNAMs = item.XNAMs.CollectionEqualsHelper(
+            ret.XNAMs = item.XNAMs.ListEqualsMask(
                 rhs.XNAMs,
                 (l, r) => l == r,
                 include);

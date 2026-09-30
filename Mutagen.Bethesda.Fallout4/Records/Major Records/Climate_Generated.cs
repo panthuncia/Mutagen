@@ -1342,9 +1342,9 @@ namespace Mutagen.Bethesda.Fallout4
             Climate.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Weathers = item.Weathers.CollectionEqualsHelper(
+            ret.Weathers = item.Weathers.ListEqualsMask(
                 rhs.Weathers,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.SunTexture = string.Equals(item.SunTexture, rhs.SunTexture);
             ret.SunGlareTexture = string.Equals(item.SunGlareTexture, rhs.SunGlareTexture);

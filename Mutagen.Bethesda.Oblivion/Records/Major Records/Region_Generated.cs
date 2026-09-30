@@ -1296,9 +1296,9 @@ namespace Mutagen.Bethesda.Oblivion
             ret.Icon = string.Equals(item.Icon, rhs.Icon);
             ret.MapColor = item.MapColor.ColorOnlyEquals(rhs.MapColor);
             ret.Worldspace = item.Worldspace.Equals(rhs.Worldspace);
-            ret.Areas = item.Areas.CollectionEqualsHelper(
+            ret.Areas = item.Areas.ListEqualsMask(
                 rhs.Areas,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Objects = EqualsMaskHelper.EqualsHelper(
                 item.Objects,

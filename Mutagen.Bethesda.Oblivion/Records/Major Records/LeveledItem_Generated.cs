@@ -996,9 +996,9 @@ namespace Mutagen.Bethesda.Oblivion
         {
             ret.ChanceNone = item.ChanceNone.Equals(rhs.ChanceNone);
             ret.Flags = item.Flags == rhs.Flags;
-            ret.Entries = item.Entries.CollectionEqualsHelper(
+            ret.Entries = item.Entries.ListEqualsMask(
                 rhs.Entries,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

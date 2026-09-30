@@ -1041,9 +1041,9 @@ namespace Mutagen.Bethesda.Skyrim
         {
             ret.ColorInfluence = item.ColorInfluence.EqualsWithin(rhs.ColorInfluence);
             ret.FadeDistanceRadiusScale = item.FadeDistanceRadiusScale.EqualsWithin(rhs.FadeDistanceRadiusScale);
-            ret.Sprites = item.Sprites.CollectionEqualsHelper(
+            ret.Sprites = item.Sprites.ListEqualsMask(
                 rhs.Sprites,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

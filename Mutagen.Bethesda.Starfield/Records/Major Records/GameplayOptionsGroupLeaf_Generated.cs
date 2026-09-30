@@ -791,7 +791,7 @@ namespace Mutagen.Bethesda.Starfield
             GameplayOptionsGroupLeaf.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.GameplayOptions = item.GameplayOptions.CollectionEqualsHelper(
+            ret.GameplayOptions = item.GameplayOptions.ListEqualsMask(
                 rhs.GameplayOptions,
                 (l, r) => object.Equals(l, r),
                 include);

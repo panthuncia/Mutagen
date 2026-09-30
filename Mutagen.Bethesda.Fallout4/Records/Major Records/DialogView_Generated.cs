@@ -1185,11 +1185,11 @@ namespace Mutagen.Bethesda.Fallout4
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Quest = item.Quest.Equals(rhs.Quest);
-            ret.Branches = item.Branches.CollectionEqualsHelper(
+            ret.Branches = item.Branches.ListEqualsMask(
                 rhs.Branches,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.TNAMs = item.TNAMs.CollectionEqualsHelper(
+            ret.TNAMs = item.TNAMs.ListEqualsMask(
                 rhs.TNAMs,
                 (l, r) => MemoryExtensions.SequenceEqual(l.Span, r.Span),
                 include);

@@ -5600,9 +5600,9 @@ namespace Mutagen.Bethesda.Starfield
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.XALG = item.XALG == rhs.XALG;
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Base = item.Base.Equals(rhs.Base);
             ret.XMSP = item.XMSP.Equals(rhs.XMSP);
@@ -5630,9 +5630,9 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.Primitive,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.PlacedObjectXCZRXCZA = item.PlacedObjectXCZRXCZA.CollectionEqualsHelper(
+            ret.PlacedObjectXCZRXCZA = item.PlacedObjectXCZRXCZA.ListEqualsMask(
                 rhs.PlacedObjectXCZRXCZA,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.VolumeReflectionProbeOffsetIntensity = EqualsMaskHelper.EqualsHelper(
                 item.VolumeReflectionProbeOffsetIntensity,
@@ -5671,9 +5671,9 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.Patrol,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.RagdollData = item.RagdollData.CollectionEqualsHelper(
+            ret.RagdollData = item.RagdollData.ListEqualsMask(
                 rhs.RagdollData,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.TeleportDestination = EqualsMaskHelper.EqualsHelper(
                 item.TeleportDestination,
@@ -5682,11 +5682,11 @@ namespace Mutagen.Bethesda.Starfield
                 include);
             ret.TeleportName = item.TeleportName.Equals(rhs.TeleportName);
             ret.ReferenceGroup = item.ReferenceGroup.Equals(rhs.ReferenceGroup);
-            ret.LocationRefTypes = item.LocationRefTypes.CollectionEqualsHelper(
+            ret.LocationRefTypes = item.LocationRefTypes.ListEqualsMask(
                 rhs.LocationRefTypes,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.LayeredMaterialSwaps = item.LayeredMaterialSwaps.CollectionEqualsHelper(
+            ret.LayeredMaterialSwaps = item.LayeredMaterialSwaps.ListEqualsMask(
                 rhs.LayeredMaterialSwaps,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -5698,7 +5698,7 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.ProjectedDecal,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.ProjectedDecalReferences = item.ProjectedDecalReferences.CollectionEqualsHelper(
+            ret.ProjectedDecalReferences = item.ProjectedDecalReferences.ListEqualsMask(
                 rhs.ProjectedDecalReferences,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -5715,9 +5715,9 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.Collision,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.PowerLinks = item.PowerLinks.CollectionEqualsHelper(
+            ret.PowerLinks = item.PowerLinks.ListEqualsMask(
                 rhs.PowerLinks,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Count = item.Count == rhs.Count;
             ret.XFLG = MemorySliceExt.SequenceEqual(item.XFLG, rhs.XFLG);
@@ -5740,9 +5740,9 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.Ownership,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.LightColors = item.LightColors.CollectionEqualsHelper(
+            ret.LightColors = item.LightColors.ListEqualsMask(
                 rhs.LightColors,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.GroupedPackIn = EqualsMaskHelper.EqualsHelper(
                 item.GroupedPackIn,
@@ -5761,15 +5761,15 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.LightRoundedness,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.LinkedReferences = item.LinkedReferences.CollectionEqualsHelper(
+            ret.LinkedReferences = item.LinkedReferences.ListEqualsMask(
                 rhs.LinkedReferences,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.IsLinkedRefTransient = item.IsLinkedRefTransient == rhs.IsLinkedRefTransient;
             ret.XLIB = item.XLIB.Equals(rhs.XLIB);
-            ret.SnapLinks = item.SnapLinks.CollectionEqualsHelper(
+            ret.SnapLinks = item.SnapLinks.ListEqualsMask(
                 rhs.SnapLinks,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.EncounterZone = item.EncounterZone.Equals(rhs.EncounterZone);
             ret.GeometryDirtinessScale = item.GeometryDirtinessScale.EqualsWithin(rhs.GeometryDirtinessScale);
@@ -5778,9 +5778,9 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.Lock,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Properties = item.Properties.CollectionEqualsHelper(
+            ret.Properties = item.Properties.ListEqualsMask(
                 rhs.Properties,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.ExternalEmittance = EqualsMaskHelper.EqualsHelper(
                 item.ExternalEmittance,
@@ -5803,9 +5803,9 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.EnableParent,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Traversals = item.Traversals.CollectionEqualsHelper(
+            ret.Traversals = item.Traversals.ListEqualsMask(
                 rhs.Traversals,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.NumTraversalFluffBytes = item.NumTraversalFluffBytes == rhs.NumTraversalFluffBytes;
             ret.NavigationDoorLink = EqualsMaskHelper.EqualsHelper(

@@ -925,9 +925,9 @@ namespace Mutagen.Bethesda.Fallout4
             NavigationMeshObstacleManager.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.SubObjects = item.SubObjects.CollectionEqualsHelper(
+            ret.SubObjects = item.SubObjects.ListEqualsMask(
                 rhs.SubObjects,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

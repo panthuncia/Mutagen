@@ -1218,16 +1218,16 @@ namespace Mutagen.Bethesda.Starfield
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Race = item.Race.Equals(rhs.Race);
-            ret.ActorKeywords = item.ActorKeywords.CollectionEqualsHelper(
+            ret.ActorKeywords = item.ActorKeywords.ListEqualsMask(
                 rhs.ActorKeywords,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.BehaviorGraph = string.Equals(item.BehaviorGraph, rhs.BehaviorGraph);
-            ret.AnimationPaths = item.AnimationPaths.CollectionEqualsHelper(
+            ret.AnimationPaths = item.AnimationPaths.ListEqualsMask(
                 rhs.AnimationPaths,
                 (l, r) => string.Equals(l, r),
                 include);
-            ret.TargetKeywords = item.TargetKeywords.CollectionEqualsHelper(
+            ret.TargetKeywords = item.TargetKeywords.ListEqualsMask(
                 rhs.TargetKeywords,
                 (l, r) => object.Equals(l, r),
                 include);

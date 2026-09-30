@@ -2221,12 +2221,12 @@ namespace Mutagen.Bethesda.Skyrim
             ret.BashImpactDataSet = item.BashImpactDataSet.Equals(rhs.BashImpactDataSet);
             ret.AlternateBlockMaterial = item.AlternateBlockMaterial.Equals(rhs.AlternateBlockMaterial);
             ret.Race = item.Race.Equals(rhs.Race);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.Description = object.Equals(item.Description, rhs.Description);
-            ret.Armature = item.Armature.CollectionEqualsHelper(
+            ret.Armature = item.Armature.ListEqualsMask(
                 rhs.Armature,
                 (l, r) => object.Equals(l, r),
                 include);

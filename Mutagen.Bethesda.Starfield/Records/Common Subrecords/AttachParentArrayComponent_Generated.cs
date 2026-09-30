@@ -796,7 +796,7 @@ namespace Mutagen.Bethesda.Starfield
             AttachParentArrayComponent.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Slots = item.Slots.CollectionEqualsHelper(
+            ret.Slots = item.Slots.ListEqualsMask(
                 rhs.Slots,
                 (l, r) => object.Equals(l, r),
                 include);

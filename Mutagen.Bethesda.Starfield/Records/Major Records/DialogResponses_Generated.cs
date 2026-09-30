@@ -2063,9 +2063,9 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.VirtualMachineAdapter,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Flags = EqualsMaskHelper.EqualsHelper(
                 item.Flags,
@@ -2075,13 +2075,13 @@ namespace Mutagen.Bethesda.Starfield
             ret.TPIC = MemorySliceExt.SequenceEqual(item.TPIC, rhs.TPIC);
             ret.SharedDialog = item.SharedDialog.Equals(rhs.SharedDialog);
             ret.DialogGroup = item.DialogGroup.Equals(rhs.DialogGroup);
-            ret.Responses = item.Responses.CollectionEqualsHelper(
+            ret.Responses = item.Responses.ListEqualsMask(
                 rhs.Responses,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Prompt = object.Equals(item.Prompt, rhs.Prompt);
             ret.Speaker = item.Speaker.Equals(rhs.Speaker);

@@ -1712,32 +1712,32 @@ namespace Mutagen.Bethesda.Starfield
             SurfacePattern.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.SurfacePatternStyle = item.SurfacePatternStyle.Equals(rhs.SurfacePatternStyle);
-            ret.Blocks = item.Blocks.Array2dEqualsHelper(
+            ret.Blocks = item.Blocks.Array2dEqualsMask(
                 rhs.Blocks,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.MasterBlocks = item.MasterBlocks.Array2dEqualsHelper(
+            ret.MasterBlocks = item.MasterBlocks.Array2dEqualsMask(
                 rhs.MasterBlocks,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.MasterBlockRotations = item.MasterBlockRotations.Array2dEqualsHelper(
+            ret.MasterBlockRotations = item.MasterBlockRotations.Array2dEqualsMask(
                 rhs.MasterBlockRotations,
                 (l, r) => l == r,
                 include);
-            ret.OverrideBlocks = item.OverrideBlocks.Array2dEqualsHelper(
+            ret.OverrideBlocks = item.OverrideBlocks.Array2dEqualsMask(
                 rhs.OverrideBlocks,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.OverrideBlockRotations = item.OverrideBlockRotations.Array2dEqualsHelper(
+            ret.OverrideBlockRotations = item.OverrideBlockRotations.Array2dEqualsMask(
                 rhs.OverrideBlockRotations,
                 (l, r) => l == r,
                 include);
-            ret.Worldspaces = item.Worldspaces.CollectionEqualsHelper(
+            ret.Worldspaces = item.Worldspaces.ListEqualsMask(
                 rhs.Worldspaces,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -1963,23 +1963,23 @@ namespace Mutagen.Bethesda.Starfield
             }
             if ((equalsMask?.GetShouldTranslate((int)SurfacePattern_FieldIndex.Blocks) ?? true))
             {
-                if (!lhs.Blocks.SequenceEqualNullable(rhs.Blocks)) return false;
+                if (!lhs.Blocks.Array2dEquals(rhs.Blocks)) return false;
             }
             if ((equalsMask?.GetShouldTranslate((int)SurfacePattern_FieldIndex.MasterBlocks) ?? true))
             {
-                if (!lhs.MasterBlocks.SequenceEqualNullable(rhs.MasterBlocks)) return false;
+                if (!lhs.MasterBlocks.Array2dEquals(rhs.MasterBlocks)) return false;
             }
             if ((equalsMask?.GetShouldTranslate((int)SurfacePattern_FieldIndex.MasterBlockRotations) ?? true))
             {
-                if (!lhs.MasterBlockRotations.SequenceEqualNullable(rhs.MasterBlockRotations)) return false;
+                if (!lhs.MasterBlockRotations.Array2dEquals(rhs.MasterBlockRotations)) return false;
             }
             if ((equalsMask?.GetShouldTranslate((int)SurfacePattern_FieldIndex.OverrideBlocks) ?? true))
             {
-                if (!lhs.OverrideBlocks.SequenceEqualNullable(rhs.OverrideBlocks)) return false;
+                if (!lhs.OverrideBlocks.Array2dEquals(rhs.OverrideBlocks)) return false;
             }
             if ((equalsMask?.GetShouldTranslate((int)SurfacePattern_FieldIndex.OverrideBlockRotations) ?? true))
             {
-                if (!lhs.OverrideBlockRotations.SequenceEqualNullable(rhs.OverrideBlockRotations)) return false;
+                if (!lhs.OverrideBlockRotations.Array2dEquals(rhs.OverrideBlockRotations)) return false;
             }
             if ((equalsMask?.GetShouldTranslate((int)SurfacePattern_FieldIndex.Worldspaces) ?? true))
             {

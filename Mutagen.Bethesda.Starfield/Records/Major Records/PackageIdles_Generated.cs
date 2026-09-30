@@ -907,7 +907,7 @@ namespace Mutagen.Bethesda.Starfield
         {
             ret.Type = item.Type == rhs.Type;
             ret.TimerSetting = item.TimerSetting.EqualsWithin(rhs.TimerSetting);
-            ret.Animations = item.Animations.CollectionEqualsHelper(
+            ret.Animations = item.Animations.ListEqualsMask(
                 rhs.Animations,
                 (l, r) => object.Equals(l, r),
                 include);

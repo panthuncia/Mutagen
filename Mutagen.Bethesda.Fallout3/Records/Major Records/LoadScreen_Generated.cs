@@ -1095,9 +1095,9 @@ namespace Mutagen.Bethesda.Fallout3
             ret.LargeIconFilename = string.Equals(item.LargeIconFilename, rhs.LargeIconFilename);
             ret.SmallIconFilename = string.Equals(item.SmallIconFilename, rhs.SmallIconFilename);
             ret.Description = string.Equals(item.Description, rhs.Description);
-            ret.Locations = item.Locations.CollectionEqualsHelper(
+            ret.Locations = item.Locations.ListEqualsMask(
                 rhs.Locations,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.LoadScreenType = item.LoadScreenType.Equals(rhs.LoadScreenType);
             base.FillEqualsMask(item, rhs, ret, include);

@@ -868,7 +868,7 @@ namespace Mutagen.Bethesda.Starfield
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Traversal = item.Traversal.Equals(rhs.Traversal);
-            ret.NodeIDs = item.NodeIDs.CollectionEqualsHelper(
+            ret.NodeIDs = item.NodeIDs.ListEqualsMask(
                 rhs.NodeIDs,
                 (l, r) => l == r,
                 include);

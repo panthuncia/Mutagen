@@ -1540,30 +1540,30 @@ namespace Mutagen.Bethesda.Fallout3
                 rhs.Data,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Vertices = item.Vertices.CollectionEqualsHelper(
+            ret.Vertices = item.Vertices.ListEqualsMask(
                 rhs.Vertices,
                 (l, r) => l.Equals(r),
                 include);
-            ret.Triangles = item.Triangles.CollectionEqualsHelper(
+            ret.Triangles = item.Triangles.ListEqualsMask(
                 rhs.Triangles,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.CoverTriangles = item.CoverTriangles.CollectionEqualsHelper(
+            ret.CoverTriangles = item.CoverTriangles.ListEqualsMask(
                 rhs.CoverTriangles,
                 (l, r) => l == r,
                 include);
-            ret.DoorLinks = item.DoorLinks.CollectionEqualsHelper(
+            ret.DoorLinks = item.DoorLinks.ListEqualsMask(
                 rhs.DoorLinks,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.NavmeshGrid = EqualsMaskHelper.EqualsHelper(
                 item.NavmeshGrid,
                 rhs.NavmeshGrid,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.EdgeLinks = item.EdgeLinks.CollectionEqualsHelper(
+            ret.EdgeLinks = item.EdgeLinks.ListEqualsMask(
                 rhs.EdgeLinks,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

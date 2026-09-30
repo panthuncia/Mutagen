@@ -1055,7 +1055,7 @@ namespace Mutagen.Bethesda.Starfield
             VehicleConfigComponent.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.SuspensionBoneModifiers = item.SuspensionBoneModifiers.CollectionEqualsHelper(
+            ret.SuspensionBoneModifiers = item.SuspensionBoneModifiers.ListEqualsMask(
                 rhs.SuspensionBoneModifiers,
                 (l, r) => object.Equals(l, r),
                 include);

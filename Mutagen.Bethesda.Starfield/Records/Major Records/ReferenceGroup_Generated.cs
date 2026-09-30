@@ -1360,15 +1360,15 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.VirtualMachineAdapter,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Name = string.Equals(item.Name, rhs.Name);
             ret.Reference = item.Reference.Equals(rhs.Reference);
             ret.PackIn = item.PackIn.Equals(rhs.PackIn);
             ret.LNAM = item.LNAM.Equals(rhs.LNAM);
-            ret.MNAM = item.MNAM.CollectionEqualsHelper(
+            ret.MNAM = item.MNAM.ListEqualsMask(
                 rhs.MNAM,
                 (l, r) => l == r,
                 include);

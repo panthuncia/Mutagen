@@ -4362,19 +4362,19 @@ namespace Mutagen.Bethesda.Fallout4
             ret.AlternateBlockMaterial = item.AlternateBlockMaterial.Equals(rhs.AlternateBlockMaterial);
             ret.PickUpSound = item.PickUpSound.Equals(rhs.PickUpSound);
             ret.PutDownSound = item.PutDownSound.Equals(rhs.PutDownSound);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.Description = object.Equals(item.Description, rhs.Description);
             ret.InstanceNaming = item.InstanceNaming.Equals(rhs.InstanceNaming);
-            ret.AttachParentSlots = item.AttachParentSlots.CollectionEqualsHelper(
+            ret.AttachParentSlots = item.AttachParentSlots.ListEqualsMask(
                 rhs.AttachParentSlots,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.ObjectTemplates = item.ObjectTemplates.CollectionEqualsHelper(
+            ret.ObjectTemplates = item.ObjectTemplates.ListEqualsMask(
                 rhs.ObjectTemplates,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.EmbeddedWeaponMod = item.EmbeddedWeaponMod.Equals(rhs.EmbeddedWeaponMod);
             ret.FirstPersonModel = EqualsMaskHelper.EqualsHelper(
@@ -4432,9 +4432,9 @@ namespace Mutagen.Bethesda.Fallout4
             ret.AimModel = item.AimModel.Equals(rhs.AimModel);
             ret.Zoom = item.Zoom.Equals(rhs.Zoom);
             ret.Template = item.Template.Equals(rhs.Template);
-            ret.DamageTypes = item.DamageTypes.CollectionEqualsHelper(
+            ret.DamageTypes = item.DamageTypes.ListEqualsMask(
                 rhs.DamageTypes,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Filter = string.Equals(item.Filter, rhs.Filter);
             ret.MeleeSpeed = item.MeleeSpeed == rhs.MeleeSpeed;

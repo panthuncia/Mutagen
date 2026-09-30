@@ -869,9 +869,9 @@ namespace Mutagen.Bethesda.Oblivion
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Stage = item.Stage == rhs.Stage;
-            ret.LogEntries = item.LogEntries.CollectionEqualsHelper(
+            ret.LogEntries = item.LogEntries.ListEqualsMask(
                 rhs.LogEntries,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

@@ -1045,9 +1045,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.INTTPhaseIndex = item.INTTPhaseIndex == rhs.INTTPhaseIndex;
             ret.ACTVPhaseIndex = item.ACTVPhaseIndex == rhs.ACTVPhaseIndex;
             ret.StartPhaseForScene = string.Equals(item.StartPhaseForScene, rhs.StartPhaseForScene);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

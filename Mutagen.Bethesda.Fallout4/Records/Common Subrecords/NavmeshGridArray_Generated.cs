@@ -800,7 +800,7 @@ namespace Mutagen.Bethesda.Fallout4
             NavmeshGridArray.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.GridCell = item.GridCell.CollectionEqualsHelper(
+            ret.GridCell = item.GridCell.ListEqualsMask(
                 rhs.GridCell,
                 (l, r) => l == r,
                 include);

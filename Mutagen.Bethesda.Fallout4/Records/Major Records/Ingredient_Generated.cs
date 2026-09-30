@@ -1825,7 +1825,7 @@ namespace Mutagen.Bethesda.Fallout4
                 include);
             ret.ObjectBounds = MaskItemExt.Factory(item.ObjectBounds.GetEqualsMask(rhs.ObjectBounds, include), include);
             ret.Name = object.Equals(item.Name, rhs.Name);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -1851,9 +1851,9 @@ namespace Mutagen.Bethesda.Fallout4
             ret.Weight = item.Weight.EqualsWithin(rhs.Weight);
             ret.IngredientValue = item.IngredientValue == rhs.IngredientValue;
             ret.Flags = item.Flags == rhs.Flags;
-            ret.Effects = item.Effects.CollectionEqualsHelper(
+            ret.Effects = item.Effects.ListEqualsMask(
                 rhs.Effects,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

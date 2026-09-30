@@ -1081,14 +1081,14 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.Data,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Resistances = item.Resistances.CollectionEqualsHelper(
+            ret.Resistances = item.Resistances.ListEqualsMask(
                 rhs.Resistances,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.DSDL = MemorySliceExt.SequenceEqual(item.DSDL, rhs.DSDL);
-            ret.Stages = item.Stages.CollectionEqualsHelper(
+            ret.Stages = item.Stages.ListEqualsMask(
                 rhs.Stages,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

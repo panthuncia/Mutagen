@@ -796,7 +796,7 @@ namespace Mutagen.Bethesda.Starfield
             ForcedLocRefTypeComponent.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.ForcedLocations = item.ForcedLocations.CollectionEqualsHelper(
+            ret.ForcedLocations = item.ForcedLocations.ListEqualsMask(
                 rhs.ForcedLocations,
                 (l, r) => object.Equals(l, r),
                 include);

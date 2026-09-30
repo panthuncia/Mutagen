@@ -909,9 +909,9 @@ namespace Mutagen.Bethesda.Starfield
         {
             ret.Static = item.Static.Equals(rhs.Static);
             ret.Unknown = item.Unknown == rhs.Unknown;
-            ret.Placements = item.Placements.CollectionEqualsHelper(
+            ret.Placements = item.Placements.ListEqualsMask(
                 rhs.Placements,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

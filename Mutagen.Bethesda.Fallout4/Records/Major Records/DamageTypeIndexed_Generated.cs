@@ -940,7 +940,7 @@ namespace Mutagen.Bethesda.Fallout4
             DamageTypeIndexed.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.DamageTypes = item.DamageTypes.CollectionEqualsHelper(
+            ret.DamageTypes = item.DamageTypes.ListEqualsMask(
                 rhs.DamageTypes,
                 (l, r) => l == r,
                 include);

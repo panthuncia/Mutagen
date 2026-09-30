@@ -1073,13 +1073,13 @@ namespace Mutagen.Bethesda.Fallout3
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Version = item.Version == rhs.Version;
-            ret.Infos = item.Infos.CollectionEqualsHelper(
+            ret.Infos = item.Infos.ListEqualsMask(
                 rhs.Infos,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Connections = item.Connections.CollectionEqualsHelper(
+            ret.Connections = item.Connections.ListEqualsMask(
                 rhs.Connections,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

@@ -1521,21 +1521,21 @@ namespace Mutagen.Bethesda.Skyrim
             ret.NavmeshVersion = item.NavmeshVersion == rhs.NavmeshVersion;
             ret.CrcHash = item.CrcHash == rhs.CrcHash;
             ret.Parent = MaskItemExt.Factory(item.Parent.GetEqualsMask(rhs.Parent, include), include);
-            ret.Vertices = item.Vertices.CollectionEqualsHelper(
+            ret.Vertices = item.Vertices.ListEqualsMask(
                 rhs.Vertices,
                 (l, r) => l.Equals(r),
                 include);
-            ret.Triangles = item.Triangles.CollectionEqualsHelper(
+            ret.Triangles = item.Triangles.ListEqualsMask(
                 rhs.Triangles,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.EdgeLinks = item.EdgeLinks.CollectionEqualsHelper(
+            ret.EdgeLinks = item.EdgeLinks.ListEqualsMask(
                 rhs.EdgeLinks,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.DoorTriangles = item.DoorTriangles.CollectionEqualsHelper(
+            ret.DoorTriangles = item.DoorTriangles.ListEqualsMask(
                 rhs.DoorTriangles,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.NavmeshGridDivisor = item.NavmeshGridDivisor == rhs.NavmeshGridDivisor;
             ret.MaxDistanceX = item.MaxDistanceX.EqualsWithin(rhs.MaxDistanceX);

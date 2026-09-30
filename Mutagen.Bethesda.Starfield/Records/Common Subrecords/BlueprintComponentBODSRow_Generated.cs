@@ -812,9 +812,9 @@ namespace Mutagen.Bethesda.Starfield
             BlueprintComponentBODSRow.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.BODSItems = item.BODSItems.CollectionEqualsHelper(
+            ret.BODSItems = item.BODSItems.ListEqualsMask(
                 rhs.BODSItems,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

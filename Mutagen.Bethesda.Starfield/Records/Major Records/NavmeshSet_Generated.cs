@@ -809,7 +809,7 @@ namespace Mutagen.Bethesda.Starfield
             NavmeshSet.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Navmeshes = item.Navmeshes.CollectionEqualsHelper(
+            ret.Navmeshes = item.Navmeshes.ListEqualsMask(
                 rhs.Navmeshes,
                 (l, r) => object.Equals(l, r),
                 include);

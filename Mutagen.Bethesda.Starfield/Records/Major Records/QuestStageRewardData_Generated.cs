@@ -1040,13 +1040,13 @@ namespace Mutagen.Bethesda.Starfield
         {
             ret.XpAwarded = item.XpAwarded.Equals(rhs.XpAwarded);
             ret.BonusCredits = item.BonusCredits.Equals(rhs.BonusCredits);
-            ret.Rewards = item.Rewards.CollectionEqualsHelper(
+            ret.Rewards = item.Rewards.ListEqualsMask(
                 rhs.Rewards,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

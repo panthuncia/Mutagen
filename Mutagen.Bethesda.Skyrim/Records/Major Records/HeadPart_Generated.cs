@@ -1479,13 +1479,13 @@ namespace Mutagen.Bethesda.Skyrim
                 include);
             ret.Flags = item.Flags == rhs.Flags;
             ret.Type = item.Type == rhs.Type;
-            ret.ExtraParts = item.ExtraParts.CollectionEqualsHelper(
+            ret.ExtraParts = item.ExtraParts.ListEqualsMask(
                 rhs.ExtraParts,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Parts = item.Parts.CollectionEqualsHelper(
+            ret.Parts = item.Parts.ListEqualsMask(
                 rhs.Parts,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.TextureSet = item.TextureSet.Equals(rhs.TextureSet);
             ret.Color = item.Color.Equals(rhs.Color);

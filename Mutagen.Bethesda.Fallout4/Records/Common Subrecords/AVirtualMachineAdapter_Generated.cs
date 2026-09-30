@@ -886,9 +886,9 @@ namespace Mutagen.Bethesda.Fallout4
         {
             ret.Version = item.Version == rhs.Version;
             ret.ObjectFormat = item.ObjectFormat == rhs.ObjectFormat;
-            ret.Scripts = item.Scripts.CollectionEqualsHelper(
+            ret.Scripts = item.Scripts.ListEqualsMask(
                 rhs.Scripts,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

@@ -1778,9 +1778,9 @@ namespace Mutagen.Bethesda.Fallout3
             ret.WithdrawalEffect = item.WithdrawalEffect.Equals(rhs.WithdrawalEffect);
             ret.AddictionChance = item.AddictionChance.EqualsWithin(rhs.AddictionChance);
             ret.ConsumeSound = item.ConsumeSound.Equals(rhs.ConsumeSound);
-            ret.Effects = item.Effects.CollectionEqualsHelper(
+            ret.Effects = item.Effects.ListEqualsMask(
                 rhs.Effects,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

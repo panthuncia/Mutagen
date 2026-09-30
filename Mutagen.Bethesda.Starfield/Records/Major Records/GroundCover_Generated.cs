@@ -1314,15 +1314,15 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.VirtualMachineAdapter,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Grasses = item.Grasses.CollectionEqualsHelper(
+            ret.Grasses = item.Grasses.ListEqualsMask(
                 rhs.Grasses,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.LandscapeTextures = item.LandscapeTextures.CollectionEqualsHelper(
+            ret.LandscapeTextures = item.LandscapeTextures.ListEqualsMask(
                 rhs.LandscapeTextures,
                 (l, r) => object.Equals(l, r),
                 include);

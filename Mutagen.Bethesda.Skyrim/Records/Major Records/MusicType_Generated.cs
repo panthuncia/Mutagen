@@ -1066,7 +1066,7 @@ namespace Mutagen.Bethesda.Skyrim
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.FadeDuration = item.FadeDuration.EqualsWithin(rhs.FadeDuration);
-            ret.Tracks = item.Tracks.CollectionEqualsHelper(
+            ret.Tracks = item.Tracks.ListEqualsMask(
                 rhs.Tracks,
                 (l, r) => object.Equals(l, r),
                 include);

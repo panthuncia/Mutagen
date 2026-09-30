@@ -1051,7 +1051,7 @@ namespace Mutagen.Bethesda.Oblivion
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.TextureSpecularExponent = item.TextureSpecularExponent == rhs.TextureSpecularExponent;
-            ret.PotentialGrass = item.PotentialGrass.CollectionEqualsHelper(
+            ret.PotentialGrass = item.PotentialGrass.ListEqualsMask(
                 rhs.PotentialGrass,
                 (l, r) => object.Equals(l, r),
                 include);

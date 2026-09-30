@@ -2033,9 +2033,9 @@ namespace Mutagen.Bethesda.Fallout3
         {
             ret.Base = item.Base.Equals(rhs.Base);
             ret.EncounterZone = item.EncounterZone.Equals(rhs.EncounterZone);
-            ret.RagdollData = item.RagdollData.CollectionEqualsHelper(
+            ret.RagdollData = item.RagdollData.ListEqualsMask(
                 rhs.RagdollData,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.RagdollBipedRotation = item.RagdollBipedRotation.Equals(rhs.RagdollBipedRotation);
             ret.Patrol = EqualsMaskHelper.EqualsHelper(
@@ -2048,13 +2048,13 @@ namespace Mutagen.Bethesda.Fallout3
             ret.Count = item.Count == rhs.Count;
             ret.Radius = item.Radius.EqualsWithin(rhs.Radius);
             ret.Health = item.Health.EqualsWithin(rhs.Health);
-            ret.Reflections = item.Reflections.CollectionEqualsHelper(
+            ret.Reflections = item.Reflections.ListEqualsMask(
                 rhs.Reflections,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.LinkedDecals = item.LinkedDecals.CollectionEqualsHelper(
+            ret.LinkedDecals = item.LinkedDecals.ListEqualsMask(
                 rhs.LinkedDecals,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.LinkedReference = item.LinkedReference.Equals(rhs.LinkedReference);
             ret.LinkedReferenceColor = EqualsMaskHelper.EqualsHelper(

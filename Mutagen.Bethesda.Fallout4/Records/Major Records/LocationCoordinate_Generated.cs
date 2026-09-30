@@ -860,7 +860,7 @@ namespace Mutagen.Bethesda.Fallout4
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Location = item.Location.Equals(rhs.Location);
-            ret.Coordinates = item.Coordinates.CollectionEqualsHelper(
+            ret.Coordinates = item.Coordinates.ListEqualsMask(
                 rhs.Coordinates,
                 (l, r) => l.Equals(r),
                 include);

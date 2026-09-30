@@ -1387,9 +1387,9 @@ namespace Mutagen.Bethesda.Skyrim
             Climate.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.WeatherTypes = item.WeatherTypes.CollectionEqualsHelper(
+            ret.WeatherTypes = item.WeatherTypes.ListEqualsMask(
                 rhs.WeatherTypes,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.SunTexture = object.Equals(item.SunTexture, rhs.SunTexture);
             ret.SunGlareTexture = object.Equals(item.SunGlareTexture, rhs.SunGlareTexture);

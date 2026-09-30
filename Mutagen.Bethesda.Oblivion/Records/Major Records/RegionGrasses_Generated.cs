@@ -810,7 +810,7 @@ namespace Mutagen.Bethesda.Oblivion
             RegionGrasses.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Grasses = item.Grasses.CollectionEqualsHelper(
+            ret.Grasses = item.Grasses.ListEqualsMask(
                 rhs.Grasses,
                 (l, r) => object.Equals(l, r),
                 include);

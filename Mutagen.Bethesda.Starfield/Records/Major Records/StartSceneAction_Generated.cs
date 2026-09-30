@@ -871,9 +871,9 @@ namespace Mutagen.Bethesda.Starfield
             StartSceneAction.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.StartScenes = item.StartScenes.CollectionEqualsHelper(
+            ret.StartScenes = item.StartScenes.ListEqualsMask(
                 rhs.StartScenes,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.HTID = item.HTID == rhs.HTID;
             base.FillEqualsMask(item, rhs, ret, include);

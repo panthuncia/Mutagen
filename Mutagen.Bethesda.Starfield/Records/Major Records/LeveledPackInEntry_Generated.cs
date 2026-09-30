@@ -1065,9 +1065,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.Count = item.Count == rhs.Count;
             ret.ChanceNone = item.ChanceNone.Equals(rhs.ChanceNone);
             ret.Unused2 = item.Unused2 == rhs.Unused2;
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

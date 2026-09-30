@@ -870,9 +870,9 @@ namespace Mutagen.Bethesda.Starfield
             SurfaceTreePatternSwapInfoComponentData.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Data = item.Data.CollectionEqualsHelper(
+            ret.Data = item.Data.ListEqualsMask(
                 rhs.Data,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Unknown = MemoryExtensions.SequenceEqual(item.Unknown.Span, rhs.Unknown.Span);
         }

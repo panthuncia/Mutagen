@@ -1216,9 +1216,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.Name = object.Equals(item.Name, rhs.Name);
             ret.Description = object.Equals(item.Description, rhs.Description);
             ret.InventoryImage = string.Equals(item.InventoryImage, rhs.InventoryImage);
-            ret.Properties = item.Properties.CollectionEqualsHelper(
+            ret.Properties = item.Properties.ListEqualsMask(
                 rhs.Properties,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Unknown = item.Unknown == rhs.Unknown;
             base.FillEqualsMask(item, rhs, ret, include);

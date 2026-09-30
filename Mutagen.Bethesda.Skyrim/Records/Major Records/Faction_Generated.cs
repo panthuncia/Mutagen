@@ -1819,9 +1819,9 @@ namespace Mutagen.Bethesda.Skyrim
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Name = object.Equals(item.Name, rhs.Name);
-            ret.Relations = item.Relations.CollectionEqualsHelper(
+            ret.Relations = item.Relations.ListEqualsMask(
                 rhs.Relations,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Flags = item.Flags == rhs.Flags;
             ret.ExteriorJailMarker = item.ExteriorJailMarker.Equals(rhs.ExteriorJailMarker);
@@ -1835,9 +1835,9 @@ namespace Mutagen.Bethesda.Skyrim
                 rhs.CrimeValues,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Ranks = item.Ranks.CollectionEqualsHelper(
+            ret.Ranks = item.Ranks.ListEqualsMask(
                 rhs.Ranks,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.VendorBuySellList = item.VendorBuySellList.Equals(rhs.VendorBuySellList);
             ret.MerchantContainer = item.MerchantContainer.Equals(rhs.MerchantContainer);
@@ -1851,9 +1851,9 @@ namespace Mutagen.Bethesda.Skyrim
                 rhs.VendorLocation,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

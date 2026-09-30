@@ -1021,9 +1021,9 @@ namespace Mutagen.Bethesda.Starfield
             AmbienceSet.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Sounds = item.Sounds.CollectionEqualsHelper(
+            ret.Sounds = item.Sounds.ListEqualsMask(
                 rhs.Sounds,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.MergeBehavior = item.MergeBehavior == rhs.MergeBehavior;
             ret.WallaExterior = EqualsMaskHelper.EqualsHelper(

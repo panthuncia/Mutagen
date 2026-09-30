@@ -1461,7 +1461,7 @@ namespace Mutagen.Bethesda.Skyrim
                 rhs.Model,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.DNAMs = item.DNAMs.CollectionEqualsHelper(
+            ret.DNAMs = item.DNAMs.ListEqualsMask(
                 rhs.DNAMs,
                 (l, r) => MemoryExtensions.SequenceEqual(l.Span, r.Span),
                 include);

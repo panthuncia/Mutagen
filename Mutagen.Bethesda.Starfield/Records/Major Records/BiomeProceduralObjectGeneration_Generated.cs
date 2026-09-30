@@ -948,9 +948,9 @@ namespace Mutagen.Bethesda.Starfield
         {
             ret.ProceduralObjectGenerationMaskName = string.Equals(item.ProceduralObjectGenerationMaskName, rhs.ProceduralObjectGenerationMaskName);
             ret.BNAM = item.BNAM == rhs.BNAM;
-            ret.Objects = item.Objects.CollectionEqualsHelper(
+            ret.Objects = item.Objects.ListEqualsMask(
                 rhs.Objects,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Footprints = MaskItemExt.Factory(item.Footprints.GetEqualsMask(rhs.Footprints, include), include);
         }

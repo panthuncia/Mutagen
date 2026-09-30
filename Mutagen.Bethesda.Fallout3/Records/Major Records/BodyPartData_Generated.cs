@@ -1049,9 +1049,9 @@ namespace Mutagen.Bethesda.Fallout3
                 rhs.Model,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Parts = item.Parts.CollectionEqualsHelper(
+            ret.Parts = item.Parts.ListEqualsMask(
                 rhs.Parts,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Ragdoll = item.Ragdoll.Equals(rhs.Ragdoll);
             base.FillEqualsMask(item, rhs, ret, include);

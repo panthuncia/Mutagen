@@ -2073,21 +2073,21 @@ namespace Mutagen.Bethesda.Starfield
             Planet.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.MasterWorldspaces = item.MasterWorldspaces.CollectionEqualsHelper(
+            ret.MasterWorldspaces = item.MasterWorldspaces.ListEqualsMask(
                 rhs.MasterWorldspaces,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.AddedWorldspaces = item.AddedWorldspaces.CollectionEqualsHelper(
+            ret.AddedWorldspaces = item.AddedWorldspaces.ListEqualsMask(
                 rhs.AddedWorldspaces,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Biomes = item.Biomes.CollectionEqualsHelper(
+            ret.Biomes = item.Biomes.ListEqualsMask(
                 rhs.Biomes,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.SurfaceTree = item.SurfaceTree.Equals(rhs.SurfaceTree);
             ret.ScanWorldspaceMultiplier = item.ScanWorldspaceMultiplier.EqualsWithin(rhs.ScanWorldspaceMultiplier);

@@ -3884,9 +3884,9 @@ namespace Mutagen.Bethesda.Starfield
             Cell.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Name = object.Equals(item.Name, rhs.Name);
             ret.Flags = item.Flags == rhs.Flags;
@@ -3908,9 +3908,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.LightingTemplate = item.LightingTemplate.Equals(rhs.LightingTemplate);
             ret.WaterHeight = item.WaterHeight.EqualsWithin(rhs.WaterHeight);
             ret.XILS = item.XILS.EqualsWithin(rhs.XILS);
-            ret.XCLAs = item.XCLAs.CollectionEqualsHelper(
+            ret.XCLAs = item.XCLAs.ListEqualsMask(
                 rhs.XCLAs,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.WaterData = MemorySliceExt.SequenceEqual(item.WaterData, rhs.WaterData);
             ret.CellSkyRegion = item.CellSkyRegion.Equals(rhs.CellSkyRegion);
@@ -3922,9 +3922,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.Location = item.Location.Equals(rhs.Location);
             ret.Water = item.Water.Equals(rhs.Water);
             ret.WaterType = string.Equals(item.WaterType, rhs.WaterType);
-            ret.ShipBlueprintSnapLinks = item.ShipBlueprintSnapLinks.CollectionEqualsHelper(
+            ret.ShipBlueprintSnapLinks = item.ShipBlueprintSnapLinks.ListEqualsMask(
                 rhs.ShipBlueprintSnapLinks,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.WaterVelocity = EqualsMaskHelper.EqualsHelper(
                 item.WaterVelocity,
@@ -3939,34 +3939,34 @@ namespace Mutagen.Bethesda.Starfield
             ret.GlobalDirtLayerMaterial = string.Equals(item.GlobalDirtLayerMaterial, rhs.GlobalDirtLayerMaterial);
             ret.GlobalDirtLayerInheritBiomeLayer = item.GlobalDirtLayerInheritBiomeLayer == rhs.GlobalDirtLayerInheritBiomeLayer;
             ret.TimeOfDay = item.TimeOfDay.Equals(rhs.TimeOfDay);
-            ret.LinkedReferences = item.LinkedReferences.CollectionEqualsHelper(
+            ret.LinkedReferences = item.LinkedReferences.ListEqualsMask(
                 rhs.LinkedReferences,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.IsLinkedRefTransient = item.IsLinkedRefTransient == rhs.IsLinkedRefTransient;
             ret.EnvironmentMap = string.Equals(item.EnvironmentMap, rhs.EnvironmentMap);
-            ret.Traversals = item.Traversals.CollectionEqualsHelper(
+            ret.Traversals = item.Traversals.ListEqualsMask(
                 rhs.Traversals,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.NumTraversalFluffBytes = item.NumTraversalFluffBytes == rhs.NumTraversalFluffBytes;
-            ret.NavigationMeshes = item.NavigationMeshes.CollectionEqualsHelper(
+            ret.NavigationMeshes = item.NavigationMeshes.ListEqualsMask(
                 rhs.NavigationMeshes,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Timestamp = item.Timestamp == rhs.Timestamp;
             ret.UnknownGroupData = item.UnknownGroupData == rhs.UnknownGroupData;
             ret.PersistentTimestamp = item.PersistentTimestamp == rhs.PersistentTimestamp;
             ret.PersistentUnknownGroupData = item.PersistentUnknownGroupData == rhs.PersistentUnknownGroupData;
-            ret.Persistent = item.Persistent.CollectionEqualsHelper(
+            ret.Persistent = item.Persistent.ListEqualsMask(
                 rhs.Persistent,
-                (loqLhs, loqRhs) => (IMask<bool>)loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => (IMask<bool>)loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.TemporaryTimestamp = item.TemporaryTimestamp == rhs.TemporaryTimestamp;
             ret.TemporaryUnknownGroupData = item.TemporaryUnknownGroupData == rhs.TemporaryUnknownGroupData;
-            ret.Temporary = item.Temporary.CollectionEqualsHelper(
+            ret.Temporary = item.Temporary.ListEqualsMask(
                 rhs.Temporary,
-                (loqLhs, loqRhs) => (IMask<bool>)loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => (IMask<bool>)loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

@@ -800,7 +800,7 @@ namespace Mutagen.Bethesda.Fallout3
             NavmeshGridCell.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Triangles = item.Triangles.CollectionEqualsHelper(
+            ret.Triangles = item.Triangles.ListEqualsMask(
                 rhs.Triangles,
                 (l, r) => l == r,
                 include);

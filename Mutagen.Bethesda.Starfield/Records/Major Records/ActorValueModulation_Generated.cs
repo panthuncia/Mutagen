@@ -1278,16 +1278,16 @@ namespace Mutagen.Bethesda.Starfield
             ActorValueModulation.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Type = item.Type == rhs.Type;
             ret.YNAM = string.Equals(item.YNAM, rhs.YNAM);
             ret.TNAM = string.Equals(item.TNAM, rhs.TNAM);
-            ret.Entries = item.Entries.CollectionEqualsHelper(
+            ret.Entries = item.Entries.ListEqualsMask(
                 rhs.Entries,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.TextureType = item.TextureType == rhs.TextureType;
             ret.Parent = item.Parent.Equals(rhs.Parent);

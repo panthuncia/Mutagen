@@ -801,9 +801,9 @@ namespace Mutagen.Bethesda.Fallout4
             ScriptEntryStructs.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Members = item.Members.CollectionEqualsHelper(
+            ret.Members = item.Members.ListEqualsMask(
                 rhs.Members,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

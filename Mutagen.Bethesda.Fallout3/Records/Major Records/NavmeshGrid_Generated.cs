@@ -1006,9 +1006,9 @@ namespace Mutagen.Bethesda.Fallout3
             ret.MaxDistanceY = item.MaxDistanceY.EqualsWithin(rhs.MaxDistanceY);
             ret.Min = item.Min.Equals(rhs.Min);
             ret.Max = item.Max.Equals(rhs.Max);
-            ret.Cells = item.Cells.CollectionEqualsHelper(
+            ret.Cells = item.Cells.ListEqualsMask(
                 rhs.Cells,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

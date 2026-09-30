@@ -1240,7 +1240,7 @@ namespace Mutagen.Bethesda.Starfield
             ret.FadeDuration = item.FadeDuration.EqualsWithin(rhs.FadeDuration);
             ret.VNAM = MemorySliceExt.SequenceEqual(item.VNAM, rhs.VNAM);
             ret.UNAM = MemorySliceExt.SequenceEqual(item.UNAM, rhs.UNAM);
-            ret.Tracks = item.Tracks.CollectionEqualsHelper(
+            ret.Tracks = item.Tracks.ListEqualsMask(
                 rhs.Tracks,
                 (l, r) => object.Equals(l, r),
                 include);

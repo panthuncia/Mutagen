@@ -3755,7 +3755,7 @@ namespace Mutagen.Bethesda.Fallout4
                 include);
             ret.LightingTemplate = item.LightingTemplate.Equals(rhs.LightingTemplate);
             ret.WaterHeight = item.WaterHeight.EqualsWithin(rhs.WaterHeight);
-            ret.Regions = item.Regions.CollectionEqualsHelper(
+            ret.Regions = item.Regions.ListEqualsMask(
                 rhs.Regions,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -3786,40 +3786,40 @@ namespace Mutagen.Bethesda.Fallout4
             ret.Music = item.Music.Equals(rhs.Music);
             ret.ImageSpace = item.ImageSpace.Equals(rhs.ImageSpace);
             ret.GodRays = item.GodRays.Equals(rhs.GodRays);
-            ret.PhysicsReferences = item.PhysicsReferences.CollectionEqualsHelper(
+            ret.PhysicsReferences = item.PhysicsReferences.ListEqualsMask(
                 rhs.PhysicsReferences,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.CombinedMeshes = item.CombinedMeshes.CollectionEqualsHelper(
+            ret.CombinedMeshes = item.CombinedMeshes.ListEqualsMask(
                 rhs.CombinedMeshes,
                 (l, r) => l == r,
                 include);
-            ret.CombinedMeshReferences = item.CombinedMeshReferences.CollectionEqualsHelper(
+            ret.CombinedMeshReferences = item.CombinedMeshReferences.ListEqualsMask(
                 rhs.CombinedMeshReferences,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Landscape = EqualsMaskHelper.EqualsHelper(
                 item.Landscape,
                 rhs.Landscape,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.NavigationMeshes = item.NavigationMeshes.CollectionEqualsHelper(
+            ret.NavigationMeshes = item.NavigationMeshes.ListEqualsMask(
                 rhs.NavigationMeshes,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Timestamp = item.Timestamp == rhs.Timestamp;
             ret.UnknownGroupData = item.UnknownGroupData == rhs.UnknownGroupData;
             ret.PersistentTimestamp = item.PersistentTimestamp == rhs.PersistentTimestamp;
             ret.PersistentUnknownGroupData = item.PersistentUnknownGroupData == rhs.PersistentUnknownGroupData;
-            ret.Persistent = item.Persistent.CollectionEqualsHelper(
+            ret.Persistent = item.Persistent.ListEqualsMask(
                 rhs.Persistent,
-                (loqLhs, loqRhs) => (IMask<bool>)loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => (IMask<bool>)loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.TemporaryTimestamp = item.TemporaryTimestamp == rhs.TemporaryTimestamp;
             ret.TemporaryUnknownGroupData = item.TemporaryUnknownGroupData == rhs.TemporaryUnknownGroupData;
-            ret.Temporary = item.Temporary.CollectionEqualsHelper(
+            ret.Temporary = item.Temporary.ListEqualsMask(
                 rhs.Temporary,
-                (loqLhs, loqRhs) => (IMask<bool>)loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => (IMask<bool>)loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

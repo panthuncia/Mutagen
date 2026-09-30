@@ -796,7 +796,7 @@ namespace Mutagen.Bethesda.Starfield
             QualityUpgradeComponent.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.QualityMods = item.QualityMods.CollectionEqualsHelper(
+            ret.QualityMods = item.QualityMods.ListEqualsMask(
                 rhs.QualityMods,
                 (l, r) => object.Equals(l, r),
                 include);

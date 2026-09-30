@@ -702,19 +702,19 @@ namespace Mutagen.Bethesda.Starfield
             ret.LevelMin = item.LevelMin == rhs.LevelMin;
             ret.LevelMax = item.LevelMax == rhs.LevelMax;
             ret.Default = item.Default == rhs.Default;
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.MinLevelForRanks = item.MinLevelForRanks == rhs.MinLevelForRanks;
             ret.AltLevelsPerTier = item.AltLevelsPerTier == rhs.AltLevelsPerTier;
-            ret.Includes = item.Includes.CollectionEqualsHelper(
+            ret.Includes = item.Includes.ListEqualsMask(
                 rhs.Includes,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Properties = item.Properties.CollectionEqualsHelper(
+            ret.Properties = item.Properties.ListEqualsMask(
                 rhs.Properties,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

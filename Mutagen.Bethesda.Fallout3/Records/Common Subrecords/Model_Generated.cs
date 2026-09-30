@@ -990,9 +990,9 @@ namespace Mutagen.Bethesda.Fallout3
             ret.File = string.Equals(item.File, rhs.File);
             ret.MODB = item.MODB.EqualsWithin(rhs.MODB);
             ret.Hashes = MemorySliceExt.SequenceEqual(item.Hashes, rhs.Hashes);
-            ret.AlternateTextures = item.AlternateTextures.CollectionEqualsHelper(
+            ret.AlternateTextures = item.AlternateTextures.ListEqualsMask(
                 rhs.AlternateTextures,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.FaceGenFlags = item.FaceGenFlags == rhs.FaceGenFlags;
         }

@@ -1007,9 +1007,9 @@ namespace Mutagen.Bethesda.Starfield
             LayeredMaterialSwap.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.REFL = MemorySliceExt.SequenceEqual(item.REFL, rhs.REFL);
             base.FillEqualsMask(item, rhs, ret, include);

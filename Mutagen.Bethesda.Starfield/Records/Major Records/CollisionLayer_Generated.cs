@@ -1264,7 +1264,7 @@ namespace Mutagen.Bethesda.Starfield
             ret.DebugColor = item.DebugColor.ColorOnlyEquals(rhs.DebugColor);
             ret.Flags = item.Flags == rhs.Flags;
             ret.Name = string.Equals(item.Name, rhs.Name);
-            ret.CollidesWith = item.CollidesWith.CollectionEqualsHelper(
+            ret.CollidesWith = item.CollidesWith.ListEqualsMask(
                 rhs.CollidesWith,
                 (l, r) => object.Equals(l, r),
                 include);

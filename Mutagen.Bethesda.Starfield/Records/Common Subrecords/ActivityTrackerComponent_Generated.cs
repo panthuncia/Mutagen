@@ -805,9 +805,9 @@ namespace Mutagen.Bethesda.Starfield
             ActivityTrackerComponent.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Activities = item.Activities.CollectionEqualsHelper(
+            ret.Activities = item.Activities.ListEqualsMask(
                 rhs.Activities,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

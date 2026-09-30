@@ -3075,7 +3075,7 @@ namespace Mutagen.Bethesda.Fallout4
                 include);
             ret.Name = object.Equals(item.Name, rhs.Name);
             ret.MenuDisplayObject = item.MenuDisplayObject.Equals(rhs.MenuDisplayObject);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -3116,18 +3116,18 @@ namespace Mutagen.Bethesda.Fallout4
             ret.CastingSoundLevel = item.CastingSoundLevel == rhs.CastingSoundLevel;
             ret.ScriptEffectAIScore = item.ScriptEffectAIScore.EqualsWithin(rhs.ScriptEffectAIScore);
             ret.ScriptEffectAIDelayTime = item.ScriptEffectAIDelayTime.EqualsWithin(rhs.ScriptEffectAIDelayTime);
-            ret.CounterEffects = item.CounterEffects.CollectionEqualsHelper(
+            ret.CounterEffects = item.CounterEffects.ListEqualsMask(
                 rhs.CounterEffects,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Sounds = item.Sounds.CollectionEqualsHelper(
+            ret.Sounds = item.Sounds.ListEqualsMask(
                 rhs.Sounds,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Description = object.Equals(item.Description, rhs.Description);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

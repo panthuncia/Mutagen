@@ -930,9 +930,9 @@ namespace Mutagen.Bethesda.Starfield
             SecondaryDamageList.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Damages = item.Damages.CollectionEqualsHelper(
+            ret.Damages = item.Damages.ListEqualsMask(
                 rhs.Damages,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

@@ -1177,14 +1177,14 @@ namespace Mutagen.Bethesda.Starfield
             CameraPath.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Parent = item.Parent.Equals(rhs.Parent);
             ret.Previous = item.Previous.Equals(rhs.Previous);
             ret.Zoom = item.Zoom == rhs.Zoom;
-            ret.Shots = item.Shots.CollectionEqualsHelper(
+            ret.Shots = item.Shots.ListEqualsMask(
                 rhs.Shots,
                 (l, r) => object.Equals(l, r),
                 include);

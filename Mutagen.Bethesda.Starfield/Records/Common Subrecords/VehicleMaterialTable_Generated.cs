@@ -1089,17 +1089,17 @@ namespace Mutagen.Bethesda.Starfield
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.MaterialID = item.MaterialID == rhs.MaterialID;
-            ret.AudioRules = item.AudioRules.CollectionEqualsHelper(
+            ret.AudioRules = item.AudioRules.ListEqualsMask(
                 rhs.AudioRules,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.VfxRules = item.VfxRules.CollectionEqualsHelper(
+            ret.VfxRules = item.VfxRules.ListEqualsMask(
                 rhs.VfxRules,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.FrictionRules = item.FrictionRules.CollectionEqualsHelper(
+            ret.FrictionRules = item.FrictionRules.ListEqualsMask(
                 rhs.FrictionRules,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

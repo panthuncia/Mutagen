@@ -1142,12 +1142,12 @@ namespace Mutagen.Bethesda.Oblivion
                 rhs.Model,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.AnimationGroupSection = item.AnimationGroupSection == rhs.AnimationGroupSection;
-            ret.RelatedIdleAnimations = item.RelatedIdleAnimations.CollectionEqualsHelper(
+            ret.RelatedIdleAnimations = item.RelatedIdleAnimations.ListEqualsMask(
                 rhs.RelatedIdleAnimations,
                 (l, r) => object.Equals(l, r),
                 include);

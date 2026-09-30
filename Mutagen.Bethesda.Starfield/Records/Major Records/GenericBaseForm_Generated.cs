@@ -1588,19 +1588,19 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.ObjectPaletteDefaults,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Filter = string.Equals(item.Filter, rhs.Filter);
             ret.Template = item.Template.Equals(rhs.Template);
-            ret.ObjectTemplateInstanceData = item.ObjectTemplateInstanceData.CollectionEqualsHelper(
+            ret.ObjectTemplateInstanceData = item.ObjectTemplateInstanceData.ListEqualsMask(
                 rhs.ObjectTemplateInstanceData,
                 (l, r) => string.Equals(l, r),
                 include);
-            ret.ObjectTemplates = item.ObjectTemplates.CollectionEqualsHelper(
+            ret.ObjectTemplates = item.ObjectTemplates.ListEqualsMask(
                 rhs.ObjectTemplates,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.NavmeshGeometry = EqualsMaskHelper.EqualsHelper(
                 item.NavmeshGeometry,

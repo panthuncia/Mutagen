@@ -1097,9 +1097,9 @@ namespace Mutagen.Bethesda.Starfield
                 include);
             ret.HNAM = MaskItemExt.Factory(item.HNAM.GetEqualsMask(rhs.HNAM, include), include);
             ret.DialogueTargetActor = item.DialogueTargetActor == rhs.DialogueTargetActor;
-            ret.DialogueList = item.DialogueList.CollectionEqualsHelper(
+            ret.DialogueList = item.DialogueList.ListEqualsMask(
                 rhs.DialogueList,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.ATTR = MemorySliceExt.SequenceEqual(item.ATTR, rhs.ATTR);
             ret.ACBS = item.ACBS == rhs.ACBS;

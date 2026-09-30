@@ -890,9 +890,9 @@ namespace Mutagen.Bethesda.Fallout3
         {
             ret.Rank = item.Rank == rhs.Rank;
             ret.Priority = item.Priority == rhs.Priority;
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

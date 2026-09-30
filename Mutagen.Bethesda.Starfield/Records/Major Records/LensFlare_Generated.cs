@@ -1204,9 +1204,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.ExposureInfluence = item.ExposureInfluence.EqualsWithin(rhs.ExposureInfluence);
             ret.MinEV100 = item.MinEV100.EqualsWithin(rhs.MinEV100);
             ret.MaxEV100 = item.MaxEV100.EqualsWithin(rhs.MaxEV100);
-            ret.Sprites = item.Sprites.CollectionEqualsHelper(
+            ret.Sprites = item.Sprites.ListEqualsMask(
                 rhs.Sprites,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

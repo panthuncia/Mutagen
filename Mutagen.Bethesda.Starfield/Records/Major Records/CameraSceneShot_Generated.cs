@@ -1316,9 +1316,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.AIDT = item.AIDT == rhs.AIDT;
             ret.MPCD = item.MPCD == rhs.MPCD;
             ret.VNAM = item.VNAM == rhs.VNAM;
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

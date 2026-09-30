@@ -1285,9 +1285,9 @@ namespace Mutagen.Bethesda.Starfield
         {
             ret.Flags = item.Flags == rhs.Flags;
             ret.ContextNotes = string.Equals(item.ContextNotes, rhs.ContextNotes);
-            ret.ActorReactions = item.ActorReactions.CollectionEqualsHelper(
+            ret.ActorReactions = item.ActorReactions.ListEqualsMask(
                 rhs.ActorReactions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.ActorValue = item.ActorValue.Equals(rhs.ActorValue);
             ret.EventSize = item.EventSize.Equals(rhs.EventSize);

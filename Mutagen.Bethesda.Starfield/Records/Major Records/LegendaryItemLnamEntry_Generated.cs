@@ -904,9 +904,9 @@ namespace Mutagen.Bethesda.Starfield
         {
             ret.Slot = item.Slot == rhs.Slot;
             ret.Unknown = item.Unknown == rhs.Unknown;
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

@@ -1394,23 +1394,23 @@ namespace Mutagen.Bethesda.Fallout4
             FootstepSet.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.WalkFootsteps = item.WalkFootsteps.CollectionEqualsHelper(
+            ret.WalkFootsteps = item.WalkFootsteps.ListEqualsMask(
                 rhs.WalkFootsteps,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.RunFootsteps = item.RunFootsteps.CollectionEqualsHelper(
+            ret.RunFootsteps = item.RunFootsteps.ListEqualsMask(
                 rhs.RunFootsteps,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.SprintFootsteps = item.SprintFootsteps.CollectionEqualsHelper(
+            ret.SprintFootsteps = item.SprintFootsteps.ListEqualsMask(
                 rhs.SprintFootsteps,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.SneakFootsteps = item.SneakFootsteps.CollectionEqualsHelper(
+            ret.SneakFootsteps = item.SneakFootsteps.ListEqualsMask(
                 rhs.SneakFootsteps,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.SwimFootsteps = item.SwimFootsteps.CollectionEqualsHelper(
+            ret.SwimFootsteps = item.SwimFootsteps.ListEqualsMask(
                 rhs.SwimFootsteps,
                 (l, r) => object.Equals(l, r),
                 include);

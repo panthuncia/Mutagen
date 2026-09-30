@@ -1073,13 +1073,13 @@ namespace Mutagen.Bethesda.Skyrim
             ret.Versioning = item.Versioning == rhs.Versioning;
             ret.ExtraBindDataVersion = item.ExtraBindDataVersion == rhs.ExtraBindDataVersion;
             ret.FileName = string.Equals(item.FileName, rhs.FileName);
-            ret.Fragments = item.Fragments.CollectionEqualsHelper(
+            ret.Fragments = item.Fragments.ListEqualsMask(
                 rhs.Fragments,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Aliases = item.Aliases.CollectionEqualsHelper(
+            ret.Aliases = item.Aliases.ListEqualsMask(
                 rhs.Aliases,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

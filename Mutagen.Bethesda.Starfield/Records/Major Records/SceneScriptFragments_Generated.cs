@@ -792,9 +792,9 @@ namespace Mutagen.Bethesda.Starfield
             SceneScriptFragments.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.PhaseFragments = item.PhaseFragments.CollectionEqualsHelper(
+            ret.PhaseFragments = item.PhaseFragments.ListEqualsMask(
                 rhs.PhaseFragments,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

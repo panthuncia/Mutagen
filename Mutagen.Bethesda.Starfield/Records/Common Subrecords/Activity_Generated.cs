@@ -1077,9 +1077,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.ATAN = string.Equals(item.ATAN, rhs.ATAN);
             ret.Name = object.Equals(item.Name, rhs.Name);
             ret.Description = object.Equals(item.Description, rhs.Description);
-            ret.ProgressionEvalutor = item.ProgressionEvalutor.CollectionEqualsHelper(
+            ret.ProgressionEvalutor = item.ProgressionEvalutor.ListEqualsMask(
                 rhs.ProgressionEvalutor,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.ANAM = string.Equals(item.ANAM, rhs.ANAM);
             ret.Configuration = string.Equals(item.Configuration, rhs.Configuration);

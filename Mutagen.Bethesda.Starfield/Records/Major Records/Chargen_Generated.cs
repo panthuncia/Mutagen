@@ -1224,21 +1224,21 @@ namespace Mutagen.Bethesda.Starfield
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.NNAM = MemorySliceExt.SequenceEqual(item.NNAM, rhs.NNAM);
-            ret.RacePresets = item.RacePresets.CollectionEqualsHelper(
+            ret.RacePresets = item.RacePresets.ListEqualsMask(
                 rhs.RacePresets,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.MorphGroups = item.MorphGroups.CollectionEqualsHelper(
+            ret.MorphGroups = item.MorphGroups.ListEqualsMask(
                 rhs.MorphGroups,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.FaceMorphs = item.FaceMorphs.CollectionEqualsHelper(
+            ret.FaceMorphs = item.FaceMorphs.ListEqualsMask(
                 rhs.FaceMorphs,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.FaceDials = item.FaceDials.CollectionEqualsHelper(
+            ret.FaceDials = item.FaceDials.ListEqualsMask(
                 rhs.FaceDials,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

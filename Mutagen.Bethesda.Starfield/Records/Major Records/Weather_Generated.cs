@@ -4360,7 +4360,7 @@ namespace Mutagen.Bethesda.Starfield
             Weather.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -4368,9 +4368,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.Precipitation = item.Precipitation.Equals(rhs.Precipitation);
             ret.CameraEffect = item.CameraEffect.Equals(rhs.CameraEffect);
             ret.CLDC = MemorySliceExt.SequenceEqual(item.CLDC, rhs.CLDC);
-            ret.Clouds = item.Clouds.CollectionEqualsHelper(
+            ret.Clouds = item.Clouds.ListEqualsMask(
                 rhs.Clouds,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.SkyUpperColor = MaskItemExt.Factory(item.SkyUpperColor.GetEqualsMask(rhs.SkyUpperColor, include), include);
             ret.FogNearColor = MaskItemExt.Factory(item.FogNearColor.GetEqualsMask(rhs.FogNearColor, include), include);
@@ -4431,7 +4431,7 @@ namespace Mutagen.Bethesda.Starfield
             ret.WindDirection = item.WindDirection.EqualsWithin(rhs.WindDirection);
             ret.WindDirectionRange = item.WindDirectionRange.EqualsWithin(rhs.WindDirectionRange);
             ret.WindTurbulance = item.WindTurbulance.Equals(rhs.WindTurbulance);
-            ret.SkyStatics = item.SkyStatics.CollectionEqualsHelper(
+            ret.SkyStatics = item.SkyStatics.ListEqualsMask(
                 rhs.SkyStatics,
                 (l, r) => object.Equals(l, r),
                 include);

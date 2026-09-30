@@ -2097,17 +2097,17 @@ namespace Mutagen.Bethesda.Fallout4
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Flags = item.Flags == rhs.Flags;
-            ret.Phases = item.Phases.CollectionEqualsHelper(
+            ret.Phases = item.Phases.ListEqualsMask(
                 rhs.Phases,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Actors = item.Actors.CollectionEqualsHelper(
+            ret.Actors = item.Actors.ListEqualsMask(
                 rhs.Actors,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Actions = item.Actions.CollectionEqualsHelper(
+            ret.Actions = item.Actions.ListEqualsMask(
                 rhs.Actions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Unused = EqualsMaskHelper.EqualsHelper(
                 item.Unused,
@@ -2125,13 +2125,13 @@ namespace Mutagen.Bethesda.Fallout4
             ret.CameraDistanceOverride = item.CameraDistanceOverride.EqualsWithin(rhs.CameraDistanceOverride);
             ret.DialogueDistanceOverride = item.DialogueDistanceOverride.EqualsWithin(rhs.DialogueDistanceOverride);
             ret.FovOverride = item.FovOverride.EqualsWithin(rhs.FovOverride);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.SetParentQuestStage = EqualsMaskHelper.EqualsHelper(
                 item.SetParentQuestStage,

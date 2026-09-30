@@ -1118,16 +1118,16 @@ namespace Mutagen.Bethesda.Starfield
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Flags = item.Flags == rhs.Flags;
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Note = string.Equals(item.Note, rhs.Note);
             ret.ScriptFlagComment = string.Equals(item.ScriptFlagComment, rhs.ScriptFlagComment);
             ret.Entry = object.Equals(item.Entry, rhs.Entry);
-            ret.StageCompleteDatas = item.StageCompleteDatas.CollectionEqualsHelper(
+            ret.StageCompleteDatas = item.StageCompleteDatas.ListEqualsMask(
                 rhs.StageCompleteDatas,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

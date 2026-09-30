@@ -2338,31 +2338,31 @@ namespace Mutagen.Bethesda.Oblivion
                 rhs.Configuration,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Factions = item.Factions.CollectionEqualsHelper(
+            ret.Factions = item.Factions.ListEqualsMask(
                 rhs.Factions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.DeathItem = item.DeathItem.Equals(rhs.DeathItem);
             ret.Race = item.Race.Equals(rhs.Race);
-            ret.Spells = item.Spells.CollectionEqualsHelper(
+            ret.Spells = item.Spells.ListEqualsMask(
                 rhs.Spells,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.Script = item.Script.Equals(rhs.Script);
-            ret.Items = item.Items.CollectionEqualsHelper(
+            ret.Items = item.Items.ListEqualsMask(
                 rhs.Items,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.AIData = EqualsMaskHelper.EqualsHelper(
                 item.AIData,
                 rhs.AIData,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.AIPackages = item.AIPackages.CollectionEqualsHelper(
+            ret.AIPackages = item.AIPackages.ListEqualsMask(
                 rhs.AIPackages,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Animations = item.Animations.CollectionEqualsHelper(
+            ret.Animations = item.Animations.ListEqualsMask(
                 rhs.Animations,
                 (l, r) => string.Equals(l, r),
                 include);
@@ -2374,7 +2374,7 @@ namespace Mutagen.Bethesda.Oblivion
                 include);
             ret.Hair = item.Hair.Equals(rhs.Hair);
             ret.HairLength = item.HairLength.EqualsWithin(rhs.HairLength);
-            ret.Eyes = item.Eyes.CollectionEqualsHelper(
+            ret.Eyes = item.Eyes.ListEqualsMask(
                 rhs.Eyes,
                 (l, r) => object.Equals(l, r),
                 include);

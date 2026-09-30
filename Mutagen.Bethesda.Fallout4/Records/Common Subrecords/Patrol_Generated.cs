@@ -958,9 +958,9 @@ namespace Mutagen.Bethesda.Fallout4
         {
             ret.IdleTime = item.IdleTime.EqualsWithin(rhs.IdleTime);
             ret.Idle = item.Idle.Equals(rhs.Idle);
-            ret.Topics = item.Topics.CollectionEqualsHelper(
+            ret.Topics = item.Topics.ListEqualsMask(
                 rhs.Topics,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Topic = item.Topic.Equals(rhs.Topic);
         }

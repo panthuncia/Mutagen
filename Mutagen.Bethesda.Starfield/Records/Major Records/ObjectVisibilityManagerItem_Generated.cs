@@ -867,9 +867,9 @@ namespace Mutagen.Bethesda.Starfield
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Object = item.Object.Equals(rhs.Object);
-            ret.ObjectBounds = item.ObjectBounds.CollectionEqualsHelper(
+            ret.ObjectBounds = item.ObjectBounds.ListEqualsMask(
                 rhs.ObjectBounds,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

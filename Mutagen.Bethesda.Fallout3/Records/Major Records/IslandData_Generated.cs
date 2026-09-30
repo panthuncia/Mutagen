@@ -997,11 +997,11 @@ namespace Mutagen.Bethesda.Fallout3
         {
             ret.Min = item.Min.Equals(rhs.Min);
             ret.Max = item.Max.Equals(rhs.Max);
-            ret.Vertices = item.Vertices.CollectionEqualsHelper(
+            ret.Vertices = item.Vertices.ListEqualsMask(
                 rhs.Vertices,
                 (l, r) => l.Equals(r),
                 include);
-            ret.Triangles = item.Triangles.CollectionEqualsHelper(
+            ret.Triangles = item.Triangles.ListEqualsMask(
                 rhs.Triangles,
                 (l, r) => l.Equals(r),
                 include);

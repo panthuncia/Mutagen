@@ -1023,9 +1023,9 @@ namespace Mutagen.Bethesda.Skyrim
             ret.FileName = object.Equals(item.FileName, rhs.FileName);
             ret.MaskType = item.MaskType == rhs.MaskType;
             ret.PresetDefault = item.PresetDefault.Equals(rhs.PresetDefault);
-            ret.Presets = item.Presets.CollectionEqualsHelper(
+            ret.Presets = item.Presets.ListEqualsMask(
                 rhs.Presets,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

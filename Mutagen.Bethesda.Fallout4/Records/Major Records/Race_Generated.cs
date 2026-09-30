@@ -5613,7 +5613,7 @@ namespace Mutagen.Bethesda.Fallout4
             ret.AnimationSound = item.AnimationSound.Equals(rhs.AnimationSound);
             ret.Name = object.Equals(item.Name, rhs.Name);
             ret.Description = object.Equals(item.Description, rhs.Description);
-            ret.ActorEffect = item.ActorEffect.CollectionEqualsHelper(
+            ret.ActorEffect = item.ActorEffect.ListEqualsMask(
                 rhs.ActorEffect,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -5623,15 +5623,15 @@ namespace Mutagen.Bethesda.Fallout4
                 rhs.BipedBodyTemplate,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Properties = item.Properties.CollectionEqualsHelper(
+            ret.Properties = item.Properties.ListEqualsMask(
                 rhs.Properties,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.AttachParentSlots = item.AttachParentSlots.CollectionEqualsHelper(
+            ret.AttachParentSlots = item.AttachParentSlots.ListEqualsMask(
                 rhs.AttachParentSlots,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -5685,7 +5685,7 @@ namespace Mutagen.Bethesda.Fallout4
                 rhs: rhs.SkeletalModel,
                 maskGetter: (l, r, i) => EqualsMaskHelper.EqualsHelper(l, r, (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl), i),
                 include: include);
-            ret.MovementTypeNames = item.MovementTypeNames.CollectionEqualsHelper(
+            ret.MovementTypeNames = item.MovementTypeNames.ListEqualsMask(
                 rhs.MovementTypeNames,
                 (l, r) => string.Equals(l, r),
                 include);
@@ -5701,9 +5701,9 @@ namespace Mutagen.Bethesda.Fallout4
             ret.FacegenMainClamp = item.FacegenMainClamp.EqualsWithin(rhs.FacegenMainClamp);
             ret.FacegenFaceClamp = item.FacegenFaceClamp.EqualsWithin(rhs.FacegenFaceClamp);
             ret.AttackRace = item.AttackRace.Equals(rhs.AttackRace);
-            ret.Attacks = item.Attacks.CollectionEqualsHelper(
+            ret.Attacks = item.Attacks.ListEqualsMask(
                 rhs.Attacks,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.BodyData = GenderedItem.EqualityMaskHelper(
                 lhs: item.BodyData,
@@ -5728,14 +5728,14 @@ namespace Mutagen.Bethesda.Fallout4
                 rhs: rhs.BipedObjects,
                 maskGetter: (k, l, r) => l.GetEqualsMask(r, include),
                 include: include);
-            ret.MovementDataOverrides = item.MovementDataOverrides.CollectionEqualsHelper(
+            ret.MovementDataOverrides = item.MovementDataOverrides.ListEqualsMask(
                 rhs.MovementDataOverrides,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.EquipmentFlags = item.EquipmentFlags == rhs.EquipmentFlags;
-            ret.EquipmentSlots = item.EquipmentSlots.CollectionEqualsHelper(
+            ret.EquipmentSlots = item.EquipmentSlots.ListEqualsMask(
                 rhs.EquipmentSlots,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.UnarmedWeapon = item.UnarmedWeapon.Equals(rhs.UnarmedWeapon);
             ret.FaceFxPhonemes = MaskItemExt.Factory(item.FaceFxPhonemes.GetEqualsMask(rhs.FaceFxPhonemes, include), include);
@@ -5752,15 +5752,15 @@ namespace Mutagen.Bethesda.Fallout4
             ret.ArmorRace = item.ArmorRace.Equals(rhs.ArmorRace);
             ret.SubgraphTemplateRace = item.SubgraphTemplateRace.Equals(rhs.SubgraphTemplateRace);
             ret.SubgraphAdditiveRace = item.SubgraphAdditiveRace.Equals(rhs.SubgraphAdditiveRace);
-            ret.Subgraphs = item.Subgraphs.CollectionEqualsHelper(
+            ret.Subgraphs = item.Subgraphs.ListEqualsMask(
                 rhs.Subgraphs,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.IdleChatterTimeMin = item.IdleChatterTimeMin.EqualsWithin(rhs.IdleChatterTimeMin);
             ret.IdleChatterTimeMax = item.IdleChatterTimeMax.EqualsWithin(rhs.IdleChatterTimeMax);
-            ret.MorphValues = item.MorphValues.CollectionEqualsHelper(
+            ret.MorphValues = item.MorphValues.ListEqualsMask(
                 rhs.MorphValues,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.MorphValuesLastIndex = item.MorphValuesLastIndex == rhs.MorphValuesLastIndex;
             ret.HairColorLookupTexture = string.Equals(item.HairColorLookupTexture, rhs.HairColorLookupTexture);

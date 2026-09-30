@@ -1431,9 +1431,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.NAM7 = item.NAM7 == rhs.NAM7;
             ret.NAM8 = item.NAM8 == rhs.NAM8;
             ret.NAM9 = item.NAM9 == rhs.NAM9;
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

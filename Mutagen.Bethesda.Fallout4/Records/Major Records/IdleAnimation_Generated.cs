@@ -1355,13 +1355,13 @@ namespace Mutagen.Bethesda.Fallout4
             IdleAnimation.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.BehaviorGraph = string.Equals(item.BehaviorGraph, rhs.BehaviorGraph);
             ret.AnimationEvent = string.Equals(item.AnimationEvent, rhs.AnimationEvent);
-            ret.RelatedIdles = item.RelatedIdles.CollectionEqualsHelper(
+            ret.RelatedIdles = item.RelatedIdles.ListEqualsMask(
                 rhs.RelatedIdles,
                 (l, r) => object.Equals(l, r),
                 include);

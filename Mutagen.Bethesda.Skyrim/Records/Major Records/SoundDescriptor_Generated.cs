@@ -1539,15 +1539,15 @@ namespace Mutagen.Bethesda.Skyrim
             ret.Type = item.Type == rhs.Type;
             ret.Category = item.Category.Equals(rhs.Category);
             ret.AlternateSoundFor = item.AlternateSoundFor.Equals(rhs.AlternateSoundFor);
-            ret.SoundFiles = item.SoundFiles.CollectionEqualsHelper(
+            ret.SoundFiles = item.SoundFiles.ListEqualsMask(
                 rhs.SoundFiles,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.OutputModel = item.OutputModel.Equals(rhs.OutputModel);
             ret.String = object.Equals(item.String, rhs.String);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.LoopAndRumble = EqualsMaskHelper.EqualsHelper(
                 item.LoopAndRumble,

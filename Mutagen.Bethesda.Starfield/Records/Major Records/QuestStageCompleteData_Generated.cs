@@ -930,9 +930,9 @@ namespace Mutagen.Bethesda.Starfield
         {
             ret.QSRD = MemorySliceExt.SequenceEqual(item.QSRD, rhs.QSRD);
             ret.AffinityChange = item.AffinityChange.Equals(rhs.AffinityChange);
-            ret.RewardDatas = item.RewardDatas.CollectionEqualsHelper(
+            ret.RewardDatas = item.RewardDatas.ListEqualsMask(
                 rhs.RewardDatas,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

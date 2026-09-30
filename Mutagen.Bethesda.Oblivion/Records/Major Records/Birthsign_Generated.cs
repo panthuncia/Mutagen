@@ -1062,7 +1062,7 @@ namespace Mutagen.Bethesda.Oblivion
             ret.Name = string.Equals(item.Name, rhs.Name);
             ret.Icon = string.Equals(item.Icon, rhs.Icon);
             ret.Description = string.Equals(item.Description, rhs.Description);
-            ret.Spells = item.Spells.CollectionEqualsHelper(
+            ret.Spells = item.Spells.ListEqualsMask(
                 rhs.Spells,
                 (l, r) => object.Equals(l, r),
                 include);

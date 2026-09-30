@@ -839,9 +839,9 @@ namespace Mutagen.Bethesda.Starfield
             BlockHeightAdjustmentComponent.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.SurfaceBlocks = item.SurfaceBlocks.Array2dEqualsHelper(
+            ret.SurfaceBlocks = item.SurfaceBlocks.Array2dEqualsMask(
                 rhs.SurfaceBlocks,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.DATA = MemorySliceExt.SequenceEqual(item.DATA, rhs.DATA);
             base.FillEqualsMask(item, rhs, ret, include);
@@ -934,7 +934,7 @@ namespace Mutagen.Bethesda.Starfield
             if (!base.Equals((IAComponentGetter)lhs, (IAComponentGetter)rhs, equalsMask)) return false;
             if ((equalsMask?.GetShouldTranslate((int)BlockHeightAdjustmentComponent_FieldIndex.SurfaceBlocks) ?? true))
             {
-                if (!lhs.SurfaceBlocks.SequenceEqual(rhs.SurfaceBlocks, (l, r) => ((BlockHeightAdjustmentComponentItemCommon)((IBlockHeightAdjustmentComponentItemGetter)l.Value).CommonInstance()!).Equals(l.Value, r.Value, equalsMask?.GetSubCrystal((int)BlockHeightAdjustmentComponent_FieldIndex.SurfaceBlocks)))) return false;
+                if (!lhs.SurfaceBlocks.Array2dEquals(rhs.SurfaceBlocks, (l, r) => ((BlockHeightAdjustmentComponentItemCommon)((IBlockHeightAdjustmentComponentItemGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)BlockHeightAdjustmentComponent_FieldIndex.SurfaceBlocks)))) return false;
             }
             if ((equalsMask?.GetShouldTranslate((int)BlockHeightAdjustmentComponent_FieldIndex.DATA) ?? true))
             {

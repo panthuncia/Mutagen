@@ -1504,9 +1504,9 @@ namespace Mutagen.Bethesda.Starfield
             AimOpticalSightMarker.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.ActivateSightOnSightedMode = item.ActivateSightOnSightedMode == rhs.ActivateSightOnSightedMode;
             ret.OpticalSightAttachNode = string.Equals(item.OpticalSightAttachNode, rhs.OpticalSightAttachNode);

@@ -814,9 +814,9 @@ namespace Mutagen.Bethesda.Skyrim
             RegionGrasses.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Grasses = item.Grasses.CollectionEqualsHelper(
+            ret.Grasses = item.Grasses.ListEqualsMask(
                 rhs.Grasses,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

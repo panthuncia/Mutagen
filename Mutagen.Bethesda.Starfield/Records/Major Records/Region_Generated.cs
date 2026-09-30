@@ -1072,9 +1072,9 @@ namespace Mutagen.Bethesda.Starfield
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.MapColor = item.MapColor.ColorOnlyEquals(rhs.MapColor);
-            ret.RegionAreas = item.RegionAreas.CollectionEqualsHelper(
+            ret.RegionAreas = item.RegionAreas.ListEqualsMask(
                 rhs.RegionAreas,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Weather = EqualsMaskHelper.EqualsHelper(
                 item.Weather,

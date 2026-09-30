@@ -2376,15 +2376,15 @@ namespace Mutagen.Bethesda.Oblivion
                 rhs.Model,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Items = item.Items.CollectionEqualsHelper(
+            ret.Items = item.Items.ListEqualsMask(
                 rhs.Items,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Spells = item.Spells.CollectionEqualsHelper(
+            ret.Spells = item.Spells.ListEqualsMask(
                 rhs.Spells,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Models = item.Models.CollectionEqualsHelper(
+            ret.Models = item.Models.ListEqualsMask(
                 rhs.Models,
                 (l, r) => string.Equals(l, r),
                 include);
@@ -2394,9 +2394,9 @@ namespace Mutagen.Bethesda.Oblivion
                 rhs.Configuration,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Factions = item.Factions.CollectionEqualsHelper(
+            ret.Factions = item.Factions.ListEqualsMask(
                 rhs.Factions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.DeathItem = item.DeathItem.Equals(rhs.DeathItem);
             ret.Script = item.Script.Equals(rhs.Script);
@@ -2405,11 +2405,11 @@ namespace Mutagen.Bethesda.Oblivion
                 rhs.AIData,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.AIPackages = item.AIPackages.CollectionEqualsHelper(
+            ret.AIPackages = item.AIPackages.ListEqualsMask(
                 rhs.AIPackages,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Animations = item.Animations.CollectionEqualsHelper(
+            ret.Animations = item.Animations.ListEqualsMask(
                 rhs.Animations,
                 (l, r) => string.Equals(l, r),
                 include);
@@ -2426,9 +2426,9 @@ namespace Mutagen.Bethesda.Oblivion
             ret.BloodSpray = string.Equals(item.BloodSpray, rhs.BloodSpray);
             ret.BloodDecal = string.Equals(item.BloodDecal, rhs.BloodDecal);
             ret.InheritsSoundFrom = item.InheritsSoundFrom.Equals(rhs.InheritsSoundFrom);
-            ret.Sounds = item.Sounds.CollectionEqualsHelper(
+            ret.Sounds = item.Sounds.ListEqualsMask(
                 rhs.Sounds,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

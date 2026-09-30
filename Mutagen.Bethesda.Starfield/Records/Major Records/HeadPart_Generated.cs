@@ -1756,9 +1756,9 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.VirtualMachineAdapter,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Name = object.Equals(item.Name, rhs.Name);
             ret.Model = EqualsMaskHelper.EqualsHelper(
@@ -1768,7 +1768,7 @@ namespace Mutagen.Bethesda.Starfield
                 include);
             ret.Flags = item.Flags == rhs.Flags;
             ret.Type = item.Type == rhs.Type;
-            ret.ExtraParts = item.ExtraParts.CollectionEqualsHelper(
+            ret.ExtraParts = item.ExtraParts.ListEqualsMask(
                 rhs.ExtraParts,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -1777,9 +1777,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.TextureSet = item.TextureSet.Equals(rhs.TextureSet);
             ret.ValidRaces = item.ValidRaces.Equals(rhs.ValidRaces);
             ret.Morph = item.Morph.Equals(rhs.Morph);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

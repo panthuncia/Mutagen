@@ -1384,13 +1384,13 @@ namespace Mutagen.Bethesda.Fallout4
             ret.MaxCount = item.MaxCount == rhs.MaxCount;
             ret.Flags = item.Flags == rhs.Flags;
             ret.Global = item.Global.Equals(rhs.Global);
-            ret.Entries = item.Entries.CollectionEqualsHelper(
+            ret.Entries = item.Entries.ListEqualsMask(
                 rhs.Entries,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.FilterKeywordChances = item.FilterKeywordChances.CollectionEqualsHelper(
+            ret.FilterKeywordChances = item.FilterKeywordChances.ListEqualsMask(
                 rhs.FilterKeywordChances,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.EpicLootChance = item.EpicLootChance.Equals(rhs.EpicLootChance);
             ret.OverrideName = object.Equals(item.OverrideName, rhs.OverrideName);

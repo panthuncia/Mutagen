@@ -939,13 +939,13 @@ namespace Mutagen.Bethesda.Skyrim
             PreferredPathing.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.NavmeshSets = item.NavmeshSets.CollectionEqualsHelper(
+            ret.NavmeshSets = item.NavmeshSets.ListEqualsMask(
                 rhs.NavmeshSets,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.NavmeshTree = item.NavmeshTree.CollectionEqualsHelper(
+            ret.NavmeshTree = item.NavmeshTree.ListEqualsMask(
                 rhs.NavmeshTree,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

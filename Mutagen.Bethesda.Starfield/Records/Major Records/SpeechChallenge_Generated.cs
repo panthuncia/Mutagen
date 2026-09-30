@@ -1398,11 +1398,11 @@ namespace Mutagen.Bethesda.Starfield
             ret.SRAN = item.SRAN == rhs.SRAN;
             ret.SGEN = item.SGEN == rhs.SGEN;
             ret.Quest = item.Quest.Equals(rhs.Quest);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Scenes = item.Scenes.CollectionEqualsHelper(
+            ret.Scenes = item.Scenes.ListEqualsMask(
                 rhs.Scenes,
                 (l, r) => object.Equals(l, r),
                 include);

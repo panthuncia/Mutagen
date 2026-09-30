@@ -4940,7 +4940,7 @@ namespace Mutagen.Bethesda.Skyrim
         {
             ret.Name = object.Equals(item.Name, rhs.Name);
             ret.Description = object.Equals(item.Description, rhs.Description);
-            ret.ActorEffect = item.ActorEffect.CollectionEqualsHelper(
+            ret.ActorEffect = item.ActorEffect.ListEqualsMask(
                 rhs.ActorEffect,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -4950,7 +4950,7 @@ namespace Mutagen.Bethesda.Skyrim
                 rhs.BodyTemplate,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -4999,7 +4999,7 @@ namespace Mutagen.Bethesda.Skyrim
                 rhs: rhs.SkeletalModel,
                 maskGetter: (l, r, i) => EqualsMaskHelper.EqualsHelper(l, r, (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl), i),
                 include: include);
-            ret.MovementTypeNames = item.MovementTypeNames.CollectionEqualsHelper(
+            ret.MovementTypeNames = item.MovementTypeNames.ListEqualsMask(
                 rhs.MovementTypeNames,
                 (l, r) => string.Equals(l, r),
                 include);
@@ -5020,20 +5020,20 @@ namespace Mutagen.Bethesda.Skyrim
             ret.FacegenMainClamp = item.FacegenMainClamp.EqualsWithin(rhs.FacegenMainClamp);
             ret.FacegenFaceClamp = item.FacegenFaceClamp.EqualsWithin(rhs.FacegenFaceClamp);
             ret.AttackRace = item.AttackRace.Equals(rhs.AttackRace);
-            ret.Attacks = item.Attacks.CollectionEqualsHelper(
+            ret.Attacks = item.Attacks.ListEqualsMask(
                 rhs.Attacks,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.BodyData = GenderedItem.EqualityMaskHelper(
                 lhs: item.BodyData,
                 rhs: rhs.BodyData,
                 maskGetter: (l, r, i) => EqualsMaskHelper.EqualsHelper(l, r, (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl), i),
                 include: include);
-            ret.Hairs = item.Hairs.CollectionEqualsHelper(
+            ret.Hairs = item.Hairs.ListEqualsMask(
                 rhs.Hairs,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Eyes = item.Eyes.CollectionEqualsHelper(
+            ret.Eyes = item.Eyes.ListEqualsMask(
                 rhs.Eyes,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -5052,12 +5052,12 @@ namespace Mutagen.Bethesda.Skyrim
                 lhs: item.BipedObjectNames,
                 rhs: rhs.BipedObjectNames,
                 include: include);
-            ret.MovementTypes = item.MovementTypes.CollectionEqualsHelper(
+            ret.MovementTypes = item.MovementTypes.ListEqualsMask(
                 rhs.MovementTypes,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.EquipmentFlags = item.EquipmentFlags == rhs.EquipmentFlags;
-            ret.EquipmentSlots = item.EquipmentSlots.CollectionEqualsHelper(
+            ret.EquipmentSlots = item.EquipmentSlots.ListEqualsMask(
                 rhs.EquipmentSlots,
                 (l, r) => object.Equals(l, r),
                 include);

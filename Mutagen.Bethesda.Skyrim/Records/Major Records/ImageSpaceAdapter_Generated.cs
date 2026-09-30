@@ -7269,225 +7269,225 @@ namespace Mutagen.Bethesda.Skyrim
             ret.RadialBlurUseTarget = item.RadialBlurUseTarget == rhs.RadialBlurUseTarget;
             ret.RadialBlurCenter = item.RadialBlurCenter.Equals(rhs.RadialBlurCenter);
             ret.DepthOfFieldFlags = item.DepthOfFieldFlags == rhs.DepthOfFieldFlags;
-            ret.BlurRadius = item.BlurRadius.CollectionEqualsHelper(
+            ret.BlurRadius = item.BlurRadius.ListEqualsMask(
                 rhs.BlurRadius,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.DoubleVisionStrength = item.DoubleVisionStrength.CollectionEqualsHelper(
+            ret.DoubleVisionStrength = item.DoubleVisionStrength.ListEqualsMask(
                 rhs.DoubleVisionStrength,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.TintColor = item.TintColor.CollectionEqualsHelper(
+            ret.TintColor = item.TintColor.ListEqualsMask(
                 rhs.TintColor,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.FadeColor = item.FadeColor.CollectionEqualsHelper(
+            ret.FadeColor = item.FadeColor.ListEqualsMask(
                 rhs.FadeColor,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.RadialBlurStrength = item.RadialBlurStrength.CollectionEqualsHelper(
+            ret.RadialBlurStrength = item.RadialBlurStrength.ListEqualsMask(
                 rhs.RadialBlurStrength,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.RadialBlurRampUp = item.RadialBlurRampUp.CollectionEqualsHelper(
+            ret.RadialBlurRampUp = item.RadialBlurRampUp.ListEqualsMask(
                 rhs.RadialBlurRampUp,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.RadialBlurStart = item.RadialBlurStart.CollectionEqualsHelper(
+            ret.RadialBlurStart = item.RadialBlurStart.ListEqualsMask(
                 rhs.RadialBlurStart,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.RadialBlurRampDown = item.RadialBlurRampDown.CollectionEqualsHelper(
+            ret.RadialBlurRampDown = item.RadialBlurRampDown.ListEqualsMask(
                 rhs.RadialBlurRampDown,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.RadialBlurDownStart = item.RadialBlurDownStart.CollectionEqualsHelper(
+            ret.RadialBlurDownStart = item.RadialBlurDownStart.ListEqualsMask(
                 rhs.RadialBlurDownStart,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.DepthOfFieldStrength = item.DepthOfFieldStrength.CollectionEqualsHelper(
+            ret.DepthOfFieldStrength = item.DepthOfFieldStrength.ListEqualsMask(
                 rhs.DepthOfFieldStrength,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.DepthOfFieldDistance = item.DepthOfFieldDistance.CollectionEqualsHelper(
+            ret.DepthOfFieldDistance = item.DepthOfFieldDistance.ListEqualsMask(
                 rhs.DepthOfFieldDistance,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.DepthOfFieldRange = item.DepthOfFieldRange.CollectionEqualsHelper(
+            ret.DepthOfFieldRange = item.DepthOfFieldRange.ListEqualsMask(
                 rhs.DepthOfFieldRange,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.MotionBlurStrength = item.MotionBlurStrength.CollectionEqualsHelper(
+            ret.MotionBlurStrength = item.MotionBlurStrength.ListEqualsMask(
                 rhs.MotionBlurStrength,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.HdrEyeAdaptSpeedMult = item.HdrEyeAdaptSpeedMult.CollectionEqualsHelper(
+            ret.HdrEyeAdaptSpeedMult = item.HdrEyeAdaptSpeedMult.ListEqualsMask(
                 rhs.HdrEyeAdaptSpeedMult,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.HdrEyeAdaptSpeedAdd = item.HdrEyeAdaptSpeedAdd.CollectionEqualsHelper(
+            ret.HdrEyeAdaptSpeedAdd = item.HdrEyeAdaptSpeedAdd.ListEqualsMask(
                 rhs.HdrEyeAdaptSpeedAdd,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.HdrBloomBlurRadiusMult = item.HdrBloomBlurRadiusMult.CollectionEqualsHelper(
+            ret.HdrBloomBlurRadiusMult = item.HdrBloomBlurRadiusMult.ListEqualsMask(
                 rhs.HdrBloomBlurRadiusMult,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.HdrBloomBlurRadiusAdd = item.HdrBloomBlurRadiusAdd.CollectionEqualsHelper(
+            ret.HdrBloomBlurRadiusAdd = item.HdrBloomBlurRadiusAdd.ListEqualsMask(
                 rhs.HdrBloomBlurRadiusAdd,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.HdrBloomThresholdMult = item.HdrBloomThresholdMult.CollectionEqualsHelper(
+            ret.HdrBloomThresholdMult = item.HdrBloomThresholdMult.ListEqualsMask(
                 rhs.HdrBloomThresholdMult,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.HdrBloomThresholdAdd = item.HdrBloomThresholdAdd.CollectionEqualsHelper(
+            ret.HdrBloomThresholdAdd = item.HdrBloomThresholdAdd.ListEqualsMask(
                 rhs.HdrBloomThresholdAdd,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.HdrBloomScaleMult = item.HdrBloomScaleMult.CollectionEqualsHelper(
+            ret.HdrBloomScaleMult = item.HdrBloomScaleMult.ListEqualsMask(
                 rhs.HdrBloomScaleMult,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.HdrBloomScaleAdd = item.HdrBloomScaleAdd.CollectionEqualsHelper(
+            ret.HdrBloomScaleAdd = item.HdrBloomScaleAdd.ListEqualsMask(
                 rhs.HdrBloomScaleAdd,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.HdrTargetLumMinMult = item.HdrTargetLumMinMult.CollectionEqualsHelper(
+            ret.HdrTargetLumMinMult = item.HdrTargetLumMinMult.ListEqualsMask(
                 rhs.HdrTargetLumMinMult,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.HdrTargetLumMinAdd = item.HdrTargetLumMinAdd.CollectionEqualsHelper(
+            ret.HdrTargetLumMinAdd = item.HdrTargetLumMinAdd.ListEqualsMask(
                 rhs.HdrTargetLumMinAdd,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.HdrTargetLumMaxMult = item.HdrTargetLumMaxMult.CollectionEqualsHelper(
+            ret.HdrTargetLumMaxMult = item.HdrTargetLumMaxMult.ListEqualsMask(
                 rhs.HdrTargetLumMaxMult,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.HdrTargetLumMaxAdd = item.HdrTargetLumMaxAdd.CollectionEqualsHelper(
+            ret.HdrTargetLumMaxAdd = item.HdrTargetLumMaxAdd.ListEqualsMask(
                 rhs.HdrTargetLumMaxAdd,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.HdrSunlightScaleMult = item.HdrSunlightScaleMult.CollectionEqualsHelper(
+            ret.HdrSunlightScaleMult = item.HdrSunlightScaleMult.ListEqualsMask(
                 rhs.HdrSunlightScaleMult,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.HdrSunlightScaleAdd = item.HdrSunlightScaleAdd.CollectionEqualsHelper(
+            ret.HdrSunlightScaleAdd = item.HdrSunlightScaleAdd.ListEqualsMask(
                 rhs.HdrSunlightScaleAdd,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.HdrSkyScaleMult = item.HdrSkyScaleMult.CollectionEqualsHelper(
+            ret.HdrSkyScaleMult = item.HdrSkyScaleMult.ListEqualsMask(
                 rhs.HdrSkyScaleMult,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.HdrSkyScaleAdd = item.HdrSkyScaleAdd.CollectionEqualsHelper(
+            ret.HdrSkyScaleAdd = item.HdrSkyScaleAdd.ListEqualsMask(
                 rhs.HdrSkyScaleAdd,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Unknown08 = item.Unknown08.CollectionEqualsHelper(
+            ret.Unknown08 = item.Unknown08.ListEqualsMask(
                 rhs.Unknown08,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Unknown48 = item.Unknown48.CollectionEqualsHelper(
+            ret.Unknown48 = item.Unknown48.ListEqualsMask(
                 rhs.Unknown48,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Unknown09 = item.Unknown09.CollectionEqualsHelper(
+            ret.Unknown09 = item.Unknown09.ListEqualsMask(
                 rhs.Unknown09,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Unknown49 = item.Unknown49.CollectionEqualsHelper(
+            ret.Unknown49 = item.Unknown49.ListEqualsMask(
                 rhs.Unknown49,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Unknown0A = item.Unknown0A.CollectionEqualsHelper(
+            ret.Unknown0A = item.Unknown0A.ListEqualsMask(
                 rhs.Unknown0A,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Unknown4A = item.Unknown4A.CollectionEqualsHelper(
+            ret.Unknown4A = item.Unknown4A.ListEqualsMask(
                 rhs.Unknown4A,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Unknown0B = item.Unknown0B.CollectionEqualsHelper(
+            ret.Unknown0B = item.Unknown0B.ListEqualsMask(
                 rhs.Unknown0B,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Unknown4B = item.Unknown4B.CollectionEqualsHelper(
+            ret.Unknown4B = item.Unknown4B.ListEqualsMask(
                 rhs.Unknown4B,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Unknown0C = item.Unknown0C.CollectionEqualsHelper(
+            ret.Unknown0C = item.Unknown0C.ListEqualsMask(
                 rhs.Unknown0C,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Unknown4C = item.Unknown4C.CollectionEqualsHelper(
+            ret.Unknown4C = item.Unknown4C.ListEqualsMask(
                 rhs.Unknown4C,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Unknown0D = item.Unknown0D.CollectionEqualsHelper(
+            ret.Unknown0D = item.Unknown0D.ListEqualsMask(
                 rhs.Unknown0D,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Unknown4D = item.Unknown4D.CollectionEqualsHelper(
+            ret.Unknown4D = item.Unknown4D.ListEqualsMask(
                 rhs.Unknown4D,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Unknown0E = item.Unknown0E.CollectionEqualsHelper(
+            ret.Unknown0E = item.Unknown0E.ListEqualsMask(
                 rhs.Unknown0E,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Unknown4E = item.Unknown4E.CollectionEqualsHelper(
+            ret.Unknown4E = item.Unknown4E.ListEqualsMask(
                 rhs.Unknown4E,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Unknown0F = item.Unknown0F.CollectionEqualsHelper(
+            ret.Unknown0F = item.Unknown0F.ListEqualsMask(
                 rhs.Unknown0F,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Unknown4F = item.Unknown4F.CollectionEqualsHelper(
+            ret.Unknown4F = item.Unknown4F.ListEqualsMask(
                 rhs.Unknown4F,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Unknown10 = item.Unknown10.CollectionEqualsHelper(
+            ret.Unknown10 = item.Unknown10.ListEqualsMask(
                 rhs.Unknown10,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Unknown50 = item.Unknown50.CollectionEqualsHelper(
+            ret.Unknown50 = item.Unknown50.ListEqualsMask(
                 rhs.Unknown50,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.CinematicSaturationMult = item.CinematicSaturationMult.CollectionEqualsHelper(
+            ret.CinematicSaturationMult = item.CinematicSaturationMult.ListEqualsMask(
                 rhs.CinematicSaturationMult,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.CinematicSaturationAdd = item.CinematicSaturationAdd.CollectionEqualsHelper(
+            ret.CinematicSaturationAdd = item.CinematicSaturationAdd.ListEqualsMask(
                 rhs.CinematicSaturationAdd,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.CinematicBrightnessMult = item.CinematicBrightnessMult.CollectionEqualsHelper(
+            ret.CinematicBrightnessMult = item.CinematicBrightnessMult.ListEqualsMask(
                 rhs.CinematicBrightnessMult,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.CinematicBrightnessAdd = item.CinematicBrightnessAdd.CollectionEqualsHelper(
+            ret.CinematicBrightnessAdd = item.CinematicBrightnessAdd.ListEqualsMask(
                 rhs.CinematicBrightnessAdd,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.CinematicContrastMult = item.CinematicContrastMult.CollectionEqualsHelper(
+            ret.CinematicContrastMult = item.CinematicContrastMult.ListEqualsMask(
                 rhs.CinematicContrastMult,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.CinematicContrastAdd = item.CinematicContrastAdd.CollectionEqualsHelper(
+            ret.CinematicContrastAdd = item.CinematicContrastAdd.ListEqualsMask(
                 rhs.CinematicContrastAdd,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Unknown14 = item.Unknown14.CollectionEqualsHelper(
+            ret.Unknown14 = item.Unknown14.ListEqualsMask(
                 rhs.Unknown14,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Unknown54 = item.Unknown54.CollectionEqualsHelper(
+            ret.Unknown54 = item.Unknown54.ListEqualsMask(
                 rhs.Unknown54,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

@@ -1361,7 +1361,7 @@ namespace Mutagen.Bethesda.Fallout3
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Flags = item.Flags == rhs.Flags;
-            ret.VertexNormals = item.VertexNormals.Array2dEqualsHelper(
+            ret.VertexNormals = item.VertexNormals.Array2dEqualsMask(
                 rhs.VertexNormals,
                 (l, r) => l.Equals(r),
                 include);
@@ -1370,15 +1370,15 @@ namespace Mutagen.Bethesda.Fallout3
                 rhs.VertexHeightMap,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.VertexColors = item.VertexColors.Array2dEqualsHelper(
+            ret.VertexColors = item.VertexColors.Array2dEqualsMask(
                 rhs.VertexColors,
                 (l, r) => l.Equals(r),
                 include);
-            ret.Layers = item.Layers.CollectionEqualsHelper(
+            ret.Layers = item.Layers.ListEqualsMask(
                 rhs.Layers,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Textures = item.Textures.CollectionEqualsHelper(
+            ret.Textures = item.Textures.ListEqualsMask(
                 rhs.Textures,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -1558,7 +1558,7 @@ namespace Mutagen.Bethesda.Fallout3
             }
             if ((equalsMask?.GetShouldTranslate((int)Landscape_FieldIndex.VertexNormals) ?? true))
             {
-                if (!lhs.VertexNormals.SequenceEqualNullable(rhs.VertexNormals)) return false;
+                if (!lhs.VertexNormals.Array2dEquals(rhs.VertexNormals)) return false;
             }
             if ((equalsMask?.GetShouldTranslate((int)Landscape_FieldIndex.VertexHeightMap) ?? true))
             {
@@ -1570,7 +1570,7 @@ namespace Mutagen.Bethesda.Fallout3
             }
             if ((equalsMask?.GetShouldTranslate((int)Landscape_FieldIndex.VertexColors) ?? true))
             {
-                if (!lhs.VertexColors.SequenceEqualNullable(rhs.VertexColors)) return false;
+                if (!lhs.VertexColors.Array2dEquals(rhs.VertexColors)) return false;
             }
             if ((equalsMask?.GetShouldTranslate((int)Landscape_FieldIndex.Layers) ?? true))
             {

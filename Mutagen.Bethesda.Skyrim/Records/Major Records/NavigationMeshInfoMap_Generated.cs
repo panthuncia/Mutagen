@@ -1067,9 +1067,9 @@ namespace Mutagen.Bethesda.Skyrim
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.NavMeshVersion = item.NavMeshVersion == rhs.NavMeshVersion;
-            ret.MapInfos = item.MapInfos.CollectionEqualsHelper(
+            ret.MapInfos = item.MapInfos.ListEqualsMask(
                 rhs.MapInfos,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.PreferredPathing = EqualsMaskHelper.EqualsHelper(
                 item.PreferredPathing,

@@ -2957,47 +2957,47 @@ namespace Mutagen.Bethesda.Fallout4
             ret.Event = item.Event == rhs.Event;
             ret.Location = item.Location.Equals(rhs.Location);
             ret.QuestCompletionXp = item.QuestCompletionXp.Equals(rhs.QuestCompletionXp);
-            ret.TextDisplayGlobals = item.TextDisplayGlobals.CollectionEqualsHelper(
+            ret.TextDisplayGlobals = item.TextDisplayGlobals.ListEqualsMask(
                 rhs.TextDisplayGlobals,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.Filter = string.Equals(item.Filter, rhs.Filter);
-            ret.DialogConditions = item.DialogConditions.CollectionEqualsHelper(
+            ret.DialogConditions = item.DialogConditions.ListEqualsMask(
                 rhs.DialogConditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.UnusedConditions = item.UnusedConditions.CollectionEqualsHelper(
+            ret.UnusedConditions = item.UnusedConditions.ListEqualsMask(
                 rhs.UnusedConditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Stages = item.Stages.CollectionEqualsHelper(
+            ret.Stages = item.Stages.ListEqualsMask(
                 rhs.Stages,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Objectives = item.Objectives.CollectionEqualsHelper(
+            ret.Objectives = item.Objectives.ListEqualsMask(
                 rhs.Objectives,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Aliases = item.Aliases.CollectionEqualsHelper(
+            ret.Aliases = item.Aliases.ListEqualsMask(
                 rhs.Aliases,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Description = object.Equals(item.Description, rhs.Description);
             ret.QuestGroup = item.QuestGroup.Equals(rhs.QuestGroup);
             ret.SwfFile = string.Equals(item.SwfFile, rhs.SwfFile);
             ret.Timestamp = item.Timestamp == rhs.Timestamp;
             ret.Unknown = item.Unknown == rhs.Unknown;
-            ret.DialogBranches = item.DialogBranches.CollectionEqualsHelper(
+            ret.DialogBranches = item.DialogBranches.ListEqualsMask(
                 rhs.DialogBranches,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.DialogTopics = item.DialogTopics.CollectionEqualsHelper(
+            ret.DialogTopics = item.DialogTopics.ListEqualsMask(
                 rhs.DialogTopics,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Scenes = item.Scenes.CollectionEqualsHelper(
+            ret.Scenes = item.Scenes.ListEqualsMask(
                 rhs.Scenes,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

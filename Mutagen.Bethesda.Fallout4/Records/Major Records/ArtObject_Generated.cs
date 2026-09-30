@@ -1185,7 +1185,7 @@ namespace Mutagen.Bethesda.Fallout4
         {
             ret.ObjectBounds = MaskItemExt.Factory(item.ObjectBounds.GetEqualsMask(rhs.ObjectBounds, include), include);
             ret.PreviewTransform = item.PreviewTransform.Equals(rhs.PreviewTransform);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);

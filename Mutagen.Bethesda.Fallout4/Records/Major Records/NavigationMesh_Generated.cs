@@ -1093,9 +1093,9 @@ namespace Mutagen.Bethesda.Fallout4
                 include);
             ret.ONAM = item.ONAM.Equals(rhs.ONAM);
             ret.NNAM = MemorySliceExt.SequenceEqual(item.NNAM, rhs.NNAM);
-            ret.PreCutMapEntries = item.PreCutMapEntries.CollectionEqualsHelper(
+            ret.PreCutMapEntries = item.PreCutMapEntries.ListEqualsMask(
                 rhs.PreCutMapEntries,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

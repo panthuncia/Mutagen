@@ -2121,9 +2121,9 @@ namespace Mutagen.Bethesda.Oblivion
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.SubCellsTimestamp = item.SubCellsTimestamp == rhs.SubCellsTimestamp;
-            ret.SubCells = item.SubCells.CollectionEqualsHelper(
+            ret.SubCells = item.SubCells.ListEqualsMask(
                 rhs.SubCells,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

@@ -2430,9 +2430,9 @@ namespace Mutagen.Bethesda.Starfield
                 include);
             ret.XALG = item.XALG == rhs.XALG;
             ret.DefaultLayer = item.DefaultLayer.Equals(rhs.DefaultLayer);
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Name = object.Equals(item.Name, rhs.Name);
             ret.Model = EqualsMaskHelper.EqualsHelper(
@@ -2463,9 +2463,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.SpawnSpreadDegrees = item.SpawnSpreadDegrees.EqualsWithin(rhs.SpawnSpreadDegrees);
             ret.Count = item.Count == rhs.Count;
             ret.Duration = item.Duration.EqualsWithin(rhs.Duration);
-            ret.DamageType = item.DamageType.CollectionEqualsHelper(
+            ret.DamageType = item.DamageType.ListEqualsMask(
                 rhs.DamageType,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

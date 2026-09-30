@@ -3621,9 +3621,9 @@ namespace Mutagen.Bethesda.Fallout3
             ret.RCLR = MemorySliceExt.SequenceEqual(item.RCLR, rhs.RCLR);
             ret.Base = item.Base.Equals(rhs.Base);
             ret.EncounterZone = item.EncounterZone.Equals(rhs.EncounterZone);
-            ret.RagdollData = item.RagdollData.CollectionEqualsHelper(
+            ret.RagdollData = item.RagdollData.ListEqualsMask(
                 rhs.RagdollData,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.RagdollBipedRotation = item.RagdollBipedRotation.Equals(rhs.RagdollBipedRotation);
             ret.Primitive = EqualsMaskHelper.EqualsHelper(
@@ -3680,17 +3680,17 @@ namespace Mutagen.Bethesda.Fallout3
             ret.Charge = item.Charge.EqualsWithin(rhs.Charge);
             ret.AmmoType = item.AmmoType.Equals(rhs.AmmoType);
             ret.AmmoCount = item.AmmoCount == rhs.AmmoCount;
-            ret.Reflections = item.Reflections.CollectionEqualsHelper(
+            ret.Reflections = item.Reflections.ListEqualsMask(
                 rhs.Reflections,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.LitWater = item.LitWater.CollectionEqualsHelper(
+            ret.LitWater = item.LitWater.ListEqualsMask(
                 rhs.LitWater,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.LinkedDecals = item.LinkedDecals.CollectionEqualsHelper(
+            ret.LinkedDecals = item.LinkedDecals.ListEqualsMask(
                 rhs.LinkedDecals,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.LinkedReference = item.LinkedReference.Equals(rhs.LinkedReference);
             ret.LinkedReferenceColor = EqualsMaskHelper.EqualsHelper(
@@ -3719,9 +3719,9 @@ namespace Mutagen.Bethesda.Fallout3
                 rhs.NavigationDoorLink,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Portals = item.Portals.CollectionEqualsHelper(
+            ret.Portals = item.Portals.ListEqualsMask(
                 rhs.Portals,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.PortalRoom = EqualsMaskHelper.EqualsHelper(
                 item.PortalRoom,
@@ -3730,7 +3730,7 @@ namespace Mutagen.Bethesda.Fallout3
                 include);
             ret.SpeedTreeSeed = item.SpeedTreeSeed == rhs.SpeedTreeSeed;
             ret.Unknown = item.Unknown == rhs.Unknown;
-            ret.LinkedRooms = item.LinkedRooms.CollectionEqualsHelper(
+            ret.LinkedRooms = item.LinkedRooms.ListEqualsMask(
                 rhs.LinkedRooms,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -3744,7 +3744,7 @@ namespace Mutagen.Bethesda.Fallout3
                 rhs.LinkedOcclusionPlanes,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.DistantLodData = item.DistantLodData.CollectionEqualsHelper(
+            ret.DistantLodData = item.DistantLodData.ListEqualsMask(
                 rhs.DistantLodData,
                 (l, r) => l.EqualsWithin(r),
                 include);

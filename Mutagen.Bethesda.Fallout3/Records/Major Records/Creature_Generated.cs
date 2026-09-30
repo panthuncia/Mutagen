@@ -2832,21 +2832,21 @@ namespace Mutagen.Bethesda.Fallout3
                 rhs.Model,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.ActorEffects = item.ActorEffects.CollectionEqualsHelper(
+            ret.ActorEffects = item.ActorEffects.ListEqualsMask(
                 rhs.ActorEffects,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.UnarmedAttackEffect = item.UnarmedAttackEffect.Equals(rhs.UnarmedAttackEffect);
             ret.UnarmedAttackAnimation = item.UnarmedAttackAnimation == rhs.UnarmedAttackAnimation;
-            ret.Models = item.Models.CollectionEqualsHelper(
+            ret.Models = item.Models.ListEqualsMask(
                 rhs.Models,
                 (l, r) => string.Equals(l, r),
                 include);
             ret.ModelListTextures = MemorySliceExt.SequenceEqual(item.ModelListTextures, rhs.ModelListTextures);
             ret.Configuration = MaskItemExt.Factory(item.Configuration.GetEqualsMask(rhs.Configuration, include), include);
-            ret.Factions = item.Factions.CollectionEqualsHelper(
+            ret.Factions = item.Factions.ListEqualsMask(
                 rhs.Factions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.DeathItem = item.DeathItem.Equals(rhs.DeathItem);
             ret.Voice = item.Voice.Equals(rhs.Voice);
@@ -2857,16 +2857,16 @@ namespace Mutagen.Bethesda.Fallout3
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Script = item.Script.Equals(rhs.Script);
-            ret.Items = item.Items.CollectionEqualsHelper(
+            ret.Items = item.Items.ListEqualsMask(
                 rhs.Items,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.AIData = MaskItemExt.Factory(item.AIData.GetEqualsMask(rhs.AIData, include), include);
-            ret.Packages = item.Packages.CollectionEqualsHelper(
+            ret.Packages = item.Packages.ListEqualsMask(
                 rhs.Packages,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Animations = item.Animations.CollectionEqualsHelper(
+            ret.Animations = item.Animations.ListEqualsMask(
                 rhs.Animations,
                 (l, r) => string.Equals(l, r),
                 include);
@@ -2880,9 +2880,9 @@ namespace Mutagen.Bethesda.Fallout3
             ret.ImpactMaterialType = item.ImpactMaterialType == rhs.ImpactMaterialType;
             ret.SoundLevel = item.SoundLevel == rhs.SoundLevel;
             ret.InheritsSoundFrom = item.InheritsSoundFrom.Equals(rhs.InheritsSoundFrom);
-            ret.SoundTypes = item.SoundTypes.CollectionEqualsHelper(
+            ret.SoundTypes = item.SoundTypes.ListEqualsMask(
                 rhs.SoundTypes,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.ImpactDataset = item.ImpactDataset.Equals(rhs.ImpactDataset);
             ret.MeleeWeaponList = item.MeleeWeaponList.Equals(rhs.MeleeWeaponList);

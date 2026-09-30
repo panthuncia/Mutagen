@@ -1170,7 +1170,7 @@ namespace Mutagen.Bethesda.Skyrim
             ret.HorizontalPosition = item.HorizontalPosition.EqualsWithin(rhs.HorizontalPosition);
             ret.VerticalPosition = item.VerticalPosition.EqualsWithin(rhs.VerticalPosition);
             ret.AssociatedSkill = item.AssociatedSkill.Equals(rhs.AssociatedSkill);
-            ret.ConnectionLineToIndices = item.ConnectionLineToIndices.CollectionEqualsHelper(
+            ret.ConnectionLineToIndices = item.ConnectionLineToIndices.ListEqualsMask(
                 rhs.ConnectionLineToIndices,
                 (l, r) => l == r,
                 include);

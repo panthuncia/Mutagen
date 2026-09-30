@@ -924,7 +924,7 @@ namespace Mutagen.Bethesda.Starfield
             GenericBaseFormTemplate.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
                 (l, r) => string.Equals(l, r),
                 include);

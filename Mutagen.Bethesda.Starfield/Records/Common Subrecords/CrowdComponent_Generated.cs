@@ -895,9 +895,9 @@ namespace Mutagen.Bethesda.Starfield
         {
             ret.CDND = item.CDND.EqualsWithin(rhs.CDND);
             ret.CDNS = MemorySliceExt.SequenceEqual(item.CDNS, rhs.CDNS);
-            ret.Items = item.Items.CollectionEqualsHelper(
+            ret.Items = item.Items.ListEqualsMask(
                 rhs.Items,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

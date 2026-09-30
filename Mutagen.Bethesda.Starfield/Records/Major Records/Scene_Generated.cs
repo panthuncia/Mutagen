@@ -2761,24 +2761,24 @@ namespace Mutagen.Bethesda.Starfield
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Flags = item.Flags == rhs.Flags;
-            ret.Phases = item.Phases.CollectionEqualsHelper(
+            ret.Phases = item.Phases.ListEqualsMask(
                 rhs.Phases,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Actors = item.Actors.CollectionEqualsHelper(
+            ret.Actors = item.Actors.ListEqualsMask(
                 rhs.Actors,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Actions = item.Actions.CollectionEqualsHelper(
+            ret.Actions = item.Actions.ListEqualsMask(
                 rhs.Actions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Quest = item.Quest.Equals(rhs.Quest);
             ret.LastActionIndex = item.LastActionIndex == rhs.LastActionIndex;
             ret.VNAM = MemorySliceExt.SequenceEqual(item.VNAM, rhs.VNAM);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.SetParentQuestStage = EqualsMaskHelper.EqualsHelper(
                 item.SetParentQuestStage,
@@ -2793,11 +2793,11 @@ namespace Mutagen.Bethesda.Starfield
             ret.JNAM = MemorySliceExt.SequenceEqual(item.JNAM, rhs.JNAM);
             ret.SCPP = item.SCPP.Equals(rhs.SCPP);
             ret.SCSP = item.SCSP == rhs.SCSP;
-            ret.SPMA = item.SPMA.CollectionEqualsHelper(
+            ret.SPMA = item.SPMA.ListEqualsMask(
                 rhs.SPMA,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.SPEX = item.SPEX.CollectionEqualsHelper(
+            ret.SPEX = item.SPEX.ListEqualsMask(
                 rhs.SPEX,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -2806,15 +2806,15 @@ namespace Mutagen.Bethesda.Starfield
             ret.SPRP = item.SPRP == rhs.SPRP;
             ret.SPDF = item.SPDF == rhs.SPDF;
             ret.SPPQ = item.SPPQ == rhs.SPPQ;
-            ret.SPKW = item.SPKW.CollectionEqualsHelper(
+            ret.SPKW = item.SPKW.ListEqualsMask(
                 rhs.SPKW,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.SPPK = item.SPPK.CollectionEqualsHelper(
+            ret.SPPK = item.SPPK.ListEqualsMask(
                 rhs.SPPK,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.SPKY = item.SPKY.CollectionEqualsHelper(
+            ret.SPKY = item.SPKY.ListEqualsMask(
                 rhs.SPKY,
                 (l, r) => object.Equals(l, r),
                 include);

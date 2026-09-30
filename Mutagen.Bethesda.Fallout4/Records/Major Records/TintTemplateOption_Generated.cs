@@ -1346,18 +1346,18 @@ namespace Mutagen.Bethesda.Fallout4
             ret.Index = item.Index == rhs.Index;
             ret.Name = object.Equals(item.Name, rhs.Name);
             ret.Flags = item.Flags == rhs.Flags;
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Textures = item.Textures.CollectionEqualsHelper(
+            ret.Textures = item.Textures.ListEqualsMask(
                 rhs.Textures,
                 (l, r) => string.Equals(l, r),
                 include);
             ret.BlendOperation = item.BlendOperation == rhs.BlendOperation;
-            ret.TemplateColors = item.TemplateColors.CollectionEqualsHelper(
+            ret.TemplateColors = item.TemplateColors.ListEqualsMask(
                 rhs.TemplateColors,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Default = item.Default.EqualsWithin(rhs.Default);
         }

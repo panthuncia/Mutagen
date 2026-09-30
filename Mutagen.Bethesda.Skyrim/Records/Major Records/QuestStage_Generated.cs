@@ -948,9 +948,9 @@ namespace Mutagen.Bethesda.Skyrim
             ret.Index = item.Index == rhs.Index;
             ret.Flags = item.Flags == rhs.Flags;
             ret.Unknown = item.Unknown == rhs.Unknown;
-            ret.LogEntries = item.LogEntries.CollectionEqualsHelper(
+            ret.LogEntries = item.LogEntries.ListEqualsMask(
                 rhs.LogEntries,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

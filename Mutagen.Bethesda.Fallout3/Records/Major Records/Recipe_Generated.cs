@@ -1403,21 +1403,21 @@ namespace Mutagen.Bethesda.Fallout3
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Name = object.Equals(item.Name, rhs.Name);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Skill = item.Skill == rhs.Skill;
             ret.Level = item.Level == rhs.Level;
             ret.Category = item.Category.Equals(rhs.Category);
             ret.SubCategory = item.SubCategory.Equals(rhs.SubCategory);
-            ret.Ingredients = item.Ingredients.CollectionEqualsHelper(
+            ret.Ingredients = item.Ingredients.ListEqualsMask(
                 rhs.Ingredients,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Outputs = item.Outputs.CollectionEqualsHelper(
+            ret.Outputs = item.Outputs.ListEqualsMask(
                 rhs.Outputs,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

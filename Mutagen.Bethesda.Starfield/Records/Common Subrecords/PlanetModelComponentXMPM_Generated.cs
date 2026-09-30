@@ -931,13 +931,13 @@ namespace Mutagen.Bethesda.Starfield
             PlanetModelComponentXMPM.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.UnknownStrings = item.UnknownStrings.CollectionEqualsHelper(
+            ret.UnknownStrings = item.UnknownStrings.ListEqualsMask(
                 rhs.UnknownStrings,
                 (l, r) => string.Equals(l, r),
                 include);
-            ret.UnknownSubItems = item.UnknownSubItems.CollectionEqualsHelper(
+            ret.UnknownSubItems = item.UnknownSubItems.ListEqualsMask(
                 rhs.UnknownSubItems,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

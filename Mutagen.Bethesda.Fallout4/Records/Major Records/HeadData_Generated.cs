@@ -1703,34 +1703,34 @@ namespace Mutagen.Bethesda.Fallout4
                 rhs.NeckFatAdjustmentsScale,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.HeadParts = item.HeadParts.CollectionEqualsHelper(
+            ret.HeadParts = item.HeadParts.ListEqualsMask(
                 rhs.HeadParts,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.RacePresets = item.RacePresets.CollectionEqualsHelper(
+            ret.RacePresets = item.RacePresets.ListEqualsMask(
                 rhs.RacePresets,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.AvailableHairColors = item.AvailableHairColors.CollectionEqualsHelper(
+            ret.AvailableHairColors = item.AvailableHairColors.ListEqualsMask(
                 rhs.AvailableHairColors,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.FaceDetails = item.FaceDetails.CollectionEqualsHelper(
+            ret.FaceDetails = item.FaceDetails.ListEqualsMask(
                 rhs.FaceDetails,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.DefaultFaceTexture = item.DefaultFaceTexture.Equals(rhs.DefaultFaceTexture);
-            ret.TintLayers = item.TintLayers.CollectionEqualsHelper(
+            ret.TintLayers = item.TintLayers.ListEqualsMask(
                 rhs.TintLayers,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.MorphGroups = item.MorphGroups.CollectionEqualsHelper(
+            ret.MorphGroups = item.MorphGroups.ListEqualsMask(
                 rhs.MorphGroups,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.FaceMorphs = item.FaceMorphs.CollectionEqualsHelper(
+            ret.FaceMorphs = item.FaceMorphs.ListEqualsMask(
                 rhs.FaceMorphs,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.MaleWrinkleMapPath = string.Equals(item.MaleWrinkleMapPath, rhs.MaleWrinkleMapPath);
         }

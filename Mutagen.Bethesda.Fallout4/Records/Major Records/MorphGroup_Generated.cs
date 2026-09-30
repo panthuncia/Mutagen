@@ -985,9 +985,9 @@ namespace Mutagen.Bethesda.Fallout4
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Name = string.Equals(item.Name, rhs.Name);
-            ret.MorphPresets = item.MorphPresets.CollectionEqualsHelper(
+            ret.MorphPresets = item.MorphPresets.ListEqualsMask(
                 rhs.MorphPresets,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.UnknownMPPK = MemorySliceExt.SequenceEqual(item.UnknownMPPK, rhs.UnknownMPPK);
             ret.UnknownMPGS = MemorySliceExt.SequenceEqual(item.UnknownMPGS, rhs.UnknownMPGS);

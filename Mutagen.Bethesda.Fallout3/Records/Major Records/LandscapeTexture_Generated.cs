@@ -1161,7 +1161,7 @@ namespace Mutagen.Bethesda.Fallout3
             ret.TextureSet = item.TextureSet.Equals(rhs.TextureSet);
             ret.Havok = MaskItemExt.Factory(item.Havok.GetEqualsMask(rhs.Havok, include), include);
             ret.TextureSpecularExponent = item.TextureSpecularExponent == rhs.TextureSpecularExponent;
-            ret.Grasses = item.Grasses.CollectionEqualsHelper(
+            ret.Grasses = item.Grasses.ListEqualsMask(
                 rhs.Grasses,
                 (l, r) => object.Equals(l, r),
                 include);

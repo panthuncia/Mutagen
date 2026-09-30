@@ -1695,14 +1695,14 @@ namespace Mutagen.Bethesda.Fallout4
         {
             ret.PickUpSound = item.PickUpSound.Equals(rhs.PickUpSound);
             ret.PutDownSound = item.PutDownSound.Equals(rhs.PutDownSound);
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Description = object.Equals(item.Description, rhs.Description);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.CreatedObject = item.CreatedObject.Equals(rhs.CreatedObject);
             ret.WorkbenchKeyword = item.WorkbenchKeyword.Equals(rhs.WorkbenchKeyword);
@@ -1710,13 +1710,13 @@ namespace Mutagen.Bethesda.Fallout4
             ret.NAM2 = MemorySliceExt.SequenceEqual(item.NAM2, rhs.NAM2);
             ret.NAM3 = MemorySliceExt.SequenceEqual(item.NAM3, rhs.NAM3);
             ret.MenuArtObject = item.MenuArtObject.Equals(rhs.MenuArtObject);
-            ret.Categories = item.Categories.CollectionEqualsHelper(
+            ret.Categories = item.Categories.ListEqualsMask(
                 rhs.Categories,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.CreatedObjectCounts = item.CreatedObjectCounts.CollectionEqualsHelper(
+            ret.CreatedObjectCounts = item.CreatedObjectCounts.ListEqualsMask(
                 rhs.CreatedObjectCounts,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

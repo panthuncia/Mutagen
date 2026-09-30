@@ -1262,9 +1262,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.DirtinessScale = item.DirtinessScale.Equals(rhs.DirtinessScale);
             ret.XALG = item.XALG == rhs.XALG;
             ret.Description = string.Equals(item.Description, rhs.Description);
-            ret.Markers = item.Markers.CollectionEqualsHelper(
+            ret.Markers = item.Markers.ListEqualsMask(
                 rhs.Markers,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.DefaultStartMarker = EqualsMaskHelper.EqualsHelper(
                 item.DefaultStartMarker,

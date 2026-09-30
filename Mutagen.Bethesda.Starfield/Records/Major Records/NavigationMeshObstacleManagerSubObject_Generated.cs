@@ -940,7 +940,7 @@ namespace Mutagen.Bethesda.Starfield
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Index = item.Index == rhs.Index;
-            ret.DATAs = item.DATAs.CollectionEqualsHelper(
+            ret.DATAs = item.DATAs.ListEqualsMask(
                 rhs.DATAs,
                 (l, r) => MemoryExtensions.SequenceEqual(l.Span, r.Span),
                 include);

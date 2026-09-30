@@ -2014,27 +2014,27 @@ namespace Mutagen.Bethesda.Fallout3
             ret.Quest = item.Quest.Equals(rhs.Quest);
             ret.PreviousTopic = item.PreviousTopic.Equals(rhs.PreviousTopic);
             ret.PreviousInfo = item.PreviousInfo.Equals(rhs.PreviousInfo);
-            ret.AddTopics = item.AddTopics.CollectionEqualsHelper(
+            ret.AddTopics = item.AddTopics.ListEqualsMask(
                 rhs.AddTopics,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Responses = item.Responses.CollectionEqualsHelper(
+            ret.Responses = item.Responses.ListEqualsMask(
                 rhs.Responses,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Choices = item.Choices.CollectionEqualsHelper(
+            ret.Choices = item.Choices.ListEqualsMask(
                 rhs.Choices,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.LinkFrom = item.LinkFrom.CollectionEqualsHelper(
+            ret.LinkFrom = item.LinkFrom.ListEqualsMask(
                 rhs.LinkFrom,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.FollowUp = item.FollowUp.CollectionEqualsHelper(
+            ret.FollowUp = item.FollowUp.ListEqualsMask(
                 rhs.FollowUp,
                 (l, r) => object.Equals(l, r),
                 include);

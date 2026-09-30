@@ -1495,31 +1495,31 @@ namespace Mutagen.Bethesda.Skyrim
             HeadData.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.HeadParts = item.HeadParts.CollectionEqualsHelper(
+            ret.HeadParts = item.HeadParts.ListEqualsMask(
                 rhs.HeadParts,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.AvailableMorphs = EqualsMaskHelper.EqualsHelper(
                 item.AvailableMorphs,
                 rhs.AvailableMorphs,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.RacePresets = item.RacePresets.CollectionEqualsHelper(
+            ret.RacePresets = item.RacePresets.ListEqualsMask(
                 rhs.RacePresets,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.AvailableHairColors = item.AvailableHairColors.CollectionEqualsHelper(
+            ret.AvailableHairColors = item.AvailableHairColors.ListEqualsMask(
                 rhs.AvailableHairColors,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.FaceDetails = item.FaceDetails.CollectionEqualsHelper(
+            ret.FaceDetails = item.FaceDetails.ListEqualsMask(
                 rhs.FaceDetails,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.DefaultFaceTexture = item.DefaultFaceTexture.Equals(rhs.DefaultFaceTexture);
-            ret.TintMasks = item.TintMasks.CollectionEqualsHelper(
+            ret.TintMasks = item.TintMasks.ListEqualsMask(
                 rhs.TintMasks,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Model = EqualsMaskHelper.EqualsHelper(
                 item.Model,

@@ -798,9 +798,9 @@ namespace Mutagen.Bethesda.Fallout3
             AlphaLayer.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.AlphaLayerData = item.AlphaLayerData.CollectionEqualsHelper(
+            ret.AlphaLayerData = item.AlphaLayerData.ListEqualsMask(
                 rhs.AlphaLayerData,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

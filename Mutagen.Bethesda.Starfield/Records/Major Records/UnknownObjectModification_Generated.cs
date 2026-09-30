@@ -1041,9 +1041,9 @@ namespace Mutagen.Bethesda.Starfield
             UnknownObjectModification.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Properties = item.Properties.CollectionEqualsHelper(
+            ret.Properties = item.Properties.ListEqualsMask(
                 rhs.Properties,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.ObjectModificationTargetName = string.Equals(item.ObjectModificationTargetName, rhs.ObjectModificationTargetName);
             base.FillEqualsMask(item, rhs, ret, include);

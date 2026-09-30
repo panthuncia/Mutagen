@@ -939,9 +939,9 @@ namespace Mutagen.Bethesda.Skyrim
         {
             ret.File = object.Equals(item.File, rhs.File);
             ret.Data = MemorySliceExt.SequenceEqual(item.Data, rhs.Data);
-            ret.AlternateTextures = item.AlternateTextures.CollectionEqualsHelper(
+            ret.AlternateTextures = item.AlternateTextures.ListEqualsMask(
                 rhs.AlternateTextures,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

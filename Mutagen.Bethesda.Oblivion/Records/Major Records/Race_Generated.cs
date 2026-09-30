@@ -1947,13 +1947,13 @@ namespace Mutagen.Bethesda.Oblivion
         {
             ret.Name = string.Equals(item.Name, rhs.Name);
             ret.Description = string.Equals(item.Description, rhs.Description);
-            ret.Spells = item.Spells.CollectionEqualsHelper(
+            ret.Spells = item.Spells.ListEqualsMask(
                 rhs.Spells,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Relations = item.Relations.CollectionEqualsHelper(
+            ret.Relations = item.Relations.ListEqualsMask(
                 rhs.Relations,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Data = EqualsMaskHelper.EqualsHelper(
                 item.Data,
@@ -1978,20 +1978,20 @@ namespace Mutagen.Bethesda.Oblivion
                 rhs: rhs.RaceStats,
                 maskGetter: (l, r, i) => l.GetEqualsMask(r, i),
                 include: include);
-            ret.FaceData = item.FaceData.CollectionEqualsHelper(
+            ret.FaceData = item.FaceData.ListEqualsMask(
                 rhs.FaceData,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.BodyData = GenderedItem.EqualityMaskHelper(
                 lhs: item.BodyData,
                 rhs: rhs.BodyData,
                 maskGetter: (l, r, i) => EqualsMaskHelper.EqualsHelper(l, r, (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl), i),
                 include: include);
-            ret.Hairs = item.Hairs.CollectionEqualsHelper(
+            ret.Hairs = item.Hairs.ListEqualsMask(
                 rhs.Hairs,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Eyes = item.Eyes.CollectionEqualsHelper(
+            ret.Eyes = item.Eyes.ListEqualsMask(
                 rhs.Eyes,
                 (l, r) => object.Equals(l, r),
                 include);

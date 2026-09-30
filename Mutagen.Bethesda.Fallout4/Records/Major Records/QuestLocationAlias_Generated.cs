@@ -1252,9 +1252,9 @@ namespace Mutagen.Bethesda.Fallout4
                 rhs.FindMatchingRefFromEvent,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.ClosestToAlias = item.ClosestToAlias == rhs.ClosestToAlias;
             base.FillEqualsMask(item, rhs, ret, include);

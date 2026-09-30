@@ -916,13 +916,13 @@ namespace Mutagen.Bethesda.Starfield
             StoredTraversalsComponent.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Traversals = item.Traversals.CollectionEqualsHelper(
+            ret.Traversals = item.Traversals.ListEqualsMask(
                 rhs.Traversals,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.ActivatorTraversals = item.ActivatorTraversals.CollectionEqualsHelper(
+            ret.ActivatorTraversals = item.ActivatorTraversals.ListEqualsMask(
                 rhs.ActivatorTraversals,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

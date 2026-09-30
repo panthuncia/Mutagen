@@ -1688,18 +1688,18 @@ namespace Mutagen.Bethesda.Starfield
             ret.Deleted = MemorySliceExt.SequenceEqual(item.Deleted, rhs.Deleted);
             ret.Author = string.Equals(item.Author, rhs.Author);
             ret.Description = string.Equals(item.Description, rhs.Description);
-            ret.MasterReferences = item.MasterReferences.CollectionEqualsHelper(
+            ret.MasterReferences = item.MasterReferences.ListEqualsMask(
                 rhs.MasterReferences,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.OverriddenForms = item.OverriddenForms.CollectionEqualsHelper(
+            ret.OverriddenForms = item.OverriddenForms.ListEqualsMask(
                 rhs.OverriddenForms,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.Screenshot = MemorySliceExt.SequenceEqual(item.Screenshot, rhs.Screenshot);
-            ret.TransientTypes = item.TransientTypes.CollectionEqualsHelper(
+            ret.TransientTypes = item.TransientTypes.ListEqualsMask(
                 rhs.TransientTypes,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Branch = string.Equals(item.Branch, rhs.Branch);
             ret.INTV = item.INTV == rhs.INTV;

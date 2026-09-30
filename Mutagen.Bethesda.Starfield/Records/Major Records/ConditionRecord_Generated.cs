@@ -1023,9 +1023,9 @@ namespace Mutagen.Bethesda.Starfield
             ConditionRecord.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.OwnerQuest = item.OwnerQuest.Equals(rhs.OwnerQuest);
             ret.OwnerPackage = item.OwnerPackage.Equals(rhs.OwnerPackage);

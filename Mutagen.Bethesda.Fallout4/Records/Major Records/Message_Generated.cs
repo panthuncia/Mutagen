@@ -1309,9 +1309,9 @@ namespace Mutagen.Bethesda.Fallout4
             ret.DisplayTime = item.DisplayTime == rhs.DisplayTime;
             ret.Swf = string.Equals(item.Swf, rhs.Swf);
             ret.ShortTitle = object.Equals(item.ShortTitle, rhs.ShortTitle);
-            ret.MenuButtons = item.MenuButtons.CollectionEqualsHelper(
+            ret.MenuButtons = item.MenuButtons.ListEqualsMask(
                 rhs.MenuButtons,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

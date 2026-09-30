@@ -808,9 +808,9 @@ namespace Mutagen.Bethesda.Starfield
             RegionWeather.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Weathers = item.Weathers.CollectionEqualsHelper(
+            ret.Weathers = item.Weathers.ListEqualsMask(
                 rhs.Weathers,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }
