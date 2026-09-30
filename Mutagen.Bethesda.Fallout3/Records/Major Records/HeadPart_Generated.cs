@@ -1126,7 +1126,7 @@ namespace Mutagen.Bethesda.Fallout3
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Playable = item.Playable == rhs.Playable;
-            ret.ExtraParts = item.ExtraParts.CollectionEqualsHelper(
+            ret.ExtraParts = item.ExtraParts.ListEqualsMask(
                 rhs.ExtraParts,
                 (l, r) => object.Equals(l, r),
                 include);

@@ -893,7 +893,7 @@ namespace Mutagen.Bethesda.Fallout3
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Offset = item.Offset.EqualsWithin(rhs.Offset);
-            ret.HeightMap = item.HeightMap.Array2dEqualsHelper(
+            ret.HeightMap = item.HeightMap.Array2dEqualsMask(
                 rhs.HeightMap,
                 (l, r) => l == r,
                 include);

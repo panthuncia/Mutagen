@@ -1095,7 +1095,7 @@ namespace Mutagen.Bethesda.Fallout3
                 include);
             ret.Flags = item.Flags == rhs.Flags;
             ret.IdleTimer = item.IdleTimer.EqualsWithin(rhs.IdleTimer);
-            ret.Animations = item.Animations.CollectionEqualsHelper(
+            ret.Animations = item.Animations.ListEqualsMask(
                 rhs.Animations,
                 (l, r) => object.Equals(l, r),
                 include);

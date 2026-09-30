@@ -3801,86 +3801,86 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.VirtualMachineAdapter,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Properties = item.Properties.CollectionEqualsHelper(
+            ret.Properties = item.Properties.ListEqualsMask(
                 rhs.Properties,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.AddedPersistLocationReferences = item.AddedPersistLocationReferences.CollectionEqualsHelper(
+            ret.AddedPersistLocationReferences = item.AddedPersistLocationReferences.ListEqualsMask(
                 rhs.AddedPersistLocationReferences,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.MasterPersistLocationReferences = item.MasterPersistLocationReferences.CollectionEqualsHelper(
+            ret.MasterPersistLocationReferences = item.MasterPersistLocationReferences.ListEqualsMask(
                 rhs.MasterPersistLocationReferences,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.RemovedPersistLocationReferences = item.RemovedPersistLocationReferences.CollectionEqualsHelper(
+            ret.RemovedPersistLocationReferences = item.RemovedPersistLocationReferences.ListEqualsMask(
                 rhs.RemovedPersistLocationReferences,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.AddedUniqueBaseForms = item.AddedUniqueBaseForms.CollectionEqualsHelper(
+            ret.AddedUniqueBaseForms = item.AddedUniqueBaseForms.ListEqualsMask(
                 rhs.AddedUniqueBaseForms,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.LocationCellUniqueReferences = item.LocationCellUniqueReferences.CollectionEqualsHelper(
+            ret.LocationCellUniqueReferences = item.LocationCellUniqueReferences.ListEqualsMask(
                 rhs.LocationCellUniqueReferences,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.RemovedUniqueBaseForms = item.RemovedUniqueBaseForms.CollectionEqualsHelper(
+            ret.RemovedUniqueBaseForms = item.RemovedUniqueBaseForms.ListEqualsMask(
                 rhs.RemovedUniqueBaseForms,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.AddedUniqueNpcs = item.AddedUniqueNpcs.CollectionEqualsHelper(
+            ret.AddedUniqueNpcs = item.AddedUniqueNpcs.ListEqualsMask(
                 rhs.AddedUniqueNpcs,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.MasterUniqueNpcs = item.MasterUniqueNpcs.CollectionEqualsHelper(
+            ret.MasterUniqueNpcs = item.MasterUniqueNpcs.ListEqualsMask(
                 rhs.MasterUniqueNpcs,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.RemovedUniqueNpcs = item.RemovedUniqueNpcs.CollectionEqualsHelper(
+            ret.RemovedUniqueNpcs = item.RemovedUniqueNpcs.ListEqualsMask(
                 rhs.RemovedUniqueNpcs,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.AddedSpecialReferences = item.AddedSpecialReferences.CollectionEqualsHelper(
+            ret.AddedSpecialReferences = item.AddedSpecialReferences.ListEqualsMask(
                 rhs.AddedSpecialReferences,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.MasterSpecialReferences = item.MasterSpecialReferences.CollectionEqualsHelper(
+            ret.MasterSpecialReferences = item.MasterSpecialReferences.ListEqualsMask(
                 rhs.MasterSpecialReferences,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.RemovedSpecialReferences = item.RemovedSpecialReferences.CollectionEqualsHelper(
+            ret.RemovedSpecialReferences = item.RemovedSpecialReferences.ListEqualsMask(
                 rhs.RemovedSpecialReferences,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.MasterWorldspaceCells = item.MasterWorldspaceCells.CollectionEqualsHelper(
+            ret.MasterWorldspaceCells = item.MasterWorldspaceCells.ListEqualsMask(
                 rhs.MasterWorldspaceCells,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.AddedInitiallyDisabledReferences = item.AddedInitiallyDisabledReferences.CollectionEqualsHelper(
+            ret.AddedInitiallyDisabledReferences = item.AddedInitiallyDisabledReferences.ListEqualsMask(
                 rhs.AddedInitiallyDisabledReferences,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.MasterInitiallyDisabledReferences = item.MasterInitiallyDisabledReferences.CollectionEqualsHelper(
+            ret.MasterInitiallyDisabledReferences = item.MasterInitiallyDisabledReferences.ListEqualsMask(
                 rhs.MasterInitiallyDisabledReferences,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.AddedEnablePointReferences = item.AddedEnablePointReferences.CollectionEqualsHelper(
+            ret.AddedEnablePointReferences = item.AddedEnablePointReferences.ListEqualsMask(
                 rhs.AddedEnablePointReferences,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.MasterEnablePointReferences = item.MasterEnablePointReferences.CollectionEqualsHelper(
+            ret.MasterEnablePointReferences = item.MasterEnablePointReferences.ListEqualsMask(
                 rhs.MasterEnablePointReferences,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Name = object.Equals(item.Name, rhs.Name);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Properties2 = item.Properties2.CollectionEqualsHelper(
+            ret.Properties2 = item.Properties2.ListEqualsMask(
                 rhs.Properties2,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Owner = EqualsMaskHelper.EqualsHelper(
                 item.Owner,

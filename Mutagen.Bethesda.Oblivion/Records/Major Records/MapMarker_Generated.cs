@@ -921,7 +921,7 @@ namespace Mutagen.Bethesda.Oblivion
         {
             ret.Flags = item.Flags == rhs.Flags;
             ret.Name = string.Equals(item.Name, rhs.Name);
-            ret.Types = item.Types.CollectionEqualsHelper(
+            ret.Types = item.Types.ListEqualsMask(
                 rhs.Types,
                 (l, r) => l == r,
                 include);

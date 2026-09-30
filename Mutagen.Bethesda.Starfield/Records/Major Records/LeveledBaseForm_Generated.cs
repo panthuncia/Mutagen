@@ -1904,25 +1904,25 @@ namespace Mutagen.Bethesda.Starfield
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.XALG = item.XALG == rhs.XALG;
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.ChanceNone = item.ChanceNone.EqualsWithin(rhs.ChanceNone);
             ret.MaxCount = item.MaxCount == rhs.MaxCount;
             ret.Flags = item.Flags == rhs.Flags;
             ret.UseGlobal = item.UseGlobal.Equals(rhs.UseGlobal);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Entries = item.Entries.CollectionEqualsHelper(
+            ret.Entries = item.Entries.ListEqualsMask(
                 rhs.Entries,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.FilterKeywordChances = item.FilterKeywordChances.CollectionEqualsHelper(
+            ret.FilterKeywordChances = item.FilterKeywordChances.ListEqualsMask(
                 rhs.FilterKeywordChances,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Model = EqualsMaskHelper.EqualsHelper(
                 item.Model,

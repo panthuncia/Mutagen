@@ -1615,9 +1615,9 @@ namespace Mutagen.Bethesda.Skyrim
                 rhs.Icons,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Trait = item.Trait == rhs.Trait;
             ret.Level = item.Level == rhs.Level;
@@ -1625,9 +1625,9 @@ namespace Mutagen.Bethesda.Skyrim
             ret.Playable = item.Playable == rhs.Playable;
             ret.Hidden = item.Hidden == rhs.Hidden;
             ret.NextPerk = item.NextPerk.Equals(rhs.NextPerk);
-            ret.Effects = item.Effects.CollectionEqualsHelper(
+            ret.Effects = item.Effects.ListEqualsMask(
                 rhs.Effects,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

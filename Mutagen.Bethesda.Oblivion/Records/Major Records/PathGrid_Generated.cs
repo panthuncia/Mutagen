@@ -1186,18 +1186,18 @@ namespace Mutagen.Bethesda.Oblivion
             PathGrid.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.PointToPointConnections = item.PointToPointConnections.CollectionEqualsHelper(
+            ret.PointToPointConnections = item.PointToPointConnections.ListEqualsMask(
                 rhs.PointToPointConnections,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.PGAG = MemorySliceExt.SequenceEqual(item.PGAG, rhs.PGAG);
-            ret.InterCellConnections = item.InterCellConnections.CollectionEqualsHelper(
+            ret.InterCellConnections = item.InterCellConnections.ListEqualsMask(
                 rhs.InterCellConnections,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.PointToReferenceMappings = item.PointToReferenceMappings.CollectionEqualsHelper(
+            ret.PointToReferenceMappings = item.PointToReferenceMappings.ListEqualsMask(
                 rhs.PointToReferenceMappings,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

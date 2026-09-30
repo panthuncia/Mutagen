@@ -1805,7 +1805,7 @@ namespace Mutagen.Bethesda.Skyrim
                 rhs.Destructible,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -1818,9 +1818,9 @@ namespace Mutagen.Bethesda.Skyrim
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.AssociatedSpell = item.AssociatedSpell.Equals(rhs.AssociatedSpell);
-            ret.Markers = item.Markers.CollectionEqualsHelper(
+            ret.Markers = item.Markers.ListEqualsMask(
                 rhs.Markers,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.ModelFilename = object.Equals(item.ModelFilename, rhs.ModelFilename);
             base.FillEqualsMask(item, rhs, ret, include);

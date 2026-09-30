@@ -1336,9 +1336,9 @@ namespace Mutagen.Bethesda.Fallout4
         {
             ret.MapColor = item.MapColor.ColorOnlyEquals(rhs.MapColor);
             ret.Worldspace = item.Worldspace.Equals(rhs.Worldspace);
-            ret.RegionAreas = item.RegionAreas.CollectionEqualsHelper(
+            ret.RegionAreas = item.RegionAreas.ListEqualsMask(
                 rhs.RegionAreas,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Objects = EqualsMaskHelper.EqualsHelper(
                 item.Objects,

@@ -2892,9 +2892,9 @@ namespace Mutagen.Bethesda.Fallout4
             ret.SetParentQuestStage = item.SetParentQuestStage == rhs.SetParentQuestStage;
             ret.TimerMinSeconds = item.TimerMinSeconds.EqualsWithin(rhs.TimerMinSeconds);
             ret.STSC = MemorySliceExt.SequenceEqual(item.STSC, rhs.STSC);
-            ret.StartScenes = item.StartScenes.CollectionEqualsHelper(
+            ret.StartScenes = item.StartScenes.ListEqualsMask(
                 rhs.StartScenes,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.PlayerPositiveResponse = item.PlayerPositiveResponse.Equals(rhs.PlayerPositiveResponse);
             ret.PlayerNegativeResponse = item.PlayerNegativeResponse.Equals(rhs.PlayerNegativeResponse);
@@ -2904,7 +2904,7 @@ namespace Mutagen.Bethesda.Fallout4
             ret.PlayerNegativeSubtype = item.PlayerNegativeSubtype.Equals(rhs.PlayerNegativeSubtype);
             ret.PlayerNeutralSubtype = item.PlayerNeutralSubtype.Equals(rhs.PlayerNeutralSubtype);
             ret.PlayerQuestionSubtype = item.PlayerQuestionSubtype.Equals(rhs.PlayerQuestionSubtype);
-            ret.NpcHeadtrackingActorIds = item.NpcHeadtrackingActorIds.CollectionEqualsHelper(
+            ret.NpcHeadtrackingActorIds = item.NpcHeadtrackingActorIds.ListEqualsMask(
                 rhs.NpcHeadtrackingActorIds,
                 (l, r) => l == r,
                 include);
@@ -2917,7 +2917,7 @@ namespace Mutagen.Bethesda.Fallout4
             ret.NpcNeutralSubtype = item.NpcNeutralSubtype.Equals(rhs.NpcNeutralSubtype);
             ret.NpcQuestionSubtype = item.NpcQuestionSubtype.Equals(rhs.NpcQuestionSubtype);
             ret.DialogueTargetActorId = item.DialogueTargetActorId == rhs.DialogueTargetActorId;
-            ret.Packages = item.Packages.CollectionEqualsHelper(
+            ret.Packages = item.Packages.ListEqualsMask(
                 rhs.Packages,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -2931,7 +2931,7 @@ namespace Mutagen.Bethesda.Fallout4
                 include);
             ret.Emotion = item.Emotion == rhs.Emotion;
             ret.EmotionValue = item.EmotionValue == rhs.EmotionValue;
-            ret.PlayerHeadTrackingActorIds = item.PlayerHeadTrackingActorIds.CollectionEqualsHelper(
+            ret.PlayerHeadTrackingActorIds = item.PlayerHeadTrackingActorIds.ListEqualsMask(
                 rhs.PlayerHeadTrackingActorIds,
                 (l, r) => l == r,
                 include);

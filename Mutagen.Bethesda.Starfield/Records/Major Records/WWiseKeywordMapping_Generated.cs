@@ -1145,14 +1145,14 @@ namespace Mutagen.Bethesda.Starfield
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.WMTI = item.WMTI == rhs.WMTI;
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.WMSS = item.WMSS == rhs.WMSS;
-            ret.Items = item.Items.CollectionEqualsHelper(
+            ret.Items = item.Items.ListEqualsMask(
                 rhs.Items,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

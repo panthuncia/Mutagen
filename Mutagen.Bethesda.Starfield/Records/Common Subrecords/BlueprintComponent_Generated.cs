@@ -998,13 +998,13 @@ namespace Mutagen.Bethesda.Starfield
             BlueprintComponent.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Items = item.Items.CollectionEqualsHelper(
+            ret.Items = item.Items.ListEqualsMask(
                 rhs.Items,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.BODSRows = item.BODSRows.CollectionEqualsHelper(
+            ret.BODSRows = item.BODSRows.ListEqualsMask(
                 rhs.BODSRows,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.BLUF = item.BLUF == rhs.BLUF;
             ret.NextPartID = item.NextPartID == rhs.NextPartID;

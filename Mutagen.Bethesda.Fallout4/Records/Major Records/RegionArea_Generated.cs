@@ -896,7 +896,7 @@ namespace Mutagen.Bethesda.Fallout4
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.EdgeFallOff = item.EdgeFallOff == rhs.EdgeFallOff;
-            ret.RegionPointListData = item.RegionPointListData.CollectionEqualsHelper(
+            ret.RegionPointListData = item.RegionPointListData.ListEqualsMask(
                 rhs.RegionPointListData,
                 (l, r) => l.Equals(r),
                 include);

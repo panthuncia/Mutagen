@@ -3094,9 +3094,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.SnapTemplate = item.SnapTemplate.Equals(rhs.SnapTemplate);
             ret.SnapBehavior = item.SnapBehavior.Equals(rhs.SnapBehavior);
             ret.XALG = item.XALG == rhs.XALG;
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Name = object.Equals(item.Name, rhs.Name);
             ret.Model = EqualsMaskHelper.EqualsHelper(
@@ -3109,15 +3109,15 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.Destructible,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Properties = item.Properties.CollectionEqualsHelper(
+            ret.Properties = item.Properties.ListEqualsMask(
                 rhs.Properties,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.ForcedLocations = item.ForcedLocations.CollectionEqualsHelper(
+            ret.ForcedLocations = item.ForcedLocations.ListEqualsMask(
                 rhs.ForcedLocations,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -3133,27 +3133,27 @@ namespace Mutagen.Bethesda.Starfield
             ret.Flags = item.Flags == rhs.Flags;
             ret.ActivationAngleForPlayer = item.ActivationAngleForPlayer == rhs.ActivationAngleForPlayer;
             ret.ActivationAngleInvertFacing = item.ActivationAngleInvertFacing == rhs.ActivationAngleInvertFacing;
-            ret.ContainerItems = item.ContainerItems.CollectionEqualsHelper(
+            ret.ContainerItems = item.ContainerItems.ListEqualsMask(
                 rhs.ContainerItems,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.MarkerFlags = item.MarkerFlags == rhs.MarkerFlags;
             ret.ActivationAngleForSittingActor = item.ActivationAngleForSittingActor == rhs.ActivationAngleForSittingActor;
             ret.BenchType = item.BenchType == rhs.BenchType;
             ret.AssociatedForm = item.AssociatedForm.Equals(rhs.AssociatedForm);
             ret.FurnitureTemplate = item.FurnitureTemplate.Equals(rhs.FurnitureTemplate);
-            ret.MarkerEntryPoints = item.MarkerEntryPoints.CollectionEqualsHelper(
+            ret.MarkerEntryPoints = item.MarkerEntryPoints.ListEqualsMask(
                 rhs.MarkerEntryPoints,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.MarkerModel = string.Equals(item.MarkerModel, rhs.MarkerModel);
-            ret.MarkerParameters = item.MarkerParameters.CollectionEqualsHelper(
+            ret.MarkerParameters = item.MarkerParameters.ListEqualsMask(
                 rhs.MarkerParameters,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.MarkerFiles = item.MarkerFiles.CollectionEqualsHelper(
+            ret.MarkerFiles = item.MarkerFiles.ListEqualsMask(
                 rhs.MarkerFiles,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

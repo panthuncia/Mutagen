@@ -3129,7 +3129,7 @@ namespace Mutagen.Bethesda.Fallout3
             ret.LightInheritFlags = item.LightInheritFlags == rhs.LightInheritFlags;
             ret.WaterHeight = item.WaterHeight.EqualsWithin(rhs.WaterHeight);
             ret.WaterNoiseTexture = string.Equals(item.WaterNoiseTexture, rhs.WaterNoiseTexture);
-            ret.Regions = item.Regions.CollectionEqualsHelper(
+            ret.Regions = item.Regions.ListEqualsMask(
                 rhs.Regions,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -3148,29 +3148,29 @@ namespace Mutagen.Bethesda.Fallout3
                 rhs.Landscape,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.NavigationMeshes = item.NavigationMeshes.CollectionEqualsHelper(
+            ret.NavigationMeshes = item.NavigationMeshes.ListEqualsMask(
                 rhs.NavigationMeshes,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Timestamp = item.Timestamp == rhs.Timestamp;
             ret.UnknownGroupData = item.UnknownGroupData == rhs.UnknownGroupData;
             ret.PersistentTimestamp = item.PersistentTimestamp == rhs.PersistentTimestamp;
             ret.PersistentUnknownGroupData = item.PersistentUnknownGroupData == rhs.PersistentUnknownGroupData;
-            ret.Persistent = item.Persistent.CollectionEqualsHelper(
+            ret.Persistent = item.Persistent.ListEqualsMask(
                 rhs.Persistent,
-                (loqLhs, loqRhs) => (IMask<bool>)loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => (IMask<bool>)loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.TemporaryTimestamp = item.TemporaryTimestamp == rhs.TemporaryTimestamp;
             ret.TemporaryUnknownGroupData = item.TemporaryUnknownGroupData == rhs.TemporaryUnknownGroupData;
-            ret.Temporary = item.Temporary.CollectionEqualsHelper(
+            ret.Temporary = item.Temporary.ListEqualsMask(
                 rhs.Temporary,
-                (loqLhs, loqRhs) => (IMask<bool>)loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => (IMask<bool>)loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.VisibleWhenDistantTimestamp = item.VisibleWhenDistantTimestamp == rhs.VisibleWhenDistantTimestamp;
             ret.VisibleWhenDistantUnknownGroupData = item.VisibleWhenDistantUnknownGroupData == rhs.VisibleWhenDistantUnknownGroupData;
-            ret.VisibleWhenDistant = item.VisibleWhenDistant.CollectionEqualsHelper(
+            ret.VisibleWhenDistant = item.VisibleWhenDistant.ListEqualsMask(
                 rhs.VisibleWhenDistant,
-                (loqLhs, loqRhs) => (IMask<bool>)loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => (IMask<bool>)loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

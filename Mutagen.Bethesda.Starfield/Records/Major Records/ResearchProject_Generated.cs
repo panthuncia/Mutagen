@@ -1666,24 +1666,24 @@ namespace Mutagen.Bethesda.Starfield
             ret.Name = object.Equals(item.Name, rhs.Name);
             ret.Description = object.Equals(item.Description, rhs.Description);
             ret.WorkbenchKeyword = item.WorkbenchKeyword.Equals(rhs.WorkbenchKeyword);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.RequiredItems = item.RequiredItems.CollectionEqualsHelper(
+            ret.RequiredItems = item.RequiredItems.ListEqualsMask(
                 rhs.RequiredItems,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.RequiredPerks = item.RequiredPerks.CollectionEqualsHelper(
+            ret.RequiredPerks = item.RequiredPerks.ListEqualsMask(
                 rhs.RequiredPerks,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.CreatedItem = item.CreatedItem.Equals(rhs.CreatedItem);
             ret.NumberCreated = item.NumberCreated == rhs.NumberCreated;
             ret.SortingPriority = item.SortingPriority.EqualsWithin(rhs.SortingPriority);
             ret.Tier = item.Tier == rhs.Tier;
             ret.CategoryKeyword = item.CategoryKeyword.Equals(rhs.CategoryKeyword);
-            ret.RequiredProjects = item.RequiredProjects.CollectionEqualsHelper(
+            ret.RequiredProjects = item.RequiredProjects.ListEqualsMask(
                 rhs.RequiredProjects,
                 (l, r) => object.Equals(l, r),
                 include);

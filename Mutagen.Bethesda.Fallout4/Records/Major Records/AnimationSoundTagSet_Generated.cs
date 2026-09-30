@@ -928,9 +928,9 @@ namespace Mutagen.Bethesda.Fallout4
             AnimationSoundTagSet.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Tags = item.Tags.CollectionEqualsHelper(
+            ret.Tags = item.Tags.ListEqualsMask(
                 rhs.Tags,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

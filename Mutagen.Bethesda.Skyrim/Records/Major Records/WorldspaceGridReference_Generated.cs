@@ -863,9 +863,9 @@ namespace Mutagen.Bethesda.Skyrim
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.GridPosition = item.GridPosition.Equals(rhs.GridPosition);
-            ret.References = item.References.CollectionEqualsHelper(
+            ret.References = item.References.ListEqualsMask(
                 rhs.References,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

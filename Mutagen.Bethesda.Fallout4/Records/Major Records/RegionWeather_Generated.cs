@@ -894,9 +894,9 @@ namespace Mutagen.Bethesda.Fallout4
             RegionWeather.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Weathers = item.Weathers.CollectionEqualsHelper(
+            ret.Weathers = item.Weathers.ListEqualsMask(
                 rhs.Weathers,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.LodDisplayDistanceMultiplier = item.LodDisplayDistanceMultiplier.EqualsWithin(rhs.LodDisplayDistanceMultiplier);
             ret.OcclusionAccuracyDist = item.OcclusionAccuracyDist.EqualsWithin(rhs.OcclusionAccuracyDist);

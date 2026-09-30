@@ -860,9 +860,9 @@ namespace Mutagen.Bethesda.Skyrim
             PackageDataTopic.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Topics = item.Topics.CollectionEqualsHelper(
+            ret.Topics = item.Topics.ListEqualsMask(
                 rhs.Topics,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.TPIC = MemorySliceExt.SequenceEqual(item.TPIC, rhs.TPIC);
             base.FillEqualsMask(item, rhs, ret, include);

@@ -2466,9 +2466,9 @@ namespace Mutagen.Bethesda.Fallout3
             ret.DnamSlot2 = item.DnamSlot2 == rhs.DnamSlot2;
             ret.DnamUnused = item.DnamUnused == rhs.DnamUnused;
             ret.OverridesAnimationSounds = item.OverridesAnimationSounds == rhs.OverridesAnimationSounds;
-            ret.AnimationSounds = item.AnimationSounds.CollectionEqualsHelper(
+            ret.AnimationSounds = item.AnimationSounds.ListEqualsMask(
                 rhs.AnimationSounds,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.AnimationSoundsTemplate = item.AnimationSoundsTemplate.Equals(rhs.AnimationSoundsTemplate);
             ret.DNAMDataTypeState = item.DNAMDataTypeState == rhs.DNAMDataTypeState;

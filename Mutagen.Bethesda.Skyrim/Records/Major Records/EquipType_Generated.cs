@@ -970,7 +970,7 @@ namespace Mutagen.Bethesda.Skyrim
             EquipType.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.SlotParents = item.SlotParents.CollectionEqualsHelper(
+            ret.SlotParents = item.SlotParents.ListEqualsMask(
                 rhs.SlotParents,
                 (l, r) => object.Equals(l, r),
                 include);

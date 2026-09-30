@@ -1970,7 +1970,7 @@ namespace Mutagen.Bethesda.Starfield
             ret.ObjectBounds = MaskItemExt.Factory(item.ObjectBounds.GetEqualsMask(rhs.ObjectBounds, include), include);
             ret.DirtinessScale = item.DirtinessScale.Equals(rhs.DirtinessScale);
             ret.Name = object.Equals(item.Name, rhs.Name);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -1997,9 +1997,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.CastingPerk = item.CastingPerk.Equals(rhs.CastingPerk);
             ret.MAGF = item.MAGF == rhs.MAGF;
             ret.MUID = item.MUID == rhs.MUID;
-            ret.Effects = item.Effects.CollectionEqualsHelper(
+            ret.Effects = item.Effects.ListEqualsMask(
                 rhs.Effects,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

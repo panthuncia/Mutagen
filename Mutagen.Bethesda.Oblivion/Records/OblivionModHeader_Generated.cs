@@ -1162,9 +1162,9 @@ namespace Mutagen.Bethesda.Oblivion
             ret.Deleted = MemorySliceExt.SequenceEqual(item.Deleted, rhs.Deleted);
             ret.Author = string.Equals(item.Author, rhs.Author);
             ret.Description = string.Equals(item.Description, rhs.Description);
-            ret.MasterReferences = item.MasterReferences.CollectionEqualsHelper(
+            ret.MasterReferences = item.MasterReferences.ListEqualsMask(
                 rhs.MasterReferences,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

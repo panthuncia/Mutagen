@@ -1218,9 +1218,9 @@ namespace Mutagen.Bethesda.Fallout4
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Description = object.Equals(item.Description, rhs.Description);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.LoadingScreenNif = item.LoadingScreenNif.Equals(rhs.LoadingScreenNif);
             ret.Transform = item.Transform.Equals(rhs.Transform);

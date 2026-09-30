@@ -1107,9 +1107,9 @@ namespace Mutagen.Bethesda.Skyrim
             ret.SCTX = MemorySliceExt.SequenceEqual(item.SCTX, rhs.SCTX);
             ret.QNAM = MemorySliceExt.SequenceEqual(item.QNAM, rhs.QNAM);
             ret.TNAM = MemorySliceExt.SequenceEqual(item.TNAM, rhs.TNAM);
-            ret.Topics = item.Topics.CollectionEqualsHelper(
+            ret.Topics = item.Topics.ListEqualsMask(
                 rhs.Topics,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

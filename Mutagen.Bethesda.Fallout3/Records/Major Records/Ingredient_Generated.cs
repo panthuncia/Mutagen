@@ -1448,9 +1448,9 @@ namespace Mutagen.Bethesda.Fallout3
             ret.Weight = item.Weight.EqualsWithin(rhs.Weight);
             ret.Value = item.Value == rhs.Value;
             ret.Flags = item.Flags == rhs.Flags;
-            ret.Effects = item.Effects.CollectionEqualsHelper(
+            ret.Effects = item.Effects.ListEqualsMask(
                 rhs.Effects,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

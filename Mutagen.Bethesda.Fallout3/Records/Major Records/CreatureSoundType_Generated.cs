@@ -868,9 +868,9 @@ namespace Mutagen.Bethesda.Fallout3
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Type = item.Type == rhs.Type;
-            ret.Sounds = item.Sounds.CollectionEqualsHelper(
+            ret.Sounds = item.Sounds.ListEqualsMask(
                 rhs.Sounds,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

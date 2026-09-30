@@ -1104,15 +1104,15 @@ namespace Mutagen.Bethesda.Fallout3
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.NavigationMesh = item.NavigationMesh.Equals(rhs.NavigationMesh);
-            ret.StandardLinks = item.StandardLinks.CollectionEqualsHelper(
+            ret.StandardLinks = item.StandardLinks.ListEqualsMask(
                 rhs.StandardLinks,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.PreferredLinks = item.PreferredLinks.CollectionEqualsHelper(
+            ret.PreferredLinks = item.PreferredLinks.ListEqualsMask(
                 rhs.PreferredLinks,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.DoorLinks = item.DoorLinks.CollectionEqualsHelper(
+            ret.DoorLinks = item.DoorLinks.ListEqualsMask(
                 rhs.DoorLinks,
                 (l, r) => object.Equals(l, r),
                 include);

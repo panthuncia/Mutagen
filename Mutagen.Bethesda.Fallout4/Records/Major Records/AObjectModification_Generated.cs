@@ -1886,23 +1886,23 @@ namespace Mutagen.Bethesda.Fallout4
             ret.MaxRank = item.MaxRank == rhs.MaxRank;
             ret.LevelTierScaledOffset = item.LevelTierScaledOffset == rhs.LevelTierScaledOffset;
             ret.AttachPoint = item.AttachPoint.Equals(rhs.AttachPoint);
-            ret.AttachParentSlots = item.AttachParentSlots.CollectionEqualsHelper(
+            ret.AttachParentSlots = item.AttachParentSlots.ListEqualsMask(
                 rhs.AttachParentSlots,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Items = item.Items.CollectionEqualsHelper(
+            ret.Items = item.Items.ListEqualsMask(
                 rhs.Items,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Includes = item.Includes.CollectionEqualsHelper(
+            ret.Includes = item.Includes.ListEqualsMask(
                 rhs.Includes,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.TargetOmodKeywords = item.TargetOmodKeywords.CollectionEqualsHelper(
+            ret.TargetOmodKeywords = item.TargetOmodKeywords.ListEqualsMask(
                 rhs.TargetOmodKeywords,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.FilterKeywords = item.FilterKeywords.CollectionEqualsHelper(
+            ret.FilterKeywords = item.FilterKeywords.ListEqualsMask(
                 rhs.FilterKeywords,
                 (l, r) => object.Equals(l, r),
                 include);

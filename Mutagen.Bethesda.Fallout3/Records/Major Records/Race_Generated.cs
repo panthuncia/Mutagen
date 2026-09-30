@@ -1863,9 +1863,9 @@ namespace Mutagen.Bethesda.Fallout3
         {
             ret.Name = object.Equals(item.Name, rhs.Name);
             ret.Description = object.Equals(item.Description, rhs.Description);
-            ret.Relations = item.Relations.CollectionEqualsHelper(
+            ret.Relations = item.Relations.ListEqualsMask(
                 rhs.Relations,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Data = EqualsMaskHelper.EqualsHelper(
                 item.Data,
@@ -1898,11 +1898,11 @@ namespace Mutagen.Bethesda.Fallout3
                 rhs: rhs.BodyData,
                 maskGetter: (l, r, i) => EqualsMaskHelper.EqualsHelper(l, r, (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl), i),
                 include: include);
-            ret.Hairs = item.Hairs.CollectionEqualsHelper(
+            ret.Hairs = item.Hairs.ListEqualsMask(
                 rhs.Hairs,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Eyes = item.Eyes.CollectionEqualsHelper(
+            ret.Eyes = item.Eyes.ListEqualsMask(
                 rhs.Eyes,
                 (l, r) => object.Equals(l, r),
                 include);

@@ -1504,9 +1504,9 @@ namespace Mutagen.Bethesda.Skyrim
             ret.ChargeTime = item.ChargeTime.EqualsWithin(rhs.ChargeTime);
             ret.BaseEnchantment = item.BaseEnchantment.Equals(rhs.BaseEnchantment);
             ret.WornRestrictions = item.WornRestrictions.Equals(rhs.WornRestrictions);
-            ret.Effects = item.Effects.CollectionEqualsHelper(
+            ret.Effects = item.Effects.ListEqualsMask(
                 rhs.Effects,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.ENITDataTypeState = item.ENITDataTypeState == rhs.ENITDataTypeState;
             base.FillEqualsMask(item, rhs, ret, include);

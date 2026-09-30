@@ -839,9 +839,9 @@ namespace Mutagen.Bethesda.Starfield
             BlockHeightAdjustmentComponent.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.SurfaceBlocks = item.SurfaceBlocks.Array2dEqualsHelper(
+            ret.SurfaceBlocks = item.SurfaceBlocks.Array2dEqualsMask(
                 rhs.SurfaceBlocks,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.DATA = MemorySliceExt.SequenceEqual(item.DATA, rhs.DATA);
             base.FillEqualsMask(item, rhs, ret, include);

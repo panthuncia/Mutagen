@@ -1155,9 +1155,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.MaxConcurrentQuests = item.MaxConcurrentQuests == rhs.MaxConcurrentQuests;
             ret.MaxNumQuestsToRun = item.MaxNumQuestsToRun == rhs.MaxNumQuestsToRun;
             ret.HoursUntilReset = item.HoursUntilReset.EqualsWithin(rhs.HoursUntilReset);
-            ret.Quests = item.Quests.CollectionEqualsHelper(
+            ret.Quests = item.Quests.ListEqualsMask(
                 rhs.Quests,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

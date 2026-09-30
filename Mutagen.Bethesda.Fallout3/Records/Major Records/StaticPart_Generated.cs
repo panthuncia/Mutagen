@@ -867,9 +867,9 @@ namespace Mutagen.Bethesda.Fallout3
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Static = item.Static.Equals(rhs.Static);
-            ret.Placements = item.Placements.CollectionEqualsHelper(
+            ret.Placements = item.Placements.ListEqualsMask(
                 rhs.Placements,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

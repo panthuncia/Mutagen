@@ -1338,18 +1338,18 @@ namespace Mutagen.Bethesda.Starfield
             FormList.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Name = object.Equals(item.Name, rhs.Name);
-            ret.Items = item.Items.CollectionEqualsHelper(
+            ret.Items = item.Items.ListEqualsMask(
                 rhs.Items,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.ConditionalEntries = item.ConditionalEntries.CollectionEqualsHelper(
+            ret.ConditionalEntries = item.ConditionalEntries.ListEqualsMask(
                 rhs.ConditionalEntries,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.AddToList = item.AddToList.Equals(rhs.AddToList);
             base.FillEqualsMask(item, rhs, ret, include);

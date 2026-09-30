@@ -994,9 +994,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.AliasID = item.AliasID == rhs.AliasID;
             ret.Flags = item.Flags == rhs.Flags;
             ret.Keyword = item.Keyword.Equals(rhs.Keyword);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.QSTADataTypeState = item.QSTADataTypeState == rhs.QSTADataTypeState;
         }

@@ -1040,13 +1040,13 @@ namespace Mutagen.Bethesda.Starfield
             AimAssistPose.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.AttachPoints = item.AttachPoints.CollectionEqualsHelper(
+            ret.AttachPoints = item.AttachPoints.ListEqualsMask(
                 rhs.AttachPoints,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Connections = item.Connections.CollectionEqualsHelper(
+            ret.Connections = item.Connections.ListEqualsMask(
                 rhs.Connections,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

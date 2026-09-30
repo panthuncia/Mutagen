@@ -2500,9 +2500,9 @@ namespace Mutagen.Bethesda.Starfield
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.XALG = item.XALG == rhs.XALG;
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Model = EqualsMaskHelper.EqualsHelper(
                 item.Model,
@@ -2512,31 +2512,31 @@ namespace Mutagen.Bethesda.Starfield
             ret.BaseObjectList = item.BaseObjectList.Equals(rhs.BaseObjectList);
             ret.RankTemplate = item.RankTemplate.Equals(rhs.RankTemplate);
             ret.MNAM = item.MNAM.Equals(rhs.MNAM);
-            ret.LegendaryMods = item.LegendaryMods.CollectionEqualsHelper(
+            ret.LegendaryMods = item.LegendaryMods.ListEqualsMask(
                 rhs.LegendaryMods,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.LnamEntries = item.LnamEntries.CollectionEqualsHelper(
+            ret.LnamEntries = item.LnamEntries.ListEqualsMask(
                 rhs.LnamEntries,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.IncludeFilters = item.IncludeFilters.CollectionEqualsHelper(
+            ret.IncludeFilters = item.IncludeFilters.ListEqualsMask(
                 rhs.IncludeFilters,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.ExcludeFilters = item.ExcludeFilters.CollectionEqualsHelper(
+            ret.ExcludeFilters = item.ExcludeFilters.ListEqualsMask(
                 rhs.ExcludeFilters,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.FNAM = MemorySliceExt.SequenceEqual(item.FNAM, rhs.FNAM);
             ret.KNAM = MemorySliceExt.SequenceEqual(item.KNAM, rhs.KNAM);
-            ret.GNAM = item.GNAM.CollectionEqualsHelper(
+            ret.GNAM = item.GNAM.ListEqualsMask(
                 rhs.GNAM,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.HNAM = item.HNAM.CollectionEqualsHelper(
+            ret.HNAM = item.HNAM.ListEqualsMask(
                 rhs.HNAM,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.JNAM = MemorySliceExt.SequenceEqual(item.JNAM, rhs.JNAM);
             base.FillEqualsMask(item, rhs, ret, include);

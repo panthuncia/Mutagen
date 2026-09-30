@@ -2523,9 +2523,9 @@ namespace Mutagen.Bethesda.Starfield
             DialogTopic.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Name = object.Equals(item.Name, rhs.Name);
             ret.Priority = item.Priority.EqualsWithin(rhs.Priority);
@@ -2537,15 +2537,15 @@ namespace Mutagen.Bethesda.Starfield
             ret.Category = item.Category == rhs.Category;
             ret.Subtype = item.Subtype == rhs.Subtype;
             ret.SubtypeName = item.SubtypeName == rhs.SubtypeName;
-            ret.TopicInfoList = item.TopicInfoList.CollectionEqualsHelper(
+            ret.TopicInfoList = item.TopicInfoList.ListEqualsMask(
                 rhs.TopicInfoList,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.Timestamp = item.Timestamp == rhs.Timestamp;
             ret.Unknown = item.Unknown == rhs.Unknown;
-            ret.Responses = item.Responses.CollectionEqualsHelper(
+            ret.Responses = item.Responses.ListEqualsMask(
                 rhs.Responses,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

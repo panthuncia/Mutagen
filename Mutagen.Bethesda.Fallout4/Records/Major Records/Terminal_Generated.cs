@@ -2263,35 +2263,35 @@ namespace Mutagen.Bethesda.Fallout4
                 rhs.Model,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Properties = item.Properties.CollectionEqualsHelper(
+            ret.Properties = item.Properties.ListEqualsMask(
                 rhs.Properties,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.PNAM = MemorySliceExt.SequenceEqual(item.PNAM, rhs.PNAM);
             ret.LoopingSound = item.LoopingSound.Equals(rhs.LoopingSound);
             ret.FNAM = MemorySliceExt.SequenceEqual(item.FNAM, rhs.FNAM);
-            ret.Holotapes = item.Holotapes.CollectionEqualsHelper(
+            ret.Holotapes = item.Holotapes.ListEqualsMask(
                 rhs.Holotapes,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Flags = item.Flags == rhs.Flags;
             ret.WorkbenchData = MemorySliceExt.SequenceEqual(item.WorkbenchData, rhs.WorkbenchData);
             ret.MarkerModel = string.Equals(item.MarkerModel, rhs.MarkerModel);
-            ret.MarkerParameters = item.MarkerParameters.CollectionEqualsHelper(
+            ret.MarkerParameters = item.MarkerParameters.ListEqualsMask(
                 rhs.MarkerParameters,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.BodyTexts = item.BodyTexts.CollectionEqualsHelper(
+            ret.BodyTexts = item.BodyTexts.ListEqualsMask(
                 rhs.BodyTexts,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.MenuItems = item.MenuItems.CollectionEqualsHelper(
+            ret.MenuItems = item.MenuItems.ListEqualsMask(
                 rhs.MenuItems,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

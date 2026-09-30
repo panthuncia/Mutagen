@@ -1527,9 +1527,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.ObjectBounds = MaskItemExt.Factory(item.ObjectBounds.GetEqualsMask(rhs.ObjectBounds, include), include);
             ret.DirtinessScale = item.DirtinessScale.Equals(rhs.DirtinessScale);
             ret.SnapTemplate = item.SnapTemplate.Equals(rhs.SnapTemplate);
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Model = EqualsMaskHelper.EqualsHelper(
                 item.Model,
@@ -1538,9 +1538,9 @@ namespace Mutagen.Bethesda.Starfield
                 include);
             ret.Name = object.Equals(item.Name, rhs.Name);
             ret.Filter = string.Equals(item.Filter, rhs.Filter);
-            ret.Parts = item.Parts.CollectionEqualsHelper(
+            ret.Parts = item.Parts.ListEqualsMask(
                 rhs.Parts,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

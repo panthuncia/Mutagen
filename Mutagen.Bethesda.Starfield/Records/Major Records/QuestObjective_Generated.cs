@@ -951,9 +951,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.Index = item.Index == rhs.Index;
             ret.Flags = item.Flags == rhs.Flags;
             ret.DisplayText = object.Equals(item.DisplayText, rhs.DisplayText);
-            ret.Targets = item.Targets.CollectionEqualsHelper(
+            ret.Targets = item.Targets.ListEqualsMask(
                 rhs.Targets,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

@@ -1355,9 +1355,9 @@ namespace Mutagen.Bethesda.Fallout4
                 include);
             ret.Name = object.Equals(item.Name, rhs.Name);
             ret.Filter = string.Equals(item.Filter, rhs.Filter);
-            ret.Parts = item.Parts.CollectionEqualsHelper(
+            ret.Parts = item.Parts.ListEqualsMask(
                 rhs.Parts,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

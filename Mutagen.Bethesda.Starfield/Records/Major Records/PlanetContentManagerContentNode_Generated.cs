@@ -1274,13 +1274,13 @@ namespace Mutagen.Bethesda.Starfield
             PlanetContentManagerContentNode.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Content = item.Content.Equals(rhs.Content);
             ret.OverrideContentPlacementPropertiesAndConditions = item.OverrideContentPlacementPropertiesAndConditions == rhs.OverrideContentPlacementPropertiesAndConditions;
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);

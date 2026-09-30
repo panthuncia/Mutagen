@@ -1182,7 +1182,7 @@ namespace Mutagen.Bethesda.Skyrim
             ret.HavokFriction = item.HavokFriction == rhs.HavokFriction;
             ret.HavokRestitution = item.HavokRestitution == rhs.HavokRestitution;
             ret.TextureSpecularExponent = item.TextureSpecularExponent == rhs.TextureSpecularExponent;
-            ret.Grasses = item.Grasses.CollectionEqualsHelper(
+            ret.Grasses = item.Grasses.ListEqualsMask(
                 rhs.Grasses,
                 (l, r) => object.Equals(l, r),
                 include);

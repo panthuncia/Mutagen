@@ -1179,15 +1179,15 @@ namespace Mutagen.Bethesda.Oblivion
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Name = string.Equals(item.Name, rhs.Name);
-            ret.Relations = item.Relations.CollectionEqualsHelper(
+            ret.Relations = item.Relations.ListEqualsMask(
                 rhs.Relations,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Flags = item.Flags == rhs.Flags;
             ret.CrimeGoldMultiplier = item.CrimeGoldMultiplier.EqualsWithin(rhs.CrimeGoldMultiplier);
-            ret.Ranks = item.Ranks.CollectionEqualsHelper(
+            ret.Ranks = item.Ranks.ListEqualsMask(
                 rhs.Ranks,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

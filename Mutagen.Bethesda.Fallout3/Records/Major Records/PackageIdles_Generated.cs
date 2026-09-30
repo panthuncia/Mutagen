@@ -997,7 +997,7 @@ namespace Mutagen.Bethesda.Fallout3
             ret.Flags = item.Flags == rhs.Flags;
             ret.AnimationCount = MemorySliceExt.SequenceEqual(item.AnimationCount, rhs.AnimationCount);
             ret.TimerSetting = item.TimerSetting.EqualsWithin(rhs.TimerSetting);
-            ret.Animations = item.Animations.CollectionEqualsHelper(
+            ret.Animations = item.Animations.ListEqualsMask(
                 rhs.Animations,
                 (l, r) => object.Equals(l, r),
                 include);

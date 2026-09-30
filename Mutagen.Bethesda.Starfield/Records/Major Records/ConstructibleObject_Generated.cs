@@ -2437,23 +2437,23 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.VirtualMachineAdapter,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Description = object.Equals(item.Description, rhs.Description);
             ret.WorkbenchKeyword = item.WorkbenchKeyword.Equals(rhs.WorkbenchKeyword);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.ConstructableComponents = item.ConstructableComponents.CollectionEqualsHelper(
+            ret.ConstructableComponents = item.ConstructableComponents.ListEqualsMask(
                 rhs.ConstructableComponents,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.RequiredPerks = item.RequiredPerks.CollectionEqualsHelper(
+            ret.RequiredPerks = item.RequiredPerks.ListEqualsMask(
                 rhs.RequiredPerks,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.CreatedObject = item.CreatedObject.Equals(rhs.CreatedObject);
             ret.AmountProduced = item.AmountProduced == rhs.AmountProduced;
@@ -2474,9 +2474,9 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.DropdownSound,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.RepairComponents = item.RepairComponents.CollectionEqualsHelper(
+            ret.RepairComponents = item.RepairComponents.ListEqualsMask(
                 rhs.RepairComponents,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.LearnMethod = item.LearnMethod == rhs.LearnMethod;
             ret.Value = item.Value == rhs.Value;
@@ -2485,7 +2485,7 @@ namespace Mutagen.Bethesda.Starfield
             ret.BaseReturnScaleTable = item.BaseReturnScaleTable.Equals(rhs.BaseReturnScaleTable);
             ret.LearnChance = item.LearnChance.Equals(rhs.LearnChance);
             ret.MaxBuildCountGlobal = item.MaxBuildCountGlobal.Equals(rhs.MaxBuildCountGlobal);
-            ret.RecipeFilters = item.RecipeFilters.CollectionEqualsHelper(
+            ret.RecipeFilters = item.RecipeFilters.ListEqualsMask(
                 rhs.RecipeFilters,
                 (l, r) => object.Equals(l, r),
                 include);

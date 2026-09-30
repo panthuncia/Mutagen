@@ -534,9 +534,9 @@ namespace Mutagen.Bethesda.Starfield
             InstanceNamingRuleSet.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Names = item.Names.CollectionEqualsHelper(
+            ret.Names = item.Names.ListEqualsMask(
                 rhs.Names,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

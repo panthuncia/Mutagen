@@ -3119,9 +3119,9 @@ namespace Mutagen.Bethesda.Skyrim
             Worldspace.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.LargeReferences = item.LargeReferences.CollectionEqualsHelper(
+            ret.LargeReferences = item.LargeReferences.ListEqualsMask(
                 rhs.LargeReferences,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.MaxHeight = EqualsMaskHelper.EqualsHelper(
                 item.MaxHeight,
@@ -3178,9 +3178,9 @@ namespace Mutagen.Bethesda.Skyrim
                 include);
             ret.SubCellsTimestamp = item.SubCellsTimestamp == rhs.SubCellsTimestamp;
             ret.SubCellsUnknown = item.SubCellsUnknown == rhs.SubCellsUnknown;
-            ret.SubCells = item.SubCells.CollectionEqualsHelper(
+            ret.SubCells = item.SubCells.ListEqualsMask(
                 rhs.SubCells,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

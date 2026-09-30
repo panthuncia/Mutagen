@@ -864,9 +864,9 @@ namespace Mutagen.Bethesda.Fallout3
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.ParentActivateOnly = item.ParentActivateOnly == rhs.ParentActivateOnly;
-            ret.Parents = item.Parents.CollectionEqualsHelper(
+            ret.Parents = item.Parents.ListEqualsMask(
                 rhs.Parents,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

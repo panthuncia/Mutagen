@@ -2251,9 +2251,9 @@ namespace Mutagen.Bethesda.Fallout4
             ret.ScheduleMinute = item.ScheduleMinute == rhs.ScheduleMinute;
             ret.Unknown3 = MemoryExtensions.SequenceEqual(item.Unknown3.Span, rhs.Unknown3.Span);
             ret.ScheduleDurationInMinutes = item.ScheduleDurationInMinutes == rhs.ScheduleDurationInMinutes;
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.IdleAnimations = EqualsMaskHelper.EqualsHelper(
                 item.IdleAnimations,
@@ -2270,9 +2270,9 @@ namespace Mutagen.Bethesda.Fallout4
                 maskGetter: (k, l, r) => l.GetEqualsMask(r, include),
                 include: include);
             ret.XnamMarker = MemoryExtensions.SequenceEqual(item.XnamMarker.Span, rhs.XnamMarker.Span);
-            ret.ProcedureTree = item.ProcedureTree.CollectionEqualsHelper(
+            ret.ProcedureTree = item.ProcedureTree.ListEqualsMask(
                 rhs.ProcedureTree,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.OnBegin = EqualsMaskHelper.EqualsHelper(
                 item.OnBegin,

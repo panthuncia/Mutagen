@@ -898,9 +898,9 @@ namespace Mutagen.Bethesda.Starfield
         {
             ret.Activator = item.Activator.Equals(rhs.Activator);
             ret.Vector = item.Vector.Equals(rhs.Vector);
-            ret.Traversals = item.Traversals.CollectionEqualsHelper(
+            ret.Traversals = item.Traversals.ListEqualsMask(
                 rhs.Traversals,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

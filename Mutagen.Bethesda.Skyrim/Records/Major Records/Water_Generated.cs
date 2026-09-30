@@ -3631,7 +3631,7 @@ namespace Mutagen.Bethesda.Skyrim
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Name = object.Equals(item.Name, rhs.Name);
-            ret.UnusedNoisemaps = item.UnusedNoisemaps.CollectionEqualsHelper(
+            ret.UnusedNoisemaps = item.UnusedNoisemaps.ListEqualsMask(
                 rhs.UnusedNoisemaps,
                 (l, r) => string.Equals(l, r),
                 include);

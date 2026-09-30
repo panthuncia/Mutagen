@@ -1002,9 +1002,9 @@ namespace Mutagen.Bethesda.Starfield
             ArmorModification.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Properties = item.Properties.CollectionEqualsHelper(
+            ret.Properties = item.Properties.ListEqualsMask(
                 rhs.Properties,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

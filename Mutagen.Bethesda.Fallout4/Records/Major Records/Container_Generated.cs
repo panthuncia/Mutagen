@@ -1991,9 +1991,9 @@ namespace Mutagen.Bethesda.Fallout4
                 rhs.Model,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Items = item.Items.CollectionEqualsHelper(
+            ret.Items = item.Items.ListEqualsMask(
                 rhs.Items,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Destructible = EqualsMaskHelper.EqualsHelper(
                 item.Destructible,
@@ -2002,14 +2002,14 @@ namespace Mutagen.Bethesda.Fallout4
                 include);
             ret.Flags = item.Flags == rhs.Flags;
             ret.Weight = item.Weight.EqualsWithin(rhs.Weight);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.ForcedLocRefType = item.ForcedLocRefType.Equals(rhs.ForcedLocRefType);
-            ret.Properties = item.Properties.CollectionEqualsHelper(
+            ret.Properties = item.Properties.ListEqualsMask(
                 rhs.Properties,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.NativeTerminal = item.NativeTerminal.Equals(rhs.NativeTerminal);
             ret.OpenSound = item.OpenSound.Equals(rhs.OpenSound);

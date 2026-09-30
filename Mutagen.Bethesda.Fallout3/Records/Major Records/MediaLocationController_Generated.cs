@@ -1967,27 +1967,27 @@ namespace Mutagen.Bethesda.Fallout3
             ret.DayStart = item.DayStart == rhs.DayStart;
             ret.NightStart = item.NightStart == rhs.NightStart;
             ret.RetriggerDelay = item.RetriggerDelay.EqualsWithin(rhs.RetriggerDelay);
-            ret.NeutralSets = item.NeutralSets.CollectionEqualsHelper(
+            ret.NeutralSets = item.NeutralSets.ListEqualsMask(
                 rhs.NeutralSets,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.AllySets = item.AllySets.CollectionEqualsHelper(
+            ret.AllySets = item.AllySets.ListEqualsMask(
                 rhs.AllySets,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.FriendSets = item.FriendSets.CollectionEqualsHelper(
+            ret.FriendSets = item.FriendSets.ListEqualsMask(
                 rhs.FriendSets,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.EnemySets = item.EnemySets.CollectionEqualsHelper(
+            ret.EnemySets = item.EnemySets.ListEqualsMask(
                 rhs.EnemySets,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.LocationSets = item.LocationSets.CollectionEqualsHelper(
+            ret.LocationSets = item.LocationSets.ListEqualsMask(
                 rhs.LocationSets,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.BattleSets = item.BattleSets.CollectionEqualsHelper(
+            ret.BattleSets = item.BattleSets.ListEqualsMask(
                 rhs.BattleSets,
                 (l, r) => object.Equals(l, r),
                 include);

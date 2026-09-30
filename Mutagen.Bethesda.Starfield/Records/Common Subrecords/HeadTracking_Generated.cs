@@ -897,7 +897,7 @@ namespace Mutagen.Bethesda.Starfield
             HeadTracking.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Aliases = item.Aliases.CollectionEqualsHelper(
+            ret.Aliases = item.Aliases.ListEqualsMask(
                 rhs.Aliases,
                 (l, r) => l == r,
                 include);

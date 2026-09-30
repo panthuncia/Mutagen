@@ -1598,13 +1598,13 @@ namespace Mutagen.Bethesda.Starfield
                 include);
             ret.ObjectBounds = MaskItemExt.Factory(item.ObjectBounds.GetEqualsMask(rhs.ObjectBounds, include), include);
             ret.DirtinessScale = item.DirtinessScale.Equals(rhs.DirtinessScale);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.Flags = item.Flags == rhs.Flags;
             ret.IdleTimer = item.IdleTimer.EqualsWithin(rhs.IdleTimer);
-            ret.Animations = item.Animations.CollectionEqualsHelper(
+            ret.Animations = item.Animations.ListEqualsMask(
                 rhs.Animations,
                 (l, r) => object.Equals(l, r),
                 include);

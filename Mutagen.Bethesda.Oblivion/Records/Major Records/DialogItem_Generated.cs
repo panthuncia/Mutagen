@@ -1624,23 +1624,23 @@ namespace Mutagen.Bethesda.Oblivion
             ret.Quest = item.Quest.Equals(rhs.Quest);
             ret.Topic = item.Topic.Equals(rhs.Topic);
             ret.PreviousItem = item.PreviousItem.Equals(rhs.PreviousItem);
-            ret.Topics = item.Topics.CollectionEqualsHelper(
+            ret.Topics = item.Topics.ListEqualsMask(
                 rhs.Topics,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Responses = item.Responses.CollectionEqualsHelper(
+            ret.Responses = item.Responses.ListEqualsMask(
                 rhs.Responses,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Choices = item.Choices.CollectionEqualsHelper(
+            ret.Choices = item.Choices.ListEqualsMask(
                 rhs.Choices,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.LinkFrom = item.LinkFrom.CollectionEqualsHelper(
+            ret.LinkFrom = item.LinkFrom.ListEqualsMask(
                 rhs.LinkFrom,
                 (l, r) => object.Equals(l, r),
                 include);

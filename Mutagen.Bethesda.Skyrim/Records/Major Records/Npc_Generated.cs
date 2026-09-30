@@ -3725,15 +3725,15 @@ namespace Mutagen.Bethesda.Skyrim
                 include);
             ret.ObjectBounds = MaskItemExt.Factory(item.ObjectBounds.GetEqualsMask(rhs.ObjectBounds, include), include);
             ret.Configuration = MaskItemExt.Factory(item.Configuration.GetEqualsMask(rhs.Configuration, include), include);
-            ret.Factions = item.Factions.CollectionEqualsHelper(
+            ret.Factions = item.Factions.ListEqualsMask(
                 rhs.Factions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.DeathItem = item.DeathItem.Equals(rhs.DeathItem);
             ret.Voice = item.Voice.Equals(rhs.Voice);
             ret.Template = item.Template.Equals(rhs.Template);
             ret.Race = item.Race.Equals(rhs.Race);
-            ret.ActorEffect = item.ActorEffect.CollectionEqualsHelper(
+            ret.ActorEffect = item.ActorEffect.ListEqualsMask(
                 rhs.ActorEffect,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -3745,28 +3745,28 @@ namespace Mutagen.Bethesda.Skyrim
             ret.WornArmor = item.WornArmor.Equals(rhs.WornArmor);
             ret.FarAwayModel = item.FarAwayModel.Equals(rhs.FarAwayModel);
             ret.AttackRace = item.AttackRace.Equals(rhs.AttackRace);
-            ret.Attacks = item.Attacks.CollectionEqualsHelper(
+            ret.Attacks = item.Attacks.ListEqualsMask(
                 rhs.Attacks,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.SpectatorOverridePackageList = item.SpectatorOverridePackageList.Equals(rhs.SpectatorOverridePackageList);
             ret.ObserveDeadBodyOverridePackageList = item.ObserveDeadBodyOverridePackageList.Equals(rhs.ObserveDeadBodyOverridePackageList);
             ret.GuardWarnOverridePackageList = item.GuardWarnOverridePackageList.Equals(rhs.GuardWarnOverridePackageList);
             ret.CombatOverridePackageList = item.CombatOverridePackageList.Equals(rhs.CombatOverridePackageList);
-            ret.Perks = item.Perks.CollectionEqualsHelper(
+            ret.Perks = item.Perks.ListEqualsMask(
                 rhs.Perks,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Items = item.Items.CollectionEqualsHelper(
+            ret.Items = item.Items.ListEqualsMask(
                 rhs.Items,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.AIData = MaskItemExt.Factory(item.AIData.GetEqualsMask(rhs.AIData, include), include);
-            ret.Packages = item.Packages.CollectionEqualsHelper(
+            ret.Packages = item.Packages.ListEqualsMask(
                 rhs.Packages,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -3778,7 +3778,7 @@ namespace Mutagen.Bethesda.Skyrim
                 rhs.PlayerSkills,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.HeadParts = item.HeadParts.CollectionEqualsHelper(
+            ret.HeadParts = item.HeadParts.ListEqualsMask(
                 rhs.HeadParts,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -3810,9 +3810,9 @@ namespace Mutagen.Bethesda.Skyrim
                 rhs.FaceParts,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.TintLayers = item.TintLayers.CollectionEqualsHelper(
+            ret.TintLayers = item.TintLayers.ListEqualsMask(
                 rhs.TintLayers,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

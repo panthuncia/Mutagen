@@ -1124,7 +1124,7 @@ namespace Mutagen.Bethesda.Oblivion
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Icon = string.Equals(item.Icon, rhs.Icon);
-            ret.SpeedTreeSeeds = item.SpeedTreeSeeds.CollectionEqualsHelper(
+            ret.SpeedTreeSeeds = item.SpeedTreeSeeds.ListEqualsMask(
                 rhs.SpeedTreeSeeds,
                 (l, r) => l == r,
                 include);

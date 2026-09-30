@@ -2352,9 +2352,9 @@ namespace Mutagen.Bethesda.Skyrim
             ret.Count = item.Count == rhs.Count;
             ret.Radius = item.Radius.EqualsWithin(rhs.Radius);
             ret.Health = item.Health.EqualsWithin(rhs.Health);
-            ret.LinkedReferences = item.LinkedReferences.CollectionEqualsHelper(
+            ret.LinkedReferences = item.LinkedReferences.ListEqualsMask(
                 rhs.LinkedReferences,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.ActivateParents = EqualsMaskHelper.EqualsHelper(
                 item.ActivateParents,
@@ -2369,7 +2369,7 @@ namespace Mutagen.Bethesda.Skyrim
             ret.PersistentLocation = item.PersistentLocation.Equals(rhs.PersistentLocation);
             ret.LocationReference = item.LocationReference.Equals(rhs.LocationReference);
             ret.IsIgnoredBySandbox = item.IsIgnoredBySandbox == rhs.IsIgnoredBySandbox;
-            ret.LocationRefTypes = item.LocationRefTypes.CollectionEqualsHelper(
+            ret.LocationRefTypes = item.LocationRefTypes.ListEqualsMask(
                 rhs.LocationRefTypes,
                 (l, r) => object.Equals(l, r),
                 include);

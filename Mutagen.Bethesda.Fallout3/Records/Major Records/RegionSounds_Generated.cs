@@ -1060,13 +1060,13 @@ namespace Mutagen.Bethesda.Fallout3
             ret.MusicType = item.MusicType == rhs.MusicType;
             ret.Music = item.Music.Equals(rhs.Music);
             ret.IncidentalMediaSet = item.IncidentalMediaSet.Equals(rhs.IncidentalMediaSet);
-            ret.BattleMediaSets = item.BattleMediaSets.CollectionEqualsHelper(
+            ret.BattleMediaSets = item.BattleMediaSets.ListEqualsMask(
                 rhs.BattleMediaSets,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Sounds = item.Sounds.CollectionEqualsHelper(
+            ret.Sounds = item.Sounds.ListEqualsMask(
                 rhs.Sounds,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

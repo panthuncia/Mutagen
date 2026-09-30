@@ -2367,32 +2367,32 @@ namespace Mutagen.Bethesda.Skyrim
                 rhs.FindMatchingRefFromEvent,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Items = item.Items.CollectionEqualsHelper(
+            ret.Items = item.Items.ListEqualsMask(
                 rhs.Items,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.SpectatorOverridePackageList = item.SpectatorOverridePackageList.Equals(rhs.SpectatorOverridePackageList);
             ret.ObserveDeadBodyOverridePackageList = item.ObserveDeadBodyOverridePackageList.Equals(rhs.ObserveDeadBodyOverridePackageList);
             ret.GuardWarnOverridePackageList = item.GuardWarnOverridePackageList.Equals(rhs.GuardWarnOverridePackageList);
             ret.CombatOverridePackageList = item.CombatOverridePackageList.Equals(rhs.CombatOverridePackageList);
             ret.DisplayName = item.DisplayName.Equals(rhs.DisplayName);
-            ret.Spells = item.Spells.CollectionEqualsHelper(
+            ret.Spells = item.Spells.ListEqualsMask(
                 rhs.Spells,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Factions = item.Factions.CollectionEqualsHelper(
+            ret.Factions = item.Factions.ListEqualsMask(
                 rhs.Factions,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.PackageData = item.PackageData.CollectionEqualsHelper(
+            ret.PackageData = item.PackageData.ListEqualsMask(
                 rhs.PackageData,
                 (l, r) => object.Equals(l, r),
                 include);

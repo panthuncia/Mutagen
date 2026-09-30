@@ -2298,9 +2298,9 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.VirtualMachineAdapter,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.FirstPersonFlags = item.FirstPersonFlags == rhs.FirstPersonFlags;
             ret.Race = item.Race.Equals(rhs.Race);
@@ -2325,7 +2325,7 @@ namespace Mutagen.Bethesda.Starfield
                 rhs: rhs.AltSkeleton,
                 maskGetter: (l, r, i) => EqualityComparer<String?>.Default.Equals(l, r),
                 include: include);
-            ret.ExtraLightLayers = item.ExtraLightLayers.CollectionEqualsHelper(
+            ret.ExtraLightLayers = item.ExtraLightLayers.ListEqualsMask(
                 rhs.ExtraLightLayers,
                 (l, r) => l == r,
                 include);
@@ -2339,7 +2339,7 @@ namespace Mutagen.Bethesda.Starfield
                 rhs: rhs.Morphs,
                 maskGetter: (l, r, i) => EqualsMaskHelper.EqualsHelper(l, r, (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl), i),
                 include: include);
-            ret.AdditionalRaces = item.AdditionalRaces.CollectionEqualsHelper(
+            ret.AdditionalRaces = item.AdditionalRaces.ListEqualsMask(
                 rhs.AdditionalRaces,
                 (l, r) => object.Equals(l, r),
                 include);

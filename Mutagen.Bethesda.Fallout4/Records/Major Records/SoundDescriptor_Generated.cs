@@ -1573,27 +1573,27 @@ namespace Mutagen.Bethesda.Fallout4
                 include);
             ret.Category = item.Category.Equals(rhs.Category);
             ret.AlternateSoundFor = item.AlternateSoundFor.Equals(rhs.AlternateSoundFor);
-            ret.SoundFiles = item.SoundFiles.CollectionEqualsHelper(
+            ret.SoundFiles = item.SoundFiles.ListEqualsMask(
                 rhs.SoundFiles,
                 (l, r) => string.Equals(l, r),
                 include);
             ret.OutputModel = item.OutputModel.Equals(rhs.OutputModel);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.LoopAndRumble = EqualsMaskHelper.EqualsHelper(
                 item.LoopAndRumble,
                 rhs.LoopAndRumble,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Descriptors = item.Descriptors.CollectionEqualsHelper(
+            ret.Descriptors = item.Descriptors.ListEqualsMask(
                 rhs.Descriptors,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.RatesOfFire = item.RatesOfFire.CollectionEqualsHelper(
+            ret.RatesOfFire = item.RatesOfFire.ListEqualsMask(
                 rhs.RatesOfFire,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

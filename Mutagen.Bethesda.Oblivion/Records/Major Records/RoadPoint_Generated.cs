@@ -890,7 +890,7 @@ namespace Mutagen.Bethesda.Oblivion
         {
             ret.Point = item.Point.Equals(rhs.Point);
             ret.NumConnectionsFluffBytes = MemoryExtensions.SequenceEqual(item.NumConnectionsFluffBytes.Span, rhs.NumConnectionsFluffBytes.Span);
-            ret.Connections = item.Connections.CollectionEqualsHelper(
+            ret.Connections = item.Connections.ListEqualsMask(
                 rhs.Connections,
                 (l, r) => l.Equals(r),
                 include);

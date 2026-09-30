@@ -1194,17 +1194,17 @@ namespace Mutagen.Bethesda.Starfield
         {
             ret.NavigationMesh = item.NavigationMesh.Equals(rhs.NavigationMesh);
             ret.Data = MemoryExtensions.SequenceEqual(item.Data.Span, rhs.Data.Span);
-            ret.MergedTo = item.MergedTo.CollectionEqualsHelper(
+            ret.MergedTo = item.MergedTo.ListEqualsMask(
                 rhs.MergedTo,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.PreferredMerges = item.PreferredMerges.CollectionEqualsHelper(
+            ret.PreferredMerges = item.PreferredMerges.ListEqualsMask(
                 rhs.PreferredMerges,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.LinkedDoors = item.LinkedDoors.CollectionEqualsHelper(
+            ret.LinkedDoors = item.LinkedDoors.ListEqualsMask(
                 rhs.LinkedDoors,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Unknown = MemoryExtensions.SequenceEqual(item.Unknown.Span, rhs.Unknown.Span);
         }

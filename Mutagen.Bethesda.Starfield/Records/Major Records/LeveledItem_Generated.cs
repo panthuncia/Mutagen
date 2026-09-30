@@ -2246,28 +2246,28 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.ObjectPaletteDefaults,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.XALG = item.XALG == rhs.XALG;
             ret.ChanceNone = item.ChanceNone.EqualsWithin(rhs.ChanceNone);
             ret.MaxCount = item.MaxCount == rhs.MaxCount;
             ret.Flags = item.Flags == rhs.Flags;
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.UseChanceNoneGlobal = item.UseChanceNoneGlobal.Equals(rhs.UseChanceNoneGlobal);
             ret.RequiredBiome = item.RequiredBiome.Equals(rhs.RequiredBiome);
             ret.RequiredResourceVein = item.RequiredResourceVein.Equals(rhs.RequiredResourceVein);
-            ret.Entries = item.Entries.CollectionEqualsHelper(
+            ret.Entries = item.Entries.ListEqualsMask(
                 rhs.Entries,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.FilterKeywordChances = item.FilterKeywordChances.CollectionEqualsHelper(
+            ret.FilterKeywordChances = item.FilterKeywordChances.ListEqualsMask(
                 rhs.FilterKeywordChances,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.EpicLootChance = item.EpicLootChance.Equals(rhs.EpicLootChance);
             ret.MarkerColor = item.MarkerColor.ColorOnlyEquals(rhs.MarkerColor);
@@ -2278,7 +2278,7 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.Model,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.ForcedLocations = item.ForcedLocations.CollectionEqualsHelper(
+            ret.ForcedLocations = item.ForcedLocations.ListEqualsMask(
                 rhs.ForcedLocations,
                 (l, r) => object.Equals(l, r),
                 include);

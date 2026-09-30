@@ -791,7 +791,7 @@ namespace Mutagen.Bethesda.Skyrim
             ScriptBoolListProperty.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Data = item.Data.CollectionEqualsHelper(
+            ret.Data = item.Data.ListEqualsMask(
                 rhs.Data,
                 (l, r) => l == r,
                 include);

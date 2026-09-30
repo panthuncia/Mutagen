@@ -827,7 +827,7 @@ namespace Mutagen.Bethesda.Starfield
             PackageSceneAction.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Packages = item.Packages.CollectionEqualsHelper(
+            ret.Packages = item.Packages.ListEqualsMask(
                 rhs.Packages,
                 (l, r) => object.Equals(l, r),
                 include);

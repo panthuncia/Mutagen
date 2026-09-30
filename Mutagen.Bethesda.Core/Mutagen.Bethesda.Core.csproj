@@ -757,6 +757,7 @@
         <Compile Include="Plugins\Binary\Translations\StringBinaryType.cs" />
         <Compile Include="Plugins\Allocators\IFormKeyAllocator.cs" />
         <Compile Include="Plugins\Records\ContentHashExt.cs" />
+        <Compile Include="Plugins\Records\EqualsMasks.cs" />
         <Compile Include="Plugins\Records\GenderedItem.cs" />
         <Compile Include="Plugins\Binary\Overlay\AListGroupOverlay.cs" />
         <Compile Include="Plugins\Records\ProtocolDefinition_Bethesda.cs" />

@@ -1235,9 +1235,9 @@ namespace Mutagen.Bethesda.Skyrim
             ret.Quest = item.Quest.Equals(rhs.Quest);
             ret.Flags = item.Flags == rhs.Flags;
             ret.DisplayTime = item.DisplayTime == rhs.DisplayTime;
-            ret.MenuButtons = item.MenuButtons.CollectionEqualsHelper(
+            ret.MenuButtons = item.MenuButtons.ListEqualsMask(
                 rhs.MenuButtons,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

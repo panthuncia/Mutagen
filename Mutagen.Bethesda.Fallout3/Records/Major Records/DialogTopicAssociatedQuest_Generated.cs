@@ -874,9 +874,9 @@ namespace Mutagen.Bethesda.Fallout3
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Quest = item.Quest.Equals(rhs.Quest);
-            ret.SharedInfos = item.SharedInfos.CollectionEqualsHelper(
+            ret.SharedInfos = item.SharedInfos.ListEqualsMask(
                 rhs.SharedInfos,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

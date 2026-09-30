@@ -864,7 +864,7 @@ namespace Mutagen.Bethesda.Fallout4
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.FormType = item.FormType == rhs.FormType;
-            ret.Links = item.Links.CollectionEqualsHelper(
+            ret.Links = item.Links.ListEqualsMask(
                 rhs.Links,
                 (l, r) => object.Equals(l, r),
                 include);

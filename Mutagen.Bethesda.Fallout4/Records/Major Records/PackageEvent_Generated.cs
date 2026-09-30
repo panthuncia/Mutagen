@@ -872,9 +872,9 @@ namespace Mutagen.Bethesda.Fallout4
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Idle = item.Idle.Equals(rhs.Idle);
-            ret.Topics = item.Topics.CollectionEqualsHelper(
+            ret.Topics = item.Topics.ListEqualsMask(
                 rhs.Topics,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

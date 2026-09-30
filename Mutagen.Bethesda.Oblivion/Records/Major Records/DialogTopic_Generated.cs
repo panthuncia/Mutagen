@@ -1540,16 +1540,16 @@ namespace Mutagen.Bethesda.Oblivion
             DialogTopic.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Quests = item.Quests.CollectionEqualsHelper(
+            ret.Quests = item.Quests.ListEqualsMask(
                 rhs.Quests,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.Name = string.Equals(item.Name, rhs.Name);
             ret.DialogType = item.DialogType == rhs.DialogType;
             ret.Timestamp = item.Timestamp == rhs.Timestamp;
-            ret.Items = item.Items.CollectionEqualsHelper(
+            ret.Items = item.Items.ListEqualsMask(
                 rhs.Items,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

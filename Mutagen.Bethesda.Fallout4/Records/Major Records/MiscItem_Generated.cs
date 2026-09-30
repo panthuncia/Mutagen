@@ -1939,18 +1939,18 @@ namespace Mutagen.Bethesda.Fallout4
                 include);
             ret.PickUpSound = item.PickUpSound.Equals(rhs.PickUpSound);
             ret.PutDownSound = item.PutDownSound.Equals(rhs.PutDownSound);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.FeaturedItemMessage = item.FeaturedItemMessage.Equals(rhs.FeaturedItemMessage);
             ret.Value = item.Value == rhs.Value;
             ret.Weight = item.Weight.EqualsWithin(rhs.Weight);
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.ComponentDisplayIndices = item.ComponentDisplayIndices.CollectionEqualsHelper(
+            ret.ComponentDisplayIndices = item.ComponentDisplayIndices.ListEqualsMask(
                 rhs.ComponentDisplayIndices,
                 (l, r) => l == r,
                 include);

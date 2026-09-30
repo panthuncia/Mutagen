@@ -1005,11 +1005,11 @@ namespace Mutagen.Bethesda.Starfield
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.ExternalBaseTemplate = item.ExternalBaseTemplate.Equals(rhs.ExternalBaseTemplate);
-            ret.Sources = item.Sources.CollectionEqualsHelper(
+            ret.Sources = item.Sources.ListEqualsMask(
                 rhs.Sources,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.EXASs = item.EXASs.CollectionEqualsHelper(
+            ret.EXASs = item.EXASs.ListEqualsMask(
                 rhs.EXASs,
                 (l, r) => string.Equals(l, r),
                 include);

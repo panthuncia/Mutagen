@@ -940,7 +940,7 @@ namespace Mutagen.Bethesda.Fallout4
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Index = item.Index == rhs.Index;
-            ret.DATAs = item.DATAs.CollectionEqualsHelper(
+            ret.DATAs = item.DATAs.ListEqualsMask(
                 rhs.DATAs,
                 (l, r) => l == r,
                 include);

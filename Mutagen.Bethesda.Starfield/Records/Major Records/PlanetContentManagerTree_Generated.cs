@@ -1191,13 +1191,13 @@ namespace Mutagen.Bethesda.Starfield
             ret.NAM1 = MemoryExtensions.SequenceEqual(item.NAM1.Span, rhs.NAM1.Span);
             ret.NAM2 = MemoryExtensions.SequenceEqual(item.NAM2.Span, rhs.NAM2.Span);
             ret.NAM5 = MemoryExtensions.SequenceEqual(item.NAM5.Span, rhs.NAM5.Span);
-            ret.Nodes = item.Nodes.CollectionEqualsHelper(
+            ret.Nodes = item.Nodes.ListEqualsMask(
                 rhs.Nodes,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

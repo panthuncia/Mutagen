@@ -1641,7 +1641,7 @@ namespace Mutagen.Bethesda.Fallout3
                 rhs.Destructible,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.SpeedTreeSeeds = item.SpeedTreeSeeds.CollectionEqualsHelper(
+            ret.SpeedTreeSeeds = item.SpeedTreeSeeds.ListEqualsMask(
                 rhs.SpeedTreeSeeds,
                 (l, r) => l == r,
                 include);

@@ -978,9 +978,9 @@ namespace Mutagen.Bethesda.Skyrim
         {
             ret.Rank = item.Rank == rhs.Rank;
             ret.Priority = item.Priority == rhs.Priority;
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.ButtonLabel = object.Equals(item.ButtonLabel, rhs.ButtonLabel);
             ret.Flags = MaskItemExt.Factory(item.Flags.GetEqualsMask(rhs.Flags, include), include);

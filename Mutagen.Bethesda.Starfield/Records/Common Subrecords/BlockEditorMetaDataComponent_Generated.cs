@@ -1139,7 +1139,7 @@ namespace Mutagen.Bethesda.Starfield
             ret.UnknownByte = item.UnknownByte == rhs.UnknownByte;
             ret.UnknownString2 = string.Equals(item.UnknownString2, rhs.UnknownString2);
             ret.UnknownString3 = string.Equals(item.UnknownString3, rhs.UnknownString3);
-            ret.UnknownInts = item.UnknownInts.CollectionEqualsHelper(
+            ret.UnknownInts = item.UnknownInts.ListEqualsMask(
                 rhs.UnknownInts,
                 (l, r) => l == r,
                 include);

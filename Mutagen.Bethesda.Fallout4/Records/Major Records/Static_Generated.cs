@@ -1738,9 +1738,9 @@ namespace Mutagen.Bethesda.Fallout4
                 rhs.Model,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Properties = item.Properties.CollectionEqualsHelper(
+            ret.Properties = item.Properties.ListEqualsMask(
                 rhs.Properties,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Name = object.Equals(item.Name, rhs.Name);
             ret.MaxAngle = item.MaxAngle.EqualsWithin(rhs.MaxAngle);
@@ -1752,9 +1752,9 @@ namespace Mutagen.Bethesda.Fallout4
                 rhs.NavmeshGeometry,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.DistantLods = item.DistantLods.CollectionEqualsHelper(
+            ret.DistantLods = item.DistantLods.ListEqualsMask(
                 rhs.DistantLods,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.DNAMDataTypeState = item.DNAMDataTypeState == rhs.DNAMDataTypeState;
             base.FillEqualsMask(item, rhs, ret, include);

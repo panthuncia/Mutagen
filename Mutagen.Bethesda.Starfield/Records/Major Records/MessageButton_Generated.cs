@@ -960,9 +960,9 @@ namespace Mutagen.Bethesda.Starfield
         {
             ret.Text = object.Equals(item.Text, rhs.Text);
             ret.ButtonText = string.Equals(item.ButtonText, rhs.ButtonText);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Reference = item.Reference.Equals(rhs.Reference);
         }

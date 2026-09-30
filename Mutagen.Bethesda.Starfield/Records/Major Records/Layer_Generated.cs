@@ -1177,9 +1177,9 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.VirtualMachineAdapter,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Parent = item.Parent.Equals(rhs.Parent);
             ret.SurfaceColor = item.SurfaceColor.ColorOnlyEquals(rhs.SurfaceColor);

@@ -871,7 +871,7 @@ namespace Mutagen.Bethesda.Oblivion
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Reference = item.Reference.Equals(rhs.Reference);
-            ret.Points = item.Points.CollectionEqualsHelper(
+            ret.Points = item.Points.ListEqualsMask(
                 rhs.Points,
                 (l, r) => l == r,
                 include);

@@ -841,9 +841,9 @@ namespace Mutagen.Bethesda.Starfield
             CameraSceneAction.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.CameraShots = item.CameraShots.CollectionEqualsHelper(
+            ret.CameraShots = item.CameraShots.ListEqualsMask(
                 rhs.CameraShots,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

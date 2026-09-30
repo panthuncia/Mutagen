@@ -1457,7 +1457,7 @@ namespace Mutagen.Bethesda.Fallout3
                 include);
             ret.PickUpSound = item.PickUpSound.Equals(rhs.PickUpSound);
             ret.DropSound = item.DropSound.Equals(rhs.DropSound);
-            ret.Quests = item.Quests.CollectionEqualsHelper(
+            ret.Quests = item.Quests.ListEqualsMask(
                 rhs.Quests,
                 (l, r) => object.Equals(l, r),
                 include);

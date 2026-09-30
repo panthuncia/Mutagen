@@ -1423,15 +1423,15 @@ namespace Mutagen.Bethesda.Fallout4
                 rhs.LoopData,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.CuePoints = item.CuePoints.CollectionEqualsHelper(
+            ret.CuePoints = item.CuePoints.ListEqualsMask(
                 rhs.CuePoints,
                 (l, r) => l.EqualsWithin(r),
                 include);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Tracks = item.Tracks.CollectionEqualsHelper(
+            ret.Tracks = item.Tracks.ListEqualsMask(
                 rhs.Tracks,
                 (l, r) => object.Equals(l, r),
                 include);

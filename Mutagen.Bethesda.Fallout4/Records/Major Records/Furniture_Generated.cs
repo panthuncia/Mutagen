@@ -2791,13 +2791,13 @@ namespace Mutagen.Bethesda.Fallout4
                 rhs.Destructible,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Properties = item.Properties.CollectionEqualsHelper(
+            ret.Properties = item.Properties.ListEqualsMask(
                 rhs.Properties,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.NativeTerminal = item.NativeTerminal.Equals(rhs.NativeTerminal);
             ret.ForcedLocRefType = item.ForcedLocRefType.Equals(rhs.ForcedLocRefType);
@@ -2805,34 +2805,34 @@ namespace Mutagen.Bethesda.Fallout4
             ret.DrinkingWater = item.DrinkingWater.Equals(rhs.DrinkingWater);
             ret.ActivateTextOverride = object.Equals(item.ActivateTextOverride, rhs.ActivateTextOverride);
             ret.Flags = item.Flags == rhs.Flags;
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Items = item.Items.CollectionEqualsHelper(
+            ret.Items = item.Items.ListEqualsMask(
                 rhs.Items,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.BenchType = item.BenchType == rhs.BenchType;
             ret.UsesSkill = item.UsesSkill == rhs.UsesSkill;
             ret.AssociatedForm = item.AssociatedForm.Equals(rhs.AssociatedForm);
             ret.EnabledEntryPoints = item.EnabledEntryPoints == rhs.EnabledEntryPoints;
-            ret.MarkerEntryPoints = item.MarkerEntryPoints.CollectionEqualsHelper(
+            ret.MarkerEntryPoints = item.MarkerEntryPoints.ListEqualsMask(
                 rhs.MarkerEntryPoints,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.MarkerModel = string.Equals(item.MarkerModel, rhs.MarkerModel);
-            ret.MarkerParameters = item.MarkerParameters.CollectionEqualsHelper(
+            ret.MarkerParameters = item.MarkerParameters.ListEqualsMask(
                 rhs.MarkerParameters,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.AttachParentSlots = item.AttachParentSlots.CollectionEqualsHelper(
+            ret.AttachParentSlots = item.AttachParentSlots.ListEqualsMask(
                 rhs.AttachParentSlots,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.ObjectTemplates = item.ObjectTemplates.CollectionEqualsHelper(
+            ret.ObjectTemplates = item.ObjectTemplates.ListEqualsMask(
                 rhs.ObjectTemplates,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.NavmeshGeometry = EqualsMaskHelper.EqualsHelper(
                 item.NavmeshGeometry,

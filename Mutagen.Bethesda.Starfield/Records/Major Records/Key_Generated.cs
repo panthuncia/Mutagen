@@ -2189,16 +2189,16 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.DropdownSound,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.FeaturedItemMessage = item.FeaturedItemMessage.Equals(rhs.FeaturedItemMessage);
-            ret.Resources = item.Resources.CollectionEqualsHelper(
+            ret.Resources = item.Resources.ListEqualsMask(
                 rhs.Resources,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.ComponentDisplayIndices = item.ComponentDisplayIndices.CollectionEqualsHelper(
+            ret.ComponentDisplayIndices = item.ComponentDisplayIndices.ListEqualsMask(
                 rhs.ComponentDisplayIndices,
                 (l, r) => l == r,
                 include);

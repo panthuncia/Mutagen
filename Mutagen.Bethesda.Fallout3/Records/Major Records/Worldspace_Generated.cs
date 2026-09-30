@@ -2894,16 +2894,16 @@ namespace Mutagen.Bethesda.Fallout3
             ret.Music = item.Music.Equals(rhs.Music);
             ret.CanopyShadow = string.Equals(item.CanopyShadow, rhs.CanopyShadow);
             ret.WaterNoiseTexture = string.Equals(item.WaterNoiseTexture, rhs.WaterNoiseTexture);
-            ret.ImpactSwapData = item.ImpactSwapData.CollectionEqualsHelper(
+            ret.ImpactSwapData = item.ImpactSwapData.ListEqualsMask(
                 rhs.ImpactSwapData,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.FootstepMaterials = EqualsMaskHelper.EqualsHelper(
                 item.FootstepMaterials,
                 rhs.FootstepMaterials,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.OffsetData = item.OffsetData.CollectionEqualsHelper(
+            ret.OffsetData = item.OffsetData.ListEqualsMask(
                 rhs.OffsetData,
                 (l, r) => l == r,
                 include);
@@ -2914,9 +2914,9 @@ namespace Mutagen.Bethesda.Fallout3
                 include);
             ret.SubCellsTimestamp = item.SubCellsTimestamp == rhs.SubCellsTimestamp;
             ret.SubCellsUnknownGroupData = item.SubCellsUnknownGroupData == rhs.SubCellsUnknownGroupData;
-            ret.SubCells = item.SubCells.CollectionEqualsHelper(
+            ret.SubCells = item.SubCells.ListEqualsMask(
                 rhs.SubCells,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

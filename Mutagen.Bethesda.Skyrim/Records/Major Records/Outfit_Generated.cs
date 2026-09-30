@@ -930,7 +930,7 @@ namespace Mutagen.Bethesda.Skyrim
             Outfit.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Items = item.Items.CollectionEqualsHelper(
+            ret.Items = item.Items.ListEqualsMask(
                 rhs.Items,
                 (l, r) => object.Equals(l, r),
                 include);

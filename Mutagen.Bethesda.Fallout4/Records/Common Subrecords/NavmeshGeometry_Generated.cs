@@ -1823,33 +1823,33 @@ namespace Mutagen.Bethesda.Fallout4
             ret.NavmeshVersion = item.NavmeshVersion == rhs.NavmeshVersion;
             ret.CrcHash = item.CrcHash == rhs.CrcHash;
             ret.Parent = MaskItemExt.Factory(item.Parent.GetEqualsMask(rhs.Parent, include), include);
-            ret.Vertices = item.Vertices.CollectionEqualsHelper(
+            ret.Vertices = item.Vertices.ListEqualsMask(
                 rhs.Vertices,
                 (l, r) => l.Equals(r),
                 include);
-            ret.Triangles = item.Triangles.CollectionEqualsHelper(
+            ret.Triangles = item.Triangles.ListEqualsMask(
                 rhs.Triangles,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.EdgeLinks = item.EdgeLinks.CollectionEqualsHelper(
+            ret.EdgeLinks = item.EdgeLinks.ListEqualsMask(
                 rhs.EdgeLinks,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.DoorTriangles = item.DoorTriangles.CollectionEqualsHelper(
+            ret.DoorTriangles = item.DoorTriangles.ListEqualsMask(
                 rhs.DoorTriangles,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Cover = item.Cover.CollectionEqualsHelper(
+            ret.Cover = item.Cover.ListEqualsMask(
                 rhs.Cover,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.CoverTriangleMappings = item.CoverTriangleMappings.CollectionEqualsHelper(
+            ret.CoverTriangleMappings = item.CoverTriangleMappings.ListEqualsMask(
                 rhs.CoverTriangleMappings,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Waypoints = item.Waypoints.CollectionEqualsHelper(
+            ret.Waypoints = item.Waypoints.ListEqualsMask(
                 rhs.Waypoints,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.GridSize = item.GridSize == rhs.GridSize;
             ret.GridMaxDistance = item.GridMaxDistance.Equals(rhs.GridMaxDistance);

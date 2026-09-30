@@ -2846,28 +2846,28 @@ namespace Mutagen.Bethesda.Starfield
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Name = object.Equals(item.Name, rhs.Name);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.FilterString = string.Equals(item.FilterString, rhs.FilterString);
-            ret.Flora = item.Flora.CollectionEqualsHelper(
+            ret.Flora = item.Flora.ListEqualsMask(
                 rhs.Flora,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.ResourceGeneration = item.ResourceGeneration.CollectionEqualsHelper(
+            ret.ResourceGeneration = item.ResourceGeneration.ListEqualsMask(
                 rhs.ResourceGeneration,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.ProceduralObjectGeneration = item.ProceduralObjectGeneration.CollectionEqualsHelper(
+            ret.ProceduralObjectGeneration = item.ProceduralObjectGeneration.ListEqualsMask(
                 rhs.ProceduralObjectGeneration,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.ObjectSwaps = item.ObjectSwaps.CollectionEqualsHelper(
+            ret.ObjectSwaps = item.ObjectSwaps.ListEqualsMask(
                 rhs.ObjectSwaps,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.MaterialSwaps = item.MaterialSwaps.CollectionEqualsHelper(
+            ret.MaterialSwaps = item.MaterialSwaps.ListEqualsMask(
                 rhs.MaterialSwaps,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -2886,13 +2886,13 @@ namespace Mutagen.Bethesda.Starfield
             ret.SurfaceColor2 = item.SurfaceColor2.ColorOnlyEquals(rhs.SurfaceColor2);
             ret.RockTint = item.RockTint.ColorOnlyEquals(rhs.RockTint);
             ret.Type = item.Type == rhs.Type;
-            ret.MarkerObjectKeywords = item.MarkerObjectKeywords.CollectionEqualsHelper(
+            ret.MarkerObjectKeywords = item.MarkerObjectKeywords.ListEqualsMask(
                 rhs.MarkerObjectKeywords,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Terrain = item.Terrain.CollectionEqualsHelper(
+            ret.Terrain = item.Terrain.ListEqualsMask(
                 rhs.Terrain,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.GroundLayerNormal = string.Equals(item.GroundLayerNormal, rhs.GroundLayerNormal);
             ret.BTPS = MemorySliceExt.SequenceEqual(item.BTPS, rhs.BTPS);

@@ -1267,9 +1267,9 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.VirtualMachineAdapter,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.NavmeshGeometry = EqualsMaskHelper.EqualsHelper(
                 item.NavmeshGeometry,
@@ -1277,9 +1277,9 @@ namespace Mutagen.Bethesda.Starfield
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.NNAM = MemorySliceExt.SequenceEqual(item.NNAM, rhs.NNAM);
-            ret.PreCutMapEntries = item.PreCutMapEntries.CollectionEqualsHelper(
+            ret.PreCutMapEntries = item.PreCutMapEntries.ListEqualsMask(
                 rhs.PreCutMapEntries,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

@@ -1679,7 +1679,7 @@ namespace Mutagen.Bethesda.Skyrim
                 rhs: rhs.TextureSwapList,
                 maskGetter: (l, r, i) => EqualityComparer<IFormLinkNullableGetter<IFormListGetter>>.Default.Equals(l, r),
                 include: include);
-            ret.AdditionalRaces = item.AdditionalRaces.CollectionEqualsHelper(
+            ret.AdditionalRaces = item.AdditionalRaces.ListEqualsMask(
                 rhs.AdditionalRaces,
                 (l, r) => object.Equals(l, r),
                 include);

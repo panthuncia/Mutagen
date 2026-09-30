@@ -2119,14 +2119,14 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.VirtualMachineAdapter,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Name = object.Equals(item.Name, rhs.Name);
-            ret.Relations = item.Relations.CollectionEqualsHelper(
+            ret.Relations = item.Relations.ListEqualsMask(
                 rhs.Relations,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Keyword = item.Keyword.Equals(rhs.Keyword);
             ret.Flags = item.Flags == rhs.Flags;
@@ -2136,13 +2136,13 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.CrimeValues,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Prisons = item.Prisons.CollectionEqualsHelper(
+            ret.Prisons = item.Prisons.ListEqualsMask(
                 rhs.Prisons,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Ranks = item.Ranks.CollectionEqualsHelper(
+            ret.Ranks = item.Ranks.ListEqualsMask(
                 rhs.Ranks,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.VendorBuySellList = item.VendorBuySellList.Equals(rhs.VendorBuySellList);
             ret.MerchantContainer = item.MerchantContainer.Equals(rhs.MerchantContainer);
@@ -2156,9 +2156,9 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.VendorLocation,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.VoiceType = item.VoiceType.Equals(rhs.VoiceType);
             ret.Herd = EqualsMaskHelper.EqualsHelper(

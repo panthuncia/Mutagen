@@ -1250,13 +1250,13 @@ namespace Mutagen.Bethesda.Fallout4
             ret.ExteriorTail = item.ExteriorTail.Equals(rhs.ExteriorTail);
             ret.VatsDescriptor = item.VatsDescriptor.Equals(rhs.VatsDescriptor);
             ret.VatsThreshold = item.VatsThreshold.EqualsWithin(rhs.VatsThreshold);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Sounds = item.Sounds.CollectionEqualsHelper(
+            ret.Sounds = item.Sounds.ListEqualsMask(
                 rhs.Sounds,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

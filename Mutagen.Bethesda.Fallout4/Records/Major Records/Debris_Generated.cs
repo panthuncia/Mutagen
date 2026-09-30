@@ -927,9 +927,9 @@ namespace Mutagen.Bethesda.Fallout4
             Debris.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Models = item.Models.CollectionEqualsHelper(
+            ret.Models = item.Models.ListEqualsMask(
                 rhs.Models,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

@@ -1115,9 +1115,9 @@ namespace Mutagen.Bethesda.Skyrim
             ret.QuestFlags = item.QuestFlags == rhs.QuestFlags;
             ret.MaxConcurrentQuests = item.MaxConcurrentQuests == rhs.MaxConcurrentQuests;
             ret.MaxNumQuestsToRun = item.MaxNumQuestsToRun == rhs.MaxNumQuestsToRun;
-            ret.Quests = item.Quests.CollectionEqualsHelper(
+            ret.Quests = item.Quests.ListEqualsMask(
                 rhs.Quests,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

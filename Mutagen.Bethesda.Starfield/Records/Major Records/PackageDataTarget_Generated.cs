@@ -898,9 +898,9 @@ namespace Mutagen.Bethesda.Starfield
         {
             ret.Type = item.Type == rhs.Type;
             ret.Target = MaskItemExt.Factory(item.Target.GetEqualsMask(rhs.Target, include), include);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

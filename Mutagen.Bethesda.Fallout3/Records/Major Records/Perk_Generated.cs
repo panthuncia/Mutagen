@@ -1295,14 +1295,14 @@ namespace Mutagen.Bethesda.Fallout3
                 rhs.Icons,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.PerkData = MaskItemExt.Factory(item.PerkData.GetEqualsMask(rhs.PerkData, include), include);
-            ret.Effects = item.Effects.CollectionEqualsHelper(
+            ret.Effects = item.Effects.ListEqualsMask(
                 rhs.Effects,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

@@ -1410,9 +1410,9 @@ namespace Mutagen.Bethesda.Oblivion
             ret.BlockNumberX = item.BlockNumberX == rhs.BlockNumberX;
             ret.GroupType = item.GroupType == rhs.GroupType;
             ret.LastModified = item.LastModified == rhs.LastModified;
-            ret.Items = item.Items.CollectionEqualsHelper(
+            ret.Items = item.Items.ListEqualsMask(
                 rhs.Items,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

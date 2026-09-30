@@ -846,9 +846,9 @@ namespace Mutagen.Bethesda.Starfield
             AnimationSceneAction.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Animations = item.Animations.CollectionEqualsHelper(
+            ret.Animations = item.Animations.ListEqualsMask(
                 rhs.Animations,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

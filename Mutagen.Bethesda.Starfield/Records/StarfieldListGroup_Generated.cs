@@ -959,9 +959,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.Type = item.Type == rhs.Type;
             ret.LastModified = item.LastModified == rhs.LastModified;
             ret.Unknown = item.Unknown == rhs.Unknown;
-            ret.Records = item.Records.CollectionEqualsHelper(
+            ret.Records = item.Records.ListEqualsMask(
                 rhs.Records,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

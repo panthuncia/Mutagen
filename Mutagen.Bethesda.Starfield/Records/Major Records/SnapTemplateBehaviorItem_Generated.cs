@@ -1006,9 +1006,9 @@ namespace Mutagen.Bethesda.Starfield
         {
             ret.ENAM = item.ENAM == rhs.ENAM;
             ret.BaseObject = item.BaseObject.Equals(rhs.BaseObject);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.SnapTemplateNode = item.SnapTemplateNode.Equals(rhs.SnapTemplateNode);
             ret.Keyword = item.Keyword.Equals(rhs.Keyword);

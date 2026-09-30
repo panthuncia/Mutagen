@@ -882,9 +882,9 @@ namespace Mutagen.Bethesda.Skyrim
         {
             ret.ExtraBindDataVersion = item.ExtraBindDataVersion == rhs.ExtraBindDataVersion;
             ret.FileName = string.Equals(item.FileName, rhs.FileName);
-            ret.Fragments = item.Fragments.CollectionEqualsHelper(
+            ret.Fragments = item.Fragments.ListEqualsMask(
                 rhs.Fragments,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

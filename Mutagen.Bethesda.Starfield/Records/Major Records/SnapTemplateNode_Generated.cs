@@ -1769,27 +1769,27 @@ namespace Mutagen.Bethesda.Starfield
                 include);
             ret.ObjectBounds = MaskItemExt.Factory(item.ObjectBounds.GetEqualsMask(rhs.ObjectBounds, include), include);
             ret.DirtinessScale = item.DirtinessScale.Equals(rhs.DirtinessScale);
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Model = EqualsMaskHelper.EqualsHelper(
                 item.Model,
                 rhs.Model,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.CNAM = item.CNAM.ColorOnlyEquals(rhs.CNAM);
             ret.FNAM = item.FNAM == rhs.FNAM;
             ret.SNST = item.SNST == rhs.SNST;
-            ret.AdjacentSnapNodes = item.AdjacentSnapNodes.CollectionEqualsHelper(
+            ret.AdjacentSnapNodes = item.AdjacentSnapNodes.ListEqualsMask(
                 rhs.AdjacentSnapNodes,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.SnapAngles = item.SnapAngles.CollectionEqualsHelper(
+            ret.SnapAngles = item.SnapAngles.ListEqualsMask(
                 rhs.SnapAngles,
                 (l, r) => l.EqualsWithin(r),
                 include);

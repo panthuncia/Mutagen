@@ -2262,9 +2262,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.SnapTemplate = item.SnapTemplate.Equals(rhs.SnapTemplate);
             ret.SnapBehavior = item.SnapBehavior.Equals(rhs.SnapBehavior);
             ret.XALG = item.XALG == rhs.XALG;
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Filter = string.Equals(item.Filter, rhs.Filter);
             ret.ObjectPlacementDefaults2 = EqualsMaskHelper.EqualsHelper(
@@ -2275,20 +2275,20 @@ namespace Mutagen.Bethesda.Starfield
             ret.Cell = item.Cell.Equals(rhs.Cell);
             ret.Version = item.Version == rhs.Version;
             ret.FNAM = MemorySliceExt.SequenceEqual(item.FNAM, rhs.FNAM);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.NativeTerminal = item.NativeTerminal.Equals(rhs.NativeTerminal);
-            ret.ForcedLocations = item.ForcedLocations.CollectionEqualsHelper(
+            ret.ForcedLocations = item.ForcedLocations.ListEqualsMask(
                 rhs.ForcedLocations,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Properties = item.Properties.CollectionEqualsHelper(
+            ret.Properties = item.Properties.ListEqualsMask(
                 rhs.Properties,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.MaterialSwaps = item.MaterialSwaps.CollectionEqualsHelper(
+            ret.MaterialSwaps = item.MaterialSwaps.ListEqualsMask(
                 rhs.MaterialSwaps,
                 (l, r) => object.Equals(l, r),
                 include);

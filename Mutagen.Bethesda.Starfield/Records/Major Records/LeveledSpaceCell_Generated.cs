@@ -1293,14 +1293,14 @@ namespace Mutagen.Bethesda.Starfield
             ret.ChanceNone = item.ChanceNone.EqualsWithin(rhs.ChanceNone);
             ret.MaxCount = item.MaxCount == rhs.MaxCount;
             ret.Flags = item.Flags == rhs.Flags;
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.UseGlobal = item.UseGlobal.Equals(rhs.UseGlobal);
-            ret.Entries = item.Entries.CollectionEqualsHelper(
+            ret.Entries = item.Entries.ListEqualsMask(
                 rhs.Entries,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

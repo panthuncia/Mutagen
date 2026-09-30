@@ -1067,13 +1067,13 @@ namespace Mutagen.Bethesda.Oblivion
             ret.MetadataSummary = MaskItemExt.Factory(item.MetadataSummary.GetEqualsMask(rhs.MetadataSummary, include), include);
             ret.CompiledScript = MemorySliceExt.SequenceEqual(item.CompiledScript, rhs.CompiledScript);
             ret.SourceCode = string.Equals(item.SourceCode, rhs.SourceCode);
-            ret.LocalVariables = item.LocalVariables.CollectionEqualsHelper(
+            ret.LocalVariables = item.LocalVariables.ListEqualsMask(
                 rhs.LocalVariables,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.References = item.References.CollectionEqualsHelper(
+            ret.References = item.References.ListEqualsMask(
                 rhs.References,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

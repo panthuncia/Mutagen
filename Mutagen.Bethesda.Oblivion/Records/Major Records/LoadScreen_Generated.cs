@@ -993,9 +993,9 @@ namespace Mutagen.Bethesda.Oblivion
         {
             ret.Icon = string.Equals(item.Icon, rhs.Icon);
             ret.Description = string.Equals(item.Description, rhs.Description);
-            ret.Locations = item.Locations.CollectionEqualsHelper(
+            ret.Locations = item.Locations.ListEqualsMask(
                 rhs.Locations,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

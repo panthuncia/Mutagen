@@ -1214,20 +1214,20 @@ namespace Mutagen.Bethesda.Starfield
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Sound = MaskItemExt.Factory(item.Sound.GetEqualsMask(rhs.Sound, include), include);
-            ret.WeatherKeywords = item.WeatherKeywords.CollectionEqualsHelper(
+            ret.WeatherKeywords = item.WeatherKeywords.ListEqualsMask(
                 rhs.WeatherKeywords,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.MarkerKeywords = item.MarkerKeywords.CollectionEqualsHelper(
+            ret.MarkerKeywords = item.MarkerKeywords.ListEqualsMask(
                 rhs.MarkerKeywords,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.SwitchGroup = item.SwitchGroup == rhs.SwitchGroup;
             ret.ReEvaluateIntervalUseCustom = item.ReEvaluateIntervalUseCustom == rhs.ReEvaluateIntervalUseCustom;
             ret.ReEvaluateIntervalSeconds = item.ReEvaluateIntervalSeconds.EqualsWithin(rhs.ReEvaluateIntervalSeconds);
-            ret.PlanetCustomizations = item.PlanetCustomizations.CollectionEqualsHelper(
+            ret.PlanetCustomizations = item.PlanetCustomizations.ListEqualsMask(
                 rhs.PlanetCustomizations,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

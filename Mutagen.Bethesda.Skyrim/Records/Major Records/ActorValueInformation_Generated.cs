@@ -1210,9 +1210,9 @@ namespace Mutagen.Bethesda.Skyrim
                 rhs.Skill,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.PerkTree = item.PerkTree.CollectionEqualsHelper(
+            ret.PerkTree = item.PerkTree.ListEqualsMask(
                 rhs.PerkTree,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

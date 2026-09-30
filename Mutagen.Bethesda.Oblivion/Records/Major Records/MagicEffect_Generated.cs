@@ -1191,7 +1191,7 @@ namespace Mutagen.Bethesda.Oblivion
                 rhs.Data,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.CounterEffects = item.CounterEffects.CollectionEqualsHelper(
+            ret.CounterEffects = item.CounterEffects.ListEqualsMask(
                 rhs.CounterEffects,
                 (l, r) => object.Equals(l, r),
                 include);

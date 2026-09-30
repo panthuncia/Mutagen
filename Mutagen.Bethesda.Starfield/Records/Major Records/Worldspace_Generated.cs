@@ -3739,13 +3739,13 @@ namespace Mutagen.Bethesda.Starfield
             Worldspace.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.LargeReferences = item.LargeReferences.CollectionEqualsHelper(
+            ret.LargeReferences = item.LargeReferences.ListEqualsMask(
                 rhs.LargeReferences,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Name = object.Equals(item.Name, rhs.Name);
             ret.EncounterLocation = item.EncounterLocation.Equals(rhs.EncounterLocation);
@@ -3786,15 +3786,15 @@ namespace Mutagen.Bethesda.Starfield
             ret.EnvironmentMap = string.Equals(item.EnvironmentMap, rhs.EnvironmentMap);
             ret.WaterEnvironmentMap = string.Equals(item.WaterEnvironmentMap, rhs.WaterEnvironmentMap);
             ret.GNAM = item.GNAM.EqualsWithin(rhs.GNAM);
-            ret.LandscapeTextures = item.LandscapeTextures.CollectionEqualsHelper(
+            ret.LandscapeTextures = item.LandscapeTextures.ListEqualsMask(
                 rhs.LandscapeTextures,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.CellWaterHeightLocations = item.CellWaterHeightLocations.CollectionEqualsHelper(
+            ret.CellWaterHeightLocations = item.CellWaterHeightLocations.ListEqualsMask(
                 rhs.CellWaterHeightLocations,
                 (l, r) => l.Equals(r),
                 include);
-            ret.WaterHeights = item.WaterHeights.CollectionEqualsHelper(
+            ret.WaterHeights = item.WaterHeights.ListEqualsMask(
                 rhs.WaterHeights,
                 (l, r) => l.EqualsWithin(r),
                 include);
@@ -3808,9 +3808,9 @@ namespace Mutagen.Bethesda.Starfield
                 include);
             ret.SubCellsTimestamp = item.SubCellsTimestamp == rhs.SubCellsTimestamp;
             ret.SubCellsUnknown = item.SubCellsUnknown == rhs.SubCellsUnknown;
-            ret.SubCells = item.SubCells.CollectionEqualsHelper(
+            ret.SubCells = item.SubCells.ListEqualsMask(
                 rhs.SubCells,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

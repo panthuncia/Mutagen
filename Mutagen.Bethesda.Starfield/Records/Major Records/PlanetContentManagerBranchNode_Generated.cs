@@ -1637,24 +1637,24 @@ namespace Mutagen.Bethesda.Starfield
             PlanetContentManagerBranchNode.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.NodeType = item.NodeType == rhs.NodeType;
             ret.ChildSelection = item.ChildSelection == rhs.ChildSelection;
             ret.CountCurve = item.CountCurve.Equals(rhs.CountCurve);
             ret.DistributionCurve = item.DistributionCurve.Equals(rhs.DistributionCurve);
             ret.ConsumeRequestEvenOnFailure = item.ConsumeRequestEvenOnFailure == rhs.ConsumeRequestEvenOnFailure;
-            ret.Nodes = item.Nodes.CollectionEqualsHelper(
+            ret.Nodes = item.Nodes.ListEqualsMask(
                 rhs.Nodes,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);

@@ -1675,17 +1675,17 @@ namespace Mutagen.Bethesda.Skyrim
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Flags = item.Flags == rhs.Flags;
-            ret.Phases = item.Phases.CollectionEqualsHelper(
+            ret.Phases = item.Phases.ListEqualsMask(
                 rhs.Phases,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Actors = item.Actors.CollectionEqualsHelper(
+            ret.Actors = item.Actors.ListEqualsMask(
                 rhs.Actors,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Actions = item.Actions.CollectionEqualsHelper(
+            ret.Actions = item.Actions.ListEqualsMask(
                 rhs.Actions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Unused = EqualsMaskHelper.EqualsHelper(
                 item.Unused,
@@ -1700,9 +1700,9 @@ namespace Mutagen.Bethesda.Skyrim
             ret.Quest = item.Quest.Equals(rhs.Quest);
             ret.LastActionIndex = item.LastActionIndex == rhs.LastActionIndex;
             ret.VNAM = MemorySliceExt.SequenceEqual(item.VNAM, rhs.VNAM);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

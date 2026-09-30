@@ -1818,7 +1818,7 @@ namespace Mutagen.Bethesda.Fallout3
             ret.ConstantEffectEnchantmentFactor = item.ConstantEffectEnchantmentFactor.EqualsWithin(rhs.ConstantEffectEnchantmentFactor);
             ret.ConstantEffectBarterFactor = item.ConstantEffectBarterFactor.EqualsWithin(rhs.ConstantEffectBarterFactor);
             ret.Archetype = MaskItemExt.Factory(item.Archetype.GetEqualsMask(rhs.Archetype, include), include);
-            ret.CounterEffects = item.CounterEffects.CollectionEqualsHelper(
+            ret.CounterEffects = item.CounterEffects.ListEqualsMask(
                 rhs.CounterEffects,
                 (l, r) => object.Equals(l, r),
                 include);

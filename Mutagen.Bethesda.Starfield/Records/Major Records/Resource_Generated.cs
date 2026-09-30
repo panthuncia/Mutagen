@@ -1635,7 +1635,7 @@ namespace Mutagen.Bethesda.Starfield
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Name = object.Equals(item.Name, rhs.Name);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -1646,7 +1646,7 @@ namespace Mutagen.Bethesda.Starfield
                 include);
             ret.List = item.List.Equals(rhs.List);
             ret.Rarity = item.Rarity == rhs.Rarity;
-            ret.NextRarities = item.NextRarities.CollectionEqualsHelper(
+            ret.NextRarities = item.NextRarities.ListEqualsMask(
                 rhs.NextRarities,
                 (l, r) => object.Equals(l, r),
                 include);

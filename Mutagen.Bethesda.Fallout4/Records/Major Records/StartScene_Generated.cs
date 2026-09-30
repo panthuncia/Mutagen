@@ -961,9 +961,9 @@ namespace Mutagen.Bethesda.Fallout4
             ret.Scene = item.Scene.Equals(rhs.Scene);
             ret.PhaseIndex = item.PhaseIndex == rhs.PhaseIndex;
             ret.StartPhaseForScene = string.Equals(item.StartPhaseForScene, rhs.StartPhaseForScene);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

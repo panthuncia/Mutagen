@@ -1535,9 +1535,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.AnimationOnlyMovement = item.AnimationOnlyMovement == rhs.AnimationOnlyMovement;
             ret.UseFlavorAnimation = item.UseFlavorAnimation == rhs.UseFlavorAnimation;
             ret.DelayStartTimeAction = item.DelayStartTimeAction.EqualsWithin(rhs.DelayStartTimeAction);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Action = item.Action.Equals(rhs.Action);
             ret.UseActorAnimationAction = item.UseActorAnimationAction == rhs.UseActorAnimationAction;

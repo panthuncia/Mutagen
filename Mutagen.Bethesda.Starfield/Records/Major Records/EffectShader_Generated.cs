@@ -1694,9 +1694,9 @@ namespace Mutagen.Bethesda.Starfield
             EffectShader.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.EffectSequence = item.EffectSequence.Equals(rhs.EffectSequence);
             ret.EdgeEffectFallOff = item.EdgeEffectFallOff.EqualsWithin(rhs.EdgeEffectFallOff);

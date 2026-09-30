@@ -3347,15 +3347,15 @@ namespace Mutagen.Bethesda.Fallout3
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Configuration = MaskItemExt.Factory(item.Configuration.GetEqualsMask(rhs.Configuration, include), include);
-            ret.Factions = item.Factions.CollectionEqualsHelper(
+            ret.Factions = item.Factions.ListEqualsMask(
                 rhs.Factions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.DeathItem = item.DeathItem.Equals(rhs.DeathItem);
             ret.Voice = item.Voice.Equals(rhs.Voice);
             ret.Template = item.Template.Equals(rhs.Template);
             ret.Race = item.Race.Equals(rhs.Race);
-            ret.ActorEffects = item.ActorEffects.CollectionEqualsHelper(
+            ret.ActorEffects = item.ActorEffects.ListEqualsMask(
                 rhs.ActorEffects,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -3367,16 +3367,16 @@ namespace Mutagen.Bethesda.Fallout3
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Script = item.Script.Equals(rhs.Script);
-            ret.Items = item.Items.CollectionEqualsHelper(
+            ret.Items = item.Items.ListEqualsMask(
                 rhs.Items,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.AIData = MaskItemExt.Factory(item.AIData.GetEqualsMask(rhs.AIData, include), include);
-            ret.Packages = item.Packages.CollectionEqualsHelper(
+            ret.Packages = item.Packages.ListEqualsMask(
                 rhs.Packages,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Animations = item.Animations.CollectionEqualsHelper(
+            ret.Animations = item.Animations.ListEqualsMask(
                 rhs.Animations,
                 (l, r) => string.Equals(l, r),
                 include);
@@ -3398,7 +3398,7 @@ namespace Mutagen.Bethesda.Fallout3
                 rhs.PlayerSkills,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.HeadParts = item.HeadParts.CollectionEqualsHelper(
+            ret.HeadParts = item.HeadParts.ListEqualsMask(
                 rhs.HeadParts,
                 (l, r) => object.Equals(l, r),
                 include);

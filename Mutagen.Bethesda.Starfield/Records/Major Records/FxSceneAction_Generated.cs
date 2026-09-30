@@ -1174,9 +1174,9 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.WED0,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.BIPL = item.BIPL.Equals(rhs.BIPL);
             ret.LVLO = item.LVLO == rhs.LVLO;

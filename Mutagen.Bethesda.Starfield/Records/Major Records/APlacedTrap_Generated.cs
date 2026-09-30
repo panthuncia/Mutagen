@@ -1956,17 +1956,17 @@ namespace Mutagen.Bethesda.Starfield
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Emittance = item.Emittance.Equals(rhs.Emittance);
-            ret.RagdollData = item.RagdollData.CollectionEqualsHelper(
+            ret.RagdollData = item.RagdollData.ListEqualsMask(
                 rhs.RagdollData,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.ReferenceGroup = item.ReferenceGroup.Equals(rhs.ReferenceGroup);
             ret.SourcePackIn = item.SourcePackIn.Equals(rhs.SourcePackIn);
             ret.IgnoredBySandbox = item.IgnoredBySandbox == rhs.IgnoredBySandbox;
             ret.OwnerFactionRank = item.OwnerFactionRank == rhs.OwnerFactionRank;
-            ret.LinkedReferences = item.LinkedReferences.CollectionEqualsHelper(
+            ret.LinkedReferences = item.LinkedReferences.ListEqualsMask(
                 rhs.LinkedReferences,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.IsLinkedRefTransient = item.IsLinkedRefTransient == rhs.IsLinkedRefTransient;
             ret.Ownership = EqualsMaskHelper.EqualsHelper(
@@ -1977,7 +1977,7 @@ namespace Mutagen.Bethesda.Starfield
             ret.EncounterLocation = item.EncounterLocation.Equals(rhs.EncounterLocation);
             ret.Layer = item.Layer.Equals(rhs.Layer);
             ret.HeadTrackingWeight = item.HeadTrackingWeight.EqualsWithin(rhs.HeadTrackingWeight);
-            ret.LocationRefTypes = item.LocationRefTypes.CollectionEqualsHelper(
+            ret.LocationRefTypes = item.LocationRefTypes.ListEqualsMask(
                 rhs.LocationRefTypes,
                 (l, r) => object.Equals(l, r),
                 include);

@@ -1386,13 +1386,13 @@ namespace Mutagen.Bethesda.Starfield
             ret.MenuButtonStyle = item.MenuButtonStyle == rhs.MenuButtonStyle;
             ret.Style = item.Style == rhs.Style;
             ret.INAM = object.Equals(item.INAM, rhs.INAM);
-            ret.BodyTexts = item.BodyTexts.CollectionEqualsHelper(
+            ret.BodyTexts = item.BodyTexts.ListEqualsMask(
                 rhs.BodyTexts,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.MenuItems = item.MenuItems.CollectionEqualsHelper(
+            ret.MenuItems = item.MenuItems.ListEqualsMask(
                 rhs.MenuItems,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

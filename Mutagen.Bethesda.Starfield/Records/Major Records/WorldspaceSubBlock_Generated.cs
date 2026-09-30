@@ -1520,9 +1520,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.GroupType = item.GroupType == rhs.GroupType;
             ret.LastModified = item.LastModified == rhs.LastModified;
             ret.Unknown = item.Unknown == rhs.Unknown;
-            ret.Items = item.Items.CollectionEqualsHelper(
+            ret.Items = item.Items.ListEqualsMask(
                 rhs.Items,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

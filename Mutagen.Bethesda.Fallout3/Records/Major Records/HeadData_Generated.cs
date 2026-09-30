@@ -848,9 +848,9 @@ namespace Mutagen.Bethesda.Fallout3
             HeadData.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.HeadParts = item.HeadParts.CollectionEqualsHelper(
+            ret.HeadParts = item.HeadParts.ListEqualsMask(
                 rhs.HeadParts,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

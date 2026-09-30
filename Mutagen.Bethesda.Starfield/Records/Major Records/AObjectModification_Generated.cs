@@ -2179,9 +2179,9 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.VirtualMachineAdapter,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Name = object.Equals(item.Name, rhs.Name);
             ret.Description = object.Equals(item.Description, rhs.Description);
@@ -2193,20 +2193,20 @@ namespace Mutagen.Bethesda.Starfield
             ret.Unknown = item.Unknown == rhs.Unknown;
             ret.Unknown2 = item.Unknown2 == rhs.Unknown2;
             ret.AttachPoint = item.AttachPoint.Equals(rhs.AttachPoint);
-            ret.AttachParentSlots = item.AttachParentSlots.CollectionEqualsHelper(
+            ret.AttachParentSlots = item.AttachParentSlots.ListEqualsMask(
                 rhs.AttachParentSlots,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.Unknown3 = item.Unknown3 == rhs.Unknown3;
-            ret.Includes = item.Includes.CollectionEqualsHelper(
+            ret.Includes = item.Includes.ListEqualsMask(
                 rhs.Includes,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.TargetOmodKeywords = item.TargetOmodKeywords.CollectionEqualsHelper(
+            ret.TargetOmodKeywords = item.TargetOmodKeywords.ListEqualsMask(
                 rhs.TargetOmodKeywords,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.FilterKeywords = item.FilterKeywords.CollectionEqualsHelper(
+            ret.FilterKeywords = item.FilterKeywords.ListEqualsMask(
                 rhs.FilterKeywords,
                 (l, r) => object.Equals(l, r),
                 include);

@@ -1282,7 +1282,7 @@ namespace Mutagen.Bethesda.Oblivion
             ret.CloseSound = item.CloseSound.Equals(rhs.CloseSound);
             ret.LoopSound = item.LoopSound.Equals(rhs.LoopSound);
             ret.Flags = item.Flags == rhs.Flags;
-            ret.RandomTeleportDestinations = item.RandomTeleportDestinations.CollectionEqualsHelper(
+            ret.RandomTeleportDestinations = item.RandomTeleportDestinations.ListEqualsMask(
                 rhs.RandomTeleportDestinations,
                 (l, r) => object.Equals(l, r),
                 include);

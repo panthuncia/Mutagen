@@ -2104,31 +2104,31 @@ namespace Mutagen.Bethesda.Skyrim
             ret.Unknown = item.Unknown == rhs.Unknown;
             ret.Type = item.Type == rhs.Type;
             ret.Event = item.Event == rhs.Event;
-            ret.TextDisplayGlobals = item.TextDisplayGlobals.CollectionEqualsHelper(
+            ret.TextDisplayGlobals = item.TextDisplayGlobals.ListEqualsMask(
                 rhs.TextDisplayGlobals,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.Filter = string.Equals(item.Filter, rhs.Filter);
-            ret.DialogConditions = item.DialogConditions.CollectionEqualsHelper(
+            ret.DialogConditions = item.DialogConditions.ListEqualsMask(
                 rhs.DialogConditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.EventConditions = item.EventConditions.CollectionEqualsHelper(
+            ret.EventConditions = item.EventConditions.ListEqualsMask(
                 rhs.EventConditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Stages = item.Stages.CollectionEqualsHelper(
+            ret.Stages = item.Stages.ListEqualsMask(
                 rhs.Stages,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Objectives = item.Objectives.CollectionEqualsHelper(
+            ret.Objectives = item.Objectives.ListEqualsMask(
                 rhs.Objectives,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.NextAliasID = item.NextAliasID == rhs.NextAliasID;
-            ret.Aliases = item.Aliases.CollectionEqualsHelper(
+            ret.Aliases = item.Aliases.ListEqualsMask(
                 rhs.Aliases,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Description = object.Equals(item.Description, rhs.Description);
             base.FillEqualsMask(item, rhs, ret, include);

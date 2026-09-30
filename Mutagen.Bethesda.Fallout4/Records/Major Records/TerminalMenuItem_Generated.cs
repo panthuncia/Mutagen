@@ -1116,9 +1116,9 @@ namespace Mutagen.Bethesda.Fallout4
             ret.DisplayText = object.Equals(item.DisplayText, rhs.DisplayText);
             ret.ImageFile = string.Equals(item.ImageFile, rhs.ImageFile);
             ret.Submenu = item.Submenu.Equals(rhs.Submenu);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

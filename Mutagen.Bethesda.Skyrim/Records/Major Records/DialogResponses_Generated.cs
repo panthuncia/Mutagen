@@ -1877,22 +1877,22 @@ namespace Mutagen.Bethesda.Skyrim
             ret.Topic = item.Topic.Equals(rhs.Topic);
             ret.PreviousDialog = item.PreviousDialog.Equals(rhs.PreviousDialog);
             ret.FavorLevel = item.FavorLevel == rhs.FavorLevel;
-            ret.LinkTo = item.LinkTo.CollectionEqualsHelper(
+            ret.LinkTo = item.LinkTo.ListEqualsMask(
                 rhs.LinkTo,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.ResponseData = item.ResponseData.Equals(rhs.ResponseData);
-            ret.Responses = item.Responses.CollectionEqualsHelper(
+            ret.Responses = item.Responses.ListEqualsMask(
                 rhs.Responses,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.UnknownData = item.UnknownData.CollectionEqualsHelper(
+            ret.UnknownData = item.UnknownData.ListEqualsMask(
                 rhs.UnknownData,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Prompt = object.Equals(item.Prompt, rhs.Prompt);
             ret.Speaker = item.Speaker.Equals(rhs.Speaker);

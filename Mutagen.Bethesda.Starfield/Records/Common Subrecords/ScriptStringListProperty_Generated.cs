@@ -791,7 +791,7 @@ namespace Mutagen.Bethesda.Starfield
             ScriptStringListProperty.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Data = item.Data.CollectionEqualsHelper(
+            ret.Data = item.Data.ListEqualsMask(
                 rhs.Data,
                 (l, r) => string.Equals(l, r),
                 include);

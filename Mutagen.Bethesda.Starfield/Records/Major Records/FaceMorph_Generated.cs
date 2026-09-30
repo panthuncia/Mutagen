@@ -1025,9 +1025,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.FMRU = string.Equals(item.FMRU, rhs.FMRU);
             ret.Name = object.Equals(item.Name, rhs.Name);
             ret.FMRS = string.Equals(item.FMRS, rhs.FMRS);
-            ret.Items = item.Items.CollectionEqualsHelper(
+            ret.Items = item.Items.ListEqualsMask(
                 rhs.Items,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

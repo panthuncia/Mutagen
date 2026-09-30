@@ -1391,9 +1391,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.DisplayTime = item.DisplayTime == rhs.DisplayTime;
             ret.BNAM = item.BNAM == rhs.BNAM;
             ret.ShortTitle = object.Equals(item.ShortTitle, rhs.ShortTitle);
-            ret.MenuButtons = item.MenuButtons.CollectionEqualsHelper(
+            ret.MenuButtons = item.MenuButtons.ListEqualsMask(
                 rhs.MenuButtons,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

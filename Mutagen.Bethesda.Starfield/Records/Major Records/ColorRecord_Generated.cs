@@ -1109,9 +1109,9 @@ namespace Mutagen.Bethesda.Starfield
                 include);
             ret.Data = MaskItemExt.Factory(item.Data.GetEqualsMask(rhs.Data, include), include);
             ret.Flags = item.Flags == rhs.Flags;
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

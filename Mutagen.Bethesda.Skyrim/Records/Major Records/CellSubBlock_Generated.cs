@@ -1462,9 +1462,9 @@ namespace Mutagen.Bethesda.Skyrim
             ret.GroupType = item.GroupType == rhs.GroupType;
             ret.LastModified = item.LastModified == rhs.LastModified;
             ret.Unknown = item.Unknown == rhs.Unknown;
-            ret.Cells = item.Cells.CollectionEqualsHelper(
+            ret.Cells = item.Cells.ListEqualsMask(
                 rhs.Cells,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

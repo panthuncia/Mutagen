@@ -1303,9 +1303,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.Emotion = item.Emotion.Equals(rhs.Emotion);
             ret.WEMFile = item.WEMFile == rhs.WEMFile;
             ret.EmotionOut = item.EmotionOut.EqualsWithin(rhs.EmotionOut);
-            ret.TROTs = item.TROTs.CollectionEqualsHelper(
+            ret.TROTs = item.TROTs.ListEqualsMask(
                 rhs.TROTs,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.ResponseText = object.Equals(item.ResponseText, rhs.ResponseText);
             ret.ScriptNotes = string.Equals(item.ScriptNotes, rhs.ScriptNotes);

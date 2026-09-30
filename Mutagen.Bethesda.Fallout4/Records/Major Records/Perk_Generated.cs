@@ -1630,9 +1630,9 @@ namespace Mutagen.Bethesda.Fallout4
             ret.Name = object.Equals(item.Name, rhs.Name);
             ret.Description = object.Equals(item.Description, rhs.Description);
             ret.Icon = string.Equals(item.Icon, rhs.Icon);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Trait = item.Trait == rhs.Trait;
             ret.Level = item.Level == rhs.Level;
@@ -1642,9 +1642,9 @@ namespace Mutagen.Bethesda.Fallout4
             ret.Sound = item.Sound.Equals(rhs.Sound);
             ret.NextPerk = item.NextPerk.Equals(rhs.NextPerk);
             ret.Swf = string.Equals(item.Swf, rhs.Swf);
-            ret.Effects = item.Effects.CollectionEqualsHelper(
+            ret.Effects = item.Effects.ListEqualsMask(
                 rhs.Effects,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

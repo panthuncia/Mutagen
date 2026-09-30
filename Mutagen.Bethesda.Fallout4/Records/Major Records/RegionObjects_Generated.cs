@@ -894,9 +894,9 @@ namespace Mutagen.Bethesda.Fallout4
             RegionObjects.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Objects = item.Objects.CollectionEqualsHelper(
+            ret.Objects = item.Objects.ListEqualsMask(
                 rhs.Objects,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.LodDisplayDistanceMultiplier = item.LodDisplayDistanceMultiplier.EqualsWithin(rhs.LodDisplayDistanceMultiplier);
             ret.OcclusionAccuracyDist = item.OcclusionAccuracyDist.EqualsWithin(rhs.OcclusionAccuracyDist);

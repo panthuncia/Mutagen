@@ -854,7 +854,7 @@ namespace Mutagen.Bethesda.Fallout3
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.EdgeFallOff = item.EdgeFallOff == rhs.EdgeFallOff;
-            ret.RegionPoints = item.RegionPoints.CollectionEqualsHelper(
+            ret.RegionPoints = item.RegionPoints.ListEqualsMask(
                 rhs.RegionPoints,
                 (l, r) => l.Equals(r),
                 include);

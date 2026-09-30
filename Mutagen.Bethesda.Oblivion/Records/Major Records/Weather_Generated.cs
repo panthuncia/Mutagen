@@ -1334,9 +1334,9 @@ namespace Mutagen.Bethesda.Oblivion
                 rhs.Model,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Colors = item.Colors.CollectionEqualsHelper(
+            ret.Colors = item.Colors.ListEqualsMask(
                 rhs.Colors,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.FogDistance = EqualsMaskHelper.EqualsHelper(
                 item.FogDistance,
@@ -1353,9 +1353,9 @@ namespace Mutagen.Bethesda.Oblivion
                 rhs.Data,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Sounds = item.Sounds.CollectionEqualsHelper(
+            ret.Sounds = item.Sounds.ListEqualsMask(
                 rhs.Sounds,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

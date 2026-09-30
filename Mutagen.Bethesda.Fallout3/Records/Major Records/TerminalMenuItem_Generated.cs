@@ -1090,9 +1090,9 @@ namespace Mutagen.Bethesda.Fallout3
             ret.DisplayNote = item.DisplayNote.Equals(rhs.DisplayNote);
             ret.SubMenu = item.SubMenu.Equals(rhs.SubMenu);
             ret.EmbeddedScript = MaskItemExt.Factory(item.EmbeddedScript.GetEqualsMask(rhs.EmbeddedScript, include), include);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

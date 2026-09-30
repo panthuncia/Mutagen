@@ -1589,18 +1589,18 @@ namespace Mutagen.Bethesda.Starfield
             SnapTemplate.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Parent = item.Parent.Equals(rhs.Parent);
-            ret.Nodes = item.Nodes.CollectionEqualsHelper(
+            ret.Nodes = item.Nodes.ListEqualsMask(
                 rhs.Nodes,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.ParentNodes = item.ParentNodes.CollectionEqualsHelper(
+            ret.ParentNodes = item.ParentNodes.ListEqualsMask(
                 rhs.ParentNodes,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.BNAM = EqualsMaskHelper.SpanEqualsHelper<Single>(
                 item.BNAM,
@@ -1610,9 +1610,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.NextNodeID = item.NextNodeID == rhs.NextNodeID;
             ret.STPT = item.STPT == rhs.STPT;
             ret.CNAM = string.Equals(item.CNAM, rhs.CNAM);
-            ret.SnapTemplateRnamTraversal = item.SnapTemplateRnamTraversal.CollectionEqualsHelper(
+            ret.SnapTemplateRnamTraversal = item.SnapTemplateRnamTraversal.ListEqualsMask(
                 rhs.SnapTemplateRnamTraversal,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

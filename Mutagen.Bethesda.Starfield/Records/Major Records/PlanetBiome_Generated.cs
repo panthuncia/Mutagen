@@ -1361,21 +1361,21 @@ namespace Mutagen.Bethesda.Starfield
             ret.Chance = item.Chance.EqualsWithin(rhs.Chance);
             ret.Unknown2 = item.Unknown2 == rhs.Unknown2;
             ret.ResourceGeneration = item.ResourceGeneration.Equals(rhs.ResourceGeneration);
-            ret.Fauna = item.Fauna.CollectionEqualsHelper(
+            ret.Fauna = item.Fauna.ListEqualsMask(
                 rhs.Fauna,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.Flora = item.Flora.CollectionEqualsHelper(
+            ret.Flora = item.Flora.ListEqualsMask(
                 rhs.Flora,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.UnknownItems = item.UnknownItems.CollectionEqualsHelper(
+            ret.UnknownItems = item.UnknownItems.ListEqualsMask(
                 rhs.UnknownItems,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

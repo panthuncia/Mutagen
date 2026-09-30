@@ -2112,11 +2112,11 @@ namespace Mutagen.Bethesda.Fallout3
             DialogTopic.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.AssociatedQuests = item.AssociatedQuests.CollectionEqualsHelper(
+            ret.AssociatedQuests = item.AssociatedQuests.ListEqualsMask(
                 rhs.AssociatedQuests,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.RemovedQuests = item.RemovedQuests.CollectionEqualsHelper(
+            ret.RemovedQuests = item.RemovedQuests.ListEqualsMask(
                 rhs.RemovedQuests,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -2125,19 +2125,19 @@ namespace Mutagen.Bethesda.Fallout3
             ret.DumbResponse = string.Equals(item.DumbResponse, rhs.DumbResponse);
             ret.Type = item.Type == rhs.Type;
             ret.Flags = item.Flags == rhs.Flags;
-            ret.InfoOrderMastersOnly = item.InfoOrderMastersOnly.CollectionEqualsHelper(
+            ret.InfoOrderMastersOnly = item.InfoOrderMastersOnly.ListEqualsMask(
                 rhs.InfoOrderMastersOnly,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.InfoOrderAllPreviousModules = item.InfoOrderAllPreviousModules.CollectionEqualsHelper(
+            ret.InfoOrderAllPreviousModules = item.InfoOrderAllPreviousModules.ListEqualsMask(
                 rhs.InfoOrderAllPreviousModules,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.Timestamp = item.Timestamp == rhs.Timestamp;
             ret.Unknown = item.Unknown == rhs.Unknown;
-            ret.Responses = item.Responses.CollectionEqualsHelper(
+            ret.Responses = item.Responses.ListEqualsMask(
                 rhs.Responses,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.DATADataTypeState = item.DATADataTypeState == rhs.DATADataTypeState;
             base.FillEqualsMask(item, rhs, ret, include);

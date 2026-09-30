@@ -1832,7 +1832,7 @@ namespace Mutagen.Bethesda.Skyrim
             ret.PickUpSound = item.PickUpSound.Equals(rhs.PickUpSound);
             ret.PutDownSound = item.PutDownSound.Equals(rhs.PutDownSound);
             ret.Description = object.Equals(item.Description, rhs.Description);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);

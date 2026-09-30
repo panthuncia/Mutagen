@@ -6075,9 +6075,9 @@ namespace Mutagen.Bethesda.Starfield
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.SnapTemplate = item.SnapTemplate.Equals(rhs.SnapTemplate);
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Flags = item.Flags == rhs.Flags;
             ret.XpValueOffset = item.XpValueOffset == rhs.XpValueOffset;
@@ -6086,9 +6086,9 @@ namespace Mutagen.Bethesda.Starfield
             ret.CalcMaxLevel = item.CalcMaxLevel == rhs.CalcMaxLevel;
             ret.DispositionBase = item.DispositionBase == rhs.DispositionBase;
             ret.UseTemplateActors = item.UseTemplateActors == rhs.UseTemplateActors;
-            ret.Factions = item.Factions.CollectionEqualsHelper(
+            ret.Factions = item.Factions.ListEqualsMask(
                 rhs.Factions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.DeathItem = item.DeathItem.Equals(rhs.DeathItem);
             ret.Voice = item.Voice.Equals(rhs.Voice);
@@ -6101,7 +6101,7 @@ namespace Mutagen.Bethesda.Starfield
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Race = item.Race.Equals(rhs.Race);
-            ret.ActorEffect = item.ActorEffect.CollectionEqualsHelper(
+            ret.ActorEffect = item.ActorEffect.ListEqualsMask(
                 rhs.ActorEffect,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -6109,22 +6109,22 @@ namespace Mutagen.Bethesda.Starfield
             ret.AttackRace = item.AttackRace.Equals(rhs.AttackRace);
             ret.SpectatorOverridePackageList = item.SpectatorOverridePackageList.Equals(rhs.SpectatorOverridePackageList);
             ret.CombatOverridePackageList = item.CombatOverridePackageList.Equals(rhs.CombatOverridePackageList);
-            ret.Perks = item.Perks.CollectionEqualsHelper(
+            ret.Perks = item.Perks.ListEqualsMask(
                 rhs.Perks,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Properties = item.Properties.CollectionEqualsHelper(
+            ret.Properties = item.Properties.ListEqualsMask(
                 rhs.Properties,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.ForcedLocations = item.ForcedLocations.CollectionEqualsHelper(
+            ret.ForcedLocations = item.ForcedLocations.ListEqualsMask(
                 rhs.ForcedLocations,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.NativeTerminal = item.NativeTerminal.Equals(rhs.NativeTerminal);
-            ret.Items = item.Items.CollectionEqualsHelper(
+            ret.Items = item.Items.ListEqualsMask(
                 rhs.Items,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Aggression = item.Aggression == rhs.Aggression;
             ret.Confidence = item.Confidence == rhs.Confidence;
@@ -6133,7 +6133,7 @@ namespace Mutagen.Bethesda.Starfield
             ret.Mood = item.Mood == rhs.Mood;
             ret.Assistance = item.Assistance == rhs.Assistance;
             ret.UnknownAIDT = item.UnknownAIDT == rhs.UnknownAIDT;
-            ret.Packages = item.Packages.CollectionEqualsHelper(
+            ret.Packages = item.Packages.ListEqualsMask(
                 rhs.Packages,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -6142,21 +6142,21 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.FLEE,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.RDSAs = item.RDSAs.CollectionEqualsHelper(
+            ret.RDSAs = item.RDSAs.ListEqualsMask(
                 rhs.RDSAs,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.AttachParentSlots = item.AttachParentSlots.CollectionEqualsHelper(
+            ret.AttachParentSlots = item.AttachParentSlots.ListEqualsMask(
                 rhs.AttachParentSlots,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.ObjectTemplates = item.ObjectTemplates.CollectionEqualsHelper(
+            ret.ObjectTemplates = item.ObjectTemplates.ListEqualsMask(
                 rhs.ObjectTemplates,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Class = item.Class.Equals(rhs.Class);
             ret.Name = object.Equals(item.Name, rhs.Name);
@@ -6169,7 +6169,7 @@ namespace Mutagen.Bethesda.Starfield
             ret.Unused = item.Unused == rhs.Unused;
             ret.HCLR = item.HCLR == rhs.HCLR;
             ret.BCLR = item.BCLR == rhs.BCLR;
-            ret.HeadParts = item.HeadParts.CollectionEqualsHelper(
+            ret.HeadParts = item.HeadParts.ListEqualsMask(
                 rhs.HeadParts,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -6182,9 +6182,9 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.Weight,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Sounds = item.Sounds.CollectionEqualsHelper(
+            ret.Sounds = item.Sounds.ListEqualsMask(
                 rhs.Sounds,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.InheritsSoundsFrom = item.InheritsSoundsFrom.Equals(rhs.InheritsSoundsFrom);
             ret.CompanionInfoQuest = item.CompanionInfoQuest.Equals(rhs.CompanionInfoQuest);
@@ -6194,26 +6194,26 @@ namespace Mutagen.Bethesda.Starfield
             ret.DefaultPackageList = item.DefaultPackageList.Equals(rhs.DefaultPackageList);
             ret.CrimeFaction = item.CrimeFaction.Equals(rhs.CrimeFaction);
             ret.FormationFaction = item.FormationFaction.Equals(rhs.FormationFaction);
-            ret.Tints = item.Tints.CollectionEqualsHelper(
+            ret.Tints = item.Tints.ListEqualsMask(
                 rhs.Tints,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.BodyMorphRegionValues = EqualsMaskHelper.EqualsHelper(
                 item.BodyMorphRegionValues,
                 rhs.BodyMorphRegionValues,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.FaceDialPositions = item.FaceDialPositions.CollectionEqualsHelper(
+            ret.FaceDialPositions = item.FaceDialPositions.ListEqualsMask(
                 rhs.FaceDialPositions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.FaceMorphs = item.FaceMorphs.CollectionEqualsHelper(
+            ret.FaceMorphs = item.FaceMorphs.ListEqualsMask(
                 rhs.FaceMorphs,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.MorphBlends = item.MorphBlends.CollectionEqualsHelper(
+            ret.MorphBlends = item.MorphBlends.ListEqualsMask(
                 rhs.MorphBlends,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.ActivateTextOverride = object.Equals(item.ActivateTextOverride, rhs.ActivateTextOverride);
             ret.SkinToneIndex = item.SkinToneIndex == rhs.SkinToneIndex;

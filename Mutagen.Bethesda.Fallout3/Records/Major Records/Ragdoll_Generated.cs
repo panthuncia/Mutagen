@@ -1487,7 +1487,7 @@ namespace Mutagen.Bethesda.Fallout3
             ret.ActorBase = item.ActorBase.Equals(rhs.ActorBase);
             ret.BodyPartData = item.BodyPartData.Equals(rhs.BodyPartData);
             ret.FeedbackData = MaskItemExt.Factory(item.FeedbackData.GetEqualsMask(rhs.FeedbackData, include), include);
-            ret.FeedbackDynamicBones = item.FeedbackDynamicBones.CollectionEqualsHelper(
+            ret.FeedbackDynamicBones = item.FeedbackDynamicBones.ListEqualsMask(
                 rhs.FeedbackDynamicBones,
                 (l, r) => l == r,
                 include);

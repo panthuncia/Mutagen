@@ -4014,9 +4014,9 @@ namespace Mutagen.Bethesda.Skyrim
                 rhs.OcclusionPlane,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Portals = item.Portals.CollectionEqualsHelper(
+            ret.Portals = item.Portals.ListEqualsMask(
                 rhs.Portals,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.RoomPortal = EqualsMaskHelper.EqualsHelper(
                 item.RoomPortal,
@@ -4026,7 +4026,7 @@ namespace Mutagen.Bethesda.Skyrim
             ret.Unknown = item.Unknown == rhs.Unknown;
             ret.LightingTemplate = item.LightingTemplate.Equals(rhs.LightingTemplate);
             ret.ImageSpace = item.ImageSpace.Equals(rhs.ImageSpace);
-            ret.LinkedRooms = item.LinkedRooms.CollectionEqualsHelper(
+            ret.LinkedRooms = item.LinkedRooms.ListEqualsMask(
                 rhs.LinkedRooms,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -4034,11 +4034,11 @@ namespace Mutagen.Bethesda.Skyrim
             ret.RagdollData = MemorySliceExt.SequenceEqual(item.RagdollData, rhs.RagdollData);
             ret.RagdollBipedData = MemorySliceExt.SequenceEqual(item.RagdollBipedData, rhs.RagdollBipedData);
             ret.Radius = item.Radius.EqualsWithin(rhs.Radius);
-            ret.Reflections = item.Reflections.CollectionEqualsHelper(
+            ret.Reflections = item.Reflections.ListEqualsMask(
                 rhs.Reflections,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.LitWater = item.LitWater.CollectionEqualsHelper(
+            ret.LitWater = item.LitWater.ListEqualsMask(
                 rhs.LitWater,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -4093,7 +4093,7 @@ namespace Mutagen.Bethesda.Skyrim
                 rhs.NavigationDoorLink,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.LocationRefTypes = item.LocationRefTypes.CollectionEqualsHelper(
+            ret.LocationRefTypes = item.LocationRefTypes.ListEqualsMask(
                 rhs.LocationRefTypes,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -4108,9 +4108,9 @@ namespace Mutagen.Bethesda.Skyrim
                 rhs.EnableParent,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.LinkedReferences = item.LinkedReferences.CollectionEqualsHelper(
+            ret.LinkedReferences = item.LinkedReferences.ListEqualsMask(
                 rhs.LinkedReferences,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Patrol = EqualsMaskHelper.EqualsHelper(
                 item.Patrol,

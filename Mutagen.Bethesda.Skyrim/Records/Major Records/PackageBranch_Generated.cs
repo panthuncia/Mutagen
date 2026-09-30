@@ -1331,9 +1331,9 @@ namespace Mutagen.Bethesda.Skyrim
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.BranchType = string.Equals(item.BranchType, rhs.BranchType);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Root = EqualsMaskHelper.EqualsHelper(
                 item.Root,
@@ -1342,7 +1342,7 @@ namespace Mutagen.Bethesda.Skyrim
                 include);
             ret.ProcedureType = string.Equals(item.ProcedureType, rhs.ProcedureType);
             ret.Flags = item.Flags == rhs.Flags;
-            ret.DataInputIndices = item.DataInputIndices.CollectionEqualsHelper(
+            ret.DataInputIndices = item.DataInputIndices.ListEqualsMask(
                 rhs.DataInputIndices,
                 (l, r) => l == r,
                 include);
@@ -1356,7 +1356,7 @@ namespace Mutagen.Bethesda.Skyrim
                 rhs.FlagsOverrideUnused,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Unknown = item.Unknown.CollectionEqualsHelper(
+            ret.Unknown = item.Unknown.ListEqualsMask(
                 rhs.Unknown,
                 (l, r) => MemoryExtensions.SequenceEqual(l.Span, r.Span),
                 include);

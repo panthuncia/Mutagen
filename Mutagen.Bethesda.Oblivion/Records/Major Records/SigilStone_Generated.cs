@@ -1196,9 +1196,9 @@ namespace Mutagen.Bethesda.Oblivion
                 include);
             ret.Icon = string.Equals(item.Icon, rhs.Icon);
             ret.Script = item.Script.Equals(rhs.Script);
-            ret.Effects = item.Effects.CollectionEqualsHelper(
+            ret.Effects = item.Effects.ListEqualsMask(
                 rhs.Effects,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Data = EqualsMaskHelper.EqualsHelper(
                 item.Data,

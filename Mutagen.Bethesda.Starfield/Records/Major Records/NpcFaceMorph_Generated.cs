@@ -859,9 +859,9 @@ namespace Mutagen.Bethesda.Starfield
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Index = item.Index == rhs.Index;
-            ret.MorphGroups = item.MorphGroups.CollectionEqualsHelper(
+            ret.MorphGroups = item.MorphGroups.ListEqualsMask(
                 rhs.MorphGroups,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

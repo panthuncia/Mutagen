@@ -1863,9 +1863,9 @@ namespace Mutagen.Bethesda.Starfield
             Impact.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Model = EqualsMaskHelper.EqualsHelper(
                 item.Model,
@@ -1880,11 +1880,11 @@ namespace Mutagen.Bethesda.Starfield
             ret.NoDecalData = item.NoDecalData == rhs.NoDecalData;
             ret.Result = item.Result == rhs.Result;
             ret.Unknown = item.Unknown == rhs.Unknown;
-            ret.ProjectedDecals = item.ProjectedDecals.CollectionEqualsHelper(
+            ret.ProjectedDecals = item.ProjectedDecals.ListEqualsMask(
                 rhs.ProjectedDecals,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.ScatterProjectedDecals = item.ScatterProjectedDecals.CollectionEqualsHelper(
+            ret.ScatterProjectedDecals = item.ScatterProjectedDecals.ListEqualsMask(
                 rhs.ScatterProjectedDecals,
                 (l, r) => object.Equals(l, r),
                 include);

@@ -1096,7 +1096,7 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.VirtualMachineAdapter,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.SlotParents = item.SlotParents.CollectionEqualsHelper(
+            ret.SlotParents = item.SlotParents.ListEqualsMask(
                 rhs.SlotParents,
                 (l, r) => object.Equals(l, r),
                 include);

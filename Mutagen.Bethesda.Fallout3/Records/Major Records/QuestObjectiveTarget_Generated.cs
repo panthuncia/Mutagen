@@ -956,9 +956,9 @@ namespace Mutagen.Bethesda.Fallout3
             ret.Target = item.Target.Equals(rhs.Target);
             ret.CompassMarkerIgnoresLocks = item.CompassMarkerIgnoresLocks == rhs.CompassMarkerIgnoresLocks;
             ret.Unused = MemoryExtensions.SequenceEqual(item.Unused.Span, rhs.Unused.Span);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

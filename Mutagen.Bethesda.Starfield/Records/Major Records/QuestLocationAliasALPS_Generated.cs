@@ -876,9 +876,9 @@ namespace Mutagen.Bethesda.Starfield
             QuestLocationAliasALPS.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.PcmTypeKeyword = item.PcmTypeKeyword.Equals(rhs.PcmTypeKeyword);
         }

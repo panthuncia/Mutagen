@@ -1100,7 +1100,7 @@ namespace Mutagen.Bethesda.Starfield
         {
             ret.File = object.Equals(item.File, rhs.File);
             ret.TextureFileHashes = MemorySliceExt.SequenceEqual(item.TextureFileHashes, rhs.TextureFileHashes);
-            ret.MaterialSwaps = item.MaterialSwaps.CollectionEqualsHelper(
+            ret.MaterialSwaps = item.MaterialSwaps.ListEqualsMask(
                 rhs.MaterialSwaps,
                 (l, r) => object.Equals(l, r),
                 include);

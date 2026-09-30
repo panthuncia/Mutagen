@@ -2933,9 +2933,9 @@ namespace Mutagen.Bethesda.Starfield
                 rhs.Transforms,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Components = item.Components.CollectionEqualsHelper(
+            ret.Components = item.Components.ListEqualsMask(
                 rhs.Components,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Name = object.Equals(item.Name, rhs.Name);
             ret.ObjectEffect = item.ObjectEffect.Equals(rhs.ObjectEffect);
@@ -2964,15 +2964,15 @@ namespace Mutagen.Bethesda.Starfield
             ret.BlockBashImpactDataSet = item.BlockBashImpactDataSet.Equals(rhs.BlockBashImpactDataSet);
             ret.AlternateBlockMaterial = item.AlternateBlockMaterial.Equals(rhs.AlternateBlockMaterial);
             ret.Race = item.Race.Equals(rhs.Race);
-            ret.Keywords = item.Keywords.CollectionEqualsHelper(
+            ret.Keywords = item.Keywords.ListEqualsMask(
                 rhs.Keywords,
                 (l, r) => object.Equals(l, r),
                 include);
             ret.Description = object.Equals(item.Description, rhs.Description);
             ret.InstanceNaming = item.InstanceNaming.Equals(rhs.InstanceNaming);
-            ret.Armatures = item.Armatures.CollectionEqualsHelper(
+            ret.Armatures = item.Armatures.ListEqualsMask(
                 rhs.Armatures,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Value = item.Value == rhs.Value;
             ret.Weight = item.Weight.EqualsWithin(rhs.Weight);
@@ -2981,17 +2981,17 @@ namespace Mutagen.Bethesda.Starfield
             ret.BaseAddonIndex = item.BaseAddonIndex == rhs.BaseAddonIndex;
             ret.StaggerRating = item.StaggerRating == rhs.StaggerRating;
             ret.Unused = MemoryExtensions.SequenceEqual(item.Unused.Span, rhs.Unused.Span);
-            ret.Resistances = item.Resistances.CollectionEqualsHelper(
+            ret.Resistances = item.Resistances.ListEqualsMask(
                 rhs.Resistances,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.AttachParentSlots = item.AttachParentSlots.CollectionEqualsHelper(
+            ret.AttachParentSlots = item.AttachParentSlots.ListEqualsMask(
                 rhs.AttachParentSlots,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.ObjectTemplates = item.ObjectTemplates.CollectionEqualsHelper(
+            ret.ObjectTemplates = item.ObjectTemplates.ListEqualsMask(
                 rhs.ObjectTemplates,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.Voice = EqualsMaskHelper.EqualsHelper(
                 item.Voice,

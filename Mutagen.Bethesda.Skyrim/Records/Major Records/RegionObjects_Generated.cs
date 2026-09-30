@@ -814,9 +814,9 @@ namespace Mutagen.Bethesda.Skyrim
             RegionObjects.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.Objects = item.Objects.CollectionEqualsHelper(
+            ret.Objects = item.Objects.ListEqualsMask(
                 rhs.Objects,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

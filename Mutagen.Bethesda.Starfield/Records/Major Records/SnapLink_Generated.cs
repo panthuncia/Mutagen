@@ -859,9 +859,9 @@ namespace Mutagen.Bethesda.Starfield
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.LinkedReference = item.LinkedReference.Equals(rhs.LinkedReference);
-            ret.Links = item.Links.CollectionEqualsHelper(
+            ret.Links = item.Links.ListEqualsMask(
                 rhs.Links,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

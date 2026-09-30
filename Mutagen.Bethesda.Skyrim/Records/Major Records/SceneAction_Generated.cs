@@ -1526,7 +1526,7 @@ namespace Mutagen.Bethesda.Skyrim
             ret.StartPhase = item.StartPhase == rhs.StartPhase;
             ret.EndPhase = item.EndPhase == rhs.EndPhase;
             ret.TimerSeconds = item.TimerSeconds.EqualsWithin(rhs.TimerSeconds);
-            ret.Packages = item.Packages.CollectionEqualsHelper(
+            ret.Packages = item.Packages.ListEqualsMask(
                 rhs.Packages,
                 (l, r) => object.Equals(l, r),
                 include);

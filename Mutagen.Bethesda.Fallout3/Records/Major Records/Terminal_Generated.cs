@@ -1618,9 +1618,9 @@ namespace Mutagen.Bethesda.Fallout3
             ret.Flags = item.Flags == rhs.Flags;
             ret.ServerType = item.ServerType == rhs.ServerType;
             ret.Unused = item.Unused == rhs.Unused;
-            ret.MenuItems = item.MenuItems.CollectionEqualsHelper(
+            ret.MenuItems = item.MenuItems.ListEqualsMask(
                 rhs.MenuItems,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.DNAMDataTypeState = item.DNAMDataTypeState == rhs.DNAMDataTypeState;
             base.FillEqualsMask(item, rhs, ret, include);

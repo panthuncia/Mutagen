@@ -870,9 +870,9 @@ namespace Mutagen.Bethesda.Starfield
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Sound = MaskItemExt.Factory(item.Sound.GetEqualsMask(rhs.Sound, include), include);
-            ret.GuidPairs = item.GuidPairs.CollectionEqualsHelper(
+            ret.GuidPairs = item.GuidPairs.ListEqualsMask(
                 rhs.GuidPairs,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

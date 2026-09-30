@@ -1494,7 +1494,7 @@ namespace Mutagen.Bethesda.Fallout4
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.DATA = MemorySliceExt.SequenceEqual(item.DATA, rhs.DATA);
-            ret.VertexNormals = item.VertexNormals.Array2dEqualsHelper(
+            ret.VertexNormals = item.VertexNormals.Array2dEqualsMask(
                 rhs.VertexNormals,
                 (l, r) => l.Equals(r),
                 include);
@@ -1503,21 +1503,21 @@ namespace Mutagen.Bethesda.Fallout4
                 rhs.VertexHeightMap,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.VertexColors = item.VertexColors.Array2dEqualsHelper(
+            ret.VertexColors = item.VertexColors.Array2dEqualsMask(
                 rhs.VertexColors,
                 (l, r) => l.Equals(r),
                 include);
-            ret.Layers = item.Layers.CollectionEqualsHelper(
+            ret.Layers = item.Layers.ListEqualsMask(
                 rhs.Layers,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Textures = item.Textures.CollectionEqualsHelper(
+            ret.Textures = item.Textures.ListEqualsMask(
                 rhs.Textures,
                 (l, r) => object.Equals(l, r),
                 include);
-            ret.MPCDs = item.MPCDs.CollectionEqualsHelper(
+            ret.MPCDs = item.MPCDs.ListEqualsMask(
                 rhs.MPCDs,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

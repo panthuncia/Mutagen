@@ -2578,7 +2578,7 @@ namespace Mutagen.Bethesda.Oblivion
                 rhs.Lighting,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Regions = item.Regions.CollectionEqualsHelper(
+            ret.Regions = item.Regions.ListEqualsMask(
                 rhs.Regions,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -2603,19 +2603,19 @@ namespace Mutagen.Bethesda.Oblivion
                 include);
             ret.Timestamp = item.Timestamp == rhs.Timestamp;
             ret.PersistentTimestamp = item.PersistentTimestamp == rhs.PersistentTimestamp;
-            ret.Persistent = item.Persistent.CollectionEqualsHelper(
+            ret.Persistent = item.Persistent.ListEqualsMask(
                 rhs.Persistent,
-                (loqLhs, loqRhs) => (IMask<bool>)loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => (IMask<bool>)loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.TemporaryTimestamp = item.TemporaryTimestamp == rhs.TemporaryTimestamp;
-            ret.Temporary = item.Temporary.CollectionEqualsHelper(
+            ret.Temporary = item.Temporary.ListEqualsMask(
                 rhs.Temporary,
-                (loqLhs, loqRhs) => (IMask<bool>)loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => (IMask<bool>)loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.VisibleWhenDistantTimestamp = item.VisibleWhenDistantTimestamp == rhs.VisibleWhenDistantTimestamp;
-            ret.VisibleWhenDistant = item.VisibleWhenDistant.CollectionEqualsHelper(
+            ret.VisibleWhenDistant = item.VisibleWhenDistant.ListEqualsMask(
                 rhs.VisibleWhenDistant,
-                (loqLhs, loqRhs) => (IMask<bool>)loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => (IMask<bool>)loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             base.FillEqualsMask(item, rhs, ret, include);
         }

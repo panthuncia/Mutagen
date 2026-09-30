@@ -3717,7 +3717,7 @@ namespace Mutagen.Bethesda.Skyrim
             Weather.Mask<bool> ret,
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
-            ret.CloudTextures = item.CloudTextures.CollectionEqualsHelper(
+            ret.CloudTextures = item.CloudTextures.ListEqualsMask(
                 rhs.CloudTextures,
                 (l, r) => object.Equals(l, r),
                 include);
@@ -3729,9 +3729,9 @@ namespace Mutagen.Bethesda.Skyrim
             ret.Precipitation = item.Precipitation.Equals(rhs.Precipitation);
             ret.VisualEffect = item.VisualEffect.Equals(rhs.VisualEffect);
             ret.ONAM = MemorySliceExt.SequenceEqual(item.ONAM, rhs.ONAM);
-            ret.Clouds = item.Clouds.CollectionEqualsHelper(
+            ret.Clouds = item.Clouds.ListEqualsMask(
                 rhs.Clouds,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.SkyUpperColor = MaskItemExt.Factory(item.SkyUpperColor.GetEqualsMask(rhs.SkyUpperColor, include), include);
             ret.FogNearColor = MaskItemExt.Factory(item.FogNearColor.GetEqualsMask(rhs.FogNearColor, include), include);
@@ -3774,11 +3774,11 @@ namespace Mutagen.Bethesda.Skyrim
             ret.VisualEffectEnd = item.VisualEffectEnd.Equals(rhs.VisualEffectEnd);
             ret.WindDirection = item.WindDirection.EqualsWithin(rhs.WindDirection);
             ret.WindDirectionRange = item.WindDirectionRange.EqualsWithin(rhs.WindDirectionRange);
-            ret.Sounds = item.Sounds.CollectionEqualsHelper(
+            ret.Sounds = item.Sounds.ListEqualsMask(
                 rhs.Sounds,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.SkyStatics = item.SkyStatics.CollectionEqualsHelper(
+            ret.SkyStatics = item.SkyStatics.ListEqualsMask(
                 rhs.SkyStatics,
                 (l, r) => object.Equals(l, r),
                 include);

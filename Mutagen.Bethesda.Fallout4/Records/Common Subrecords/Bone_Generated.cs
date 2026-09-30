@@ -926,7 +926,7 @@ namespace Mutagen.Bethesda.Fallout4
             EqualsMaskHelper.Include include = EqualsMaskHelper.Include.All)
         {
             ret.Name = string.Equals(item.Name, rhs.Name);
-            ret.Values = item.Values.CollectionEqualsHelper(
+            ret.Values = item.Values.ListEqualsMask(
                 rhs.Values,
                 (l, r) => l.EqualsWithin(r),
                 include);

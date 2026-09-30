@@ -906,9 +906,9 @@ namespace Mutagen.Bethesda.Fallout3
         {
             ret.Index = item.Index == rhs.Index;
             ret.Description = string.Equals(item.Description, rhs.Description);
-            ret.Targets = item.Targets.CollectionEqualsHelper(
+            ret.Targets = item.Targets.ListEqualsMask(
                 rhs.Targets,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
         }
         

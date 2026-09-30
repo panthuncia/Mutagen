@@ -1087,9 +1087,9 @@ namespace Mutagen.Bethesda.Fallout3
                 rhs.Model,
                 (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
-            ret.Conditions = item.Conditions.CollectionEqualsHelper(
+            ret.Conditions = item.Conditions.ListEqualsMask(
                 rhs.Conditions,
-                (loqLhs, loqRhs) => loqLhs.GetEqualsMask(loqRhs, include),
+                (loqLhs, loqRhs, incl) => loqLhs.GetEqualsMask(loqRhs, incl),
                 include);
             ret.RelatedIdleAnimations = MaskItemExt.Factory(item.RelatedIdleAnimations.GetEqualsMask(rhs.RelatedIdleAnimations, include), include);
             ret.AnimationData = MaskItemExt.Factory(item.AnimationData.GetEqualsMask(rhs.AnimationData, include), include);
