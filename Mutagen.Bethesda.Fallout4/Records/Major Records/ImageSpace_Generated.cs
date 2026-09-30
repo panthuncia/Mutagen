@@ -2885,7 +2885,8 @@ namespace Mutagen.Bethesda.Fallout4
             int offset,
             PreviousParse lastParsed);
         #endregion
-        private RangeInt32? _HNAMLocation;
+        private RangeInt32? _HNAMLocationStore;
+        private RangeInt32? _HNAMLocation { get { EnsureFilled(); return _HNAMLocationStore; } set => _HNAMLocationStore = value; }
         #region HdrEyeAdaptSpeed
         private int _HdrEyeAdaptSpeedLocation => _HNAMLocation!.Value.Min;
         private bool _HdrEyeAdaptSpeed_IsSet => _HNAMLocation.HasValue;
@@ -2931,7 +2932,8 @@ namespace Mutagen.Bethesda.Fallout4
         private bool _HdrMiddleGray_IsSet => _HNAMLocation.HasValue;
         public Single HdrMiddleGray => _HdrMiddleGray_IsSet ? _recordData.Slice(_HdrMiddleGrayLocation, 4).Float() : default(Single);
         #endregion
-        private RangeInt32? _CNAMLocation;
+        private RangeInt32? _CNAMLocationStore;
+        private RangeInt32? _CNAMLocation { get { EnsureFilled(); return _CNAMLocationStore; } set => _CNAMLocationStore = value; }
         #region CinematicSaturation
         private int _CinematicSaturationLocation => _CNAMLocation!.Value.Min;
         private bool _CinematicSaturation_IsSet => _CNAMLocation.HasValue;
@@ -2947,7 +2949,8 @@ namespace Mutagen.Bethesda.Fallout4
         private bool _CinematicContrast_IsSet => _CNAMLocation.HasValue;
         public Single CinematicContrast => _CinematicContrast_IsSet ? _recordData.Slice(_CinematicContrastLocation, 4).Float() : default(Single);
         #endregion
-        private RangeInt32? _TNAMLocation;
+        private RangeInt32? _TNAMLocationStore;
+        private RangeInt32? _TNAMLocation { get { EnsureFilled(); return _TNAMLocationStore; } set => _TNAMLocationStore = value; }
         #region TintAmount
         private int _TintAmountLocation => _TNAMLocation!.Value.Min;
         private bool _TintAmount_IsSet => _TNAMLocation.HasValue;
@@ -2958,8 +2961,10 @@ namespace Mutagen.Bethesda.Fallout4
         private bool _TintColor_IsSet => _TNAMLocation.HasValue;
         public Color TintColor => _TintColor_IsSet ? _recordData.Slice(_TintColorLocation, 12).ReadColor(ColorBinaryType.NoAlphaFloat) : default(Color);
         #endregion
-        private RangeInt32? _DNAMLocation;
-        public ImageSpace.DNAMDataType DNAMDataTypeState { get; private set; }
+        private RangeInt32? _DNAMLocationStore;
+        private RangeInt32? _DNAMLocation { get { EnsureFilled(); return _DNAMLocationStore; } set => _DNAMLocationStore = value; }
+        private ImageSpace.DNAMDataType DNAMDataTypeStateStore;
+        public ImageSpace.DNAMDataType DNAMDataTypeState { get { EnsureFilled(); return DNAMDataTypeStateStore; } private set => DNAMDataTypeStateStore = value; }
         #region DepthOfFieldStrength
         private int _DepthOfFieldStrengthLocation => _DNAMLocation!.Value.Min;
         private bool _DepthOfFieldStrength_IsSet => _DNAMLocation.HasValue;
@@ -3001,7 +3006,8 @@ namespace Mutagen.Bethesda.Fallout4
         public Single DepthOfFieldVignetteStrength => _DepthOfFieldVignetteStrength_IsSet ? _recordData.Slice(_DepthOfFieldVignetteStrengthLocation, 4).Float() : default(Single);
         #endregion
         #region Lut
-        private int? _LutLocation;
+        private int? _LutLocationStore;
+        private int? _LutLocation { get { EnsureFilled(); return _LutLocationStore; } set => _LutLocationStore = value; }
         public String? Lut => _LutLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LutLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(

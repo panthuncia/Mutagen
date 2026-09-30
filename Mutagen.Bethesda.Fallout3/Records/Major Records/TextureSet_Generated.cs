@@ -2154,39 +2154,48 @@ namespace Mutagen.Bethesda.Fallout3
 
 
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         public IObjectBoundsGetter? ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         #endregion
         #region BaseImage
-        private int? _BaseImageLocation;
+        private int? _BaseImageLocationStore;
+        private int? _BaseImageLocation { get { EnsureFilled(); return _BaseImageLocationStore; } set => _BaseImageLocationStore = value; }
         public AssetLinkGetter<Fallout3TextureAssetType>? BaseImage => _BaseImageLocation.HasValue ? new AssetLinkGetter<Fallout3TextureAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BaseImageLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<Fallout3TextureAssetType>?);
         #endregion
         #region NormalMap
-        private int? _NormalMapLocation;
+        private int? _NormalMapLocationStore;
+        private int? _NormalMapLocation { get { EnsureFilled(); return _NormalMapLocationStore; } set => _NormalMapLocationStore = value; }
         public AssetLinkGetter<Fallout3TextureAssetType>? NormalMap => _NormalMapLocation.HasValue ? new AssetLinkGetter<Fallout3TextureAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NormalMapLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<Fallout3TextureAssetType>?);
         #endregion
         #region EnvironmentMapMask
-        private int? _EnvironmentMapMaskLocation;
+        private int? _EnvironmentMapMaskLocationStore;
+        private int? _EnvironmentMapMaskLocation { get { EnsureFilled(); return _EnvironmentMapMaskLocationStore; } set => _EnvironmentMapMaskLocationStore = value; }
         public AssetLinkGetter<Fallout3TextureAssetType>? EnvironmentMapMask => _EnvironmentMapMaskLocation.HasValue ? new AssetLinkGetter<Fallout3TextureAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EnvironmentMapMaskLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<Fallout3TextureAssetType>?);
         #endregion
         #region GlowMap
-        private int? _GlowMapLocation;
+        private int? _GlowMapLocationStore;
+        private int? _GlowMapLocation { get { EnsureFilled(); return _GlowMapLocationStore; } set => _GlowMapLocationStore = value; }
         public AssetLinkGetter<Fallout3TextureAssetType>? GlowMap => _GlowMapLocation.HasValue ? new AssetLinkGetter<Fallout3TextureAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _GlowMapLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<Fallout3TextureAssetType>?);
         #endregion
         #region ParallaxMap
-        private int? _ParallaxMapLocation;
+        private int? _ParallaxMapLocationStore;
+        private int? _ParallaxMapLocation { get { EnsureFilled(); return _ParallaxMapLocationStore; } set => _ParallaxMapLocationStore = value; }
         public AssetLinkGetter<Fallout3TextureAssetType>? ParallaxMap => _ParallaxMapLocation.HasValue ? new AssetLinkGetter<Fallout3TextureAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ParallaxMapLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<Fallout3TextureAssetType>?);
         #endregion
         #region EnvironmentMap
-        private int? _EnvironmentMapLocation;
+        private int? _EnvironmentMapLocationStore;
+        private int? _EnvironmentMapLocation { get { EnsureFilled(); return _EnvironmentMapLocationStore; } set => _EnvironmentMapLocationStore = value; }
         public AssetLinkGetter<Fallout3TextureAssetType>? EnvironmentMap => _EnvironmentMapLocation.HasValue ? new AssetLinkGetter<Fallout3TextureAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EnvironmentMapLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<Fallout3TextureAssetType>?);
         #endregion
         #region Decal
-        private RangeInt32? _DecalLocation;
+        private RangeInt32? _DecalLocationStore;
+        private RangeInt32? _DecalLocation { get { EnsureFilled(); return _DecalLocationStore; } set => _DecalLocationStore = value; }
         public IDecalGetter? Decal => _DecalLocation.HasValue ? DecalBinaryOverlay.DecalFactory(_recordData.Slice(_DecalLocation!.Value.Min), _package) : default;
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public TextureSet.Flag? Flags => EnumBinaryTranslation<TextureSet.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 2);
         #endregion
         partial void CustomFactoryEnd(
@@ -2210,6 +2219,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new TextureSetBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => TextureSetFill((TextureSetBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void TextureSetFill(
+            TextureSetBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2217,9 +2243,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new TextureSetBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2232,7 +2256,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ITextureSetGetter TextureSetFactory(

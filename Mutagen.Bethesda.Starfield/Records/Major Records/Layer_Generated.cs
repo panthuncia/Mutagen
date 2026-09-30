@@ -1963,22 +1963,30 @@ namespace Mutagen.Bethesda.Starfield
         public Layer.MajorFlag MajorFlags => (Layer.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
         #region Parent
-        private int? _ParentLocation;
+        private int? _ParentLocationStore;
+        private int? _ParentLocation { get { EnsureFilled(); return _ParentLocationStore; } set => _ParentLocationStore = value; }
         public IFormLinkNullableGetter<ILayerGetter> Parent => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ILayerGetter>(_package, _recordData, _ParentLocation);
         #endregion
         #region SurfaceColor
-        private int? _SurfaceColorLocation;
+        private int? _SurfaceColorLocationStore;
+        private int? _SurfaceColorLocation { get { EnsureFilled(); return _SurfaceColorLocationStore; } set => _SurfaceColorLocationStore = value; }
         public Color SurfaceColor => _SurfaceColorLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SurfaceColorLocation.Value, _package.MetaData.Constants).ReadColor(ColorBinaryType.Alpha) : default(Color);
         #endregion
         #region LodBehavior
-        private int? _LodBehaviorLocation;
+        private int? _LodBehaviorLocationStore;
+        private int? _LodBehaviorLocation { get { EnsureFilled(); return _LodBehaviorLocationStore; } set => _LodBehaviorLocationStore = value; }
         public Layer.LodBehaviorType LodBehavior => EnumBinaryTranslation<Layer.LodBehaviorType, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_LodBehaviorLocation, _recordData, _package, 4);
         #endregion
         partial void CustomFactoryEnd(
@@ -2002,6 +2010,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new LayerBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => LayerFill((LayerBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void LayerFill(
+            LayerBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2009,9 +2034,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new LayerBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2024,7 +2047,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ILayerGetter LayerFactory(

@@ -2567,9 +2567,13 @@ namespace Mutagen.Bethesda.Oblivion
         protected override Type LinkType => typeof(IDialogTopicGetter);
 
 
-        public IReadOnlyList<IFormLinkGetter<IQuestGetter>> Quests { get; private set; } = [];
+        #region Quests
+        private IReadOnlyList<IFormLinkGetter<IQuestGetter>> QuestsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IQuestGetter>> Quests { get { EnsureFilled(); return QuestsStore; } private set => QuestsStore = value; }
+        #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2577,7 +2581,8 @@ namespace Mutagen.Bethesda.Oblivion
         #endregion
         #endregion
         #region DialogType
-        private int? _DialogTypeLocation;
+        private int? _DialogTypeLocationStore;
+        private int? _DialogTypeLocation { get { EnsureFilled(); return _DialogTypeLocationStore; } set => _DialogTypeLocationStore = value; }
         public DialogType? DialogType => EnumBinaryTranslation<DialogType, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_DialogTypeLocation, _recordData, _package, 1);
         #endregion
         partial void CustomFactoryEnd(

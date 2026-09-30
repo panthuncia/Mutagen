@@ -1680,7 +1680,8 @@ namespace Mutagen.Bethesda.Fallout4
 
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -1691,7 +1692,10 @@ namespace Mutagen.Bethesda.Fallout4
         ITranslatedStringGetter ITranslatedNamedRequiredGetter.Name => this.Name ?? TranslatedString.Empty;
         #endregion
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IFallout4MajorRecordGetter>> Items { get; private set; } = [];
+        #region Items
+        private IReadOnlyList<IFormLinkGetter<IFallout4MajorRecordGetter>> ItemsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IFallout4MajorRecordGetter>> Items { get { EnsureFilled(); return ItemsStore; } private set => ItemsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -1713,6 +1717,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new FormListBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => FormListFill((FormListBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void FormListFill(
+            FormListBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1720,9 +1741,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new FormListBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1735,7 +1754,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IFormListGetter FormListFactory(

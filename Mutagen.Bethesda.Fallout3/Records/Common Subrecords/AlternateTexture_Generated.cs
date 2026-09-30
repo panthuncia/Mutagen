@@ -1189,7 +1189,8 @@ namespace Mutagen.Bethesda.Fallout3
 
         #region Name
         public String Name => BinaryStringUtility.ParsePrependedString(_structData.Slice(0x0), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int NameEndingPos;
+        private int NameEndingPosStore;
+        protected int NameEndingPos { get { EnsureFilled(); return NameEndingPosStore; } private set => NameEndingPosStore = value; }
         #endregion
         public IFormLinkGetter<ITextureSetGetter> NewTexture => FormLinkBinaryTranslation.Instance.OverlayFactory<ITextureSetGetter>(_package, _structData.Span.Slice(NameEndingPos, 0x4));
         public Int32 Index => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(NameEndingPos + 0x4, 0x4));

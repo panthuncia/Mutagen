@@ -1211,10 +1211,14 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region RSMC
-        private int? _RSMCLocation;
+        private int? _RSMCLocationStore;
+        private int? _RSMCLocation { get { EnsureFilled(); return _RSMCLocationStore; } set => _RSMCLocationStore = value; }
         public UInt32? RSMC => _RSMCLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _RSMCLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
-        public ISoundReferenceGetter? RSMH { get; private set; }
+        #region RSMH
+        private ISoundReferenceGetter? RSMHStore;
+        public ISoundReferenceGetter? RSMH { get { EnsureFilled(); return RSMHStore; } private set => RSMHStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

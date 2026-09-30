@@ -3178,20 +3178,30 @@ namespace Mutagen.Bethesda.Skyrim
         public Light.MajorFlag MajorFlags => (Light.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         private IObjectBoundsGetter? _ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         public IObjectBoundsGetter ObjectBounds => _ObjectBounds ?? new ObjectBounds();
         #endregion
-        public IModelGetter? Model { get; private set; }
-        public IDestructibleGetter? Destructible { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
+        #region Destructible
+        private IDestructibleGetter? DestructibleStore;
+        public IDestructibleGetter? Destructible { get { EnsureFilled(); return DestructibleStore; } private set => DestructibleStore = value; }
+        #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -3202,8 +3212,12 @@ namespace Mutagen.Bethesda.Skyrim
         ITranslatedStringGetter ITranslatedNamedRequiredGetter.Name => this.Name ?? TranslatedString.Empty;
         #endregion
         #endregion
-        public IIconsGetter? Icons { get; private set; }
-        private RangeInt32? _DATALocation;
+        #region Icons
+        private IIconsGetter? IconsStore;
+        public IIconsGetter? Icons { get { EnsureFilled(); return IconsStore; } private set => IconsStore = value; }
+        #endregion
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         #region Time
         private int _TimeLocation => _DATALocation!.Value.Min;
         private bool _Time_IsSet => _DATALocation.HasValue;
@@ -3265,15 +3279,18 @@ namespace Mutagen.Bethesda.Skyrim
         public Single Weight => _Weight_IsSet ? _recordData.Slice(_WeightLocation, 4).Float() : default(Single);
         #endregion
         #region FadeValue
-        private int? _FadeValueLocation;
+        private int? _FadeValueLocationStore;
+        private int? _FadeValueLocation { get { EnsureFilled(); return _FadeValueLocationStore; } set => _FadeValueLocationStore = value; }
         public Single FadeValue => _FadeValueLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FadeValueLocation.Value, _package.MetaData.Constants).Float() : default(Single);
         #endregion
         #region Sound
-        private int? _SoundLocation;
+        private int? _SoundLocationStore;
+        private int? _SoundLocation { get { EnsureFilled(); return _SoundLocationStore; } set => _SoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundDescriptorGetter> Sound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundDescriptorGetter>(_package, _recordData, _SoundLocation);
         #endregion
         #region Lens
-        private int? _LensLocation;
+        private int? _LensLocationStore;
+        private int? _LensLocation { get { EnsureFilled(); return _LensLocationStore; } set => _LensLocationStore = value; }
         public IFormLinkNullableGetter<ILensFlareGetter> Lens => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ILensFlareGetter>(_package, _recordData, _LensLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -3297,6 +3314,23 @@ namespace Mutagen.Bethesda.Skyrim
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new LightBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => LightFill((LightBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void LightFill(
+            LightBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -3304,9 +3338,7 @@ namespace Mutagen.Bethesda.Skyrim
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new LightBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -3319,7 +3351,6 @@ namespace Mutagen.Bethesda.Skyrim
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ILightGetter LightFactory(

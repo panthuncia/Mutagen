@@ -2867,43 +2867,57 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         private IObjectBoundsGetter? _ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         public IObjectBoundsGetter ObjectBounds => _ObjectBounds ?? new ObjectBounds();
         #endregion
         #region DirtinessScale
-        private int? _DirtinessScaleLocation;
+        private int? _DirtinessScaleLocationStore;
+        private int? _DirtinessScaleLocation { get { EnsureFilled(); return _DirtinessScaleLocationStore; } set => _DirtinessScaleLocationStore = value; }
         public Percent DirtinessScale => _DirtinessScaleLocation.HasValue ? PercentBinaryTranslation.GetPercent(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DirtinessScaleLocation.Value, _package.MetaData.Constants), FloatIntegerType.UInt) : default(Percent);
         #endregion
         #region ObjectPaletteDefaults
-        private RangeInt32? _ObjectPaletteDefaultsLocation;
+        private RangeInt32? _ObjectPaletteDefaultsLocationStore;
+        private RangeInt32? _ObjectPaletteDefaultsLocation { get { EnsureFilled(); return _ObjectPaletteDefaultsLocationStore; } set => _ObjectPaletteDefaultsLocationStore = value; }
         public IObjectPaletteDefaultsGetter? ObjectPaletteDefaults => _ObjectPaletteDefaultsLocation.HasValue ? ObjectPaletteDefaultsBinaryOverlay.ObjectPaletteDefaultsFactory(_recordData.Slice(_ObjectPaletteDefaultsLocation!.Value.Min), _package) : default;
         #endregion
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
         #region Transforms
-        private RangeInt32? _TransformsLocation;
+        private RangeInt32? _TransformsLocationStore;
+        private RangeInt32? _TransformsLocation { get { EnsureFilled(); return _TransformsLocationStore; } set => _TransformsLocationStore = value; }
         public ITransformsGetter? Transforms => _TransformsLocation.HasValue ? TransformsBinaryOverlay.TransformsFactory(_recordData.Slice(_TransformsLocation!.Value.Min), _package) : default;
         #endregion
         #region PTTA
-        private RangeInt32? _PTTALocation;
+        private RangeInt32? _PTTALocationStore;
+        private RangeInt32? _PTTALocation { get { EnsureFilled(); return _PTTALocationStore; } set => _PTTALocationStore = value; }
         public IPTTAGetter? PTTA => _PTTALocation.HasValue ? PTTABinaryOverlay.PTTAFactory(_recordData.Slice(_PTTALocation!.Value.Min), _package) : default;
         #endregion
         #region SnapBehavior
-        private int? _SnapBehaviorLocation;
+        private int? _SnapBehaviorLocationStore;
+        private int? _SnapBehaviorLocation { get { EnsureFilled(); return _SnapBehaviorLocationStore; } set => _SnapBehaviorLocationStore = value; }
         public IFormLinkNullableGetter<ISnapTemplateBehaviorGetter> SnapBehavior => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISnapTemplateBehaviorGetter>(_package, _recordData, _SnapBehaviorLocation);
         #endregion
         #region Material
-        private int? _MaterialLocation;
+        private int? _MaterialLocationStore;
+        private int? _MaterialLocation { get { EnsureFilled(); return _MaterialLocationStore; } set => _MaterialLocationStore = value; }
         public IFormLinkNullableGetter<IMaterialPathGetter> Material => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMaterialPathGetter>(_package, _recordData, _MaterialLocation);
         #endregion
-        private RangeInt32? _DATALocation;
-        public ProjectedDecal.DATADataType DATADataTypeState { get; private set; }
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
+        private ProjectedDecal.DATADataType DATADataTypeStateStore;
+        public ProjectedDecal.DATADataType DATADataTypeState { get { EnsureFilled(); return DATADataTypeStateStore; } private set => DATADataTypeStateStore = value; }
         #region UnknownData1
         private int _UnknownData1Location => _DATALocation!.Value.Min;
         private bool _UnknownData1_IsSet => _DATALocation.HasValue;
@@ -2955,6 +2969,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ProjectedDecalBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ProjectedDecalFill((ProjectedDecalBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ProjectedDecalFill(
+            ProjectedDecalBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2962,9 +2993,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ProjectedDecalBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2977,7 +3006,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IProjectedDecalGetter ProjectedDecalFactory(

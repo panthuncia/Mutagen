@@ -1421,20 +1421,27 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region IdleTime
-        private int? _IdleTimeLocation;
+        private int? _IdleTimeLocationStore;
+        private int? _IdleTimeLocation { get { EnsureFilled(); return _IdleTimeLocationStore; } set => _IdleTimeLocationStore = value; }
         public Single? IdleTime => _IdleTimeLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _IdleTimeLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region ScriptMarker
-        private int? _ScriptMarkerLocation;
+        private int? _ScriptMarkerLocationStore;
+        private int? _ScriptMarkerLocation { get { EnsureFilled(); return _ScriptMarkerLocationStore; } set => _ScriptMarkerLocationStore = value; }
         public Boolean ScriptMarker => _ScriptMarkerLocation.HasValue ? true : default(Boolean);
         #endregion
         #region Idle
-        private int? _IdleLocation;
+        private int? _IdleLocationStore;
+        private int? _IdleLocation { get { EnsureFilled(); return _IdleLocationStore; } set => _IdleLocationStore = value; }
         public IFormLinkNullableGetter<IIdleAnimationGetter> Idle => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IIdleAnimationGetter>(_package, _recordData, _IdleLocation);
         #endregion
-        public IScriptFieldsGetter? EmbeddedScript { get; private set; }
+        #region EmbeddedScript
+        private IScriptFieldsGetter? EmbeddedScriptStore;
+        public IScriptFieldsGetter? EmbeddedScript { get { EnsureFilled(); return EmbeddedScriptStore; } private set => EmbeddedScriptStore = value; }
+        #endregion
         #region Topic
-        private int? _TopicLocation;
+        private int? _TopicLocationStore;
+        private int? _TopicLocation { get { EnsureFilled(); return _TopicLocationStore; } set => _TopicLocationStore = value; }
         public IFormLinkNullableGetter<IDialogTopicGetter> Topic => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogTopicGetter>(_package, _recordData, _TopicLocation);
         #endregion
         partial void CustomFactoryEnd(

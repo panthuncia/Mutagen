@@ -1087,7 +1087,8 @@ namespace Mutagen.Bethesda.Starfield
 
         #region ChainEnd
         public String ChainEnd => BinaryStringUtility.ParsePrependedString(_structData.Slice(TargetEndingPos + 0x4), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int ChainEndEndingPos;
+        private int ChainEndEndingPosStore;
+        protected int ChainEndEndingPos { get { EnsureFilled(); return ChainEndEndingPosStore; } private set => ChainEndEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

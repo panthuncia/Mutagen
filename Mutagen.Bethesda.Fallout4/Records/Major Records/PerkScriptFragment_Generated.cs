@@ -1270,11 +1270,13 @@ namespace Mutagen.Bethesda.Fallout4
         public SByte Unknown2 => (sbyte)_structData.Slice(0x4, 0x1)[0];
         #region ScriptName
         public String ScriptName => BinaryStringUtility.ParsePrependedString(_structData.Slice(0x5), lengthLength: 2, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int ScriptNameEndingPos;
+        private int ScriptNameEndingPosStore;
+        protected int ScriptNameEndingPos { get { EnsureFilled(); return ScriptNameEndingPosStore; } private set => ScriptNameEndingPosStore = value; }
         #endregion
         #region FragmentName
         public String FragmentName => BinaryStringUtility.ParsePrependedString(_structData.Slice(ScriptNameEndingPos), lengthLength: 2, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int FragmentNameEndingPos;
+        private int FragmentNameEndingPosStore;
+        protected int FragmentNameEndingPos { get { EnsureFilled(); return FragmentNameEndingPosStore; } private set => FragmentNameEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

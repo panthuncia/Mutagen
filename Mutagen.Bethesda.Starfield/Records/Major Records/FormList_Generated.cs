@@ -2176,9 +2176,13 @@ namespace Mutagen.Bethesda.Starfield
         protected override Type LinkType => typeof(IFormListGetter);
 
 
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2189,10 +2193,17 @@ namespace Mutagen.Bethesda.Starfield
         ITranslatedStringGetter ITranslatedNamedRequiredGetter.Name => this.Name ?? TranslatedString.Empty;
         #endregion
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IStarfieldMajorRecordGetter>> Items { get; private set; } = [];
-        public IReadOnlyList<IFormListConditionalEntryGetter> ConditionalEntries { get; private set; } = [];
+        #region Items
+        private IReadOnlyList<IFormLinkGetter<IStarfieldMajorRecordGetter>> ItemsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IStarfieldMajorRecordGetter>> Items { get { EnsureFilled(); return ItemsStore; } private set => ItemsStore = value; }
+        #endregion
+        #region ConditionalEntries
+        private IReadOnlyList<IFormListConditionalEntryGetter> ConditionalEntriesStore = [];
+        public IReadOnlyList<IFormListConditionalEntryGetter> ConditionalEntries { get { EnsureFilled(); return ConditionalEntriesStore; } private set => ConditionalEntriesStore = value; }
+        #endregion
         #region AddToList
-        private int? _AddToListLocation;
+        private int? _AddToListLocationStore;
+        private int? _AddToListLocation { get { EnsureFilled(); return _AddToListLocationStore; } set => _AddToListLocationStore = value; }
         public IFormLinkNullableGetter<IFormListGetter> AddToList => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IFormListGetter>(_package, _recordData, _AddToListLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -2216,6 +2227,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new FormListBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => FormListFill((FormListBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void FormListFill(
+            FormListBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2223,9 +2251,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new FormListBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2238,7 +2264,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IFormListGetter FormListFactory(

@@ -1161,11 +1161,13 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Number
-        private int? _NumberLocation;
+        private int? _NumberLocationStore;
+        private int? _NumberLocation { get { EnsureFilled(); return _NumberLocationStore; } set => _NumberLocationStore = value; }
         public Int32? Number => _NumberLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NumberLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region Head
-        private int? _HeadLocation;
+        private int? _HeadLocationStore;
+        private int? _HeadLocation { get { EnsureFilled(); return _HeadLocationStore; } set => _HeadLocationStore = value; }
         public IFormLinkNullableGetter<IHeadPartGetter> Head => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IHeadPartGetter>(_package, _recordData, _HeadLocation);
         #endregion
         partial void CustomFactoryEnd(

@@ -1277,7 +1277,8 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        public PackageTarget.VersioningBreaks Versioning { get; private set; }
+        private PackageTarget.VersioningBreaks VersioningStore;
+        public PackageTarget.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public Int32 CountOrDistance => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x8, 0x4));
         public Single Unknown => _structData.Length <= 0xC ? default : _structData.Slice(0xC, 0x4).Float();
         partial void CustomFactoryEnd(

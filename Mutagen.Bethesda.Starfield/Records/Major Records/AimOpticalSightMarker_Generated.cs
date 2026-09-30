@@ -2413,8 +2413,12 @@ namespace Mutagen.Bethesda.Starfield
         protected override Type LinkType => typeof(IAimOpticalSightMarkerGetter);
 
 
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
-        private RangeInt32? _ANAMLocation;
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
+        private RangeInt32? _ANAMLocationStore;
+        private RangeInt32? _ANAMLocation { get { EnsureFilled(); return _ANAMLocationStore; } set => _ANAMLocationStore = value; }
         #region ActivateSightOnSightedMode
         private int _ActivateSightOnSightedModeLocation => _ANAMLocation!.Value.Min;
         private bool _ActivateSightOnSightedMode_IsSet => _ANAMLocation.HasValue;
@@ -2424,7 +2428,8 @@ namespace Mutagen.Bethesda.Starfield
         private int _OpticalSightAttachNodeLocation => _ANAMLocation!.Value.Min + 0x1;
         private bool _OpticalSightAttachNode_IsSet => _ANAMLocation.HasValue;
         public String OpticalSightAttachNode => _OpticalSightAttachNode_IsSet ? BinaryStringUtility.ParsePrependedString(_recordData.Slice(_OpticalSightAttachNodeLocation), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
-        protected int OpticalSightAttachNodeEndingPos;
+        private int OpticalSightAttachNodeEndingPosStore;
+        protected int OpticalSightAttachNodeEndingPos { get { EnsureFilled(); return OpticalSightAttachNodeEndingPosStore; } private set => OpticalSightAttachNodeEndingPosStore = value; }
         #endregion
         #region DelayBeforeSightActivation
         private int _DelayBeforeSightActivationLocation => OpticalSightAttachNodeEndingPos;
@@ -2507,6 +2512,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new AimOpticalSightMarkerBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => AimOpticalSightMarkerFill((AimOpticalSightMarkerBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void AimOpticalSightMarkerFill(
+            AimOpticalSightMarkerBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2514,9 +2536,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new AimOpticalSightMarkerBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2530,7 +2550,6 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
             ret.OpticalSightAttachNodeEndingPos = ret._ANAMLocation!.Value.Min + 0x1 + BinaryPrimitives.ReadInt32LittleEndian(ret._recordData.Slice(ret._ANAMLocation!.Value.Min + 0x1)) + 4;
-            return ret;
         }
 
         public static IAimOpticalSightMarkerGetter AimOpticalSightMarkerFactory(

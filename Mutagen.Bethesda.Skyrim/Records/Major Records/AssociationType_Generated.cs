@@ -1613,15 +1613,18 @@ namespace Mutagen.Bethesda.Skyrim
 
 
         #region ParentTitle
-        private IGenderedItemGetter<String?>? _ParentTitleOverlay;
+        private IGenderedItemGetter<String?>? _ParentTitleOverlayStore;
+        private IGenderedItemGetter<String?>? _ParentTitleOverlay { get { EnsureFilled(); return _ParentTitleOverlayStore; } set => _ParentTitleOverlayStore = value; }
         public IGenderedItemGetter<String?>? ParentTitle => _ParentTitleOverlay;
         #endregion
         #region Title
-        private IGenderedItemGetter<String?>? _TitleOverlay;
+        private IGenderedItemGetter<String?>? _TitleOverlayStore;
+        private IGenderedItemGetter<String?>? _TitleOverlay { get { EnsureFilled(); return _TitleOverlayStore; } set => _TitleOverlayStore = value; }
         public IGenderedItemGetter<String?>? Title => _TitleOverlay;
         #endregion
         #region IsFamily
-        private int? _IsFamilyLocation;
+        private int? _IsFamilyLocationStore;
+        private int? _IsFamilyLocation { get { EnsureFilled(); return _IsFamilyLocationStore; } set => _IsFamilyLocationStore = value; }
         public Boolean? IsFamily => _IsFamilyLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IsFamilyLocation.Value, _package.MetaData.Constants)) >= 1 : default(Boolean?);
         #endregion
         partial void CustomFactoryEnd(
@@ -1645,6 +1648,23 @@ namespace Mutagen.Bethesda.Skyrim
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new AssociationTypeBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => AssociationTypeFill((AssociationTypeBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void AssociationTypeFill(
+            AssociationTypeBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1652,9 +1672,7 @@ namespace Mutagen.Bethesda.Skyrim
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new AssociationTypeBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1667,7 +1685,6 @@ namespace Mutagen.Bethesda.Skyrim
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IAssociationTypeGetter AssociationTypeFactory(

@@ -1733,7 +1733,8 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        public MovementData.VersioningBreaks Versioning { get; private set; }
+        private MovementData.VersioningBreaks VersioningStore;
+        public MovementData.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public IMovementDirectionDataGetter Left => MovementDirectionDataBinaryOverlay.MovementDirectionDataFactory(_structData, _package, default(TypedParseParams));
         public IMovementDirectionDataGetter Right => MovementDirectionDataBinaryOverlay.MovementDirectionDataFactory(_structData.Slice(0x10), _package, default(TypedParseParams));
         public IMovementDirectionDataGetter Forward => MovementDirectionDataBinaryOverlay.MovementDirectionDataFactory(_structData.Slice(0x20), _package, default(TypedParseParams));

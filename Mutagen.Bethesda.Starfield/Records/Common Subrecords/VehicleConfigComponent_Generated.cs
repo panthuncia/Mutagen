@@ -1784,25 +1784,33 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IFormLinkGetter<IBoneModifierGetter>>? SuspensionBoneModifiers { get; private set; }
+        #region SuspensionBoneModifiers
+        private IReadOnlyList<IFormLinkGetter<IBoneModifierGetter>>? SuspensionBoneModifiersStore;
+        public IReadOnlyList<IFormLinkGetter<IBoneModifierGetter>>? SuspensionBoneModifiers { get { EnsureFilled(); return SuspensionBoneModifiersStore; } private set => SuspensionBoneModifiersStore = value; }
+        #endregion
         #region Config
-        private RangeInt32? _ConfigLocation;
+        private RangeInt32? _ConfigLocationStore;
+        private RangeInt32? _ConfigLocation { get { EnsureFilled(); return _ConfigLocationStore; } set => _ConfigLocationStore = value; }
         public IVehicleConfigDataGetter? Config => _ConfigLocation.HasValue ? VehicleConfigDataBinaryOverlay.VehicleConfigDataFactory(_recordData.Slice(_ConfigLocation!.Value.Min), _package) : default;
         #endregion
         #region MountedWeapon
-        private int? _MountedWeaponLocation;
+        private int? _MountedWeaponLocationStore;
+        private int? _MountedWeaponLocation { get { EnsureFilled(); return _MountedWeaponLocationStore; } set => _MountedWeaponLocationStore = value; }
         public IFormLinkNullableGetter<IWeaponGetter> MountedWeapon => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IWeaponGetter>(_package, _recordData, _MountedWeaponLocation);
         #endregion
         #region Weapon
-        private RangeInt32? _WeaponLocation;
+        private RangeInt32? _WeaponLocationStore;
+        private RangeInt32? _WeaponLocation { get { EnsureFilled(); return _WeaponLocationStore; } set => _WeaponLocationStore = value; }
         public IVehicleWeaponDataGetter? Weapon => _WeaponLocation.HasValue ? VehicleWeaponDataBinaryOverlay.VehicleWeaponDataFactory(_recordData.Slice(_WeaponLocation!.Value.Min), _package) : default;
         #endregion
         #region WWise
-        private RangeInt32? _WWiseLocation;
+        private RangeInt32? _WWiseLocationStore;
+        private RangeInt32? _WWiseLocation { get { EnsureFilled(); return _WWiseLocationStore; } set => _WWiseLocationStore = value; }
         public IVehicleWWiseDataGetter? WWise => _WWiseLocation.HasValue ? VehicleWWiseDataBinaryOverlay.VehicleWWiseDataFactory(_recordData.Slice(_WWiseLocation!.Value.Min), _package) : default;
         #endregion
         #region Material
-        private RangeInt32? _MaterialLocation;
+        private RangeInt32? _MaterialLocationStore;
+        private RangeInt32? _MaterialLocation { get { EnsureFilled(); return _MaterialLocationStore; } set => _MaterialLocationStore = value; }
         public IVehicleMaterialTableGetter? Material => _MaterialLocation.HasValue ? VehicleMaterialTableBinaryOverlay.VehicleMaterialTableFactory(_recordData.Slice(_MaterialLocation!.Value.Min), _package) : default;
         #endregion
         partial void CustomFactoryEnd(

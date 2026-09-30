@@ -1654,15 +1654,23 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public IDestructableDataGetter? Data => _DataLocation.HasValue ? DestructableDataBinaryOverlay.DestructableDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         #endregion
-        public IReadOnlyList<IResistanceDestructibleGetter>? Resistances { get; private set; }
+        #region Resistances
+        private IReadOnlyList<IResistanceDestructibleGetter>? ResistancesStore;
+        public IReadOnlyList<IResistanceDestructibleGetter>? Resistances { get { EnsureFilled(); return ResistancesStore; } private set => ResistancesStore = value; }
+        #endregion
         #region DSDL
-        private int? _DSDLLocation;
+        private int? _DSDLLocationStore;
+        private int? _DSDLLocation { get { EnsureFilled(); return _DSDLLocationStore; } set => _DSDLLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? DSDL => _DSDLLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DSDLLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
-        public IReadOnlyList<IDestructionStageGetter> Stages { get; private set; } = [];
+        #region Stages
+        private IReadOnlyList<IDestructionStageGetter> StagesStore = [];
+        public IReadOnlyList<IDestructionStageGetter> Stages { get { EnsureFilled(); return StagesStore; } private set => StagesStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

@@ -1576,9 +1576,13 @@ namespace Mutagen.Bethesda.Oblivion
         protected override Type LinkType => typeof(IGrassGetter);
 
 
-        public IModelGetter? Model { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public IGrassDataGetter? Data => _DataLocation.HasValue ? GrassDataBinaryOverlay.GrassDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         #endregion
         partial void CustomFactoryEnd(
@@ -1602,6 +1606,23 @@ namespace Mutagen.Bethesda.Oblivion
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new GrassBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => GrassFill((GrassBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void GrassFill(
+            GrassBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1609,9 +1630,7 @@ namespace Mutagen.Bethesda.Oblivion
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new GrassBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1624,7 +1643,6 @@ namespace Mutagen.Bethesda.Oblivion
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IGrassGetter GrassFactory(

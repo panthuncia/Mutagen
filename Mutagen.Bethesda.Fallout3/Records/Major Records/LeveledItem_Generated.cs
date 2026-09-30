@@ -1875,22 +1875,29 @@ namespace Mutagen.Bethesda.Fallout3
 
 
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         public IObjectBoundsGetter? ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         #endregion
         #region ChanceNone
-        private int? _ChanceNoneLocation;
+        private int? _ChanceNoneLocationStore;
+        private int? _ChanceNoneLocation { get { EnsureFilled(); return _ChanceNoneLocationStore; } set => _ChanceNoneLocationStore = value; }
         public Percent ChanceNone => _ChanceNoneLocation.HasValue ? PercentBinaryTranslation.GetPercent(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ChanceNoneLocation.Value, _package.MetaData.Constants), FloatIntegerType.ByteHundred) : default(Percent);
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public LeveledFlag Flags => EnumBinaryTranslation<LeveledFlag, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_FlagsLocation, _recordData, _package, 1);
         #endregion
         #region Global
-        private int? _GlobalLocation;
+        private int? _GlobalLocationStore;
+        private int? _GlobalLocation { get { EnsureFilled(); return _GlobalLocationStore; } set => _GlobalLocationStore = value; }
         public IFormLinkNullableGetter<IGlobalGetter> Global => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IGlobalGetter>(_package, _recordData, _GlobalLocation);
         #endregion
-        public IReadOnlyList<ILeveledItemEntryGetter> Entries { get; private set; } = [];
+        #region Entries
+        private IReadOnlyList<ILeveledItemEntryGetter> EntriesStore = [];
+        public IReadOnlyList<ILeveledItemEntryGetter> Entries { get { EnsureFilled(); return EntriesStore; } private set => EntriesStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -1912,6 +1919,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new LeveledItemBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => LeveledItemFill((LeveledItemBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void LeveledItemFill(
+            LeveledItemBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1919,9 +1943,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new LeveledItemBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1934,7 +1956,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ILeveledItemGetter LeveledItemFactory(

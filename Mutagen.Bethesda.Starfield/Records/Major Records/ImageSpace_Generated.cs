@@ -1598,15 +1598,18 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region Reflection
-        private int? _ReflectionLocation;
+        private int? _ReflectionLocationStore;
+        private int? _ReflectionLocation { get { EnsureFilled(); return _ReflectionLocationStore; } set => _ReflectionLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? Reflection => _ReflectionLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ReflectionLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region ReflectionParent
-        private int? _ReflectionParentLocation;
+        private int? _ReflectionParentLocationStore;
+        private int? _ReflectionParentLocation { get { EnsureFilled(); return _ReflectionParentLocationStore; } set => _ReflectionParentLocationStore = value; }
         public IFormLinkNullableGetter<IWeatherSettingGetter> ReflectionParent => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IWeatherSettingGetter>(_package, _recordData, _ReflectionParentLocation);
         #endregion
         #region ReflectionDiff
-        private int? _ReflectionDiffLocation;
+        private int? _ReflectionDiffLocationStore;
+        private int? _ReflectionDiffLocation { get { EnsureFilled(); return _ReflectionDiffLocationStore; } set => _ReflectionDiffLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? ReflectionDiff => _ReflectionDiffLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ReflectionDiffLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(
@@ -1630,6 +1633,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ImageSpaceBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ImageSpaceFill((ImageSpaceBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ImageSpaceFill(
+            ImageSpaceBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1637,9 +1657,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ImageSpaceBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1652,7 +1670,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IImageSpaceGetter ImageSpaceFactory(

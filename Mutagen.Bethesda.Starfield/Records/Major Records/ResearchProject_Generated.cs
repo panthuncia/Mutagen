@@ -2774,7 +2774,8 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2786,37 +2787,56 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #endregion
         #region Description
-        private int? _DescriptionLocation;
+        private int? _DescriptionLocationStore;
+        private int? _DescriptionLocation { get { EnsureFilled(); return _DescriptionLocationStore; } set => _DescriptionLocationStore = value; }
         public ITranslatedStringGetter? Description => _DescriptionLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DescriptionLocation.Value, _package.MetaData.Constants), StringsSource.DL, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         #region WorkbenchKeyword
-        private int? _WorkbenchKeywordLocation;
+        private int? _WorkbenchKeywordLocationStore;
+        private int? _WorkbenchKeywordLocation { get { EnsureFilled(); return _WorkbenchKeywordLocationStore; } set => _WorkbenchKeywordLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> WorkbenchKeyword => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _WorkbenchKeywordLocation);
         #endregion
-        public IReadOnlyList<IConditionGetter>? Conditions { get; private set; }
-        public IReadOnlyList<IResearchProjectRequiredItemGetter>? RequiredItems { get; private set; }
-        public IReadOnlyList<IResearchProjectRequiredPerkGetter>? RequiredPerks { get; private set; }
+        #region Conditions
+        private IReadOnlyList<IConditionGetter>? ConditionsStore;
+        public IReadOnlyList<IConditionGetter>? Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
+        #region RequiredItems
+        private IReadOnlyList<IResearchProjectRequiredItemGetter>? RequiredItemsStore;
+        public IReadOnlyList<IResearchProjectRequiredItemGetter>? RequiredItems { get { EnsureFilled(); return RequiredItemsStore; } private set => RequiredItemsStore = value; }
+        #endregion
+        #region RequiredPerks
+        private IReadOnlyList<IResearchProjectRequiredPerkGetter>? RequiredPerksStore;
+        public IReadOnlyList<IResearchProjectRequiredPerkGetter>? RequiredPerks { get { EnsureFilled(); return RequiredPerksStore; } private set => RequiredPerksStore = value; }
+        #endregion
         #region CreatedItem
-        private int? _CreatedItemLocation;
+        private int? _CreatedItemLocationStore;
+        private int? _CreatedItemLocation { get { EnsureFilled(); return _CreatedItemLocationStore; } set => _CreatedItemLocationStore = value; }
         public IFormLinkNullableGetter<IStarfieldMajorRecordGetter> CreatedItem => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IStarfieldMajorRecordGetter>(_package, _recordData, _CreatedItemLocation);
         #endregion
         #region NumberCreated
-        private int? _NumberCreatedLocation;
+        private int? _NumberCreatedLocationStore;
+        private int? _NumberCreatedLocation { get { EnsureFilled(); return _NumberCreatedLocationStore; } set => _NumberCreatedLocationStore = value; }
         public UInt16? NumberCreated => _NumberCreatedLocation.HasValue ? BinaryPrimitives.ReadUInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NumberCreatedLocation.Value, _package.MetaData.Constants)) : default(UInt16?);
         #endregion
         #region SortingPriority
-        private int? _SortingPriorityLocation;
+        private int? _SortingPriorityLocationStore;
+        private int? _SortingPriorityLocation { get { EnsureFilled(); return _SortingPriorityLocationStore; } set => _SortingPriorityLocationStore = value; }
         public Single? SortingPriority => _SortingPriorityLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SortingPriorityLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region Tier
-        private int? _TierLocation;
+        private int? _TierLocationStore;
+        private int? _TierLocation { get { EnsureFilled(); return _TierLocationStore; } set => _TierLocationStore = value; }
         public ResearchProject.TierEnum Tier => EnumBinaryTranslation<ResearchProject.TierEnum, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_TierLocation, _recordData, _package, 1);
         #endregion
         #region CategoryKeyword
-        private int? _CategoryKeywordLocation;
+        private int? _CategoryKeywordLocationStore;
+        private int? _CategoryKeywordLocation { get { EnsureFilled(); return _CategoryKeywordLocationStore; } set => _CategoryKeywordLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> CategoryKeyword => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _CategoryKeywordLocation);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IResearchProjectGetter>> RequiredProjects { get; private set; } = [];
+        #region RequiredProjects
+        private IReadOnlyList<IFormLinkGetter<IResearchProjectGetter>> RequiredProjectsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IResearchProjectGetter>> RequiredProjects { get { EnsureFilled(); return RequiredProjectsStore; } private set => RequiredProjectsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -2838,6 +2858,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ResearchProjectBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ResearchProjectFill((ResearchProjectBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ResearchProjectFill(
+            ResearchProjectBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2845,9 +2882,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ResearchProjectBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2860,7 +2895,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IResearchProjectGetter ResearchProjectFactory(

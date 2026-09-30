@@ -1143,7 +1143,8 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public Model.Flag? Flags => EnumBinaryTranslation<Model.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 1);
         #endregion
         partial void CustomFactoryEnd(

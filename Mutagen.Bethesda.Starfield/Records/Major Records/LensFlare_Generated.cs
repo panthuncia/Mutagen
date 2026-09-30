@@ -2019,32 +2019,42 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
         #region ColorInfluence
-        private int? _ColorInfluenceLocation;
+        private int? _ColorInfluenceLocationStore;
+        private int? _ColorInfluenceLocation { get { EnsureFilled(); return _ColorInfluenceLocationStore; } set => _ColorInfluenceLocationStore = value; }
         public Single ColorInfluence => _ColorInfluenceLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ColorInfluenceLocation.Value, _package.MetaData.Constants).Float() : default(Single);
         #endregion
         #region FadeDistanceRadiusScale
-        private int? _FadeDistanceRadiusScaleLocation;
+        private int? _FadeDistanceRadiusScaleLocationStore;
+        private int? _FadeDistanceRadiusScaleLocation { get { EnsureFilled(); return _FadeDistanceRadiusScaleLocationStore; } set => _FadeDistanceRadiusScaleLocationStore = value; }
         public Single FadeDistanceRadiusScale => _FadeDistanceRadiusScaleLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FadeDistanceRadiusScaleLocation.Value, _package.MetaData.Constants).Float() : default(Single);
         #endregion
         #region ExposureInfluence
-        private int? _ExposureInfluenceLocation;
+        private int? _ExposureInfluenceLocationStore;
+        private int? _ExposureInfluenceLocation { get { EnsureFilled(); return _ExposureInfluenceLocationStore; } set => _ExposureInfluenceLocationStore = value; }
         public Single ExposureInfluence => _ExposureInfluenceLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ExposureInfluenceLocation.Value, _package.MetaData.Constants).Float() : default(Single);
         #endregion
         #region MinEV100
-        private int? _MinEV100Location;
+        private int? _MinEV100LocationStore;
+        private int? _MinEV100Location { get { EnsureFilled(); return _MinEV100LocationStore; } set => _MinEV100LocationStore = value; }
         public Single MinEV100 => _MinEV100Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MinEV100Location.Value, _package.MetaData.Constants).Float() : default(Single);
         #endregion
         #region MaxEV100
-        private int? _MaxEV100Location;
+        private int? _MaxEV100LocationStore;
+        private int? _MaxEV100Location { get { EnsureFilled(); return _MaxEV100LocationStore; } set => _MaxEV100LocationStore = value; }
         public Single MaxEV100 => _MaxEV100Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaxEV100Location.Value, _package.MetaData.Constants).Float() : default(Single);
         #endregion
-        public IReadOnlyList<ILensFlareSpriteGetter>? Sprites { get; private set; }
+        #region Sprites
+        private IReadOnlyList<ILensFlareSpriteGetter>? SpritesStore;
+        public IReadOnlyList<ILensFlareSpriteGetter>? Sprites { get { EnsureFilled(); return SpritesStore; } private set => SpritesStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -2066,6 +2076,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new LensFlareBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => LensFlareFill((LensFlareBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void LensFlareFill(
+            LensFlareBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2073,9 +2100,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new LensFlareBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2088,7 +2113,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ILensFlareGetter LensFlareFactory(

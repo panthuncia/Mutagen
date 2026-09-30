@@ -1158,11 +1158,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Index
-        private int? _IndexLocation;
+        private int? _IndexLocationStore;
+        private int? _IndexLocation { get { EnsureFilled(); return _IndexLocationStore; } set => _IndexLocationStore = value; }
         public UInt32 Index => _IndexLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IndexLocation.Value, _package.MetaData.Constants)) : default(UInt32);
         #endregion
         #region Part
-        private int? _PartLocation;
+        private int? _PartLocationStore;
+        private int? _PartLocation { get { EnsureFilled(); return _PartLocationStore; } set => _PartLocationStore = value; }
         public IFormLinkNullableGetter<IHeadPartGetter> Part => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IHeadPartGetter>(_package, _recordData, _PartLocation);
         #endregion
         partial void CustomFactoryEnd(

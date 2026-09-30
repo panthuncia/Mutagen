@@ -1254,15 +1254,18 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region SymmetricGeometry
-        private int? _SymmetricGeometryLocation;
+        private int? _SymmetricGeometryLocationStore;
+        private int? _SymmetricGeometryLocation { get { EnsureFilled(); return _SymmetricGeometryLocationStore; } set => _SymmetricGeometryLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? SymmetricGeometry => _SymmetricGeometryLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SymmetricGeometryLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region AsymmetricGeometry
-        private int? _AsymmetricGeometryLocation;
+        private int? _AsymmetricGeometryLocationStore;
+        private int? _AsymmetricGeometryLocation { get { EnsureFilled(); return _AsymmetricGeometryLocationStore; } set => _AsymmetricGeometryLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? AsymmetricGeometry => _AsymmetricGeometryLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _AsymmetricGeometryLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region SymmetricTexture
-        private int? _SymmetricTextureLocation;
+        private int? _SymmetricTextureLocationStore;
+        private int? _SymmetricTextureLocation { get { EnsureFilled(); return _SymmetricTextureLocationStore; } set => _SymmetricTextureLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? SymmetricTexture => _SymmetricTextureLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SymmetricTextureLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

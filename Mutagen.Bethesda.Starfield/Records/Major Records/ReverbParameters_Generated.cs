@@ -1644,17 +1644,21 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
         #region AudioBus
-        private int? _AudioBusLocation;
+        private int? _AudioBusLocationStore;
+        private int? _AudioBusLocation { get { EnsureFilled(); return _AudioBusLocationStore; } set => _AudioBusLocationStore = value; }
         public Guid? AudioBus => _AudioBusLocation.HasValue ? new Guid(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AudioBusLocation.Value, _package.MetaData.Constants).Slice(0, 16)) : default(Guid?);
         #endregion
         #region ReverbClass
-        private int? _ReverbClassLocation;
+        private int? _ReverbClassLocationStore;
+        private int? _ReverbClassLocation { get { EnsureFilled(); return _ReverbClassLocationStore; } set => _ReverbClassLocationStore = value; }
         public ReverbParameters.Class ReverbClass => EnumBinaryTranslation<ReverbParameters.Class, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_ReverbClassLocation, _recordData, _package, 4);
         #endregion
         partial void CustomFactoryEnd(
@@ -1678,6 +1682,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ReverbParametersBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ReverbParametersFill((ReverbParametersBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ReverbParametersFill(
+            ReverbParametersBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1685,9 +1706,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ReverbParametersBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1700,7 +1719,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IReverbParametersGetter ReverbParametersFactory(

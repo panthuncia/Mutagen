@@ -943,7 +943,10 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IInstanceNamingRuleGetter<T>>? Names { get; private set; }
+        #region Names
+        private IReadOnlyList<IInstanceNamingRuleGetter<T>>? NamesStore;
+        public IReadOnlyList<IInstanceNamingRuleGetter<T>>? Names { get { EnsureFilled(); return NamesStore; } private set => NamesStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

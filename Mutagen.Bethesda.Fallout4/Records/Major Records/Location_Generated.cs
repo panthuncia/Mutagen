@@ -5374,24 +5374,73 @@ namespace Mutagen.Bethesda.Fallout4
 
         public Location.MajorFlag MajorFlags => (Location.MajorFlag)this.MajorRecordFlagsRaw;
 
-        public IReadOnlyList<IPersistentActorReferenceGetter>? PersistentActorReferencesAdded { get; private set; }
-        public IReadOnlyList<IPersistentActorReferenceGetter>? PersistentActorReferencesStatic { get; private set; }
-        public IReadOnlyList<IFormLinkGetter<IPlacedSimpleGetter>>? PersistentActorReferencesRemoved { get; private set; }
-        public IReadOnlyList<IUniqueActorReferenceGetter>? UniqueActorReferencesAdded { get; private set; }
-        public IReadOnlyList<IUniqueActorReferenceGetter>? UniqueActorReferencesStatic { get; private set; }
-        public IReadOnlyList<IFormLinkGetter<INpcGetter>>? UniqueActorReferencesRemoved { get; private set; }
-        public IReadOnlyList<ILocationRefTypeReferenceGetter>? LocationRefTypeReferencesAdded { get; private set; }
-        public IReadOnlyList<ILocationRefTypeReferenceGetter>? LocationRefTypeReferencesStatic { get; private set; }
-        public IReadOnlyList<IFormLinkGetter<IPlacedSimpleGetter>>? LocationRefTypeReferencesRemoved { get; private set; }
-        public IReadOnlyList<ILocationCoordinateGetter> WorldspaceCellsAdded { get; private set; } = [];
-        public IReadOnlyList<ILocationCoordinateGetter> WorldspaceCellsStatic { get; private set; } = [];
-        public IReadOnlyList<ILocationCoordinateGetter> WorldspaceCellsRemoved { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<IPlacedGetter>>? InitiallyDisabledReferencesAdded { get; private set; }
-        public IReadOnlyList<IFormLinkGetter<IPlacedGetter>>? InitiallyDisabledReferencesStatic { get; private set; }
-        public IReadOnlyList<IEnableParentReferenceGetter>? EnableParentReferencesAdded { get; private set; }
-        public IReadOnlyList<IEnableParentReferenceGetter>? EnableParentReferencesStatic { get; private set; }
+        #region PersistentActorReferencesAdded
+        private IReadOnlyList<IPersistentActorReferenceGetter>? PersistentActorReferencesAddedStore;
+        public IReadOnlyList<IPersistentActorReferenceGetter>? PersistentActorReferencesAdded { get { EnsureFilled(); return PersistentActorReferencesAddedStore; } private set => PersistentActorReferencesAddedStore = value; }
+        #endregion
+        #region PersistentActorReferencesStatic
+        private IReadOnlyList<IPersistentActorReferenceGetter>? PersistentActorReferencesStaticStore;
+        public IReadOnlyList<IPersistentActorReferenceGetter>? PersistentActorReferencesStatic { get { EnsureFilled(); return PersistentActorReferencesStaticStore; } private set => PersistentActorReferencesStaticStore = value; }
+        #endregion
+        #region PersistentActorReferencesRemoved
+        private IReadOnlyList<IFormLinkGetter<IPlacedSimpleGetter>>? PersistentActorReferencesRemovedStore;
+        public IReadOnlyList<IFormLinkGetter<IPlacedSimpleGetter>>? PersistentActorReferencesRemoved { get { EnsureFilled(); return PersistentActorReferencesRemovedStore; } private set => PersistentActorReferencesRemovedStore = value; }
+        #endregion
+        #region UniqueActorReferencesAdded
+        private IReadOnlyList<IUniqueActorReferenceGetter>? UniqueActorReferencesAddedStore;
+        public IReadOnlyList<IUniqueActorReferenceGetter>? UniqueActorReferencesAdded { get { EnsureFilled(); return UniqueActorReferencesAddedStore; } private set => UniqueActorReferencesAddedStore = value; }
+        #endregion
+        #region UniqueActorReferencesStatic
+        private IReadOnlyList<IUniqueActorReferenceGetter>? UniqueActorReferencesStaticStore;
+        public IReadOnlyList<IUniqueActorReferenceGetter>? UniqueActorReferencesStatic { get { EnsureFilled(); return UniqueActorReferencesStaticStore; } private set => UniqueActorReferencesStaticStore = value; }
+        #endregion
+        #region UniqueActorReferencesRemoved
+        private IReadOnlyList<IFormLinkGetter<INpcGetter>>? UniqueActorReferencesRemovedStore;
+        public IReadOnlyList<IFormLinkGetter<INpcGetter>>? UniqueActorReferencesRemoved { get { EnsureFilled(); return UniqueActorReferencesRemovedStore; } private set => UniqueActorReferencesRemovedStore = value; }
+        #endregion
+        #region LocationRefTypeReferencesAdded
+        private IReadOnlyList<ILocationRefTypeReferenceGetter>? LocationRefTypeReferencesAddedStore;
+        public IReadOnlyList<ILocationRefTypeReferenceGetter>? LocationRefTypeReferencesAdded { get { EnsureFilled(); return LocationRefTypeReferencesAddedStore; } private set => LocationRefTypeReferencesAddedStore = value; }
+        #endregion
+        #region LocationRefTypeReferencesStatic
+        private IReadOnlyList<ILocationRefTypeReferenceGetter>? LocationRefTypeReferencesStaticStore;
+        public IReadOnlyList<ILocationRefTypeReferenceGetter>? LocationRefTypeReferencesStatic { get { EnsureFilled(); return LocationRefTypeReferencesStaticStore; } private set => LocationRefTypeReferencesStaticStore = value; }
+        #endregion
+        #region LocationRefTypeReferencesRemoved
+        private IReadOnlyList<IFormLinkGetter<IPlacedSimpleGetter>>? LocationRefTypeReferencesRemovedStore;
+        public IReadOnlyList<IFormLinkGetter<IPlacedSimpleGetter>>? LocationRefTypeReferencesRemoved { get { EnsureFilled(); return LocationRefTypeReferencesRemovedStore; } private set => LocationRefTypeReferencesRemovedStore = value; }
+        #endregion
+        #region WorldspaceCellsAdded
+        private IReadOnlyList<ILocationCoordinateGetter> WorldspaceCellsAddedStore = [];
+        public IReadOnlyList<ILocationCoordinateGetter> WorldspaceCellsAdded { get { EnsureFilled(); return WorldspaceCellsAddedStore; } private set => WorldspaceCellsAddedStore = value; }
+        #endregion
+        #region WorldspaceCellsStatic
+        private IReadOnlyList<ILocationCoordinateGetter> WorldspaceCellsStaticStore = [];
+        public IReadOnlyList<ILocationCoordinateGetter> WorldspaceCellsStatic { get { EnsureFilled(); return WorldspaceCellsStaticStore; } private set => WorldspaceCellsStaticStore = value; }
+        #endregion
+        #region WorldspaceCellsRemoved
+        private IReadOnlyList<ILocationCoordinateGetter> WorldspaceCellsRemovedStore = [];
+        public IReadOnlyList<ILocationCoordinateGetter> WorldspaceCellsRemoved { get { EnsureFilled(); return WorldspaceCellsRemovedStore; } private set => WorldspaceCellsRemovedStore = value; }
+        #endregion
+        #region InitiallyDisabledReferencesAdded
+        private IReadOnlyList<IFormLinkGetter<IPlacedGetter>>? InitiallyDisabledReferencesAddedStore;
+        public IReadOnlyList<IFormLinkGetter<IPlacedGetter>>? InitiallyDisabledReferencesAdded { get { EnsureFilled(); return InitiallyDisabledReferencesAddedStore; } private set => InitiallyDisabledReferencesAddedStore = value; }
+        #endregion
+        #region InitiallyDisabledReferencesStatic
+        private IReadOnlyList<IFormLinkGetter<IPlacedGetter>>? InitiallyDisabledReferencesStaticStore;
+        public IReadOnlyList<IFormLinkGetter<IPlacedGetter>>? InitiallyDisabledReferencesStatic { get { EnsureFilled(); return InitiallyDisabledReferencesStaticStore; } private set => InitiallyDisabledReferencesStaticStore = value; }
+        #endregion
+        #region EnableParentReferencesAdded
+        private IReadOnlyList<IEnableParentReferenceGetter>? EnableParentReferencesAddedStore;
+        public IReadOnlyList<IEnableParentReferenceGetter>? EnableParentReferencesAdded { get { EnsureFilled(); return EnableParentReferencesAddedStore; } private set => EnableParentReferencesAddedStore = value; }
+        #endregion
+        #region EnableParentReferencesStatic
+        private IReadOnlyList<IEnableParentReferenceGetter>? EnableParentReferencesStaticStore;
+        public IReadOnlyList<IEnableParentReferenceGetter>? EnableParentReferencesStatic { get { EnsureFilled(); return EnableParentReferencesStaticStore; } private set => EnableParentReferencesStaticStore = value; }
+        #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -5403,35 +5452,43 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #endregion
         #region Keywords
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get; private set; }
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? KeywordsStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get { EnsureFilled(); return KeywordsStore; } private set => KeywordsStore = value; }
         IReadOnlyList<IFormLinkGetter<IKeywordCommonGetter>>? IKeywordedGetter.Keywords => this.Keywords;
         #endregion
         #region ParentLocation
-        private int? _ParentLocationLocation;
+        private int? _ParentLocationLocationStore;
+        private int? _ParentLocationLocation { get { EnsureFilled(); return _ParentLocationLocationStore; } set => _ParentLocationLocationStore = value; }
         public IFormLinkNullableGetter<ILocationGetter> ParentLocation => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ILocationGetter>(_package, _recordData, _ParentLocationLocation);
         #endregion
         #region Music
-        private int? _MusicLocation;
+        private int? _MusicLocationStore;
+        private int? _MusicLocation { get { EnsureFilled(); return _MusicLocationStore; } set => _MusicLocationStore = value; }
         public IFormLinkNullableGetter<IMusicTypeGetter> Music => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMusicTypeGetter>(_package, _recordData, _MusicLocation);
         #endregion
         #region UnreportedCrimeFaction
-        private int? _UnreportedCrimeFactionLocation;
+        private int? _UnreportedCrimeFactionLocationStore;
+        private int? _UnreportedCrimeFactionLocation { get { EnsureFilled(); return _UnreportedCrimeFactionLocationStore; } set => _UnreportedCrimeFactionLocationStore = value; }
         public IFormLinkNullableGetter<IFactionGetter> UnreportedCrimeFaction => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IFactionGetter>(_package, _recordData, _UnreportedCrimeFactionLocation);
         #endregion
         #region WorldLocationMarkerRef
-        private int? _WorldLocationMarkerRefLocation;
+        private int? _WorldLocationMarkerRefLocationStore;
+        private int? _WorldLocationMarkerRefLocation { get { EnsureFilled(); return _WorldLocationMarkerRefLocationStore; } set => _WorldLocationMarkerRefLocationStore = value; }
         public IFormLinkNullableGetter<IPlacedSimpleGetter> WorldLocationMarkerRef => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IPlacedSimpleGetter>(_package, _recordData, _WorldLocationMarkerRefLocation);
         #endregion
         #region WorldLocationRadius
-        private int? _WorldLocationRadiusLocation;
+        private int? _WorldLocationRadiusLocationStore;
+        private int? _WorldLocationRadiusLocation { get { EnsureFilled(); return _WorldLocationRadiusLocationStore; } set => _WorldLocationRadiusLocationStore = value; }
         public Single? WorldLocationRadius => _WorldLocationRadiusLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _WorldLocationRadiusLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region ActorFadeMult
-        private int? _ActorFadeMultLocation;
+        private int? _ActorFadeMultLocationStore;
+        private int? _ActorFadeMultLocation { get { EnsureFilled(); return _ActorFadeMultLocationStore; } set => _ActorFadeMultLocationStore = value; }
         public Single? ActorFadeMult => _ActorFadeMultLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ActorFadeMultLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region Color
-        private int? _ColorLocation;
+        private int? _ColorLocationStore;
+        private int? _ColorLocation { get { EnsureFilled(); return _ColorLocationStore; } set => _ColorLocationStore = value; }
         public Color? Color => _ColorLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ColorLocation.Value, _package.MetaData.Constants).ReadColor(ColorBinaryType.Alpha) : default(Color?);
         #endregion
         partial void CustomFactoryEnd(
@@ -5455,6 +5512,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new LocationBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => LocationFill((LocationBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void LocationFill(
+            LocationBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -5462,9 +5536,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new LocationBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -5477,7 +5549,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ILocationGetter LocationFactory(

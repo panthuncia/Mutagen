@@ -6505,31 +6505,88 @@ namespace Mutagen.Bethesda.Starfield
         public Location.MajorFlag MajorFlags => (Location.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
-        public IReadOnlyList<IObjectPropertyGetter>? Properties { get; private set; }
-        public IReadOnlyList<ILocationReferenceGetter>? AddedPersistLocationReferences { get; private set; }
-        public IReadOnlyList<ILocationReferenceGetter>? MasterPersistLocationReferences { get; private set; }
-        public IReadOnlyList<IFormLinkGetter<IPlacedSimpleGetter>>? RemovedPersistLocationReferences { get; private set; }
-        public IReadOnlyList<ILocationCellUniqueReferenceGetter>? AddedUniqueBaseForms { get; private set; }
-        public IReadOnlyList<ILocationCellUniqueReferenceGetter>? LocationCellUniqueReferences { get; private set; }
-        public IReadOnlyList<IFormLinkGetter<IGenericBaseFormGetter>>? RemovedUniqueBaseForms { get; private set; }
-        public IReadOnlyList<ILocationCellUniqueGetter>? AddedUniqueNpcs { get; private set; }
-        public IReadOnlyList<ILocationCellUniqueGetter>? MasterUniqueNpcs { get; private set; }
-        public IReadOnlyList<IFormLinkGetter<INpcGetter>>? RemovedUniqueNpcs { get; private set; }
-        public IReadOnlyList<ILocationCellStaticReferenceGetter>? AddedSpecialReferences { get; private set; }
-        public IReadOnlyList<ILocationCellStaticReferenceGetter>? MasterSpecialReferences { get; private set; }
-        public IReadOnlyList<IFormLinkGetter<IPlacedSimpleGetter>>? RemovedSpecialReferences { get; private set; }
-        public IReadOnlyList<ILocationCoordinateGetter> MasterWorldspaceCells { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<IPlacedGetter>>? AddedInitiallyDisabledReferences { get; private set; }
-        public IReadOnlyList<IFormLinkGetter<IPlacedGetter>>? MasterInitiallyDisabledReferences { get; private set; }
-        public IReadOnlyList<ILocationCellEnablePointGetter>? AddedEnablePointReferences { get; private set; }
-        public IReadOnlyList<ILocationCellEnablePointGetter>? MasterEnablePointReferences { get; private set; }
+        #region Properties
+        private IReadOnlyList<IObjectPropertyGetter>? PropertiesStore;
+        public IReadOnlyList<IObjectPropertyGetter>? Properties { get { EnsureFilled(); return PropertiesStore; } private set => PropertiesStore = value; }
+        #endregion
+        #region AddedPersistLocationReferences
+        private IReadOnlyList<ILocationReferenceGetter>? AddedPersistLocationReferencesStore;
+        public IReadOnlyList<ILocationReferenceGetter>? AddedPersistLocationReferences { get { EnsureFilled(); return AddedPersistLocationReferencesStore; } private set => AddedPersistLocationReferencesStore = value; }
+        #endregion
+        #region MasterPersistLocationReferences
+        private IReadOnlyList<ILocationReferenceGetter>? MasterPersistLocationReferencesStore;
+        public IReadOnlyList<ILocationReferenceGetter>? MasterPersistLocationReferences { get { EnsureFilled(); return MasterPersistLocationReferencesStore; } private set => MasterPersistLocationReferencesStore = value; }
+        #endregion
+        #region RemovedPersistLocationReferences
+        private IReadOnlyList<IFormLinkGetter<IPlacedSimpleGetter>>? RemovedPersistLocationReferencesStore;
+        public IReadOnlyList<IFormLinkGetter<IPlacedSimpleGetter>>? RemovedPersistLocationReferences { get { EnsureFilled(); return RemovedPersistLocationReferencesStore; } private set => RemovedPersistLocationReferencesStore = value; }
+        #endregion
+        #region AddedUniqueBaseForms
+        private IReadOnlyList<ILocationCellUniqueReferenceGetter>? AddedUniqueBaseFormsStore;
+        public IReadOnlyList<ILocationCellUniqueReferenceGetter>? AddedUniqueBaseForms { get { EnsureFilled(); return AddedUniqueBaseFormsStore; } private set => AddedUniqueBaseFormsStore = value; }
+        #endregion
+        #region LocationCellUniqueReferences
+        private IReadOnlyList<ILocationCellUniqueReferenceGetter>? LocationCellUniqueReferencesStore;
+        public IReadOnlyList<ILocationCellUniqueReferenceGetter>? LocationCellUniqueReferences { get { EnsureFilled(); return LocationCellUniqueReferencesStore; } private set => LocationCellUniqueReferencesStore = value; }
+        #endregion
+        #region RemovedUniqueBaseForms
+        private IReadOnlyList<IFormLinkGetter<IGenericBaseFormGetter>>? RemovedUniqueBaseFormsStore;
+        public IReadOnlyList<IFormLinkGetter<IGenericBaseFormGetter>>? RemovedUniqueBaseForms { get { EnsureFilled(); return RemovedUniqueBaseFormsStore; } private set => RemovedUniqueBaseFormsStore = value; }
+        #endregion
+        #region AddedUniqueNpcs
+        private IReadOnlyList<ILocationCellUniqueGetter>? AddedUniqueNpcsStore;
+        public IReadOnlyList<ILocationCellUniqueGetter>? AddedUniqueNpcs { get { EnsureFilled(); return AddedUniqueNpcsStore; } private set => AddedUniqueNpcsStore = value; }
+        #endregion
+        #region MasterUniqueNpcs
+        private IReadOnlyList<ILocationCellUniqueGetter>? MasterUniqueNpcsStore;
+        public IReadOnlyList<ILocationCellUniqueGetter>? MasterUniqueNpcs { get { EnsureFilled(); return MasterUniqueNpcsStore; } private set => MasterUniqueNpcsStore = value; }
+        #endregion
+        #region RemovedUniqueNpcs
+        private IReadOnlyList<IFormLinkGetter<INpcGetter>>? RemovedUniqueNpcsStore;
+        public IReadOnlyList<IFormLinkGetter<INpcGetter>>? RemovedUniqueNpcs { get { EnsureFilled(); return RemovedUniqueNpcsStore; } private set => RemovedUniqueNpcsStore = value; }
+        #endregion
+        #region AddedSpecialReferences
+        private IReadOnlyList<ILocationCellStaticReferenceGetter>? AddedSpecialReferencesStore;
+        public IReadOnlyList<ILocationCellStaticReferenceGetter>? AddedSpecialReferences { get { EnsureFilled(); return AddedSpecialReferencesStore; } private set => AddedSpecialReferencesStore = value; }
+        #endregion
+        #region MasterSpecialReferences
+        private IReadOnlyList<ILocationCellStaticReferenceGetter>? MasterSpecialReferencesStore;
+        public IReadOnlyList<ILocationCellStaticReferenceGetter>? MasterSpecialReferences { get { EnsureFilled(); return MasterSpecialReferencesStore; } private set => MasterSpecialReferencesStore = value; }
+        #endregion
+        #region RemovedSpecialReferences
+        private IReadOnlyList<IFormLinkGetter<IPlacedSimpleGetter>>? RemovedSpecialReferencesStore;
+        public IReadOnlyList<IFormLinkGetter<IPlacedSimpleGetter>>? RemovedSpecialReferences { get { EnsureFilled(); return RemovedSpecialReferencesStore; } private set => RemovedSpecialReferencesStore = value; }
+        #endregion
+        #region MasterWorldspaceCells
+        private IReadOnlyList<ILocationCoordinateGetter> MasterWorldspaceCellsStore = [];
+        public IReadOnlyList<ILocationCoordinateGetter> MasterWorldspaceCells { get { EnsureFilled(); return MasterWorldspaceCellsStore; } private set => MasterWorldspaceCellsStore = value; }
+        #endregion
+        #region AddedInitiallyDisabledReferences
+        private IReadOnlyList<IFormLinkGetter<IPlacedGetter>>? AddedInitiallyDisabledReferencesStore;
+        public IReadOnlyList<IFormLinkGetter<IPlacedGetter>>? AddedInitiallyDisabledReferences { get { EnsureFilled(); return AddedInitiallyDisabledReferencesStore; } private set => AddedInitiallyDisabledReferencesStore = value; }
+        #endregion
+        #region MasterInitiallyDisabledReferences
+        private IReadOnlyList<IFormLinkGetter<IPlacedGetter>>? MasterInitiallyDisabledReferencesStore;
+        public IReadOnlyList<IFormLinkGetter<IPlacedGetter>>? MasterInitiallyDisabledReferences { get { EnsureFilled(); return MasterInitiallyDisabledReferencesStore; } private set => MasterInitiallyDisabledReferencesStore = value; }
+        #endregion
+        #region AddedEnablePointReferences
+        private IReadOnlyList<ILocationCellEnablePointGetter>? AddedEnablePointReferencesStore;
+        public IReadOnlyList<ILocationCellEnablePointGetter>? AddedEnablePointReferences { get { EnsureFilled(); return AddedEnablePointReferencesStore; } private set => AddedEnablePointReferencesStore = value; }
+        #endregion
+        #region MasterEnablePointReferences
+        private IReadOnlyList<ILocationCellEnablePointGetter>? MasterEnablePointReferencesStore;
+        public IReadOnlyList<ILocationCellEnablePointGetter>? MasterEnablePointReferences { get { EnsureFilled(); return MasterEnablePointReferencesStore; } private set => MasterEnablePointReferencesStore = value; }
+        #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -6541,52 +6598,67 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #endregion
         #region Keywords
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get; private set; }
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? KeywordsStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get { EnsureFilled(); return KeywordsStore; } private set => KeywordsStore = value; }
         IReadOnlyList<IFormLinkGetter<IKeywordCommonGetter>>? IKeywordedGetter.Keywords => this.Keywords;
         #endregion
-        public IReadOnlyList<IObjectPropertyGetter>? Properties2 { get; private set; }
+        #region Properties2
+        private IReadOnlyList<IObjectPropertyGetter>? Properties2Store;
+        public IReadOnlyList<IObjectPropertyGetter>? Properties2 { get { EnsureFilled(); return Properties2Store; } private set => Properties2Store = value; }
+        #endregion
         #region Owner
-        private RangeInt32? _OwnerLocation;
+        private RangeInt32? _OwnerLocationStore;
+        private RangeInt32? _OwnerLocation { get { EnsureFilled(); return _OwnerLocationStore; } set => _OwnerLocationStore = value; }
         public ILocationOwnerDataGetter? Owner => _OwnerLocation.HasValue ? LocationOwnerDataBinaryOverlay.LocationOwnerDataFactory(_recordData.Slice(_OwnerLocation!.Value.Min), _package) : default;
         #endregion
         #region ParentLocation
-        private int? _ParentLocationLocation;
+        private int? _ParentLocationLocationStore;
+        private int? _ParentLocationLocation { get { EnsureFilled(); return _ParentLocationLocationStore; } set => _ParentLocationLocationStore = value; }
         public IFormLinkNullableGetter<ILocationGetter> ParentLocation => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ILocationGetter>(_package, _recordData, _ParentLocationLocation);
         #endregion
         #region MusicType
-        private int? _MusicTypeLocation;
+        private int? _MusicTypeLocationStore;
+        private int? _MusicTypeLocation { get { EnsureFilled(); return _MusicTypeLocationStore; } set => _MusicTypeLocationStore = value; }
         public IFormLinkNullableGetter<IMusicTypeGetter> MusicType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMusicTypeGetter>(_package, _recordData, _MusicTypeLocation);
         #endregion
         #region UnreportedCrimeFaction
-        private int? _UnreportedCrimeFactionLocation;
+        private int? _UnreportedCrimeFactionLocationStore;
+        private int? _UnreportedCrimeFactionLocation { get { EnsureFilled(); return _UnreportedCrimeFactionLocationStore; } set => _UnreportedCrimeFactionLocationStore = value; }
         public IFormLinkNullableGetter<IFactionGetter> UnreportedCrimeFaction => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IFactionGetter>(_package, _recordData, _UnreportedCrimeFactionLocation);
         #endregion
         #region WorldLocationMarkerRef
-        private int? _WorldLocationMarkerRefLocation;
+        private int? _WorldLocationMarkerRefLocationStore;
+        private int? _WorldLocationMarkerRefLocation { get { EnsureFilled(); return _WorldLocationMarkerRefLocationStore; } set => _WorldLocationMarkerRefLocationStore = value; }
         public IFormLinkNullableGetter<IPlacedSimpleGetter> WorldLocationMarkerRef => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IPlacedSimpleGetter>(_package, _recordData, _WorldLocationMarkerRefLocation);
         #endregion
         #region WorldLocationRadius
-        private int? _WorldLocationRadiusLocation;
+        private int? _WorldLocationRadiusLocationStore;
+        private int? _WorldLocationRadiusLocation { get { EnsureFilled(); return _WorldLocationRadiusLocationStore; } set => _WorldLocationRadiusLocationStore = value; }
         public Single? WorldLocationRadius => _WorldLocationRadiusLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _WorldLocationRadiusLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region ActorFadeMult
-        private int? _ActorFadeMultLocation;
+        private int? _ActorFadeMultLocationStore;
+        private int? _ActorFadeMultLocation { get { EnsureFilled(); return _ActorFadeMultLocationStore; } set => _ActorFadeMultLocationStore = value; }
         public Single? ActorFadeMult => _ActorFadeMultLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ActorFadeMultLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region RandomConversionTimer
-        private int? _RandomConversionTimerLocation;
+        private int? _RandomConversionTimerLocationStore;
+        private int? _RandomConversionTimerLocation { get { EnsureFilled(); return _RandomConversionTimerLocationStore; } set => _RandomConversionTimerLocationStore = value; }
         public Single? RandomConversionTimer => _RandomConversionTimerLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _RandomConversionTimerLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region Color
-        private int? _ColorLocation;
+        private int? _ColorLocationStore;
+        private int? _ColorLocation { get { EnsureFilled(); return _ColorLocationStore; } set => _ColorLocationStore = value; }
         public Color? Color => _ColorLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ColorLocation.Value, _package.MetaData.Constants).ReadColor(ColorBinaryType.Alpha) : default(Color?);
         #endregion
         #region StarID
-        private int? _StarIDLocation;
+        private int? _StarIDLocationStore;
+        private int? _StarIDLocation { get { EnsureFilled(); return _StarIDLocationStore; } set => _StarIDLocationStore = value; }
         public Int32? StarID => _StarIDLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _StarIDLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region PlanetID
-        private int? _PlanetIDLocation;
+        private int? _PlanetIDLocationStore;
+        private int? _PlanetIDLocation { get { EnsureFilled(); return _PlanetIDLocationStore; } set => _PlanetIDLocationStore = value; }
         public Int32? PlanetID => _PlanetIDLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _PlanetIDLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         partial void CustomFactoryEnd(
@@ -6610,6 +6682,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new LocationBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => LocationFill((LocationBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void LocationFill(
+            LocationBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -6617,9 +6706,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new LocationBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -6632,7 +6719,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ILocationGetter LocationFactory(

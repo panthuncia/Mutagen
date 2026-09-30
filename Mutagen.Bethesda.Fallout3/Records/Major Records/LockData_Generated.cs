@@ -1381,14 +1381,16 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        public LockData.VersioningBreaks Versioning { get; private set; }
+        private LockData.VersioningBreaks VersioningStore;
+        public LockData.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public UInt32 Level => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0x0, 0x4));
         public IFormLinkGetter<IKeyGetter> Key => FormLinkBinaryTranslation.Instance.OverlayFactory<IKeyGetter>(_package, _structData.Span.Slice(0x4, 0x4));
         public LockData.Flag LockFlags => (LockData.Flag)_structData.Span.Slice(0x8, 0x1)[0];
         public ReadOnlyMemorySlice<Byte> Unused => _structData.Span.Slice(0x9, 0x3).ToArray();
         #region Unknown
         public ReadOnlyMemorySlice<Byte> Unknown => _structData.Span.Length <= 0xC ? [] : _structData.Span.Slice(0xC).ToArray();
-        protected int UnknownEndingPos;
+        private int UnknownEndingPosStore;
+        protected int UnknownEndingPos { get { EnsureFilled(); return UnknownEndingPosStore; } private set => UnknownEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

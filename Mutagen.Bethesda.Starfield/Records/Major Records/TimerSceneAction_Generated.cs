@@ -1453,23 +1453,28 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region MaxSeconds
-        private int? _MaxSecondsLocation;
+        private int? _MaxSecondsLocationStore;
+        private int? _MaxSecondsLocation { get { EnsureFilled(); return _MaxSecondsLocationStore; } set => _MaxSecondsLocationStore = value; }
         public Single? MaxSeconds => _MaxSecondsLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaxSecondsLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region MinSeconds
-        private int? _MinSecondsLocation;
+        private int? _MinSecondsLocationStore;
+        private int? _MinSecondsLocation { get { EnsureFilled(); return _MinSecondsLocationStore; } set => _MinSecondsLocationStore = value; }
         public Single? MinSeconds => _MinSecondsLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MinSecondsLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region HNAM
-        private int? _HNAMLocation;
+        private int? _HNAMLocationStore;
+        private int? _HNAMLocation { get { EnsureFilled(); return _HNAMLocationStore; } set => _HNAMLocationStore = value; }
         public Boolean HNAM => _HNAMLocation.HasValue ? true : default(Boolean);
         #endregion
         #region SCQS
-        private int? _SCQSLocation;
+        private int? _SCQSLocationStore;
+        private int? _SCQSLocation { get { EnsureFilled(); return _SCQSLocationStore; } set => _SCQSLocationStore = value; }
         public Int16? SCQS => _SCQSLocation.HasValue ? BinaryPrimitives.ReadInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SCQSLocation.Value, _package.MetaData.Constants)) : default(Int16?);
         #endregion
         #region INTV
-        private int? _INTVLocation;
+        private int? _INTVLocationStore;
+        private int? _INTVLocation { get { EnsureFilled(); return _INTVLocationStore; } set => _INTVLocationStore = value; }
         public Int16? INTV => _INTVLocation.HasValue ? BinaryPrimitives.ReadInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _INTVLocation.Value, _package.MetaData.Constants)) : default(Int16?);
         #endregion
         partial void CustomFactoryEnd(

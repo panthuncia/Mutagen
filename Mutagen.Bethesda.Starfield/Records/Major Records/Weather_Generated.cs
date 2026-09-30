@@ -7488,23 +7488,28 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region Keywords
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get; private set; }
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? KeywordsStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get { EnsureFilled(); return KeywordsStore; } private set => KeywordsStore = value; }
         IReadOnlyList<IFormLinkGetter<IKeywordCommonGetter>>? IKeywordedGetter.Keywords => this.Keywords;
         #endregion
         #region LNAM
-        private int? _LNAMLocation;
+        private int? _LNAMLocationStore;
+        private int? _LNAMLocation { get { EnsureFilled(); return _LNAMLocationStore; } set => _LNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? LNAM => _LNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _LNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region Precipitation
-        private int? _PrecipitationLocation;
+        private int? _PrecipitationLocationStore;
+        private int? _PrecipitationLocation { get { EnsureFilled(); return _PrecipitationLocationStore; } set => _PrecipitationLocationStore = value; }
         public IFormLinkNullableGetter<IShaderParticleGeometryGetter> Precipitation => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IShaderParticleGeometryGetter>(_package, _recordData, _PrecipitationLocation);
         #endregion
         #region CameraEffect
-        private int? _CameraEffectLocation;
+        private int? _CameraEffectLocationStore;
+        private int? _CameraEffectLocation { get { EnsureFilled(); return _CameraEffectLocationStore; } set => _CameraEffectLocationStore = value; }
         public IFormLinkNullableGetter<IArtObjectGetter> CameraEffect => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IArtObjectGetter>(_package, _recordData, _CameraEffectLocation);
         #endregion
         #region CLDC
-        private int? _CLDCLocation;
+        private int? _CLDCLocationStore;
+        private int? _CLDCLocation { get { EnsureFilled(); return _CLDCLocationStore; } set => _CLDCLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? CLDC => _CLDCLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _CLDCLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region Clouds
@@ -7533,7 +7538,8 @@ namespace Mutagen.Bethesda.Starfield
             int offset,
             PreviousParse lastParsed);
         #endregion
-        private RangeInt32? _NAM0Location;
+        private RangeInt32? _NAM0LocationStore;
+        private RangeInt32? _NAM0Location { get { EnsureFilled(); return _NAM0LocationStore; } set => _NAM0LocationStore = value; }
         #region SkyUpperColor
         private int _SkyUpperColorLocation => _NAM0Location!.Value.Min;
         private bool _SkyUpperColor_IsSet => _NAM0Location.HasValue;
@@ -7649,10 +7655,12 @@ namespace Mutagen.Bethesda.Starfield
         public IWeatherColorGetter FogFarHigh => _FogFarHigh ?? new WeatherColor();
         #endregion
         #region NAM4
-        private int? _NAM4Location;
+        private int? _NAM4LocationStore;
+        private int? _NAM4Location { get { EnsureFilled(); return _NAM4LocationStore; } set => _NAM4LocationStore = value; }
         public ReadOnlyMemorySlice<Single>? NAM4 => _NAM4Location.HasValue ? BinaryOverlayArrayHelper.FloatSliceFromFixedSize(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM4Location.Value, _package.MetaData.Constants), amount: 32) : default(ReadOnlyMemorySlice<Single>?);
         #endregion
-        private RangeInt32? _FNAMLocation;
+        private RangeInt32? _FNAMLocationStore;
+        private RangeInt32? _FNAMLocation { get { EnsureFilled(); return _FNAMLocationStore; } set => _FNAMLocationStore = value; }
         #region FogDistanceDayNear
         private int _FogDistanceDayNearLocation => _FNAMLocation!.Value.Min;
         private bool _FogDistanceDayNear_IsSet => _FNAMLocation.HasValue;
@@ -7743,7 +7751,8 @@ namespace Mutagen.Bethesda.Starfield
         private bool _FogDistanceNightFarHeightRange_IsSet => _FNAMLocation.HasValue;
         public Single FogDistanceNightFarHeightRange => _FogDistanceNightFarHeightRange_IsSet ? _recordData.Slice(_FogDistanceNightFarHeightRangeLocation, 4).Float() : default(Single);
         #endregion
-        private RangeInt32? _DATALocation;
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         #region WindSpeed
         private int _WindSpeedLocation => _DATALocation!.Value.Min;
         private bool _WindSpeed_IsSet => _DATALocation.HasValue;
@@ -7835,8 +7844,12 @@ namespace Mutagen.Bethesda.Starfield
             int offset,
             PreviousParse lastParsed);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IStaticGetter>> SkyStatics { get; private set; } = [];
-        private RangeInt32? _IMSPLocation;
+        #region SkyStatics
+        private IReadOnlyList<IFormLinkGetter<IStaticGetter>> SkyStaticsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IStaticGetter>> SkyStatics { get { EnsureFilled(); return SkyStaticsStore; } private set => SkyStaticsStore = value; }
+        #endregion
+        private RangeInt32? _IMSPLocationStore;
+        private RangeInt32? _IMSPLocation { get { EnsureFilled(); return _IMSPLocationStore; } set => _IMSPLocationStore = value; }
         #region ImageSpaceSunrise
         private int _ImageSpaceSunriseLocation => _IMSPLocation!.Value.Min;
         private bool _ImageSpaceSunrise_IsSet => _IMSPLocation.HasValue;
@@ -7878,7 +7891,8 @@ namespace Mutagen.Bethesda.Starfield
         public IFormLinkGetter<IImageSpaceGetter> ImageSpaceLateSunset => _ImageSpaceLateSunset_IsSet ? FormLinkBinaryTranslation.Instance.OverlayFactory<IImageSpaceGetter>(_package, _recordData.Span.Slice(_ImageSpaceLateSunsetLocation, 0x4), isSet: _ImageSpaceLateSunset_IsSet) : FormLink<IImageSpaceGetter>.Null;
         #endregion
         #region HNAM
-        private int? _HNAMLocation;
+        private int? _HNAMLocationStore;
+        private int? _HNAMLocation { get { EnsureFilled(); return _HNAMLocationStore; } set => _HNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? HNAM => _HNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _HNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region DirectionalAmbientLightingColors
@@ -7889,21 +7903,28 @@ namespace Mutagen.Bethesda.Starfield
         public partial IWeatherAmbientColorSetGetter? GetDirectionalAmbientLightingColorsCustom();
         public IWeatherAmbientColorSetGetter? DirectionalAmbientLightingColors => GetDirectionalAmbientLightingColorsCustom();
         #endregion
-        public IModelGetter? Aurora { get; private set; }
+        #region Aurora
+        private IModelGetter? AuroraStore;
+        public IModelGetter? Aurora { get { EnsureFilled(); return AuroraStore; } private set => AuroraStore = value; }
+        #endregion
         #region SunGlareLensFlare
-        private int? _SunGlareLensFlareLocation;
+        private int? _SunGlareLensFlareLocationStore;
+        private int? _SunGlareLensFlareLocation { get { EnsureFilled(); return _SunGlareLensFlareLocationStore; } set => _SunGlareLensFlareLocationStore = value; }
         public IFormLinkNullableGetter<ILensFlareGetter> SunGlareLensFlare => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ILensFlareGetter>(_package, _recordData, _SunGlareLensFlareLocation);
         #endregion
         #region Magic
-        private RangeInt32? _MagicLocation;
+        private RangeInt32? _MagicLocationStore;
+        private RangeInt32? _MagicLocation { get { EnsureFilled(); return _MagicLocationStore; } set => _MagicLocationStore = value; }
         public IWeatherMagicGetter? Magic => _MagicLocation.HasValue ? WeatherMagicBinaryOverlay.WeatherMagicFactory(_recordData.Slice(_MagicLocation!.Value.Min), _package) : default;
         #endregion
         #region VolatilityMult
-        private int? _VolatilityMultLocation;
+        private int? _VolatilityMultLocationStore;
+        private int? _VolatilityMultLocation { get { EnsureFilled(); return _VolatilityMultLocationStore; } set => _VolatilityMultLocationStore = value; }
         public Single? VolatilityMult => _VolatilityMultLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _VolatilityMultLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region VisibilityMult
-        private int? _VisibilityMultLocation;
+        private int? _VisibilityMultLocationStore;
+        private int? _VisibilityMultLocation { get { EnsureFilled(); return _VisibilityMultLocationStore; } set => _VisibilityMultLocationStore = value; }
         public Single? VisibilityMult => _VisibilityMultLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _VisibilityMultLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         partial void CustomFactoryEnd(

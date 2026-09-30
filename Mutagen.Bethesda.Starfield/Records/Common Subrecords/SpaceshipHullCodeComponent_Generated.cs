@@ -1116,7 +1116,8 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region HullCode
-        private int? _HullCodeLocation;
+        private int? _HullCodeLocationStore;
+        private int? _HullCodeLocation { get { EnsureFilled(); return _HullCodeLocationStore; } set => _HullCodeLocationStore = value; }
         public ITranslatedStringGetter? HullCode => _HullCodeLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HullCodeLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         partial void CustomFactoryEnd(

@@ -350,12 +350,12 @@ public class Array2dBinaryTranslationGeneration : BinaryTranslationGeneration
         
         if (typeGen.Nullable)
         {
-            sb.AppendLine($"public {arr2d.ListTypeName(getter: true, internalInterface: true)}{typeGen.NullChar} {typeGen.Name} {{ get; private set; }}");
+            LazyFill.Property(sb, "public", $"{arr2d.ListTypeName(getter: true, internalInterface: true)}{typeGen.NullChar}", typeGen.Name);
         }
         else if (typeGen.GetFieldData().HasTrigger)
         {
             sb.AppendLine($"private static {arr2d.ListTypeName(getter: true, internalInterface: true)} _{typeGen.Name}Empty = new Array2d<{arr2d.SubTypeGeneration.TypeName(getter: true)}>({arr2d.FixedSize.Value.X}, {arr2d.FixedSize.Value.Y}, {arr2d.SubTypeGeneration.GetDefault(getter: false)});");
-            sb.AppendLine($"public {arr2d.ListTypeName(getter: true, internalInterface: true)} {typeGen.Name} {{ get; private set; }} = _{typeGen.Name}Empty;");
+            LazyFill.Property(sb, "public", $"{arr2d.ListTypeName(getter: true, internalInterface: true)}", typeGen.Name, $"_{typeGen.Name}Empty");
         }
         else
         {

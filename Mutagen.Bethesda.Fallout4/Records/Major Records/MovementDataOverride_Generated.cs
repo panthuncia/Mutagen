@@ -1205,11 +1205,13 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region MovementType
-        private int? _MovementTypeLocation;
+        private int? _MovementTypeLocationStore;
+        private int? _MovementTypeLocation { get { EnsureFilled(); return _MovementTypeLocationStore; } set => _MovementTypeLocationStore = value; }
         public IFormLinkNullableGetter<IMovementTypeGetter> MovementType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMovementTypeGetter>(_package, _recordData, _MovementTypeLocation);
         #endregion
         #region MovementData
-        private RangeInt32? _MovementDataLocation;
+        private RangeInt32? _MovementDataLocationStore;
+        private RangeInt32? _MovementDataLocation { get { EnsureFilled(); return _MovementDataLocationStore; } set => _MovementDataLocationStore = value; }
         public IMovementDataGetter? MovementData => _MovementDataLocation.HasValue ? MovementDataBinaryOverlay.MovementDataFactory(_recordData.Slice(_MovementDataLocation!.Value.Min), _package) : default;
         #endregion
         partial void CustomFactoryEnd(

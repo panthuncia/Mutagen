@@ -2039,7 +2039,8 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        private RangeInt32? _TETILocation;
+        private RangeInt32? _TETILocationStore;
+        private RangeInt32? _TETILocation { get { EnsureFilled(); return _TETILocationStore; } set => _TETILocationStore = value; }
         #region Slot
         private int _SlotLocation => _TETILocation!.Value.Min;
         private bool _Slot_IsSet => _TETILocation.HasValue;
@@ -2051,7 +2052,8 @@ namespace Mutagen.Bethesda.Fallout4
         public UInt16 Index => _Index_IsSet ? BinaryPrimitives.ReadUInt16LittleEndian(_recordData.Slice(_IndexLocation, 2)) : default(UInt16);
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2063,18 +2065,30 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public TintTemplateOption.Flag? Flags => EnumBinaryTranslation<TintTemplateOption.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 2);
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
-        public IReadOnlyList<String> Textures { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
+        #region Textures
+        private IReadOnlyList<String> TexturesStore = [];
+        public IReadOnlyList<String> Textures { get { EnsureFilled(); return TexturesStore; } private set => TexturesStore = value; }
+        #endregion
         #region BlendOperation
-        private int? _BlendOperationLocation;
+        private int? _BlendOperationLocationStore;
+        private int? _BlendOperationLocation { get { EnsureFilled(); return _BlendOperationLocationStore; } set => _BlendOperationLocationStore = value; }
         public BlendOperation? BlendOperation => EnumBinaryTranslation<BlendOperation, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_BlendOperationLocation, _recordData, _package, 4);
         #endregion
-        public IReadOnlyList<ITintTemplateColorGetter>? TemplateColors { get; private set; }
+        #region TemplateColors
+        private IReadOnlyList<ITintTemplateColorGetter>? TemplateColorsStore;
+        public IReadOnlyList<ITintTemplateColorGetter>? TemplateColors { get { EnsureFilled(); return TemplateColorsStore; } private set => TemplateColorsStore = value; }
+        #endregion
         #region Default
-        private int? _DefaultLocation;
+        private int? _DefaultLocationStore;
+        private int? _DefaultLocation { get { EnsureFilled(); return _DefaultLocationStore; } set => _DefaultLocationStore = value; }
         public Single? Default => _DefaultLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DefaultLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         partial void CustomFactoryEnd(

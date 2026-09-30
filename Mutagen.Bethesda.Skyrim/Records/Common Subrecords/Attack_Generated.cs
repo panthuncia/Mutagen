@@ -1211,11 +1211,13 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region AttackData
-        private RangeInt32? _AttackDataLocation;
+        private RangeInt32? _AttackDataLocationStore;
+        private RangeInt32? _AttackDataLocation { get { EnsureFilled(); return _AttackDataLocationStore; } set => _AttackDataLocationStore = value; }
         public IAttackDataGetter? AttackData => _AttackDataLocation.HasValue ? AttackDataBinaryOverlay.AttackDataFactory(_recordData.Slice(_AttackDataLocation!.Value.Min), _package) : default;
         #endregion
         #region AttackEvent
-        private int? _AttackEventLocation;
+        private int? _AttackEventLocationStore;
+        private int? _AttackEventLocation { get { EnsureFilled(); return _AttackEventLocationStore; } set => _AttackEventLocationStore = value; }
         public String? AttackEvent => _AttackEventLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AttackEventLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(

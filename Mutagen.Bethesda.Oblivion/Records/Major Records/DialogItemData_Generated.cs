@@ -1190,7 +1190,8 @@ namespace Mutagen.Bethesda.Oblivion
                 translationParams: translationParams);
         }
 
-        public DialogItemData.VersioningBreaks Versioning { get; private set; }
+        private DialogItemData.VersioningBreaks VersioningStore;
+        public DialogItemData.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public DialogType DialogType => (DialogType)BinaryPrimitives.ReadUInt16LittleEndian(_structData.Span.Slice(0x0, 0x2));
         public DialogItem.Flag Flags => _structData.Span.Length <= 0x2 ? default : (DialogItem.Flag)_structData.Span.Slice(0x2, 0x1)[0];
         partial void CustomFactoryEnd(

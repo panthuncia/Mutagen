@@ -1,3 +1,4 @@
+using System.Runtime.ExceptionServices;
 using Mutagen.Bethesda.Plugins.Binary.Headers;
 using Mutagen.Bethesda.Plugins.Binary.Translations;
 using Mutagen.Bethesda.Plugins.Exceptions;
@@ -53,16 +54,91 @@ internal abstract class PluginBinaryOverlay : ILoquiObject
     ILoquiRegistration ILoquiObject.Registration => throw new NotImplementedException();
 
     internal ReadOnlyMemorySlice<byte> _structData;
-    internal ReadOnlyMemorySlice<byte> _recordData;
+    internal ReadOnlyMemorySlice<byte> _recordDataStore;
     internal BinaryOverlayFactoryPackage _package;
+
+    /// <summary>
+    /// The record's subrecord data. Reading it completes a deferred fill first, so every generated getter that
+    /// reads data sees the record fully parsed.
+    /// </summary>
+    internal ReadOnlyMemorySlice<byte> _recordData
+    {
+        get
+        {
+            EnsureFilled();
+            return _recordDataStore;
+        }
+        set => _recordDataStore = value;
+    }
+
+    // Lazy parsing: a major record's overlay can be created from its header alone, deferring decompression and the
+    // walk over its subrecords until a field is read. Enumerating records for their FormKeys, or looking one up, then
+    // costs no more than reading headers. Everything a deferred fill needs lives in one small object, allocated only
+    // for deferred records, so eager overlays (and the many subrecord overlays) pay one null reference.
+    internal sealed class DeferredFill(ReadOnlyMemorySlice<byte> record, TypedParseParams translationParams, Action<PluginBinaryOverlay, DeferredFill> fill)
+    {
+        /// <summary>The whole record as read, header included: never changed, so it can be read while a fill runs.</summary>
+        public readonly ReadOnlyMemorySlice<byte> Record = record;
+        public readonly TypedParseParams TranslationParams = translationParams;
+        public readonly Action<PluginBinaryOverlay, DeferredFill> Fill = fill;
+        public int FillingThread;
+        public ExceptionDispatchInfo? Failure;
+    }
+
+    private DeferredFill? _deferred;
 
     protected PluginBinaryOverlay(
         MemoryPair memoryPair,
         BinaryOverlayFactoryPackage package)
     {
         _structData = memoryPair.StructData;
-        _recordData = memoryPair.RecordData;
+        _recordDataStore = memoryPair.RecordData;
         _package = package;
+    }
+
+    /// <summary>
+    /// Defers the fill of this overlay's fields until one is first read. <paramref name="fill"/> should be a static
+    /// lambda, so deferring allocates nothing but the state.
+    /// </summary>
+    internal void DeferFill(ReadOnlyMemorySlice<byte> record, TypedParseParams translationParams, Action<PluginBinaryOverlay, DeferredFill> fill) =>
+        _deferred = new DeferredFill(record, translationParams, fill);
+
+    /// <summary>The deferred state while a fill is pending (or failed); null once the record is filled.</summary>
+    internal DeferredFill? PendingFill => Volatile.Read(ref _deferred);
+
+    /// <summary>Whether a deferred fill is still pending.</summary>
+    internal bool IsFillPending => PendingFill is { Failure: null };
+
+    /// <summary>
+    /// Runs a deferred fill once, before any field is read. Thread-safe; the thread running the fill passes straight
+    /// through, since the fill itself reads and writes the fields. A fill that fails rethrows on every later read.
+    /// </summary>
+    protected internal void EnsureFilled()
+    {
+        var deferred = Volatile.Read(ref _deferred);
+        if (deferred is null) return;
+        deferred.Failure?.Throw();
+        if (deferred.FillingThread == Environment.CurrentManagedThreadId) return;
+        lock (deferred)
+        {
+            if (Volatile.Read(ref _deferred) is null) return;
+            deferred.Failure?.Throw();
+            deferred.FillingThread = Environment.CurrentManagedThreadId;
+            try
+            {
+                deferred.Fill(this, deferred);
+            }
+            catch (Exception ex)
+            {
+                deferred.Failure = ExceptionDispatchInfo.Capture(ex);
+            }
+            finally
+            {
+                deferred.FillingThread = 0;
+            }
+            deferred.Failure?.Throw();
+            Volatile.Write(ref _deferred, null);
+        }
     }
 
     public static void FillModTypes(

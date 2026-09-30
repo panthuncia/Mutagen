@@ -1447,17 +1447,23 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public IModelGetter? Model { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
         #region Rig
-        private int? _RigLocation;
+        private int? _RigLocationStore;
+        private int? _RigLocation { get { EnsureFilled(); return _RigLocationStore; } set => _RigLocationStore = value; }
         public AssetLinkGetter<StarfieldRigAssetType>? Rig => _RigLocation.HasValue ? new AssetLinkGetter<StarfieldRigAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _RigLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<StarfieldRigAssetType>?);
         #endregion
         #region AnimationRoot
-        private int? _AnimationRootLocation;
+        private int? _AnimationRootLocationStore;
+        private int? _AnimationRootLocation { get { EnsureFilled(); return _AnimationRootLocationStore; } set => _AnimationRootLocationStore = value; }
         public AssetLinkGetter<StarfieldAnimationTextAssetType>? AnimationRoot => _AnimationRootLocation.HasValue ? new AssetLinkGetter<StarfieldAnimationTextAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AnimationRootLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<StarfieldAnimationTextAssetType>?);
         #endregion
         #region Animations
-        private int? _AnimationsLocation;
+        private int? _AnimationsLocationStore;
+        private int? _AnimationsLocation { get { EnsureFilled(); return _AnimationsLocationStore; } set => _AnimationsLocationStore = value; }
         public String? Animations => _AnimationsLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AnimationsLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(

@@ -2025,25 +2025,35 @@ namespace Mutagen.Bethesda.Fallout3
         public MoveableStatic.MajorFlag MajorFlags => (MoveableStatic.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         public IObjectBoundsGetter? ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         string INamedRequiredGetter.Name => this.Name ?? string.Empty;
         #endregion
         #endregion
-        public IModelGetter? Model { get; private set; }
-        public IDestructibleGetter? Destructible { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
+        #region Destructible
+        private IDestructibleGetter? DestructibleStore;
+        public IDestructibleGetter? Destructible { get { EnsureFilled(); return DestructibleStore; } private set => DestructibleStore = value; }
+        #endregion
         #region OnLocalMap
-        private int? _OnLocalMapLocation;
+        private int? _OnLocalMapLocationStore;
+        private int? _OnLocalMapLocation { get { EnsureFilled(); return _OnLocalMapLocationStore; } set => _OnLocalMapLocationStore = value; }
         public Boolean? OnLocalMap => _OnLocalMapLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _OnLocalMapLocation.Value, _package.MetaData.Constants)[0] >= 1 : default(Boolean?);
         #endregion
         #region Sound
-        private int? _SoundLocation;
+        private int? _SoundLocationStore;
+        private int? _SoundLocation { get { EnsureFilled(); return _SoundLocationStore; } set => _SoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> Sound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _SoundLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -2067,6 +2077,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new MoveableStaticBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => MoveableStaticFill((MoveableStaticBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void MoveableStaticFill(
+            MoveableStaticBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2074,9 +2101,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new MoveableStaticBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2089,7 +2114,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IMoveableStaticGetter MoveableStaticFactory(

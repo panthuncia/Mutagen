@@ -3294,26 +3294,32 @@ namespace Mutagen.Bethesda.Starfield
         public Ammunition.MajorFlag MajorFlags => (Ammunition.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         private IObjectBoundsGetter? _ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         public IObjectBoundsGetter ObjectBounds => _ObjectBounds ?? new ObjectBounds();
         #endregion
         #region DirtinessScale
-        private int? _DirtinessScaleLocation;
+        private int? _DirtinessScaleLocationStore;
+        private int? _DirtinessScaleLocation { get { EnsureFilled(); return _DirtinessScaleLocationStore; } set => _DirtinessScaleLocationStore = value; }
         public Percent DirtinessScale => _DirtinessScaleLocation.HasValue ? PercentBinaryTranslation.GetPercent(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DirtinessScaleLocation.Value, _package.MetaData.Constants), FloatIntegerType.UInt) : default(Percent);
         #endregion
         #region Transforms
-        private RangeInt32? _TransformsLocation;
+        private RangeInt32? _TransformsLocationStore;
+        private RangeInt32? _TransformsLocation { get { EnsureFilled(); return _TransformsLocationStore; } set => _TransformsLocationStore = value; }
         public ITransformsGetter? Transforms => _TransformsLocation.HasValue ? TransformsBinaryOverlay.TransformsFactory(_recordData.Slice(_TransformsLocation!.Value.Min), _package) : default;
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -3324,18 +3330,30 @@ namespace Mutagen.Bethesda.Starfield
         ITranslatedStringGetter ITranslatedNamedRequiredGetter.Name => this.Name ?? TranslatedString.Empty;
         #endregion
         #endregion
-        public IModelGetter? Model { get; private set; }
-        public ISoundReferenceGetter? PickupSound { get; private set; }
-        public ISoundReferenceGetter? DropdownSound { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
+        #region PickupSound
+        private ISoundReferenceGetter? PickupSoundStore;
+        public ISoundReferenceGetter? PickupSound { get { EnsureFilled(); return PickupSoundStore; } private set => PickupSoundStore = value; }
+        #endregion
+        #region DropdownSound
+        private ISoundReferenceGetter? DropdownSoundStore;
+        public ISoundReferenceGetter? DropdownSound { get { EnsureFilled(); return DropdownSoundStore; } private set => DropdownSoundStore = value; }
+        #endregion
         #region Description
-        private int? _DescriptionLocation;
+        private int? _DescriptionLocationStore;
+        private int? _DescriptionLocation { get { EnsureFilled(); return _DescriptionLocationStore; } set => _DescriptionLocationStore = value; }
         public ITranslatedStringGetter Description => _DescriptionLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DescriptionLocation.Value, _package.MetaData.Constants), StringsSource.DL, parsingBundle: _package.MetaData, eager: false) : TranslatedString.Empty;
         #endregion
         #region Keywords
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get; private set; }
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? KeywordsStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get { EnsureFilled(); return KeywordsStore; } private set => KeywordsStore = value; }
         IReadOnlyList<IFormLinkGetter<IKeywordCommonGetter>>? IKeywordedGetter.Keywords => this.Keywords;
         #endregion
-        private RangeInt32? _DATALocation;
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         #region Value
         private int _ValueLocation => _DATALocation!.Value.Min;
         private bool _Value_IsSet => _DATALocation.HasValue;
@@ -3346,7 +3364,8 @@ namespace Mutagen.Bethesda.Starfield
         private bool _Weight_IsSet => _DATALocation.HasValue;
         public Single Weight => _Weight_IsSet ? _recordData.Slice(_WeightLocation, 4).Float() : default(Single);
         #endregion
-        private RangeInt32? _DNAMLocation;
+        private RangeInt32? _DNAMLocationStore;
+        private RangeInt32? _DNAMLocation { get { EnsureFilled(); return _DNAMLocationStore; } set => _DNAMLocationStore = value; }
         #region Projectile
         private int _ProjectileLocation => _DNAMLocation!.Value.Min;
         private bool _Projectile_IsSet => _DNAMLocation.HasValue;
@@ -3368,15 +3387,18 @@ namespace Mutagen.Bethesda.Starfield
         public UInt32 Health => _Health_IsSet ? BinaryPrimitives.ReadUInt32LittleEndian(_recordData.Slice(_HealthLocation, 4)) : default(UInt32);
         #endregion
         #region ShortName
-        private int? _ShortNameLocation;
+        private int? _ShortNameLocationStore;
+        private int? _ShortNameLocation { get { EnsureFilled(); return _ShortNameLocationStore; } set => _ShortNameLocationStore = value; }
         public ITranslatedStringGetter? ShortName => _ShortNameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ShortNameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         #region CasingModel
-        private int? _CasingModelLocation;
+        private int? _CasingModelLocationStore;
+        private int? _CasingModelLocation { get { EnsureFilled(); return _CasingModelLocationStore; } set => _CasingModelLocationStore = value; }
         public String? CasingModel => _CasingModelLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _CasingModelLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region LightLayer
-        private int? _LightLayerLocation;
+        private int? _LightLayerLocationStore;
+        private int? _LightLayerLocation { get { EnsureFilled(); return _LightLayerLocationStore; } set => _LightLayerLocationStore = value; }
         public UInt32? LightLayer => _LightLayerLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LightLayerLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         partial void CustomFactoryEnd(
@@ -3400,6 +3422,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new AmmunitionBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => AmmunitionFill((AmmunitionBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void AmmunitionFill(
+            AmmunitionBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -3407,9 +3446,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new AmmunitionBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -3422,7 +3459,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IAmmunitionGetter AmmunitionFactory(

@@ -1580,14 +1580,22 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IBlueprintComponentItemGetter>? Items { get; private set; }
-        public IReadOnlyList<IBlueprintComponentBODSRowGetter> BODSRows { get; private set; } = [];
+        #region Items
+        private IReadOnlyList<IBlueprintComponentItemGetter>? ItemsStore;
+        public IReadOnlyList<IBlueprintComponentItemGetter>? Items { get { EnsureFilled(); return ItemsStore; } private set => ItemsStore = value; }
+        #endregion
+        #region BODSRows
+        private IReadOnlyList<IBlueprintComponentBODSRowGetter> BODSRowsStore = [];
+        public IReadOnlyList<IBlueprintComponentBODSRowGetter> BODSRows { get { EnsureFilled(); return BODSRowsStore; } private set => BODSRowsStore = value; }
+        #endregion
         #region BLUF
-        private int? _BLUFLocation;
+        private int? _BLUFLocationStore;
+        private int? _BLUFLocation { get { EnsureFilled(); return _BLUFLocationStore; } set => _BLUFLocationStore = value; }
         public Byte? BLUF => _BLUFLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _BLUFLocation.Value, _package.MetaData.Constants)[0] : default(Byte?);
         #endregion
         #region NextPartID
-        private int? _NextPartIDLocation;
+        private int? _NextPartIDLocationStore;
+        private int? _NextPartIDLocation { get { EnsureFilled(); return _NextPartIDLocationStore; } set => _NextPartIDLocationStore = value; }
         public UInt32? NextPartID => _NextPartIDLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NextPartIDLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         partial void CustomFactoryEnd(

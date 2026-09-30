@@ -2500,31 +2500,49 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
         #region Type
-        private int? _TypeLocation;
+        private int? _TypeLocationStore;
+        private int? _TypeLocation { get { EnsureFilled(); return _TypeLocationStore; } set => _TypeLocationStore = value; }
         public MusicTrack.TypeEnum Type => EnumBinaryTranslation<MusicTrack.TypeEnum, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_TypeLocation, _recordData, _package, 4);
         #endregion
         #region Duration
-        private int? _DurationLocation;
+        private int? _DurationLocationStore;
+        private int? _DurationLocation { get { EnsureFilled(); return _DurationLocationStore; } set => _DurationLocationStore = value; }
         public Single? Duration => _DurationLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DurationLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region FadeOut
-        private int? _FadeOutLocation;
+        private int? _FadeOutLocationStore;
+        private int? _FadeOutLocation { get { EnsureFilled(); return _FadeOutLocationStore; } set => _FadeOutLocationStore = value; }
         public Single? FadeOut => _FadeOutLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FadeOutLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
-        public ISoundReferenceGetter? MTSH { get; private set; }
-        public IReadOnlyList<Single>? CuePoints { get; private set; }
+        #region MTSH
+        private ISoundReferenceGetter? MTSHStore;
+        public ISoundReferenceGetter? MTSH { get { EnsureFilled(); return MTSHStore; } private set => MTSHStore = value; }
+        #endregion
+        #region CuePoints
+        private IReadOnlyList<Single>? CuePointsStore;
+        public IReadOnlyList<Single>? CuePoints { get { EnsureFilled(); return CuePointsStore; } private set => CuePointsStore = value; }
+        #endregion
         #region MSTF
-        private int? _MSTFLocation;
+        private int? _MSTFLocationStore;
+        private int? _MSTFLocation { get { EnsureFilled(); return _MSTFLocationStore; } set => _MSTFLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? MSTF => _MSTFLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MSTFLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
-        public IReadOnlyList<IConditionGetter>? Conditions { get; private set; }
-        public IReadOnlyList<IFormLinkGetter<IMusicTrackGetter>>? Tracks { get; private set; }
+        #region Conditions
+        private IReadOnlyList<IConditionGetter>? ConditionsStore;
+        public IReadOnlyList<IConditionGetter>? Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
+        #region Tracks
+        private IReadOnlyList<IFormLinkGetter<IMusicTrackGetter>>? TracksStore;
+        public IReadOnlyList<IFormLinkGetter<IMusicTrackGetter>>? Tracks { get { EnsureFilled(); return TracksStore; } private set => TracksStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -2546,6 +2564,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new MusicTrackBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => MusicTrackFill((MusicTrackBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void MusicTrackFill(
+            MusicTrackBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2553,9 +2588,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new MusicTrackBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2568,7 +2601,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IMusicTrackGetter MusicTrackFactory(

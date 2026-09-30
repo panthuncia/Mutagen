@@ -1896,7 +1896,8 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        private RangeInt32? _DSTDLocation;
+        private RangeInt32? _DSTDLocationStore;
+        private RangeInt32? _DSTDLocation { get { EnsureFilled(); return _DSTDLocationStore; } set => _DSTDLocationStore = value; }
         #region HealthPercent
         private int _HealthPercentLocation => _DSTDLocation!.Value.Min;
         private bool _HealthPercent_IsSet => _DSTDLocation.HasValue;
@@ -1943,12 +1944,17 @@ namespace Mutagen.Bethesda.Starfield
         public Single Unknown => _Unknown_IsSet ? _recordData.Slice(_UnknownLocation, 4).Float() : default(Single);
         #endregion
         #region SequenceName
-        private int? _SequenceNameLocation;
+        private int? _SequenceNameLocationStore;
+        private int? _SequenceNameLocation { get { EnsureFilled(); return _SequenceNameLocationStore; } set => _SequenceNameLocationStore = value; }
         public String? SequenceName => _SequenceNameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SequenceNameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        public IModelGetter? Model { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
         #region UnusedMaterialSwap
-        private int? _UnusedMaterialSwapLocation;
+        private int? _UnusedMaterialSwapLocationStore;
+        private int? _UnusedMaterialSwapLocation { get { EnsureFilled(); return _UnusedMaterialSwapLocationStore; } set => _UnusedMaterialSwapLocationStore = value; }
         public Int32? UnusedMaterialSwap => _UnusedMaterialSwapLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _UnusedMaterialSwapLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         partial void CustomFactoryEnd(

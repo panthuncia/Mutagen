@@ -2095,7 +2095,8 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2107,7 +2108,8 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #endregion
         #region Description
-        private int? _DescriptionLocation;
+        private int? _DescriptionLocationStore;
+        private int? _DescriptionLocation { get { EnsureFilled(); return _DescriptionLocationStore; } set => _DescriptionLocationStore = value; }
         public ITranslatedStringGetter? Description => _DescriptionLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DescriptionLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         #region Data
@@ -2118,9 +2120,13 @@ namespace Mutagen.Bethesda.Starfield
         public partial IAGameplayOptionDataGetter? GetDataCustom();
         public IAGameplayOptionDataGetter? Data => GetDataCustom();
         #endregion
-        public IReadOnlyList<IGameplayOptionRewardGetter> Rewards { get; private set; } = [];
+        #region Rewards
+        private IReadOnlyList<IGameplayOptionRewardGetter> RewardsStore = [];
+        public IReadOnlyList<IGameplayOptionRewardGetter> Rewards { get { EnsureFilled(); return RewardsStore; } private set => RewardsStore = value; }
+        #endregion
         #region Keywords
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get; private set; }
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? KeywordsStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get { EnsureFilled(); return KeywordsStore; } private set => KeywordsStore = value; }
         IReadOnlyList<IFormLinkGetter<IKeywordCommonGetter>>? IKeywordedGetter.Keywords => this.Keywords;
         #endregion
         partial void CustomFactoryEnd(

@@ -3383,48 +3383,81 @@ namespace Mutagen.Bethesda.Fallout3
 
 
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         private IDialogResponsesDataGetter? _Data => _DataLocation.HasValue ? DialogResponsesDataBinaryOverlay.DialogResponsesDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         public IDialogResponsesDataGetter Data => _Data ?? new DialogResponsesData();
         #endregion
         #region Quest
-        private int? _QuestLocation;
+        private int? _QuestLocationStore;
+        private int? _QuestLocation { get { EnsureFilled(); return _QuestLocationStore; } set => _QuestLocationStore = value; }
         public IFormLinkGetter<IQuestGetter> Quest => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IQuestGetter>(_package, _recordData, _QuestLocation);
         #endregion
         #region PreviousTopic
-        private int? _PreviousTopicLocation;
+        private int? _PreviousTopicLocationStore;
+        private int? _PreviousTopicLocation { get { EnsureFilled(); return _PreviousTopicLocationStore; } set => _PreviousTopicLocationStore = value; }
         public IFormLinkNullableGetter<IDialogTopicGetter> PreviousTopic => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogTopicGetter>(_package, _recordData, _PreviousTopicLocation);
         #endregion
         #region PreviousInfo
-        private int? _PreviousInfoLocation;
+        private int? _PreviousInfoLocationStore;
+        private int? _PreviousInfoLocation { get { EnsureFilled(); return _PreviousInfoLocationStore; } set => _PreviousInfoLocationStore = value; }
         public IFormLinkNullableGetter<IDialogResponsesGetter> PreviousInfo => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogResponsesGetter>(_package, _recordData, _PreviousInfoLocation);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IDialogTopicGetter>> AddTopics { get; private set; } = [];
-        public IReadOnlyList<IDialogResponseGetter> Responses { get; private set; } = [];
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<IDialogTopicGetter>> Choices { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<IDialogTopicGetter>> LinkFrom { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<IDialogResponsesGetter>> FollowUp { get; private set; } = [];
-        public IScriptFieldsGetter? BeginScript { get; private set; }
-        public IScriptFieldsGetter? EndScript { get; private set; }
+        #region AddTopics
+        private IReadOnlyList<IFormLinkGetter<IDialogTopicGetter>> AddTopicsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IDialogTopicGetter>> AddTopics { get { EnsureFilled(); return AddTopicsStore; } private set => AddTopicsStore = value; }
+        #endregion
+        #region Responses
+        private IReadOnlyList<IDialogResponseGetter> ResponsesStore = [];
+        public IReadOnlyList<IDialogResponseGetter> Responses { get { EnsureFilled(); return ResponsesStore; } private set => ResponsesStore = value; }
+        #endregion
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
+        #region Choices
+        private IReadOnlyList<IFormLinkGetter<IDialogTopicGetter>> ChoicesStore = [];
+        public IReadOnlyList<IFormLinkGetter<IDialogTopicGetter>> Choices { get { EnsureFilled(); return ChoicesStore; } private set => ChoicesStore = value; }
+        #endregion
+        #region LinkFrom
+        private IReadOnlyList<IFormLinkGetter<IDialogTopicGetter>> LinkFromStore = [];
+        public IReadOnlyList<IFormLinkGetter<IDialogTopicGetter>> LinkFrom { get { EnsureFilled(); return LinkFromStore; } private set => LinkFromStore = value; }
+        #endregion
+        #region FollowUp
+        private IReadOnlyList<IFormLinkGetter<IDialogResponsesGetter>> FollowUpStore = [];
+        public IReadOnlyList<IFormLinkGetter<IDialogResponsesGetter>> FollowUp { get { EnsureFilled(); return FollowUpStore; } private set => FollowUpStore = value; }
+        #endregion
+        #region BeginScript
+        private IScriptFieldsGetter? BeginScriptStore;
+        public IScriptFieldsGetter? BeginScript { get { EnsureFilled(); return BeginScriptStore; } private set => BeginScriptStore = value; }
+        #endregion
+        #region EndScript
+        private IScriptFieldsGetter? EndScriptStore;
+        public IScriptFieldsGetter? EndScript { get { EnsureFilled(); return EndScriptStore; } private set => EndScriptStore = value; }
+        #endregion
         #region UnusedSound
-        private int? _UnusedSoundLocation;
+        private int? _UnusedSoundLocationStore;
+        private int? _UnusedSoundLocation { get { EnsureFilled(); return _UnusedSoundLocationStore; } set => _UnusedSoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> UnusedSound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _UnusedSoundLocation);
         #endregion
         #region Prompt
-        private int? _PromptLocation;
+        private int? _PromptLocationStore;
+        private int? _PromptLocation { get { EnsureFilled(); return _PromptLocationStore; } set => _PromptLocationStore = value; }
         public String? Prompt => _PromptLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _PromptLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Speaker
-        private int? _SpeakerLocation;
+        private int? _SpeakerLocationStore;
+        private int? _SpeakerLocation { get { EnsureFilled(); return _SpeakerLocationStore; } set => _SpeakerLocationStore = value; }
         public IFormLinkNullableGetter<INpcSpawnGetter> Speaker => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<INpcSpawnGetter>(_package, _recordData, _SpeakerLocation);
         #endregion
         #region ActorValuePerk
-        private int? _ActorValuePerkLocation;
+        private int? _ActorValuePerkLocationStore;
+        private int? _ActorValuePerkLocation { get { EnsureFilled(); return _ActorValuePerkLocationStore; } set => _ActorValuePerkLocationStore = value; }
         public IFormLinkNullableGetter<IActorValueOrPerkGetter> ActorValuePerk => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IActorValueOrPerkGetter>(_package, _recordData, _ActorValuePerkLocation);
         #endregion
         #region SpeechChallenge
-        private int? _SpeechChallengeLocation;
+        private int? _SpeechChallengeLocationStore;
+        private int? _SpeechChallengeLocation { get { EnsureFilled(); return _SpeechChallengeLocationStore; } set => _SpeechChallengeLocationStore = value; }
         public DialogResponses.SpeechChallengeEnum? SpeechChallenge => EnumBinaryTranslation<DialogResponses.SpeechChallengeEnum, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_SpeechChallengeLocation, _recordData, _package, 4);
         #endregion
         partial void CustomFactoryEnd(
@@ -3448,6 +3481,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new DialogResponsesBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => DialogResponsesFill((DialogResponsesBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void DialogResponsesFill(
+            DialogResponsesBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -3455,9 +3505,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new DialogResponsesBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -3470,7 +3518,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IDialogResponsesGetter DialogResponsesFactory(

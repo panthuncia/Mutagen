@@ -4179,78 +4179,122 @@ namespace Mutagen.Bethesda.Starfield
         public ConstructibleObject.MajorFlag MajorFlags => (ConstructibleObject.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
         #region Description
-        private int? _DescriptionLocation;
+        private int? _DescriptionLocationStore;
+        private int? _DescriptionLocation { get { EnsureFilled(); return _DescriptionLocationStore; } set => _DescriptionLocationStore = value; }
         public ITranslatedStringGetter? Description => _DescriptionLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DescriptionLocation.Value, _package.MetaData.Constants), StringsSource.DL, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         #region WorkbenchKeyword
-        private int? _WorkbenchKeywordLocation;
+        private int? _WorkbenchKeywordLocationStore;
+        private int? _WorkbenchKeywordLocation { get { EnsureFilled(); return _WorkbenchKeywordLocationStore; } set => _WorkbenchKeywordLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> WorkbenchKeyword => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _WorkbenchKeywordLocation);
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
-        public IReadOnlyList<IConstructibleObjectComponentGetter>? ConstructableComponents { get; private set; }
-        public IReadOnlyList<IConstructibleRequiredPerkGetter>? RequiredPerks { get; private set; }
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
+        #region ConstructableComponents
+        private IReadOnlyList<IConstructibleObjectComponentGetter>? ConstructableComponentsStore;
+        public IReadOnlyList<IConstructibleObjectComponentGetter>? ConstructableComponents { get { EnsureFilled(); return ConstructableComponentsStore; } private set => ConstructableComponentsStore = value; }
+        #endregion
+        #region RequiredPerks
+        private IReadOnlyList<IConstructibleRequiredPerkGetter>? RequiredPerksStore;
+        public IReadOnlyList<IConstructibleRequiredPerkGetter>? RequiredPerks { get { EnsureFilled(); return RequiredPerksStore; } private set => RequiredPerksStore = value; }
+        #endregion
         #region CreatedObject
-        private int? _CreatedObjectLocation;
+        private int? _CreatedObjectLocationStore;
+        private int? _CreatedObjectLocation { get { EnsureFilled(); return _CreatedObjectLocationStore; } set => _CreatedObjectLocationStore = value; }
         public IFormLinkNullableGetter<IConstructibleObjectTargetGetter> CreatedObject => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IConstructibleObjectTargetGetter>(_package, _recordData, _CreatedObjectLocation);
         #endregion
         #region AmountProduced
-        private int? _AmountProducedLocation;
+        private int? _AmountProducedLocationStore;
+        private int? _AmountProducedLocation { get { EnsureFilled(); return _AmountProducedLocationStore; } set => _AmountProducedLocationStore = value; }
         public UInt16 AmountProduced => _AmountProducedLocation.HasValue ? BinaryPrimitives.ReadUInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AmountProducedLocation.Value, _package.MetaData.Constants)) : default(UInt16);
         #endregion
         #region MenuSortOrder
-        private int? _MenuSortOrderLocation;
+        private int? _MenuSortOrderLocationStore;
+        private int? _MenuSortOrderLocation { get { EnsureFilled(); return _MenuSortOrderLocationStore; } set => _MenuSortOrderLocationStore = value; }
         public Single MenuSortOrder => _MenuSortOrderLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MenuSortOrderLocation.Value, _package.MetaData.Constants).Float() : default(Single);
         #endregion
         #region Tier
-        private int? _TierLocation;
+        private int? _TierLocationStore;
+        private int? _TierLocation { get { EnsureFilled(); return _TierLocationStore; } set => _TierLocationStore = value; }
         public Byte Tier => _TierLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _TierLocation.Value, _package.MetaData.Constants)[0] : default(Byte);
         #endregion
-        public ISoundReferenceGetter? CraftingSound { get; private set; }
-        public ISoundReferenceGetter? PickupSound { get; private set; }
-        public ISoundReferenceGetter? DropdownSound { get; private set; }
-        public IReadOnlyList<IConstructibleObjectComponentGetter>? RepairComponents { get; private set; }
+        #region CraftingSound
+        private ISoundReferenceGetter? CraftingSoundStore;
+        public ISoundReferenceGetter? CraftingSound { get { EnsureFilled(); return CraftingSoundStore; } private set => CraftingSoundStore = value; }
+        #endregion
+        #region PickupSound
+        private ISoundReferenceGetter? PickupSoundStore;
+        public ISoundReferenceGetter? PickupSound { get { EnsureFilled(); return PickupSoundStore; } private set => PickupSoundStore = value; }
+        #endregion
+        #region DropdownSound
+        private ISoundReferenceGetter? DropdownSoundStore;
+        public ISoundReferenceGetter? DropdownSound { get { EnsureFilled(); return DropdownSoundStore; } private set => DropdownSoundStore = value; }
+        #endregion
+        #region RepairComponents
+        private IReadOnlyList<IConstructibleObjectComponentGetter>? RepairComponentsStore;
+        public IReadOnlyList<IConstructibleObjectComponentGetter>? RepairComponents { get { EnsureFilled(); return RepairComponentsStore; } private set => RepairComponentsStore = value; }
+        #endregion
         #region LearnMethod
-        private int? _LearnMethodLocation;
+        private int? _LearnMethodLocationStore;
+        private int? _LearnMethodLocation { get { EnsureFilled(); return _LearnMethodLocationStore; } set => _LearnMethodLocationStore = value; }
         public ConstructibleObject.LearnMethodEnum? LearnMethod => EnumBinaryTranslation<ConstructibleObject.LearnMethodEnum, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_LearnMethodLocation, _recordData, _package, 1);
         #endregion
         #region Value
-        private int? _ValueLocation;
+        private int? _ValueLocationStore;
+        private int? _ValueLocation { get { EnsureFilled(); return _ValueLocationStore; } set => _ValueLocationStore = value; }
         public UInt32 Value => _ValueLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ValueLocation.Value, _package.MetaData.Constants)) : default(UInt32);
         #endregion
         #region MenuArtObject
-        private int? _MenuArtObjectLocation;
+        private int? _MenuArtObjectLocationStore;
+        private int? _MenuArtObjectLocation { get { EnsureFilled(); return _MenuArtObjectLocationStore; } set => _MenuArtObjectLocationStore = value; }
         public IFormLinkNullableGetter<IArtObjectGetter> MenuArtObject => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IArtObjectGetter>(_package, _recordData, _MenuArtObjectLocation);
         #endregion
         #region LearnedFrom
-        private int? _LearnedFromLocation;
+        private int? _LearnedFromLocationStore;
+        private int? _LearnedFromLocation { get { EnsureFilled(); return _LearnedFromLocationStore; } set => _LearnedFromLocationStore = value; }
         public IFormLinkNullableGetter<IStarfieldMajorRecordGetter> LearnedFrom => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IStarfieldMajorRecordGetter>(_package, _recordData, _LearnedFromLocation);
         #endregion
         #region BaseReturnScaleTable
-        private int? _BaseReturnScaleTableLocation;
+        private int? _BaseReturnScaleTableLocationStore;
+        private int? _BaseReturnScaleTableLocation { get { EnsureFilled(); return _BaseReturnScaleTableLocationStore; } set => _BaseReturnScaleTableLocationStore = value; }
         public IFormLinkNullableGetter<ICurveTableGetter> BaseReturnScaleTable => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ICurveTableGetter>(_package, _recordData, _BaseReturnScaleTableLocation);
         #endregion
         #region LearnChance
-        private int? _LearnChanceLocation;
+        private int? _LearnChanceLocationStore;
+        private int? _LearnChanceLocation { get { EnsureFilled(); return _LearnChanceLocationStore; } set => _LearnChanceLocationStore = value; }
         public IFormLinkNullableGetter<IGlobalGetter> LearnChance => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IGlobalGetter>(_package, _recordData, _LearnChanceLocation);
         #endregion
         #region MaxBuildCountGlobal
-        private int? _MaxBuildCountGlobalLocation;
+        private int? _MaxBuildCountGlobalLocationStore;
+        private int? _MaxBuildCountGlobalLocation { get { EnsureFilled(); return _MaxBuildCountGlobalLocationStore; } set => _MaxBuildCountGlobalLocationStore = value; }
         public IFormLinkNullableGetter<IGlobalGetter> MaxBuildCountGlobal => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IGlobalGetter>(_package, _recordData, _MaxBuildCountGlobalLocation);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? RecipeFilters { get; private set; }
+        #region RecipeFilters
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? RecipeFiltersStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? RecipeFilters { get { EnsureFilled(); return RecipeFiltersStore; } private set => RecipeFiltersStore = value; }
+        #endregion
         #region InstantiationFilterKeyword
-        private int? _InstantiationFilterKeywordLocation;
+        private int? _InstantiationFilterKeywordLocationStore;
+        private int? _InstantiationFilterKeywordLocation { get { EnsureFilled(); return _InstantiationFilterKeywordLocationStore; } set => _InstantiationFilterKeywordLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> InstantiationFilterKeyword => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _InstantiationFilterKeywordLocation);
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public ConstructibleObject.Flag? Flags => EnumBinaryTranslation<ConstructibleObject.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 8);
         #endregion
         partial void CustomFactoryEnd(
@@ -4274,6 +4318,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ConstructibleObjectBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ConstructibleObjectFill((ConstructibleObjectBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ConstructibleObjectFill(
+            ConstructibleObjectBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -4281,9 +4342,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ConstructibleObjectBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -4296,7 +4355,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IConstructibleObjectGetter ConstructibleObjectFactory(

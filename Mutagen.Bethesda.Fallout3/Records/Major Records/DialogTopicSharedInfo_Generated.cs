@@ -1161,11 +1161,13 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region InfoConnection
-        private int? _InfoConnectionLocation;
+        private int? _InfoConnectionLocationStore;
+        private int? _InfoConnectionLocation { get { EnsureFilled(); return _InfoConnectionLocationStore; } set => _InfoConnectionLocationStore = value; }
         public IFormLinkGetter<IDialogResponsesGetter> InfoConnection => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogResponsesGetter>(_package, _recordData, _InfoConnectionLocation);
         #endregion
         #region InfoIndex
-        private int? _InfoIndexLocation;
+        private int? _InfoIndexLocationStore;
+        private int? _InfoIndexLocation { get { EnsureFilled(); return _InfoIndexLocationStore; } set => _InfoIndexLocationStore = value; }
         public Int32? InfoIndex => _InfoIndexLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _InfoIndexLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         partial void CustomFactoryEnd(

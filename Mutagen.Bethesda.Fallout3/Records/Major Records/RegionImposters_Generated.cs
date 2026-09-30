@@ -1263,7 +1263,10 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IFormLinkGetter<IPlacedObjectGetter>>? Imposters { get; private set; }
+        #region Imposters
+        private IReadOnlyList<IFormLinkGetter<IPlacedObjectGetter>>? ImpostersStore;
+        public IReadOnlyList<IFormLinkGetter<IPlacedObjectGetter>>? Imposters { get { EnsureFilled(); return ImpostersStore; } private set => ImpostersStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

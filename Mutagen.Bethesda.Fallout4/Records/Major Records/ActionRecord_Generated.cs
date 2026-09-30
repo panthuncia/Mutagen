@@ -1762,23 +1762,28 @@ namespace Mutagen.Bethesda.Fallout4
         public ActionRecord.MajorFlag MajorFlags => (ActionRecord.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region Color
-        private int? _ColorLocation;
+        private int? _ColorLocationStore;
+        private int? _ColorLocation { get { EnsureFilled(); return _ColorLocationStore; } set => _ColorLocationStore = value; }
         public Color? Color => _ColorLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ColorLocation.Value, _package.MetaData.Constants).ReadColor(ColorBinaryType.Alpha) : default(Color?);
         #endregion
         #region Notes
-        private int? _NotesLocation;
+        private int? _NotesLocationStore;
+        private int? _NotesLocation { get { EnsureFilled(); return _NotesLocationStore; } set => _NotesLocationStore = value; }
         public String? Notes => _NotesLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NotesLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Type
-        private int? _TypeLocation;
+        private int? _TypeLocationStore;
+        private int? _TypeLocation { get { EnsureFilled(); return _TypeLocationStore; } set => _TypeLocationStore = value; }
         public ActionRecord.TypeEnum? Type => EnumBinaryTranslation<ActionRecord.TypeEnum, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_TypeLocation, _recordData, _package, 4);
         #endregion
         #region AttractionRule
-        private int? _AttractionRuleLocation;
+        private int? _AttractionRuleLocationStore;
+        private int? _AttractionRuleLocation { get { EnsureFilled(); return _AttractionRuleLocationStore; } set => _AttractionRuleLocationStore = value; }
         public IFormLinkNullableGetter<IAttractionRuleGetter> AttractionRule => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IAttractionRuleGetter>(_package, _recordData, _AttractionRuleLocation);
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -1806,6 +1811,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ActionRecordBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ActionRecordFill((ActionRecordBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ActionRecordFill(
+            ActionRecordBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1813,9 +1835,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ActionRecordBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1828,7 +1848,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IActionRecordGetter ActionRecordFactory(

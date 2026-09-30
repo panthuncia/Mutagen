@@ -1279,11 +1279,15 @@ namespace Mutagen.Bethesda.Oblivion
             PreviousParse lastParsed);
         #endregion
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         private IEffectDataGetter? _Data => _DataLocation.HasValue ? EffectDataBinaryOverlay.EffectDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         public IEffectDataGetter Data => _Data ?? new EffectData();
         #endregion
-        public IScriptEffectGetter? ScriptEffect { get; private set; }
+        #region ScriptEffect
+        private IScriptEffectGetter? ScriptEffectStore;
+        public IScriptEffectGetter? ScriptEffect { get { EnsureFilled(); return ScriptEffectStore; } private set => ScriptEffectStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

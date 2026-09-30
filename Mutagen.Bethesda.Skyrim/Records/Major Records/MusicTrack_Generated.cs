@@ -2451,32 +2451,47 @@ namespace Mutagen.Bethesda.Skyrim
 
 
         #region Type
-        private int? _TypeLocation;
+        private int? _TypeLocationStore;
+        private int? _TypeLocation { get { EnsureFilled(); return _TypeLocationStore; } set => _TypeLocationStore = value; }
         public MusicTrack.TypeEnum Type => EnumBinaryTranslation<MusicTrack.TypeEnum, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_TypeLocation, _recordData, _package, 4);
         #endregion
         #region Duration
-        private int? _DurationLocation;
+        private int? _DurationLocationStore;
+        private int? _DurationLocation { get { EnsureFilled(); return _DurationLocationStore; } set => _DurationLocationStore = value; }
         public Single? Duration => _DurationLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DurationLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region FadeOut
-        private int? _FadeOutLocation;
+        private int? _FadeOutLocationStore;
+        private int? _FadeOutLocation { get { EnsureFilled(); return _FadeOutLocationStore; } set => _FadeOutLocationStore = value; }
         public Single? FadeOut => _FadeOutLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FadeOutLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region TrackFilename
-        private int? _TrackFilenameLocation;
+        private int? _TrackFilenameLocationStore;
+        private int? _TrackFilenameLocation { get { EnsureFilled(); return _TrackFilenameLocationStore; } set => _TrackFilenameLocationStore = value; }
         public AssetLinkGetter<SkyrimMusicAssetType>? TrackFilename => _TrackFilenameLocation.HasValue ? new AssetLinkGetter<SkyrimMusicAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TrackFilenameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<SkyrimMusicAssetType>?);
         #endregion
         #region FinaleFilename
-        private int? _FinaleFilenameLocation;
+        private int? _FinaleFilenameLocationStore;
+        private int? _FinaleFilenameLocation { get { EnsureFilled(); return _FinaleFilenameLocationStore; } set => _FinaleFilenameLocationStore = value; }
         public AssetLinkGetter<SkyrimMusicAssetType>? FinaleFilename => _FinaleFilenameLocation.HasValue ? new AssetLinkGetter<SkyrimMusicAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FinaleFilenameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<SkyrimMusicAssetType>?);
         #endregion
         #region LoopData
-        private RangeInt32? _LoopDataLocation;
+        private RangeInt32? _LoopDataLocationStore;
+        private RangeInt32? _LoopDataLocation { get { EnsureFilled(); return _LoopDataLocationStore; } set => _LoopDataLocationStore = value; }
         public IMusicTrackLoopDataGetter? LoopData => _LoopDataLocation.HasValue ? MusicTrackLoopDataBinaryOverlay.MusicTrackLoopDataFactory(_recordData.Slice(_LoopDataLocation!.Value.Min), _package) : default;
         #endregion
-        public IReadOnlyList<Single>? CuePoints { get; private set; }
-        public IReadOnlyList<IConditionGetter>? Conditions { get; private set; }
-        public IReadOnlyList<IFormLinkGetter<IMusicTrackGetter>>? Tracks { get; private set; }
+        #region CuePoints
+        private IReadOnlyList<Single>? CuePointsStore;
+        public IReadOnlyList<Single>? CuePoints { get { EnsureFilled(); return CuePointsStore; } private set => CuePointsStore = value; }
+        #endregion
+        #region Conditions
+        private IReadOnlyList<IConditionGetter>? ConditionsStore;
+        public IReadOnlyList<IConditionGetter>? Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
+        #region Tracks
+        private IReadOnlyList<IFormLinkGetter<IMusicTrackGetter>>? TracksStore;
+        public IReadOnlyList<IFormLinkGetter<IMusicTrackGetter>>? Tracks { get { EnsureFilled(); return TracksStore; } private set => TracksStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -2498,6 +2513,23 @@ namespace Mutagen.Bethesda.Skyrim
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new MusicTrackBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => MusicTrackFill((MusicTrackBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void MusicTrackFill(
+            MusicTrackBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2505,9 +2537,7 @@ namespace Mutagen.Bethesda.Skyrim
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new MusicTrackBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2520,7 +2550,6 @@ namespace Mutagen.Bethesda.Skyrim
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IMusicTrackGetter MusicTrackFactory(

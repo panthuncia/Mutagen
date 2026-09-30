@@ -1281,10 +1281,12 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Object
-        private int? _ObjectLocation;
+        private int? _ObjectLocationStore;
+        private int? _ObjectLocation { get { EnsureFilled(); return _ObjectLocationStore; } set => _ObjectLocationStore = value; }
         public IFormLinkGetter<IFallout4MajorRecordGetter> Object => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IFallout4MajorRecordGetter>(_package, _recordData, _ObjectLocation);
         #endregion
-        private RangeInt32? _ALCALocation;
+        private RangeInt32? _ALCALocationStore;
+        private RangeInt32? _ALCALocation { get { EnsureFilled(); return _ALCALocationStore; } set => _ALCALocationStore = value; }
         #region AliasID
         private int _AliasIDLocation => _ALCALocation!.Value.Min;
         private bool _AliasID_IsSet => _ALCALocation.HasValue;
@@ -1296,7 +1298,8 @@ namespace Mutagen.Bethesda.Fallout4
         public CreateReferenceToObject.CreateEnum Create => _Create_IsSet ? (CreateReferenceToObject.CreateEnum)BinaryPrimitives.ReadUInt16LittleEndian(_recordData.Span.Slice(_CreateLocation, 0x2)) : default;
         #endregion
         #region Level
-        private int? _LevelLocation;
+        private int? _LevelLocationStore;
+        private int? _LevelLocation { get { EnsureFilled(); return _LevelLocationStore; } set => _LevelLocationStore = value; }
         public Level Level => EnumBinaryTranslation<Level, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_LevelLocation, _recordData, _package, 4);
         #endregion
         partial void CustomFactoryEnd(

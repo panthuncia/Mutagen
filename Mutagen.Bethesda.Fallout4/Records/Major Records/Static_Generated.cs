@@ -2912,28 +2912,40 @@ namespace Mutagen.Bethesda.Fallout4
 
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         private IObjectBoundsGetter? _ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         public IObjectBoundsGetter ObjectBounds => _ObjectBounds ?? new ObjectBounds();
         #endregion
         #region PreviewTransform
-        private int? _PreviewTransformLocation;
+        private int? _PreviewTransformLocationStore;
+        private int? _PreviewTransformLocation { get { EnsureFilled(); return _PreviewTransformLocationStore; } set => _PreviewTransformLocationStore = value; }
         public IFormLinkNullableGetter<ITransformGetter> PreviewTransform => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ITransformGetter>(_package, _recordData, _PreviewTransformLocation);
         #endregion
         #region ForcedLocRefType
-        private int? _ForcedLocRefTypeLocation;
+        private int? _ForcedLocRefTypeLocationStore;
+        private int? _ForcedLocRefTypeLocation { get { EnsureFilled(); return _ForcedLocRefTypeLocationStore; } set => _ForcedLocRefTypeLocationStore = value; }
         public IFormLinkNullableGetter<ILocationReferenceTypeGetter> ForcedLocRefType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ILocationReferenceTypeGetter>(_package, _recordData, _ForcedLocRefTypeLocation);
         #endregion
-        public IModelGetter? Model { get; private set; }
-        public IReadOnlyList<IObjectPropertyGetter>? Properties { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
+        #region Properties
+        private IReadOnlyList<IObjectPropertyGetter>? PropertiesStore;
+        public IReadOnlyList<IObjectPropertyGetter>? Properties { get { EnsureFilled(); return PropertiesStore; } private set => PropertiesStore = value; }
+        #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2944,8 +2956,10 @@ namespace Mutagen.Bethesda.Fallout4
         ITranslatedStringGetter ITranslatedNamedRequiredGetter.Name => this.Name ?? TranslatedString.Empty;
         #endregion
         #endregion
-        private RangeInt32? _DNAMLocation;
-        public Static.DNAMDataType DNAMDataTypeState { get; private set; }
+        private RangeInt32? _DNAMLocationStore;
+        private RangeInt32? _DNAMLocation { get { EnsureFilled(); return _DNAMLocationStore; } set => _DNAMLocationStore = value; }
+        private Static.DNAMDataType DNAMDataTypeStateStore;
+        public Static.DNAMDataType DNAMDataTypeState { get { EnsureFilled(); return DNAMDataTypeStateStore; } private set => DNAMDataTypeStateStore = value; }
         #region MaxAngle
         private int _MaxAngleLocation => _DNAMLocation!.Value.Min;
         private bool _MaxAngle_IsSet => _DNAMLocation.HasValue;
@@ -2967,8 +2981,10 @@ namespace Mutagen.Bethesda.Fallout4
         public Single LeafFrequency => _LeafFrequency_IsSet ? _recordData.Slice(_LeafFrequencyLocation, 4).Float() : default(Single);
         #endregion
         #region NavmeshGeometry
-        private int? _NavmeshGeometryLengthOverride;
-        private RangeInt32? _NavmeshGeometryLocation;
+        private int? _NavmeshGeometryLengthOverrideStore;
+        private int? _NavmeshGeometryLengthOverride { get { EnsureFilled(); return _NavmeshGeometryLengthOverrideStore; } set => _NavmeshGeometryLengthOverrideStore = value; }
+        private RangeInt32? _NavmeshGeometryLocationStore;
+        private RangeInt32? _NavmeshGeometryLocation { get { EnsureFilled(); return _NavmeshGeometryLocationStore; } set => _NavmeshGeometryLocationStore = value; }
         public INavmeshGeometryGetter? NavmeshGeometry => _NavmeshGeometryLocation.HasValue ? NavmeshGeometryBinaryOverlay.NavmeshGeometryFactory(_recordData.Slice(_NavmeshGeometryLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_NavmeshGeometryLengthOverride)) : default;
         #endregion
         #region DistantLodParsing

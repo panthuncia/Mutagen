@@ -1347,15 +1347,18 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Description
-        private int? _DescriptionLocation;
+        private int? _DescriptionLocationStore;
+        private int? _DescriptionLocation { get { EnsureFilled(); return _DescriptionLocationStore; } set => _DescriptionLocationStore = value; }
         public ITranslatedStringGetter? Description => _DescriptionLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DescriptionLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         #region SettingValue
-        private int? _SettingValueLocation;
+        private int? _SettingValueLocationStore;
+        private int? _SettingValueLocation { get { EnsureFilled(); return _SettingValueLocationStore; } set => _SettingValueLocationStore = value; }
         public Single? SettingValue => _SettingValueLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SettingValueLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -1367,7 +1370,8 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #endregion
         #region RewardValue
-        private int? _RewardValueLocation;
+        private int? _RewardValueLocationStore;
+        private int? _RewardValueLocation { get { EnsureFilled(); return _RewardValueLocationStore; } set => _RewardValueLocationStore = value; }
         public Single? RewardValue => _RewardValueLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _RewardValueLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         partial void CustomFactoryEnd(

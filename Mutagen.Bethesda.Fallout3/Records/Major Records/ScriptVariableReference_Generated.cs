@@ -1086,7 +1086,8 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region VariableIndex
-        private int? _VariableIndexLocation;
+        private int? _VariableIndexLocationStore;
+        private int? _VariableIndexLocation { get { EnsureFilled(); return _VariableIndexLocationStore; } set => _VariableIndexLocationStore = value; }
         public Int32 VariableIndex => _VariableIndexLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _VariableIndexLocation.Value, _package.MetaData.Constants)) : default(Int32);
         #endregion
         partial void CustomFactoryEnd(

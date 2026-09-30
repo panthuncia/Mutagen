@@ -1273,7 +1273,8 @@ namespace Mutagen.Bethesda.Oblivion
         public ReadOnlyMemorySlice<Byte> NumConnectionsFluffBytes => _structData.Span.Slice(0xC, 0x3).ToArray();
         #region Connections
         public IReadOnlyList<P3Float> Connections => BinaryOverlayList.FactoryByStartIndex<P3Float>(_structData.Slice(0xF), _package, 12, (s, p) => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(s));
-        protected int ConnectionsEndingPos;
+        private int ConnectionsEndingPosStore;
+        protected int ConnectionsEndingPos { get { EnsureFilled(); return ConnectionsEndingPosStore; } private set => ConnectionsEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

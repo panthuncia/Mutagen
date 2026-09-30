@@ -1695,7 +1695,8 @@ namespace Mutagen.Bethesda.Fallout4
         protected override Type LinkType => typeof(IAttractionRuleGetter);
 
 
-        private RangeInt32? _AOR2Location;
+        private RangeInt32? _AOR2LocationStore;
+        private RangeInt32? _AOR2Location { get { EnsureFilled(); return _AOR2LocationStore; } set => _AOR2LocationStore = value; }
         #region Radius
         private int _RadiusLocation => _AOR2Location!.Value.Min;
         private bool _Radius_IsSet => _AOR2Location.HasValue;
@@ -1747,6 +1748,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new AttractionRuleBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => AttractionRuleFill((AttractionRuleBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void AttractionRuleFill(
+            AttractionRuleBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1754,9 +1772,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new AttractionRuleBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1769,7 +1785,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IAttractionRuleGetter AttractionRuleFactory(

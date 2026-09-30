@@ -1878,12 +1878,19 @@ namespace Mutagen.Bethesda.Starfield
         protected override Type LinkType => typeof(ISoundKeywordMappingGetter);
 
 
-        public ISoundReferenceGetter? WED0 { get; private set; }
+        #region WED0
+        private ISoundReferenceGetter? WED0Store;
+        public ISoundReferenceGetter? WED0 { get { EnsureFilled(); return WED0Store; } private set => WED0Store = value; }
+        #endregion
         #region Keywords
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>> Keywords { get; private set; } = [];
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>> KeywordsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>> Keywords { get { EnsureFilled(); return KeywordsStore; } private set => KeywordsStore = value; }
         IReadOnlyList<IFormLinkGetter<IKeywordCommonGetter>>? IKeywordedGetter.Keywords => this.Keywords;
         #endregion
-        public IReadOnlyList<ISoundKeywordMappingItemGetter> Items { get; private set; } = [];
+        #region Items
+        private IReadOnlyList<ISoundKeywordMappingItemGetter> ItemsStore = [];
+        public IReadOnlyList<ISoundKeywordMappingItemGetter> Items { get { EnsureFilled(); return ItemsStore; } private set => ItemsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -1905,6 +1912,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new SoundKeywordMappingBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => SoundKeywordMappingFill((SoundKeywordMappingBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void SoundKeywordMappingFill(
+            SoundKeywordMappingBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1912,9 +1936,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new SoundKeywordMappingBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1927,7 +1949,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ISoundKeywordMappingGetter SoundKeywordMappingFactory(

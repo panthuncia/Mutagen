@@ -1874,7 +1874,8 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -1898,19 +1899,23 @@ namespace Mutagen.Bethesda.Starfield
             PreviousParse lastParsed);
         #endregion
         #region EditorWidth
-        private int? _EditorWidthLocation;
+        private int? _EditorWidthLocationStore;
+        private int? _EditorWidthLocation { get { EnsureFilled(); return _EditorWidthLocationStore; } set => _EditorWidthLocationStore = value; }
         public UInt32? EditorWidth => _EditorWidthLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EditorWidthLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public ScenePhase.Flag? Flags => EnumBinaryTranslation<ScenePhase.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 2);
         #endregion
         #region PhaseSetParentQuestStage
-        private RangeInt32? _PhaseSetParentQuestStageLocation;
+        private RangeInt32? _PhaseSetParentQuestStageLocationStore;
+        private RangeInt32? _PhaseSetParentQuestStageLocation { get { EnsureFilled(); return _PhaseSetParentQuestStageLocationStore; } set => _PhaseSetParentQuestStageLocationStore = value; }
         public ISceneSetParentQuestStageGetter? PhaseSetParentQuestStage => _PhaseSetParentQuestStageLocation.HasValue ? SceneSetParentQuestStageBinaryOverlay.SceneSetParentQuestStageFactory(_recordData.Slice(_PhaseSetParentQuestStageLocation!.Value.Min), _package) : default;
         #endregion
         #region SPMV
-        private int? _SPMVLocation;
+        private int? _SPMVLocationStore;
+        private int? _SPMVLocation { get { EnsureFilled(); return _SPMVLocationStore; } set => _SPMVLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? SPMV => _SPMVLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SPMVLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

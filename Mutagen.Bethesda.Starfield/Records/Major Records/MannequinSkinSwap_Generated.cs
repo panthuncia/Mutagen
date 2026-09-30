@@ -1290,10 +1290,14 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region MSSS
-        private int? _MSSSLocation;
+        private int? _MSSSLocationStore;
+        private int? _MSSSLocation { get { EnsureFilled(); return _MSSSLocationStore; } set => _MSSSLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? MSSS => _MSSSLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MSSSLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
-        public IReadOnlyList<IMannequinSkinSwapItemGetter> Items { get; private set; } = [];
+        #region Items
+        private IReadOnlyList<IMannequinSkinSwapItemGetter> ItemsStore = [];
+        public IReadOnlyList<IMannequinSkinSwapItemGetter> Items { get { EnsureFilled(); return ItemsStore; } private set => ItemsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

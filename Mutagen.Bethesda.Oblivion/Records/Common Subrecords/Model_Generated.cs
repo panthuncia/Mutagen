@@ -1222,15 +1222,18 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region File
-        private int? _FileLocation;
+        private int? _FileLocationStore;
+        private int? _FileLocation { get { EnsureFilled(); return _FileLocationStore; } set => _FileLocationStore = value; }
         public String File => _FileLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FileLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region BoundRadius
-        private int? _BoundRadiusLocation;
+        private int? _BoundRadiusLocationStore;
+        private int? _BoundRadiusLocation { get { EnsureFilled(); return _BoundRadiusLocationStore; } set => _BoundRadiusLocationStore = value; }
         public Single BoundRadius => _BoundRadiusLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _BoundRadiusLocation.Value, _package.MetaData.Constants).Float() : default(Single);
         #endregion
         #region Hashes
-        private int? _HashesLocation;
+        private int? _HashesLocationStore;
+        private int? _HashesLocation { get { EnsureFilled(); return _HashesLocationStore; } set => _HashesLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? Hashes => _HashesLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _HashesLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

@@ -1761,12 +1761,19 @@ namespace Mutagen.Bethesda.Starfield
         protected override Type LinkType => typeof(IAmbienceSetGetter);
 
 
-        public IReadOnlyList<IAmbientSoundEventGetter>? Sounds { get; private set; }
+        #region Sounds
+        private IReadOnlyList<IAmbientSoundEventGetter>? SoundsStore;
+        public IReadOnlyList<IAmbientSoundEventGetter>? Sounds { get { EnsureFilled(); return SoundsStore; } private set => SoundsStore = value; }
+        #endregion
         #region MergeBehavior
-        private int? _MergeBehaviorLocation;
+        private int? _MergeBehaviorLocationStore;
+        private int? _MergeBehaviorLocation { get { EnsureFilled(); return _MergeBehaviorLocationStore; } set => _MergeBehaviorLocationStore = value; }
         public AmbienceSet.MergeBehaviorEnum? MergeBehavior => EnumBinaryTranslation<AmbienceSet.MergeBehaviorEnum, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_MergeBehaviorLocation, _recordData, _package, 1);
         #endregion
-        public ISoundReferenceGetter? WallaExterior { get; private set; }
+        #region WallaExterior
+        private ISoundReferenceGetter? WallaExteriorStore;
+        public ISoundReferenceGetter? WallaExterior { get { EnsureFilled(); return WallaExteriorStore; } private set => WallaExteriorStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -1788,6 +1795,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new AmbienceSetBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => AmbienceSetFill((AmbienceSetBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void AmbienceSetFill(
+            AmbienceSetBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1795,9 +1819,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new AmbienceSetBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1810,7 +1832,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IAmbienceSetGetter AmbienceSetFactory(

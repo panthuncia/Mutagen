@@ -1948,17 +1948,26 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region Quest
-        private int? _QuestLocation;
+        private int? _QuestLocationStore;
+        private int? _QuestLocation { get { EnsureFilled(); return _QuestLocationStore; } set => _QuestLocationStore = value; }
         public IFormLinkNullableGetter<IQuestGetter> Quest => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IQuestGetter>(_package, _recordData, _QuestLocation);
         #endregion
-        public IReadOnlyList<ISceneCollectionItemGetter> Scenes { get; private set; } = [];
+        #region Scenes
+        private IReadOnlyList<ISceneCollectionItemGetter> ScenesStore = [];
+        public IReadOnlyList<ISceneCollectionItemGetter> Scenes { get { EnsureFilled(); return ScenesStore; } private set => ScenesStore = value; }
+        #endregion
         #region VNAM
-        private int? _VNAMLocation;
+        private int? _VNAMLocationStore;
+        private int? _VNAMLocation { get { EnsureFilled(); return _VNAMLocationStore; } set => _VNAMLocationStore = value; }
         public Int32? VNAM => _VNAMLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _VNAMLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
-        public IReadOnlyList<Int64> XNAMs { get; private set; } = [];
+        #region XNAMs
+        private IReadOnlyList<Int64> XNAMsStore = [];
+        public IReadOnlyList<Int64> XNAMs { get { EnsureFilled(); return XNAMsStore; } private set => XNAMsStore = value; }
+        #endregion
         #region VNAM2
-        private int? _VNAM2Location;
+        private int? _VNAM2LocationStore;
+        private int? _VNAM2Location { get { EnsureFilled(); return _VNAM2LocationStore; } set => _VNAM2LocationStore = value; }
         public Int32? VNAM2 => _VNAM2Location.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _VNAM2Location.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         partial void CustomFactoryEnd(
@@ -1982,6 +1991,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new SceneCollectionBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => SceneCollectionFill((SceneCollectionBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void SceneCollectionFill(
+            SceneCollectionBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1989,9 +2015,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new SceneCollectionBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2004,7 +2028,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ISceneCollectionGetter SceneCollectionFactory(

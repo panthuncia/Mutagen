@@ -2192,8 +2192,10 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
@@ -2206,19 +2208,28 @@ namespace Mutagen.Bethesda.Starfield
         public Single ChanceNone => GetChanceNoneCustom();
         #endregion
         #region MaxCount
-        private int? _MaxCountLocation;
+        private int? _MaxCountLocationStore;
+        private int? _MaxCountLocation { get { EnsureFilled(); return _MaxCountLocationStore; } set => _MaxCountLocationStore = value; }
         public Byte MaxCount => _MaxCountLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaxCountLocation.Value, _package.MetaData.Constants)[0] : default(Byte);
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public LeveledSpaceCell.Flag Flags => EnumBinaryTranslation<LeveledSpaceCell.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_FlagsLocation, _recordData, _package, 2);
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region UseGlobal
-        private int? _UseGlobalLocation;
+        private int? _UseGlobalLocationStore;
+        private int? _UseGlobalLocation { get { EnsureFilled(); return _UseGlobalLocationStore; } set => _UseGlobalLocationStore = value; }
         public IFormLinkNullableGetter<IGlobalGetter> UseGlobal => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IGlobalGetter>(_package, _recordData, _UseGlobalLocation);
         #endregion
-        public IReadOnlyList<ILeveledNpcEntryGetter>? Entries { get; private set; }
+        #region Entries
+        private IReadOnlyList<ILeveledNpcEntryGetter>? EntriesStore;
+        public IReadOnlyList<ILeveledNpcEntryGetter>? Entries { get { EnsureFilled(); return EntriesStore; } private set => EntriesStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

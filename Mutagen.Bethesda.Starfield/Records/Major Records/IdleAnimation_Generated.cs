@@ -2102,16 +2102,22 @@ namespace Mutagen.Bethesda.Starfield
         protected override Type LinkType => typeof(IIdleAnimationGetter);
 
 
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region BehaviorGraph
-        private int? _BehaviorGraphLocation;
+        private int? _BehaviorGraphLocationStore;
+        private int? _BehaviorGraphLocation { get { EnsureFilled(); return _BehaviorGraphLocationStore; } set => _BehaviorGraphLocationStore = value; }
         public String? BehaviorGraph => _BehaviorGraphLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BehaviorGraphLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region AnimationEvent
-        private int? _AnimationEventLocation;
+        private int? _AnimationEventLocationStore;
+        private int? _AnimationEventLocation { get { EnsureFilled(); return _AnimationEventLocationStore; } set => _AnimationEventLocationStore = value; }
         public String? AnimationEvent => _AnimationEventLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AnimationEventLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        private RangeInt32? _ANAMLocation;
+        private RangeInt32? _ANAMLocationStore;
+        private RangeInt32? _ANAMLocation { get { EnsureFilled(); return _ANAMLocationStore; } set => _ANAMLocationStore = value; }
         #region ParentAnimation
         private int _ParentAnimationLocation => _ANAMLocation!.Value.Min;
         private bool _ParentAnimation_IsSet => _ANAMLocation.HasValue;
@@ -2123,15 +2129,18 @@ namespace Mutagen.Bethesda.Starfield
         public IFormLinkGetter<IIdleRelationGetter> PreviousAnimation => _PreviousAnimation_IsSet ? FormLinkBinaryTranslation.Instance.OverlayFactory<IIdleRelationGetter>(_package, _recordData.Span.Slice(_PreviousAnimationLocation, 0x4), isSet: _PreviousAnimation_IsSet) : FormLink<IIdleRelationGetter>.Null;
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public IdleAnimation.Flag? Flags => EnumBinaryTranslation<IdleAnimation.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 1);
         #endregion
         #region AnimationFile
-        private int? _AnimationFileLocation;
+        private int? _AnimationFileLocationStore;
+        private int? _AnimationFileLocation { get { EnsureFilled(); return _AnimationFileLocationStore; } set => _AnimationFileLocationStore = value; }
         public String? AnimationFile => _AnimationFileLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AnimationFileLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2163,6 +2172,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new IdleAnimationBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => IdleAnimationFill((IdleAnimationBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void IdleAnimationFill(
+            IdleAnimationBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2170,9 +2196,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new IdleAnimationBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2185,7 +2209,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IIdleAnimationGetter IdleAnimationFactory(

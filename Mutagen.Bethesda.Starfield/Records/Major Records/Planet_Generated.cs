@@ -3726,77 +3726,106 @@ namespace Mutagen.Bethesda.Starfield
         protected override Type LinkType => typeof(IPlanetGetter);
 
 
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
-        public IReadOnlyList<IMasterWorldspaceGetter>? MasterWorldspaces { get; private set; }
-        public IReadOnlyList<IAddedWorldspaceGetter>? AddedWorldspaces { get; private set; }
-        public IReadOnlyList<IPlanetBiomeGetter> Biomes { get; private set; } = [];
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
+        #region MasterWorldspaces
+        private IReadOnlyList<IMasterWorldspaceGetter>? MasterWorldspacesStore;
+        public IReadOnlyList<IMasterWorldspaceGetter>? MasterWorldspaces { get { EnsureFilled(); return MasterWorldspacesStore; } private set => MasterWorldspacesStore = value; }
+        #endregion
+        #region AddedWorldspaces
+        private IReadOnlyList<IAddedWorldspaceGetter>? AddedWorldspacesStore;
+        public IReadOnlyList<IAddedWorldspaceGetter>? AddedWorldspaces { get { EnsureFilled(); return AddedWorldspacesStore; } private set => AddedWorldspacesStore = value; }
+        #endregion
+        #region Biomes
+        private IReadOnlyList<IPlanetBiomeGetter> BiomesStore = [];
+        public IReadOnlyList<IPlanetBiomeGetter> Biomes { get { EnsureFilled(); return BiomesStore; } private set => BiomesStore = value; }
+        #endregion
         #region SurfaceTree
-        private int? _SurfaceTreeLocation;
+        private int? _SurfaceTreeLocationStore;
+        private int? _SurfaceTreeLocation { get { EnsureFilled(); return _SurfaceTreeLocationStore; } set => _SurfaceTreeLocationStore = value; }
         public IFormLinkNullableGetter<ISurfaceTreeGetter> SurfaceTree => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISurfaceTreeGetter>(_package, _recordData, _SurfaceTreeLocation);
         #endregion
         #region ScanWorldspaceMultiplier
-        private int? _ScanWorldspaceMultiplierLocation;
+        private int? _ScanWorldspaceMultiplierLocationStore;
+        private int? _ScanWorldspaceMultiplierLocation { get { EnsureFilled(); return _ScanWorldspaceMultiplierLocationStore; } set => _ScanWorldspaceMultiplierLocationStore = value; }
         public Single? ScanWorldspaceMultiplier => _ScanWorldspaceMultiplierLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ScanWorldspaceMultiplierLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region EnvironmentMap
-        private int? _EnvironmentMapLocation;
+        private int? _EnvironmentMapLocationStore;
+        private int? _EnvironmentMapLocation { get { EnsureFilled(); return _EnvironmentMapLocationStore; } set => _EnvironmentMapLocationStore = value; }
         public String? EnvironmentMap => _EnvironmentMapLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EnvironmentMapLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region BodyType
-        private int? _BodyTypeLocation;
+        private int? _BodyTypeLocationStore;
+        private int? _BodyTypeLocation { get { EnsureFilled(); return _BodyTypeLocationStore; } set => _BodyTypeLocationStore = value; }
         public Planet.BodyTypeEnum BodyType => EnumBinaryTranslation<Planet.BodyTypeEnum, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_BodyTypeLocation, _recordData, _package, 1);
         #endregion
         #region SpaceCell
-        private RangeInt32? _SpaceCellLocation;
+        private RangeInt32? _SpaceCellLocationStore;
+        private RangeInt32? _SpaceCellLocation { get { EnsureFilled(); return _SpaceCellLocationStore; } set => _SpaceCellLocationStore = value; }
         public ISpaceCellGetter? SpaceCell => _SpaceCellLocation.HasValue ? SpaceCellBinaryOverlay.SpaceCellFactory(_recordData.Slice(_SpaceCellLocation!.Value.Min), _package) : default;
         #endregion
         #region OrbitalData
-        private RangeInt32? _OrbitalDataLocation;
+        private RangeInt32? _OrbitalDataLocationStore;
+        private RangeInt32? _OrbitalDataLocation { get { EnsureFilled(); return _OrbitalDataLocationStore; } set => _OrbitalDataLocationStore = value; }
         private IOrbitalDataGetter? _OrbitalData => _OrbitalDataLocation.HasValue ? OrbitalDataBinaryOverlay.OrbitalDataFactory(_recordData.Slice(_OrbitalDataLocation!.Value.Min), _package) : default;
         public IOrbitalDataGetter OrbitalData => _OrbitalData ?? new OrbitalData();
         #endregion
         #region OrbitedData
-        private RangeInt32? _OrbitedDataLocation;
+        private RangeInt32? _OrbitedDataLocationStore;
+        private RangeInt32? _OrbitedDataLocation { get { EnsureFilled(); return _OrbitedDataLocationStore; } set => _OrbitedDataLocationStore = value; }
         public IOrbitedDataGetter? OrbitedData => _OrbitedDataLocation.HasValue ? OrbitedDataBinaryOverlay.OrbitedDataFactory(_recordData.Slice(_OrbitedDataLocation!.Value.Min), _package) : default;
         #endregion
         #region GalaxyData
-        private RangeInt32? _GalaxyDataLocation;
+        private RangeInt32? _GalaxyDataLocationStore;
+        private RangeInt32? _GalaxyDataLocation { get { EnsureFilled(); return _GalaxyDataLocationStore; } set => _GalaxyDataLocationStore = value; }
         public IGalaxyDataGetter? GalaxyData => _GalaxyDataLocation.HasValue ? GalaxyDataBinaryOverlay.GalaxyDataFactory(_recordData.Slice(_GalaxyDataLocation!.Value.Min), _package) : default;
         #endregion
         #region Details
-        private RangeInt32? _DetailsLocation;
+        private RangeInt32? _DetailsLocationStore;
+        private RangeInt32? _DetailsLocation { get { EnsureFilled(); return _DetailsLocationStore; } set => _DetailsLocationStore = value; }
         public IPlanetDetailsGetter? Details => _DetailsLocation.HasValue ? PlanetDetailsBinaryOverlay.PlanetDetailsFactory(_recordData.Slice(_DetailsLocation!.Value.Min), _package) : default;
         #endregion
         #region AtmosphereData
-        private RangeInt32? _AtmosphereDataLocation;
+        private RangeInt32? _AtmosphereDataLocationStore;
+        private RangeInt32? _AtmosphereDataLocation { get { EnsureFilled(); return _AtmosphereDataLocationStore; } set => _AtmosphereDataLocationStore = value; }
         public IAtmosphereDataGetter? AtmosphereData => _AtmosphereDataLocation.HasValue ? AtmosphereDataBinaryOverlay.AtmosphereDataFactory(_recordData.Slice(_AtmosphereDataLocation!.Value.Min), _package) : default;
         #endregion
         #region BiomeNoise
-        private RangeInt32? _BiomeNoiseLocation;
+        private RangeInt32? _BiomeNoiseLocationStore;
+        private RangeInt32? _BiomeNoiseLocation { get { EnsureFilled(); return _BiomeNoiseLocationStore; } set => _BiomeNoiseLocationStore = value; }
         public IBiomeNoiseGetter? BiomeNoise => _BiomeNoiseLocation.HasValue ? BiomeNoiseBinaryOverlay.BiomeNoiseFactory(_recordData.Slice(_BiomeNoiseLocation!.Value.Min), _package) : default;
         #endregion
         #region PlayerKnowledge
-        private int? _PlayerKnowledgeLocation;
+        private int? _PlayerKnowledgeLocationStore;
+        private int? _PlayerKnowledgeLocation { get { EnsureFilled(); return _PlayerKnowledgeLocationStore; } set => _PlayerKnowledgeLocationStore = value; }
         public Planet.PlayerKnowledgeFlag? PlayerKnowledge => EnumBinaryTranslation<Planet.PlayerKnowledgeFlag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_PlayerKnowledgeLocation, _recordData, _package, 4);
         #endregion
         #region Temperature
-        private int? _TemperatureLocation;
+        private int? _TemperatureLocationStore;
+        private int? _TemperatureLocation { get { EnsureFilled(); return _TemperatureLocationStore; } set => _TemperatureLocationStore = value; }
         public Single? Temperature => _TemperatureLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _TemperatureLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region Density
-        private int? _DensityLocation;
+        private int? _DensityLocationStore;
+        private int? _DensityLocation { get { EnsureFilled(); return _DensityLocationStore; } set => _DensityLocationStore = value; }
         public Single? Density => _DensityLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DensityLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region PerihelionAngleDegrees
-        private int? _PerihelionAngleDegreesLocation;
+        private int? _PerihelionAngleDegreesLocationStore;
+        private int? _PerihelionAngleDegreesLocation { get { EnsureFilled(); return _PerihelionAngleDegreesLocationStore; } set => _PerihelionAngleDegreesLocationStore = value; }
         public Single? PerihelionAngleDegrees => _PerihelionAngleDegreesLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _PerihelionAngleDegreesLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region ResourceCreationSeed
-        private int? _ResourceCreationSeedLocation;
+        private int? _ResourceCreationSeedLocationStore;
+        private int? _ResourceCreationSeedLocation { get { EnsureFilled(); return _ResourceCreationSeedLocationStore; } set => _ResourceCreationSeedLocationStore = value; }
         public Int32? ResourceCreationSeed => _ResourceCreationSeedLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ResourceCreationSeedLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         partial void CustomFactoryEnd(
@@ -3820,6 +3849,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new PlanetBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => PlanetFill((PlanetBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void PlanetFill(
+            PlanetBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -3827,9 +3873,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new PlanetBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -3842,7 +3886,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IPlanetGetter PlanetFactory(

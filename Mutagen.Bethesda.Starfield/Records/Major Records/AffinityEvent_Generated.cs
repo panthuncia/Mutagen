@@ -2132,36 +2132,47 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public AffinityEvent.Flag Flags => EnumBinaryTranslation<AffinityEvent.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_FlagsLocation, _recordData, _package, 4);
         #endregion
         #region ContextNotes
-        private int? _ContextNotesLocation;
+        private int? _ContextNotesLocationStore;
+        private int? _ContextNotesLocation { get { EnsureFilled(); return _ContextNotesLocationStore; } set => _ContextNotesLocationStore = value; }
         public String? ContextNotes => _ContextNotesLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ContextNotesLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        public IReadOnlyList<IActorReactionGetter> ActorReactions { get; private set; } = [];
+        #region ActorReactions
+        private IReadOnlyList<IActorReactionGetter> ActorReactionsStore = [];
+        public IReadOnlyList<IActorReactionGetter> ActorReactions { get { EnsureFilled(); return ActorReactionsStore; } private set => ActorReactionsStore = value; }
+        #endregion
         #region ActorValue
-        private int? _ActorValueLocation;
+        private int? _ActorValueLocationStore;
+        private int? _ActorValueLocation { get { EnsureFilled(); return _ActorValueLocationStore; } set => _ActorValueLocationStore = value; }
         public IFormLinkNullableGetter<IActorValueInformationGetter> ActorValue => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IActorValueInformationGetter>(_package, _recordData, _ActorValueLocation);
         #endregion
         #region EventSize
-        private int? _EventSizeLocation;
+        private int? _EventSizeLocationStore;
+        private int? _EventSizeLocation { get { EnsureFilled(); return _EventSizeLocationStore; } set => _EventSizeLocationStore = value; }
         public IFormLinkNullableGetter<IGlobalGetter> EventSize => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IGlobalGetter>(_package, _recordData, _EventSizeLocation);
         #endregion
         #region DistanceToPlayer
-        private int? _DistanceToPlayerLocation;
+        private int? _DistanceToPlayerLocationStore;
+        private int? _DistanceToPlayerLocation { get { EnsureFilled(); return _DistanceToPlayerLocationStore; } set => _DistanceToPlayerLocationStore = value; }
         public IFormLinkNullableGetter<IGlobalGetter> DistanceToPlayer => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IGlobalGetter>(_package, _recordData, _DistanceToPlayerLocation);
         #endregion
         #region CooldownInMinutes
-        private int? _CooldownInMinutesLocation;
+        private int? _CooldownInMinutesLocationStore;
+        private int? _CooldownInMinutesLocation { get { EnsureFilled(); return _CooldownInMinutesLocationStore; } set => _CooldownInMinutesLocationStore = value; }
         public IFormLinkNullableGetter<IGlobalGetter> CooldownInMinutes => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IGlobalGetter>(_package, _recordData, _CooldownInMinutesLocation);
         #endregion
         #region RequiredFaction
-        private int? _RequiredFactionLocation;
+        private int? _RequiredFactionLocationStore;
+        private int? _RequiredFactionLocation { get { EnsureFilled(); return _RequiredFactionLocationStore; } set => _RequiredFactionLocationStore = value; }
         public IFormLinkNullableGetter<IFactionGetter> RequiredFaction => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IFactionGetter>(_package, _recordData, _RequiredFactionLocation);
         #endregion
         #region AddToEvent
-        private int? _AddToEventLocation;
+        private int? _AddToEventLocationStore;
+        private int? _AddToEventLocation { get { EnsureFilled(); return _AddToEventLocationStore; } set => _AddToEventLocationStore = value; }
         public IFormLinkNullableGetter<IAffinityEventGetter> AddToEvent => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IAffinityEventGetter>(_package, _recordData, _AddToEventLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -2185,6 +2196,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new AffinityEventBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => AffinityEventFill((AffinityEventBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void AffinityEventFill(
+            AffinityEventBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2192,9 +2220,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new AffinityEventBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2207,7 +2233,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IAffinityEventGetter AffinityEventFactory(

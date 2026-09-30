@@ -1168,7 +1168,8 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public ISurfaceTreePatternSwapInfoComponentDataGetter? Data => _DataLocation.HasValue ? SurfaceTreePatternSwapInfoComponentDataBinaryOverlay.SurfaceTreePatternSwapInfoComponentDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         #endregion
         partial void CustomFactoryEnd(

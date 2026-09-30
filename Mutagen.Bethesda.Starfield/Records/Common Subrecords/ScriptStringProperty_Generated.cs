@@ -1090,7 +1090,8 @@ namespace Mutagen.Bethesda.Starfield
 
         #region Data
         public String Data => BinaryStringUtility.ParsePrependedString(_structData.Slice(0x0), lengthLength: 2, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int DataEndingPos;
+        private int DataEndingPosStore;
+        protected int DataEndingPos { get { EnsureFilled(); return DataEndingPosStore; } private set => DataEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

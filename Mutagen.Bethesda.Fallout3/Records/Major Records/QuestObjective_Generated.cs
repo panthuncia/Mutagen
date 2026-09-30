@@ -1345,14 +1345,19 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Index
-        private int? _IndexLocation;
+        private int? _IndexLocationStore;
+        private int? _IndexLocation { get { EnsureFilled(); return _IndexLocationStore; } set => _IndexLocationStore = value; }
         public Int32 Index => _IndexLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IndexLocation.Value, _package.MetaData.Constants)) : default(Int32);
         #endregion
         #region Description
-        private int? _DescriptionLocation;
+        private int? _DescriptionLocationStore;
+        private int? _DescriptionLocation { get { EnsureFilled(); return _DescriptionLocationStore; } set => _DescriptionLocationStore = value; }
         public String? Description => _DescriptionLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DescriptionLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        public IReadOnlyList<IQuestObjectiveTargetGetter> Targets { get; private set; } = [];
+        #region Targets
+        private IReadOnlyList<IQuestObjectiveTargetGetter> TargetsStore = [];
+        public IReadOnlyList<IQuestObjectiveTargetGetter> Targets { get { EnsureFilled(); return TargetsStore; } private set => TargetsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

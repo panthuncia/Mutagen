@@ -1213,11 +1213,13 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region File
-        private int? _FileLocation;
+        private int? _FileLocationStore;
+        private int? _FileLocation { get { EnsureFilled(); return _FileLocationStore; } set => _FileLocationStore = value; }
         public AssetLinkGetter<SkyrimModelAssetType> File => _FileLocation.HasValue ? new AssetLinkGetter<SkyrimModelAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FileLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : AssetLinkGetter<SkyrimModelAssetType>.Null;
         #endregion
         #region Data
-        private int? _DataLocation;
+        private int? _DataLocationStore;
+        private int? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? Data => _DataLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DataLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

@@ -1207,8 +1207,10 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Text
-        public ITranslatedStringGetter Text { get; private set; } = TranslatedString.Empty;
-        protected int TextEndingPos;
+        private ITranslatedStringGetter TextStore = TranslatedString.Empty;
+        public ITranslatedStringGetter Text { get { EnsureFilled(); return TextStore; } private set => TextStore = value; }
+        private int TextEndingPosStore;
+        protected int TextEndingPos { get { EnsureFilled(); return TextEndingPosStore; } private set => TextEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

@@ -1161,11 +1161,13 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region AddonIndex
-        private int? _AddonIndexLocation;
+        private int? _AddonIndexLocationStore;
+        private int? _AddonIndexLocation { get { EnsureFilled(); return _AddonIndexLocationStore; } set => _AddonIndexLocationStore = value; }
         public UInt16? AddonIndex => _AddonIndexLocation.HasValue ? BinaryPrimitives.ReadUInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AddonIndexLocation.Value, _package.MetaData.Constants)) : default(UInt16?);
         #endregion
         #region ArmorAddon
-        private int? _ArmorAddonLocation;
+        private int? _ArmorAddonLocationStore;
+        private int? _ArmorAddonLocation { get { EnsureFilled(); return _ArmorAddonLocationStore; } set => _ArmorAddonLocationStore = value; }
         public IFormLinkNullableGetter<IArmorAddonGetter> ArmorAddon => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IArmorAddonGetter>(_package, _recordData, _ArmorAddonLocation);
         #endregion
         partial void CustomFactoryEnd(

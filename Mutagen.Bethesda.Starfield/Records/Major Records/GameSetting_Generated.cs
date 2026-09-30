@@ -1393,7 +1393,8 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region XALG
-        private int? _XALGLocation;
+        private int? _XALGLocationStore;
+        private int? _XALGLocation { get { EnsureFilled(); return _XALGLocationStore; } set => _XALGLocationStore = value; }
         public UInt64? XALG => _XALGLocation.HasValue ? BinaryPrimitives.ReadUInt64LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _XALGLocation.Value, _package.MetaData.Constants)) : default(UInt64?);
         #endregion
         partial void CustomFactoryEnd(

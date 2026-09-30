@@ -1340,10 +1340,14 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region MusicType
-        private int? _MusicTypeLocation;
+        private int? _MusicTypeLocationStore;
+        private int? _MusicTypeLocation { get { EnsureFilled(); return _MusicTypeLocationStore; } set => _MusicTypeLocationStore = value; }
         public MusicType? MusicType => EnumBinaryTranslation<MusicType, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_MusicTypeLocation, _recordData, _package, 4);
         #endregion
-        public IReadOnlyList<IRegionSoundGetter>? Sounds { get; private set; }
+        #region Sounds
+        private IReadOnlyList<IRegionSoundGetter>? SoundsStore;
+        public IReadOnlyList<IRegionSoundGetter>? Sounds { get { EnsureFilled(); return SoundsStore; } private set => SoundsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

@@ -1545,9 +1545,13 @@ namespace Mutagen.Bethesda.Oblivion
         protected override Type LinkType => typeof(IAnimatedObjectGetter);
 
 
-        public IModelGetter? Model { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
         #region IdleAnimation
-        private int? _IdleAnimationLocation;
+        private int? _IdleAnimationLocationStore;
+        private int? _IdleAnimationLocation { get { EnsureFilled(); return _IdleAnimationLocationStore; } set => _IdleAnimationLocationStore = value; }
         public IFormLinkNullableGetter<IIdleAnimationGetter> IdleAnimation => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IIdleAnimationGetter>(_package, _recordData, _IdleAnimationLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -1571,6 +1575,23 @@ namespace Mutagen.Bethesda.Oblivion
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new AnimatedObjectBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => AnimatedObjectFill((AnimatedObjectBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void AnimatedObjectFill(
+            AnimatedObjectBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1578,9 +1599,7 @@ namespace Mutagen.Bethesda.Oblivion
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new AnimatedObjectBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1593,7 +1612,6 @@ namespace Mutagen.Bethesda.Oblivion
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IAnimatedObjectGetter AnimatedObjectFactory(

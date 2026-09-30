@@ -1401,27 +1401,33 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region TintType
-        private int? _TintTypeLocation;
+        private int? _TintTypeLocationStore;
+        private int? _TintTypeLocation { get { EnsureFilled(); return _TintTypeLocationStore; } set => _TintTypeLocationStore = value; }
         public TintType TintType => EnumBinaryTranslation<TintType, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_TintTypeLocation, _recordData, _package, 4);
         #endregion
         #region TintGroup
-        private int? _TintGroupLocation;
+        private int? _TintGroupLocationStore;
+        private int? _TintGroupLocation { get { EnsureFilled(); return _TintGroupLocationStore; } set => _TintGroupLocationStore = value; }
         public String TintGroup => _TintGroupLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TintGroupLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region TintName
-        private int? _TintNameLocation;
+        private int? _TintNameLocationStore;
+        private int? _TintNameLocation { get { EnsureFilled(); return _TintNameLocationStore; } set => _TintNameLocationStore = value; }
         public String TintName => _TintNameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TintNameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region TintTexture
-        private int? _TintTextureLocation;
+        private int? _TintTextureLocationStore;
+        private int? _TintTextureLocation { get { EnsureFilled(); return _TintTextureLocationStore; } set => _TintTextureLocationStore = value; }
         public String TintTexture => _TintTextureLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TintTextureLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region TintColor
-        private int? _TintColorLocation;
+        private int? _TintColorLocationStore;
+        private int? _TintColorLocation { get { EnsureFilled(); return _TintColorLocationStore; } set => _TintColorLocationStore = value; }
         public Color TintColor => _TintColorLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _TintColorLocation.Value, _package.MetaData.Constants).ReadColor(ColorBinaryType.Alpha) : default(Color);
         #endregion
         #region TintIntensity
-        private int? _TintIntensityLocation;
+        private int? _TintIntensityLocationStore;
+        private int? _TintIntensityLocation { get { EnsureFilled(); return _TintIntensityLocationStore; } set => _TintIntensityLocationStore = value; }
         public UInt32 TintIntensity => _TintIntensityLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TintIntensityLocation.Value, _package.MetaData.Constants)) : default(UInt32);
         #endregion
         partial void CustomFactoryEnd(

@@ -1120,7 +1120,8 @@ namespace Mutagen.Bethesda.Starfield
 
         #region CellEditorID
         public String CellEditorID => BinaryStringUtility.ParsePrependedString(_structData.Slice(0x0), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int CellEditorIDEndingPos;
+        private int CellEditorIDEndingPosStore;
+        protected int CellEditorIDEndingPos { get { EnsureFilled(); return CellEditorIDEndingPosStore; } private set => CellEditorIDEndingPosStore = value; }
         #endregion
         public Boolean IsUnique => _structData.Slice(CellEditorIDEndingPos, 0x1)[0] >= 1;
         partial void CustomFactoryEnd(

@@ -2693,28 +2693,48 @@ namespace Mutagen.Bethesda.Oblivion
 
 
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public IDialogItemDataGetter? Data => _DataLocation.HasValue ? DialogItemDataBinaryOverlay.DialogItemDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         #endregion
         #region Quest
-        private int? _QuestLocation;
+        private int? _QuestLocationStore;
+        private int? _QuestLocation { get { EnsureFilled(); return _QuestLocationStore; } set => _QuestLocationStore = value; }
         public IFormLinkNullableGetter<IQuestGetter> Quest => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IQuestGetter>(_package, _recordData, _QuestLocation);
         #endregion
         #region Topic
-        private int? _TopicLocation;
+        private int? _TopicLocationStore;
+        private int? _TopicLocation { get { EnsureFilled(); return _TopicLocationStore; } set => _TopicLocationStore = value; }
         public IFormLinkNullableGetter<IDialogTopicGetter> Topic => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogTopicGetter>(_package, _recordData, _TopicLocation);
         #endregion
         #region PreviousItem
-        private int? _PreviousItemLocation;
+        private int? _PreviousItemLocationStore;
+        private int? _PreviousItemLocation { get { EnsureFilled(); return _PreviousItemLocationStore; } set => _PreviousItemLocationStore = value; }
         public IFormLinkNullableGetter<IDialogItemGetter> PreviousItem => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogItemGetter>(_package, _recordData, _PreviousItemLocation);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IDialogTopicGetter>> Topics { get; private set; } = [];
-        public IReadOnlyList<IDialogResponseGetter> Responses { get; private set; } = [];
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<IDialogTopicGetter>> Choices { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<IDialogTopicGetter>> LinkFrom { get; private set; } = [];
+        #region Topics
+        private IReadOnlyList<IFormLinkGetter<IDialogTopicGetter>> TopicsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IDialogTopicGetter>> Topics { get { EnsureFilled(); return TopicsStore; } private set => TopicsStore = value; }
+        #endregion
+        #region Responses
+        private IReadOnlyList<IDialogResponseGetter> ResponsesStore = [];
+        public IReadOnlyList<IDialogResponseGetter> Responses { get { EnsureFilled(); return ResponsesStore; } private set => ResponsesStore = value; }
+        #endregion
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
+        #region Choices
+        private IReadOnlyList<IFormLinkGetter<IDialogTopicGetter>> ChoicesStore = [];
+        public IReadOnlyList<IFormLinkGetter<IDialogTopicGetter>> Choices { get { EnsureFilled(); return ChoicesStore; } private set => ChoicesStore = value; }
+        #endregion
+        #region LinkFrom
+        private IReadOnlyList<IFormLinkGetter<IDialogTopicGetter>> LinkFromStore = [];
+        public IReadOnlyList<IFormLinkGetter<IDialogTopicGetter>> LinkFrom { get { EnsureFilled(); return LinkFromStore; } private set => LinkFromStore = value; }
+        #endregion
         #region Script
-        private IScriptFieldsGetter? _Script;
+        private IScriptFieldsGetter? _ScriptStore;
+        private IScriptFieldsGetter? _Script { get { EnsureFilled(); return _ScriptStore; } set => _ScriptStore = value; }
         public IScriptFieldsGetter Script => _Script ?? new ScriptFields();
         #endregion
         partial void CustomFactoryEnd(
@@ -2738,6 +2758,23 @@ namespace Mutagen.Bethesda.Oblivion
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new DialogItemBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => DialogItemFill((DialogItemBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void DialogItemFill(
+            DialogItemBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2745,9 +2782,7 @@ namespace Mutagen.Bethesda.Oblivion
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new DialogItemBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2760,7 +2795,6 @@ namespace Mutagen.Bethesda.Oblivion
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IDialogItemGetter DialogItemFactory(

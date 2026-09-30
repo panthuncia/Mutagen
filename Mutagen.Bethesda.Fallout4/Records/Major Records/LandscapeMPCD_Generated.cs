@@ -1065,7 +1065,8 @@ namespace Mutagen.Bethesda.Fallout4
 
         #region MPCD
         public ReadOnlyMemorySlice<Byte> MPCD => _structData.Span.ToArray();
-        protected int MPCDEndingPos;
+        private int MPCDEndingPosStore;
+        protected int MPCDEndingPos { get { EnsureFilled(); return MPCDEndingPosStore; } private set => MPCDEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

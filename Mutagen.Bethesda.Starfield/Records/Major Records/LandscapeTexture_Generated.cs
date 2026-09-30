@@ -1889,20 +1889,25 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
         #region MaterialPath
-        private int? _MaterialPathLocation;
+        private int? _MaterialPathLocationStore;
+        private int? _MaterialPathLocation { get { EnsureFilled(); return _MaterialPathLocationStore; } set => _MaterialPathLocationStore = value; }
         public AssetLinkGetter<StarfieldMaterialAssetType>? MaterialPath => _MaterialPathLocation.HasValue ? new AssetLinkGetter<StarfieldMaterialAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaterialPathLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<StarfieldMaterialAssetType>?);
         #endregion
         #region MaterialType
-        private int? _MaterialTypeLocation;
+        private int? _MaterialTypeLocationStore;
+        private int? _MaterialTypeLocation { get { EnsureFilled(); return _MaterialTypeLocationStore; } set => _MaterialTypeLocationStore = value; }
         public IFormLinkGetter<IMaterialTypeGetter> MaterialType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMaterialTypeGetter>(_package, _recordData, _MaterialTypeLocation);
         #endregion
-        private RangeInt32? _HNAMLocation;
+        private RangeInt32? _HNAMLocationStore;
+        private RangeInt32? _HNAMLocation { get { EnsureFilled(); return _HNAMLocationStore; } set => _HNAMLocationStore = value; }
         #region HavokFriction
         private int _HavokFrictionLocation => _HNAMLocation!.Value.Min;
         private bool _HavokFriction_IsSet => _HNAMLocation.HasValue;
@@ -1914,7 +1919,8 @@ namespace Mutagen.Bethesda.Starfield
         public Byte HavokRestitution => _HavokRestitution_IsSet ? _recordData.Span[_HavokRestitutionLocation] : default;
         #endregion
         #region Dirtiness
-        private int? _DirtinessLocation;
+        private int? _DirtinessLocationStore;
+        private int? _DirtinessLocation { get { EnsureFilled(); return _DirtinessLocationStore; } set => _DirtinessLocationStore = value; }
         public Percent? Dirtiness => _DirtinessLocation.HasValue ? PercentBinaryTranslation.GetPercent(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DirtinessLocation.Value, _package.MetaData.Constants), FloatIntegerType.UInt) : default(Percent?);
         #endregion
         partial void CustomFactoryEnd(
@@ -1938,6 +1944,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new LandscapeTextureBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => LandscapeTextureFill((LandscapeTextureBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void LandscapeTextureFill(
+            LandscapeTextureBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1945,9 +1968,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new LandscapeTextureBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1960,7 +1981,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ILandscapeTextureGetter LandscapeTextureFactory(

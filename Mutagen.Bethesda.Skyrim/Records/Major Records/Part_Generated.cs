@@ -1194,11 +1194,13 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region PartType
-        private int? _PartTypeLocation;
+        private int? _PartTypeLocationStore;
+        private int? _PartTypeLocation { get { EnsureFilled(); return _PartTypeLocationStore; } set => _PartTypeLocationStore = value; }
         public Part.PartTypeEnum? PartType => EnumBinaryTranslation<Part.PartTypeEnum, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_PartTypeLocation, _recordData, _package, 4);
         #endregion
         #region FileName
-        private int? _FileNameLocation;
+        private int? _FileNameLocationStore;
+        private int? _FileNameLocation { get { EnsureFilled(); return _FileNameLocationStore; } set => _FileNameLocationStore = value; }
         public AssetLinkGetter<SkyrimDeformedModelAssetType>? FileName => _FileNameLocation.HasValue ? new AssetLinkGetter<SkyrimDeformedModelAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FileNameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<SkyrimDeformedModelAssetType>?);
         #endregion
         partial void CustomFactoryEnd(

@@ -1122,8 +1122,10 @@ namespace Mutagen.Bethesda.Starfield
 
         public IFormLinkGetter<IPlanetGetter> Planet => FormLinkBinaryTranslation.Instance.OverlayFactory<IPlanetGetter>(_package, _structData.Span.Slice(0x0, 0x4));
         #region SwitchState
-        public String SwitchState { get; private set; } = string.Empty;
-        protected int SwitchStateEndingPos;
+        private String SwitchStateStore = string.Empty;
+        public String SwitchState { get { EnsureFilled(); return SwitchStateStore; } private set => SwitchStateStore = value; }
+        private int SwitchStateEndingPosStore;
+        protected int SwitchStateEndingPos { get { EnsureFilled(); return SwitchStateEndingPosStore; } private set => SwitchStateEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

@@ -1263,7 +1263,10 @@ namespace Mutagen.Bethesda.Oblivion
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IFormLinkGetter<IGrassGetter>>? Grasses { get; private set; }
+        #region Grasses
+        private IReadOnlyList<IFormLinkGetter<IGrassGetter>>? GrassesStore;
+        public IReadOnlyList<IFormLinkGetter<IGrassGetter>>? Grasses { get { EnsureFilled(); return GrassesStore; } private set => GrassesStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

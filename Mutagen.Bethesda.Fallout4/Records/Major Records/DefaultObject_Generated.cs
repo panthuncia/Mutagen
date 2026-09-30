@@ -1436,7 +1436,8 @@ namespace Mutagen.Bethesda.Fallout4
 
 
         #region Object
-        private int? _ObjectLocation;
+        private int? _ObjectLocationStore;
+        private int? _ObjectLocation { get { EnsureFilled(); return _ObjectLocationStore; } set => _ObjectLocationStore = value; }
         public IFormLinkNullableGetter<IFallout4MajorRecordGetter> Object => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IFallout4MajorRecordGetter>(_package, _recordData, _ObjectLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -1460,6 +1461,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new DefaultObjectBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => DefaultObjectFill((DefaultObjectBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void DefaultObjectFill(
+            DefaultObjectBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1467,9 +1485,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new DefaultObjectBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1482,7 +1498,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IDefaultObjectGetter DefaultObjectFactory(

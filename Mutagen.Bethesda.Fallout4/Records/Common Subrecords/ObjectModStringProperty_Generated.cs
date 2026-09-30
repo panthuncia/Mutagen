@@ -918,8 +918,10 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Value
-        public String Value { get; private set; } = string.Empty;
-        protected int ValueEndingPos;
+        private String ValueStore = string.Empty;
+        public String Value { get { EnsureFilled(); return ValueStore; } private set => ValueStore = value; }
+        private int ValueEndingPosStore;
+        protected int ValueEndingPos { get { EnsureFilled(); return ValueEndingPosStore; } private set => ValueEndingPosStore = value; }
         #endregion
         public UInt32 Unused => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(ValueEndingPos, 0x4));
         public ObjectModProperty.FloatFunctionType FunctionType => (ObjectModProperty.FloatFunctionType)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(ValueEndingPos + 0x4, 0x4));

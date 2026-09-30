@@ -1836,20 +1836,27 @@ namespace Mutagen.Bethesda.Fallout3
         public LoadScreen.MajorFlag MajorFlags => (LoadScreen.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region LargeIconFilename
-        private int? _LargeIconFilenameLocation;
+        private int? _LargeIconFilenameLocationStore;
+        private int? _LargeIconFilenameLocation { get { EnsureFilled(); return _LargeIconFilenameLocationStore; } set => _LargeIconFilenameLocationStore = value; }
         public String LargeIconFilename => _LargeIconFilenameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LargeIconFilenameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region SmallIconFilename
-        private int? _SmallIconFilenameLocation;
+        private int? _SmallIconFilenameLocationStore;
+        private int? _SmallIconFilenameLocation { get { EnsureFilled(); return _SmallIconFilenameLocationStore; } set => _SmallIconFilenameLocationStore = value; }
         public String? SmallIconFilename => _SmallIconFilenameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SmallIconFilenameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Description
-        private int? _DescriptionLocation;
+        private int? _DescriptionLocationStore;
+        private int? _DescriptionLocation { get { EnsureFilled(); return _DescriptionLocationStore; } set => _DescriptionLocationStore = value; }
         public String Description => _DescriptionLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DescriptionLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
-        public IReadOnlyList<ILoadScreenLocationGetter> Locations { get; private set; } = [];
+        #region Locations
+        private IReadOnlyList<ILoadScreenLocationGetter> LocationsStore = [];
+        public IReadOnlyList<ILoadScreenLocationGetter> Locations { get { EnsureFilled(); return LocationsStore; } private set => LocationsStore = value; }
+        #endregion
         #region LoadScreenType
-        private int? _LoadScreenTypeLocation;
+        private int? _LoadScreenTypeLocationStore;
+        private int? _LoadScreenTypeLocation { get { EnsureFilled(); return _LoadScreenTypeLocationStore; } set => _LoadScreenTypeLocationStore = value; }
         public IFormLinkNullableGetter<ILoadScreenTypeGetter> LoadScreenType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ILoadScreenTypeGetter>(_package, _recordData, _LoadScreenTypeLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -1873,6 +1880,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new LoadScreenBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => LoadScreenFill((LoadScreenBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void LoadScreenFill(
+            LoadScreenBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1880,9 +1904,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new LoadScreenBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1895,7 +1917,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ILoadScreenGetter LoadScreenFactory(

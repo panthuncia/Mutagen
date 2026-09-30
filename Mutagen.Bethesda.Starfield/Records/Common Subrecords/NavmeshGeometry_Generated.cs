@@ -2996,7 +2996,8 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public NavmeshGeometry.VersioningBreaks Versioning { get; private set; }
+        private NavmeshGeometry.VersioningBreaks VersioningStore;
+        public NavmeshGeometry.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public UInt32 NavmeshVersion => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0x0, 0x4));
         public UInt32 CrcHash => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0x4, 0x4));
         #region Parent
@@ -3005,31 +3006,38 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region Vertices
         public IReadOnlyList<INavmeshVertexGetter> Vertices => BinaryOverlayList.FactoryByCountLength<INavmeshVertexGetter>(_structData.Slice(0x10), _package, 16, countLength: 4, (s, p) => NavmeshVertexBinaryOverlay.NavmeshVertexFactory(s, p));
-        protected int VerticesEndingPos;
+        private int VerticesEndingPosStore;
+        protected int VerticesEndingPos { get { EnsureFilled(); return VerticesEndingPosStore; } private set => VerticesEndingPosStore = value; }
         #endregion
         #region Triangles
-        protected int TrianglesEndingPos;
+        private int TrianglesEndingPosStore;
+        protected int TrianglesEndingPos { get { EnsureFilled(); return TrianglesEndingPosStore; } private set => TrianglesEndingPosStore = value; }
         partial void CustomTrianglesEndPos();
         #endregion
         #region EdgeLinks
         public IReadOnlyList<IEdgeLinkGetter> EdgeLinks => BinaryOverlayList.FactoryByCountLength<IEdgeLinkGetter>(_structData.Slice(TrianglesEndingPos), _package, 11, countLength: 4, (s, p) => EdgeLinkBinaryOverlay.EdgeLinkFactory(s, p));
-        protected int EdgeLinksEndingPos;
+        private int EdgeLinksEndingPosStore;
+        protected int EdgeLinksEndingPos { get { EnsureFilled(); return EdgeLinksEndingPosStore; } private set => EdgeLinksEndingPosStore = value; }
         #endregion
         #region DoorTriangles
         public IReadOnlyList<IDoorTriangleGetter> DoorTriangles => BinaryOverlayList.FactoryByCountLength<IDoorTriangleGetter>(_structData.Slice(EdgeLinksEndingPos), _package, 10, countLength: 4, (s, p) => DoorTriangleBinaryOverlay.DoorTriangleFactory(s, p));
-        protected int DoorTrianglesEndingPos;
+        private int DoorTrianglesEndingPosStore;
+        protected int DoorTrianglesEndingPos { get { EnsureFilled(); return DoorTrianglesEndingPosStore; } private set => DoorTrianglesEndingPosStore = value; }
         #endregion
         #region Cover
         public IReadOnlyList<INavmeshCoverGetter> Cover => BinaryOverlayList.FactoryByCountLength<INavmeshCoverGetter>(_structData.Slice(DoorTrianglesEndingPos), _package, 12, countLength: 4, (s, p) => NavmeshCoverBinaryOverlay.NavmeshCoverFactory(s, p));
-        protected int CoverEndingPos;
+        private int CoverEndingPosStore;
+        protected int CoverEndingPos { get { EnsureFilled(); return CoverEndingPosStore; } private set => CoverEndingPosStore = value; }
         #endregion
         #region CoverTriangleMappings
         public IReadOnlyList<INavmeshCoverTriangleMapGetter> CoverTriangleMappings => BinaryOverlayList.FactoryByCountLength<INavmeshCoverTriangleMapGetter>(_structData.Slice(CoverEndingPos), _package, 4, countLength: 4, (s, p) => NavmeshCoverTriangleMapBinaryOverlay.NavmeshCoverTriangleMapFactory(s, p));
-        protected int CoverTriangleMappingsEndingPos;
+        private int CoverTriangleMappingsEndingPosStore;
+        protected int CoverTriangleMappingsEndingPos { get { EnsureFilled(); return CoverTriangleMappingsEndingPosStore; } private set => CoverTriangleMappingsEndingPosStore = value; }
         #endregion
         #region Waypoints
         public IReadOnlyList<INavmeshWaypointGetter> Waypoints => BinaryOverlayList.FactoryByCountLength<INavmeshWaypointGetter>(_structData.Slice(CoverTriangleMappingsEndingPos), _package, 18, countLength: 4, (s, p) => NavmeshWaypointBinaryOverlay.NavmeshWaypointFactory(s, p));
-        protected int WaypointsEndingPos;
+        private int WaypointsEndingPosStore;
+        protected int WaypointsEndingPos { get { EnsureFilled(); return WaypointsEndingPosStore; } private set => WaypointsEndingPosStore = value; }
         #endregion
         public UInt32 GridSize => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(WaypointsEndingPos, 0x4));
         public P2Float GridMaxDistance => P2FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(WaypointsEndingPos + 0x4, 0x8));
@@ -3037,7 +3045,8 @@ namespace Mutagen.Bethesda.Starfield
         public P3Float GridMax => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(WaypointsEndingPos + 0x18, 0xC));
         #region GridArrays
         public IReadOnlyList<INavmeshGridArrayGetter> GridArrays => BinaryOverlayList.FactoryByLazyParse<INavmeshGridArrayGetter>(_structData.Slice(WaypointsEndingPos + 0x24), _package, (s, p) => NavmeshGridArrayBinaryOverlay.NavmeshGridArrayFactory(s, p));
-        protected int GridArraysEndingPos;
+        private int GridArraysEndingPosStore;
+        protected int GridArraysEndingPos { get { EnsureFilled(); return GridArraysEndingPosStore; } private set => GridArraysEndingPosStore = value; }
         #endregion
         public Int32 Unknown3 => _structData.Length <= GridArraysEndingPos + 0x0 ? default : BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(GridArraysEndingPos + 0x0, 0x4));
         partial void CustomFactoryEnd(

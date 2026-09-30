@@ -1142,11 +1142,13 @@ namespace Mutagen.Bethesda.Plugins.Records
         }
 
         #region Master
-        private int? _MasterLocation;
+        private int? _MasterLocationStore;
+        private int? _MasterLocation { get { EnsureFilled(); return _MasterLocationStore; } set => _MasterLocationStore = value; }
         public ModKey Master => _MasterLocation.HasValue ? ModKey.FromNameAndExtension(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MasterLocation.Value, _package.MetaData.Constants), _package.MetaData.Encodings.NonTranslated)) : ModKey.Null;
         #endregion
         #region FileSize
-        private int? _FileSizeLocation;
+        private int? _FileSizeLocationStore;
+        private int? _FileSizeLocation { get { EnsureFilled(); return _FileSizeLocationStore; } set => _FileSizeLocationStore = value; }
         public UInt64? FileSize => _FileSizeLocation.HasValue ? BinaryPrimitives.ReadUInt64LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FileSizeLocation.Value, _package.MetaData.Constants)) : default(UInt64?);
         #endregion
         partial void CustomFactoryEnd(

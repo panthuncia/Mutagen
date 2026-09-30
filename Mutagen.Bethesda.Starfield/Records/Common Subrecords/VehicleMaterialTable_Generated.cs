@@ -1609,16 +1609,22 @@ namespace Mutagen.Bethesda.Starfield
 
         public Guid MaterialID => new Guid(_structData.Slice(0x0, 0x10).Slice(0, 16));
         #region AudioRules
-        public IReadOnlyList<IVehicleAudioRuleGetter> AudioRules { get; private set; } = null!;
-        protected int AudioRulesEndingPos;
+        private IReadOnlyList<IVehicleAudioRuleGetter> AudioRulesStore = null!;
+        public IReadOnlyList<IVehicleAudioRuleGetter> AudioRules { get { EnsureFilled(); return AudioRulesStore; } private set => AudioRulesStore = value; }
+        private int AudioRulesEndingPosStore;
+        protected int AudioRulesEndingPos { get { EnsureFilled(); return AudioRulesEndingPosStore; } private set => AudioRulesEndingPosStore = value; }
         #endregion
         #region VfxRules
-        public IReadOnlyList<IVehicleVfxRuleGetter> VfxRules { get; private set; } = null!;
-        protected int VfxRulesEndingPos;
+        private IReadOnlyList<IVehicleVfxRuleGetter> VfxRulesStore = null!;
+        public IReadOnlyList<IVehicleVfxRuleGetter> VfxRules { get { EnsureFilled(); return VfxRulesStore; } private set => VfxRulesStore = value; }
+        private int VfxRulesEndingPosStore;
+        protected int VfxRulesEndingPos { get { EnsureFilled(); return VfxRulesEndingPosStore; } private set => VfxRulesEndingPosStore = value; }
         #endregion
         #region FrictionRules
-        public IReadOnlyList<IVehicleFrictionRuleGetter> FrictionRules { get; private set; } = null!;
-        protected int FrictionRulesEndingPos;
+        private IReadOnlyList<IVehicleFrictionRuleGetter> FrictionRulesStore = null!;
+        public IReadOnlyList<IVehicleFrictionRuleGetter> FrictionRules { get { EnsureFilled(); return FrictionRulesStore; } private set => FrictionRulesStore = value; }
+        private int FrictionRulesEndingPosStore;
+        protected int FrictionRulesEndingPos { get { EnsureFilled(); return FrictionRulesEndingPosStore; } private set => FrictionRulesEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

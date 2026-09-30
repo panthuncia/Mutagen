@@ -1673,19 +1673,28 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region MusicType
-        private int? _MusicTypeLocation;
+        private int? _MusicTypeLocationStore;
+        private int? _MusicTypeLocation { get { EnsureFilled(); return _MusicTypeLocationStore; } set => _MusicTypeLocationStore = value; }
         public UInt32? MusicType => _MusicTypeLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MusicTypeLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region Music
-        private int? _MusicLocation;
+        private int? _MusicLocationStore;
+        private int? _MusicLocation { get { EnsureFilled(); return _MusicLocationStore; } set => _MusicLocationStore = value; }
         public IFormLinkNullableGetter<IMusicTypeGetter> Music => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMusicTypeGetter>(_package, _recordData, _MusicLocation);
         #endregion
         #region IncidentalMediaSet
-        private int? _IncidentalMediaSetLocation;
+        private int? _IncidentalMediaSetLocationStore;
+        private int? _IncidentalMediaSetLocation { get { EnsureFilled(); return _IncidentalMediaSetLocationStore; } set => _IncidentalMediaSetLocationStore = value; }
         public IFormLinkNullableGetter<IMediaSetGetter> IncidentalMediaSet => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMediaSetGetter>(_package, _recordData, _IncidentalMediaSetLocation);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IMediaSetGetter>> BattleMediaSets { get; private set; } = [];
-        public IReadOnlyList<IRegionSoundGetter>? Sounds { get; private set; }
+        #region BattleMediaSets
+        private IReadOnlyList<IFormLinkGetter<IMediaSetGetter>> BattleMediaSetsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IMediaSetGetter>> BattleMediaSets { get { EnsureFilled(); return BattleMediaSetsStore; } private set => BattleMediaSetsStore = value; }
+        #endregion
+        #region Sounds
+        private IReadOnlyList<IRegionSoundGetter>? SoundsStore;
+        public IReadOnlyList<IRegionSoundGetter>? Sounds { get { EnsureFilled(); return SoundsStore; } private set => SoundsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

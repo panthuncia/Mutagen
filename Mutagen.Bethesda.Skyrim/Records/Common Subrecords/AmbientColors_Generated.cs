@@ -1497,7 +1497,8 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        public AmbientColors.VersioningBreaks Versioning { get; private set; }
+        private AmbientColors.VersioningBreaks VersioningStore;
+        public AmbientColors.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public Color DirectionalXPlus => _structData.Slice(0x0, 0x4).ReadColor(ColorBinaryType.Alpha);
         public Color DirectionalXMinus => _structData.Slice(0x4, 0x4).ReadColor(ColorBinaryType.Alpha);
         public Color DirectionalYPlus => _structData.Slice(0x8, 0x4).ReadColor(ColorBinaryType.Alpha);

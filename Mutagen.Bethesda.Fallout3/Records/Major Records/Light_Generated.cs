@@ -2740,25 +2740,38 @@ namespace Mutagen.Bethesda.Fallout3
         public Light.MajorFlag MajorFlags => (Light.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         public IObjectBoundsGetter? ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         #endregion
-        public IModelGetter? Model { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
         #region Script
-        private int? _ScriptLocation;
+        private int? _ScriptLocationStore;
+        private int? _ScriptLocation { get { EnsureFilled(); return _ScriptLocationStore; } set => _ScriptLocationStore = value; }
         public IFormLinkNullableGetter<IScriptGetter> Script => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IScriptGetter>(_package, _recordData, _ScriptLocation);
         #endregion
-        public IDestructibleGetter? Destructible { get; private set; }
+        #region Destructible
+        private IDestructibleGetter? DestructibleStore;
+        public IDestructibleGetter? Destructible { get { EnsureFilled(); return DestructibleStore; } private set => DestructibleStore = value; }
+        #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         string INamedRequiredGetter.Name => this.Name ?? string.Empty;
         #endregion
         #endregion
-        public IIconsGetter? Icons { get; private set; }
-        private RangeInt32? _DATALocation;
+        #region Icons
+        private IIconsGetter? IconsStore;
+        public IIconsGetter? Icons { get { EnsureFilled(); return IconsStore; } private set => IconsStore = value; }
+        #endregion
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         #region Time
         private int _TimeLocation => _DATALocation!.Value.Min;
         private bool _Time_IsSet => _DATALocation.HasValue;
@@ -2800,11 +2813,13 @@ namespace Mutagen.Bethesda.Fallout3
         public Single Weight => _Weight_IsSet ? _recordData.Slice(_WeightLocation, 4).Float() : default(Single);
         #endregion
         #region FadeValue
-        private int? _FadeValueLocation;
+        private int? _FadeValueLocationStore;
+        private int? _FadeValueLocation { get { EnsureFilled(); return _FadeValueLocationStore; } set => _FadeValueLocationStore = value; }
         public Single FadeValue => _FadeValueLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FadeValueLocation.Value, _package.MetaData.Constants).Float() : default(Single);
         #endregion
         #region Sound
-        private int? _SoundLocation;
+        private int? _SoundLocationStore;
+        private int? _SoundLocation { get { EnsureFilled(); return _SoundLocationStore; } set => _SoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> Sound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _SoundLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -2828,6 +2843,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new LightBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => LightFill((LightBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void LightFill(
+            LightBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2835,9 +2867,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new LightBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2850,7 +2880,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ILightGetter LightFactory(

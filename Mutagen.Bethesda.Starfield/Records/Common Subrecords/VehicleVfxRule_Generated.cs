@@ -1122,7 +1122,8 @@ namespace Mutagen.Bethesda.Starfield
 
         #region Rule
         public String Rule => BinaryStringUtility.ParsePrependedString(_structData.Slice(0x0), lengthLength: 1, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int RuleEndingPos;
+        private int RuleEndingPosStore;
+        protected int RuleEndingPos { get { EnsureFilled(); return RuleEndingPosStore; } private set => RuleEndingPosStore = value; }
         #endregion
         public IFormLinkGetter<IStarfieldMajorRecordGetter> BoundObject => FormLinkBinaryTranslation.Instance.OverlayFactory<IStarfieldMajorRecordGetter>(_package, _structData.Span.Slice(RuleEndingPos, 0x4));
         partial void CustomFactoryEnd(

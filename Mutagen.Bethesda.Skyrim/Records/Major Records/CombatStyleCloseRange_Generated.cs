@@ -1294,7 +1294,8 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        public CombatStyleCloseRange.VersioningBreaks Versioning { get; private set; }
+        private CombatStyleCloseRange.VersioningBreaks VersioningStore;
+        public CombatStyleCloseRange.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public Single CircleMult => _structData.Slice(0x0, 0x4).Float();
         public Single FallbackMult => _structData.Slice(0x4, 0x4).Float();
         public Single FlankDistance => _structData.Length <= 0x8 ? default : _structData.Slice(0x8, 0x4).Float();

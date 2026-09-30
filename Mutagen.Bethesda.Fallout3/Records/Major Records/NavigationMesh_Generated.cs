@@ -2617,22 +2617,40 @@ namespace Mutagen.Bethesda.Fallout3
         public NavigationMesh.MajorFlag MajorFlags => (NavigationMesh.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region Version
-        private int? _VersionLocation;
+        private int? _VersionLocationStore;
+        private int? _VersionLocation { get { EnsureFilled(); return _VersionLocationStore; } set => _VersionLocationStore = value; }
         public UInt32? Version => _VersionLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _VersionLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public INavigationMeshDataGetter? Data => _DataLocation.HasValue ? NavigationMeshDataBinaryOverlay.NavigationMeshDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         #endregion
-        public IReadOnlyList<P3Float>? Vertices { get; private set; }
-        public IReadOnlyList<INavmeshTriangleGetter>? Triangles { get; private set; }
-        public IReadOnlyList<UInt16>? CoverTriangles { get; private set; }
-        public IReadOnlyList<INavmeshDoorLinkGetter>? DoorLinks { get; private set; }
+        #region Vertices
+        private IReadOnlyList<P3Float>? VerticesStore;
+        public IReadOnlyList<P3Float>? Vertices { get { EnsureFilled(); return VerticesStore; } private set => VerticesStore = value; }
+        #endregion
+        #region Triangles
+        private IReadOnlyList<INavmeshTriangleGetter>? TrianglesStore;
+        public IReadOnlyList<INavmeshTriangleGetter>? Triangles { get { EnsureFilled(); return TrianglesStore; } private set => TrianglesStore = value; }
+        #endregion
+        #region CoverTriangles
+        private IReadOnlyList<UInt16>? CoverTrianglesStore;
+        public IReadOnlyList<UInt16>? CoverTriangles { get { EnsureFilled(); return CoverTrianglesStore; } private set => CoverTrianglesStore = value; }
+        #endregion
+        #region DoorLinks
+        private IReadOnlyList<INavmeshDoorLinkGetter>? DoorLinksStore;
+        public IReadOnlyList<INavmeshDoorLinkGetter>? DoorLinks { get { EnsureFilled(); return DoorLinksStore; } private set => DoorLinksStore = value; }
+        #endregion
         #region NavmeshGrid
-        private RangeInt32? _NavmeshGridLocation;
+        private RangeInt32? _NavmeshGridLocationStore;
+        private RangeInt32? _NavmeshGridLocation { get { EnsureFilled(); return _NavmeshGridLocationStore; } set => _NavmeshGridLocationStore = value; }
         public INavmeshGridGetter? NavmeshGrid => _NavmeshGridLocation.HasValue ? NavmeshGridBinaryOverlay.NavmeshGridFactory(_recordData.Slice(_NavmeshGridLocation!.Value.Min), _package) : default;
         #endregion
-        public IReadOnlyList<INavmeshEdgeLinkGetter>? EdgeLinks { get; private set; }
+        #region EdgeLinks
+        private IReadOnlyList<INavmeshEdgeLinkGetter>? EdgeLinksStore;
+        public IReadOnlyList<INavmeshEdgeLinkGetter>? EdgeLinks { get { EnsureFilled(); return EdgeLinksStore; } private set => EdgeLinksStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -2654,6 +2672,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new NavigationMeshBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => NavigationMeshFill((NavigationMeshBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void NavigationMeshFill(
+            NavigationMeshBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2661,9 +2696,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new NavigationMeshBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2676,7 +2709,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static INavigationMeshGetter NavigationMeshFactory(

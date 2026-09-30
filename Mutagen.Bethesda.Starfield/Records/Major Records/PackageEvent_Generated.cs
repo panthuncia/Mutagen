@@ -1290,7 +1290,8 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Idle
-        private int? _IdleLocation;
+        private int? _IdleLocationStore;
+        private int? _IdleLocation { get { EnsureFilled(); return _IdleLocationStore; } set => _IdleLocationStore = value; }
         public IFormLinkGetter<IIdleAnimationGetter> Idle => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IIdleAnimationGetter>(_package, _recordData, _IdleLocation);
         #endregion
         #region Topics

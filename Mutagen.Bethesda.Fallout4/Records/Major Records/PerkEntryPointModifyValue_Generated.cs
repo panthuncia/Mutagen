@@ -1316,7 +1316,8 @@ namespace Mutagen.Bethesda.Fallout4
 
         public PerkEntryPointModifyValue.ModificationType Modification => (PerkEntryPointModifyValue.ModificationType)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x2, 0x4));
         #region Value
-        private int? _ValueLocation;
+        private int? _ValueLocationStore;
+        private int? _ValueLocation { get { EnsureFilled(); return _ValueLocationStore; } set => _ValueLocationStore = value; }
         public Single? Value => _ValueLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ValueLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         partial void CustomFactoryEnd(

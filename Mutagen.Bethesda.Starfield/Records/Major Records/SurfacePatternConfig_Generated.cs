@@ -1799,11 +1799,18 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region SurfacePatternStyle
-        private int? _SurfacePatternStyleLocation;
+        private int? _SurfacePatternStyleLocationStore;
+        private int? _SurfacePatternStyleLocation { get { EnsureFilled(); return _SurfacePatternStyleLocationStore; } set => _SurfacePatternStyleLocationStore = value; }
         public IFormLinkGetter<ISurfacePatternStyleGetter> SurfacePatternStyle => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISurfacePatternStyleGetter>(_package, _recordData, _SurfacePatternStyleLocation);
         #endregion
-        public IReadOnlyList<ISurfacePatternStyleConfigGetter> Items { get; private set; } = [];
-        public IReadOnlyList<ISurfacePatternRarityConfigGetter> Rarity { get; private set; } = [];
+        #region Items
+        private IReadOnlyList<ISurfacePatternStyleConfigGetter> ItemsStore = [];
+        public IReadOnlyList<ISurfacePatternStyleConfigGetter> Items { get { EnsureFilled(); return ItemsStore; } private set => ItemsStore = value; }
+        #endregion
+        #region Rarity
+        private IReadOnlyList<ISurfacePatternRarityConfigGetter> RarityStore = [];
+        public IReadOnlyList<ISurfacePatternRarityConfigGetter> Rarity { get { EnsureFilled(); return RarityStore; } private set => RarityStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -1825,6 +1832,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new SurfacePatternConfigBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => SurfacePatternConfigFill((SurfacePatternConfigBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void SurfacePatternConfigFill(
+            SurfacePatternConfigBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1832,9 +1856,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new SurfacePatternConfigBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1847,7 +1869,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ISurfacePatternConfigGetter SurfacePatternConfigFactory(

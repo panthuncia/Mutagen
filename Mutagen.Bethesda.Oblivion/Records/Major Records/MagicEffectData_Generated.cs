@@ -1715,7 +1715,8 @@ namespace Mutagen.Bethesda.Oblivion
                 translationParams: translationParams);
         }
 
-        public MagicEffectData.VersioningBreaks Versioning { get; private set; }
+        private MagicEffectData.VersioningBreaks VersioningStore;
+        public MagicEffectData.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public MagicEffect.MagicFlag Flags => (MagicEffect.MagicFlag)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x0, 0x4));
         public Single BaseCost => _structData.Slice(0x4, 0x4).Float();
         public Int32 Unused => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x8, 0x4));

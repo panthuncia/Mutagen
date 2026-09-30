@@ -1730,7 +1730,8 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        private RangeInt32? _DSTDLocation;
+        private RangeInt32? _DSTDLocationStore;
+        private RangeInt32? _DSTDLocation { get { EnsureFilled(); return _DSTDLocationStore; } set => _DSTDLocationStore = value; }
         #region HealthPercent
         private int _HealthPercentLocation => _DSTDLocation!.Value.Min;
         private bool _HealthPercent_IsSet => _DSTDLocation.HasValue;
@@ -1772,10 +1773,14 @@ namespace Mutagen.Bethesda.Fallout4
         public Int32 DebrisCount => _DebrisCount_IsSet ? BinaryPrimitives.ReadInt32LittleEndian(_recordData.Slice(_DebrisCountLocation, 4)) : default(Int32);
         #endregion
         #region SequenceName
-        private int? _SequenceNameLocation;
+        private int? _SequenceNameLocationStore;
+        private int? _SequenceNameLocation { get { EnsureFilled(); return _SequenceNameLocationStore; } set => _SequenceNameLocationStore = value; }
         public String? SequenceName => _SequenceNameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SequenceNameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        public IModelGetter? Model { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

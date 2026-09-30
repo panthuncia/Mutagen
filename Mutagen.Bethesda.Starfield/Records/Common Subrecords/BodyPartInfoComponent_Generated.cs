@@ -1121,7 +1121,8 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region GNAM
-        private int? _GNAMLocation;
+        private int? _GNAMLocationStore;
+        private int? _GNAMLocation { get { EnsureFilled(); return _GNAMLocationStore; } set => _GNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? GNAM => _GNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _GNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

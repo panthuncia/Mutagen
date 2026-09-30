@@ -1256,7 +1256,10 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IContainerEntryGetter>? Items { get; private set; }
+        #region Items
+        private IReadOnlyList<IContainerEntryGetter>? ItemsStore;
+        public IReadOnlyList<IContainerEntryGetter>? Items { get { EnsureFilled(); return ItemsStore; } private set => ItemsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

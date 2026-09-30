@@ -4078,7 +4078,8 @@ namespace Mutagen.Bethesda.Fallout3
 
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -4089,7 +4090,8 @@ namespace Mutagen.Bethesda.Fallout3
         ITranslatedStringGetter ITranslatedNamedRequiredGetter.Name => this.Name ?? TranslatedString.Empty;
         #endregion
         #endregion
-        private RangeInt32? _DATALocation;
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         #region DecksPercentBeforeShuffle
         private int _DecksPercentBeforeShuffleLocation => _DATALocation!.Value.Min;
         private bool _DecksPercentBeforeShuffle_IsSet => _DATALocation.HasValue;
@@ -4161,95 +4163,118 @@ namespace Mutagen.Bethesda.Fallout3
         public Boolean DealerStayOnSoft17 => _DealerStayOnSoft17_IsSet ? BinaryPrimitives.ReadUInt32LittleEndian(_recordData.Slice(_DealerStayOnSoft17Location, 4)) >= 1 : default(Boolean);
         #endregion
         #region ChipModelOneDollar
-        private int? _ChipModelOneDollarLocation;
+        private int? _ChipModelOneDollarLocationStore;
+        private int? _ChipModelOneDollarLocation { get { EnsureFilled(); return _ChipModelOneDollarLocationStore; } set => _ChipModelOneDollarLocationStore = value; }
         public String? ChipModelOneDollar => _ChipModelOneDollarLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ChipModelOneDollarLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ChipModelFiveDollar
-        private int? _ChipModelFiveDollarLocation;
+        private int? _ChipModelFiveDollarLocationStore;
+        private int? _ChipModelFiveDollarLocation { get { EnsureFilled(); return _ChipModelFiveDollarLocationStore; } set => _ChipModelFiveDollarLocationStore = value; }
         public String? ChipModelFiveDollar => _ChipModelFiveDollarLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ChipModelFiveDollarLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ChipModelTenDollar
-        private int? _ChipModelTenDollarLocation;
+        private int? _ChipModelTenDollarLocationStore;
+        private int? _ChipModelTenDollarLocation { get { EnsureFilled(); return _ChipModelTenDollarLocationStore; } set => _ChipModelTenDollarLocationStore = value; }
         public String? ChipModelTenDollar => _ChipModelTenDollarLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ChipModelTenDollarLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ChipModelTwentyFiveDollar
-        private int? _ChipModelTwentyFiveDollarLocation;
+        private int? _ChipModelTwentyFiveDollarLocationStore;
+        private int? _ChipModelTwentyFiveDollarLocation { get { EnsureFilled(); return _ChipModelTwentyFiveDollarLocationStore; } set => _ChipModelTwentyFiveDollarLocationStore = value; }
         public String? ChipModelTwentyFiveDollar => _ChipModelTwentyFiveDollarLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ChipModelTwentyFiveDollarLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ChipModelOneHundredDollar
-        private int? _ChipModelOneHundredDollarLocation;
+        private int? _ChipModelOneHundredDollarLocationStore;
+        private int? _ChipModelOneHundredDollarLocation { get { EnsureFilled(); return _ChipModelOneHundredDollarLocationStore; } set => _ChipModelOneHundredDollarLocationStore = value; }
         public String? ChipModelOneHundredDollar => _ChipModelOneHundredDollarLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ChipModelOneHundredDollarLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ChipModelFiveHundredDollar
-        private int? _ChipModelFiveHundredDollarLocation;
+        private int? _ChipModelFiveHundredDollarLocationStore;
+        private int? _ChipModelFiveHundredDollarLocation { get { EnsureFilled(); return _ChipModelFiveHundredDollarLocationStore; } set => _ChipModelFiveHundredDollarLocationStore = value; }
         public String? ChipModelFiveHundredDollar => _ChipModelFiveHundredDollarLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ChipModelFiveHundredDollarLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ChipModelRoulette
-        private int? _ChipModelRouletteLocation;
+        private int? _ChipModelRouletteLocationStore;
+        private int? _ChipModelRouletteLocation { get { EnsureFilled(); return _ChipModelRouletteLocationStore; } set => _ChipModelRouletteLocationStore = value; }
         public String? ChipModelRoulette => _ChipModelRouletteLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ChipModelRouletteLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region SlotMachineModel
-        private int? _SlotMachineModelLocation;
+        private int? _SlotMachineModelLocationStore;
+        private int? _SlotMachineModelLocation { get { EnsureFilled(); return _SlotMachineModelLocationStore; } set => _SlotMachineModelLocationStore = value; }
         public String? SlotMachineModel => _SlotMachineModelLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SlotMachineModelLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region SlotMachineModel2
-        private int? _SlotMachineModel2Location;
+        private int? _SlotMachineModel2LocationStore;
+        private int? _SlotMachineModel2Location { get { EnsureFilled(); return _SlotMachineModel2LocationStore; } set => _SlotMachineModel2LocationStore = value; }
         public String? SlotMachineModel2 => _SlotMachineModel2Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SlotMachineModel2Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region BlackJackTableModel
-        private int? _BlackJackTableModelLocation;
+        private int? _BlackJackTableModelLocationStore;
+        private int? _BlackJackTableModelLocation { get { EnsureFilled(); return _BlackJackTableModelLocationStore; } set => _BlackJackTableModelLocationStore = value; }
         public String? BlackJackTableModel => _BlackJackTableModelLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BlackJackTableModelLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region BlackJackTableModelRelated
-        private int? _BlackJackTableModelRelatedLocation;
+        private int? _BlackJackTableModelRelatedLocationStore;
+        private int? _BlackJackTableModelRelatedLocation { get { EnsureFilled(); return _BlackJackTableModelRelatedLocationStore; } set => _BlackJackTableModelRelatedLocationStore = value; }
         public String? BlackJackTableModelRelated => _BlackJackTableModelRelatedLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BlackJackTableModelRelatedLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region RouletteTableModel
-        private int? _RouletteTableModelLocation;
+        private int? _RouletteTableModelLocationStore;
+        private int? _RouletteTableModelLocation { get { EnsureFilled(); return _RouletteTableModelLocationStore; } set => _RouletteTableModelLocationStore = value; }
         public String? RouletteTableModel => _RouletteTableModelLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _RouletteTableModelLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region SlotReelTextureSymbol1
-        private int? _SlotReelTextureSymbol1Location;
+        private int? _SlotReelTextureSymbol1LocationStore;
+        private int? _SlotReelTextureSymbol1Location { get { EnsureFilled(); return _SlotReelTextureSymbol1LocationStore; } set => _SlotReelTextureSymbol1LocationStore = value; }
         public String? SlotReelTextureSymbol1 => _SlotReelTextureSymbol1Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SlotReelTextureSymbol1Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region SlotReelTextureSymbol2
-        private int? _SlotReelTextureSymbol2Location;
+        private int? _SlotReelTextureSymbol2LocationStore;
+        private int? _SlotReelTextureSymbol2Location { get { EnsureFilled(); return _SlotReelTextureSymbol2LocationStore; } set => _SlotReelTextureSymbol2LocationStore = value; }
         public String? SlotReelTextureSymbol2 => _SlotReelTextureSymbol2Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SlotReelTextureSymbol2Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region SlotReelTextureSymbol3
-        private int? _SlotReelTextureSymbol3Location;
+        private int? _SlotReelTextureSymbol3LocationStore;
+        private int? _SlotReelTextureSymbol3Location { get { EnsureFilled(); return _SlotReelTextureSymbol3LocationStore; } set => _SlotReelTextureSymbol3LocationStore = value; }
         public String? SlotReelTextureSymbol3 => _SlotReelTextureSymbol3Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SlotReelTextureSymbol3Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region SlotReelTextureSymbol4
-        private int? _SlotReelTextureSymbol4Location;
+        private int? _SlotReelTextureSymbol4LocationStore;
+        private int? _SlotReelTextureSymbol4Location { get { EnsureFilled(); return _SlotReelTextureSymbol4LocationStore; } set => _SlotReelTextureSymbol4LocationStore = value; }
         public String? SlotReelTextureSymbol4 => _SlotReelTextureSymbol4Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SlotReelTextureSymbol4Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region SlotReelTextureSymbol5
-        private int? _SlotReelTextureSymbol5Location;
+        private int? _SlotReelTextureSymbol5LocationStore;
+        private int? _SlotReelTextureSymbol5Location { get { EnsureFilled(); return _SlotReelTextureSymbol5LocationStore; } set => _SlotReelTextureSymbol5LocationStore = value; }
         public String? SlotReelTextureSymbol5 => _SlotReelTextureSymbol5Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SlotReelTextureSymbol5Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region SlotReelTextureSymbol6
-        private int? _SlotReelTextureSymbol6Location;
+        private int? _SlotReelTextureSymbol6LocationStore;
+        private int? _SlotReelTextureSymbol6Location { get { EnsureFilled(); return _SlotReelTextureSymbol6LocationStore; } set => _SlotReelTextureSymbol6LocationStore = value; }
         public String? SlotReelTextureSymbol6 => _SlotReelTextureSymbol6Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SlotReelTextureSymbol6Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region SlotReelTextureSymbolW
-        private int? _SlotReelTextureSymbolWLocation;
+        private int? _SlotReelTextureSymbolWLocationStore;
+        private int? _SlotReelTextureSymbolWLocation { get { EnsureFilled(); return _SlotReelTextureSymbolWLocationStore; } set => _SlotReelTextureSymbolWLocationStore = value; }
         public String? SlotReelTextureSymbolW => _SlotReelTextureSymbolWLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SlotReelTextureSymbolWLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region BlackJackDeckTexture1
-        private int? _BlackJackDeckTexture1Location;
+        private int? _BlackJackDeckTexture1LocationStore;
+        private int? _BlackJackDeckTexture1Location { get { EnsureFilled(); return _BlackJackDeckTexture1LocationStore; } set => _BlackJackDeckTexture1LocationStore = value; }
         public String? BlackJackDeckTexture1 => _BlackJackDeckTexture1Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BlackJackDeckTexture1Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region BlackJackDeckTexture2
-        private int? _BlackJackDeckTexture2Location;
+        private int? _BlackJackDeckTexture2LocationStore;
+        private int? _BlackJackDeckTexture2Location { get { EnsureFilled(); return _BlackJackDeckTexture2LocationStore; } set => _BlackJackDeckTexture2LocationStore = value; }
         public String? BlackJackDeckTexture2 => _BlackJackDeckTexture2Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BlackJackDeckTexture2Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region BlackJackDeckTexture3
-        private int? _BlackJackDeckTexture3Location;
+        private int? _BlackJackDeckTexture3LocationStore;
+        private int? _BlackJackDeckTexture3Location { get { EnsureFilled(); return _BlackJackDeckTexture3LocationStore; } set => _BlackJackDeckTexture3LocationStore = value; }
         public String? BlackJackDeckTexture3 => _BlackJackDeckTexture3Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BlackJackDeckTexture3Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region BlackJackDeckTexture4
-        private int? _BlackJackDeckTexture4Location;
+        private int? _BlackJackDeckTexture4LocationStore;
+        private int? _BlackJackDeckTexture4Location { get { EnsureFilled(); return _BlackJackDeckTexture4LocationStore; } set => _BlackJackDeckTexture4LocationStore = value; }
         public String? BlackJackDeckTexture4 => _BlackJackDeckTexture4Location.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BlackJackDeckTexture4Location.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(
@@ -4273,6 +4298,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new CasinoBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => CasinoFill((CasinoBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void CasinoFill(
+            CasinoBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -4280,9 +4322,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new CasinoBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -4295,7 +4335,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ICasinoGetter CasinoFactory(

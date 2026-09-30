@@ -3918,9 +3918,13 @@ namespace Mutagen.Bethesda.Starfield
 
         public DialogTopic.MajorFlag MajorFlags => (DialogTopic.MajorFlag)this.MajorRecordFlagsRaw;
 
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -3932,26 +3936,32 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #endregion
         #region Priority
-        private int? _PriorityLocation;
+        private int? _PriorityLocationStore;
+        private int? _PriorityLocation { get { EnsureFilled(); return _PriorityLocationStore; } set => _PriorityLocationStore = value; }
         public Single Priority => _PriorityLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _PriorityLocation.Value, _package.MetaData.Constants).Float() : default(Single);
         #endregion
         #region Branch
-        private int? _BranchLocation;
+        private int? _BranchLocationStore;
+        private int? _BranchLocation { get { EnsureFilled(); return _BranchLocationStore; } set => _BranchLocationStore = value; }
         public IFormLinkNullableGetter<IDialogBranchGetter> Branch => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogBranchGetter>(_package, _recordData, _BranchLocation);
         #endregion
         #region Quest
-        private int? _QuestLocation;
+        private int? _QuestLocationStore;
+        private int? _QuestLocation { get { EnsureFilled(); return _QuestLocationStore; } set => _QuestLocationStore = value; }
         public IFormLinkGetter<IQuestGetter> Quest => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IQuestGetter>(_package, _recordData, _QuestLocation);
         #endregion
         #region Keyword
-        private int? _KeywordLocation;
+        private int? _KeywordLocationStore;
+        private int? _KeywordLocation { get { EnsureFilled(); return _KeywordLocationStore; } set => _KeywordLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> Keyword => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _KeywordLocation);
         #endregion
         #region AffinityEvent
-        private int? _AffinityEventLocation;
+        private int? _AffinityEventLocationStore;
+        private int? _AffinityEventLocation { get { EnsureFilled(); return _AffinityEventLocationStore; } set => _AffinityEventLocationStore = value; }
         public IFormLinkNullableGetter<IAffinityEventGetter> AffinityEvent => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IAffinityEventGetter>(_package, _recordData, _AffinityEventLocation);
         #endregion
-        private RangeInt32? _DATALocation;
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         #region TopicFlags
         private int _TopicFlagsLocation => _DATALocation!.Value.Min;
         private bool _TopicFlags_IsSet => _DATALocation.HasValue;
@@ -3968,10 +3978,14 @@ namespace Mutagen.Bethesda.Starfield
         public DialogTopic.SubtypeEnum Subtype => _Subtype_IsSet ? (DialogTopic.SubtypeEnum)BinaryPrimitives.ReadUInt16LittleEndian(_recordData.Span.Slice(_SubtypeLocation, 0x2)) : default;
         #endregion
         #region SubtypeName
-        private int? _SubtypeNameLocation;
+        private int? _SubtypeNameLocationStore;
+        private int? _SubtypeNameLocation { get { EnsureFilled(); return _SubtypeNameLocationStore; } set => _SubtypeNameLocationStore = value; }
         public DialogTopic.SubtypeNameEnum SubtypeName => EnumBinaryTranslation<DialogTopic.SubtypeNameEnum, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_SubtypeNameLocation, _recordData, _package, 4);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IDialogResponsesGetter>>? TopicInfoList { get; private set; }
+        #region TopicInfoList
+        private IReadOnlyList<IFormLinkGetter<IDialogResponsesGetter>>? TopicInfoListStore;
+        public IReadOnlyList<IFormLinkGetter<IDialogResponsesGetter>>? TopicInfoList { get { EnsureFilled(); return TopicInfoListStore; } private set => TopicInfoListStore = value; }
+        #endregion
         #region InfoListCount
         public partial ParseResult InfoListCountCustomParse(
             OverlayStream stream,

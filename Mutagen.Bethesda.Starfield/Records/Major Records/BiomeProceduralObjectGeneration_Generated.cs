@@ -1440,16 +1440,22 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region ProceduralObjectGenerationMaskName
-        private int? _ProceduralObjectGenerationMaskNameLocation;
+        private int? _ProceduralObjectGenerationMaskNameLocationStore;
+        private int? _ProceduralObjectGenerationMaskNameLocation { get { EnsureFilled(); return _ProceduralObjectGenerationMaskNameLocationStore; } set => _ProceduralObjectGenerationMaskNameLocationStore = value; }
         public String? ProceduralObjectGenerationMaskName => _ProceduralObjectGenerationMaskNameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ProceduralObjectGenerationMaskNameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region BNAM
-        private int? _BNAMLocation;
+        private int? _BNAMLocationStore;
+        private int? _BNAMLocation { get { EnsureFilled(); return _BNAMLocationStore; } set => _BNAMLocationStore = value; }
         public Int32? BNAM => _BNAMLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BNAMLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
-        public IReadOnlyList<IBiomeObjectGetter> Objects { get; private set; } = [];
+        #region Objects
+        private IReadOnlyList<IBiomeObjectGetter> ObjectsStore = [];
+        public IReadOnlyList<IBiomeObjectGetter> Objects { get { EnsureFilled(); return ObjectsStore; } private set => ObjectsStore = value; }
+        #endregion
         #region Footprints
-        private RangeInt32? _FootprintsLocation;
+        private RangeInt32? _FootprintsLocationStore;
+        private RangeInt32? _FootprintsLocation { get { EnsureFilled(); return _FootprintsLocationStore; } set => _FootprintsLocationStore = value; }
         private IBiomeFootprintsGetter? _Footprints => _FootprintsLocation.HasValue ? BiomeFootprintsBinaryOverlay.BiomeFootprintsFactory(_recordData.Slice(_FootprintsLocation!.Value.Min), _package) : default;
         public IBiomeFootprintsGetter Footprints => _Footprints ?? new BiomeFootprints();
         #endregion

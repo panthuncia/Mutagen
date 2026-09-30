@@ -1689,28 +1689,37 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region File
-        private int? _FileLocation;
+        private int? _FileLocationStore;
+        private int? _FileLocation { get { EnsureFilled(); return _FileLocationStore; } set => _FileLocationStore = value; }
         public AssetLinkGetter<StarfieldModelAssetType>? File => _FileLocation.HasValue ? new AssetLinkGetter<StarfieldModelAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FileLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<StarfieldModelAssetType>?);
         #endregion
         #region TextureFileHashes
-        private int? _TextureFileHashesLocation;
+        private int? _TextureFileHashesLocationStore;
+        private int? _TextureFileHashesLocation { get { EnsureFilled(); return _TextureFileHashesLocationStore; } set => _TextureFileHashesLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? TextureFileHashes => _TextureFileHashesLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _TextureFileHashesLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<ILayeredMaterialSwapGetter>>? MaterialSwaps { get; private set; }
+        #region MaterialSwaps
+        private IReadOnlyList<IFormLinkGetter<ILayeredMaterialSwapGetter>>? MaterialSwapsStore;
+        public IReadOnlyList<IFormLinkGetter<ILayeredMaterialSwapGetter>>? MaterialSwaps { get { EnsureFilled(); return MaterialSwapsStore; } private set => MaterialSwapsStore = value; }
+        #endregion
         #region LightLayer
-        private int? _LightLayerLocation;
+        private int? _LightLayerLocationStore;
+        private int? _LightLayerLocation { get { EnsureFilled(); return _LightLayerLocationStore; } set => _LightLayerLocationStore = value; }
         public UInt32? LightLayer => _LightLayerLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LightLayerLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public Model.Flag? Flags => EnumBinaryTranslation<Model.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 1);
         #endregion
         #region ColorRemappingIndex
-        private int? _ColorRemappingIndexLocation;
+        private int? _ColorRemappingIndexLocationStore;
+        private int? _ColorRemappingIndexLocation { get { EnsureFilled(); return _ColorRemappingIndexLocationStore; } set => _ColorRemappingIndexLocationStore = value; }
         public Single? ColorRemappingIndex => _ColorRemappingIndexLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ColorRemappingIndexLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region FlagsVestigial
-        private int? _FlagsVestigialLocation;
+        private int? _FlagsVestigialLocationStore;
+        private int? _FlagsVestigialLocation { get { EnsureFilled(); return _FlagsVestigialLocationStore; } set => _FlagsVestigialLocationStore = value; }
         public Model.Flag? FlagsVestigial => EnumBinaryTranslation<Model.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsVestigialLocation, _recordData, _package, 1);
         #endregion
         partial void CustomFactoryEnd(

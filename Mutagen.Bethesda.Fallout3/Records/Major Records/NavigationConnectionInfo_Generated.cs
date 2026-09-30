@@ -1613,15 +1613,18 @@ namespace Mutagen.Bethesda.Fallout3
         public IFormLinkGetter<INavigationMeshGetter> NavigationMesh => FormLinkBinaryTranslation.Instance.OverlayFactory<INavigationMeshGetter>(_package, _structData.Span.Slice(0x0, 0x4));
         #region StandardLinks
         public IReadOnlyList<IFormLinkGetter<INavigationMeshGetter>> StandardLinks => BinaryOverlayList.FactoryByCountLength<IFormLinkGetter<INavigationMeshGetter>>(_structData.Slice(0x4), _package, 4, countLength: 4, (s, p) => FormLinkBinaryTranslation.Instance.OverlayFactory<INavigationMeshGetter>(p, s));
-        protected int StandardLinksEndingPos;
+        private int StandardLinksEndingPosStore;
+        protected int StandardLinksEndingPos { get { EnsureFilled(); return StandardLinksEndingPosStore; } private set => StandardLinksEndingPosStore = value; }
         #endregion
         #region PreferredLinks
         public IReadOnlyList<IFormLinkGetter<INavigationMeshGetter>> PreferredLinks => BinaryOverlayList.FactoryByCountLength<IFormLinkGetter<INavigationMeshGetter>>(_structData.Slice(StandardLinksEndingPos), _package, 4, countLength: 4, (s, p) => FormLinkBinaryTranslation.Instance.OverlayFactory<INavigationMeshGetter>(p, s));
-        protected int PreferredLinksEndingPos;
+        private int PreferredLinksEndingPosStore;
+        protected int PreferredLinksEndingPos { get { EnsureFilled(); return PreferredLinksEndingPosStore; } private set => PreferredLinksEndingPosStore = value; }
         #endregion
         #region DoorLinks
         public IReadOnlyList<IFormLinkGetter<IPlacedObjectGetter>> DoorLinks => BinaryOverlayList.FactoryByCountLength<IFormLinkGetter<IPlacedObjectGetter>>(_structData.Slice(PreferredLinksEndingPos), _package, 4, countLength: 4, (s, p) => FormLinkBinaryTranslation.Instance.OverlayFactory<IPlacedObjectGetter>(p, s));
-        protected int DoorLinksEndingPos;
+        private int DoorLinksEndingPosStore;
+        protected int DoorLinksEndingPos { get { EnsureFilled(); return DoorLinksEndingPosStore; } private set => DoorLinksEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

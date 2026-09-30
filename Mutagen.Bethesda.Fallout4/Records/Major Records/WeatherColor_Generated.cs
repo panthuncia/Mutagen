@@ -1497,7 +1497,8 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        public WeatherColor.VersioningBreaks Versioning { get; private set; }
+        private WeatherColor.VersioningBreaks VersioningStore;
+        public WeatherColor.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public Color Sunrise => _structData.Slice(0x0, 0x4).ReadColor(ColorBinaryType.Alpha);
         public Color Day => _structData.Slice(0x4, 0x4).ReadColor(ColorBinaryType.Alpha);
         public Color Sunset => _structData.Slice(0x8, 0x4).ReadColor(ColorBinaryType.Alpha);

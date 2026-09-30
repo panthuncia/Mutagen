@@ -2327,17 +2327,26 @@ namespace Mutagen.Bethesda.Fallout3
         protected override Type LinkType => typeof(IClimateGetter);
 
 
-        public IReadOnlyList<IWeatherTypeGetter>? WeatherTypes { get; private set; }
+        #region WeatherTypes
+        private IReadOnlyList<IWeatherTypeGetter>? WeatherTypesStore;
+        public IReadOnlyList<IWeatherTypeGetter>? WeatherTypes { get { EnsureFilled(); return WeatherTypesStore; } private set => WeatherTypesStore = value; }
+        #endregion
         #region SunTexture
-        private int? _SunTextureLocation;
+        private int? _SunTextureLocationStore;
+        private int? _SunTextureLocation { get { EnsureFilled(); return _SunTextureLocationStore; } set => _SunTextureLocationStore = value; }
         public String? SunTexture => _SunTextureLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SunTextureLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region SunGlareTexture
-        private int? _SunGlareTextureLocation;
+        private int? _SunGlareTextureLocationStore;
+        private int? _SunGlareTextureLocation { get { EnsureFilled(); return _SunGlareTextureLocationStore; } set => _SunGlareTextureLocationStore = value; }
         public String? SunGlareTexture => _SunGlareTextureLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SunGlareTextureLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        public IModelGetter? Model { get; private set; }
-        private RangeInt32? _TNAMLocation;
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
+        private RangeInt32? _TNAMLocationStore;
+        private RangeInt32? _TNAMLocation { get { EnsureFilled(); return _TNAMLocationStore; } set => _TNAMLocationStore = value; }
         #region SunriseBegin
         private int _SunriseBeginLocation => _TNAMLocation!.Value.Min;
         public partial TimeOnly GetSunriseBeginCustom();
@@ -2369,10 +2378,17 @@ namespace Mutagen.Bethesda.Fallout3
         partial void MoonAndPhaseLengthCustomParse(
             OverlayStream stream,
             int offset);
-        protected int MoonAndPhaseLengthEndingPos;
+        private int MoonAndPhaseLengthEndingPosStore;
+        protected int MoonAndPhaseLengthEndingPos { get { EnsureFilled(); return MoonAndPhaseLengthEndingPosStore; } private set => MoonAndPhaseLengthEndingPosStore = value; }
         #endregion
-        protected int MoonsEndingPos;
-        protected int PhaseLengthEndingPos;
+        #region Moons
+        private int MoonsEndingPosStore;
+        protected int MoonsEndingPos { get { EnsureFilled(); return MoonsEndingPosStore; } private set => MoonsEndingPosStore = value; }
+        #endregion
+        #region PhaseLength
+        private int PhaseLengthEndingPosStore;
+        protected int PhaseLengthEndingPos { get { EnsureFilled(); return PhaseLengthEndingPosStore; } private set => PhaseLengthEndingPosStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -2394,6 +2410,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ClimateBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ClimateFill((ClimateBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ClimateFill(
+            ClimateBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2401,9 +2434,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ClimateBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2416,7 +2447,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IClimateGetter ClimateFactory(

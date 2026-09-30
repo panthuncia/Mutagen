@@ -1557,11 +1557,13 @@ namespace Mutagen.Bethesda.Oblivion
 
 
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public ICombatStyleDataGetter? Data => _DataLocation.HasValue ? CombatStyleDataBinaryOverlay.CombatStyleDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         #endregion
         #region Advanced
-        private RangeInt32? _AdvancedLocation;
+        private RangeInt32? _AdvancedLocationStore;
+        private RangeInt32? _AdvancedLocation { get { EnsureFilled(); return _AdvancedLocationStore; } set => _AdvancedLocationStore = value; }
         public ICombatStyleAdvancedGetter? Advanced => _AdvancedLocation.HasValue ? CombatStyleAdvancedBinaryOverlay.CombatStyleAdvancedFactory(_recordData.Slice(_AdvancedLocation!.Value.Min), _package) : default;
         #endregion
         partial void CustomFactoryEnd(
@@ -1585,6 +1587,23 @@ namespace Mutagen.Bethesda.Oblivion
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new CombatStyleBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => CombatStyleFill((CombatStyleBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void CombatStyleFill(
+            CombatStyleBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1592,9 +1611,7 @@ namespace Mutagen.Bethesda.Oblivion
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new CombatStyleBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1607,7 +1624,6 @@ namespace Mutagen.Bethesda.Oblivion
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ICombatStyleGetter CombatStyleFactory(

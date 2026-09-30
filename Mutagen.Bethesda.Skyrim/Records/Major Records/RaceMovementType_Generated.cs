@@ -1205,11 +1205,13 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region MovementType
-        private int? _MovementTypeLocation;
+        private int? _MovementTypeLocationStore;
+        private int? _MovementTypeLocation { get { EnsureFilled(); return _MovementTypeLocationStore; } set => _MovementTypeLocationStore = value; }
         public IFormLinkNullableGetter<IMovementTypeGetter> MovementType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMovementTypeGetter>(_package, _recordData, _MovementTypeLocation);
         #endregion
         #region Overrides
-        private RangeInt32? _OverridesLocation;
+        private RangeInt32? _OverridesLocationStore;
+        private RangeInt32? _OverridesLocation { get { EnsureFilled(); return _OverridesLocationStore; } set => _OverridesLocationStore = value; }
         public ISpeedOverridesGetter? Overrides => _OverridesLocation.HasValue ? SpeedOverridesBinaryOverlay.SpeedOverridesFactory(_recordData.Slice(_OverridesLocation!.Value.Min), _package) : default;
         #endregion
         partial void CustomFactoryEnd(

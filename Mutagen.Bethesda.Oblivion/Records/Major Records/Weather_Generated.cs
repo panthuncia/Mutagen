@@ -2328,28 +2328,42 @@ namespace Mutagen.Bethesda.Oblivion
 
 
         #region TextureLowerLayer
-        private int? _TextureLowerLayerLocation;
+        private int? _TextureLowerLayerLocationStore;
+        private int? _TextureLowerLayerLocation { get { EnsureFilled(); return _TextureLowerLayerLocationStore; } set => _TextureLowerLayerLocationStore = value; }
         public String? TextureLowerLayer => _TextureLowerLayerLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TextureLowerLayerLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region TextureUpperLayer
-        private int? _TextureUpperLayerLocation;
+        private int? _TextureUpperLayerLocationStore;
+        private int? _TextureUpperLayerLocation { get { EnsureFilled(); return _TextureUpperLayerLocationStore; } set => _TextureUpperLayerLocationStore = value; }
         public String? TextureUpperLayer => _TextureUpperLayerLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TextureUpperLayerLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        public IModelGetter? Model { get; private set; }
-        public IReadOnlyList<IWeatherColorsGetter>? Colors { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
+        #region Colors
+        private IReadOnlyList<IWeatherColorsGetter>? ColorsStore;
+        public IReadOnlyList<IWeatherColorsGetter>? Colors { get { EnsureFilled(); return ColorsStore; } private set => ColorsStore = value; }
+        #endregion
         #region FogDistance
-        private RangeInt32? _FogDistanceLocation;
+        private RangeInt32? _FogDistanceLocationStore;
+        private RangeInt32? _FogDistanceLocation { get { EnsureFilled(); return _FogDistanceLocationStore; } set => _FogDistanceLocationStore = value; }
         public IFogDistanceGetter? FogDistance => _FogDistanceLocation.HasValue ? FogDistanceBinaryOverlay.FogDistanceFactory(_recordData.Slice(_FogDistanceLocation!.Value.Min), _package) : default;
         #endregion
         #region HDRData
-        private RangeInt32? _HDRDataLocation;
+        private RangeInt32? _HDRDataLocationStore;
+        private RangeInt32? _HDRDataLocation { get { EnsureFilled(); return _HDRDataLocationStore; } set => _HDRDataLocationStore = value; }
         public IHDRDataGetter? HDRData => _HDRDataLocation.HasValue ? HDRDataBinaryOverlay.HDRDataFactory(_recordData.Slice(_HDRDataLocation!.Value.Min), _package) : default;
         #endregion
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public IWeatherDataGetter? Data => _DataLocation.HasValue ? WeatherDataBinaryOverlay.WeatherDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         #endregion
-        public IReadOnlyList<IWeatherSoundGetter> Sounds { get; private set; } = [];
+        #region Sounds
+        private IReadOnlyList<IWeatherSoundGetter> SoundsStore = [];
+        public IReadOnlyList<IWeatherSoundGetter> Sounds { get { EnsureFilled(); return SoundsStore; } private set => SoundsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -2371,6 +2385,23 @@ namespace Mutagen.Bethesda.Oblivion
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new WeatherBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => WeatherFill((WeatherBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void WeatherFill(
+            WeatherBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2378,9 +2409,7 @@ namespace Mutagen.Bethesda.Oblivion
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new WeatherBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2393,7 +2422,6 @@ namespace Mutagen.Bethesda.Oblivion
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IWeatherGetter WeatherFactory(

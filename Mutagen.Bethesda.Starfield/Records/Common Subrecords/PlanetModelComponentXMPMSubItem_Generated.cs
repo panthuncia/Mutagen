@@ -1214,12 +1214,15 @@ namespace Mutagen.Bethesda.Starfield
 
         #region ResourceID
         public String ResourceID => BinaryStringUtility.ParsePrependedString(_structData.Slice(0x0), lengthLength: 2, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int ResourceIDEndingPos;
+        private int ResourceIDEndingPosStore;
+        protected int ResourceIDEndingPos { get { EnsureFilled(); return ResourceIDEndingPosStore; } private set => ResourceIDEndingPosStore = value; }
         #endregion
         public Int32 FileHash => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(ResourceIDEndingPos, 0x4));
         #region Extension
-        public String Extension { get; private set; } = string.Empty;
-        protected int ExtensionEndingPos;
+        private String ExtensionStore = string.Empty;
+        public String Extension { get { EnsureFilled(); return ExtensionStore; } private set => ExtensionStore = value; }
+        private int ExtensionEndingPosStore;
+        protected int ExtensionEndingPos { get { EnsureFilled(); return ExtensionEndingPosStore; } private set => ExtensionEndingPosStore = value; }
         #endregion
         public Int32 FolderHash => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(ExtensionEndingPos, 0x4));
         partial void CustomFactoryEnd(

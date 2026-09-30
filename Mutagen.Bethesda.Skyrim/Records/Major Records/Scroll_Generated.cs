@@ -3403,12 +3403,14 @@ namespace Mutagen.Bethesda.Skyrim
 
 
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         private IObjectBoundsGetter? _ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         public IObjectBoundsGetter ObjectBounds => _ObjectBounds ?? new ObjectBounds();
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -3420,32 +3422,45 @@ namespace Mutagen.Bethesda.Skyrim
         #endregion
         #endregion
         #region Keywords
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get; private set; }
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? KeywordsStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get { EnsureFilled(); return KeywordsStore; } private set => KeywordsStore = value; }
         IReadOnlyList<IFormLinkGetter<IKeywordCommonGetter>>? IKeywordedGetter.Keywords => this.Keywords;
         #endregion
         #region MenuDisplayObject
-        private int? _MenuDisplayObjectLocation;
+        private int? _MenuDisplayObjectLocationStore;
+        private int? _MenuDisplayObjectLocation { get { EnsureFilled(); return _MenuDisplayObjectLocationStore; } set => _MenuDisplayObjectLocationStore = value; }
         public IFormLinkNullableGetter<IStaticGetter> MenuDisplayObject => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IStaticGetter>(_package, _recordData, _MenuDisplayObjectLocation);
         #endregion
         #region EquipmentType
-        private int? _EquipmentTypeLocation;
+        private int? _EquipmentTypeLocationStore;
+        private int? _EquipmentTypeLocation { get { EnsureFilled(); return _EquipmentTypeLocationStore; } set => _EquipmentTypeLocationStore = value; }
         public IFormLinkNullableGetter<IEquipTypeGetter> EquipmentType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IEquipTypeGetter>(_package, _recordData, _EquipmentTypeLocation);
         #endregion
         #region Description
-        private int? _DescriptionLocation;
+        private int? _DescriptionLocationStore;
+        private int? _DescriptionLocation { get { EnsureFilled(); return _DescriptionLocationStore; } set => _DescriptionLocationStore = value; }
         public ITranslatedStringGetter? Description => _DescriptionLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DescriptionLocation.Value, _package.MetaData.Constants), StringsSource.DL, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
-        public IModelGetter? Model { get; private set; }
-        public IDestructibleGetter? Destructible { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
+        #region Destructible
+        private IDestructibleGetter? DestructibleStore;
+        public IDestructibleGetter? Destructible { get { EnsureFilled(); return DestructibleStore; } private set => DestructibleStore = value; }
+        #endregion
         #region PickUpSound
-        private int? _PickUpSoundLocation;
+        private int? _PickUpSoundLocationStore;
+        private int? _PickUpSoundLocation { get { EnsureFilled(); return _PickUpSoundLocationStore; } set => _PickUpSoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundDescriptorGetter> PickUpSound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundDescriptorGetter>(_package, _recordData, _PickUpSoundLocation);
         #endregion
         #region PutDownSound
-        private int? _PutDownSoundLocation;
+        private int? _PutDownSoundLocationStore;
+        private int? _PutDownSoundLocation { get { EnsureFilled(); return _PutDownSoundLocationStore; } set => _PutDownSoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundDescriptorGetter> PutDownSound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundDescriptorGetter>(_package, _recordData, _PutDownSoundLocation);
         #endregion
-        private RangeInt32? _DATALocation;
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         #region Value
         private int _ValueLocation => _DATALocation!.Value.Min;
         private bool _Value_IsSet => _DATALocation.HasValue;
@@ -3456,7 +3471,8 @@ namespace Mutagen.Bethesda.Skyrim
         private bool _Weight_IsSet => _DATALocation.HasValue;
         public Single Weight => _Weight_IsSet ? _recordData.Slice(_WeightLocation, 4).Float() : default(Single);
         #endregion
-        private RangeInt32? _SPITLocation;
+        private RangeInt32? _SPITLocationStore;
+        private RangeInt32? _SPITLocation { get { EnsureFilled(); return _SPITLocationStore; } set => _SPITLocationStore = value; }
         #region BaseCost
         private int _BaseCostLocation => _SPITLocation!.Value.Min;
         private bool _BaseCost_IsSet => _SPITLocation.HasValue;
@@ -3502,7 +3518,10 @@ namespace Mutagen.Bethesda.Skyrim
         private bool _HalfCostPerk_IsSet => _SPITLocation.HasValue;
         public IFormLinkGetter<IPerkGetter> HalfCostPerk => _HalfCostPerk_IsSet ? FormLinkBinaryTranslation.Instance.OverlayFactory<IPerkGetter>(_package, _recordData.Span.Slice(_HalfCostPerkLocation, 0x4), isSet: _HalfCostPerk_IsSet) : FormLink<IPerkGetter>.Null;
         #endregion
-        public IReadOnlyList<IEffectGetter> Effects { get; private set; } = [];
+        #region Effects
+        private IReadOnlyList<IEffectGetter> EffectsStore = [];
+        public IReadOnlyList<IEffectGetter> Effects { get { EnsureFilled(); return EffectsStore; } private set => EffectsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -3524,6 +3543,23 @@ namespace Mutagen.Bethesda.Skyrim
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ScrollBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ScrollFill((ScrollBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ScrollFill(
+            ScrollBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -3531,9 +3567,7 @@ namespace Mutagen.Bethesda.Skyrim
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ScrollBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -3546,7 +3580,6 @@ namespace Mutagen.Bethesda.Skyrim
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IScrollGetter ScrollFactory(

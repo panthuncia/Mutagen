@@ -1245,7 +1245,10 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IAlphaLayerDataGetter>? AlphaLayerData { get; private set; }
+        #region AlphaLayerData
+        private IReadOnlyList<IAlphaLayerDataGetter>? AlphaLayerDataStore;
+        public IReadOnlyList<IAlphaLayerDataGetter>? AlphaLayerData { get { EnsureFilled(); return AlphaLayerDataStore; } private set => AlphaLayerDataStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

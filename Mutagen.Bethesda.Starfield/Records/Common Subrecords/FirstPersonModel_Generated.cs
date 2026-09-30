@@ -1340,19 +1340,23 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region File
-        private int? _FileLocation;
+        private int? _FileLocationStore;
+        private int? _FileLocation { get { EnsureFilled(); return _FileLocationStore; } set => _FileLocationStore = value; }
         public AssetLinkGetter<StarfieldModelAssetType>? File => _FileLocation.HasValue ? new AssetLinkGetter<StarfieldModelAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FileLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<StarfieldModelAssetType>?);
         #endregion
         #region LightLayer
-        private int? _LightLayerLocation;
+        private int? _LightLayerLocationStore;
+        private int? _LightLayerLocation { get { EnsureFilled(); return _LightLayerLocationStore; } set => _LightLayerLocationStore = value; }
         public UInt32? LightLayer => _LightLayerLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LightLayerLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region MaterialSwap
-        private int? _MaterialSwapLocation;
+        private int? _MaterialSwapLocationStore;
+        private int? _MaterialSwapLocation { get { EnsureFilled(); return _MaterialSwapLocationStore; } set => _MaterialSwapLocationStore = value; }
         public IFormLinkNullableGetter<ILayeredMaterialSwapGetter> MaterialSwap => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ILayeredMaterialSwapGetter>(_package, _recordData, _MaterialSwapLocation);
         #endregion
         #region ColorRemappingIndex
-        private int? _ColorRemappingIndexLocation;
+        private int? _ColorRemappingIndexLocationStore;
+        private int? _ColorRemappingIndexLocation { get { EnsureFilled(); return _ColorRemappingIndexLocationStore; } set => _ColorRemappingIndexLocationStore = value; }
         public Single? ColorRemappingIndex => _ColorRemappingIndexLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ColorRemappingIndexLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         partial void CustomFactoryEnd(

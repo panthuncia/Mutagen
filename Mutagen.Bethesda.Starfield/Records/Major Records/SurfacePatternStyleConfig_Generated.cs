@@ -1150,11 +1150,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Style
-        private int? _StyleLocation;
+        private int? _StyleLocationStore;
+        private int? _StyleLocation { get { EnsureFilled(); return _StyleLocationStore; } set => _StyleLocationStore = value; }
         public String? Style => _StyleLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _StyleLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Weight
-        private int? _WeightLocation;
+        private int? _WeightLocationStore;
+        private int? _WeightLocation { get { EnsureFilled(); return _WeightLocationStore; } set => _WeightLocationStore = value; }
         public Single? Weight => _WeightLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _WeightLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         partial void CustomFactoryEnd(

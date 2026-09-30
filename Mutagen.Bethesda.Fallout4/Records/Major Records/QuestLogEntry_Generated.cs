@@ -1514,20 +1514,27 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public QuestLogEntry.Flag? Flags => EnumBinaryTranslation<QuestLogEntry.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 1);
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region Note
-        private int? _NoteLocation;
+        private int? _NoteLocationStore;
+        private int? _NoteLocation { get { EnsureFilled(); return _NoteLocationStore; } set => _NoteLocationStore = value; }
         public String? Note => _NoteLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NoteLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Entry
-        private int? _EntryLocation;
+        private int? _EntryLocationStore;
+        private int? _EntryLocation { get { EnsureFilled(); return _EntryLocationStore; } set => _EntryLocationStore = value; }
         public ITranslatedStringGetter? Entry => _EntryLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EntryLocation.Value, _package.MetaData.Constants), StringsSource.DL, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         #region NextQuest
-        private int? _NextQuestLocation;
+        private int? _NextQuestLocationStore;
+        private int? _NextQuestLocation { get { EnsureFilled(); return _NextQuestLocationStore; } set => _NextQuestLocationStore = value; }
         public IFormLinkNullableGetter<IQuestGetter> NextQuest => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IQuestGetter>(_package, _recordData, _NextQuestLocation);
         #endregion
         partial void CustomFactoryEnd(

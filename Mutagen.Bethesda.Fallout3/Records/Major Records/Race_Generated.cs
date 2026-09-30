@@ -3241,7 +3241,8 @@ namespace Mutagen.Bethesda.Fallout3
 
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -3253,24 +3254,32 @@ namespace Mutagen.Bethesda.Fallout3
         #endregion
         #endregion
         #region Description
-        private int? _DescriptionLocation;
+        private int? _DescriptionLocationStore;
+        private int? _DescriptionLocation { get { EnsureFilled(); return _DescriptionLocationStore; } set => _DescriptionLocationStore = value; }
         public ITranslatedStringGetter Description => _DescriptionLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DescriptionLocation.Value, _package.MetaData.Constants), StringsSource.DL, parsingBundle: _package.MetaData, eager: false) : TranslatedString.Empty;
         #endregion
-        public IReadOnlyList<IRaceRelationGetter> Relations { get; private set; } = [];
+        #region Relations
+        private IReadOnlyList<IRaceRelationGetter> RelationsStore = [];
+        public IReadOnlyList<IRaceRelationGetter> Relations { get { EnsureFilled(); return RelationsStore; } private set => RelationsStore = value; }
+        #endregion
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public IRaceDataGetter? Data => _DataLocation.HasValue ? RaceDataBinaryOverlay.RaceDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         #endregion
         #region Older
-        private int? _OlderLocation;
+        private int? _OlderLocationStore;
+        private int? _OlderLocation { get { EnsureFilled(); return _OlderLocationStore; } set => _OlderLocationStore = value; }
         public IFormLinkNullableGetter<IRaceGetter> Older => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IRaceGetter>(_package, _recordData, _OlderLocation);
         #endregion
         #region Younger
-        private int? _YoungerLocation;
+        private int? _YoungerLocationStore;
+        private int? _YoungerLocation { get { EnsureFilled(); return _YoungerLocationStore; } set => _YoungerLocationStore = value; }
         public IFormLinkNullableGetter<IRaceGetter> Younger => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IRaceGetter>(_package, _recordData, _YoungerLocation);
         #endregion
         #region Voices
-        private int? _VoicesLocation;
+        private int? _VoicesLocationStore;
+        private int? _VoicesLocation { get { EnsureFilled(); return _VoicesLocationStore; } set => _VoicesLocationStore = value; }
         public IGenderedItemGetter<IFormLinkGetter<IVoiceTypeGetter>> Voices
         {
             get
@@ -3284,7 +3293,8 @@ namespace Mutagen.Bethesda.Fallout3
         }
         #endregion
         #region DefaultHairStyles
-        private int? _DefaultHairStylesLocation;
+        private int? _DefaultHairStylesLocationStore;
+        private int? _DefaultHairStylesLocation { get { EnsureFilled(); return _DefaultHairStylesLocationStore; } set => _DefaultHairStylesLocationStore = value; }
         public IGenderedItemGetter<IFormLinkGetter<IHairGetter>>? DefaultHairStyles
         {
             get
@@ -3298,7 +3308,8 @@ namespace Mutagen.Bethesda.Fallout3
         }
         #endregion
         #region DefaultHairColors
-        private int? _DefaultHairColorsLocation;
+        private int? _DefaultHairColorsLocationStore;
+        private int? _DefaultHairColorsLocation { get { EnsureFilled(); return _DefaultHairColorsLocationStore; } set => _DefaultHairColorsLocationStore = value; }
         public IGenderedItemGetter<Race.HairColor> DefaultHairColors
         {
             get
@@ -3312,29 +3323,41 @@ namespace Mutagen.Bethesda.Fallout3
         }
         #endregion
         #region FacegenMainClamp
-        private int? _FacegenMainClampLocation;
+        private int? _FacegenMainClampLocationStore;
+        private int? _FacegenMainClampLocation { get { EnsureFilled(); return _FacegenMainClampLocationStore; } set => _FacegenMainClampLocationStore = value; }
         public Single FacegenMainClamp => _FacegenMainClampLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FacegenMainClampLocation.Value, _package.MetaData.Constants).Float() : default(Single);
         #endregion
         #region FacegenFaceClamp
-        private int? _FacegenFaceClampLocation;
+        private int? _FacegenFaceClampLocationStore;
+        private int? _FacegenFaceClampLocation { get { EnsureFilled(); return _FacegenFaceClampLocationStore; } set => _FacegenFaceClampLocationStore = value; }
         public Single FacegenFaceClamp => _FacegenFaceClampLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FacegenFaceClampLocation.Value, _package.MetaData.Constants).Float() : default(Single);
         #endregion
         #region UnusedATTR
-        private int? _UnusedATTRLocation;
+        private int? _UnusedATTRLocationStore;
+        private int? _UnusedATTRLocation { get { EnsureFilled(); return _UnusedATTRLocationStore; } set => _UnusedATTRLocationStore = value; }
         public UInt16 UnusedATTR => _UnusedATTRLocation.HasValue ? BinaryPrimitives.ReadUInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _UnusedATTRLocation.Value, _package.MetaData.Constants)) : default(UInt16);
         #endregion
         #region HeadData
-        private IGenderedItemGetter<IHeadDataGetter?>? _HeadDataOverlay;
+        private IGenderedItemGetter<IHeadDataGetter?>? _HeadDataOverlayStore;
+        private IGenderedItemGetter<IHeadDataGetter?>? _HeadDataOverlay { get { EnsureFilled(); return _HeadDataOverlayStore; } set => _HeadDataOverlayStore = value; }
         public IGenderedItemGetter<IHeadDataGetter?>? HeadData => _HeadDataOverlay;
         #endregion
         #region BodyData
-        private IGenderedItemGetter<IBodyDataGetter?>? _BodyDataOverlay;
+        private IGenderedItemGetter<IBodyDataGetter?>? _BodyDataOverlayStore;
+        private IGenderedItemGetter<IBodyDataGetter?>? _BodyDataOverlay { get { EnsureFilled(); return _BodyDataOverlayStore; } set => _BodyDataOverlayStore = value; }
         public IGenderedItemGetter<IBodyDataGetter?>? BodyData => _BodyDataOverlay;
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IHairGetter>>? Hairs { get; private set; }
-        public IReadOnlyList<IFormLinkGetter<IEyeGetter>>? Eyes { get; private set; }
+        #region Hairs
+        private IReadOnlyList<IFormLinkGetter<IHairGetter>>? HairsStore;
+        public IReadOnlyList<IFormLinkGetter<IHairGetter>>? Hairs { get { EnsureFilled(); return HairsStore; } private set => HairsStore = value; }
+        #endregion
+        #region Eyes
+        private IReadOnlyList<IFormLinkGetter<IEyeGetter>>? EyesStore;
+        public IReadOnlyList<IFormLinkGetter<IEyeGetter>>? Eyes { get { EnsureFilled(); return EyesStore; } private set => EyesStore = value; }
+        #endregion
         #region FaceGenData
-        private IGenderedItemGetter<IFaceGenDataGetter?>? _FaceGenDataOverlay;
+        private IGenderedItemGetter<IFaceGenDataGetter?>? _FaceGenDataOverlayStore;
+        private IGenderedItemGetter<IFaceGenDataGetter?>? _FaceGenDataOverlay { get { EnsureFilled(); return _FaceGenDataOverlayStore; } set => _FaceGenDataOverlayStore = value; }
         public IGenderedItemGetter<IFaceGenDataGetter?>? FaceGenData => _FaceGenDataOverlay;
         #endregion
         partial void CustomFactoryEnd(
@@ -3358,6 +3381,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new RaceBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => RaceFill((RaceBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void RaceFill(
+            RaceBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -3365,9 +3405,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new RaceBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -3380,7 +3418,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IRaceGetter RaceFactory(

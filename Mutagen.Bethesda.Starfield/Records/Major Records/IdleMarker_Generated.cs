@@ -2721,26 +2721,32 @@ namespace Mutagen.Bethesda.Starfield
         public IdleMarker.MajorFlag MajorFlags => (IdleMarker.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         private IObjectBoundsGetter? _ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         public IObjectBoundsGetter ObjectBounds => _ObjectBounds ?? new ObjectBounds();
         #endregion
         #region DirtinessScale
-        private int? _DirtinessScaleLocation;
+        private int? _DirtinessScaleLocationStore;
+        private int? _DirtinessScaleLocation { get { EnsureFilled(); return _DirtinessScaleLocationStore; } set => _DirtinessScaleLocationStore = value; }
         public Percent DirtinessScale => _DirtinessScaleLocation.HasValue ? PercentBinaryTranslation.GetPercent(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DirtinessScaleLocation.Value, _package.MetaData.Constants), FloatIntegerType.UInt) : default(Percent);
         #endregion
         #region Keywords
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get; private set; }
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? KeywordsStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get { EnsureFilled(); return KeywordsStore; } private set => KeywordsStore = value; }
         IReadOnlyList<IFormLinkGetter<IKeywordCommonGetter>>? IKeywordedGetter.Keywords => this.Keywords;
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public IdleMarker.Flag? Flags => EnumBinaryTranslation<IdleMarker.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 1);
         #endregion
         #region AnimationCount
@@ -2750,7 +2756,8 @@ namespace Mutagen.Bethesda.Starfield
             PreviousParse lastParsed);
         #endregion
         #region IdleTimer
-        private int? _IdleTimerLocation;
+        private int? _IdleTimerLocationStore;
+        private int? _IdleTimerLocation { get { EnsureFilled(); return _IdleTimerLocationStore; } set => _IdleTimerLocationStore = value; }
         public Single? IdleTimer => _IdleTimerLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _IdleTimerLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region Animations
@@ -2761,17 +2768,23 @@ namespace Mutagen.Bethesda.Starfield
             RecordType type,
             PreviousParse lastParsed);
         #endregion
-        public IModelGetter? Model { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
         #region ActorAction
-        private int? _ActorActionLocation;
+        private int? _ActorActionLocationStore;
+        private int? _ActorActionLocation { get { EnsureFilled(); return _ActorActionLocationStore; } set => _ActorActionLocationStore = value; }
         public IFormLinkNullableGetter<IActionRecordGetter> ActorAction => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IActionRecordGetter>(_package, _recordData, _ActorActionLocation);
         #endregion
         #region AnimationFlavor
-        private int? _AnimationFlavorLocation;
+        private int? _AnimationFlavorLocationStore;
+        private int? _AnimationFlavorLocation { get { EnsureFilled(); return _AnimationFlavorLocationStore; } set => _AnimationFlavorLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> AnimationFlavor => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _AnimationFlavorLocation);
         #endregion
         #region AnimationArchetype
-        private int? _AnimationArchetypeLocation;
+        private int? _AnimationArchetypeLocationStore;
+        private int? _AnimationArchetypeLocation { get { EnsureFilled(); return _AnimationArchetypeLocationStore; } set => _AnimationArchetypeLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> AnimationArchetype => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _AnimationArchetypeLocation);
         #endregion
         partial void CustomFactoryEnd(

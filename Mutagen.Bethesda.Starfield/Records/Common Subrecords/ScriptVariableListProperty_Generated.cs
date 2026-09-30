@@ -1196,7 +1196,8 @@ namespace Mutagen.Bethesda.Starfield
 
         #region Data
         public IReadOnlyList<Int32> Data => BinaryOverlayList.FactoryByCountLength<Int32>(_structData, _package, 4, countLength: 4, (s, p) => BinaryPrimitives.ReadInt32LittleEndian(s));
-        protected int DataEndingPos;
+        private int DataEndingPosStore;
+        protected int DataEndingPos { get { EnsureFilled(); return DataEndingPosStore; } private set => DataEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

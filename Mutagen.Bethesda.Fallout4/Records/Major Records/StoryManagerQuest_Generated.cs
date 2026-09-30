@@ -1235,15 +1235,18 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Quest
-        private int? _QuestLocation;
+        private int? _QuestLocationStore;
+        private int? _QuestLocation { get { EnsureFilled(); return _QuestLocationStore; } set => _QuestLocationStore = value; }
         public IFormLinkNullableGetter<IQuestGetter> Quest => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IQuestGetter>(_package, _recordData, _QuestLocation);
         #endregion
         #region FNAM
-        private int? _FNAMLocation;
+        private int? _FNAMLocationStore;
+        private int? _FNAMLocation { get { EnsureFilled(); return _FNAMLocationStore; } set => _FNAMLocationStore = value; }
         public UInt32? FNAM => _FNAMLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FNAMLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region HoursUntilReset
-        private int? _HoursUntilResetLocation;
+        private int? _HoursUntilResetLocationStore;
+        private int? _HoursUntilResetLocation { get { EnsureFilled(); return _HoursUntilResetLocationStore; } set => _HoursUntilResetLocationStore = value; }
         public Single? HoursUntilReset => _HoursUntilResetLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _HoursUntilResetLocation.Value, _package.MetaData.Constants).Float() / 24f : default(Single?);
         #endregion
         partial void CustomFactoryEnd(

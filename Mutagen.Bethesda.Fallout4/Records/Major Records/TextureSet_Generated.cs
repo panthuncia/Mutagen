@@ -2305,52 +2305,64 @@ namespace Mutagen.Bethesda.Fallout4
 
 
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         private IObjectBoundsGetter? _ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         public IObjectBoundsGetter ObjectBounds => _ObjectBounds ?? new ObjectBounds();
         #endregion
         #region Diffuse
-        private int? _DiffuseLocation;
+        private int? _DiffuseLocationStore;
+        private int? _DiffuseLocation { get { EnsureFilled(); return _DiffuseLocationStore; } set => _DiffuseLocationStore = value; }
         public String? Diffuse => _DiffuseLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DiffuseLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region NormalOrGloss
-        private int? _NormalOrGlossLocation;
+        private int? _NormalOrGlossLocationStore;
+        private int? _NormalOrGlossLocation { get { EnsureFilled(); return _NormalOrGlossLocationStore; } set => _NormalOrGlossLocationStore = value; }
         public String? NormalOrGloss => _NormalOrGlossLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NormalOrGlossLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Glow
-        private int? _GlowLocation;
+        private int? _GlowLocationStore;
+        private int? _GlowLocation { get { EnsureFilled(); return _GlowLocationStore; } set => _GlowLocationStore = value; }
         public String? Glow => _GlowLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _GlowLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Height
-        private int? _HeightLocation;
+        private int? _HeightLocationStore;
+        private int? _HeightLocation { get { EnsureFilled(); return _HeightLocationStore; } set => _HeightLocationStore = value; }
         public String? Height => _HeightLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HeightLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Environment
-        private int? _EnvironmentLocation;
+        private int? _EnvironmentLocationStore;
+        private int? _EnvironmentLocation { get { EnsureFilled(); return _EnvironmentLocationStore; } set => _EnvironmentLocationStore = value; }
         public String? Environment => _EnvironmentLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EnvironmentLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Wrinkles
-        private int? _WrinklesLocation;
+        private int? _WrinklesLocationStore;
+        private int? _WrinklesLocation { get { EnsureFilled(); return _WrinklesLocationStore; } set => _WrinklesLocationStore = value; }
         public String? Wrinkles => _WrinklesLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _WrinklesLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Multilayer
-        private int? _MultilayerLocation;
+        private int? _MultilayerLocationStore;
+        private int? _MultilayerLocation { get { EnsureFilled(); return _MultilayerLocationStore; } set => _MultilayerLocationStore = value; }
         public String? Multilayer => _MultilayerLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MultilayerLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region SmoothSpec
-        private int? _SmoothSpecLocation;
+        private int? _SmoothSpecLocationStore;
+        private int? _SmoothSpecLocation { get { EnsureFilled(); return _SmoothSpecLocationStore; } set => _SmoothSpecLocationStore = value; }
         public String? SmoothSpec => _SmoothSpecLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SmoothSpecLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Decal
-        private RangeInt32? _DecalLocation;
+        private RangeInt32? _DecalLocationStore;
+        private RangeInt32? _DecalLocation { get { EnsureFilled(); return _DecalLocationStore; } set => _DecalLocationStore = value; }
         public IDecalGetter? Decal => _DecalLocation.HasValue ? DecalBinaryOverlay.DecalFactory(_recordData.Slice(_DecalLocation!.Value.Min), _package) : default;
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public TextureSet.Flag Flags => EnumBinaryTranslation<TextureSet.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_FlagsLocation, _recordData, _package, 2);
         #endregion
         #region Material
-        private int? _MaterialLocation;
+        private int? _MaterialLocationStore;
+        private int? _MaterialLocation { get { EnsureFilled(); return _MaterialLocationStore; } set => _MaterialLocationStore = value; }
         public String? Material => _MaterialLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaterialLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(
@@ -2374,6 +2386,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new TextureSetBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => TextureSetFill((TextureSetBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void TextureSetFill(
+            TextureSetBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2381,9 +2410,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new TextureSetBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2396,7 +2423,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ITextureSetGetter TextureSetFactory(

@@ -1503,15 +1503,18 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public PackageIdles.Flag Flags => EnumBinaryTranslation<PackageIdles.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_FlagsLocation, _recordData, _package, 1);
         #endregion
         #region AnimationCount
-        private int? _AnimationCountLocation;
+        private int? _AnimationCountLocationStore;
+        private int? _AnimationCountLocation { get { EnsureFilled(); return _AnimationCountLocationStore; } set => _AnimationCountLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? AnimationCount => _AnimationCountLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _AnimationCountLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region TimerSetting
-        private int? _TimerSettingLocation;
+        private int? _TimerSettingLocationStore;
+        private int? _TimerSettingLocation { get { EnsureFilled(); return _TimerSettingLocationStore; } set => _TimerSettingLocationStore = value; }
         public Single TimerSetting => _TimerSettingLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _TimerSettingLocation.Value, _package.MetaData.Constants).Float() : default(Single);
         #endregion
         #region Animations
@@ -1523,7 +1526,8 @@ namespace Mutagen.Bethesda.Fallout3
             PreviousParse lastParsed);
         #endregion
         #region Unknown
-        private int? _UnknownLocation;
+        private int? _UnknownLocationStore;
+        private int? _UnknownLocation { get { EnsureFilled(); return _UnknownLocationStore; } set => _UnknownLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? Unknown => _UnknownLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _UnknownLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

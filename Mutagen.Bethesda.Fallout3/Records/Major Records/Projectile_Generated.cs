@@ -3412,12 +3412,14 @@ namespace Mutagen.Bethesda.Fallout3
 
 
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         private IObjectBoundsGetter? _ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         public IObjectBoundsGetter ObjectBounds => _ObjectBounds ?? new ObjectBounds();
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -3428,10 +3430,18 @@ namespace Mutagen.Bethesda.Fallout3
         ITranslatedStringGetter ITranslatedNamedRequiredGetter.Name => this.Name ?? TranslatedString.Empty;
         #endregion
         #endregion
-        public IModelGetter? Model { get; private set; }
-        public IDestructibleGetter? Destructible { get; private set; }
-        private RangeInt32? _DATALocation;
-        public Projectile.DATADataType DATADataTypeState { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
+        #region Destructible
+        private IDestructibleGetter? DestructibleStore;
+        public IDestructibleGetter? Destructible { get { EnsureFilled(); return DestructibleStore; } private set => DestructibleStore = value; }
+        #endregion
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
+        private Projectile.DATADataType DATADataTypeStateStore;
+        public Projectile.DATADataType DATADataTypeState { get { EnsureFilled(); return DATADataTypeStateStore; } private set => DATADataTypeStateStore = value; }
         #region Flags
         private int _FlagsLocation => _DATALocation!.Value.Min;
         private bool _Flags_IsSet => _DATALocation.HasValue;
@@ -3535,15 +3545,18 @@ namespace Mutagen.Bethesda.Fallout3
         int BouncyMultModHeaderVersioningOffset => RotationModHeaderVersioningOffset + (_package.MetaData.ModHeaderVersion!.Value < 1.32f ? -4 : 0);
         #endregion
         #region MuzzleFlashModel
-        private int? _MuzzleFlashModelLocation;
+        private int? _MuzzleFlashModelLocationStore;
+        private int? _MuzzleFlashModelLocation { get { EnsureFilled(); return _MuzzleFlashModelLocationStore; } set => _MuzzleFlashModelLocationStore = value; }
         public String MuzzleFlashModel => _MuzzleFlashModelLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MuzzleFlashModelLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region MuzzleFlashModelTextureHashes
-        private int? _MuzzleFlashModelTextureHashesLocation;
+        private int? _MuzzleFlashModelTextureHashesLocationStore;
+        private int? _MuzzleFlashModelTextureHashesLocation { get { EnsureFilled(); return _MuzzleFlashModelTextureHashesLocationStore; } set => _MuzzleFlashModelTextureHashesLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? MuzzleFlashModelTextureHashes => _MuzzleFlashModelTextureHashesLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MuzzleFlashModelTextureHashesLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region SoundLevel
-        private int? _SoundLevelLocation;
+        private int? _SoundLevelLocationStore;
+        private int? _SoundLevelLocation { get { EnsureFilled(); return _SoundLevelLocationStore; } set => _SoundLevelLocationStore = value; }
         public SoundLevel SoundLevel => EnumBinaryTranslation<SoundLevel, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_SoundLevelLocation, _recordData, _package, 4);
         #endregion
         partial void CustomFactoryEnd(
@@ -3567,6 +3580,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ProjectileBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ProjectileFill((ProjectileBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ProjectileFill(
+            ProjectileBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -3574,9 +3604,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ProjectileBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -3589,7 +3617,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IProjectileGetter ProjectileFactory(

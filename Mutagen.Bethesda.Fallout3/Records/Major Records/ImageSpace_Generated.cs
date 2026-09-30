@@ -3615,8 +3615,10 @@ namespace Mutagen.Bethesda.Fallout3
         protected override Type LinkType => typeof(IImageSpaceGetter);
 
 
-        private RangeInt32? _DNAMLocation;
-        public ImageSpace.DNAMDataType DNAMDataTypeState { get; private set; }
+        private RangeInt32? _DNAMLocationStore;
+        private RangeInt32? _DNAMLocation { get { EnsureFilled(); return _DNAMLocationStore; } set => _DNAMLocationStore = value; }
+        private ImageSpace.DNAMDataType DNAMDataTypeStateStore;
+        public ImageSpace.DNAMDataType DNAMDataTypeState { get { EnsureFilled(); return DNAMDataTypeStateStore; } private set => DNAMDataTypeStateStore = value; }
         #region HdrEyeAdaptSpeed
         private int _HdrEyeAdaptSpeedLocation => _DNAMLocation!.Value.Min;
         private bool _HdrEyeAdaptSpeed_IsSet => _DNAMLocation.HasValue;
@@ -3829,6 +3831,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ImageSpaceBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ImageSpaceFill((ImageSpaceBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ImageSpaceFill(
+            ImageSpaceBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -3836,9 +3855,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ImageSpaceBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -3851,7 +3868,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IImageSpaceGetter ImageSpaceFactory(

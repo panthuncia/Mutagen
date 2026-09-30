@@ -1161,11 +1161,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Quest
-        private int? _QuestLocation;
+        private int? _QuestLocationStore;
+        private int? _QuestLocation { get { EnsureFilled(); return _QuestLocationStore; } set => _QuestLocationStore = value; }
         public IFormLinkNullableGetter<IQuestGetter> Quest => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IQuestGetter>(_package, _recordData, _QuestLocation);
         #endregion
         #region AliasID
-        private int? _AliasIDLocation;
+        private int? _AliasIDLocationStore;
+        private int? _AliasIDLocation { get { EnsureFilled(); return _AliasIDLocationStore; } set => _AliasIDLocationStore = value; }
         public Int32? AliasID => _AliasIDLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AliasIDLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         partial void CustomFactoryEnd(

@@ -2558,7 +2558,8 @@ namespace Mutagen.Bethesda.Fallout4
         public HeadPart.MajorFlag MajorFlags => (HeadPart.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2569,30 +2570,47 @@ namespace Mutagen.Bethesda.Fallout4
         ITranslatedStringGetter ITranslatedNamedRequiredGetter.Name => this.Name ?? TranslatedString.Empty;
         #endregion
         #endregion
-        public IModelGetter? Model { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public HeadPart.Flag Flags => EnumBinaryTranslation<HeadPart.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_FlagsLocation, _recordData, _package, 1);
         #endregion
         #region Type
-        private int? _TypeLocation;
+        private int? _TypeLocationStore;
+        private int? _TypeLocation { get { EnsureFilled(); return _TypeLocationStore; } set => _TypeLocationStore = value; }
         public HeadPart.TypeEnum? Type => EnumBinaryTranslation<HeadPart.TypeEnum, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_TypeLocation, _recordData, _package, 4);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IHeadPartGetter>> ExtraParts { get; private set; } = [];
-        public IReadOnlyList<IPartGetter> Parts { get; private set; } = [];
+        #region ExtraParts
+        private IReadOnlyList<IFormLinkGetter<IHeadPartGetter>> ExtraPartsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IHeadPartGetter>> ExtraParts { get { EnsureFilled(); return ExtraPartsStore; } private set => ExtraPartsStore = value; }
+        #endregion
+        #region Parts
+        private IReadOnlyList<IPartGetter> PartsStore = [];
+        public IReadOnlyList<IPartGetter> Parts { get { EnsureFilled(); return PartsStore; } private set => PartsStore = value; }
+        #endregion
         #region TextureSet
-        private int? _TextureSetLocation;
+        private int? _TextureSetLocationStore;
+        private int? _TextureSetLocation { get { EnsureFilled(); return _TextureSetLocationStore; } set => _TextureSetLocationStore = value; }
         public IFormLinkNullableGetter<ITextureSetGetter> TextureSet => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ITextureSetGetter>(_package, _recordData, _TextureSetLocation);
         #endregion
         #region Color
-        private int? _ColorLocation;
+        private int? _ColorLocationStore;
+        private int? _ColorLocation { get { EnsureFilled(); return _ColorLocationStore; } set => _ColorLocationStore = value; }
         public IFormLinkNullableGetter<IColorRecordGetter> Color => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IColorRecordGetter>(_package, _recordData, _ColorLocation);
         #endregion
         #region ValidRaces
-        private int? _ValidRacesLocation;
+        private int? _ValidRacesLocationStore;
+        private int? _ValidRacesLocation { get { EnsureFilled(); return _ValidRacesLocationStore; } set => _ValidRacesLocationStore = value; }
         public IFormLinkNullableGetter<IFormListGetter> ValidRaces => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IFormListGetter>(_package, _recordData, _ValidRacesLocation);
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -2614,6 +2632,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new HeadPartBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => HeadPartFill((HeadPartBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void HeadPartFill(
+            HeadPartBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2621,9 +2656,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new HeadPartBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2636,7 +2669,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IHeadPartGetter HeadPartFactory(

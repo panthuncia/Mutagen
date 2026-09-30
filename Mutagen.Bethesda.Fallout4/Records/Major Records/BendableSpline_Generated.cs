@@ -2009,11 +2009,14 @@ namespace Mutagen.Bethesda.Fallout4
 
 
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         public IObjectBoundsGetter? ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         #endregion
-        private RangeInt32? _DNAMLocation;
-        public BendableSpline.DNAMDataType DNAMDataTypeState { get; private set; }
+        private RangeInt32? _DNAMLocationStore;
+        private RangeInt32? _DNAMLocation { get { EnsureFilled(); return _DNAMLocationStore; } set => _DNAMLocationStore = value; }
+        private BendableSpline.DNAMDataType DNAMDataTypeStateStore;
+        public BendableSpline.DNAMDataType DNAMDataTypeState { get { EnsureFilled(); return DNAMDataTypeStateStore; } private set => DNAMDataTypeStateStore = value; }
         #region DefaultNumberOfTiles
         private int _DefaultNumberOfTilesLocation => _DNAMLocation!.Value.Min;
         private bool _DefaultNumberOfTiles_IsSet => _DNAMLocation.HasValue;
@@ -2045,7 +2048,8 @@ namespace Mutagen.Bethesda.Fallout4
         public Single WindFlexibility => _WindFlexibility_IsSet ? _recordData.Slice(_WindFlexibilityLocation, 4).Float() : default(Single);
         #endregion
         #region Texture
-        private int? _TextureLocation;
+        private int? _TextureLocationStore;
+        private int? _TextureLocation { get { EnsureFilled(); return _TextureLocationStore; } set => _TextureLocationStore = value; }
         public IFormLinkNullableGetter<ITextureSetGetter> Texture => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ITextureSetGetter>(_package, _recordData, _TextureLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -2069,6 +2073,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new BendableSplineBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => BendableSplineFill((BendableSplineBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void BendableSplineFill(
+            BendableSplineBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2076,9 +2097,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new BendableSplineBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2091,7 +2110,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IBendableSplineGetter BendableSplineFactory(

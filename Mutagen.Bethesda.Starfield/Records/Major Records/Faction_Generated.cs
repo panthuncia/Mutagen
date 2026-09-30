@@ -3634,14 +3634,20 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -3652,49 +3658,74 @@ namespace Mutagen.Bethesda.Starfield
         ITranslatedStringGetter ITranslatedNamedRequiredGetter.Name => this.Name ?? TranslatedString.Empty;
         #endregion
         #endregion
-        public IReadOnlyList<IRelationGetter> Relations { get; private set; } = [];
+        #region Relations
+        private IReadOnlyList<IRelationGetter> RelationsStore = [];
+        public IReadOnlyList<IRelationGetter> Relations { get { EnsureFilled(); return RelationsStore; } private set => RelationsStore = value; }
+        #endregion
         #region Keyword
-        private int? _KeywordLocation;
+        private int? _KeywordLocationStore;
+        private int? _KeywordLocation { get { EnsureFilled(); return _KeywordLocationStore; } set => _KeywordLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> Keyword => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _KeywordLocation);
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public Faction.FactionFlag Flags => EnumBinaryTranslation<Faction.FactionFlag, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_FlagsLocation, _recordData, _package, 4);
         #endregion
         #region SharedCrimeFactionList
-        private int? _SharedCrimeFactionListLocation;
+        private int? _SharedCrimeFactionListLocationStore;
+        private int? _SharedCrimeFactionListLocation { get { EnsureFilled(); return _SharedCrimeFactionListLocationStore; } set => _SharedCrimeFactionListLocationStore = value; }
         public IFormLinkNullableGetter<IFormListGetter> SharedCrimeFactionList => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IFormListGetter>(_package, _recordData, _SharedCrimeFactionListLocation);
         #endregion
         #region CrimeValues
-        private RangeInt32? _CrimeValuesLocation;
+        private RangeInt32? _CrimeValuesLocationStore;
+        private RangeInt32? _CrimeValuesLocation { get { EnsureFilled(); return _CrimeValuesLocationStore; } set => _CrimeValuesLocationStore = value; }
         public ICrimeValuesGetter? CrimeValues => _CrimeValuesLocation.HasValue ? CrimeValuesBinaryOverlay.CrimeValuesFactory(_recordData.Slice(_CrimeValuesLocation!.Value.Min), _package) : default;
         #endregion
-        public IReadOnlyList<IFactionPrisonsGetter>? Prisons { get; private set; }
-        public IReadOnlyList<IRankGetter> Ranks { get; private set; } = [];
+        #region Prisons
+        private IReadOnlyList<IFactionPrisonsGetter>? PrisonsStore;
+        public IReadOnlyList<IFactionPrisonsGetter>? Prisons { get { EnsureFilled(); return PrisonsStore; } private set => PrisonsStore = value; }
+        #endregion
+        #region Ranks
+        private IReadOnlyList<IRankGetter> RanksStore = [];
+        public IReadOnlyList<IRankGetter> Ranks { get { EnsureFilled(); return RanksStore; } private set => RanksStore = value; }
+        #endregion
         #region VendorBuySellList
-        private int? _VendorBuySellListLocation;
+        private int? _VendorBuySellListLocationStore;
+        private int? _VendorBuySellListLocation { get { EnsureFilled(); return _VendorBuySellListLocationStore; } set => _VendorBuySellListLocationStore = value; }
         public IFormLinkNullableGetter<IFormListGetter> VendorBuySellList => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IFormListGetter>(_package, _recordData, _VendorBuySellListLocation);
         #endregion
         #region MerchantContainer
-        private int? _MerchantContainerLocation;
+        private int? _MerchantContainerLocationStore;
+        private int? _MerchantContainerLocation { get { EnsureFilled(); return _MerchantContainerLocationStore; } set => _MerchantContainerLocationStore = value; }
         public IFormLinkNullableGetter<IPlacedObjectGetter> MerchantContainer => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IPlacedObjectGetter>(_package, _recordData, _MerchantContainerLocation);
         #endregion
         #region VendorValues
-        private RangeInt32? _VendorValuesLocation;
+        private RangeInt32? _VendorValuesLocationStore;
+        private RangeInt32? _VendorValuesLocation { get { EnsureFilled(); return _VendorValuesLocationStore; } set => _VendorValuesLocationStore = value; }
         public IVendorValuesGetter? VendorValues => _VendorValuesLocation.HasValue ? VendorValuesBinaryOverlay.VendorValuesFactory(_recordData.Slice(_VendorValuesLocation!.Value.Min), _package) : default;
         #endregion
-        public ILocationTargetRadiusGetter? VendorLocation { get; private set; }
-        public IReadOnlyList<IConditionGetter>? Conditions { get; private set; }
+        #region VendorLocation
+        private ILocationTargetRadiusGetter? VendorLocationStore;
+        public ILocationTargetRadiusGetter? VendorLocation { get { EnsureFilled(); return VendorLocationStore; } private set => VendorLocationStore = value; }
+        #endregion
+        #region Conditions
+        private IReadOnlyList<IConditionGetter>? ConditionsStore;
+        public IReadOnlyList<IConditionGetter>? Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region VoiceType
-        private int? _VoiceTypeLocation;
+        private int? _VoiceTypeLocationStore;
+        private int? _VoiceTypeLocation { get { EnsureFilled(); return _VoiceTypeLocationStore; } set => _VoiceTypeLocationStore = value; }
         public IFormLinkNullableGetter<IVoiceTypeOrListGetter> VoiceType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IVoiceTypeOrListGetter>(_package, _recordData, _VoiceTypeLocation);
         #endregion
         #region Herd
-        private RangeInt32? _HerdLocation;
+        private RangeInt32? _HerdLocationStore;
+        private RangeInt32? _HerdLocation { get { EnsureFilled(); return _HerdLocationStore; } set => _HerdLocationStore = value; }
         public IFactionHerdGetter? Herd => _HerdLocation.HasValue ? FactionHerdBinaryOverlay.FactionHerdFactory(_recordData.Slice(_HerdLocation!.Value.Min), _package) : default;
         #endregion
         #region FormationRadius
-        private int? _FormationRadiusLocation;
+        private int? _FormationRadiusLocationStore;
+        private int? _FormationRadiusLocation { get { EnsureFilled(); return _FormationRadiusLocationStore; } set => _FormationRadiusLocationStore = value; }
         public Single? FormationRadius => _FormationRadiusLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FormationRadiusLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         partial void CustomFactoryEnd(
@@ -3718,6 +3749,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new FactionBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => FactionFill((FactionBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void FactionFill(
+            FactionBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -3725,9 +3773,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new FactionBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -3740,7 +3786,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IFactionGetter FactionFactory(

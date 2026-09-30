@@ -1306,18 +1306,21 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public PlacedObjectMapMarker.Flag Flags => EnumBinaryTranslation<PlacedObjectMapMarker.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_FlagsLocation, _recordData, _package, 1);
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : TranslatedString.Empty;
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         string INamedRequiredGetter.Name => this.Name?.String ?? string.Empty;
         #endregion
         #endregion
-        private RangeInt32? _TNAMLocation;
+        private RangeInt32? _TNAMLocationStore;
+        private RangeInt32? _TNAMLocation { get { EnsureFilled(); return _TNAMLocationStore; } set => _TNAMLocationStore = value; }
         #region Type
         private int _TypeLocation => _TNAMLocation!.Value.Min;
         private bool _Type_IsSet => _TNAMLocation.HasValue;

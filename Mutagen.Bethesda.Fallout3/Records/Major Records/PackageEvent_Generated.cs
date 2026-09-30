@@ -1268,15 +1268,18 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Idle
-        private int? _IdleLocation;
+        private int? _IdleLocationStore;
+        private int? _IdleLocation { get { EnsureFilled(); return _IdleLocationStore; } set => _IdleLocationStore = value; }
         public IFormLinkGetter<IIdleAnimationGetter> Idle => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IIdleAnimationGetter>(_package, _recordData, _IdleLocation);
         #endregion
         #region EmbeddedScript
-        private IScriptFieldsGetter? _EmbeddedScript;
+        private IScriptFieldsGetter? _EmbeddedScriptStore;
+        private IScriptFieldsGetter? _EmbeddedScript { get { EnsureFilled(); return _EmbeddedScriptStore; } set => _EmbeddedScriptStore = value; }
         public IScriptFieldsGetter EmbeddedScript => _EmbeddedScript ?? new ScriptFields();
         #endregion
         #region Topic
-        private int? _TopicLocation;
+        private int? _TopicLocationStore;
+        private int? _TopicLocation { get { EnsureFilled(); return _TopicLocationStore; } set => _TopicLocationStore = value; }
         public IFormLinkNullableGetter<IDialogTopicGetter> Topic => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogTopicGetter>(_package, _recordData, _TopicLocation);
         #endregion
         partial void CustomFactoryEnd(

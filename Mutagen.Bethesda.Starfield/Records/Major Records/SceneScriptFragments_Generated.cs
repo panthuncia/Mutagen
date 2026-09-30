@@ -1214,8 +1214,10 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region PhaseFragments
-        public IReadOnlyList<IScenePhaseFragmentGetter> PhaseFragments { get; private set; } = null!;
-        protected int PhaseFragmentsEndingPos;
+        private IReadOnlyList<IScenePhaseFragmentGetter> PhaseFragmentsStore = null!;
+        public IReadOnlyList<IScenePhaseFragmentGetter> PhaseFragments { get { EnsureFilled(); return PhaseFragmentsStore; } private set => PhaseFragmentsStore = value; }
+        private int PhaseFragmentsEndingPosStore;
+        protected int PhaseFragmentsEndingPos { get { EnsureFilled(); return PhaseFragmentsEndingPosStore; } private set => PhaseFragmentsEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

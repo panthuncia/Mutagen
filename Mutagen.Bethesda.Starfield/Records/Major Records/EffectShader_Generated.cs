@@ -2794,12 +2794,17 @@ namespace Mutagen.Bethesda.Starfield
         protected override Type LinkType => typeof(IEffectShaderGetter);
 
 
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
         #region EffectSequence
-        private int? _EffectSequenceLocation;
+        private int? _EffectSequenceLocationStore;
+        private int? _EffectSequenceLocation { get { EnsureFilled(); return _EffectSequenceLocationStore; } set => _EffectSequenceLocationStore = value; }
         public IFormLinkNullableGetter<IEffectSequenceGetter> EffectSequence => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IEffectSequenceGetter>(_package, _recordData, _EffectSequenceLocation);
         #endregion
-        private RangeInt32? _DNAMLocation;
+        private RangeInt32? _DNAMLocationStore;
+        private RangeInt32? _DNAMLocation { get { EnsureFilled(); return _DNAMLocationStore; } set => _DNAMLocationStore = value; }
         #region EdgeEffectFallOff
         private int _EdgeEffectFallOffLocation => _DNAMLocation!.Value.Min;
         private bool _EdgeEffectFallOff_IsSet => _DNAMLocation.HasValue;
@@ -2881,7 +2886,10 @@ namespace Mutagen.Bethesda.Starfield
         private bool _Flags_IsSet => _DNAMLocation.HasValue;
         public EffectShader.Flag Flags => _Flags_IsSet ? (EffectShader.Flag)BinaryPrimitives.ReadInt32LittleEndian(_recordData.Span.Slice(_FlagsLocation, 0x4)) : default;
         #endregion
-        public IModelGetter? Model { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -2903,6 +2911,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new EffectShaderBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => EffectShaderFill((EffectShaderBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void EffectShaderFill(
+            EffectShaderBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2910,9 +2935,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new EffectShaderBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2925,7 +2948,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IEffectShaderGetter EffectShaderFactory(

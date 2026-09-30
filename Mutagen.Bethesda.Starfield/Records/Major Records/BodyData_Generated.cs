@@ -1284,10 +1284,14 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Index
-        private int? _IndexLocation;
+        private int? _IndexLocationStore;
+        private int? _IndexLocation { get { EnsureFilled(); return _IndexLocationStore; } set => _IndexLocationStore = value; }
         public BodyData.PartIndex? Index => EnumBinaryTranslation<BodyData.PartIndex, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_IndexLocation, _recordData, _package, 4);
         #endregion
-        public IModelGetter? Model { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

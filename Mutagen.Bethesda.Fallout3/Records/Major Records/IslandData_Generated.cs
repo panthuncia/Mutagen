@@ -1432,11 +1432,13 @@ namespace Mutagen.Bethesda.Fallout3
         public P3Float Max => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(0xC, 0xC));
         #region Vertices
         public IReadOnlyList<P3Float> Vertices => BinaryOverlayList.FactoryByCountLength<P3Float>(_structData.Slice(0x18), _package, 12, countLength: 2, (s, p) => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(s));
-        protected int VerticesEndingPos;
+        private int VerticesEndingPosStore;
+        protected int VerticesEndingPos { get { EnsureFilled(); return VerticesEndingPosStore; } private set => VerticesEndingPosStore = value; }
         #endregion
         #region Triangles
         public IReadOnlyList<P3Int16> Triangles => BinaryOverlayList.FactoryByCountLength<P3Int16>(_structData.Slice(VerticesEndingPos), _package, 6, countLength: 2, (s, p) => P3Int16BinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(s));
-        protected int TrianglesEndingPos;
+        private int TrianglesEndingPosStore;
+        protected int TrianglesEndingPos { get { EnsureFilled(); return TrianglesEndingPosStore; } private set => TrianglesEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

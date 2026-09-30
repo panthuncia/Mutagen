@@ -1174,11 +1174,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region MovementType
-        private int? _MovementTypeLocation;
+        private int? _MovementTypeLocationStore;
+        private int? _MovementTypeLocation { get { EnsureFilled(); return _MovementTypeLocationStore; } set => _MovementTypeLocationStore = value; }
         public IFormLinkNullableGetter<IMovementTypeGetter> MovementType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMovementTypeGetter>(_package, _recordData, _MovementTypeLocation);
         #endregion
         #region SPED
-        private int? _SPEDLocation;
+        private int? _SPEDLocationStore;
+        private int? _SPEDLocation { get { EnsureFilled(); return _SPEDLocationStore; } set => _SPEDLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? SPED => _SPEDLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SPEDLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

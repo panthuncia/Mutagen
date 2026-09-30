@@ -1671,30 +1671,39 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region ItemText
-        private int? _ItemTextLocation;
+        private int? _ItemTextLocationStore;
+        private int? _ItemTextLocation { get { EnsureFilled(); return _ItemTextLocationStore; } set => _ItemTextLocationStore = value; }
         public String? ItemText => _ItemTextLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ItemTextLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ResultText
-        private int? _ResultTextLocation;
+        private int? _ResultTextLocationStore;
+        private int? _ResultTextLocation { get { EnsureFilled(); return _ResultTextLocationStore; } set => _ResultTextLocationStore = value; }
         public String? ResultText => _ResultTextLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ResultTextLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region MenuItemFlags
-        private int? _MenuItemFlagsLocation;
+        private int? _MenuItemFlagsLocationStore;
+        private int? _MenuItemFlagsLocation { get { EnsureFilled(); return _MenuItemFlagsLocationStore; } set => _MenuItemFlagsLocationStore = value; }
         public TerminalMenuItem.MenuItemFlag MenuItemFlags => EnumBinaryTranslation<TerminalMenuItem.MenuItemFlag, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_MenuItemFlagsLocation, _recordData, _package, 1);
         #endregion
         #region DisplayNote
-        private int? _DisplayNoteLocation;
+        private int? _DisplayNoteLocationStore;
+        private int? _DisplayNoteLocation { get { EnsureFilled(); return _DisplayNoteLocationStore; } set => _DisplayNoteLocationStore = value; }
         public IFormLinkNullableGetter<INoteGetter> DisplayNote => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<INoteGetter>(_package, _recordData, _DisplayNoteLocation);
         #endregion
         #region SubMenu
-        private int? _SubMenuLocation;
+        private int? _SubMenuLocationStore;
+        private int? _SubMenuLocation { get { EnsureFilled(); return _SubMenuLocationStore; } set => _SubMenuLocationStore = value; }
         public IFormLinkNullableGetter<ITerminalGetter> SubMenu => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ITerminalGetter>(_package, _recordData, _SubMenuLocation);
         #endregion
         #region EmbeddedScript
-        private IScriptFieldsGetter? _EmbeddedScript;
+        private IScriptFieldsGetter? _EmbeddedScriptStore;
+        private IScriptFieldsGetter? _EmbeddedScript { get { EnsureFilled(); return _EmbeddedScriptStore; } set => _EmbeddedScriptStore = value; }
         public IScriptFieldsGetter EmbeddedScript => _EmbeddedScript ?? new ScriptFields();
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

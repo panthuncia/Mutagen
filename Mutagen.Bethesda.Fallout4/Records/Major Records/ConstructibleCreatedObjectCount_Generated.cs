@@ -1162,7 +1162,8 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        public ConstructibleCreatedObjectCount.VersioningBreaks Versioning { get; private set; }
+        private ConstructibleCreatedObjectCount.VersioningBreaks VersioningStore;
+        public ConstructibleCreatedObjectCount.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public UInt16 Count => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x0, 0x2));
         public UInt16 Priority => _structData.Length <= 0x2 ? default : BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x2, 0x2));
         partial void CustomFactoryEnd(

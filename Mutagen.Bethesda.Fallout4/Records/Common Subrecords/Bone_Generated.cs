@@ -1371,16 +1371,21 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         string INamedRequiredGetter.Name => this.Name ?? string.Empty;
         #endregion
         #endregion
-        public IReadOnlyList<Single>? Values { get; private set; }
+        #region Values
+        private IReadOnlyList<Single>? ValuesStore;
+        public IReadOnlyList<Single>? Values { get { EnsureFilled(); return ValuesStore; } private set => ValuesStore = value; }
+        #endregion
         #region BMMP
-        private int? _BMMPLocation;
+        private int? _BMMPLocationStore;
+        private int? _BMMPLocation { get { EnsureFilled(); return _BMMPLocationStore; } set => _BMMPLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? BMMP => _BMMPLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _BMMPLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

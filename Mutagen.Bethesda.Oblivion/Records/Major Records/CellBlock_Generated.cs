@@ -2017,7 +2017,10 @@ namespace Mutagen.Bethesda.Oblivion
         public Int32 BlockNumber => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x0, 0x4));
         public GroupTypeEnum GroupType => (GroupTypeEnum)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x4, 0x4));
         public Int32 LastModified => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x8, 0x4));
-        public IReadOnlyList<ICellSubBlockGetter> SubBlocks { get; private set; } = [];
+        #region SubBlocks
+        private IReadOnlyList<ICellSubBlockGetter> SubBlocksStore = [];
+        public IReadOnlyList<ICellSubBlockGetter> SubBlocks { get { EnsureFilled(); return SubBlocksStore; } private set => SubBlocksStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

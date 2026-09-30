@@ -2029,7 +2029,8 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2040,7 +2041,8 @@ namespace Mutagen.Bethesda.Starfield
         ITranslatedStringGetter ITranslatedNamedRequiredGetter.Name => this.Name ?? TranslatedString.Empty;
         #endregion
         #endregion
-        private RangeInt32? _FNAMLocation;
+        private RangeInt32? _FNAMLocationStore;
+        private RangeInt32? _FNAMLocation { get { EnsureFilled(); return _FNAMLocationStore; } set => _FNAMLocationStore = value; }
         #region FeatureType
         private int _FeatureTypeLocation => _FNAMLocation!.Value.Min;
         private bool _FeatureType_IsSet => _FNAMLocation.HasValue;
@@ -2077,11 +2079,13 @@ namespace Mutagen.Bethesda.Starfield
         public UInt32 UnknownFNAM2 => _UnknownFNAM2_IsSet ? BinaryPrimitives.ReadUInt32LittleEndian(_recordData.Slice(_UnknownFNAM2Location, 4)) : default(UInt32);
         #endregion
         #region Texture
-        private int? _TextureLocation;
+        private int? _TextureLocationStore;
+        private int? _TextureLocation { get { EnsureFilled(); return _TextureLocationStore; } set => _TextureLocationStore = value; }
         public String? Texture => _TextureLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TextureLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ImageSpace
-        private int? _ImageSpaceLocation;
+        private int? _ImageSpaceLocationStore;
+        private int? _ImageSpaceLocation { get { EnsureFilled(); return _ImageSpaceLocationStore; } set => _ImageSpaceLocationStore = value; }
         public IFormLinkNullableGetter<IImageSpaceGetter> ImageSpace => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IImageSpaceGetter>(_package, _recordData, _ImageSpaceLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -2105,6 +2109,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new PhotoModeFeatureBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => PhotoModeFeatureFill((PhotoModeFeatureBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void PhotoModeFeatureFill(
+            PhotoModeFeatureBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2112,9 +2133,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new PhotoModeFeatureBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2127,7 +2146,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IPhotoModeFeatureGetter PhotoModeFeatureFactory(

@@ -1207,11 +1207,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region WMSI
-        private int? _WMSILocation;
+        private int? _WMSILocationStore;
+        private int? _WMSILocation { get { EnsureFilled(); return _WMSILocationStore; } set => _WMSILocationStore = value; }
         public UInt16? WMSI => _WMSILocation.HasValue ? BinaryPrimitives.ReadUInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _WMSILocation.Value, _package.MetaData.Constants)) : default(UInt16?);
         #endregion
         #region Sound
-        private RangeInt32? _SoundLocation;
+        private RangeInt32? _SoundLocationStore;
+        private RangeInt32? _SoundLocation { get { EnsureFilled(); return _SoundLocationStore; } set => _SoundLocationStore = value; }
         public IWWiseKeywordMappingSoundItemGetter? Sound => _SoundLocation.HasValue ? WWiseKeywordMappingSoundItemBinaryOverlay.WWiseKeywordMappingSoundItemFactory(_recordData.Slice(_SoundLocation!.Value.Min), _package) : default;
         #endregion
         partial void CustomFactoryEnd(

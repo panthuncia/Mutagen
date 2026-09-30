@@ -1259,10 +1259,14 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region EdgeFallOff
-        private int? _EdgeFallOffLocation;
+        private int? _EdgeFallOffLocationStore;
+        private int? _EdgeFallOffLocation { get { EnsureFilled(); return _EdgeFallOffLocationStore; } set => _EdgeFallOffLocationStore = value; }
         public UInt32? EdgeFallOff => _EdgeFallOffLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EdgeFallOffLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
-        public IReadOnlyList<P2Float>? RegionPoints { get; private set; }
+        #region RegionPoints
+        private IReadOnlyList<P2Float>? RegionPointsStore;
+        public IReadOnlyList<P2Float>? RegionPoints { get { EnsureFilled(); return RegionPointsStore; } private set => RegionPointsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

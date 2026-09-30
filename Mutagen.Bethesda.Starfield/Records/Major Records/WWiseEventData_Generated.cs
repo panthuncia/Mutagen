@@ -1721,21 +1721,26 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
         #region Start
-        private int? _StartLocation;
+        private int? _StartLocationStore;
+        private int? _StartLocation { get { EnsureFilled(); return _StartLocationStore; } set => _StartLocationStore = value; }
         public Guid? Start => _StartLocation.HasValue ? new Guid(HeaderTranslation.ExtractSubrecordMemory(_recordData, _StartLocation.Value, _package.MetaData.Constants).Slice(0, 16)) : default(Guid?);
         #endregion
         #region Condition
-        private int? _ConditionLocation;
+        private int? _ConditionLocationStore;
+        private int? _ConditionLocation { get { EnsureFilled(); return _ConditionLocationStore; } set => _ConditionLocationStore = value; }
         public IFormLinkNullableGetter<IConditionRecordGetter> Condition => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IConditionRecordGetter>(_package, _recordData, _ConditionLocation);
         #endregion
         #region End
-        private int? _EndLocation;
+        private int? _EndLocationStore;
+        private int? _EndLocation { get { EnsureFilled(); return _EndLocationStore; } set => _EndLocationStore = value; }
         public Guid? End => _EndLocation.HasValue ? new Guid(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EndLocation.Value, _package.MetaData.Constants).Slice(0, 16)) : default(Guid?);
         #endregion
         partial void CustomFactoryEnd(
@@ -1759,6 +1764,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new WWiseEventDataBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => WWiseEventDataFill((WWiseEventDataBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void WWiseEventDataFill(
+            WWiseEventDataBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1766,9 +1788,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new WWiseEventDataBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1781,7 +1801,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IWWiseEventDataGetter WWiseEventDataFactory(

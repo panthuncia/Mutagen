@@ -1407,23 +1407,28 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region ANAM
-        private int? _ANAMLocation;
+        private int? _ANAMLocationStore;
+        private int? _ANAMLocation { get { EnsureFilled(); return _ANAMLocationStore; } set => _ANAMLocationStore = value; }
         public String? ANAM => _ANAMLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ANAMLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region BNAM
-        private int? _BNAMLocation;
+        private int? _BNAMLocationStore;
+        private int? _BNAMLocation { get { EnsureFilled(); return _BNAMLocationStore; } set => _BNAMLocationStore = value; }
         public String? BNAM => _BNAMLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BNAMLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region CNAM
-        private int? _CNAMLocation;
+        private int? _CNAMLocationStore;
+        private int? _CNAMLocation { get { EnsureFilled(); return _CNAMLocationStore; } set => _CNAMLocationStore = value; }
         public String? CNAM => _CNAMLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _CNAMLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region DNAM
-        private int? _DNAMLocation;
+        private int? _DNAMLocationStore;
+        private int? _DNAMLocation { get { EnsureFilled(); return _DNAMLocationStore; } set => _DNAMLocationStore = value; }
         public String? DNAM => _DNAMLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DNAMLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ENAM
-        private int? _ENAMLocation;
+        private int? _ENAMLocationStore;
+        private int? _ENAMLocation { get { EnsureFilled(); return _ENAMLocationStore; } set => _ENAMLocationStore = value; }
         public String? ENAM => _ENAMLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ENAMLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(

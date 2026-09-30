@@ -1800,7 +1800,8 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -1808,23 +1809,28 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #endregion
         #region SPED
-        private int? _SPEDLocation;
+        private int? _SPEDLocationStore;
+        private int? _SPEDLocation { get { EnsureFilled(); return _SPEDLocationStore; } set => _SPEDLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? SPED => _SPEDLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SPEDLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region FlightAngleGain
-        private int? _FlightAngleGainLocation;
+        private int? _FlightAngleGainLocationStore;
+        private int? _FlightAngleGainLocation { get { EnsureFilled(); return _FlightAngleGainLocationStore; } set => _FlightAngleGainLocationStore = value; }
         public Single? FlightAngleGain => _FlightAngleGainLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FlightAngleGainLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region KNAM
-        private int? _KNAMLocation;
+        private int? _KNAMLocationStore;
+        private int? _KNAMLocation { get { EnsureFilled(); return _KNAMLocationStore; } set => _KNAMLocationStore = value; }
         public Single? KNAM => _KNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _KNAMLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region INTV
-        private int? _INTVLocation;
+        private int? _INTVLocationStore;
+        private int? _INTVLocation { get { EnsureFilled(); return _INTVLocationStore; } set => _INTVLocationStore = value; }
         public UInt32? INTV => _INTVLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _INTVLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region BOLV
-        private int? _BOLVLocation;
+        private int? _BOLVLocationStore;
+        private int? _BOLVLocation { get { EnsureFilled(); return _BOLVLocationStore; } set => _BOLVLocationStore = value; }
         public Boolean BOLV => _BOLVLocation.HasValue ? true : default(Boolean);
         #endregion
         partial void CustomFactoryEnd(
@@ -1848,6 +1854,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new MovementTypeBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => MovementTypeFill((MovementTypeBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void MovementTypeFill(
+            MovementTypeBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1855,9 +1878,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new MovementTypeBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1870,7 +1891,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IMovementTypeGetter MovementTypeFactory(

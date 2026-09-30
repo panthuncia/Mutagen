@@ -4140,39 +4140,51 @@ namespace Mutagen.Bethesda.Starfield
         public Door.MajorFlag MajorFlags => (Door.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         private IObjectBoundsGetter? _ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         public IObjectBoundsGetter ObjectBounds => _ObjectBounds ?? new ObjectBounds();
         #endregion
         #region DirtinessScale
-        private int? _DirtinessScaleLocation;
+        private int? _DirtinessScaleLocationStore;
+        private int? _DirtinessScaleLocation { get { EnsureFilled(); return _DirtinessScaleLocationStore; } set => _DirtinessScaleLocationStore = value; }
         public Percent DirtinessScale => _DirtinessScaleLocation.HasValue ? PercentBinaryTranslation.GetPercent(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DirtinessScaleLocation.Value, _package.MetaData.Constants), FloatIntegerType.UInt) : default(Percent);
         #endregion
         #region ObjectPaletteDefaults
-        private RangeInt32? _ObjectPaletteDefaultsLocation;
+        private RangeInt32? _ObjectPaletteDefaultsLocationStore;
+        private RangeInt32? _ObjectPaletteDefaultsLocation { get { EnsureFilled(); return _ObjectPaletteDefaultsLocationStore; } set => _ObjectPaletteDefaultsLocationStore = value; }
         public IObjectPaletteDefaultsGetter? ObjectPaletteDefaults => _ObjectPaletteDefaultsLocation.HasValue ? ObjectPaletteDefaultsBinaryOverlay.ObjectPaletteDefaultsFactory(_recordData.Slice(_ObjectPaletteDefaultsLocation!.Value.Min), _package) : default;
         #endregion
         #region Transforms
-        private RangeInt32? _TransformsLocation;
+        private RangeInt32? _TransformsLocationStore;
+        private RangeInt32? _TransformsLocation { get { EnsureFilled(); return _TransformsLocationStore; } set => _TransformsLocationStore = value; }
         public ITransformsGetter? Transforms => _TransformsLocation.HasValue ? TransformsBinaryOverlay.TransformsFactory(_recordData.Slice(_TransformsLocation!.Value.Min), _package) : default;
         #endregion
         #region SnapTemplate
-        private int? _SnapTemplateLocation;
+        private int? _SnapTemplateLocationStore;
+        private int? _SnapTemplateLocation { get { EnsureFilled(); return _SnapTemplateLocationStore; } set => _SnapTemplateLocationStore = value; }
         public IFormLinkNullableGetter<ISnapTemplateGetter> SnapTemplate => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISnapTemplateGetter>(_package, _recordData, _SnapTemplateLocation);
         #endregion
         #region XALG
-        private int? _XALGLocation;
+        private int? _XALGLocationStore;
+        private int? _XALGLocation { get { EnsureFilled(); return _XALGLocationStore; } set => _XALGLocationStore = value; }
         public UInt64? XALG => _XALGLocation.HasValue ? BinaryPrimitives.ReadUInt64LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _XALGLocation.Value, _package.MetaData.Constants)) : default(UInt64?);
         #endregion
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -4183,43 +4195,70 @@ namespace Mutagen.Bethesda.Starfield
         ITranslatedStringGetter ITranslatedNamedRequiredGetter.Name => this.Name ?? TranslatedString.Empty;
         #endregion
         #endregion
-        public IModelGetter? Model { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
         #region Keywords
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get; private set; }
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? KeywordsStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get { EnsureFilled(); return KeywordsStore; } private set => KeywordsStore = value; }
         IReadOnlyList<IFormLinkGetter<IKeywordCommonGetter>>? IKeywordedGetter.Keywords => this.Keywords;
         #endregion
         #region NativeTerminal
-        private int? _NativeTerminalLocation;
+        private int? _NativeTerminalLocationStore;
+        private int? _NativeTerminalLocation { get { EnsureFilled(); return _NativeTerminalLocationStore; } set => _NativeTerminalLocationStore = value; }
         public IFormLinkNullableGetter<ITerminalMenuGetter> NativeTerminal => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ITerminalMenuGetter>(_package, _recordData, _NativeTerminalLocation);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<ILocationReferenceTypeGetter>>? ForcedLocations { get; private set; }
-        public IReadOnlyList<IObjectPropertyGetter>? Properties { get; private set; }
-        public ISoundReferenceGetter? OpenSound { get; private set; }
-        public ISoundReferenceGetter? CloseSound { get; private set; }
-        public ISoundReferenceGetter? LoopSound { get; private set; }
+        #region ForcedLocations
+        private IReadOnlyList<IFormLinkGetter<ILocationReferenceTypeGetter>>? ForcedLocationsStore;
+        public IReadOnlyList<IFormLinkGetter<ILocationReferenceTypeGetter>>? ForcedLocations { get { EnsureFilled(); return ForcedLocationsStore; } private set => ForcedLocationsStore = value; }
+        #endregion
+        #region Properties
+        private IReadOnlyList<IObjectPropertyGetter>? PropertiesStore;
+        public IReadOnlyList<IObjectPropertyGetter>? Properties { get { EnsureFilled(); return PropertiesStore; } private set => PropertiesStore = value; }
+        #endregion
+        #region OpenSound
+        private ISoundReferenceGetter? OpenSoundStore;
+        public ISoundReferenceGetter? OpenSound { get { EnsureFilled(); return OpenSoundStore; } private set => OpenSoundStore = value; }
+        #endregion
+        #region CloseSound
+        private ISoundReferenceGetter? CloseSoundStore;
+        public ISoundReferenceGetter? CloseSound { get { EnsureFilled(); return CloseSoundStore; } private set => CloseSoundStore = value; }
+        #endregion
+        #region LoopSound
+        private ISoundReferenceGetter? LoopSoundStore;
+        public ISoundReferenceGetter? LoopSound { get { EnsureFilled(); return LoopSoundStore; } private set => LoopSoundStore = value; }
+        #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public Door.Flag Flags => EnumBinaryTranslation<Door.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_FlagsLocation, _recordData, _package, 1);
         #endregion
         #region AlternateTextOpen
-        private int? _AlternateTextOpenLocation;
+        private int? _AlternateTextOpenLocationStore;
+        private int? _AlternateTextOpenLocation { get { EnsureFilled(); return _AlternateTextOpenLocationStore; } set => _AlternateTextOpenLocationStore = value; }
         public ITranslatedStringGetter? AlternateTextOpen => _AlternateTextOpenLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AlternateTextOpenLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         #region AlternateTextClose
-        private int? _AlternateTextCloseLocation;
+        private int? _AlternateTextCloseLocationStore;
+        private int? _AlternateTextCloseLocation { get { EnsureFilled(); return _AlternateTextCloseLocationStore; } set => _AlternateTextCloseLocationStore = value; }
         public ITranslatedStringGetter? AlternateTextClose => _AlternateTextCloseLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AlternateTextCloseLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         #region SoundLevel
-        private int? _SoundLevelLocation;
+        private int? _SoundLevelLocationStore;
+        private int? _SoundLevelLocation { get { EnsureFilled(); return _SoundLevelLocationStore; } set => _SoundLevelLocationStore = value; }
         public SoundLevel? SoundLevel => EnumBinaryTranslation<SoundLevel, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_SoundLevelLocation, _recordData, _package, 4);
         #endregion
         #region FacingAxisOverride
-        private int? _FacingAxisOverrideLocation;
+        private int? _FacingAxisOverrideLocationStore;
+        private int? _FacingAxisOverrideLocation { get { EnsureFilled(); return _FacingAxisOverrideLocationStore; } set => _FacingAxisOverrideLocationStore = value; }
         public Door.FacingAxisOverrideEnum? FacingAxisOverride => EnumBinaryTranslation<Door.FacingAxisOverrideEnum, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FacingAxisOverrideLocation, _recordData, _package, 4);
         #endregion
         #region NavmeshGeometry
-        private int? _NavmeshGeometryLengthOverride;
-        private RangeInt32? _NavmeshGeometryLocation;
+        private int? _NavmeshGeometryLengthOverrideStore;
+        private int? _NavmeshGeometryLengthOverride { get { EnsureFilled(); return _NavmeshGeometryLengthOverrideStore; } set => _NavmeshGeometryLengthOverrideStore = value; }
+        private RangeInt32? _NavmeshGeometryLocationStore;
+        private RangeInt32? _NavmeshGeometryLocation { get { EnsureFilled(); return _NavmeshGeometryLocationStore; } set => _NavmeshGeometryLocationStore = value; }
         public INavmeshGeometryGetter? NavmeshGeometry => _NavmeshGeometryLocation.HasValue ? NavmeshGeometryBinaryOverlay.NavmeshGeometryFactory(_recordData.Slice(_NavmeshGeometryLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_NavmeshGeometryLengthOverride)) : default;
         #endregion
         partial void CustomFactoryEnd(
@@ -4243,6 +4282,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new DoorBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => DoorFill((DoorBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void DoorFill(
+            DoorBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -4250,9 +4306,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new DoorBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -4265,7 +4319,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IDoorGetter DoorFactory(

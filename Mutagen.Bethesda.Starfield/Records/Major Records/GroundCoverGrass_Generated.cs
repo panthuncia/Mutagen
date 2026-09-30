@@ -1161,11 +1161,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Grass
-        private int? _GrassLocation;
+        private int? _GrassLocationStore;
+        private int? _GrassLocation { get { EnsureFilled(); return _GrassLocationStore; } set => _GrassLocationStore = value; }
         public IFormLinkNullableGetter<IGrassGetter> Grass => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IGrassGetter>(_package, _recordData, _GrassLocation);
         #endregion
         #region OverrideDensity
-        private int? _OverrideDensityLocation;
+        private int? _OverrideDensityLocationStore;
+        private int? _OverrideDensityLocation { get { EnsureFilled(); return _OverrideDensityLocationStore; } set => _OverrideDensityLocationStore = value; }
         public Int16? OverrideDensity => _OverrideDensityLocation.HasValue ? BinaryPrimitives.ReadInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _OverrideDensityLocation.Value, _package.MetaData.Constants)) : default(Int16?);
         #endregion
         partial void CustomFactoryEnd(

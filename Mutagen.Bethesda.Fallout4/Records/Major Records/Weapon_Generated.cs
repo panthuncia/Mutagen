@@ -7066,26 +7066,32 @@ namespace Mutagen.Bethesda.Fallout4
         public Weapon.MajorFlag MajorFlags => (Weapon.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         private IObjectBoundsGetter? _ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         public IObjectBoundsGetter ObjectBounds => _ObjectBounds ?? new ObjectBounds();
         #endregion
         #region PreviewTransform
-        private int? _PreviewTransformLocation;
+        private int? _PreviewTransformLocationStore;
+        private int? _PreviewTransformLocation { get { EnsureFilled(); return _PreviewTransformLocationStore; } set => _PreviewTransformLocationStore = value; }
         public IFormLinkNullableGetter<ITransformGetter> PreviewTransform => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ITransformGetter>(_package, _recordData, _PreviewTransformLocation);
         #endregion
         #region AnimationSound
-        private int? _AnimationSoundLocation;
+        private int? _AnimationSoundLocationStore;
+        private int? _AnimationSoundLocation { get { EnsureFilled(); return _AnimationSoundLocationStore; } set => _AnimationSoundLocationStore = value; }
         public IFormLinkNullableGetter<IAnimationSoundTagSetGetter> AnimationSound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IAnimationSoundTagSetGetter>(_package, _recordData, _AnimationSoundLocation);
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -7096,61 +7102,92 @@ namespace Mutagen.Bethesda.Fallout4
         ITranslatedStringGetter ITranslatedNamedRequiredGetter.Name => this.Name ?? TranslatedString.Empty;
         #endregion
         #endregion
-        public IModelGetter? Model { get; private set; }
-        public IIconsGetter? Icons { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
+        #region Icons
+        private IIconsGetter? IconsStore;
+        public IIconsGetter? Icons { get { EnsureFilled(); return IconsStore; } private set => IconsStore = value; }
+        #endregion
         #region ObjectEffect
-        private int? _ObjectEffectLocation;
+        private int? _ObjectEffectLocationStore;
+        private int? _ObjectEffectLocation { get { EnsureFilled(); return _ObjectEffectLocationStore; } set => _ObjectEffectLocationStore = value; }
         public IFormLinkNullableGetter<IObjectEffectGetter> ObjectEffect => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IObjectEffectGetter>(_package, _recordData, _ObjectEffectLocation);
         #endregion
         #region EnchantmentAmount
-        private int? _EnchantmentAmountLocation;
+        private int? _EnchantmentAmountLocationStore;
+        private int? _EnchantmentAmountLocation { get { EnsureFilled(); return _EnchantmentAmountLocationStore; } set => _EnchantmentAmountLocationStore = value; }
         public UInt16? EnchantmentAmount => _EnchantmentAmountLocation.HasValue ? BinaryPrimitives.ReadUInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EnchantmentAmountLocation.Value, _package.MetaData.Constants)) : default(UInt16?);
         #endregion
-        public IDestructibleGetter? Destructible { get; private set; }
+        #region Destructible
+        private IDestructibleGetter? DestructibleStore;
+        public IDestructibleGetter? Destructible { get { EnsureFilled(); return DestructibleStore; } private set => DestructibleStore = value; }
+        #endregion
         #region EquipmentType
-        private int? _EquipmentTypeLocation;
+        private int? _EquipmentTypeLocationStore;
+        private int? _EquipmentTypeLocation { get { EnsureFilled(); return _EquipmentTypeLocationStore; } set => _EquipmentTypeLocationStore = value; }
         public IFormLinkNullableGetter<IEquipTypeGetter> EquipmentType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IEquipTypeGetter>(_package, _recordData, _EquipmentTypeLocation);
         #endregion
         #region BlockBashImpactDataSet
-        private int? _BlockBashImpactDataSetLocation;
+        private int? _BlockBashImpactDataSetLocationStore;
+        private int? _BlockBashImpactDataSetLocation { get { EnsureFilled(); return _BlockBashImpactDataSetLocationStore; } set => _BlockBashImpactDataSetLocationStore = value; }
         public IFormLinkNullableGetter<IImpactDataSetGetter> BlockBashImpactDataSet => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IImpactDataSetGetter>(_package, _recordData, _BlockBashImpactDataSetLocation);
         #endregion
         #region AlternateBlockMaterial
-        private int? _AlternateBlockMaterialLocation;
+        private int? _AlternateBlockMaterialLocationStore;
+        private int? _AlternateBlockMaterialLocation { get { EnsureFilled(); return _AlternateBlockMaterialLocationStore; } set => _AlternateBlockMaterialLocationStore = value; }
         public IFormLinkNullableGetter<IMaterialTypeGetter> AlternateBlockMaterial => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMaterialTypeGetter>(_package, _recordData, _AlternateBlockMaterialLocation);
         #endregion
         #region PickUpSound
-        private int? _PickUpSoundLocation;
+        private int? _PickUpSoundLocationStore;
+        private int? _PickUpSoundLocation { get { EnsureFilled(); return _PickUpSoundLocationStore; } set => _PickUpSoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundDescriptorGetter> PickUpSound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundDescriptorGetter>(_package, _recordData, _PickUpSoundLocation);
         #endregion
         #region PutDownSound
-        private int? _PutDownSoundLocation;
+        private int? _PutDownSoundLocationStore;
+        private int? _PutDownSoundLocation { get { EnsureFilled(); return _PutDownSoundLocationStore; } set => _PutDownSoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundDescriptorGetter> PutDownSound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundDescriptorGetter>(_package, _recordData, _PutDownSoundLocation);
         #endregion
         #region Keywords
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get; private set; }
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? KeywordsStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get { EnsureFilled(); return KeywordsStore; } private set => KeywordsStore = value; }
         IReadOnlyList<IFormLinkGetter<IKeywordCommonGetter>>? IKeywordedGetter.Keywords => this.Keywords;
         #endregion
         #region Description
-        private int? _DescriptionLocation;
+        private int? _DescriptionLocationStore;
+        private int? _DescriptionLocation { get { EnsureFilled(); return _DescriptionLocationStore; } set => _DescriptionLocationStore = value; }
         public ITranslatedStringGetter? Description => _DescriptionLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DescriptionLocation.Value, _package.MetaData.Constants), StringsSource.DL, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         #region InstanceNaming
-        private int? _InstanceNamingLocation;
+        private int? _InstanceNamingLocationStore;
+        private int? _InstanceNamingLocation { get { EnsureFilled(); return _InstanceNamingLocationStore; } set => _InstanceNamingLocationStore = value; }
         public IFormLinkNullableGetter<IInstanceNamingRulesGetter> InstanceNaming => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IInstanceNamingRulesGetter>(_package, _recordData, _InstanceNamingLocation);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? AttachParentSlots { get; private set; }
-        public IReadOnlyList<IObjectTemplateGetter<Weapon.Property>>? ObjectTemplates { get; private set; }
+        #region AttachParentSlots
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? AttachParentSlotsStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? AttachParentSlots { get { EnsureFilled(); return AttachParentSlotsStore; } private set => AttachParentSlotsStore = value; }
+        #endregion
+        #region ObjectTemplates
+        private IReadOnlyList<IObjectTemplateGetter<Weapon.Property>>? ObjectTemplatesStore;
+        public IReadOnlyList<IObjectTemplateGetter<Weapon.Property>>? ObjectTemplates { get { EnsureFilled(); return ObjectTemplatesStore; } private set => ObjectTemplatesStore = value; }
+        #endregion
         #region EmbeddedWeaponMod
-        private int? _EmbeddedWeaponModLocation;
+        private int? _EmbeddedWeaponModLocationStore;
+        private int? _EmbeddedWeaponModLocation { get { EnsureFilled(); return _EmbeddedWeaponModLocationStore; } set => _EmbeddedWeaponModLocationStore = value; }
         public IFormLinkNullableGetter<IAObjectModificationGetter> EmbeddedWeaponMod => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IAObjectModificationGetter>(_package, _recordData, _EmbeddedWeaponModLocation);
         #endregion
-        public IModelGetter? FirstPersonModel { get; private set; }
+        #region FirstPersonModel
+        private IModelGetter? FirstPersonModelStore;
+        public IModelGetter? FirstPersonModel { get { EnsureFilled(); return FirstPersonModelStore; } private set => FirstPersonModelStore = value; }
+        #endregion
         #region MO4F
-        private int? _MO4FLocation;
+        private int? _MO4FLocationStore;
+        private int? _MO4FLocation { get { EnsureFilled(); return _MO4FLocationStore; } set => _MO4FLocationStore = value; }
         public Int32? MO4F => _MO4FLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MO4FLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
-        private RangeInt32? _DNAMLocation;
+        private RangeInt32? _DNAMLocationStore;
+        private RangeInt32? _DNAMLocation { get { EnsureFilled(); return _DNAMLocationStore; } set => _DNAMLocationStore = value; }
         #region Ammo
         private int _AmmoLocation => _DNAMLocation!.Value.Min;
         private bool _Ammo_IsSet => _DNAMLocation.HasValue;
@@ -7332,10 +7369,12 @@ namespace Mutagen.Bethesda.Fallout4
         public Int32 Unknown3 => _Unknown3_IsSet ? BinaryPrimitives.ReadInt32LittleEndian(_recordData.Slice(_Unknown3Location, 4)) : default(Int32);
         #endregion
         #region ExtraData
-        private RangeInt32? _ExtraDataLocation;
+        private RangeInt32? _ExtraDataLocationStore;
+        private RangeInt32? _ExtraDataLocation { get { EnsureFilled(); return _ExtraDataLocationStore; } set => _ExtraDataLocationStore = value; }
         public IWeaponExtraDataGetter? ExtraData => _ExtraDataLocation.HasValue ? WeaponExtraDataBinaryOverlay.WeaponExtraDataFactory(_recordData.Slice(_ExtraDataLocation!.Value.Min), _package) : default;
         #endregion
-        private RangeInt32? _CRDTLocation;
+        private RangeInt32? _CRDTLocationStore;
+        private RangeInt32? _CRDTLocation { get { EnsureFilled(); return _CRDTLocationStore; } set => _CRDTLocationStore = value; }
         #region CritDamageMult
         private int _CritDamageMultLocation => _CRDTLocation!.Value.Min;
         private bool _CritDamageMult_IsSet => _CRDTLocation.HasValue;
@@ -7352,32 +7391,42 @@ namespace Mutagen.Bethesda.Fallout4
         public IFormLinkGetter<ISpellGetter> CritEffect => _CritEffect_IsSet ? FormLinkBinaryTranslation.Instance.OverlayFactory<ISpellGetter>(_package, _recordData.Span.Slice(_CritEffectLocation, 0x4), isSet: _CritEffect_IsSet) : FormLink<ISpellGetter>.Null;
         #endregion
         #region ImpactDataSet
-        private int? _ImpactDataSetLocation;
+        private int? _ImpactDataSetLocationStore;
+        private int? _ImpactDataSetLocation { get { EnsureFilled(); return _ImpactDataSetLocationStore; } set => _ImpactDataSetLocationStore = value; }
         public IFormLinkNullableGetter<IImpactDataSetGetter> ImpactDataSet => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IImpactDataSetGetter>(_package, _recordData, _ImpactDataSetLocation);
         #endregion
         #region NpcAddAmmoList
-        private int? _NpcAddAmmoListLocation;
+        private int? _NpcAddAmmoListLocationStore;
+        private int? _NpcAddAmmoListLocation { get { EnsureFilled(); return _NpcAddAmmoListLocationStore; } set => _NpcAddAmmoListLocationStore = value; }
         public IFormLinkNullableGetter<ILeveledItemGetter> NpcAddAmmoList => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ILeveledItemGetter>(_package, _recordData, _NpcAddAmmoListLocation);
         #endregion
         #region AimModel
-        private int? _AimModelLocation;
+        private int? _AimModelLocationStore;
+        private int? _AimModelLocation { get { EnsureFilled(); return _AimModelLocationStore; } set => _AimModelLocationStore = value; }
         public IFormLinkNullableGetter<IAimModelGetter> AimModel => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IAimModelGetter>(_package, _recordData, _AimModelLocation);
         #endregion
         #region Zoom
-        private int? _ZoomLocation;
+        private int? _ZoomLocationStore;
+        private int? _ZoomLocation { get { EnsureFilled(); return _ZoomLocationStore; } set => _ZoomLocationStore = value; }
         public IFormLinkNullableGetter<IZoomGetter> Zoom => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IZoomGetter>(_package, _recordData, _ZoomLocation);
         #endregion
         #region Template
-        private int? _TemplateLocation;
+        private int? _TemplateLocationStore;
+        private int? _TemplateLocation { get { EnsureFilled(); return _TemplateLocationStore; } set => _TemplateLocationStore = value; }
         public IFormLinkNullableGetter<IWeaponGetter> Template => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IWeaponGetter>(_package, _recordData, _TemplateLocation);
         #endregion
-        public IReadOnlyList<IWeaponDamageTypeGetter>? DamageTypes { get; private set; }
+        #region DamageTypes
+        private IReadOnlyList<IWeaponDamageTypeGetter>? DamageTypesStore;
+        public IReadOnlyList<IWeaponDamageTypeGetter>? DamageTypes { get { EnsureFilled(); return DamageTypesStore; } private set => DamageTypesStore = value; }
+        #endregion
         #region Filter
-        private int? _FilterLocation;
+        private int? _FilterLocationStore;
+        private int? _FilterLocation { get { EnsureFilled(); return _FilterLocationStore; } set => _FilterLocationStore = value; }
         public String? Filter => _FilterLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FilterLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region MeleeSpeed
-        private int? _MeleeSpeedLocation;
+        private int? _MeleeSpeedLocationStore;
+        private int? _MeleeSpeedLocation { get { EnsureFilled(); return _MeleeSpeedLocationStore; } set => _MeleeSpeedLocationStore = value; }
         public Weapon.MeleeSpeeds? MeleeSpeed => EnumBinaryTranslation<Weapon.MeleeSpeeds, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_MeleeSpeedLocation, _recordData, _package, 4);
         #endregion
         partial void CustomFactoryEnd(
@@ -7401,6 +7450,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new WeaponBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => WeaponFill((WeaponBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void WeaponFill(
+            WeaponBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -7408,9 +7474,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new WeaponBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -7423,7 +7487,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IWeaponGetter WeaponFactory(

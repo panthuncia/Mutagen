@@ -1225,7 +1225,10 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IInstanceNamingRuleGetter>? Names { get; private set; }
+        #region Names
+        private IReadOnlyList<IInstanceNamingRuleGetter>? NamesStore;
+        public IReadOnlyList<IInstanceNamingRuleGetter>? Names { get { EnsureFilled(); return NamesStore; } private set => NamesStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

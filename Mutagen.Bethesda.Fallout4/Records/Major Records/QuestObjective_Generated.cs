@@ -1422,18 +1422,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Index
-        private int? _IndexLocation;
+        private int? _IndexLocationStore;
+        private int? _IndexLocation { get { EnsureFilled(); return _IndexLocationStore; } set => _IndexLocationStore = value; }
         public UInt16 Index => _IndexLocation.HasValue ? BinaryPrimitives.ReadUInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IndexLocation.Value, _package.MetaData.Constants)) : default(UInt16);
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public QuestObjective.Flag? Flags => EnumBinaryTranslation<QuestObjective.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 4);
         #endregion
         #region DisplayText
-        private int? _DisplayTextLocation;
+        private int? _DisplayTextLocationStore;
+        private int? _DisplayTextLocation { get { EnsureFilled(); return _DisplayTextLocationStore; } set => _DisplayTextLocationStore = value; }
         public ITranslatedStringGetter? DisplayText => _DisplayTextLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DisplayTextLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
-        public IReadOnlyList<IQuestObjectiveTargetGetter> Targets { get; private set; } = [];
+        #region Targets
+        private IReadOnlyList<IQuestObjectiveTargetGetter> TargetsStore = [];
+        public IReadOnlyList<IQuestObjectiveTargetGetter> Targets { get { EnsureFilled(); return TargetsStore; } private set => TargetsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

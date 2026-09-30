@@ -1123,7 +1123,8 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Item
-        private int? _ItemLocation;
+        private int? _ItemLocationStore;
+        private int? _ItemLocation { get { EnsureFilled(); return _ItemLocationStore; } set => _ItemLocationStore = value; }
         public IFormLinkNullableGetter<ILeveledItemGetter> Item => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ILeveledItemGetter>(_package, _recordData, _ItemLocation);
         #endregion
         partial void CustomFactoryEnd(

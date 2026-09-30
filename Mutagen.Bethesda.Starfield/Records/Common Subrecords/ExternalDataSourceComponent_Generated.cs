@@ -1576,13 +1576,21 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region ExternalBaseTemplate
-        private int? _ExternalBaseTemplateLocation;
+        private int? _ExternalBaseTemplateLocationStore;
+        private int? _ExternalBaseTemplateLocation { get { EnsureFilled(); return _ExternalBaseTemplateLocationStore; } set => _ExternalBaseTemplateLocationStore = value; }
         public IFormLinkNullableGetter<IExternalBaseTemplateGetter> ExternalBaseTemplate => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IExternalBaseTemplateGetter>(_package, _recordData, _ExternalBaseTemplateLocation);
         #endregion
-        public IReadOnlyList<IExternalDataSourceGetter> Sources { get; private set; } = [];
-        public IReadOnlyList<String>? EXASs { get; private set; }
+        #region Sources
+        private IReadOnlyList<IExternalDataSourceGetter> SourcesStore = [];
+        public IReadOnlyList<IExternalDataSourceGetter> Sources { get { EnsureFilled(); return SourcesStore; } private set => SourcesStore = value; }
+        #endregion
+        #region EXASs
+        private IReadOnlyList<String>? EXASsStore;
+        public IReadOnlyList<String>? EXASs { get { EnsureFilled(); return EXASsStore; } private set => EXASsStore = value; }
+        #endregion
         #region EXBS
-        private int? _EXBSLocation;
+        private int? _EXBSLocationStore;
+        private int? _EXBSLocation { get { EnsureFilled(); return _EXBSLocationStore; } set => _EXBSLocationStore = value; }
         public String EXBS => _EXBSLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EXBSLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         partial void CustomFactoryEnd(

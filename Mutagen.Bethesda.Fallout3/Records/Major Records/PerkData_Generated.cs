@@ -1339,7 +1339,8 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        public PerkData.VersioningBreaks Versioning { get; private set; }
+        private PerkData.VersioningBreaks VersioningStore;
+        public PerkData.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public Boolean IsTrait => _structData.Slice(0x0, 0x1)[0] >= 1;
         public Byte MinLevel => _structData.Span[0x1];
         public Byte NumRanks => _structData.Span[0x2];

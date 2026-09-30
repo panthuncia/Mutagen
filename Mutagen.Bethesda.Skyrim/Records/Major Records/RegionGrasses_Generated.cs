@@ -1276,7 +1276,10 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IRegionGrassGetter>? Grasses { get; private set; }
+        #region Grasses
+        private IReadOnlyList<IRegionGrassGetter>? GrassesStore;
+        public IReadOnlyList<IRegionGrassGetter>? Grasses { get { EnsureFilled(); return GrassesStore; } private set => GrassesStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

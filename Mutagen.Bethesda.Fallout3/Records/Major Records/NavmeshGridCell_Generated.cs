@@ -1149,7 +1149,8 @@ namespace Mutagen.Bethesda.Fallout3
 
         #region Triangles
         public IReadOnlyList<UInt16> Triangles => BinaryOverlayList.FactoryByCountLength<UInt16>(_structData, _package, 2, countLength: 2, (s, p) => BinaryPrimitives.ReadUInt16LittleEndian(s));
-        protected int TrianglesEndingPos;
+        private int TrianglesEndingPosStore;
+        protected int TrianglesEndingPos { get { EnsureFilled(); return TrianglesEndingPosStore; } private set => TrianglesEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

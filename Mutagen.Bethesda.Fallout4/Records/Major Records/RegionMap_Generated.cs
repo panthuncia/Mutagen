@@ -1327,7 +1327,8 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -1339,11 +1340,13 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #endregion
         #region LodDisplayDistanceMultiplier
-        private int? _LodDisplayDistanceMultiplierLocation;
+        private int? _LodDisplayDistanceMultiplierLocationStore;
+        private int? _LodDisplayDistanceMultiplierLocation { get { EnsureFilled(); return _LodDisplayDistanceMultiplierLocationStore; } set => _LodDisplayDistanceMultiplierLocationStore = value; }
         public override Single? LodDisplayDistanceMultiplier => _LodDisplayDistanceMultiplierLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _LodDisplayDistanceMultiplierLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region OcclusionAccuracyDist
-        private int? _OcclusionAccuracyDistLocation;
+        private int? _OcclusionAccuracyDistLocationStore;
+        private int? _OcclusionAccuracyDistLocation { get { EnsureFilled(); return _OcclusionAccuracyDistLocationStore; } set => _OcclusionAccuracyDistLocationStore = value; }
         public override Single? OcclusionAccuracyDist => _OcclusionAccuracyDistLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _OcclusionAccuracyDistLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         partial void CustomFactoryEnd(

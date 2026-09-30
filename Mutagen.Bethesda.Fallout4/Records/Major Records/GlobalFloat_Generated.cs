@@ -1600,7 +1600,8 @@ namespace Mutagen.Bethesda.Fallout4
 
 
         #region Data
-        private int? _DataLocation;
+        private int? _DataLocationStore;
+        private int? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public Single? Data => _DataLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DataLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         partial void CustomFactoryEnd(

@@ -1265,7 +1265,8 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        public EnableParent.VersioningBreaks Versioning { get; private set; }
+        private EnableParent.VersioningBreaks VersioningStore;
+        public EnableParent.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public IFormLinkGetter<IPlacedGetter> Reference => FormLinkBinaryTranslation.Instance.OverlayFactory<IPlacedGetter>(_package, _structData.Span.Slice(0x0, 0x4));
         public EnableParent.Flag Flags => _structData.Span.Length <= 0x4 ? default : (EnableParent.Flag)_structData.Span.Slice(0x4, 0x1)[0];
         public ReadOnlyMemorySlice<Byte> Unknown => _structData.Span.Length <= 0x5 ? UtilityTranslation.Zeros.Slice(3) : _structData.Span.Slice(0x5, 0x3).ToArray();

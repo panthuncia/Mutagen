@@ -1701,7 +1701,8 @@ namespace Mutagen.Bethesda.Oblivion
 
 
         #region ChanceNone
-        private int? _ChanceNoneLocation;
+        private int? _ChanceNoneLocationStore;
+        private int? _ChanceNoneLocation { get { EnsureFilled(); return _ChanceNoneLocationStore; } set => _ChanceNoneLocationStore = value; }
         public Percent? ChanceNone => _ChanceNoneLocation.HasValue ? PercentBinaryTranslation.GetPercent(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ChanceNoneLocation.Value, _package.MetaData.Constants), FloatIntegerType.ByteHundred) : default(Percent?);
         #endregion
         #region Flags
@@ -1712,7 +1713,10 @@ namespace Mutagen.Bethesda.Oblivion
         public partial LeveledFlag? GetFlagsCustom();
         public LeveledFlag? Flags => GetFlagsCustom();
         #endregion
-        public IReadOnlyList<ILeveledItemEntryGetter> Entries { get; private set; } = [];
+        #region Entries
+        private IReadOnlyList<ILeveledItemEntryGetter> EntriesStore = [];
+        public IReadOnlyList<ILeveledItemEntryGetter> Entries { get { EnsureFilled(); return EntriesStore; } private set => EntriesStore = value; }
+        #endregion
         #region Vestigial
         public partial ParseResult VestigialCustomParse(
             OverlayStream stream,

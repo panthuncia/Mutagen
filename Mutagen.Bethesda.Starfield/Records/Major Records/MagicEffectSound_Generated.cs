@@ -1298,7 +1298,8 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public MagicEffectSound.VersioningBreaks Versioning { get; private set; }
+        private MagicEffectSound.VersioningBreaks VersioningStore;
+        public MagicEffectSound.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public MagicEffectSound.SoundType Type => (MagicEffectSound.SoundType)_structData.Span.Slice(0x0, 0x1)[0];
         public ISoundReferenceGetter Sound => SoundReferenceBinaryOverlay.SoundReferenceFactory(_structData.Slice(0x1), _package, default(TypedParseParams));
         #region Unknown

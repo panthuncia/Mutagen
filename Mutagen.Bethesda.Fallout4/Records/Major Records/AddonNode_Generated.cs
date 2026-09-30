@@ -1962,24 +1962,32 @@ namespace Mutagen.Bethesda.Fallout4
 
 
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         private IObjectBoundsGetter? _ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         public IObjectBoundsGetter ObjectBounds => _ObjectBounds ?? new ObjectBounds();
         #endregion
-        public IModelGetter? Model { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
         #region NodeIndex
-        private int? _NodeIndexLocation;
+        private int? _NodeIndexLocationStore;
+        private int? _NodeIndexLocation { get { EnsureFilled(); return _NodeIndexLocationStore; } set => _NodeIndexLocationStore = value; }
         public UInt32 NodeIndex => _NodeIndexLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NodeIndexLocation.Value, _package.MetaData.Constants)) : default(UInt32);
         #endregion
         #region Sound
-        private int? _SoundLocation;
+        private int? _SoundLocationStore;
+        private int? _SoundLocation { get { EnsureFilled(); return _SoundLocationStore; } set => _SoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundDescriptorGetter> Sound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundDescriptorGetter>(_package, _recordData, _SoundLocation);
         #endregion
         #region Light
-        private int? _LightLocation;
+        private int? _LightLocationStore;
+        private int? _LightLocation { get { EnsureFilled(); return _LightLocationStore; } set => _LightLocationStore = value; }
         public IFormLinkNullableGetter<ILightGetter> Light => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ILightGetter>(_package, _recordData, _LightLocation);
         #endregion
-        private RangeInt32? _DNAMLocation;
+        private RangeInt32? _DNAMLocationStore;
+        private RangeInt32? _DNAMLocation { get { EnsureFilled(); return _DNAMLocationStore; } set => _DNAMLocationStore = value; }
         #region MasterParticleSystemCap
         private int _MasterParticleSystemCapLocation => _DNAMLocation!.Value.Min;
         private bool _MasterParticleSystemCap_IsSet => _DNAMLocation.HasValue;
@@ -2011,6 +2019,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new AddonNodeBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => AddonNodeFill((AddonNodeBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void AddonNodeFill(
+            AddonNodeBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2018,9 +2043,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new AddonNodeBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2033,7 +2056,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IAddonNodeGetter AddonNodeFactory(

@@ -2195,32 +2195,44 @@ namespace Mutagen.Bethesda.Fallout3
         public UInt16 FormVersion => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0xC, 0x2));
         public UInt16 Version2 => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0xE, 0x2));
         #region Stats
-        private RangeInt32? _StatsLocation;
+        private RangeInt32? _StatsLocationStore;
+        private RangeInt32? _StatsLocation { get { EnsureFilled(); return _StatsLocationStore; } set => _StatsLocationStore = value; }
         private IModStatsGetter? _Stats => _StatsLocation.HasValue ? ModStatsBinaryOverlay.ModStatsFactory(_recordData.Slice(_StatsLocation!.Value.Min), _package) : default;
         public IModStatsGetter Stats => _Stats ?? new ModStats();
         #endregion
         #region TypeOffsets
-        private int? _TypeOffsetsLocation;
+        private int? _TypeOffsetsLocationStore;
+        private int? _TypeOffsetsLocation { get { EnsureFilled(); return _TypeOffsetsLocationStore; } set => _TypeOffsetsLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? TypeOffsets => _TypeOffsetsLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _TypeOffsetsLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region Deleted
-        private int? _DeletedLocation;
+        private int? _DeletedLocationStore;
+        private int? _DeletedLocation { get { EnsureFilled(); return _DeletedLocationStore; } set => _DeletedLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? Deleted => _DeletedLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DeletedLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region Author
-        private int? _AuthorLocation;
+        private int? _AuthorLocationStore;
+        private int? _AuthorLocation { get { EnsureFilled(); return _AuthorLocationStore; } set => _AuthorLocationStore = value; }
         public String? Author => _AuthorLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AuthorLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Description
-        private int? _DescriptionLocation;
+        private int? _DescriptionLocationStore;
+        private int? _DescriptionLocation { get { EnsureFilled(); return _DescriptionLocationStore; } set => _DescriptionLocationStore = value; }
         public String? Description => _DescriptionLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DescriptionLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        public IReadOnlyList<IMasterReferenceGetter> MasterReferences { get; private set; } = [];
+        #region MasterReferences
+        private IReadOnlyList<IMasterReferenceGetter> MasterReferencesStore = [];
+        public IReadOnlyList<IMasterReferenceGetter> MasterReferences { get { EnsureFilled(); return MasterReferencesStore; } private set => MasterReferencesStore = value; }
+        #endregion
         #region Screenshot
-        private int? _ScreenshotLocation;
+        private int? _ScreenshotLocationStore;
+        private int? _ScreenshotLocation { get { EnsureFilled(); return _ScreenshotLocationStore; } set => _ScreenshotLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? Screenshot => _ScreenshotLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ScreenshotLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IFallout3MajorRecordGetter>>? OverriddenForms { get; private set; }
+        #region OverriddenForms
+        private IReadOnlyList<IFormLinkGetter<IFallout3MajorRecordGetter>>? OverriddenFormsStore;
+        public IReadOnlyList<IFormLinkGetter<IFallout3MajorRecordGetter>>? OverriddenForms { get { EnsureFilled(); return OverriddenFormsStore; } private set => OverriddenFormsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

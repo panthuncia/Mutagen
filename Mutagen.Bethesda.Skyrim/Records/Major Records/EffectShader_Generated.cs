@@ -7788,27 +7788,34 @@ namespace Mutagen.Bethesda.Skyrim
 
 
         #region FillTexture
-        private int? _FillTextureLocation;
+        private int? _FillTextureLocationStore;
+        private int? _FillTextureLocation { get { EnsureFilled(); return _FillTextureLocationStore; } set => _FillTextureLocationStore = value; }
         public AssetLinkGetter<SkyrimTextureAssetType>? FillTexture => _FillTextureLocation.HasValue ? new AssetLinkGetter<SkyrimTextureAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FillTextureLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<SkyrimTextureAssetType>?);
         #endregion
         #region ParticleShaderTexture
-        private int? _ParticleShaderTextureLocation;
+        private int? _ParticleShaderTextureLocationStore;
+        private int? _ParticleShaderTextureLocation { get { EnsureFilled(); return _ParticleShaderTextureLocationStore; } set => _ParticleShaderTextureLocationStore = value; }
         public AssetLinkGetter<SkyrimTextureAssetType>? ParticleShaderTexture => _ParticleShaderTextureLocation.HasValue ? new AssetLinkGetter<SkyrimTextureAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ParticleShaderTextureLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<SkyrimTextureAssetType>?);
         #endregion
         #region HolesTexture
-        private int? _HolesTextureLocation;
+        private int? _HolesTextureLocationStore;
+        private int? _HolesTextureLocation { get { EnsureFilled(); return _HolesTextureLocationStore; } set => _HolesTextureLocationStore = value; }
         public AssetLinkGetter<SkyrimTextureAssetType>? HolesTexture => _HolesTextureLocation.HasValue ? new AssetLinkGetter<SkyrimTextureAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HolesTextureLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<SkyrimTextureAssetType>?);
         #endregion
         #region MembranePaletteTexture
-        private int? _MembranePaletteTextureLocation;
+        private int? _MembranePaletteTextureLocationStore;
+        private int? _MembranePaletteTextureLocation { get { EnsureFilled(); return _MembranePaletteTextureLocationStore; } set => _MembranePaletteTextureLocationStore = value; }
         public AssetLinkGetter<SkyrimTextureAssetType>? MembranePaletteTexture => _MembranePaletteTextureLocation.HasValue ? new AssetLinkGetter<SkyrimTextureAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MembranePaletteTextureLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<SkyrimTextureAssetType>?);
         #endregion
         #region ParticlePaletteTexture
-        private int? _ParticlePaletteTextureLocation;
+        private int? _ParticlePaletteTextureLocationStore;
+        private int? _ParticlePaletteTextureLocation { get { EnsureFilled(); return _ParticlePaletteTextureLocationStore; } set => _ParticlePaletteTextureLocationStore = value; }
         public AssetLinkGetter<SkyrimTextureAssetType>? ParticlePaletteTexture => _ParticlePaletteTextureLocation.HasValue ? new AssetLinkGetter<SkyrimTextureAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ParticlePaletteTextureLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<SkyrimTextureAssetType>?);
         #endregion
-        private RangeInt32? _DATALocation;
-        public EffectShader.DATADataType DATADataTypeState { get; private set; }
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
+        private EffectShader.DATADataType DATADataTypeStateStore;
+        public EffectShader.DATADataType DATADataTypeState { get { EnsureFilled(); return DATADataTypeStateStore; } private set => DATADataTypeStateStore = value; }
         #region Unknown
         private int _UnknownLocation => _DATALocation!.Value.Min;
         private bool _Unknown_IsSet => _DATALocation.HasValue;
@@ -8330,6 +8337,23 @@ namespace Mutagen.Bethesda.Skyrim
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new EffectShaderBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => EffectShaderFill((EffectShaderBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void EffectShaderFill(
+            EffectShaderBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -8337,9 +8361,7 @@ namespace Mutagen.Bethesda.Skyrim
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new EffectShaderBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -8352,7 +8374,6 @@ namespace Mutagen.Bethesda.Skyrim
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IEffectShaderGetter EffectShaderFactory(

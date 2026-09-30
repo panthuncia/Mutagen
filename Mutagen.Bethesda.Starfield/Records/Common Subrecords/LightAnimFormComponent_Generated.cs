@@ -1121,7 +1121,8 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region PTCL
-        private int? _PTCLLocation;
+        private int? _PTCLLocationStore;
+        private int? _PTCLLocation { get { EnsureFilled(); return _PTCLLocationStore; } set => _PTCLLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? PTCL => _PTCLLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _PTCLLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

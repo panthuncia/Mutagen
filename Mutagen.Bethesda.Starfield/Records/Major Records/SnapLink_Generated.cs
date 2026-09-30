@@ -1240,7 +1240,8 @@ namespace Mutagen.Bethesda.Starfield
         public IFormLinkGetter<IPlacedObjectGetter> LinkedReference => FormLinkBinaryTranslation.Instance.OverlayFactory<IPlacedObjectGetter>(_package, _structData.Span.Slice(0x0, 0x4));
         #region Links
         public IReadOnlyList<ISnapLinkItemGetter> Links => BinaryOverlayList.FactoryByLazyParse<ISnapLinkItemGetter>(_structData.Slice(0x4), _package, (s, p) => SnapLinkItemBinaryOverlay.SnapLinkItemFactory(s, p));
-        protected int LinksEndingPos;
+        private int LinksEndingPosStore;
+        protected int LinksEndingPos { get { EnsureFilled(); return LinksEndingPosStore; } private set => LinksEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

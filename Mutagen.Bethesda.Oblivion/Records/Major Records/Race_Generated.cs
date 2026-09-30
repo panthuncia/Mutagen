@@ -3369,7 +3369,8 @@ namespace Mutagen.Bethesda.Oblivion
 
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -3377,17 +3378,26 @@ namespace Mutagen.Bethesda.Oblivion
         #endregion
         #endregion
         #region Description
-        private int? _DescriptionLocation;
+        private int? _DescriptionLocationStore;
+        private int? _DescriptionLocation { get { EnsureFilled(); return _DescriptionLocationStore; } set => _DescriptionLocationStore = value; }
         public String? Description => _DescriptionLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DescriptionLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<ISpellGetter>> Spells { get; private set; } = [];
-        public IReadOnlyList<IRaceRelationGetter> Relations { get; private set; } = [];
+        #region Spells
+        private IReadOnlyList<IFormLinkGetter<ISpellGetter>> SpellsStore = [];
+        public IReadOnlyList<IFormLinkGetter<ISpellGetter>> Spells { get { EnsureFilled(); return SpellsStore; } private set => SpellsStore = value; }
+        #endregion
+        #region Relations
+        private IReadOnlyList<IRaceRelationGetter> RelationsStore = [];
+        public IReadOnlyList<IRaceRelationGetter> Relations { get { EnsureFilled(); return RelationsStore; } private set => RelationsStore = value; }
+        #endregion
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public IRaceDataGetter? Data => _DataLocation.HasValue ? RaceDataBinaryOverlay.RaceDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         #endregion
         #region Voices
-        private int? _VoicesLocation;
+        private int? _VoicesLocationStore;
+        private int? _VoicesLocation { get { EnsureFilled(); return _VoicesLocationStore; } set => _VoicesLocationStore = value; }
         public IGenderedItemGetter<IFormLinkGetter<IRaceGetter>>? Voices
         {
             get
@@ -3401,7 +3411,8 @@ namespace Mutagen.Bethesda.Oblivion
         }
         #endregion
         #region DefaultHair
-        private int? _DefaultHairLocation;
+        private int? _DefaultHairLocationStore;
+        private int? _DefaultHairLocation { get { EnsureFilled(); return _DefaultHairLocationStore; } set => _DefaultHairLocationStore = value; }
         public IGenderedItemGetter<IFormLinkGetter<IHairGetter>>? DefaultHair
         {
             get
@@ -3415,19 +3426,23 @@ namespace Mutagen.Bethesda.Oblivion
         }
         #endregion
         #region DefaultHairColor
-        private int? _DefaultHairColorLocation;
+        private int? _DefaultHairColorLocationStore;
+        private int? _DefaultHairColorLocation { get { EnsureFilled(); return _DefaultHairColorLocationStore; } set => _DefaultHairColorLocationStore = value; }
         public Byte? DefaultHairColor => _DefaultHairColorLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DefaultHairColorLocation.Value, _package.MetaData.Constants)[0] : default(Byte?);
         #endregion
         #region FaceGenMainClamp
-        private int? _FaceGenMainClampLocation;
+        private int? _FaceGenMainClampLocationStore;
+        private int? _FaceGenMainClampLocation { get { EnsureFilled(); return _FaceGenMainClampLocationStore; } set => _FaceGenMainClampLocationStore = value; }
         public Int32? FaceGenMainClamp => _FaceGenMainClampLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FaceGenMainClampLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region FaceGenFaceClamp
-        private int? _FaceGenFaceClampLocation;
+        private int? _FaceGenFaceClampLocationStore;
+        private int? _FaceGenFaceClampLocation { get { EnsureFilled(); return _FaceGenFaceClampLocationStore; } set => _FaceGenFaceClampLocationStore = value; }
         public Int32? FaceGenFaceClamp => _FaceGenFaceClampLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FaceGenFaceClampLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region RaceStats
-        private int? _RaceStatsLocation;
+        private int? _RaceStatsLocationStore;
+        private int? _RaceStatsLocation { get { EnsureFilled(); return _RaceStatsLocationStore; } set => _RaceStatsLocationStore = value; }
         public IGenderedItemGetter<IRaceStatsGetter>? RaceStats
         {
             get
@@ -3440,16 +3455,30 @@ namespace Mutagen.Bethesda.Oblivion
             }
         }
         #endregion
-        public IReadOnlyList<IFacePartItemGetter> FaceData { get; private set; } = [];
+        #region FaceData
+        private IReadOnlyList<IFacePartItemGetter> FaceDataStore = [];
+        public IReadOnlyList<IFacePartItemGetter> FaceData { get { EnsureFilled(); return FaceDataStore; } private set => FaceDataStore = value; }
+        #endregion
         #region BodyData
-        private IGenderedItemGetter<IBodyDataGetter?>? _BodyDataOverlay;
+        private IGenderedItemGetter<IBodyDataGetter?>? _BodyDataOverlayStore;
+        private IGenderedItemGetter<IBodyDataGetter?>? _BodyDataOverlay { get { EnsureFilled(); return _BodyDataOverlayStore; } set => _BodyDataOverlayStore = value; }
         public IGenderedItemGetter<IBodyDataGetter?>? BodyData => _BodyDataOverlay;
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IHairGetter>>? Hairs { get; private set; }
-        public IReadOnlyList<IFormLinkGetter<IEyeGetter>>? Eyes { get; private set; }
-        public IFaceGenDataGetter? FaceGenData { get; private set; }
+        #region Hairs
+        private IReadOnlyList<IFormLinkGetter<IHairGetter>>? HairsStore;
+        public IReadOnlyList<IFormLinkGetter<IHairGetter>>? Hairs { get { EnsureFilled(); return HairsStore; } private set => HairsStore = value; }
+        #endregion
+        #region Eyes
+        private IReadOnlyList<IFormLinkGetter<IEyeGetter>>? EyesStore;
+        public IReadOnlyList<IFormLinkGetter<IEyeGetter>>? Eyes { get { EnsureFilled(); return EyesStore; } private set => EyesStore = value; }
+        #endregion
+        #region FaceGenData
+        private IFaceGenDataGetter? FaceGenDataStore;
+        public IFaceGenDataGetter? FaceGenData { get { EnsureFilled(); return FaceGenDataStore; } private set => FaceGenDataStore = value; }
+        #endregion
         #region SNAM
-        private int? _SNAMLocation;
+        private int? _SNAMLocationStore;
+        private int? _SNAMLocation { get { EnsureFilled(); return _SNAMLocationStore; } set => _SNAMLocationStore = value; }
         public Int16? SNAM => _SNAMLocation.HasValue ? BinaryPrimitives.ReadInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SNAMLocation.Value, _package.MetaData.Constants)) : default(Int16?);
         #endregion
         partial void CustomFactoryEnd(
@@ -3473,6 +3502,23 @@ namespace Mutagen.Bethesda.Oblivion
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new RaceBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => RaceFill((RaceBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void RaceFill(
+            RaceBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -3480,9 +3526,7 @@ namespace Mutagen.Bethesda.Oblivion
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new RaceBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -3495,7 +3539,6 @@ namespace Mutagen.Bethesda.Oblivion
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IRaceGetter RaceFactory(

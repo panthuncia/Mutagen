@@ -4934,7 +4934,8 @@ namespace Mutagen.Bethesda.Oblivion
 
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -4942,53 +4943,69 @@ namespace Mutagen.Bethesda.Oblivion
         #endregion
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public Cell.Flag? Flags => EnumBinaryTranslation<Cell.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 1);
         #endregion
         #region Grid
-        private int? _GridLocation;
+        private int? _GridLocationStore;
+        private int? _GridLocation { get { EnsureFilled(); return _GridLocationStore; } set => _GridLocationStore = value; }
         public P2Int? Grid => _GridLocation.HasValue ? P2IntBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(HeaderTranslation.ExtractSubrecordMemory(_recordData, _GridLocation.Value, _package.MetaData.Constants)) : default(P2Int?);
         #endregion
         #region Lighting
-        private RangeInt32? _LightingLocation;
+        private RangeInt32? _LightingLocationStore;
+        private RangeInt32? _LightingLocation { get { EnsureFilled(); return _LightingLocationStore; } set => _LightingLocationStore = value; }
         public ICellLightingGetter? Lighting => _LightingLocation.HasValue ? CellLightingBinaryOverlay.CellLightingFactory(_recordData.Slice(_LightingLocation!.Value.Min), _package) : default;
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IRegionGetter>>? Regions { get; private set; }
+        #region Regions
+        private IReadOnlyList<IFormLinkGetter<IRegionGetter>>? RegionsStore;
+        public IReadOnlyList<IFormLinkGetter<IRegionGetter>>? Regions { get { EnsureFilled(); return RegionsStore; } private set => RegionsStore = value; }
+        #endregion
         #region MusicType
-        private int? _MusicTypeLocation;
+        private int? _MusicTypeLocationStore;
+        private int? _MusicTypeLocation { get { EnsureFilled(); return _MusicTypeLocationStore; } set => _MusicTypeLocationStore = value; }
         public MusicType? MusicType => EnumBinaryTranslation<MusicType, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_MusicTypeLocation, _recordData, _package, 1);
         #endregion
         #region WaterHeight
-        private int? _WaterHeightLocation;
+        private int? _WaterHeightLocationStore;
+        private int? _WaterHeightLocation { get { EnsureFilled(); return _WaterHeightLocationStore; } set => _WaterHeightLocationStore = value; }
         public Single? WaterHeight => _WaterHeightLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _WaterHeightLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region Climate
-        private int? _ClimateLocation;
+        private int? _ClimateLocationStore;
+        private int? _ClimateLocation { get { EnsureFilled(); return _ClimateLocationStore; } set => _ClimateLocationStore = value; }
         public IFormLinkNullableGetter<IClimateGetter> Climate => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IClimateGetter>(_package, _recordData, _ClimateLocation);
         #endregion
         #region Water
-        private int? _WaterLocation;
+        private int? _WaterLocationStore;
+        private int? _WaterLocation { get { EnsureFilled(); return _WaterLocationStore; } set => _WaterLocationStore = value; }
         public IFormLinkNullableGetter<IWaterGetter> Water => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IWaterGetter>(_package, _recordData, _WaterLocation);
         #endregion
         #region Owner
-        private int? _OwnerLocation;
+        private int? _OwnerLocationStore;
+        private int? _OwnerLocation { get { EnsureFilled(); return _OwnerLocationStore; } set => _OwnerLocationStore = value; }
         public IFormLinkNullableGetter<IFactionGetter> Owner => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IFactionGetter>(_package, _recordData, _OwnerLocation);
         #endregion
         #region FactionRank
-        private int? _FactionRankLocation;
+        private int? _FactionRankLocationStore;
+        private int? _FactionRankLocation { get { EnsureFilled(); return _FactionRankLocationStore; } set => _FactionRankLocationStore = value; }
         public Int32? FactionRank => _FactionRankLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FactionRankLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region GlobalVariable
-        private int? _GlobalVariableLocation;
+        private int? _GlobalVariableLocationStore;
+        private int? _GlobalVariableLocation { get { EnsureFilled(); return _GlobalVariableLocationStore; } set => _GlobalVariableLocationStore = value; }
         public IFormLinkNullableGetter<IGlobalGetter> GlobalVariable => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IGlobalGetter>(_package, _recordData, _GlobalVariableLocation);
         #endregion
         #region XTLI
-        private int? _XTLILocation;
+        private int? _XTLILocationStore;
+        private int? _XTLILocation { get { EnsureFilled(); return _XTLILocationStore; } set => _XTLILocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? XTLI => _XTLILocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _XTLILocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region XLRL
-        private int? _XLRLLocation;
-        private int? _XLRLLengthOverride;
+        private int? _XLRLLocationStore;
+        private int? _XLRLLocation { get { EnsureFilled(); return _XLRLLocationStore; } set => _XLRLLocationStore = value; }
+        private int? _XLRLLengthOverrideStore;
+        private int? _XLRLLengthOverride { get { EnsureFilled(); return _XLRLLengthOverrideStore; } set => _XLRLLengthOverrideStore = value; }
         public ReadOnlyMemorySlice<Byte>? XLRL => PluginUtilityTranslation.ReadByteArrayWithOverflow(
             _recordData,
             _package.MetaData.Constants,

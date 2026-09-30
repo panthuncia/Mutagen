@@ -6795,13 +6795,16 @@ namespace Mutagen.Bethesda.Starfield
         public Quest.MajorFlag MajorFlags => (Quest.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IQuestAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? QuestAdapterBinaryOverlay.QuestAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -6812,43 +6815,61 @@ namespace Mutagen.Bethesda.Starfield
         ITranslatedStringGetter ITranslatedNamedRequiredGetter.Name => this.Name ?? TranslatedString.Empty;
         #endregion
         #endregion
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public IQuestDataGetter? Data => _DataLocation.HasValue ? QuestDataBinaryOverlay.QuestDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         #endregion
         #region QuestType
-        private int? _QuestTypeLocation;
+        private int? _QuestTypeLocationStore;
+        private int? _QuestTypeLocation { get { EnsureFilled(); return _QuestTypeLocationStore; } set => _QuestTypeLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> QuestType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _QuestTypeLocation);
         #endregion
         #region QuestFaction
-        private int? _QuestFactionLocation;
+        private int? _QuestFactionLocationStore;
+        private int? _QuestFactionLocation { get { EnsureFilled(); return _QuestFactionLocationStore; } set => _QuestFactionLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> QuestFaction => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _QuestFactionLocation);
         #endregion
         #region Event
-        private int? _EventLocation;
+        private int? _EventLocationStore;
+        private int? _EventLocation { get { EnsureFilled(); return _EventLocationStore; } set => _EventLocationStore = value; }
         public RecordType? Event => _EventLocation.HasValue ? new RecordType(BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EventLocation.Value, _package.MetaData.Constants))) : default(RecordType?);
         #endregion
         #region Location
-        private int? _LocationLocation;
+        private int? _LocationLocationStore;
+        private int? _LocationLocation { get { EnsureFilled(); return _LocationLocationStore; } set => _LocationLocationStore = value; }
         public IFormLinkNullableGetter<ILocationGetter> Location => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ILocationGetter>(_package, _recordData, _LocationLocation);
         #endregion
         #region QuestTimeLimit
-        private int? _QuestTimeLimitLocation;
+        private int? _QuestTimeLimitLocationStore;
+        private int? _QuestTimeLimitLocation { get { EnsureFilled(); return _QuestTimeLimitLocationStore; } set => _QuestTimeLimitLocationStore = value; }
         public IFormLinkNullableGetter<IGlobalGetter> QuestTimeLimit => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IGlobalGetter>(_package, _recordData, _QuestTimeLimitLocation);
         #endregion
         #region SourceQuest
-        private int? _SourceQuestLocation;
+        private int? _SourceQuestLocationStore;
+        private int? _SourceQuestLocation { get { EnsureFilled(); return _SourceQuestLocationStore; } set => _SourceQuestLocationStore = value; }
         public IFormLinkNullableGetter<IQuestGetter> SourceQuest => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IQuestGetter>(_package, _recordData, _SourceQuestLocation);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IDialogResponsesGetter>>? QDUPs { get; private set; }
-        public IReadOnlyList<IFormLinkGetter<IGlobalGetter>> TextDisplayGlobals { get; private set; } = [];
+        #region QDUPs
+        private IReadOnlyList<IFormLinkGetter<IDialogResponsesGetter>>? QDUPsStore;
+        public IReadOnlyList<IFormLinkGetter<IDialogResponsesGetter>>? QDUPs { get { EnsureFilled(); return QDUPsStore; } private set => QDUPsStore = value; }
+        #endregion
+        #region TextDisplayGlobals
+        private IReadOnlyList<IFormLinkGetter<IGlobalGetter>> TextDisplayGlobalsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IGlobalGetter>> TextDisplayGlobals { get { EnsureFilled(); return TextDisplayGlobalsStore; } private set => TextDisplayGlobalsStore = value; }
+        #endregion
         #region Filter
-        private int? _FilterLocation;
+        private int? _FilterLocationStore;
+        private int? _FilterLocation { get { EnsureFilled(); return _FilterLocationStore; } set => _FilterLocationStore = value; }
         public String? Filter => _FilterLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FilterLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Summary
-        private int? _SummaryLocation;
+        private int? _SummaryLocationStore;
+        private int? _SummaryLocation { get { EnsureFilled(); return _SummaryLocationStore; } set => _SummaryLocationStore = value; }
         public String? Summary => _SummaryLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SummaryLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region DialogConditions
@@ -6865,8 +6886,14 @@ namespace Mutagen.Bethesda.Starfield
             int offset,
             PreviousParse lastParsed);
         #endregion
-        public IReadOnlyList<IQuestStageGetter> Stages { get; private set; } = [];
-        public IReadOnlyList<IQuestObjectiveGetter> Objectives { get; private set; } = [];
+        #region Stages
+        private IReadOnlyList<IQuestStageGetter> StagesStore = [];
+        public IReadOnlyList<IQuestStageGetter> Stages { get { EnsureFilled(); return StagesStore; } private set => StagesStore = value; }
+        #endregion
+        #region Objectives
+        private IReadOnlyList<IQuestObjectiveGetter> ObjectivesStore = [];
+        public IReadOnlyList<IQuestObjectiveGetter> Objectives { get { EnsureFilled(); return ObjectivesStore; } private set => ObjectivesStore = value; }
+        #endregion
         #region AliasParse
         public partial ParseResult AliasParseCustomParse(
             OverlayStream stream,
@@ -6874,28 +6901,37 @@ namespace Mutagen.Bethesda.Starfield
             PreviousParse lastParsed);
         #endregion
         #region QuestGroup
-        private int? _QuestGroupLocation;
+        private int? _QuestGroupLocationStore;
+        private int? _QuestGroupLocation { get { EnsureFilled(); return _QuestGroupLocationStore; } set => _QuestGroupLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> QuestGroup => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _QuestGroupLocation);
         #endregion
         #region SwfFile
-        private int? _SwfFileLocation;
+        private int? _SwfFileLocationStore;
+        private int? _SwfFileLocation { get { EnsureFilled(); return _SwfFileLocationStore; } set => _SwfFileLocationStore = value; }
         public String? SwfFile => _SwfFileLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SwfFileLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region MissionTypeKeyword
-        private int? _MissionTypeKeywordLocation;
+        private int? _MissionTypeKeywordLocationStore;
+        private int? _MissionTypeKeywordLocation { get { EnsureFilled(); return _MissionTypeKeywordLocationStore; } set => _MissionTypeKeywordLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> MissionTypeKeyword => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _MissionTypeKeywordLocation);
         #endregion
         #region MissionBoardDescription
-        private int? _MissionBoardDescriptionLocation;
+        private int? _MissionBoardDescriptionLocationStore;
+        private int? _MissionBoardDescriptionLocation { get { EnsureFilled(); return _MissionBoardDescriptionLocationStore; } set => _MissionBoardDescriptionLocationStore = value; }
         public ITranslatedStringGetter? MissionBoardDescription => _MissionBoardDescriptionLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MissionBoardDescriptionLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
-        public IReadOnlyList<IQuestMissionBoardPanelGetter> MissionBoardInfoPanels { get; private set; } = [];
+        #region MissionBoardInfoPanels
+        private IReadOnlyList<IQuestMissionBoardPanelGetter> MissionBoardInfoPanelsStore = [];
+        public IReadOnlyList<IQuestMissionBoardPanelGetter> MissionBoardInfoPanels { get { EnsureFilled(); return MissionBoardInfoPanelsStore; } private set => MissionBoardInfoPanelsStore = value; }
+        #endregion
         #region Keywords
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get; private set; }
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? KeywordsStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get { EnsureFilled(); return KeywordsStore; } private set => KeywordsStore = value; }
         IReadOnlyList<IFormLinkGetter<IKeywordCommonGetter>>? IKeywordedGetter.Keywords => this.Keywords;
         #endregion
         #region ScriptComment
-        private int? _ScriptCommentLocation;
+        private int? _ScriptCommentLocationStore;
+        private int? _ScriptCommentLocation { get { EnsureFilled(); return _ScriptCommentLocationStore; } set => _ScriptCommentLocationStore = value; }
         public String? ScriptComment => _ScriptCommentLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ScriptCommentLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(

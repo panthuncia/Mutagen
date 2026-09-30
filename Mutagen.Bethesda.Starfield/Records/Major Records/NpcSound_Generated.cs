@@ -1223,9 +1223,13 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public ISoundReferenceGetter? Sound { get; private set; }
+        #region Sound
+        private ISoundReferenceGetter? SoundStore;
+        public ISoundReferenceGetter? Sound { get { EnsureFilled(); return SoundStore; } private set => SoundStore = value; }
+        #endregion
         #region CS3F
-        private int? _CS3FLocation;
+        private int? _CS3FLocationStore;
+        private int? _CS3FLocation { get { EnsureFilled(); return _CS3FLocationStore; } set => _CS3FLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? CS3F => _CS3FLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _CS3FLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

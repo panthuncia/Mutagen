@@ -1360,7 +1360,8 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        public RadioReceiver.VersioningBreaks Versioning { get; private set; }
+        private RadioReceiver.VersioningBreaks VersioningStore;
+        public RadioReceiver.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public IFormLinkGetter<ISoundOutputModelGetter> SoundModel => FormLinkBinaryTranslation.Instance.OverlayFactory<ISoundOutputModelGetter>(_package, _structData.Span.Slice(0x0, 0x4));
         public Single Frequency => _structData.Slice(0x4, 0x4).Float();
         public Single Volume => _structData.Slice(0x8, 0x4).Float();

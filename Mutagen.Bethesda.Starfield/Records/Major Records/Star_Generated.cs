@@ -2273,13 +2273,18 @@ namespace Mutagen.Bethesda.Starfield
         protected override Type LinkType => typeof(IStarGetter);
 
 
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
         #region Keywords
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get; private set; }
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? KeywordsStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get { EnsureFilled(); return KeywordsStore; } private set => KeywordsStore = value; }
         IReadOnlyList<IFormLinkGetter<IKeywordCommonGetter>>? IKeywordedGetter.Keywords => this.Keywords;
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2287,23 +2292,28 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #endregion
         #region BNAM
-        private int? _BNAMLocation;
+        private int? _BNAMLocationStore;
+        private int? _BNAMLocation { get { EnsureFilled(); return _BNAMLocationStore; } set => _BNAMLocationStore = value; }
         public P3Float? BNAM => _BNAMLocation.HasValue ? P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BNAMLocation.Value, _package.MetaData.Constants)) : default(P3Float?);
         #endregion
         #region ONAM
-        private int? _ONAMLocation;
+        private int? _ONAMLocationStore;
+        private int? _ONAMLocation { get { EnsureFilled(); return _ONAMLocationStore; } set => _ONAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? ONAM => _ONAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ONAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region ID
-        private int? _IDLocation;
+        private int? _IDLocationStore;
+        private int? _IDLocation { get { EnsureFilled(); return _IDLocationStore; } set => _IDLocationStore = value; }
         public UInt32? ID => _IDLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IDLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region Color
-        private int? _ColorLocation;
+        private int? _ColorLocationStore;
+        private int? _ColorLocation { get { EnsureFilled(); return _ColorLocationStore; } set => _ColorLocationStore = value; }
         public Color? Color => _ColorLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ColorLocation.Value, _package.MetaData.Constants).ReadColor(ColorBinaryType.Alpha) : default(Color?);
         #endregion
         #region SunPreset
-        private int? _SunPresetLocation;
+        private int? _SunPresetLocationStore;
+        private int? _SunPresetLocation { get { EnsureFilled(); return _SunPresetLocationStore; } set => _SunPresetLocationStore = value; }
         public IFormLinkNullableGetter<ISunPresetGetter> SunPreset => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISunPresetGetter>(_package, _recordData, _SunPresetLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -2327,6 +2337,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new StarBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => StarFill((StarBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void StarFill(
+            StarBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2334,9 +2361,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new StarBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2349,7 +2374,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IStarGetter StarFactory(

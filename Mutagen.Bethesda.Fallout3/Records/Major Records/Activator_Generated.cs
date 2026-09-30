@@ -2413,45 +2413,60 @@ namespace Mutagen.Bethesda.Fallout3
         public Activator.MajorFlag MajorFlags => (Activator.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         public IObjectBoundsGetter? ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         string INamedRequiredGetter.Name => this.Name ?? string.Empty;
         #endregion
         #endregion
-        public IModelGetter? Model { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
         #region Script
-        private int? _ScriptLocation;
+        private int? _ScriptLocationStore;
+        private int? _ScriptLocation { get { EnsureFilled(); return _ScriptLocationStore; } set => _ScriptLocationStore = value; }
         public IFormLinkNullableGetter<IScriptGetter> Script => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IScriptGetter>(_package, _recordData, _ScriptLocation);
         #endregion
-        public IDestructibleGetter? Destructible { get; private set; }
+        #region Destructible
+        private IDestructibleGetter? DestructibleStore;
+        public IDestructibleGetter? Destructible { get { EnsureFilled(); return DestructibleStore; } private set => DestructibleStore = value; }
+        #endregion
         #region LoopingSound
-        private int? _LoopingSoundLocation;
+        private int? _LoopingSoundLocationStore;
+        private int? _LoopingSoundLocation { get { EnsureFilled(); return _LoopingSoundLocationStore; } set => _LoopingSoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> LoopingSound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _LoopingSoundLocation);
         #endregion
         #region ActivationSound
-        private int? _ActivationSoundLocation;
+        private int? _ActivationSoundLocationStore;
+        private int? _ActivationSoundLocation { get { EnsureFilled(); return _ActivationSoundLocationStore; } set => _ActivationSoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> ActivationSound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _ActivationSoundLocation);
         #endregion
         #region RadioTemplate
-        private int? _RadioTemplateLocation;
+        private int? _RadioTemplateLocationStore;
+        private int? _RadioTemplateLocation { get { EnsureFilled(); return _RadioTemplateLocationStore; } set => _RadioTemplateLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> RadioTemplate => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _RadioTemplateLocation);
         #endregion
         #region RadioStation
-        private int? _RadioStationLocation;
+        private int? _RadioStationLocationStore;
+        private int? _RadioStationLocation { get { EnsureFilled(); return _RadioStationLocationStore; } set => _RadioStationLocationStore = value; }
         public IFormLinkNullableGetter<ITalkingActivatorGetter> RadioStation => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ITalkingActivatorGetter>(_package, _recordData, _RadioStationLocation);
         #endregion
         #region WaterType
-        private int? _WaterTypeLocation;
+        private int? _WaterTypeLocationStore;
+        private int? _WaterTypeLocation { get { EnsureFilled(); return _WaterTypeLocationStore; } set => _WaterTypeLocationStore = value; }
         public IFormLinkNullableGetter<IWaterGetter> WaterType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IWaterGetter>(_package, _recordData, _WaterTypeLocation);
         #endregion
         #region ActivationPrompt
-        private int? _ActivationPromptLocation;
+        private int? _ActivationPromptLocationStore;
+        private int? _ActivationPromptLocation { get { EnsureFilled(); return _ActivationPromptLocationStore; } set => _ActivationPromptLocationStore = value; }
         public String? ActivationPrompt => _ActivationPromptLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ActivationPromptLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(
@@ -2475,6 +2490,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ActivatorBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ActivatorFill((ActivatorBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ActivatorFill(
+            ActivatorBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2482,9 +2514,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ActivatorBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2497,7 +2527,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IActivatorGetter ActivatorFactory(

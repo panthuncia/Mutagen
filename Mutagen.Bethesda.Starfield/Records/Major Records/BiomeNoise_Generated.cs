@@ -1334,7 +1334,8 @@ namespace Mutagen.Bethesda.Starfield
 
         #region NoiseFilename
         public String NoiseFilename => BinaryStringUtility.ParsePrependedString(_structData.Slice(0x0), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated);
-        protected int NoiseFilenameEndingPos;
+        private int NoiseFilenameEndingPosStore;
+        protected int NoiseFilenameEndingPos { get { EnsureFilled(); return NoiseFilenameEndingPosStore; } private set => NoiseFilenameEndingPosStore = value; }
         #endregion
         public Double BiomeFrequency => BinaryPrimitives.ReadDoubleLittleEndian(_structData.Slice(NoiseFilenameEndingPos, 0x8));
         public Double TerrainHeightFrequency => BinaryPrimitives.ReadDoubleLittleEndian(_structData.Slice(NoiseFilenameEndingPos + 0x8, 0x8));

@@ -2529,12 +2529,14 @@ namespace Mutagen.Bethesda.Fallout3
 
 
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         private IObjectBoundsGetter? _ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         public IObjectBoundsGetter ObjectBounds => _ObjectBounds ?? new ObjectBounds();
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2545,38 +2547,52 @@ namespace Mutagen.Bethesda.Fallout3
         ITranslatedStringGetter ITranslatedNamedRequiredGetter.Name => this.Name ?? TranslatedString.Empty;
         #endregion
         #endregion
-        public IModelGetter? Model { get; private set; }
-        public IIconsGetter? Icons { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
+        #region Icons
+        private IIconsGetter? IconsStore;
+        public IIconsGetter? Icons { get { EnsureFilled(); return IconsStore; } private set => IconsStore = value; }
+        #endregion
         #region Script
-        private int? _ScriptLocation;
+        private int? _ScriptLocationStore;
+        private int? _ScriptLocation { get { EnsureFilled(); return _ScriptLocationStore; } set => _ScriptLocationStore = value; }
         public IFormLinkNullableGetter<IScriptGetter> Script => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IScriptGetter>(_package, _recordData, _ScriptLocation);
         #endregion
         #region PickUpSound
-        private int? _PickUpSoundLocation;
+        private int? _PickUpSoundLocationStore;
+        private int? _PickUpSoundLocation { get { EnsureFilled(); return _PickUpSoundLocationStore; } set => _PickUpSoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> PickUpSound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _PickUpSoundLocation);
         #endregion
         #region DropSound
-        private int? _DropSoundLocation;
+        private int? _DropSoundLocationStore;
+        private int? _DropSoundLocation { get { EnsureFilled(); return _DropSoundLocationStore; } set => _DropSoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> DropSound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _DropSoundLocation);
         #endregion
         #region HighResFaceImage
-        private int? _HighResFaceImageLocation;
+        private int? _HighResFaceImageLocationStore;
+        private int? _HighResFaceImageLocation { get { EnsureFilled(); return _HighResFaceImageLocationStore; } set => _HighResFaceImageLocationStore = value; }
         public String? HighResFaceImage => _HighResFaceImageLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HighResFaceImageLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region HighResBackImage
-        private int? _HighResBackImageLocation;
+        private int? _HighResBackImageLocationStore;
+        private int? _HighResBackImageLocation { get { EnsureFilled(); return _HighResBackImageLocationStore; } set => _HighResBackImageLocationStore = value; }
         public String? HighResBackImage => _HighResBackImageLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HighResBackImageLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region CardSuit
-        private int? _CardSuitLocation;
+        private int? _CardSuitLocationStore;
+        private int? _CardSuitLocation { get { EnsureFilled(); return _CardSuitLocationStore; } set => _CardSuitLocationStore = value; }
         public CaravanCard.CaravanSuit? CardSuit => EnumBinaryTranslation<CaravanCard.CaravanSuit, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_CardSuitLocation, _recordData, _package, 4);
         #endregion
         #region CardValue
-        private int? _CardValueLocation;
+        private int? _CardValueLocationStore;
+        private int? _CardValueLocation { get { EnsureFilled(); return _CardValueLocationStore; } set => _CardValueLocationStore = value; }
         public CaravanCard.CaravanValue? CardValue => EnumBinaryTranslation<CaravanCard.CaravanValue, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_CardValueLocation, _recordData, _package, 4);
         #endregion
         #region Value
-        private int? _ValueLocation;
+        private int? _ValueLocationStore;
+        private int? _ValueLocation { get { EnsureFilled(); return _ValueLocationStore; } set => _ValueLocationStore = value; }
         public UInt32? Value => _ValueLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ValueLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         partial void CustomFactoryEnd(
@@ -2600,6 +2616,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new CaravanCardBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => CaravanCardFill((CaravanCardBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void CaravanCardFill(
+            CaravanCardBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2607,9 +2640,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new CaravanCardBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2622,7 +2653,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ICaravanCardGetter CaravanCardFactory(

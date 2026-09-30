@@ -2680,13 +2680,16 @@ namespace Mutagen.Bethesda.Fallout4
         public Perk.MajorFlag MajorFlags => (Perk.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IPerkAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? PerkAdapterBinaryOverlay.PerkAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2698,15 +2701,21 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #endregion
         #region Description
-        private int? _DescriptionLocation;
+        private int? _DescriptionLocationStore;
+        private int? _DescriptionLocation { get { EnsureFilled(); return _DescriptionLocationStore; } set => _DescriptionLocationStore = value; }
         public ITranslatedStringGetter Description => _DescriptionLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DescriptionLocation.Value, _package.MetaData.Constants), StringsSource.DL, parsingBundle: _package.MetaData, eager: false) : TranslatedString.Empty;
         #endregion
         #region Icon
-        private int? _IconLocation;
+        private int? _IconLocationStore;
+        private int? _IconLocation { get { EnsureFilled(); return _IconLocationStore; } set => _IconLocationStore = value; }
         public String? Icon => _IconLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IconLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
-        private RangeInt32? _DATALocation;
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         #region Trait
         private int _TraitLocation => _DATALocation!.Value.Min;
         private bool _Trait_IsSet => _DATALocation.HasValue;
@@ -2733,15 +2742,18 @@ namespace Mutagen.Bethesda.Fallout4
         public Boolean Hidden => _Hidden_IsSet ? _recordData.Slice(_HiddenLocation, 1)[0] >= 1 : default(Boolean);
         #endregion
         #region Sound
-        private int? _SoundLocation;
+        private int? _SoundLocationStore;
+        private int? _SoundLocation { get { EnsureFilled(); return _SoundLocationStore; } set => _SoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundDescriptorGetter> Sound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundDescriptorGetter>(_package, _recordData, _SoundLocation);
         #endregion
         #region NextPerk
-        private int? _NextPerkLocation;
+        private int? _NextPerkLocationStore;
+        private int? _NextPerkLocation { get { EnsureFilled(); return _NextPerkLocationStore; } set => _NextPerkLocationStore = value; }
         public IFormLinkNullableGetter<IPerkGetter> NextPerk => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IPerkGetter>(_package, _recordData, _NextPerkLocation);
         #endregion
         #region Swf
-        private int? _SwfLocation;
+        private int? _SwfLocationStore;
+        private int? _SwfLocation { get { EnsureFilled(); return _SwfLocationStore; } set => _SwfLocationStore = value; }
         public String? Swf => _SwfLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SwfLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Effects

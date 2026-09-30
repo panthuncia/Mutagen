@@ -1871,15 +1871,23 @@ namespace Mutagen.Bethesda.Fallout3
         protected override Type LinkType => typeof(IIdleAnimationGetter);
 
 
-        public IModelGetter? Model { get; private set; }
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region RelatedIdleAnimations
-        private RangeInt32? _RelatedIdleAnimationsLocation;
+        private RangeInt32? _RelatedIdleAnimationsLocationStore;
+        private RangeInt32? _RelatedIdleAnimationsLocation { get { EnsureFilled(); return _RelatedIdleAnimationsLocationStore; } set => _RelatedIdleAnimationsLocationStore = value; }
         private IIdleAnimationRelatedAnimationsGetter? _RelatedIdleAnimations => _RelatedIdleAnimationsLocation.HasValue ? IdleAnimationRelatedAnimationsBinaryOverlay.IdleAnimationRelatedAnimationsFactory(_recordData.Slice(_RelatedIdleAnimationsLocation!.Value.Min), _package) : default;
         public IIdleAnimationRelatedAnimationsGetter RelatedIdleAnimations => _RelatedIdleAnimations ?? new IdleAnimationRelatedAnimations();
         #endregion
         #region AnimationData
-        private RangeInt32? _AnimationDataLocation;
+        private RangeInt32? _AnimationDataLocationStore;
+        private RangeInt32? _AnimationDataLocation { get { EnsureFilled(); return _AnimationDataLocationStore; } set => _AnimationDataLocationStore = value; }
         private IIdleAnimationDataGetter? _AnimationData => _AnimationDataLocation.HasValue ? IdleAnimationDataBinaryOverlay.IdleAnimationDataFactory(_recordData.Slice(_AnimationDataLocation!.Value.Min), _package) : default;
         public IIdleAnimationDataGetter AnimationData => _AnimationData ?? new IdleAnimationData();
         #endregion
@@ -1904,6 +1912,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new IdleAnimationBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => IdleAnimationFill((IdleAnimationBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void IdleAnimationFill(
+            IdleAnimationBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1911,9 +1936,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new IdleAnimationBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1926,7 +1949,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IIdleAnimationGetter IdleAnimationFactory(

@@ -1480,8 +1480,10 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        private RangeInt32? _QSTALocation;
-        public QuestObjectiveTarget.QSTADataType QSTADataTypeState { get; private set; }
+        private RangeInt32? _QSTALocationStore;
+        private RangeInt32? _QSTALocation { get { EnsureFilled(); return _QSTALocationStore; } set => _QSTALocationStore = value; }
+        private QuestObjectiveTarget.QSTADataType QSTADataTypeStateStore;
+        public QuestObjectiveTarget.QSTADataType QSTADataTypeState { get { EnsureFilled(); return QSTADataTypeStateStore; } private set => QSTADataTypeStateStore = value; }
         #region AliasID
         private int _AliasIDLocation => _QSTALocation!.Value.Min;
         private bool _AliasID_IsSet => _QSTALocation.HasValue;
@@ -1497,7 +1499,10 @@ namespace Mutagen.Bethesda.Fallout4
         private bool _Keyword_IsSet => _QSTALocation.HasValue && !QSTADataTypeState.HasFlag(QuestObjectiveTarget.QSTADataType.Break0);
         public IFormLinkGetter<IKeywordGetter> Keyword => _Keyword_IsSet ? FormLinkBinaryTranslation.Instance.OverlayFactory<IKeywordGetter>(_package, _recordData.Span.Slice(_KeywordLocation, 0x4), isSet: _Keyword_IsSet) : FormLink<IKeywordGetter>.Null;
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

@@ -1418,23 +1418,28 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region SCHR
-        private int? _SCHRLocation;
+        private int? _SCHRLocationStore;
+        private int? _SCHRLocation { get { EnsureFilled(); return _SCHRLocationStore; } set => _SCHRLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? SCHR => _SCHRLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SCHRLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region SCDA
-        private int? _SCDALocation;
+        private int? _SCDALocationStore;
+        private int? _SCDALocation { get { EnsureFilled(); return _SCDALocationStore; } set => _SCDALocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? SCDA => _SCDALocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SCDALocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region SCTX
-        private int? _SCTXLocation;
+        private int? _SCTXLocationStore;
+        private int? _SCTXLocation { get { EnsureFilled(); return _SCTXLocationStore; } set => _SCTXLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? SCTX => _SCTXLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SCTXLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region QNAM
-        private int? _QNAMLocation;
+        private int? _QNAMLocationStore;
+        private int? _QNAMLocation { get { EnsureFilled(); return _QNAMLocationStore; } set => _QNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? QNAM => _QNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _QNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region SCRO
-        private int? _SCROLocation;
+        private int? _SCROLocationStore;
+        private int? _SCROLocation { get { EnsureFilled(); return _SCROLocationStore; } set => _SCROLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? SCRO => _SCROLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SCROLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

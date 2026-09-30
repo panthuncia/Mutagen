@@ -1286,10 +1286,14 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Static
-        private int? _StaticLocation;
+        private int? _StaticLocationStore;
+        private int? _StaticLocation { get { EnsureFilled(); return _StaticLocationStore; } set => _StaticLocationStore = value; }
         public IFormLinkNullableGetter<IStaticTargetGetter> Static => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IStaticTargetGetter>(_package, _recordData, _StaticLocation);
         #endregion
-        public IReadOnlyList<IStaticPlacementGetter>? Placements { get; private set; }
+        #region Placements
+        private IReadOnlyList<IStaticPlacementGetter>? PlacementsStore;
+        public IReadOnlyList<IStaticPlacementGetter>? Placements { get { EnsureFilled(); return PlacementsStore; } private set => PlacementsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

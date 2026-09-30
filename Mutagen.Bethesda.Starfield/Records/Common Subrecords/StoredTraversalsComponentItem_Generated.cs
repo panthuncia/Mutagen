@@ -1302,8 +1302,10 @@ namespace Mutagen.Bethesda.Starfield
         public IFormLinkGetter<IActivatorGetter> Activator => FormLinkBinaryTranslation.Instance.OverlayFactory<IActivatorGetter>(_package, _structData.Span.Slice(0x0, 0x4));
         public P3Float Vector => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(0x4, 0xC));
         #region Traversals
-        public IReadOnlyList<ITraversalReferenceGetter> Traversals { get; private set; } = null!;
-        protected int TraversalsEndingPos;
+        private IReadOnlyList<ITraversalReferenceGetter> TraversalsStore = null!;
+        public IReadOnlyList<ITraversalReferenceGetter> Traversals { get { EnsureFilled(); return TraversalsStore; } private set => TraversalsStore = value; }
+        private int TraversalsEndingPosStore;
+        protected int TraversalsEndingPos { get { EnsureFilled(); return TraversalsEndingPosStore; } private set => TraversalsEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

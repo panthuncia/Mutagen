@@ -2554,32 +2554,45 @@ namespace Mutagen.Bethesda.Skyrim
 
 
         #region Type
-        private int? _TypeLocation;
+        private int? _TypeLocationStore;
+        private int? _TypeLocation { get { EnsureFilled(); return _TypeLocationStore; } set => _TypeLocationStore = value; }
         public SoundDescriptor.DescriptorType? Type => EnumBinaryTranslation<SoundDescriptor.DescriptorType, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_TypeLocation, _recordData, _package, 4);
         #endregion
         #region Category
-        private int? _CategoryLocation;
+        private int? _CategoryLocationStore;
+        private int? _CategoryLocation { get { EnsureFilled(); return _CategoryLocationStore; } set => _CategoryLocationStore = value; }
         public IFormLinkNullableGetter<ISoundCategoryGetter> Category => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundCategoryGetter>(_package, _recordData, _CategoryLocation);
         #endregion
         #region AlternateSoundFor
-        private int? _AlternateSoundForLocation;
+        private int? _AlternateSoundForLocationStore;
+        private int? _AlternateSoundForLocation { get { EnsureFilled(); return _AlternateSoundForLocationStore; } set => _AlternateSoundForLocationStore = value; }
         public IFormLinkNullableGetter<ISoundDescriptorGetter> AlternateSoundFor => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundDescriptorGetter>(_package, _recordData, _AlternateSoundForLocation);
         #endregion
-        public IReadOnlyList<IAssetLinkGetter<SkyrimSoundAssetType>> SoundFiles { get; private set; } = [];
+        #region SoundFiles
+        private IReadOnlyList<IAssetLinkGetter<SkyrimSoundAssetType>> SoundFilesStore = [];
+        public IReadOnlyList<IAssetLinkGetter<SkyrimSoundAssetType>> SoundFiles { get { EnsureFilled(); return SoundFilesStore; } private set => SoundFilesStore = value; }
+        #endregion
         #region OutputModel
-        private int? _OutputModelLocation;
+        private int? _OutputModelLocationStore;
+        private int? _OutputModelLocation { get { EnsureFilled(); return _OutputModelLocationStore; } set => _OutputModelLocationStore = value; }
         public IFormLinkNullableGetter<ISoundOutputModelGetter> OutputModel => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundOutputModelGetter>(_package, _recordData, _OutputModelLocation);
         #endregion
         #region String
-        private int? _StringLocation;
+        private int? _StringLocationStore;
+        private int? _StringLocation { get { EnsureFilled(); return _StringLocationStore; } set => _StringLocationStore = value; }
         public ITranslatedStringGetter? String => _StringLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _StringLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region LoopAndRumble
-        private RangeInt32? _LoopAndRumbleLocation;
+        private RangeInt32? _LoopAndRumbleLocationStore;
+        private RangeInt32? _LoopAndRumbleLocation { get { EnsureFilled(); return _LoopAndRumbleLocationStore; } set => _LoopAndRumbleLocationStore = value; }
         public ISoundLoopAndRumbleGetter? LoopAndRumble => _LoopAndRumbleLocation.HasValue ? SoundLoopAndRumbleBinaryOverlay.SoundLoopAndRumbleFactory(_recordData.Slice(_LoopAndRumbleLocation!.Value.Min), _package) : default;
         #endregion
-        private RangeInt32? _BNAMLocation;
+        private RangeInt32? _BNAMLocationStore;
+        private RangeInt32? _BNAMLocation { get { EnsureFilled(); return _BNAMLocationStore; } set => _BNAMLocationStore = value; }
         #region PercentFrequencyShift
         private int _PercentFrequencyShiftLocation => _BNAMLocation!.Value.Min;
         private bool _PercentFrequencyShift_IsSet => _BNAMLocation.HasValue;
@@ -2626,6 +2639,23 @@ namespace Mutagen.Bethesda.Skyrim
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new SoundDescriptorBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => SoundDescriptorFill((SoundDescriptorBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void SoundDescriptorFill(
+            SoundDescriptorBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2633,9 +2663,7 @@ namespace Mutagen.Bethesda.Skyrim
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new SoundDescriptorBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2648,7 +2676,6 @@ namespace Mutagen.Bethesda.Skyrim
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ISoundDescriptorGetter SoundDescriptorFactory(

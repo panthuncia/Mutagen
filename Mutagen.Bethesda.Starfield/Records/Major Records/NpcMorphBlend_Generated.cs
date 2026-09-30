@@ -1141,11 +1141,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region BlendName
-        private int? _BlendNameLocation;
+        private int? _BlendNameLocationStore;
+        private int? _BlendNameLocation { get { EnsureFilled(); return _BlendNameLocationStore; } set => _BlendNameLocationStore = value; }
         public String BlendName => _BlendNameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BlendNameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region Intensity
-        private int? _IntensityLocation;
+        private int? _IntensityLocationStore;
+        private int? _IntensityLocation { get { EnsureFilled(); return _IntensityLocationStore; } set => _IntensityLocationStore = value; }
         public Single Intensity => _IntensityLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _IntensityLocation.Value, _package.MetaData.Constants).Float() : default(Single);
         #endregion
         partial void CustomFactoryEnd(

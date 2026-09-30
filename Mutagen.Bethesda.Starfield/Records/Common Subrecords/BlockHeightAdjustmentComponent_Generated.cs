@@ -1316,10 +1316,12 @@ namespace Mutagen.Bethesda.Starfield
 
         #region SurfaceBlocks
         private static IReadOnlyArray2d<IBlockHeightAdjustmentComponentItemGetter> _SurfaceBlocksEmpty = new Array2d<IBlockHeightAdjustmentComponentItemGetter>(16, 16, new BlockHeightAdjustmentComponentItem());
-        public IReadOnlyArray2d<IBlockHeightAdjustmentComponentItemGetter> SurfaceBlocks { get; private set; } = _SurfaceBlocksEmpty;
+        private IReadOnlyArray2d<IBlockHeightAdjustmentComponentItemGetter> SurfaceBlocksStore = _SurfaceBlocksEmpty;
+        public IReadOnlyArray2d<IBlockHeightAdjustmentComponentItemGetter> SurfaceBlocks { get { EnsureFilled(); return SurfaceBlocksStore; } private set => SurfaceBlocksStore = value; }
         #endregion
         #region DATA
-        private int? _DATALocation;
+        private int? _DATALocationStore;
+        private int? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? DATA => _DATALocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DATALocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

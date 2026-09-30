@@ -2186,16 +2186,28 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
-        public IReadOnlyList<IGroundCoverGrassGetter> Grasses { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<ILandscapeTextureGetter>> LandscapeTextures { get; private set; } = [];
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
+        #region Grasses
+        private IReadOnlyList<IGroundCoverGrassGetter> GrassesStore = [];
+        public IReadOnlyList<IGroundCoverGrassGetter> Grasses { get { EnsureFilled(); return GrassesStore; } private set => GrassesStore = value; }
+        #endregion
+        #region LandscapeTextures
+        private IReadOnlyList<IFormLinkGetter<ILandscapeTextureGetter>> LandscapeTexturesStore = [];
+        public IReadOnlyList<IFormLinkGetter<ILandscapeTextureGetter>> LandscapeTextures { get { EnsureFilled(); return LandscapeTexturesStore; } private set => LandscapeTexturesStore = value; }
+        #endregion
         #region PaintedMaterialThreshold
-        private int? _PaintedMaterialThresholdLocation;
+        private int? _PaintedMaterialThresholdLocationStore;
+        private int? _PaintedMaterialThresholdLocation { get { EnsureFilled(); return _PaintedMaterialThresholdLocationStore; } set => _PaintedMaterialThresholdLocationStore = value; }
         public Single? PaintedMaterialThreshold => _PaintedMaterialThresholdLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _PaintedMaterialThresholdLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         partial void CustomFactoryEnd(
@@ -2219,6 +2231,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new GroundCoverBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => GroundCoverFill((GroundCoverBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void GroundCoverFill(
+            GroundCoverBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2226,9 +2255,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new GroundCoverBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2241,7 +2268,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IGroundCoverGetter GroundCoverFactory(

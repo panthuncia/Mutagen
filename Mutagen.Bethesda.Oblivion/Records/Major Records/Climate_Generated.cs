@@ -1926,18 +1926,27 @@ namespace Mutagen.Bethesda.Oblivion
         protected override Type LinkType => typeof(IClimateGetter);
 
 
-        public IReadOnlyList<IWeatherTypeGetter>? Weathers { get; private set; }
+        #region Weathers
+        private IReadOnlyList<IWeatherTypeGetter>? WeathersStore;
+        public IReadOnlyList<IWeatherTypeGetter>? Weathers { get { EnsureFilled(); return WeathersStore; } private set => WeathersStore = value; }
+        #endregion
         #region SunTexture
-        private int? _SunTextureLocation;
+        private int? _SunTextureLocationStore;
+        private int? _SunTextureLocation { get { EnsureFilled(); return _SunTextureLocationStore; } set => _SunTextureLocationStore = value; }
         public String? SunTexture => _SunTextureLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SunTextureLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region SunGlareTexture
-        private int? _SunGlareTextureLocation;
+        private int? _SunGlareTextureLocationStore;
+        private int? _SunGlareTextureLocation { get { EnsureFilled(); return _SunGlareTextureLocationStore; } set => _SunGlareTextureLocationStore = value; }
         public String? SunGlareTexture => _SunGlareTextureLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SunGlareTextureLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        public IModelGetter? Model { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public IClimateDataGetter? Data => _DataLocation.HasValue ? ClimateDataBinaryOverlay.ClimateDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         #endregion
         partial void CustomFactoryEnd(
@@ -1961,6 +1970,23 @@ namespace Mutagen.Bethesda.Oblivion
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ClimateBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ClimateFill((ClimateBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ClimateFill(
+            ClimateBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1968,9 +1994,7 @@ namespace Mutagen.Bethesda.Oblivion
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ClimateBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1983,7 +2007,6 @@ namespace Mutagen.Bethesda.Oblivion
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IClimateGetter ClimateFactory(

@@ -1864,33 +1864,46 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region REPL
-        private int? _REPLLocation;
+        private int? _REPLLocationStore;
+        private int? _REPLLocation { get { EnsureFilled(); return _REPLLocationStore; } set => _REPLLocationStore = value; }
         public IFormLinkGetter<IImageSpaceAdapterGetter> REPL => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IImageSpaceAdapterGetter>(_package, _recordData, _REPLLocation);
         #endregion
         #region HNAM
-        private int? _HNAMLocation;
+        private int? _HNAMLocationStore;
+        private int? _HNAMLocation { get { EnsureFilled(); return _HNAMLocationStore; } set => _HNAMLocationStore = value; }
         public Single HNAM => _HNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _HNAMLocation.Value, _package.MetaData.Constants).Float() : default(Single);
         #endregion
         #region VCLR
-        private int? _VCLRLocation;
+        private int? _VCLRLocationStore;
+        private int? _VCLRLocation { get { EnsureFilled(); return _VCLRLocationStore; } set => _VCLRLocationStore = value; }
         public Single VCLR => _VCLRLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _VCLRLocation.Value, _package.MetaData.Constants).Float() : default(Single);
         #endregion
         #region BTXT
-        private int? _BTXTLocation;
+        private int? _BTXTLocationStore;
+        private int? _BTXTLocation { get { EnsureFilled(); return _BTXTLocationStore; } set => _BTXTLocationStore = value; }
         public Int32 BTXT => _BTXTLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BTXTLocation.Value, _package.MetaData.Constants)) : default(Int32);
         #endregion
         #region FLMV
-        private int? _FLMVLocation;
+        private int? _FLMVLocationStore;
+        private int? _FLMVLocation { get { EnsureFilled(); return _FLMVLocationStore; } set => _FLMVLocationStore = value; }
         public Int32 FLMV => _FLMVLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FLMVLocation.Value, _package.MetaData.Constants)) : default(Int32);
         #endregion
-        public ISoundReferenceGetter? WED0 { get; private set; }
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region WED0
+        private ISoundReferenceGetter? WED0Store;
+        public ISoundReferenceGetter? WED0 { get { EnsureFilled(); return WED0Store; } private set => WED0Store = value; }
+        #endregion
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region BIPL
-        private int? _BIPLLocation;
+        private int? _BIPLLocationStore;
+        private int? _BIPLLocation { get { EnsureFilled(); return _BIPLLocationStore; } set => _BIPLLocationStore = value; }
         public IFormLinkGetter<IPlacedObjectGetter> BIPL => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IPlacedObjectGetter>(_package, _recordData, _BIPLLocation);
         #endregion
         #region LVLO
-        private int? _LVLOLocation;
+        private int? _LVLOLocationStore;
+        private int? _LVLOLocation { get { EnsureFilled(); return _LVLOLocationStore; } set => _LVLOLocationStore = value; }
         public Int32? LVLO => _LVLOLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LVLOLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         partial void CustomFactoryEnd(

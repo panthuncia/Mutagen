@@ -1957,23 +1957,32 @@ namespace Mutagen.Bethesda.Oblivion
 
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         string INamedRequiredGetter.Name => this.Name ?? string.Empty;
         #endregion
         #endregion
-        public IReadOnlyList<IRelationGetter> Relations { get; private set; } = [];
+        #region Relations
+        private IReadOnlyList<IRelationGetter> RelationsStore = [];
+        public IReadOnlyList<IRelationGetter> Relations { get { EnsureFilled(); return RelationsStore; } private set => RelationsStore = value; }
+        #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public Faction.FactionFlag? Flags => EnumBinaryTranslation<Faction.FactionFlag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 1);
         #endregion
         #region CrimeGoldMultiplier
-        private int? _CrimeGoldMultiplierLocation;
+        private int? _CrimeGoldMultiplierLocationStore;
+        private int? _CrimeGoldMultiplierLocation { get { EnsureFilled(); return _CrimeGoldMultiplierLocationStore; } set => _CrimeGoldMultiplierLocationStore = value; }
         public Single? CrimeGoldMultiplier => _CrimeGoldMultiplierLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _CrimeGoldMultiplierLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
-        public IReadOnlyList<IRankGetter> Ranks { get; private set; } = [];
+        #region Ranks
+        private IReadOnlyList<IRankGetter> RanksStore = [];
+        public IReadOnlyList<IRankGetter> Ranks { get { EnsureFilled(); return RanksStore; } private set => RanksStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -1995,6 +2004,23 @@ namespace Mutagen.Bethesda.Oblivion
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new FactionBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => FactionFill((FactionBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void FactionFill(
+            FactionBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2002,9 +2028,7 @@ namespace Mutagen.Bethesda.Oblivion
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new FactionBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2017,7 +2041,6 @@ namespace Mutagen.Bethesda.Oblivion
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IFactionGetter FactionFactory(

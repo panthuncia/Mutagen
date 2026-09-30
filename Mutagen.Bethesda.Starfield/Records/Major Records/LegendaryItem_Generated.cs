@@ -4320,25 +4320,31 @@ namespace Mutagen.Bethesda.Starfield
 
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         public IObjectBoundsGetter? ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         #endregion
         #region DirtinessScale
-        private int? _DirtinessScaleLocation;
+        private int? _DirtinessScaleLocationStore;
+        private int? _DirtinessScaleLocation { get { EnsureFilled(); return _DirtinessScaleLocationStore; } set => _DirtinessScaleLocationStore = value; }
         public Percent DirtinessScale => _DirtinessScaleLocation.HasValue ? PercentBinaryTranslation.GetPercent(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DirtinessScaleLocation.Value, _package.MetaData.Constants), FloatIntegerType.UInt) : default(Percent);
         #endregion
         #region FLLD
-        private int? _FLLDLocation;
+        private int? _FLLDLocationStore;
+        private int? _FLLDLocation { get { EnsureFilled(); return _FLLDLocationStore; } set => _FLLDLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? FLLD => _FLLDLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FLLDLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -4350,32 +4356,47 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #endregion
         #region ObjectPaletteDefaults
-        private RangeInt32? _ObjectPaletteDefaultsLocation;
+        private RangeInt32? _ObjectPaletteDefaultsLocationStore;
+        private RangeInt32? _ObjectPaletteDefaultsLocation { get { EnsureFilled(); return _ObjectPaletteDefaultsLocationStore; } set => _ObjectPaletteDefaultsLocationStore = value; }
         public IObjectPaletteDefaultsGetter? ObjectPaletteDefaults => _ObjectPaletteDefaultsLocation.HasValue ? ObjectPaletteDefaultsBinaryOverlay.ObjectPaletteDefaultsFactory(_recordData.Slice(_ObjectPaletteDefaultsLocation!.Value.Min), _package) : default;
         #endregion
         #region Transforms
-        private RangeInt32? _TransformsLocation;
+        private RangeInt32? _TransformsLocationStore;
+        private RangeInt32? _TransformsLocation { get { EnsureFilled(); return _TransformsLocationStore; } set => _TransformsLocationStore = value; }
         public ITransformsGetter? Transforms => _TransformsLocation.HasValue ? TransformsBinaryOverlay.TransformsFactory(_recordData.Slice(_TransformsLocation!.Value.Min), _package) : default;
         #endregion
         #region XALG
-        private int? _XALGLocation;
+        private int? _XALGLocationStore;
+        private int? _XALGLocation { get { EnsureFilled(); return _XALGLocationStore; } set => _XALGLocationStore = value; }
         public UInt64? XALG => _XALGLocation.HasValue ? BinaryPrimitives.ReadUInt64LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _XALGLocation.Value, _package.MetaData.Constants)) : default(UInt64?);
         #endregion
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
-        public IModelGetter? Model { get; private set; }
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
         #region BaseObjectList
-        private int? _BaseObjectListLocation;
+        private int? _BaseObjectListLocationStore;
+        private int? _BaseObjectListLocation { get { EnsureFilled(); return _BaseObjectListLocationStore; } set => _BaseObjectListLocationStore = value; }
         public IFormLinkNullableGetter<ILeveledItemGetter> BaseObjectList => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ILeveledItemGetter>(_package, _recordData, _BaseObjectListLocation);
         #endregion
         #region RankTemplate
-        private int? _RankTemplateLocation;
+        private int? _RankTemplateLocationStore;
+        private int? _RankTemplateLocation { get { EnsureFilled(); return _RankTemplateLocationStore; } set => _RankTemplateLocationStore = value; }
         public IFormLinkNullableGetter<ILegendaryItemGetter> RankTemplate => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ILegendaryItemGetter>(_package, _recordData, _RankTemplateLocation);
         #endregion
         #region MNAM
-        private int? _MNAMLocation;
+        private int? _MNAMLocationStore;
+        private int? _MNAMLocation { get { EnsureFilled(); return _MNAMLocationStore; } set => _MNAMLocationStore = value; }
         public IFormLinkNullableGetter<ILegendaryItemGetter> MNAM => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ILegendaryItemGetter>(_package, _recordData, _MNAMLocation);
         #endregion
-        public IReadOnlyList<ILegendaryModGetter>? LegendaryMods { get; private set; }
+        #region LegendaryMods
+        private IReadOnlyList<ILegendaryModGetter>? LegendaryModsStore;
+        public IReadOnlyList<ILegendaryModGetter>? LegendaryMods { get { EnsureFilled(); return LegendaryModsStore; } private set => LegendaryModsStore = value; }
+        #endregion
         #region LnamEntries
         partial void LnamEntriesCustomParse(
             OverlayStream stream,
@@ -4384,20 +4405,35 @@ namespace Mutagen.Bethesda.Starfield
             RecordType type,
             PreviousParse lastParsed);
         #endregion
-        public IReadOnlyList<ILegendaryFilterGetter>? IncludeFilters { get; private set; }
-        public IReadOnlyList<ILegendaryFilterGetter>? ExcludeFilters { get; private set; }
+        #region IncludeFilters
+        private IReadOnlyList<ILegendaryFilterGetter>? IncludeFiltersStore;
+        public IReadOnlyList<ILegendaryFilterGetter>? IncludeFilters { get { EnsureFilled(); return IncludeFiltersStore; } private set => IncludeFiltersStore = value; }
+        #endregion
+        #region ExcludeFilters
+        private IReadOnlyList<ILegendaryFilterGetter>? ExcludeFiltersStore;
+        public IReadOnlyList<ILegendaryFilterGetter>? ExcludeFilters { get { EnsureFilled(); return ExcludeFiltersStore; } private set => ExcludeFiltersStore = value; }
+        #endregion
         #region FNAM
-        private int? _FNAMLocation;
+        private int? _FNAMLocationStore;
+        private int? _FNAMLocation { get { EnsureFilled(); return _FNAMLocationStore; } set => _FNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? FNAM => _FNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region KNAM
-        private int? _KNAMLocation;
+        private int? _KNAMLocationStore;
+        private int? _KNAMLocation { get { EnsureFilled(); return _KNAMLocationStore; } set => _KNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? KNAM => _KNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _KNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
-        public IReadOnlyList<ILegendaryModGetter>? GNAM { get; private set; }
-        public IReadOnlyList<ILegendaryItemHNAMEntryGetter>? HNAM { get; private set; }
+        #region GNAM
+        private IReadOnlyList<ILegendaryModGetter>? GNAMStore;
+        public IReadOnlyList<ILegendaryModGetter>? GNAM { get { EnsureFilled(); return GNAMStore; } private set => GNAMStore = value; }
+        #endregion
+        #region HNAM
+        private IReadOnlyList<ILegendaryItemHNAMEntryGetter>? HNAMStore;
+        public IReadOnlyList<ILegendaryItemHNAMEntryGetter>? HNAM { get { EnsureFilled(); return HNAMStore; } private set => HNAMStore = value; }
+        #endregion
         #region JNAM
-        private int? _JNAMLocation;
+        private int? _JNAMLocationStore;
+        private int? _JNAMLocation { get { EnsureFilled(); return _JNAMLocationStore; } set => _JNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? JNAM => _JNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _JNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

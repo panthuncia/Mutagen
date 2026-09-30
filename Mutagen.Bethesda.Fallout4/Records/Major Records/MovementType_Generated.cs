@@ -3647,15 +3647,18 @@ namespace Mutagen.Bethesda.Fallout4
 
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         string INamedRequiredGetter.Name => this.Name ?? string.Empty;
         #endregion
         #endregion
-        private RangeInt32? _SPEDLocation;
-        public MovementType.SPEDDataType SPEDDataTypeState { get; private set; }
+        private RangeInt32? _SPEDLocationStore;
+        private RangeInt32? _SPEDLocation { get { EnsureFilled(); return _SPEDLocationStore; } set => _SPEDLocationStore = value; }
+        private MovementType.SPEDDataType SPEDDataTypeStateStore;
+        public MovementType.SPEDDataType SPEDDataTypeState { get { EnsureFilled(); return SPEDDataTypeStateStore; } private set => SPEDDataTypeStateStore = value; }
         #region LeftStanding
         private int _LeftStandingLocation => _SPEDLocation!.Value.Min;
         private bool _LeftStanding_IsSet => _SPEDLocation.HasValue;
@@ -3797,15 +3800,18 @@ namespace Mutagen.Bethesda.Fallout4
         public Single YawSprint => _YawSprint_IsSet ? _recordData.Slice(_YawSprintLocation, 4).Float() * 57.2958f : default(Single);
         #endregion
         #region AnimationChangeThresholds
-        private RangeInt32? _AnimationChangeThresholdsLocation;
+        private RangeInt32? _AnimationChangeThresholdsLocationStore;
+        private RangeInt32? _AnimationChangeThresholdsLocation { get { EnsureFilled(); return _AnimationChangeThresholdsLocationStore; } set => _AnimationChangeThresholdsLocationStore = value; }
         public IAnimationChangeThresholdsGetter? AnimationChangeThresholds => _AnimationChangeThresholdsLocation.HasValue ? AnimationChangeThresholdsBinaryOverlay.AnimationChangeThresholdsFactory(_recordData.Slice(_AnimationChangeThresholdsLocation!.Value.Min), _package) : default;
         #endregion
         #region FloatHeight
-        private int? _FloatHeightLocation;
+        private int? _FloatHeightLocationStore;
+        private int? _FloatHeightLocation { get { EnsureFilled(); return _FloatHeightLocationStore; } set => _FloatHeightLocationStore = value; }
         public Single? FloatHeight => _FloatHeightLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FloatHeightLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region FlightAngleGain
-        private int? _FlightAngleGainLocation;
+        private int? _FlightAngleGainLocationStore;
+        private int? _FlightAngleGainLocation { get { EnsureFilled(); return _FlightAngleGainLocationStore; } set => _FlightAngleGainLocationStore = value; }
         public Single? FlightAngleGain => _FlightAngleGainLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FlightAngleGainLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         partial void CustomFactoryEnd(
@@ -3829,6 +3835,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new MovementTypeBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => MovementTypeFill((MovementTypeBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void MovementTypeFill(
+            MovementTypeBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -3836,9 +3859,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new MovementTypeBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -3851,7 +3872,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IMovementTypeGetter MovementTypeFactory(

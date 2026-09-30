@@ -1550,7 +1550,8 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        public DialogResponseData.VersioningBreaks Versioning { get; private set; }
+        private DialogResponseData.VersioningBreaks VersioningStore;
+        public DialogResponseData.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public DialogResponses.EmotionType EmotionType => (DialogResponses.EmotionType)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x0, 0x4));
         public Int32 EmotionValue => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x4, 0x4));
         public UInt32 Unused1 => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0x8, 0x4));

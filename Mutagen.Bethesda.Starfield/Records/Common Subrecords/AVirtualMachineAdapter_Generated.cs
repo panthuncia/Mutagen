@@ -1299,7 +1299,8 @@ namespace Mutagen.Bethesda.Starfield
         public Int16 Version => BinaryPrimitives.ReadInt16LittleEndian(_structData.Slice(0x0, 0x2));
         public UInt16 ObjectFormat => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x2, 0x2));
         #region Scripts
-        protected int ScriptsEndingPos;
+        private int ScriptsEndingPosStore;
+        protected int ScriptsEndingPos { get { EnsureFilled(); return ScriptsEndingPosStore; } private set => ScriptsEndingPosStore = value; }
         partial void CustomScriptsEndPos();
         #endregion
         partial void CustomFactoryEnd(

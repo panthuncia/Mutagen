@@ -1543,7 +1543,8 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -1555,15 +1556,18 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #endregion
         #region Keywords
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get; private set; }
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? KeywordsStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get { EnsureFilled(); return KeywordsStore; } private set => KeywordsStore = value; }
         IReadOnlyList<IFormLinkGetter<IKeywordCommonGetter>>? IKeywordedGetter.Keywords => this.Keywords;
         #endregion
         #region Properties
-        private RangeInt32? _PropertiesLocation;
+        private RangeInt32? _PropertiesLocationStore;
+        private RangeInt32? _PropertiesLocation { get { EnsureFilled(); return _PropertiesLocationStore; } set => _PropertiesLocationStore = value; }
         public IInstanceNamingRulePropertiesGetter? Properties => _PropertiesLocation.HasValue ? InstanceNamingRulePropertiesBinaryOverlay.InstanceNamingRulePropertiesFactory(_recordData.Slice(_PropertiesLocation!.Value.Min), _package) : default;
         #endregion
         #region Index
-        private int? _IndexLocation;
+        private int? _IndexLocationStore;
+        private int? _IndexLocation { get { EnsureFilled(); return _IndexLocationStore; } set => _IndexLocationStore = value; }
         public UInt16? Index => _IndexLocation.HasValue ? BinaryPrimitives.ReadUInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IndexLocation.Value, _package.MetaData.Constants)) : default(UInt16?);
         #endregion
         partial void CustomFactoryEnd(

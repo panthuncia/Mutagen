@@ -2884,14 +2884,17 @@ namespace Mutagen.Bethesda.Fallout4
         public ArmorAddon.MajorFlag MajorFlags => (ArmorAddon.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region BodyTemplate
-        private RangeInt32? _BodyTemplateLocation;
+        private RangeInt32? _BodyTemplateLocationStore;
+        private RangeInt32? _BodyTemplateLocation { get { EnsureFilled(); return _BodyTemplateLocationStore; } set => _BodyTemplateLocationStore = value; }
         public IBodyTemplateGetter? BodyTemplate => _BodyTemplateLocation.HasValue ? BodyTemplateBinaryOverlay.BodyTemplateFactory(_recordData.Slice(_BodyTemplateLocation!.Value.Min), _package) : default;
         #endregion
         #region Race
-        private int? _RaceLocation;
+        private int? _RaceLocationStore;
+        private int? _RaceLocation { get { EnsureFilled(); return _RaceLocationStore; } set => _RaceLocationStore = value; }
         public IFormLinkNullableGetter<IRaceGetter> Race => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IRaceGetter>(_package, _recordData, _RaceLocation);
         #endregion
-        private RangeInt32? _DNAMLocation;
+        private RangeInt32? _DNAMLocationStore;
+        private RangeInt32? _DNAMLocation { get { EnsureFilled(); return _DNAMLocationStore; } set => _DNAMLocationStore = value; }
         #region Priority
         private int _PriorityLocation => _DNAMLocation!.Value.Min;
         private bool _Priority_IsSet => _DNAMLocation.HasValue;
@@ -2928,28 +2931,37 @@ namespace Mutagen.Bethesda.Fallout4
         public Single WeaponAdjust => _WeaponAdjust_IsSet ? _recordData.Slice(_WeaponAdjustLocation, 4).Float() : default(Single);
         #endregion
         #region WorldModel
-        private IGenderedItemGetter<IModelGetter?>? _WorldModelOverlay;
+        private IGenderedItemGetter<IModelGetter?>? _WorldModelOverlayStore;
+        private IGenderedItemGetter<IModelGetter?>? _WorldModelOverlay { get { EnsureFilled(); return _WorldModelOverlayStore; } set => _WorldModelOverlayStore = value; }
         public IGenderedItemGetter<IModelGetter?>? WorldModel => _WorldModelOverlay;
         #endregion
         #region FirstPersonModel
-        private IGenderedItemGetter<IModelGetter?>? _FirstPersonModelOverlay;
+        private IGenderedItemGetter<IModelGetter?>? _FirstPersonModelOverlayStore;
+        private IGenderedItemGetter<IModelGetter?>? _FirstPersonModelOverlay { get { EnsureFilled(); return _FirstPersonModelOverlayStore; } set => _FirstPersonModelOverlayStore = value; }
         public IGenderedItemGetter<IModelGetter?>? FirstPersonModel => _FirstPersonModelOverlay;
         #endregion
         #region SkinTexture
-        private IGenderedItemGetter<IFormLinkNullableGetter<ITextureSetGetter>>? _SkinTextureOverlay;
+        private IGenderedItemGetter<IFormLinkNullableGetter<ITextureSetGetter>>? _SkinTextureOverlayStore;
+        private IGenderedItemGetter<IFormLinkNullableGetter<ITextureSetGetter>>? _SkinTextureOverlay { get { EnsureFilled(); return _SkinTextureOverlayStore; } set => _SkinTextureOverlayStore = value; }
         public IGenderedItemGetter<IFormLinkNullableGetter<ITextureSetGetter>>? SkinTexture => _SkinTextureOverlay;
         #endregion
         #region TextureSwapList
-        private IGenderedItemGetter<IFormLinkNullableGetter<IFormListGetter>>? _TextureSwapListOverlay;
+        private IGenderedItemGetter<IFormLinkNullableGetter<IFormListGetter>>? _TextureSwapListOverlayStore;
+        private IGenderedItemGetter<IFormLinkNullableGetter<IFormListGetter>>? _TextureSwapListOverlay { get { EnsureFilled(); return _TextureSwapListOverlayStore; } set => _TextureSwapListOverlayStore = value; }
         public IGenderedItemGetter<IFormLinkNullableGetter<IFormListGetter>>? TextureSwapList => _TextureSwapListOverlay;
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IRaceGetter>> AdditionalRaces { get; private set; } = [];
+        #region AdditionalRaces
+        private IReadOnlyList<IFormLinkGetter<IRaceGetter>> AdditionalRacesStore = [];
+        public IReadOnlyList<IFormLinkGetter<IRaceGetter>> AdditionalRaces { get { EnsureFilled(); return AdditionalRacesStore; } private set => AdditionalRacesStore = value; }
+        #endregion
         #region FootstepSound
-        private int? _FootstepSoundLocation;
+        private int? _FootstepSoundLocationStore;
+        private int? _FootstepSoundLocation { get { EnsureFilled(); return _FootstepSoundLocationStore; } set => _FootstepSoundLocationStore = value; }
         public IFormLinkNullableGetter<IFootstepSetGetter> FootstepSound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IFootstepSetGetter>(_package, _recordData, _FootstepSoundLocation);
         #endregion
         #region ArtObject
-        private int? _ArtObjectLocation;
+        private int? _ArtObjectLocationStore;
+        private int? _ArtObjectLocation { get { EnsureFilled(); return _ArtObjectLocationStore; } set => _ArtObjectLocationStore = value; }
         public IFormLinkNullableGetter<IArtObjectGetter> ArtObject => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IArtObjectGetter>(_package, _recordData, _ArtObjectLocation);
         #endregion
         #region BoneDataParse

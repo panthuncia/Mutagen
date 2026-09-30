@@ -2289,31 +2289,46 @@ namespace Mutagen.Bethesda.Skyrim
 
         public LoadScreen.MajorFlag MajorFlags => (LoadScreen.MajorFlag)this.MajorRecordFlagsRaw;
 
-        public IIconsGetter? Icons { get; private set; }
+        #region Icons
+        private IIconsGetter? IconsStore;
+        public IIconsGetter? Icons { get { EnsureFilled(); return IconsStore; } private set => IconsStore = value; }
+        #endregion
         #region Description
-        private int? _DescriptionLocation;
+        private int? _DescriptionLocationStore;
+        private int? _DescriptionLocation { get { EnsureFilled(); return _DescriptionLocationStore; } set => _DescriptionLocationStore = value; }
         public ITranslatedStringGetter Description => _DescriptionLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DescriptionLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : TranslatedString.Empty;
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region LoadingScreenNif
-        private int? _LoadingScreenNifLocation;
+        private int? _LoadingScreenNifLocationStore;
+        private int? _LoadingScreenNifLocation { get { EnsureFilled(); return _LoadingScreenNifLocationStore; } set => _LoadingScreenNifLocationStore = value; }
         public IFormLinkGetter<IStaticGetter> LoadingScreenNif => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IStaticGetter>(_package, _recordData, _LoadingScreenNifLocation);
         #endregion
         #region InitialScale
-        private int? _InitialScaleLocation;
+        private int? _InitialScaleLocationStore;
+        private int? _InitialScaleLocation { get { EnsureFilled(); return _InitialScaleLocationStore; } set => _InitialScaleLocationStore = value; }
         public Single? InitialScale => _InitialScaleLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _InitialScaleLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region InitialRotation
-        private int? _InitialRotationLocation;
+        private int? _InitialRotationLocationStore;
+        private int? _InitialRotationLocation { get { EnsureFilled(); return _InitialRotationLocationStore; } set => _InitialRotationLocationStore = value; }
         public P3Int16? InitialRotation => _InitialRotationLocation.HasValue ? P3Int16BinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(HeaderTranslation.ExtractSubrecordMemory(_recordData, _InitialRotationLocation.Value, _package.MetaData.Constants)) : default(P3Int16?);
         #endregion
-        public IInt16MinMaxGetter? RotationOffsetConstraints { get; private set; }
+        #region RotationOffsetConstraints
+        private IInt16MinMaxGetter? RotationOffsetConstraintsStore;
+        public IInt16MinMaxGetter? RotationOffsetConstraints { get { EnsureFilled(); return RotationOffsetConstraintsStore; } private set => RotationOffsetConstraintsStore = value; }
+        #endregion
         #region InitialTranslationOffset
-        private int? _InitialTranslationOffsetLocation;
+        private int? _InitialTranslationOffsetLocationStore;
+        private int? _InitialTranslationOffsetLocation { get { EnsureFilled(); return _InitialTranslationOffsetLocationStore; } set => _InitialTranslationOffsetLocationStore = value; }
         public P3Float? InitialTranslationOffset => _InitialTranslationOffsetLocation.HasValue ? P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(HeaderTranslation.ExtractSubrecordMemory(_recordData, _InitialTranslationOffsetLocation.Value, _package.MetaData.Constants)) : default(P3Float?);
         #endregion
         #region CameraPath
-        private int? _CameraPathLocation;
+        private int? _CameraPathLocationStore;
+        private int? _CameraPathLocation { get { EnsureFilled(); return _CameraPathLocationStore; } set => _CameraPathLocationStore = value; }
         public AssetLinkGetter<SkyrimModelAssetType>? CameraPath => _CameraPathLocation.HasValue ? new AssetLinkGetter<SkyrimModelAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _CameraPathLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<SkyrimModelAssetType>?);
         #endregion
         partial void CustomFactoryEnd(
@@ -2337,6 +2352,23 @@ namespace Mutagen.Bethesda.Skyrim
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new LoadScreenBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => LoadScreenFill((LoadScreenBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void LoadScreenFill(
+            LoadScreenBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2344,9 +2376,7 @@ namespace Mutagen.Bethesda.Skyrim
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new LoadScreenBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2359,7 +2389,6 @@ namespace Mutagen.Bethesda.Skyrim
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ILoadScreenGetter LoadScreenFactory(

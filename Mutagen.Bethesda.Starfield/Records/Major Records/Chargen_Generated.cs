@@ -1846,13 +1846,26 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region NNAM
-        private int? _NNAMLocation;
+        private int? _NNAMLocationStore;
+        private int? _NNAMLocation { get { EnsureFilled(); return _NNAMLocationStore; } set => _NNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? NNAM => _NNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<INpcGetter>> RacePresets { get; private set; } = [];
-        public IReadOnlyList<IMorphGroupGetter> MorphGroups { get; private set; } = [];
-        public IReadOnlyList<IFaceMorphGetter> FaceMorphs { get; private set; } = [];
-        public IReadOnlyList<IFaceDialGetter> FaceDials { get; private set; } = [];
+        #region RacePresets
+        private IReadOnlyList<IFormLinkGetter<INpcGetter>> RacePresetsStore = [];
+        public IReadOnlyList<IFormLinkGetter<INpcGetter>> RacePresets { get { EnsureFilled(); return RacePresetsStore; } private set => RacePresetsStore = value; }
+        #endregion
+        #region MorphGroups
+        private IReadOnlyList<IMorphGroupGetter> MorphGroupsStore = [];
+        public IReadOnlyList<IMorphGroupGetter> MorphGroups { get { EnsureFilled(); return MorphGroupsStore; } private set => MorphGroupsStore = value; }
+        #endregion
+        #region FaceMorphs
+        private IReadOnlyList<IFaceMorphGetter> FaceMorphsStore = [];
+        public IReadOnlyList<IFaceMorphGetter> FaceMorphs { get { EnsureFilled(); return FaceMorphsStore; } private set => FaceMorphsStore = value; }
+        #endregion
+        #region FaceDials
+        private IReadOnlyList<IFaceDialGetter> FaceDialsStore = [];
+        public IReadOnlyList<IFaceDialGetter> FaceDials { get { EnsureFilled(); return FaceDialsStore; } private set => FaceDialsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

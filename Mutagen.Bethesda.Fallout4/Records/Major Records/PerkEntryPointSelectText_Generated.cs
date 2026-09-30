@@ -1209,8 +1209,10 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Text
-        public String Text { get; private set; } = string.Empty;
-        protected int TextEndingPos;
+        private String TextStore = string.Empty;
+        public String Text { get { EnsureFilled(); return TextStore; } private set => TextStore = value; }
+        private int TextEndingPosStore;
+        protected int TextEndingPos { get { EnsureFilled(); return TextEndingPosStore; } private set => TextEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

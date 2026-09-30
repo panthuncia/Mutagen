@@ -2346,72 +2346,92 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region NpcAnimation
-        private int? _NpcAnimationLocation;
+        private int? _NpcAnimationLocationStore;
+        private int? _NpcAnimationLocation { get { EnsureFilled(); return _NpcAnimationLocationStore; } set => _NpcAnimationLocationStore = value; }
         public IFormLinkGetter<IIdleAnimationGetter> NpcAnimation => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IIdleAnimationGetter>(_package, _recordData, _NpcAnimationLocation);
         #endregion
         #region Subgraph
-        private int? _SubgraphLocation;
+        private int? _SubgraphLocationStore;
+        private int? _SubgraphLocation { get { EnsureFilled(); return _SubgraphLocationStore; } set => _SubgraphLocationStore = value; }
         public String? Subgraph => _SubgraphLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SubgraphLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region BodyArchetype
-        private int? _BodyArchetypeLocation;
+        private int? _BodyArchetypeLocationStore;
+        private int? _BodyArchetypeLocation { get { EnsureFilled(); return _BodyArchetypeLocationStore; } set => _BodyArchetypeLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> BodyArchetype => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _BodyArchetypeLocation);
         #endregion
         #region FaceArchetype
-        private int? _FaceArchetypeLocation;
+        private int? _FaceArchetypeLocationStore;
+        private int? _FaceArchetypeLocation { get { EnsureFilled(); return _FaceArchetypeLocationStore; } set => _FaceArchetypeLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> FaceArchetype => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _FaceArchetypeLocation);
         #endregion
         #region Flavor
-        private int? _FlavorLocation;
+        private int? _FlavorLocationStore;
+        private int? _FlavorLocation { get { EnsureFilled(); return _FlavorLocationStore; } set => _FlavorLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> Flavor => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _FlavorLocation);
         #endregion
         #region UseDialogueAnimation
-        private int? _UseDialogueAnimationLocation;
+        private int? _UseDialogueAnimationLocationStore;
+        private int? _UseDialogueAnimationLocation { get { EnsureFilled(); return _UseDialogueAnimationLocationStore; } set => _UseDialogueAnimationLocationStore = value; }
         public Boolean UseDialogueAnimation => _UseDialogueAnimationLocation.HasValue ? true : default(Boolean);
         #endregion
         #region UseAnimationBodyArchetype
-        private int? _UseAnimationBodyArchetypeLocation;
+        private int? _UseAnimationBodyArchetypeLocationStore;
+        private int? _UseAnimationBodyArchetypeLocation { get { EnsureFilled(); return _UseAnimationBodyArchetypeLocationStore; } set => _UseAnimationBodyArchetypeLocationStore = value; }
         public Boolean UseAnimationBodyArchetype => _UseAnimationBodyArchetypeLocation.HasValue ? true : default(Boolean);
         #endregion
         #region HasAnimationFaceArchetype
-        private int? _HasAnimationFaceArchetypeLocation;
+        private int? _HasAnimationFaceArchetypeLocationStore;
+        private int? _HasAnimationFaceArchetypeLocation { get { EnsureFilled(); return _HasAnimationFaceArchetypeLocationStore; } set => _HasAnimationFaceArchetypeLocationStore = value; }
         public Boolean HasAnimationFaceArchetype => _HasAnimationFaceArchetypeLocation.HasValue ? true : default(Boolean);
         #endregion
         #region AnimationCompleteEndsPhase
-        private int? _AnimationCompleteEndsPhaseLocation;
+        private int? _AnimationCompleteEndsPhaseLocationStore;
+        private int? _AnimationCompleteEndsPhaseLocation { get { EnsureFilled(); return _AnimationCompleteEndsPhaseLocationStore; } set => _AnimationCompleteEndsPhaseLocationStore = value; }
         public Boolean AnimationCompleteEndsPhase => _AnimationCompleteEndsPhaseLocation.HasValue ? true : default(Boolean);
         #endregion
         #region AnimationOnlyMovement
-        private int? _AnimationOnlyMovementLocation;
+        private int? _AnimationOnlyMovementLocationStore;
+        private int? _AnimationOnlyMovementLocation { get { EnsureFilled(); return _AnimationOnlyMovementLocationStore; } set => _AnimationOnlyMovementLocationStore = value; }
         public Boolean AnimationOnlyMovement => _AnimationOnlyMovementLocation.HasValue ? true : default(Boolean);
         #endregion
         #region UseFlavorAnimation
-        private int? _UseFlavorAnimationLocation;
+        private int? _UseFlavorAnimationLocationStore;
+        private int? _UseFlavorAnimationLocation { get { EnsureFilled(); return _UseFlavorAnimationLocationStore; } set => _UseFlavorAnimationLocationStore = value; }
         public Boolean UseFlavorAnimation => _UseFlavorAnimationLocation.HasValue ? true : default(Boolean);
         #endregion
         #region DelayStartTimeAction
-        private int? _DelayStartTimeActionLocation;
+        private int? _DelayStartTimeActionLocationStore;
+        private int? _DelayStartTimeActionLocation { get { EnsureFilled(); return _DelayStartTimeActionLocationStore; } set => _DelayStartTimeActionLocationStore = value; }
         public Single? DelayStartTimeAction => _DelayStartTimeActionLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DelayStartTimeActionLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region Action
-        private int? _ActionLocation;
+        private int? _ActionLocationStore;
+        private int? _ActionLocation { get { EnsureFilled(); return _ActionLocationStore; } set => _ActionLocationStore = value; }
         public IFormLinkNullableGetter<IActionRecordGetter> Action => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IActionRecordGetter>(_package, _recordData, _ActionLocation);
         #endregion
         #region UseActorAnimationAction
-        private int? _UseActorAnimationActionLocation;
+        private int? _UseActorAnimationActionLocationStore;
+        private int? _UseActorAnimationActionLocation { get { EnsureFilled(); return _UseActorAnimationActionLocationStore; } set => _UseActorAnimationActionLocationStore = value; }
         public Boolean UseActorAnimationAction => _UseActorAnimationActionLocation.HasValue ? true : default(Boolean);
         #endregion
         #region AnimationHoldEvent
-        private int? _AnimationHoldEventLocation;
+        private int? _AnimationHoldEventLocationStore;
+        private int? _AnimationHoldEventLocation { get { EnsureFilled(); return _AnimationHoldEventLocationStore; } set => _AnimationHoldEventLocationStore = value; }
         public Boolean AnimationHoldEvent => _AnimationHoldEventLocation.HasValue ? true : default(Boolean);
         #endregion
         #region DTGT
-        private int? _DTGTLocation;
+        private int? _DTGTLocationStore;
+        private int? _DTGTLocation { get { EnsureFilled(); return _DTGTLocationStore; } set => _DTGTLocationStore = value; }
         public Int32? DTGT => _DTGTLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DTGTLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region ACEP
-        private int? _ACEPLocation;
+        private int? _ACEPLocationStore;
+        private int? _ACEPLocation { get { EnsureFilled(); return _ACEPLocationStore; } set => _ACEPLocationStore = value; }
         public Boolean ACEP => _ACEPLocation.HasValue ? true : default(Boolean);
         #endregion
         partial void CustomFactoryEnd(

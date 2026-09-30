@@ -1484,13 +1484,21 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Topic
-        private int? _TopicLocation;
+        private int? _TopicLocationStore;
+        private int? _TopicLocation { get { EnsureFilled(); return _TopicLocationStore; } set => _TopicLocationStore = value; }
         public IFormLinkGetter<IDialogTopicGetter> Topic => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogTopicGetter>(_package, _recordData, _TopicLocation);
         #endregion
-        public ISoundReferenceGetter? WED0 { get; private set; }
-        public ISoundReferenceGetter? WED1 { get; private set; }
+        #region WED0
+        private ISoundReferenceGetter? WED0Store;
+        public ISoundReferenceGetter? WED0 { get { EnsureFilled(); return WED0Store; } private set => WED0Store = value; }
+        #endregion
+        #region WED1
+        private ISoundReferenceGetter? WED1Store;
+        public ISoundReferenceGetter? WED1 { get { EnsureFilled(); return WED1Store; } private set => WED1Store = value; }
+        #endregion
         #region DialogueSubtype
-        private int? _DialogueSubtypeLocation;
+        private int? _DialogueSubtypeLocationStore;
+        private int? _DialogueSubtypeLocation { get { EnsureFilled(); return _DialogueSubtypeLocationStore; } set => _DialogueSubtypeLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> DialogueSubtype => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _DialogueSubtypeLocation);
         #endregion
         partial void CustomFactoryEnd(

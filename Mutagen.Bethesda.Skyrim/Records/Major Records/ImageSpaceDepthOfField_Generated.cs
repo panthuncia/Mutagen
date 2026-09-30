@@ -1441,7 +1441,8 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        public ImageSpaceDepthOfField.VersioningBreaks Versioning { get; private set; }
+        private ImageSpaceDepthOfField.VersioningBreaks VersioningStore;
+        public ImageSpaceDepthOfField.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public Single Strength => _structData.Slice(0x0, 0x4).Float();
         public Single Distance => _structData.Slice(0x4, 0x4).Float();
         public Single Range => _structData.Slice(0x8, 0x4).Float();
@@ -1449,13 +1450,15 @@ namespace Mutagen.Bethesda.Skyrim
         #region BlurRadius
         public partial Byte GetBlurRadiusCustom(int location);
         public Byte BlurRadius => GetBlurRadiusCustom(location: 0xE);
-        protected int BlurRadiusEndingPos;
+        private int BlurRadiusEndingPosStore;
+        protected int BlurRadiusEndingPos { get { EnsureFilled(); return BlurRadiusEndingPosStore; } private set => BlurRadiusEndingPosStore = value; }
         partial void CustomBlurRadiusEndPos();
         #endregion
         #region Sky
         public partial Boolean GetSkyCustom(int location);
         public Boolean Sky => GetSkyCustom(location: BlurRadiusEndingPos);
-        protected int SkyEndingPos;
+        private int SkyEndingPosStore;
+        protected int SkyEndingPos { get { EnsureFilled(); return SkyEndingPosStore; } private set => SkyEndingPosStore = value; }
         partial void CustomSkyEndPos();
         #endregion
         partial void CustomFactoryEnd(

@@ -1303,7 +1303,8 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        public QuestData.VersioningBreaks Versioning { get; private set; }
+        private QuestData.VersioningBreaks VersioningStore;
+        public QuestData.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public Quest.Flag Flags => (Quest.Flag)_structData.Span.Slice(0x0, 0x1)[0];
         public Byte Priority => _structData.Span[0x1];
         public UInt16 Unused => _structData.Length <= 0x2 ? default : BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x2, 0x2));

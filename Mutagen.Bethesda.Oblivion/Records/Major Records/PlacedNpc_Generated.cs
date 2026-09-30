@@ -2221,42 +2221,54 @@ namespace Mutagen.Bethesda.Oblivion
 
 
         #region Base
-        private int? _BaseLocation;
+        private int? _BaseLocationStore;
+        private int? _BaseLocation { get { EnsureFilled(); return _BaseLocationStore; } set => _BaseLocationStore = value; }
         public IFormLinkNullableGetter<INpcGetter> Base => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<INpcGetter>(_package, _recordData, _BaseLocation);
         #endregion
         #region XPCIFluff
-        private int? _XPCIFluffLocation;
+        private int? _XPCIFluffLocationStore;
+        private int? _XPCIFluffLocation { get { EnsureFilled(); return _XPCIFluffLocationStore; } set => _XPCIFluffLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? XPCIFluff => _XPCIFluffLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _XPCIFluffLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region FULLFluff
-        private int? _FULLFluffLocation;
+        private int? _FULLFluffLocationStore;
+        private int? _FULLFluffLocation { get { EnsureFilled(); return _FULLFluffLocationStore; } set => _FULLFluffLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? FULLFluff => _FULLFluffLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FULLFluffLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region DistantLODData
-        private RangeInt32? _DistantLODDataLocation;
+        private RangeInt32? _DistantLODDataLocationStore;
+        private RangeInt32? _DistantLODDataLocation { get { EnsureFilled(); return _DistantLODDataLocationStore; } set => _DistantLODDataLocationStore = value; }
         public IDistantLODDataGetter? DistantLODData => _DistantLODDataLocation.HasValue ? DistantLODDataBinaryOverlay.DistantLODDataFactory(_recordData.Slice(_DistantLODDataLocation!.Value.Min), _package) : default;
         #endregion
         #region EnableParent
-        private RangeInt32? _EnableParentLocation;
+        private RangeInt32? _EnableParentLocationStore;
+        private RangeInt32? _EnableParentLocation { get { EnsureFilled(); return _EnableParentLocationStore; } set => _EnableParentLocationStore = value; }
         public IEnableParentGetter? EnableParent => _EnableParentLocation.HasValue ? EnableParentBinaryOverlay.EnableParentFactory(_recordData.Slice(_EnableParentLocation!.Value.Min), _package) : default;
         #endregion
         #region MerchantContainer
-        private int? _MerchantContainerLocation;
+        private int? _MerchantContainerLocationStore;
+        private int? _MerchantContainerLocation { get { EnsureFilled(); return _MerchantContainerLocationStore; } set => _MerchantContainerLocationStore = value; }
         public IFormLinkNullableGetter<IPlacedObjectGetter> MerchantContainer => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IPlacedObjectGetter>(_package, _recordData, _MerchantContainerLocation);
         #endregion
         #region Horse
-        private int? _HorseLocation;
+        private int? _HorseLocationStore;
+        private int? _HorseLocation { get { EnsureFilled(); return _HorseLocationStore; } set => _HorseLocationStore = value; }
         public IFormLinkNullableGetter<IPlacedCreatureGetter> Horse => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IPlacedCreatureGetter>(_package, _recordData, _HorseLocation);
         #endregion
         #region RagdollData
-        private int? _RagdollDataLocation;
+        private int? _RagdollDataLocationStore;
+        private int? _RagdollDataLocation { get { EnsureFilled(); return _RagdollDataLocationStore; } set => _RagdollDataLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? RagdollData => _RagdollDataLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _RagdollDataLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region Scale
-        private int? _ScaleLocation;
+        private int? _ScaleLocationStore;
+        private int? _ScaleLocation { get { EnsureFilled(); return _ScaleLocationStore; } set => _ScaleLocationStore = value; }
         public Single? Scale => _ScaleLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ScaleLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
-        public ILocationGetter? Location { get; private set; }
+        #region Location
+        private ILocationGetter? LocationStore;
+        public ILocationGetter? Location { get { EnsureFilled(); return LocationStore; } private set => LocationStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -2278,6 +2290,23 @@ namespace Mutagen.Bethesda.Oblivion
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new PlacedNpcBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => PlacedNpcFill((PlacedNpcBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void PlacedNpcFill(
+            PlacedNpcBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2285,9 +2314,7 @@ namespace Mutagen.Bethesda.Oblivion
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new PlacedNpcBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2300,7 +2327,6 @@ namespace Mutagen.Bethesda.Oblivion
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IPlacedNpcGetter PlacedNpcFactory(

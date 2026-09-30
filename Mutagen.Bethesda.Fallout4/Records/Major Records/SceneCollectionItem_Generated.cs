@@ -1161,11 +1161,13 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Scene
-        private int? _SceneLocation;
+        private int? _SceneLocationStore;
+        private int? _SceneLocation { get { EnsureFilled(); return _SceneLocationStore; } set => _SceneLocationStore = value; }
         public IFormLinkGetter<ISceneGetter> Scene => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISceneGetter>(_package, _recordData, _SceneLocation);
         #endregion
         #region XNAM
-        private int? _XNAMLocation;
+        private int? _XNAMLocationStore;
+        private int? _XNAMLocation { get { EnsureFilled(); return _XNAMLocationStore; } set => _XNAMLocationStore = value; }
         public UInt64? XNAM => _XNAMLocation.HasValue ? BinaryPrimitives.ReadUInt64LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _XNAMLocation.Value, _package.MetaData.Constants)) : default(UInt64?);
         #endregion
         partial void CustomFactoryEnd(

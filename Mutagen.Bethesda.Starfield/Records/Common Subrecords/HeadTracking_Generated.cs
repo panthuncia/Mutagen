@@ -1325,13 +1325,18 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<Int32>? Aliases { get; private set; }
+        #region Aliases
+        private IReadOnlyList<Int32>? AliasesStore;
+        public IReadOnlyList<Int32>? Aliases { get { EnsureFilled(); return AliasesStore; } private set => AliasesStore = value; }
+        #endregion
         #region ForceRotate
-        private int? _ForceRotateLocation;
+        private int? _ForceRotateLocationStore;
+        private int? _ForceRotateLocation { get { EnsureFilled(); return _ForceRotateLocationStore; } set => _ForceRotateLocationStore = value; }
         public Boolean ForceRotate => _ForceRotateLocation.HasValue ? true : default(Boolean);
         #endregion
         #region ForceRotateMustComplete
-        private int? _ForceRotateMustCompleteLocation;
+        private int? _ForceRotateMustCompleteLocationStore;
+        private int? _ForceRotateMustCompleteLocation { get { EnsureFilled(); return _ForceRotateMustCompleteLocationStore; } set => _ForceRotateMustCompleteLocationStore = value; }
         public Boolean ForceRotateMustComplete => _ForceRotateMustCompleteLocation.HasValue ? true : default(Boolean);
         #endregion
         partial void CustomFactoryEnd(

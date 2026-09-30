@@ -1193,11 +1193,13 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region LargeIconFilename
-        private int? _LargeIconFilenameLocation;
+        private int? _LargeIconFilenameLocationStore;
+        private int? _LargeIconFilenameLocation { get { EnsureFilled(); return _LargeIconFilenameLocationStore; } set => _LargeIconFilenameLocationStore = value; }
         public AssetLinkGetter<SkyrimTextureAssetType> LargeIconFilename => _LargeIconFilenameLocation.HasValue ? new AssetLinkGetter<SkyrimTextureAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LargeIconFilenameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : AssetLinkGetter<SkyrimTextureAssetType>.Null;
         #endregion
         #region SmallIconFilename
-        private int? _SmallIconFilenameLocation;
+        private int? _SmallIconFilenameLocationStore;
+        private int? _SmallIconFilenameLocation { get { EnsureFilled(); return _SmallIconFilenameLocationStore; } set => _SmallIconFilenameLocationStore = value; }
         public AssetLinkGetter<SkyrimTextureAssetType>? SmallIconFilename => _SmallIconFilenameLocation.HasValue ? new AssetLinkGetter<SkyrimTextureAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SmallIconFilenameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<SkyrimTextureAssetType>?);
         #endregion
         partial void CustomFactoryEnd(

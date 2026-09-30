@@ -1528,7 +1528,8 @@ namespace Mutagen.Bethesda.Oblivion
         #region PhaseLength
         public partial Byte GetPhaseLengthCustom(int location);
         public Byte PhaseLength => GetPhaseLengthCustom(location: 0x6);
-        protected int PhaseLengthEndingPos;
+        private int PhaseLengthEndingPosStore;
+        protected int PhaseLengthEndingPos { get { EnsureFilled(); return PhaseLengthEndingPosStore; } private set => PhaseLengthEndingPosStore = value; }
         partial void CustomPhaseLengthEndPos();
         #endregion
         partial void CustomFactoryEnd(

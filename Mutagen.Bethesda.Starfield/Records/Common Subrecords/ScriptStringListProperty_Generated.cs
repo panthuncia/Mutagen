@@ -1209,7 +1209,8 @@ namespace Mutagen.Bethesda.Starfield
 
         #region Data
         public IReadOnlyList<String> Data => BinaryOverlayList.FactoryByCountLengthWithItemLength<String>(_structData, _package, countLength: 4, itemLengthLength: 2, (s, p) => BinaryStringUtility.ParsePrependedString(s, lengthLength: 2, encoding: p.MetaData.Encodings.NonTranslated));
-        protected int DataEndingPos;
+        private int DataEndingPosStore;
+        protected int DataEndingPos { get { EnsureFilled(); return DataEndingPosStore; } private set => DataEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

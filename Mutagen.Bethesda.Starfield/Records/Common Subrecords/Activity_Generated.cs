@@ -1617,11 +1617,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region ATAN
-        private int? _ATANLocation;
+        private int? _ATANLocationStore;
+        private int? _ATANLocation { get { EnsureFilled(); return _ATANLocationStore; } set => _ATANLocationStore = value; }
         public String ATAN => _ATANLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ATANLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -1633,16 +1635,22 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #endregion
         #region Description
-        private int? _DescriptionLocation;
+        private int? _DescriptionLocationStore;
+        private int? _DescriptionLocation { get { EnsureFilled(); return _DescriptionLocationStore; } set => _DescriptionLocationStore = value; }
         public ITranslatedStringGetter Description => _DescriptionLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DescriptionLocation.Value, _package.MetaData.Constants), StringsSource.DL, parsingBundle: _package.MetaData, eager: false) : TranslatedString.Empty;
         #endregion
-        public IReadOnlyList<IProgressionEvaluatorArgumentGetter> ProgressionEvalutor { get; private set; } = [];
+        #region ProgressionEvalutor
+        private IReadOnlyList<IProgressionEvaluatorArgumentGetter> ProgressionEvalutorStore = [];
+        public IReadOnlyList<IProgressionEvaluatorArgumentGetter> ProgressionEvalutor { get { EnsureFilled(); return ProgressionEvalutorStore; } private set => ProgressionEvalutorStore = value; }
+        #endregion
         #region ANAM
-        private int? _ANAMLocation;
+        private int? _ANAMLocationStore;
+        private int? _ANAMLocation { get { EnsureFilled(); return _ANAMLocationStore; } set => _ANAMLocationStore = value; }
         public String ANAM => _ANAMLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ANAMLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region Configuration
-        private int? _ConfigurationLocation;
+        private int? _ConfigurationLocationStore;
+        private int? _ConfigurationLocation { get { EnsureFilled(); return _ConfigurationLocationStore; } set => _ConfigurationLocationStore = value; }
         public String Configuration => _ConfigurationLocation.HasValue ? BinaryStringUtility.ToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ConfigurationLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         partial void CustomFactoryEnd(

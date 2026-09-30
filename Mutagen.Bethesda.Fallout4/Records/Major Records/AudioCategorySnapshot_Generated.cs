@@ -1617,10 +1617,14 @@ namespace Mutagen.Bethesda.Fallout4
 
 
         #region Priority
-        private int? _PriorityLocation;
+        private int? _PriorityLocationStore;
+        private int? _PriorityLocation { get { EnsureFilled(); return _PriorityLocationStore; } set => _PriorityLocationStore = value; }
         public UInt16? Priority => _PriorityLocation.HasValue ? BinaryPrimitives.ReadUInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _PriorityLocation.Value, _package.MetaData.Constants)) : default(UInt16?);
         #endregion
-        public IReadOnlyList<IAudioCategoryMultiplierGetter> Multipliers { get; private set; } = [];
+        #region Multipliers
+        private IReadOnlyList<IAudioCategoryMultiplierGetter> MultipliersStore = [];
+        public IReadOnlyList<IAudioCategoryMultiplierGetter> Multipliers { get { EnsureFilled(); return MultipliersStore; } private set => MultipliersStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -1642,6 +1646,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new AudioCategorySnapshotBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => AudioCategorySnapshotFill((AudioCategorySnapshotBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void AudioCategorySnapshotFill(
+            AudioCategorySnapshotBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1649,9 +1670,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new AudioCategorySnapshotBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1664,7 +1683,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IAudioCategorySnapshotGetter AudioCategorySnapshotFactory(

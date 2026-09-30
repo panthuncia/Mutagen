@@ -1237,7 +1237,8 @@ namespace Mutagen.Bethesda.Starfield
         public P3Float Angle => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(0x10, 0xC));
         #region UnknownBytes
         public ReadOnlyMemorySlice<Byte> UnknownBytes => _structData.Span.Slice(0x1C).ToArray();
-        protected int UnknownBytesEndingPos;
+        private int UnknownBytesEndingPosStore;
+        protected int UnknownBytesEndingPos { get { EnsureFilled(); return UnknownBytesEndingPosStore; } private set => UnknownBytesEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

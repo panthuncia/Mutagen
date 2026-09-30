@@ -1209,7 +1209,8 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region PhaseFragments
-        protected int PhaseFragmentsEndingPos;
+        private int PhaseFragmentsEndingPosStore;
+        protected int PhaseFragmentsEndingPos { get { EnsureFilled(); return PhaseFragmentsEndingPosStore; } private set => PhaseFragmentsEndingPosStore = value; }
         partial void CustomPhaseFragmentsEndPos();
         #endregion
         partial void CustomFactoryEnd(

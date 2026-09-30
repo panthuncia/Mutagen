@@ -3125,53 +3125,77 @@ namespace Mutagen.Bethesda.Skyrim
         public DialogResponses.MajorFlag MajorFlags => (DialogResponses.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IDialogResponsesAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? DialogResponsesAdapterBinaryOverlay.DialogResponsesAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
         #region DATA
-        private int? _DATALocation;
+        private int? _DATALocationStore;
+        private int? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? DATA => _DATALocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DATALocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region Flags
-        private RangeInt32? _FlagsLocation;
+        private RangeInt32? _FlagsLocationStore;
+        private RangeInt32? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public IDialogResponseFlagsGetter? Flags => _FlagsLocation.HasValue ? DialogResponseFlagsBinaryOverlay.DialogResponseFlagsFactory(_recordData.Slice(_FlagsLocation!.Value.Min), _package) : default;
         #endregion
         #region Topic
-        private int? _TopicLocation;
+        private int? _TopicLocationStore;
+        private int? _TopicLocation { get { EnsureFilled(); return _TopicLocationStore; } set => _TopicLocationStore = value; }
         public IFormLinkNullableGetter<IDialogTopicGetter> Topic => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogTopicGetter>(_package, _recordData, _TopicLocation);
         #endregion
         #region PreviousDialog
-        private int? _PreviousDialogLocation;
+        private int? _PreviousDialogLocationStore;
+        private int? _PreviousDialogLocation { get { EnsureFilled(); return _PreviousDialogLocationStore; } set => _PreviousDialogLocationStore = value; }
         public IFormLinkNullableGetter<IDialogResponsesGetter> PreviousDialog => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogResponsesGetter>(_package, _recordData, _PreviousDialogLocation);
         #endregion
         #region FavorLevel
-        private int? _FavorLevelLocation;
+        private int? _FavorLevelLocationStore;
+        private int? _FavorLevelLocation { get { EnsureFilled(); return _FavorLevelLocationStore; } set => _FavorLevelLocationStore = value; }
         public FavorLevel? FavorLevel => EnumBinaryTranslation<FavorLevel, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FavorLevelLocation, _recordData, _package, 1);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IDialogTopicGetter>> LinkTo { get; private set; } = [];
+        #region LinkTo
+        private IReadOnlyList<IFormLinkGetter<IDialogTopicGetter>> LinkToStore = [];
+        public IReadOnlyList<IFormLinkGetter<IDialogTopicGetter>> LinkTo { get { EnsureFilled(); return LinkToStore; } private set => LinkToStore = value; }
+        #endregion
         #region ResponseData
-        private int? _ResponseDataLocation;
+        private int? _ResponseDataLocationStore;
+        private int? _ResponseDataLocation { get { EnsureFilled(); return _ResponseDataLocationStore; } set => _ResponseDataLocationStore = value; }
         public IFormLinkNullableGetter<IDialogResponsesGetter> ResponseData => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogResponsesGetter>(_package, _recordData, _ResponseDataLocation);
         #endregion
-        public IReadOnlyList<IDialogResponseGetter> Responses { get; private set; } = [];
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
-        public IReadOnlyList<IDialogResponsesUnknownDataGetter> UnknownData { get; private set; } = [];
+        #region Responses
+        private IReadOnlyList<IDialogResponseGetter> ResponsesStore = [];
+        public IReadOnlyList<IDialogResponseGetter> Responses { get { EnsureFilled(); return ResponsesStore; } private set => ResponsesStore = value; }
+        #endregion
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
+        #region UnknownData
+        private IReadOnlyList<IDialogResponsesUnknownDataGetter> UnknownDataStore = [];
+        public IReadOnlyList<IDialogResponsesUnknownDataGetter> UnknownData { get { EnsureFilled(); return UnknownDataStore; } private set => UnknownDataStore = value; }
+        #endregion
         #region Prompt
-        private int? _PromptLocation;
+        private int? _PromptLocationStore;
+        private int? _PromptLocation { get { EnsureFilled(); return _PromptLocationStore; } set => _PromptLocationStore = value; }
         public ITranslatedStringGetter? Prompt => _PromptLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _PromptLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         #region Speaker
-        private int? _SpeakerLocation;
+        private int? _SpeakerLocationStore;
+        private int? _SpeakerLocation { get { EnsureFilled(); return _SpeakerLocationStore; } set => _SpeakerLocationStore = value; }
         public IFormLinkNullableGetter<INpcGetter> Speaker => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<INpcGetter>(_package, _recordData, _SpeakerLocation);
         #endregion
         #region WalkAwayTopic
-        private int? _WalkAwayTopicLocation;
+        private int? _WalkAwayTopicLocationStore;
+        private int? _WalkAwayTopicLocation { get { EnsureFilled(); return _WalkAwayTopicLocationStore; } set => _WalkAwayTopicLocationStore = value; }
         public IFormLinkNullableGetter<IDialogTopicGetter> WalkAwayTopic => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogTopicGetter>(_package, _recordData, _WalkAwayTopicLocation);
         #endregion
         #region AudioOutputOverride
-        private int? _AudioOutputOverrideLocation;
+        private int? _AudioOutputOverrideLocationStore;
+        private int? _AudioOutputOverrideLocation { get { EnsureFilled(); return _AudioOutputOverrideLocationStore; } set => _AudioOutputOverrideLocationStore = value; }
         public IFormLinkNullableGetter<ISoundOutputModelGetter> AudioOutputOverride => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundOutputModelGetter>(_package, _recordData, _AudioOutputOverrideLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -3195,6 +3219,23 @@ namespace Mutagen.Bethesda.Skyrim
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new DialogResponsesBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => DialogResponsesFill((DialogResponsesBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void DialogResponsesFill(
+            DialogResponsesBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -3202,9 +3243,7 @@ namespace Mutagen.Bethesda.Skyrim
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new DialogResponsesBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -3217,7 +3256,6 @@ namespace Mutagen.Bethesda.Skyrim
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IDialogResponsesGetter DialogResponsesFactory(

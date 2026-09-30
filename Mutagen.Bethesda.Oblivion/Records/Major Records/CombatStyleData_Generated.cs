@@ -3120,7 +3120,8 @@ namespace Mutagen.Bethesda.Oblivion
                 translationParams: translationParams);
         }
 
-        public CombatStyleData.VersioningBreaks Versioning { get; private set; }
+        private CombatStyleData.VersioningBreaks VersioningStore;
+        public CombatStyleData.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public Byte DodgePercentChance => _structData.Span[0x0];
         public Byte LeftRightPercentChance => _structData.Span[0x1];
         public Single DodgeLeftRightTimerMin => _structData.Slice(0x4, 0x4).Float();

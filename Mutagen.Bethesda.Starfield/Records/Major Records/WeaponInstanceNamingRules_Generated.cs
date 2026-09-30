@@ -1228,7 +1228,10 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IInstanceNamingRuleSetGetter<WeaponInstanceNamingRules.Target>> Rules { get; private set; } = [];
+        #region Rules
+        private IReadOnlyList<IInstanceNamingRuleSetGetter<WeaponInstanceNamingRules.Target>> RulesStore = [];
+        public IReadOnlyList<IInstanceNamingRuleSetGetter<WeaponInstanceNamingRules.Target>> Rules { get { EnsureFilled(); return RulesStore; } private set => RulesStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

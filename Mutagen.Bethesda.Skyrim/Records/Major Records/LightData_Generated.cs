@@ -1347,7 +1347,8 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        public LightData.VersioningBreaks Versioning { get; private set; }
+        private LightData.VersioningBreaks VersioningStore;
+        public LightData.VersioningBreaks Versioning { get { EnsureFilled(); return VersioningStore; } private set => VersioningStore = value; }
         public Single FovOffset => _structData.Slice(0x0, 0x4).Float();
         public Single FadeOffset => _structData.Slice(0x4, 0x4).Float();
         public Single EndDistanceCap => _structData.Slice(0x8, 0x4).Float();

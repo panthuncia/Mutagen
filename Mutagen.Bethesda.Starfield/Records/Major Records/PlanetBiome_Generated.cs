@@ -1998,20 +1998,24 @@ namespace Mutagen.Bethesda.Starfield
         public IFormLinkGetter<IStarfieldMajorRecordGetter> ResourceGeneration => FormLinkBinaryTranslation.Instance.OverlayFactory<IStarfieldMajorRecordGetter>(_package, _structData.Span.Slice(0xC, 0x4));
         #region Fauna
         public IReadOnlyList<IFormLinkGetter<INpcGetter>> Fauna => BinaryOverlayList.FactoryByCountLength<IFormLinkGetter<INpcGetter>>(_structData.Slice(0x10), _package, 4, countLength: 4, (s, p) => FormLinkBinaryTranslation.Instance.OverlayFactory<INpcGetter>(p, s));
-        protected int FaunaEndingPos;
+        private int FaunaEndingPosStore;
+        protected int FaunaEndingPos { get { EnsureFilled(); return FaunaEndingPosStore; } private set => FaunaEndingPosStore = value; }
         #endregion
         #region Keywords
         public IReadOnlyList<IFormLinkGetter<IKeywordGetter>> Keywords => BinaryOverlayList.FactoryByCountLength<IFormLinkGetter<IKeywordGetter>>(_structData.Slice(FaunaEndingPos), _package, 4, countLength: 4, (s, p) => FormLinkBinaryTranslation.Instance.OverlayFactory<IKeywordGetter>(p, s));
-        protected int KeywordsEndingPos;
+        private int KeywordsEndingPosStore;
+        protected int KeywordsEndingPos { get { EnsureFilled(); return KeywordsEndingPosStore; } private set => KeywordsEndingPosStore = value; }
         IReadOnlyList<IFormLinkGetter<IKeywordCommonGetter>>? IKeywordedGetter.Keywords => this.Keywords;
         #endregion
         #region Flora
         public IReadOnlyList<IPlanetFloraGetter> Flora => BinaryOverlayList.FactoryByCountLength<IPlanetFloraGetter>(_structData.Slice(KeywordsEndingPos), _package, 9, countLength: 4, expectedLengthLength: 4, (s, p) => PlanetFloraBinaryOverlay.PlanetFloraFactory(s, p));
-        protected int FloraEndingPos;
+        private int FloraEndingPosStore;
+        protected int FloraEndingPos { get { EnsureFilled(); return FloraEndingPosStore; } private set => FloraEndingPosStore = value; }
         #endregion
         #region UnknownItems
         public IReadOnlyList<IPlanetBiomeUnknownItemGetter> UnknownItems => BinaryOverlayList.FactoryByCountLength<IPlanetBiomeUnknownItemGetter>(_structData.Slice(FloraEndingPos), _package, 16, countLength: 4, (s, p) => PlanetBiomeUnknownItemBinaryOverlay.PlanetBiomeUnknownItemFactory(s, p));
-        protected int UnknownItemsEndingPos;
+        private int UnknownItemsEndingPosStore;
+        protected int UnknownItemsEndingPos { get { EnsureFilled(); return UnknownItemsEndingPosStore; } private set => UnknownItemsEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

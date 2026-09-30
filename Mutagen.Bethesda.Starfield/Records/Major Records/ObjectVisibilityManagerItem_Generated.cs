@@ -1286,10 +1286,14 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Object
-        private int? _ObjectLocation;
+        private int? _ObjectLocationStore;
+        private int? _ObjectLocation { get { EnsureFilled(); return _ObjectLocationStore; } set => _ObjectLocationStore = value; }
         public IFormLinkNullableGetter<IStaticGetter> Object => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IStaticGetter>(_package, _recordData, _ObjectLocation);
         #endregion
-        public IReadOnlyList<IObjectBoundsFloatGetter>? ObjectBounds { get; private set; }
+        #region ObjectBounds
+        private IReadOnlyList<IObjectBoundsFloatGetter>? ObjectBoundsStore;
+        public IReadOnlyList<IObjectBoundsFloatGetter>? ObjectBounds { get { EnsureFilled(); return ObjectBoundsStore; } private set => ObjectBoundsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

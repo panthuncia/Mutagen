@@ -1416,7 +1416,8 @@ namespace Mutagen.Bethesda.Skyrim
         partial void FlagsParseCustomParse(
             OverlayStream stream,
             int offset);
-        protected int FlagsParseEndingPos;
+        private int FlagsParseEndingPosStore;
+        protected int FlagsParseEndingPos { get { EnsureFilled(); return FlagsParseEndingPosStore; } private set => FlagsParseEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

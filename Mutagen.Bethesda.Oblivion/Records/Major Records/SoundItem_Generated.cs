@@ -1161,11 +1161,13 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region Sound
-        private int? _SoundLocation;
+        private int? _SoundLocationStore;
+        private int? _SoundLocation { get { EnsureFilled(); return _SoundLocationStore; } set => _SoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundGetter> Sound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundGetter>(_package, _recordData, _SoundLocation);
         #endregion
         #region Chance
-        private int? _ChanceLocation;
+        private int? _ChanceLocationStore;
+        private int? _ChanceLocation { get { EnsureFilled(); return _ChanceLocationStore; } set => _ChanceLocationStore = value; }
         public Byte? Chance => _ChanceLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ChanceLocation.Value, _package.MetaData.Constants)[0] : default(Byte?);
         #endregion
         partial void CustomFactoryEnd(

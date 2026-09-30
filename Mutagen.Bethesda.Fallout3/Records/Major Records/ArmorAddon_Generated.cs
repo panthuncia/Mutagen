@@ -3123,12 +3123,14 @@ namespace Mutagen.Bethesda.Fallout3
 
 
         #region ObjectBounds
-        private RangeInt32? _ObjectBoundsLocation;
+        private RangeInt32? _ObjectBoundsLocationStore;
+        private RangeInt32? _ObjectBoundsLocation { get { EnsureFilled(); return _ObjectBoundsLocationStore; } set => _ObjectBoundsLocationStore = value; }
         private IObjectBoundsGetter? _ObjectBounds => _ObjectBoundsLocation.HasValue ? ObjectBoundsBinaryOverlay.ObjectBoundsFactory(_recordData.Slice(_ObjectBoundsLocation!.Value.Min), _package) : default;
         public IObjectBoundsGetter ObjectBounds => _ObjectBounds ?? new ObjectBounds();
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -3136,35 +3138,54 @@ namespace Mutagen.Bethesda.Fallout3
         #endregion
         #endregion
         #region BipedData
-        private RangeInt32? _BipedDataLocation;
+        private RangeInt32? _BipedDataLocationStore;
+        private RangeInt32? _BipedDataLocation { get { EnsureFilled(); return _BipedDataLocationStore; } set => _BipedDataLocationStore = value; }
         private IBipedDataGetter? _BipedData => _BipedDataLocation.HasValue ? BipedDataBinaryOverlay.BipedDataFactory(_recordData.Slice(_BipedDataLocation!.Value.Min), _package) : default;
         public IBipedDataGetter BipedData => _BipedData ?? new BipedData();
         #endregion
-        public IModelGetter? MaleBipedModel { get; private set; }
-        public IModelGetter? MaleWorldModel { get; private set; }
+        #region MaleBipedModel
+        private IModelGetter? MaleBipedModelStore;
+        public IModelGetter? MaleBipedModel { get { EnsureFilled(); return MaleBipedModelStore; } private set => MaleBipedModelStore = value; }
+        #endregion
+        #region MaleWorldModel
+        private IModelGetter? MaleWorldModelStore;
+        public IModelGetter? MaleWorldModel { get { EnsureFilled(); return MaleWorldModelStore; } private set => MaleWorldModelStore = value; }
+        #endregion
         #region MaleIcon
-        private int? _MaleIconLocation;
+        private int? _MaleIconLocationStore;
+        private int? _MaleIconLocation { get { EnsureFilled(); return _MaleIconLocationStore; } set => _MaleIconLocationStore = value; }
         public String? MaleIcon => _MaleIconLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaleIconLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region MaleMessageIcon
-        private int? _MaleMessageIconLocation;
+        private int? _MaleMessageIconLocationStore;
+        private int? _MaleMessageIconLocation { get { EnsureFilled(); return _MaleMessageIconLocationStore; } set => _MaleMessageIconLocationStore = value; }
         public String? MaleMessageIcon => _MaleMessageIconLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaleMessageIconLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        public IModelGetter? FemaleBipedModel { get; private set; }
-        public IModelGetter? FemaleWorldModel { get; private set; }
+        #region FemaleBipedModel
+        private IModelGetter? FemaleBipedModelStore;
+        public IModelGetter? FemaleBipedModel { get { EnsureFilled(); return FemaleBipedModelStore; } private set => FemaleBipedModelStore = value; }
+        #endregion
+        #region FemaleWorldModel
+        private IModelGetter? FemaleWorldModelStore;
+        public IModelGetter? FemaleWorldModel { get { EnsureFilled(); return FemaleWorldModelStore; } private set => FemaleWorldModelStore = value; }
+        #endregion
         #region FemaleIcon
-        private int? _FemaleIconLocation;
+        private int? _FemaleIconLocationStore;
+        private int? _FemaleIconLocation { get { EnsureFilled(); return _FemaleIconLocationStore; } set => _FemaleIconLocationStore = value; }
         public String? FemaleIcon => _FemaleIconLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FemaleIconLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region FemaleMessageIcon
-        private int? _FemaleMessageIconLocation;
+        private int? _FemaleMessageIconLocationStore;
+        private int? _FemaleMessageIconLocation { get { EnsureFilled(); return _FemaleMessageIconLocationStore; } set => _FemaleMessageIconLocationStore = value; }
         public String? FemaleMessageIcon => _FemaleMessageIconLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FemaleMessageIconLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region EquipmentType
-        private int? _EquipmentTypeLocation;
+        private int? _EquipmentTypeLocationStore;
+        private int? _EquipmentTypeLocation { get { EnsureFilled(); return _EquipmentTypeLocationStore; } set => _EquipmentTypeLocationStore = value; }
         public EquipType EquipmentType => EnumBinaryTranslation<EquipType, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_EquipmentTypeLocation, _recordData, _package, 4);
         #endregion
-        private RangeInt32? _DATALocation;
+        private RangeInt32? _DATALocationStore;
+        private RangeInt32? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         #region Value
         private int _ValueLocation => _DATALocation!.Value.Min;
         private bool _Value_IsSet => _DATALocation.HasValue;
@@ -3180,8 +3201,10 @@ namespace Mutagen.Bethesda.Fallout3
         private bool _Weight_IsSet => _DATALocation.HasValue;
         public Single Weight => _Weight_IsSet ? _recordData.Slice(_WeightLocation, 4).Float() : default(Single);
         #endregion
-        private RangeInt32? _DNAMLocation;
-        public ArmorAddon.DNAMDataType DNAMDataTypeState { get; private set; }
+        private RangeInt32? _DNAMLocationStore;
+        private RangeInt32? _DNAMLocation { get { EnsureFilled(); return _DNAMLocationStore; } set => _DNAMLocationStore = value; }
+        private ArmorAddon.DNAMDataType DNAMDataTypeStateStore;
+        public ArmorAddon.DNAMDataType DNAMDataTypeState { get { EnsureFilled(); return DNAMDataTypeStateStore; } private set => DNAMDataTypeStateStore = value; }
         #region DamageResistance
         private int _DamageResistanceLocation => _DNAMLocation!.Value.Min;
         private bool _DamageResistance_IsSet => _DNAMLocation.HasValue;
@@ -3225,6 +3248,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ArmorAddonBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ArmorAddonFill((ArmorAddonBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ArmorAddonFill(
+            ArmorAddonBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -3232,9 +3272,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ArmorAddonBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -3247,7 +3285,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IArmorAddonGetter ArmorAddonFactory(

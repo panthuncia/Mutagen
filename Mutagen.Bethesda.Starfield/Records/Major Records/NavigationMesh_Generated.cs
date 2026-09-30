@@ -2163,22 +2163,33 @@ namespace Mutagen.Bethesda.Starfield
         public NavigationMesh.MajorFlag MajorFlags => (NavigationMesh.MajorFlag)this.MajorRecordFlagsRaw;
 
         #region VirtualMachineAdapter
-        private int? _VirtualMachineAdapterLengthOverride;
-        private RangeInt32? _VirtualMachineAdapterLocation;
+        private int? _VirtualMachineAdapterLengthOverrideStore;
+        private int? _VirtualMachineAdapterLengthOverride { get { EnsureFilled(); return _VirtualMachineAdapterLengthOverrideStore; } set => _VirtualMachineAdapterLengthOverrideStore = value; }
+        private RangeInt32? _VirtualMachineAdapterLocationStore;
+        private RangeInt32? _VirtualMachineAdapterLocation { get { EnsureFilled(); return _VirtualMachineAdapterLocationStore; } set => _VirtualMachineAdapterLocationStore = value; }
         public IVirtualMachineAdapterGetter? VirtualMachineAdapter => _VirtualMachineAdapterLocation.HasValue ? VirtualMachineAdapterBinaryOverlay.VirtualMachineAdapterFactory(_recordData.Slice(_VirtualMachineAdapterLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_VirtualMachineAdapterLengthOverride)) : default;
         IAVirtualMachineAdapterGetter? IHaveVirtualMachineAdapterGetter.VirtualMachineAdapter => this.VirtualMachineAdapter;
         #endregion
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
         #region NavmeshGeometry
-        private int? _NavmeshGeometryLengthOverride;
-        private RangeInt32? _NavmeshGeometryLocation;
+        private int? _NavmeshGeometryLengthOverrideStore;
+        private int? _NavmeshGeometryLengthOverride { get { EnsureFilled(); return _NavmeshGeometryLengthOverrideStore; } set => _NavmeshGeometryLengthOverrideStore = value; }
+        private RangeInt32? _NavmeshGeometryLocationStore;
+        private RangeInt32? _NavmeshGeometryLocation { get { EnsureFilled(); return _NavmeshGeometryLocationStore; } set => _NavmeshGeometryLocationStore = value; }
         public INavmeshGeometryGetter? NavmeshGeometry => _NavmeshGeometryLocation.HasValue ? NavmeshGeometryBinaryOverlay.NavmeshGeometryFactory(_recordData.Slice(_NavmeshGeometryLocation!.Value.Min), _package, TypedParseParams.FromLengthOverride(_NavmeshGeometryLengthOverride)) : default;
         #endregion
         #region NNAM
-        private int? _NNAMLocation;
+        private int? _NNAMLocationStore;
+        private int? _NNAMLocation { get { EnsureFilled(); return _NNAMLocationStore; } set => _NNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? NNAM => _NNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NNAMLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
-        public IReadOnlyList<IPreCutMapEntryGetter>? PreCutMapEntries { get; private set; }
+        #region PreCutMapEntries
+        private IReadOnlyList<IPreCutMapEntryGetter>? PreCutMapEntriesStore;
+        public IReadOnlyList<IPreCutMapEntryGetter>? PreCutMapEntries { get { EnsureFilled(); return PreCutMapEntriesStore; } private set => PreCutMapEntriesStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -2200,6 +2211,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new NavigationMeshBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => NavigationMeshFill((NavigationMeshBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void NavigationMeshFill(
+            NavigationMeshBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2207,9 +2235,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new NavigationMeshBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2222,7 +2248,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static INavigationMeshGetter NavigationMeshFactory(

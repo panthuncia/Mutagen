@@ -2836,45 +2836,66 @@ namespace Mutagen.Bethesda.Fallout4
 
 
         #region PickUpSound
-        private int? _PickUpSoundLocation;
+        private int? _PickUpSoundLocationStore;
+        private int? _PickUpSoundLocation { get { EnsureFilled(); return _PickUpSoundLocationStore; } set => _PickUpSoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundDescriptorGetter> PickUpSound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundDescriptorGetter>(_package, _recordData, _PickUpSoundLocation);
         #endregion
         #region PutDownSound
-        private int? _PutDownSoundLocation;
+        private int? _PutDownSoundLocationStore;
+        private int? _PutDownSoundLocation { get { EnsureFilled(); return _PutDownSoundLocationStore; } set => _PutDownSoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundDescriptorGetter> PutDownSound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundDescriptorGetter>(_package, _recordData, _PutDownSoundLocation);
         #endregion
-        public IReadOnlyList<IConstructibleObjectComponentGetter>? Components { get; private set; }
+        #region Components
+        private IReadOnlyList<IConstructibleObjectComponentGetter>? ComponentsStore;
+        public IReadOnlyList<IConstructibleObjectComponentGetter>? Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
         #region Description
-        private int? _DescriptionLocation;
+        private int? _DescriptionLocationStore;
+        private int? _DescriptionLocation { get { EnsureFilled(); return _DescriptionLocationStore; } set => _DescriptionLocationStore = value; }
         public ITranslatedStringGetter? Description => _DescriptionLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DescriptionLocation.Value, _package.MetaData.Constants), StringsSource.DL, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region CreatedObject
-        private int? _CreatedObjectLocation;
+        private int? _CreatedObjectLocationStore;
+        private int? _CreatedObjectLocation { get { EnsureFilled(); return _CreatedObjectLocationStore; } set => _CreatedObjectLocationStore = value; }
         public IFormLinkNullableGetter<IConstructibleObjectTargetGetter> CreatedObject => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IConstructibleObjectTargetGetter>(_package, _recordData, _CreatedObjectLocation);
         #endregion
         #region WorkbenchKeyword
-        private int? _WorkbenchKeywordLocation;
+        private int? _WorkbenchKeywordLocationStore;
+        private int? _WorkbenchKeywordLocation { get { EnsureFilled(); return _WorkbenchKeywordLocationStore; } set => _WorkbenchKeywordLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> WorkbenchKeyword => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _WorkbenchKeywordLocation);
         #endregion
         #region NAM1
-        private int? _NAM1Location;
+        private int? _NAM1LocationStore;
+        private int? _NAM1Location { get { EnsureFilled(); return _NAM1LocationStore; } set => _NAM1LocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? NAM1 => _NAM1Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM1Location.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region NAM2
-        private int? _NAM2Location;
+        private int? _NAM2LocationStore;
+        private int? _NAM2Location { get { EnsureFilled(); return _NAM2LocationStore; } set => _NAM2LocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? NAM2 => _NAM2Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM2Location.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region NAM3
-        private int? _NAM3Location;
+        private int? _NAM3LocationStore;
+        private int? _NAM3Location { get { EnsureFilled(); return _NAM3LocationStore; } set => _NAM3LocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? NAM3 => _NAM3Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM3Location.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region MenuArtObject
-        private int? _MenuArtObjectLocation;
+        private int? _MenuArtObjectLocationStore;
+        private int? _MenuArtObjectLocation { get { EnsureFilled(); return _MenuArtObjectLocationStore; } set => _MenuArtObjectLocationStore = value; }
         public IFormLinkNullableGetter<IArtObjectGetter> MenuArtObject => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IArtObjectGetter>(_package, _recordData, _MenuArtObjectLocation);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Categories { get; private set; }
-        public IReadOnlyList<IConstructibleCreatedObjectCountGetter>? CreatedObjectCounts { get; private set; }
+        #region Categories
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? CategoriesStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Categories { get { EnsureFilled(); return CategoriesStore; } private set => CategoriesStore = value; }
+        #endregion
+        #region CreatedObjectCounts
+        private IReadOnlyList<IConstructibleCreatedObjectCountGetter>? CreatedObjectCountsStore;
+        public IReadOnlyList<IConstructibleCreatedObjectCountGetter>? CreatedObjectCounts { get { EnsureFilled(); return CreatedObjectCountsStore; } private set => CreatedObjectCountsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -2896,6 +2917,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new ConstructibleObjectBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => ConstructibleObjectFill((ConstructibleObjectBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void ConstructibleObjectFill(
+            ConstructibleObjectBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2903,9 +2941,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new ConstructibleObjectBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2918,7 +2954,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IConstructibleObjectGetter ConstructibleObjectFactory(

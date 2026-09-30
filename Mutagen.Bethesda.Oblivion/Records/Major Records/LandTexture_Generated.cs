@@ -1774,18 +1774,24 @@ namespace Mutagen.Bethesda.Oblivion
 
 
         #region Icon
-        private int? _IconLocation;
+        private int? _IconLocationStore;
+        private int? _IconLocation { get { EnsureFilled(); return _IconLocationStore; } set => _IconLocationStore = value; }
         public String? Icon => _IconLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IconLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Havok
-        private RangeInt32? _HavokLocation;
+        private RangeInt32? _HavokLocationStore;
+        private RangeInt32? _HavokLocation { get { EnsureFilled(); return _HavokLocationStore; } set => _HavokLocationStore = value; }
         public IHavokDataGetter? Havok => _HavokLocation.HasValue ? HavokDataBinaryOverlay.HavokDataFactory(_recordData.Slice(_HavokLocation!.Value.Min), _package) : default;
         #endregion
         #region TextureSpecularExponent
-        private int? _TextureSpecularExponentLocation;
+        private int? _TextureSpecularExponentLocationStore;
+        private int? _TextureSpecularExponentLocation { get { EnsureFilled(); return _TextureSpecularExponentLocationStore; } set => _TextureSpecularExponentLocationStore = value; }
         public Byte? TextureSpecularExponent => _TextureSpecularExponentLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _TextureSpecularExponentLocation.Value, _package.MetaData.Constants)[0] : default(Byte?);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IGrassGetter>> PotentialGrass { get; private set; } = [];
+        #region PotentialGrass
+        private IReadOnlyList<IFormLinkGetter<IGrassGetter>> PotentialGrassStore = [];
+        public IReadOnlyList<IFormLinkGetter<IGrassGetter>> PotentialGrass { get { EnsureFilled(); return PotentialGrassStore; } private set => PotentialGrassStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -1807,6 +1813,23 @@ namespace Mutagen.Bethesda.Oblivion
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new LandTextureBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => LandTextureFill((LandTextureBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void LandTextureFill(
+            LandTextureBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1814,9 +1837,7 @@ namespace Mutagen.Bethesda.Oblivion
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new LandTextureBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1829,7 +1850,6 @@ namespace Mutagen.Bethesda.Oblivion
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ILandTextureGetter LandTextureFactory(

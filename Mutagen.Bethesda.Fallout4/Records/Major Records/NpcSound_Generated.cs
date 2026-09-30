@@ -1167,11 +1167,13 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Keyword
-        private int? _KeywordLocation;
+        private int? _KeywordLocationStore;
+        private int? _KeywordLocation { get { EnsureFilled(); return _KeywordLocationStore; } set => _KeywordLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> Keyword => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _KeywordLocation);
         #endregion
         #region Sound
-        private int? _SoundLocation;
+        private int? _SoundLocationStore;
+        private int? _SoundLocation { get { EnsureFilled(); return _SoundLocationStore; } set => _SoundLocationStore = value; }
         public IFormLinkNullableGetter<ISoundDescriptorGetter> Sound => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundDescriptorGetter>(_package, _recordData, _SoundLocation);
         #endregion
         partial void CustomFactoryEnd(

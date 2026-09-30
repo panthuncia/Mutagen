@@ -1150,11 +1150,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Morph
-        private int? _MorphLocation;
+        private int? _MorphLocationStore;
+        private int? _MorphLocation { get { EnsureFilled(); return _MorphLocationStore; } set => _MorphLocationStore = value; }
         public String? Morph => _MorphLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MorphLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Value
-        private int? _ValueLocation;
+        private int? _ValueLocationStore;
+        private int? _ValueLocation { get { EnsureFilled(); return _ValueLocationStore; } set => _ValueLocationStore = value; }
         public Single? Value => _ValueLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ValueLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         partial void CustomFactoryEnd(

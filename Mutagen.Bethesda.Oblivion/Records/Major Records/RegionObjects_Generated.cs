@@ -1268,7 +1268,10 @@ namespace Mutagen.Bethesda.Oblivion
                 translationParams: translationParams);
         }
 
-        public IReadOnlyList<IRegionObjectGetter>? Objects { get; private set; }
+        #region Objects
+        private IReadOnlyList<IRegionObjectGetter>? ObjectsStore;
+        public IReadOnlyList<IRegionObjectGetter>? Objects { get { EnsureFilled(); return ObjectsStore; } private set => ObjectsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

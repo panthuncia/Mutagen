@@ -1820,20 +1820,27 @@ namespace Mutagen.Bethesda.Oblivion
 
 
         #region ChanceNone
-        private int? _ChanceNoneLocation;
+        private int? _ChanceNoneLocationStore;
+        private int? _ChanceNoneLocation { get { EnsureFilled(); return _ChanceNoneLocationStore; } set => _ChanceNoneLocationStore = value; }
         public Percent? ChanceNone => _ChanceNoneLocation.HasValue ? PercentBinaryTranslation.GetPercent(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ChanceNoneLocation.Value, _package.MetaData.Constants), FloatIntegerType.ByteHundred) : default(Percent?);
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public LeveledFlag? Flags => EnumBinaryTranslation<LeveledFlag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 1);
         #endregion
-        public IReadOnlyList<ILeveledCreatureEntryGetter> Entries { get; private set; } = [];
+        #region Entries
+        private IReadOnlyList<ILeveledCreatureEntryGetter> EntriesStore = [];
+        public IReadOnlyList<ILeveledCreatureEntryGetter> Entries { get { EnsureFilled(); return EntriesStore; } private set => EntriesStore = value; }
+        #endregion
         #region Script
-        private int? _ScriptLocation;
+        private int? _ScriptLocationStore;
+        private int? _ScriptLocation { get { EnsureFilled(); return _ScriptLocationStore; } set => _ScriptLocationStore = value; }
         public IFormLinkNullableGetter<IScriptGetter> Script => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IScriptGetter>(_package, _recordData, _ScriptLocation);
         #endregion
         #region Template
-        private int? _TemplateLocation;
+        private int? _TemplateLocationStore;
+        private int? _TemplateLocation { get { EnsureFilled(); return _TemplateLocationStore; } set => _TemplateLocationStore = value; }
         public IFormLinkNullableGetter<INpcRecordGetter> Template => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<INpcRecordGetter>(_package, _recordData, _TemplateLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -1857,6 +1864,23 @@ namespace Mutagen.Bethesda.Oblivion
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new LeveledCreatureBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => LeveledCreatureFill((LeveledCreatureBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void LeveledCreatureFill(
+            LeveledCreatureBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1864,9 +1888,7 @@ namespace Mutagen.Bethesda.Oblivion
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new LeveledCreatureBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1879,7 +1901,6 @@ namespace Mutagen.Bethesda.Oblivion
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ILeveledCreatureGetter LeveledCreatureFactory(

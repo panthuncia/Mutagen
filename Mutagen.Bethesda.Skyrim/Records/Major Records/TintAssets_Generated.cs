@@ -1536,22 +1536,29 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Index
-        private int? _IndexLocation;
+        private int? _IndexLocationStore;
+        private int? _IndexLocation { get { EnsureFilled(); return _IndexLocationStore; } set => _IndexLocationStore = value; }
         public UInt16? Index => _IndexLocation.HasValue ? BinaryPrimitives.ReadUInt16LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IndexLocation.Value, _package.MetaData.Constants)) : default(UInt16?);
         #endregion
         #region FileName
-        private int? _FileNameLocation;
+        private int? _FileNameLocationStore;
+        private int? _FileNameLocation { get { EnsureFilled(); return _FileNameLocationStore; } set => _FileNameLocationStore = value; }
         public AssetLinkGetter<SkyrimTextureAssetType>? FileName => _FileNameLocation.HasValue ? new AssetLinkGetter<SkyrimTextureAssetType>(BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FileNameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated)) : default(AssetLinkGetter<SkyrimTextureAssetType>?);
         #endregion
         #region MaskType
-        private int? _MaskTypeLocation;
+        private int? _MaskTypeLocationStore;
+        private int? _MaskTypeLocation { get { EnsureFilled(); return _MaskTypeLocationStore; } set => _MaskTypeLocationStore = value; }
         public TintAssets.TintMaskType? MaskType => EnumBinaryTranslation<TintAssets.TintMaskType, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_MaskTypeLocation, _recordData, _package, 2);
         #endregion
         #region PresetDefault
-        private int? _PresetDefaultLocation;
+        private int? _PresetDefaultLocationStore;
+        private int? _PresetDefaultLocation { get { EnsureFilled(); return _PresetDefaultLocationStore; } set => _PresetDefaultLocationStore = value; }
         public IFormLinkNullableGetter<IColorRecordGetter> PresetDefault => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IColorRecordGetter>(_package, _recordData, _PresetDefaultLocation);
         #endregion
-        public IReadOnlyList<ITintPresetGetter> Presets { get; private set; } = [];
+        #region Presets
+        private IReadOnlyList<ITintPresetGetter> PresetsStore = [];
+        public IReadOnlyList<ITintPresetGetter> Presets { get { EnsureFilled(); return PresetsStore; } private set => PresetsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

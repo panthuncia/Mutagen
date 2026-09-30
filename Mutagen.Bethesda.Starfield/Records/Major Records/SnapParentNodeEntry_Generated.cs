@@ -1194,10 +1194,14 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region NodeID
-        private int? _NodeIDLocation;
+        private int? _NodeIDLocationStore;
+        private int? _NodeIDLocation { get { EnsureFilled(); return _NodeIDLocationStore; } set => _NodeIDLocationStore = value; }
         public UInt32? NodeID => _NodeIDLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NodeIDLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
-        public IOffsetRotationGetter? OffsetRotation { get; private set; }
+        #region OffsetRotation
+        private IOffsetRotationGetter? OffsetRotationStore;
+        public IOffsetRotationGetter? OffsetRotation { get { EnsureFilled(); return OffsetRotationStore; } private set => OffsetRotationStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

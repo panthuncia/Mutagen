@@ -1649,19 +1649,23 @@ namespace Mutagen.Bethesda.Fallout4
 
 
         #region Quest
-        private int? _QuestLocation;
+        private int? _QuestLocationStore;
+        private int? _QuestLocation { get { EnsureFilled(); return _QuestLocationStore; } set => _QuestLocationStore = value; }
         public IFormLinkGetter<IQuestGetter> Quest => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IQuestGetter>(_package, _recordData, _QuestLocation);
         #endregion
         #region Category
-        private int? _CategoryLocation;
+        private int? _CategoryLocationStore;
+        private int? _CategoryLocation { get { EnsureFilled(); return _CategoryLocationStore; } set => _CategoryLocationStore = value; }
         public DialogBranch.CategoryType? Category => EnumBinaryTranslation<DialogBranch.CategoryType, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_CategoryLocation, _recordData, _package, 4);
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public DialogBranch.Flag? Flags => EnumBinaryTranslation<DialogBranch.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 4);
         #endregion
         #region StartingTopic
-        private int? _StartingTopicLocation;
+        private int? _StartingTopicLocationStore;
+        private int? _StartingTopicLocation { get { EnsureFilled(); return _StartingTopicLocationStore; } set => _StartingTopicLocationStore = value; }
         public IFormLinkNullableGetter<IDialogTopicGetter> StartingTopic => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IDialogTopicGetter>(_package, _recordData, _StartingTopicLocation);
         #endregion
         partial void CustomFactoryEnd(
@@ -1685,6 +1689,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new DialogBranchBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => DialogBranchFill((DialogBranchBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void DialogBranchFill(
+            DialogBranchBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1692,9 +1713,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new DialogBranchBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1707,7 +1726,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IDialogBranchGetter DialogBranchFactory(

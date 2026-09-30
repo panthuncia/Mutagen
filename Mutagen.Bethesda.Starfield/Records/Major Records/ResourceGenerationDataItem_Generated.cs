@@ -1163,11 +1163,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Resource
-        private int? _ResourceLocation;
+        private int? _ResourceLocationStore;
+        private int? _ResourceLocation { get { EnsureFilled(); return _ResourceLocationStore; } set => _ResourceLocationStore = value; }
         public IFormLinkGetter<IResourceGetter> Resource => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IResourceGetter>(_package, _recordData, _ResourceLocation);
         #endregion
         #region Floats
-        private int? _FloatsLocation;
+        private int? _FloatsLocationStore;
+        private int? _FloatsLocation { get { EnsureFilled(); return _FloatsLocationStore; } set => _FloatsLocationStore = value; }
         public ReadOnlyMemorySlice<Byte> Floats => _FloatsLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FloatsLocation.Value, _package.MetaData.Constants) : ReadOnlyMemorySlice<byte>.Empty;
         #endregion
         partial void CustomFactoryEnd(

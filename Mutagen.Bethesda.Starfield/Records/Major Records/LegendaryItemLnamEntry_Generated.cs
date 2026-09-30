@@ -1357,7 +1357,10 @@ namespace Mutagen.Bethesda.Starfield
 
         public LegendaryItem.StarSlot Slot => (LegendaryItem.StarSlot)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x0, 0x4));
         public UInt32 Unknown => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0x4, 0x4));
-        public IReadOnlyList<IConditionGetter>? Conditions { get; private set; }
+        #region Conditions
+        private IReadOnlyList<IConditionGetter>? ConditionsStore;
+        public IReadOnlyList<IConditionGetter>? Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

@@ -1203,7 +1203,8 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        private RangeInt32? _XOWNLocation;
+        private RangeInt32? _XOWNLocationStore;
+        private RangeInt32? _XOWNLocation { get { EnsureFilled(); return _XOWNLocationStore; } set => _XOWNLocationStore = value; }
         #region Owner
         private int _OwnerLocation => _XOWNLocation!.Value.Min;
         private bool _Owner_IsSet => _XOWNLocation.HasValue;

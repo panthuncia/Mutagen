@@ -1377,15 +1377,20 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region BaseEffect
-        private int? _BaseEffectLocation;
+        private int? _BaseEffectLocationStore;
+        private int? _BaseEffectLocation { get { EnsureFilled(); return _BaseEffectLocationStore; } set => _BaseEffectLocationStore = value; }
         public IFormLinkNullableGetter<IMagicEffectGetter> BaseEffect => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMagicEffectGetter>(_package, _recordData, _BaseEffectLocation);
         #endregion
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         private IEffectDataGetter? _Data => _DataLocation.HasValue ? EffectDataBinaryOverlay.EffectDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         public IEffectDataGetter Data => _Data ?? new EffectData();
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

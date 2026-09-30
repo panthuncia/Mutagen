@@ -2679,7 +2679,8 @@ namespace Mutagen.Bethesda.Fallout4
 
 
         #region Notes
-        private int? _NotesLocation;
+        private int? _NotesLocationStore;
+        private int? _NotesLocation { get { EnsureFilled(); return _NotesLocationStore; } set => _NotesLocationStore = value; }
         public String? Notes => _NotesLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NotesLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Data
@@ -2691,21 +2692,31 @@ namespace Mutagen.Bethesda.Fallout4
         public IASoundDescriptorGetter? Data => GetDataCustom();
         #endregion
         #region Category
-        private int? _CategoryLocation;
+        private int? _CategoryLocationStore;
+        private int? _CategoryLocation { get { EnsureFilled(); return _CategoryLocationStore; } set => _CategoryLocationStore = value; }
         public IFormLinkNullableGetter<ISoundCategoryGetter> Category => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundCategoryGetter>(_package, _recordData, _CategoryLocation);
         #endregion
         #region AlternateSoundFor
-        private int? _AlternateSoundForLocation;
+        private int? _AlternateSoundForLocationStore;
+        private int? _AlternateSoundForLocation { get { EnsureFilled(); return _AlternateSoundForLocationStore; } set => _AlternateSoundForLocationStore = value; }
         public IFormLinkNullableGetter<ISoundDescriptorGetter> AlternateSoundFor => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundDescriptorGetter>(_package, _recordData, _AlternateSoundForLocation);
         #endregion
-        public IReadOnlyList<String> SoundFiles { get; private set; } = [];
+        #region SoundFiles
+        private IReadOnlyList<String> SoundFilesStore = [];
+        public IReadOnlyList<String> SoundFiles { get { EnsureFilled(); return SoundFilesStore; } private set => SoundFilesStore = value; }
+        #endregion
         #region OutputModel
-        private int? _OutputModelLocation;
+        private int? _OutputModelLocationStore;
+        private int? _OutputModelLocation { get { EnsureFilled(); return _OutputModelLocationStore; } set => _OutputModelLocationStore = value; }
         public IFormLinkNullableGetter<ISoundOutputModelGetter> OutputModel => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISoundOutputModelGetter>(_package, _recordData, _OutputModelLocation);
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region LoopAndRumble
-        private RangeInt32? _LoopAndRumbleLocation;
+        private RangeInt32? _LoopAndRumbleLocationStore;
+        private RangeInt32? _LoopAndRumbleLocation { get { EnsureFilled(); return _LoopAndRumbleLocationStore; } set => _LoopAndRumbleLocationStore = value; }
         public ISoundLoopAndRumbleGetter? LoopAndRumble => _LoopAndRumbleLocation.HasValue ? SoundLoopAndRumbleBinaryOverlay.SoundLoopAndRumbleFactory(_recordData.Slice(_LoopAndRumbleLocation!.Value.Min), _package) : default;
         #endregion
         #region DataParse
@@ -2714,8 +2725,14 @@ namespace Mutagen.Bethesda.Fallout4
             int offset,
             PreviousParse lastParsed);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<ISoundDescriptorGetter>> Descriptors { get; private set; } = [];
-        public IReadOnlyList<ISoundRateOfFireGetter>? RatesOfFire { get; private set; }
+        #region Descriptors
+        private IReadOnlyList<IFormLinkGetter<ISoundDescriptorGetter>> DescriptorsStore = [];
+        public IReadOnlyList<IFormLinkGetter<ISoundDescriptorGetter>> Descriptors { get { EnsureFilled(); return DescriptorsStore; } private set => DescriptorsStore = value; }
+        #endregion
+        #region RatesOfFire
+        private IReadOnlyList<ISoundRateOfFireGetter>? RatesOfFireStore;
+        public IReadOnlyList<ISoundRateOfFireGetter>? RatesOfFire { get { EnsureFilled(); return RatesOfFireStore; } private set => RatesOfFireStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

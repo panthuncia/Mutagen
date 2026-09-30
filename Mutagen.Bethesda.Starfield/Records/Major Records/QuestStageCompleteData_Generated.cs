@@ -1381,14 +1381,19 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region QSRD
-        private int? _QSRDLocation;
+        private int? _QSRDLocationStore;
+        private int? _QSRDLocation { get { EnsureFilled(); return _QSRDLocationStore; } set => _QSRDLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? QSRD => _QSRDLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _QSRDLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region AffinityChange
-        private int? _AffinityChangeLocation;
+        private int? _AffinityChangeLocationStore;
+        private int? _AffinityChangeLocation { get { EnsureFilled(); return _AffinityChangeLocationStore; } set => _AffinityChangeLocationStore = value; }
         public IFormLinkNullableGetter<IAffinityEventGetter> AffinityChange => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IAffinityEventGetter>(_package, _recordData, _AffinityChangeLocation);
         #endregion
-        public IReadOnlyList<IQuestStageRewardDataGetter> RewardDatas { get; private set; } = [];
+        #region RewardDatas
+        private IReadOnlyList<IQuestStageRewardDataGetter> RewardDatasStore = [];
+        public IReadOnlyList<IQuestStageRewardDataGetter> RewardDatas { get { EnsureFilled(); return RewardDatasStore; } private set => RewardDatasStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

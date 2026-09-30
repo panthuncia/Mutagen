@@ -1293,10 +1293,14 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Quest
-        private int? _QuestLocation;
+        private int? _QuestLocationStore;
+        private int? _QuestLocation { get { EnsureFilled(); return _QuestLocationStore; } set => _QuestLocationStore = value; }
         public IFormLinkNullableGetter<IQuestGetter> Quest => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IQuestGetter>(_package, _recordData, _QuestLocation);
         #endregion
-        public IReadOnlyList<IDialogTopicSharedInfoGetter> SharedInfos { get; private set; } = [];
+        #region SharedInfos
+        private IReadOnlyList<IDialogTopicSharedInfoGetter> SharedInfosStore = [];
+        public IReadOnlyList<IDialogTopicSharedInfoGetter> SharedInfos { get { EnsureFilled(); return SharedInfosStore; } private set => SharedInfosStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

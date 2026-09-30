@@ -1237,7 +1237,8 @@ namespace Mutagen.Bethesda.Skyrim
         public P3Float Angle => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(0x10, 0xC));
         #region Unknown2
         public ReadOnlyMemorySlice<Byte> Unknown2 => _structData.Span.Slice(0x1C).ToArray();
-        protected int Unknown2EndingPos;
+        private int Unknown2EndingPosStore;
+        protected int Unknown2EndingPos { get { EnsureFilled(); return Unknown2EndingPosStore; } private set => Unknown2EndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

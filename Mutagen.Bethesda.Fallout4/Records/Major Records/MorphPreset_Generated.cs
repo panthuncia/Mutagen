@@ -1441,11 +1441,13 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Index
-        private int? _IndexLocation;
+        private int? _IndexLocationStore;
+        private int? _IndexLocation { get { EnsureFilled(); return _IndexLocationStore; } set => _IndexLocationStore = value; }
         public UInt32? Index => _IndexLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IndexLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter? Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -1457,15 +1459,18 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #endregion
         #region UnknownMPPM
-        private int? _UnknownMPPMLocation;
+        private int? _UnknownMPPMLocationStore;
+        private int? _UnknownMPPMLocation { get { EnsureFilled(); return _UnknownMPPMLocationStore; } set => _UnknownMPPMLocationStore = value; }
         public String? UnknownMPPM => _UnknownMPPMLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _UnknownMPPMLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Texture
-        private int? _TextureLocation;
+        private int? _TextureLocationStore;
+        private int? _TextureLocation { get { EnsureFilled(); return _TextureLocationStore; } set => _TextureLocationStore = value; }
         public IFormLinkNullableGetter<ITextureSetGetter> Texture => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ITextureSetGetter>(_package, _recordData, _TextureLocation);
         #endregion
         #region UnknownMPPF
-        private int? _UnknownMPPFLocation;
+        private int? _UnknownMPPFLocationStore;
+        private int? _UnknownMPPFLocation { get { EnsureFilled(); return _UnknownMPPFLocationStore; } set => _UnknownMPPFLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? UnknownMPPF => _UnknownMPPFLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _UnknownMPPFLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

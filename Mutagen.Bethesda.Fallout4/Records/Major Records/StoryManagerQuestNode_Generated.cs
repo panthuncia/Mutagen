@@ -2012,7 +2012,8 @@ namespace Mutagen.Bethesda.Fallout4
         protected override Type LinkType => typeof(IStoryManagerQuestNodeGetter);
 
 
-        private RangeInt32? _DNAMLocation;
+        private RangeInt32? _DNAMLocationStore;
+        private RangeInt32? _DNAMLocation { get { EnsureFilled(); return _DNAMLocationStore; } set => _DNAMLocationStore = value; }
         #region Flags
         private int _FlagsLocation => _DNAMLocation!.Value.Min;
         private bool _Flags_IsSet => _DNAMLocation.HasValue;
@@ -2024,18 +2025,24 @@ namespace Mutagen.Bethesda.Fallout4
         public StoryManagerQuestNode.QuestFlag QuestFlags => _QuestFlags_IsSet ? (StoryManagerQuestNode.QuestFlag)BinaryPrimitives.ReadUInt16LittleEndian(_recordData.Span.Slice(_QuestFlagsLocation, 0x2)) : default;
         #endregion
         #region MaxConcurrentQuests
-        private int? _MaxConcurrentQuestsLocation;
+        private int? _MaxConcurrentQuestsLocationStore;
+        private int? _MaxConcurrentQuestsLocation { get { EnsureFilled(); return _MaxConcurrentQuestsLocationStore; } set => _MaxConcurrentQuestsLocationStore = value; }
         public UInt32? MaxConcurrentQuests => _MaxConcurrentQuestsLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaxConcurrentQuestsLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region MaxNumQuestsToRun
-        private int? _MaxNumQuestsToRunLocation;
+        private int? _MaxNumQuestsToRunLocationStore;
+        private int? _MaxNumQuestsToRunLocation { get { EnsureFilled(); return _MaxNumQuestsToRunLocationStore; } set => _MaxNumQuestsToRunLocationStore = value; }
         public UInt32? MaxNumQuestsToRun => _MaxNumQuestsToRunLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaxNumQuestsToRunLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region HoursUntilReset
-        private int? _HoursUntilResetLocation;
+        private int? _HoursUntilResetLocationStore;
+        private int? _HoursUntilResetLocation { get { EnsureFilled(); return _HoursUntilResetLocationStore; } set => _HoursUntilResetLocationStore = value; }
         public Single? HoursUntilReset => _HoursUntilResetLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _HoursUntilResetLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
-        public IReadOnlyList<IStoryManagerQuestGetter> Quests { get; private set; } = [];
+        #region Quests
+        private IReadOnlyList<IStoryManagerQuestGetter> QuestsStore = [];
+        public IReadOnlyList<IStoryManagerQuestGetter> Quests { get { EnsureFilled(); return QuestsStore; } private set => QuestsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -2057,6 +2064,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new StoryManagerQuestNodeBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => StoryManagerQuestNodeFill((StoryManagerQuestNodeBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void StoryManagerQuestNodeFill(
+            StoryManagerQuestNodeBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2064,9 +2088,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new StoryManagerQuestNodeBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2079,7 +2101,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IStoryManagerQuestNodeGetter StoryManagerQuestNodeFactory(

@@ -1439,18 +1439,23 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        private RangeInt32? _STRDLocation;
+        private RangeInt32? _STRDLocationStore;
+        private RangeInt32? _STRDLocation { get { EnsureFilled(); return _STRDLocationStore; } set => _STRDLocationStore = value; }
         #region Traversals
         private int _TraversalsLocation => _STRDLocation!.Value.Min;
         private bool _Traversals_IsSet => _STRDLocation.HasValue;
-        public IReadOnlyList<ITraversalReferenceGetter> Traversals { get; private set; } = null!;
-        protected int TraversalsEndingPos;
+        private IReadOnlyList<ITraversalReferenceGetter> TraversalsStore = null!;
+        public IReadOnlyList<ITraversalReferenceGetter> Traversals { get { EnsureFilled(); return TraversalsStore; } private set => TraversalsStore = value; }
+        private int TraversalsEndingPosStore;
+        protected int TraversalsEndingPos { get { EnsureFilled(); return TraversalsEndingPosStore; } private set => TraversalsEndingPosStore = value; }
         #endregion
         #region ActivatorTraversals
         private int _ActivatorTraversalsLocation => TraversalsEndingPos;
         private bool _ActivatorTraversals_IsSet => _STRDLocation.HasValue;
-        public IReadOnlyList<IStoredTraversalsComponentItemGetter> ActivatorTraversals { get; private set; } = null!;
-        protected int ActivatorTraversalsEndingPos;
+        private IReadOnlyList<IStoredTraversalsComponentItemGetter> ActivatorTraversalsStore = null!;
+        public IReadOnlyList<IStoredTraversalsComponentItemGetter> ActivatorTraversals { get { EnsureFilled(); return ActivatorTraversalsStore; } private set => ActivatorTraversalsStore = value; }
+        private int ActivatorTraversalsEndingPosStore;
+        protected int ActivatorTraversalsEndingPos { get { EnsureFilled(); return ActivatorTraversalsEndingPosStore; } private set => ActivatorTraversalsEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

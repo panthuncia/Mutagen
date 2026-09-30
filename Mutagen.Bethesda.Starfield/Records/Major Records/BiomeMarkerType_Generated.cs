@@ -1312,11 +1312,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region MarkerType
-        private int? _MarkerTypeLocation;
+        private int? _MarkerTypeLocationStore;
+        private int? _MarkerTypeLocation { get { EnsureFilled(); return _MarkerTypeLocationStore; } set => _MarkerTypeLocationStore = value; }
         public IFormLinkNullableGetter<IKeywordGetter> MarkerType => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _MarkerTypeLocation);
         #endregion
         #region Keywords
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get; private set; }
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? KeywordsStore;
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get { EnsureFilled(); return KeywordsStore; } private set => KeywordsStore = value; }
         IReadOnlyList<IFormLinkGetter<IKeywordCommonGetter>>? IKeywordedGetter.Keywords => this.Keywords;
         #endregion
         partial void CustomFactoryEnd(

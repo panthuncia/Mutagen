@@ -1793,11 +1793,18 @@ namespace Mutagen.Bethesda.Fallout3
 
 
         #region Version
-        private int? _VersionLocation;
+        private int? _VersionLocationStore;
+        private int? _VersionLocation { get { EnsureFilled(); return _VersionLocationStore; } set => _VersionLocationStore = value; }
         public UInt32? Version => _VersionLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _VersionLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
-        public IReadOnlyList<INavigationMeshInfoGetter> Infos { get; private set; } = [];
-        public IReadOnlyList<INavigationConnectionInfoGetter> Connections { get; private set; } = [];
+        #region Infos
+        private IReadOnlyList<INavigationMeshInfoGetter> InfosStore = [];
+        public IReadOnlyList<INavigationMeshInfoGetter> Infos { get { EnsureFilled(); return InfosStore; } private set => InfosStore = value; }
+        #endregion
+        #region Connections
+        private IReadOnlyList<INavigationConnectionInfoGetter> ConnectionsStore = [];
+        public IReadOnlyList<INavigationConnectionInfoGetter> Connections { get { EnsureFilled(); return ConnectionsStore; } private set => ConnectionsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -1819,6 +1826,23 @@ namespace Mutagen.Bethesda.Fallout3
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new NavigationMeshInfoMapBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => NavigationMeshInfoMapFill((NavigationMeshInfoMapBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void NavigationMeshInfoMapFill(
+            NavigationMeshInfoMapBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -1826,9 +1850,7 @@ namespace Mutagen.Bethesda.Fallout3
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new NavigationMeshInfoMapBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -1841,7 +1863,6 @@ namespace Mutagen.Bethesda.Fallout3
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static INavigationMeshInfoMapGetter NavigationMeshInfoMapFactory(

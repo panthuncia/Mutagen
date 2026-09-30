@@ -1292,19 +1292,23 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region StartBoneName
-        private int? _StartBoneNameLocation;
+        private int? _StartBoneNameLocationStore;
+        private int? _StartBoneNameLocation { get { EnsureFilled(); return _StartBoneNameLocationStore; } set => _StartBoneNameLocationStore = value; }
         public String? StartBoneName => _StartBoneNameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _StartBoneNameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region EndBoneName
-        private int? _EndBoneNameLocation;
+        private int? _EndBoneNameLocationStore;
+        private int? _EndBoneNameLocation { get { EnsureFilled(); return _EndBoneNameLocationStore; } set => _EndBoneNameLocationStore = value; }
         public String? EndBoneName => _EndBoneNameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EndBoneNameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Radius
-        private int? _RadiusLocation;
+        private int? _RadiusLocationStore;
+        private int? _RadiusLocation { get { EnsureFilled(); return _RadiusLocationStore; } set => _RadiusLocationStore = value; }
         public Single? Radius => _RadiusLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _RadiusLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region Weight
-        private int? _WeightLocation;
+        private int? _WeightLocationStore;
+        private int? _WeightLocation { get { EnsureFilled(); return _WeightLocationStore; } set => _WeightLocationStore = value; }
         public Single? Weight => _WeightLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _WeightLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         partial void CustomFactoryEnd(

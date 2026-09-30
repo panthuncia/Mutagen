@@ -1375,23 +1375,28 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region LocationName
-        private int? _LocationNameLocation;
+        private int? _LocationNameLocationStore;
+        private int? _LocationNameLocation { get { EnsureFilled(); return _LocationNameLocationStore; } set => _LocationNameLocationStore = value; }
         public String? LocationName => _LocationNameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LocationNameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region Location
-        private int? _LocationLocation;
+        private int? _LocationLocationStore;
+        private int? _LocationLocation { get { EnsureFilled(); return _LocationLocationStore; } set => _LocationLocationStore = value; }
         public IFormLinkNullableGetter<IMediaLocationControllerGetter> Location => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IMediaLocationControllerGetter>(_package, _recordData, _LocationLocation);
         #endregion
         #region UseControllerValues
-        private int? _UseControllerValuesLocation;
+        private int? _UseControllerValuesLocationStore;
+        private int? _UseControllerValuesLocation { get { EnsureFilled(); return _UseControllerValuesLocationStore; } set => _UseControllerValuesLocationStore = value; }
         public Boolean? UseControllerValues => _UseControllerValuesLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _UseControllerValuesLocation.Value, _package.MetaData.Constants)) >= 1 : default(Boolean?);
         #endregion
         #region Layer2TriggerPercent
-        private int? _Layer2TriggerPercentLocation;
+        private int? _Layer2TriggerPercentLocationStore;
+        private int? _Layer2TriggerPercentLocation { get { EnsureFilled(); return _Layer2TriggerPercentLocationStore; } set => _Layer2TriggerPercentLocationStore = value; }
         public Single? Layer2TriggerPercent => _Layer2TriggerPercentLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _Layer2TriggerPercentLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region Layer3TriggerPercent
-        private int? _Layer3TriggerPercentLocation;
+        private int? _Layer3TriggerPercentLocationStore;
+        private int? _Layer3TriggerPercentLocation { get { EnsureFilled(); return _Layer3TriggerPercentLocationStore; } set => _Layer3TriggerPercentLocationStore = value; }
         public Single? Layer3TriggerPercent => _Layer3TriggerPercentLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _Layer3TriggerPercentLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         partial void CustomFactoryEnd(

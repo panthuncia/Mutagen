@@ -4001,9 +4001,16 @@ namespace Mutagen.Bethesda.Fallout3
         protected override Type LinkType => typeof(IPackageGetter);
 
 
-        public IPackageLocationGetter? Location { get; private set; }
-        public IPackageLocationGetter? Location2 { get; private set; }
-        private RangeInt32? _PSDTLocation;
+        #region Location
+        private IPackageLocationGetter? LocationStore;
+        public IPackageLocationGetter? Location { get { EnsureFilled(); return LocationStore; } private set => LocationStore = value; }
+        #endregion
+        #region Location2
+        private IPackageLocationGetter? Location2Store;
+        public IPackageLocationGetter? Location2 { get { EnsureFilled(); return Location2Store; } private set => Location2Store = value; }
+        #endregion
+        private RangeInt32? _PSDTLocationStore;
+        private RangeInt32? _PSDTLocation { get { EnsureFilled(); return _PSDTLocationStore; } set => _PSDTLocationStore = value; }
         #region ScheduleMonth
         private int _ScheduleMonthLocation => _PSDTLocation!.Value.Min;
         private bool _ScheduleMonth_IsSet => _PSDTLocation.HasValue;
@@ -4029,23 +4036,36 @@ namespace Mutagen.Bethesda.Fallout3
         private bool _Duration_IsSet => _PSDTLocation.HasValue;
         public Int32 Duration => _Duration_IsSet ? BinaryPrimitives.ReadInt32LittleEndian(_recordData.Slice(_DurationLocation, 4)) : default(Int32);
         #endregion
-        public IPackageTargetGetter? Target { get; private set; }
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
-        public IPackageIdlesGetter? IdleAnimations { get; private set; }
+        #region Target
+        private IPackageTargetGetter? TargetStore;
+        public IPackageTargetGetter? Target { get { EnsureFilled(); return TargetStore; } private set => TargetStore = value; }
+        #endregion
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
+        #region IdleAnimations
+        private IPackageIdlesGetter? IdleAnimationsStore;
+        public IPackageIdlesGetter? IdleAnimations { get { EnsureFilled(); return IdleAnimationsStore; } private set => IdleAnimationsStore = value; }
+        #endregion
         #region CombatStyle
-        private int? _CombatStyleLocation;
+        private int? _CombatStyleLocationStore;
+        private int? _CombatStyleLocation { get { EnsureFilled(); return _CombatStyleLocationStore; } set => _CombatStyleLocationStore = value; }
         public IFormLinkNullableGetter<ICombatStyleGetter> CombatStyle => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ICombatStyleGetter>(_package, _recordData, _CombatStyleLocation);
         #endregion
         #region IsEatMarker
-        private int? _IsEatMarkerLocation;
+        private int? _IsEatMarkerLocationStore;
+        private int? _IsEatMarkerLocation { get { EnsureFilled(); return _IsEatMarkerLocationStore; } set => _IsEatMarkerLocationStore = value; }
         public Boolean IsEatMarker => _IsEatMarkerLocation.HasValue ? true : default(Boolean);
         #endregion
         #region EscortDistance
-        private int? _EscortDistanceLocation;
+        private int? _EscortDistanceLocationStore;
+        private int? _EscortDistanceLocation { get { EnsureFilled(); return _EscortDistanceLocationStore; } set => _EscortDistanceLocationStore = value; }
         public UInt32? EscortDistance => _EscortDistanceLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EscortDistanceLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region FollowStartLocationTriggerRadius
-        private int? _FollowStartLocationTriggerRadiusLocation;
+        private int? _FollowStartLocationTriggerRadiusLocationStore;
+        private int? _FollowStartLocationTriggerRadiusLocation { get { EnsureFilled(); return _FollowStartLocationTriggerRadiusLocationStore; } set => _FollowStartLocationTriggerRadiusLocationStore = value; }
         public Single? FollowStartLocationTriggerRadius => _FollowStartLocationTriggerRadiusLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FollowStartLocationTriggerRadiusLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region IsRepeatable
@@ -4057,26 +4077,45 @@ namespace Mutagen.Bethesda.Fallout3
         public Boolean? IsRepeatable => GetIsRepeatableCustom();
         #endregion
         #region WeaponData
-        private RangeInt32? _WeaponDataLocation;
+        private RangeInt32? _WeaponDataLocationStore;
+        private RangeInt32? _WeaponDataLocation { get { EnsureFilled(); return _WeaponDataLocationStore; } set => _WeaponDataLocationStore = value; }
         public IPackageWeaponDataGetter? WeaponData => _WeaponDataLocation.HasValue ? PackageWeaponDataBinaryOverlay.PackageWeaponDataFactory(_recordData.Slice(_WeaponDataLocation!.Value.Min), _package) : default;
         #endregion
-        public IPackageTargetGetter? Target2 { get; private set; }
+        #region Target2
+        private IPackageTargetGetter? Target2Store;
+        public IPackageTargetGetter? Target2 { get { EnsureFilled(); return Target2Store; } private set => Target2Store = value; }
+        #endregion
         #region IsUseItem
-        private int? _IsUseItemLocation;
+        private int? _IsUseItemLocationStore;
+        private int? _IsUseItemLocation { get { EnsureFilled(); return _IsUseItemLocationStore; } set => _IsUseItemLocationStore = value; }
         public Boolean IsUseItem => _IsUseItemLocation.HasValue ? true : default(Boolean);
         #endregion
         #region IsAmbush
-        private int? _IsAmbushLocation;
+        private int? _IsAmbushLocationStore;
+        private int? _IsAmbushLocation { get { EnsureFilled(); return _IsAmbushLocationStore; } set => _IsAmbushLocationStore = value; }
         public Boolean IsAmbush => _IsAmbushLocation.HasValue ? true : default(Boolean);
         #endregion
         #region DialogueData
-        private RangeInt32? _DialogueDataLocation;
+        private RangeInt32? _DialogueDataLocationStore;
+        private RangeInt32? _DialogueDataLocation { get { EnsureFilled(); return _DialogueDataLocationStore; } set => _DialogueDataLocationStore = value; }
         public IPackageDialogueDataGetter? DialogueData => _DialogueDataLocation.HasValue ? PackageDialogueDataBinaryOverlay.PackageDialogueDataFactory(_recordData.Slice(_DialogueDataLocation!.Value.Min), _package) : default;
         #endregion
-        public IPackageLocationGetter? DialogueLocation { get; private set; }
-        public IPackageEventGetter? OnBegin { get; private set; }
-        public IPackageEventGetter? OnEnd { get; private set; }
-        public IPackageEventGetter? OnChange { get; private set; }
+        #region DialogueLocation
+        private IPackageLocationGetter? DialogueLocationStore;
+        public IPackageLocationGetter? DialogueLocation { get { EnsureFilled(); return DialogueLocationStore; } private set => DialogueLocationStore = value; }
+        #endregion
+        #region OnBegin
+        private IPackageEventGetter? OnBeginStore;
+        public IPackageEventGetter? OnBegin { get { EnsureFilled(); return OnBeginStore; } private set => OnBeginStore = value; }
+        #endregion
+        #region OnEnd
+        private IPackageEventGetter? OnEndStore;
+        public IPackageEventGetter? OnEnd { get { EnsureFilled(); return OnEndStore; } private set => OnEndStore = value; }
+        #endregion
+        #region OnChange
+        private IPackageEventGetter? OnChangeStore;
+        public IPackageEventGetter? OnChange { get { EnsureFilled(); return OnChangeStore; } private set => OnChangeStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

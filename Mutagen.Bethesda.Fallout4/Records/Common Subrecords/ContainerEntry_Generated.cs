@@ -1238,12 +1238,14 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Item
-        private RangeInt32? _ItemLocation;
+        private RangeInt32? _ItemLocationStore;
+        private RangeInt32? _ItemLocation { get { EnsureFilled(); return _ItemLocationStore; } set => _ItemLocationStore = value; }
         private IContainerItemGetter? _Item => _ItemLocation.HasValue ? ContainerItemBinaryOverlay.ContainerItemFactory(_recordData.Slice(_ItemLocation!.Value.Min), _package) : default;
         public IContainerItemGetter Item => _Item ?? new ContainerItem();
         #endregion
         #region Data
-        private RangeInt32? _DataLocation;
+        private RangeInt32? _DataLocationStore;
+        private RangeInt32? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
         public IExtraDataGetter? Data => _DataLocation.HasValue ? ExtraDataBinaryOverlay.ExtraDataFactory(_recordData.Slice(_DataLocation!.Value.Min), _package) : default;
         #endregion
         partial void CustomFactoryEnd(

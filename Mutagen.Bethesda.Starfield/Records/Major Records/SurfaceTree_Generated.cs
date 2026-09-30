@@ -2359,24 +2359,33 @@ namespace Mutagen.Bethesda.Starfield
         protected override Type LinkType => typeof(ISurfaceTreeGetter);
 
 
-        public IReadOnlyList<IAComponentGetter> Components { get; private set; } = [];
+        #region Components
+        private IReadOnlyList<IAComponentGetter> ComponentsStore = [];
+        public IReadOnlyList<IAComponentGetter> Components { get { EnsureFilled(); return ComponentsStore; } private set => ComponentsStore = value; }
+        #endregion
         #region CNAM
-        private int? _CNAMLocation;
+        private int? _CNAMLocationStore;
+        private int? _CNAMLocation { get { EnsureFilled(); return _CNAMLocationStore; } set => _CNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte> CNAM => _CNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _CNAMLocation.Value, _package.MetaData.Constants) : ReadOnlyMemorySlice<byte>.Empty;
         #endregion
         #region DNAM
-        private int? _DNAMLocation;
+        private int? _DNAMLocationStore;
+        private int? _DNAMLocation { get { EnsureFilled(); return _DNAMLocationStore; } set => _DNAMLocationStore = value; }
         public ReadOnlyMemorySlice<Byte> DNAM => _DNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DNAMLocation.Value, _package.MetaData.Constants) : ReadOnlyMemorySlice<byte>.Empty;
         #endregion
         #region SurfacePatterns
-        private int? _SurfacePatternsLengthOverride;
-        private int? _SurfacePatternsLocation;
+        private int? _SurfacePatternsLengthOverrideStore;
+        private int? _SurfacePatternsLengthOverride { get { EnsureFilled(); return _SurfacePatternsLengthOverrideStore; } set => _SurfacePatternsLengthOverrideStore = value; }
+        private int? _SurfacePatternsLocationStore;
+        private int? _SurfacePatternsLocation { get { EnsureFilled(); return _SurfacePatternsLocationStore; } set => _SurfacePatternsLocationStore = value; }
         private readonly static ReadOnlyMemorySlice<IFormLinkGetter<ISurfacePatternGetter>> _defaultSurfacePatterns = ArrayExt.Create(65536, FormLink<ISurfacePatternGetter>.Null);
         public ReadOnlyMemorySlice<IFormLinkGetter<ISurfacePatternGetter>> SurfacePatterns => _SurfacePatternsLocation.HasValue ? BinaryOverlayArrayHelper.FormLinkSliceFromFixedSize<ISurfacePatternGetter>(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SurfacePatternsLocation.Value, _package.MetaData.Constants, TypedParseParams.FromLengthOverride(_SurfacePatternsLengthOverride)), amount: 65536, masterReferences: _package.MetaData.MasterReferences) : _defaultSurfacePatterns;
         #endregion
         #region GNAM
-        private int? _GNAMLocation;
-        private int? _GNAMLengthOverride;
+        private int? _GNAMLocationStore;
+        private int? _GNAMLocation { get { EnsureFilled(); return _GNAMLocationStore; } set => _GNAMLocationStore = value; }
+        private int? _GNAMLengthOverrideStore;
+        private int? _GNAMLengthOverride { get { EnsureFilled(); return _GNAMLengthOverrideStore; } set => _GNAMLengthOverrideStore = value; }
         public ReadOnlyMemorySlice<Byte>? GNAM => PluginUtilityTranslation.ReadByteArrayWithOverflow(
             _recordData,
             _package.MetaData.Constants,
@@ -2384,14 +2393,18 @@ namespace Mutagen.Bethesda.Starfield
             _GNAMLengthOverride);
         #endregion
         #region SurfacePatterns2
-        private int? _SurfacePatterns2LengthOverride;
-        private int? _SurfacePatterns2Location;
+        private int? _SurfacePatterns2LengthOverrideStore;
+        private int? _SurfacePatterns2LengthOverride { get { EnsureFilled(); return _SurfacePatterns2LengthOverrideStore; } set => _SurfacePatterns2LengthOverrideStore = value; }
+        private int? _SurfacePatterns2LocationStore;
+        private int? _SurfacePatterns2Location { get { EnsureFilled(); return _SurfacePatterns2LocationStore; } set => _SurfacePatterns2LocationStore = value; }
         private readonly static ReadOnlyMemorySlice<IFormLinkGetter<ISurfacePatternGetter>> _defaultSurfacePatterns2 = ArrayExt.Create(65536, FormLink<ISurfacePatternGetter>.Null);
         public ReadOnlyMemorySlice<IFormLinkGetter<ISurfacePatternGetter>> SurfacePatterns2 => _SurfacePatterns2Location.HasValue ? BinaryOverlayArrayHelper.FormLinkSliceFromFixedSize<ISurfacePatternGetter>(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SurfacePatterns2Location.Value, _package.MetaData.Constants, TypedParseParams.FromLengthOverride(_SurfacePatterns2LengthOverride)), amount: 65536, masterReferences: _package.MetaData.MasterReferences) : _defaultSurfacePatterns2;
         #endregion
         #region GNAM2
-        private int? _GNAM2Location;
-        private int? _GNAM2LengthOverride;
+        private int? _GNAM2LocationStore;
+        private int? _GNAM2Location { get { EnsureFilled(); return _GNAM2LocationStore; } set => _GNAM2LocationStore = value; }
+        private int? _GNAM2LengthOverrideStore;
+        private int? _GNAM2LengthOverride { get { EnsureFilled(); return _GNAM2LengthOverrideStore; } set => _GNAM2LengthOverrideStore = value; }
         public ReadOnlyMemorySlice<Byte>? GNAM2 => PluginUtilityTranslation.ReadByteArrayWithOverflow(
             _recordData,
             _package.MetaData.Constants,
@@ -2399,7 +2412,8 @@ namespace Mutagen.Bethesda.Starfield
             _GNAM2LengthOverride);
         #endregion
         #region Filter
-        private int? _FilterLocation;
+        private int? _FilterLocationStore;
+        private int? _FilterLocation { get { EnsureFilled(); return _FilterLocationStore; } set => _FilterLocationStore = value; }
         public String Filter => _FilterLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FilterLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         partial void CustomFactoryEnd(
@@ -2423,6 +2437,23 @@ namespace Mutagen.Bethesda.Starfield
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new SurfaceTreeBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => SurfaceTreeFill((SurfaceTreeBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void SurfaceTreeFill(
+            SurfaceTreeBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -2430,9 +2461,7 @@ namespace Mutagen.Bethesda.Starfield
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new SurfaceTreeBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -2445,7 +2474,6 @@ namespace Mutagen.Bethesda.Starfield
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static ISurfaceTreeGetter SurfaceTreeFactory(

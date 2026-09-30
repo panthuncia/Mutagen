@@ -1145,7 +1145,8 @@ namespace Mutagen.Bethesda.Starfield
         public IFormLinkGetter<ITraversalGetter> Traversal => FormLinkBinaryTranslation.Instance.OverlayFactory<ITraversalGetter>(_package, _structData.Span.Slice(0x0, 0x4));
         #region Unknown
         public ReadOnlyMemorySlice<Byte> Unknown => _structData.Span.Slice(0x4).ToArray();
-        protected int UnknownEndingPos;
+        private int UnknownEndingPosStore;
+        protected int UnknownEndingPos { get { EnsureFilled(); return UnknownEndingPosStore; } private set => UnknownEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

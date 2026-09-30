@@ -1431,21 +1431,28 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public IChargenGetter? Chargen { get; private set; }
+        #region Chargen
+        private IChargenGetter? ChargenStore;
+        public IChargenGetter? Chargen { get { EnsureFilled(); return ChargenStore; } private set => ChargenStore = value; }
+        #endregion
         #region BodySkinTones
-        private int? _BodySkinTonesLocation;
+        private int? _BodySkinTonesLocationStore;
+        private int? _BodySkinTonesLocation { get { EnsureFilled(); return _BodySkinTonesLocationStore; } set => _BodySkinTonesLocationStore = value; }
         public String? BodySkinTones => _BodySkinTonesLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BodySkinTonesLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region HandSkinTones
-        private int? _HandSkinTonesLocation;
+        private int? _HandSkinTonesLocationStore;
+        private int? _HandSkinTonesLocation { get { EnsureFilled(); return _HandSkinTonesLocationStore; } set => _HandSkinTonesLocationStore = value; }
         public String? HandSkinTones => _HandSkinTonesLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HandSkinTonesLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region FCTP
-        private int? _FCTPLocation;
+        private int? _FCTPLocationStore;
+        private int? _FCTPLocation { get { EnsureFilled(); return _FCTPLocationStore; } set => _FCTPLocationStore = value; }
         public String? FCTP => _FCTPLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FCTPLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region FaceSkinTones
-        private int? _FaceSkinTonesLocation;
+        private int? _FaceSkinTonesLocationStore;
+        private int? _FaceSkinTonesLocation { get { EnsureFilled(); return _FaceSkinTonesLocationStore; } set => _FaceSkinTonesLocationStore = value; }
         public String? FaceSkinTones => _FaceSkinTonesLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FaceSkinTonesLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(

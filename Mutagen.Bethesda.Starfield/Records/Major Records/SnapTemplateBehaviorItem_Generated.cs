@@ -1506,20 +1506,27 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region ENAM
-        private int? _ENAMLocation;
+        private int? _ENAMLocationStore;
+        private int? _ENAMLocation { get { EnsureFilled(); return _ENAMLocationStore; } set => _ENAMLocationStore = value; }
         public Int32 ENAM => _ENAMLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ENAMLocation.Value, _package.MetaData.Constants)) : default(Int32);
         #endregion
         #region BaseObject
-        private int? _BaseObjectLocation;
+        private int? _BaseObjectLocationStore;
+        private int? _BaseObjectLocation { get { EnsureFilled(); return _BaseObjectLocationStore; } set => _BaseObjectLocationStore = value; }
         public IFormLinkGetter<IBaseObjectGetter> BaseObject => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IBaseObjectGetter>(_package, _recordData, _BaseObjectLocation);
         #endregion
-        public IReadOnlyList<IConditionGetter>? Conditions { get; private set; }
+        #region Conditions
+        private IReadOnlyList<IConditionGetter>? ConditionsStore;
+        public IReadOnlyList<IConditionGetter>? Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region SnapTemplateNode
-        private int? _SnapTemplateNodeLocation;
+        private int? _SnapTemplateNodeLocationStore;
+        private int? _SnapTemplateNodeLocation { get { EnsureFilled(); return _SnapTemplateNodeLocationStore; } set => _SnapTemplateNodeLocationStore = value; }
         public IFormLinkGetter<ISnapTemplateNodeGetter> SnapTemplateNode => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ISnapTemplateNodeGetter>(_package, _recordData, _SnapTemplateNodeLocation);
         #endregion
         #region Keyword
-        private int? _KeywordLocation;
+        private int? _KeywordLocationStore;
+        private int? _KeywordLocation { get { EnsureFilled(); return _KeywordLocationStore; } set => _KeywordLocationStore = value; }
         public IFormLinkGetter<IKeywordGetter> Keyword => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IKeywordGetter>(_package, _recordData, _KeywordLocation);
         #endregion
         partial void CustomFactoryEnd(

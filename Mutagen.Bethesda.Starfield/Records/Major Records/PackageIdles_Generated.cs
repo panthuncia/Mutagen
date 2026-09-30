@@ -1380,7 +1380,8 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Type
-        private int? _TypeLocation;
+        private int? _TypeLocationStore;
+        private int? _TypeLocation { get { EnsureFilled(); return _TypeLocationStore; } set => _TypeLocationStore = value; }
         public PackageIdles.Types Type => EnumBinaryTranslation<PackageIdles.Types, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_TypeLocation, _recordData, _package, 1);
         #endregion
         #region TimerSetting

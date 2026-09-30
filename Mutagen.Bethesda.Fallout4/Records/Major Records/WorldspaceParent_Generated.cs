@@ -1158,11 +1158,13 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Worldspace
-        private int? _WorldspaceLocation;
+        private int? _WorldspaceLocationStore;
+        private int? _WorldspaceLocation { get { EnsureFilled(); return _WorldspaceLocationStore; } set => _WorldspaceLocationStore = value; }
         public IFormLinkGetter<IWorldspaceGetter> Worldspace => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IWorldspaceGetter>(_package, _recordData, _WorldspaceLocation);
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public WorldspaceParent.Flag Flags => EnumBinaryTranslation<WorldspaceParent.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_FlagsLocation, _recordData, _package, 2);
         #endregion
         partial void CustomFactoryEnd(

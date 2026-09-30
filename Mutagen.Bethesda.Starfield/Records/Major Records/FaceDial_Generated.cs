@@ -1154,11 +1154,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Index
-        private int? _IndexLocation;
+        private int? _IndexLocationStore;
+        private int? _IndexLocation { get { EnsureFilled(); return _IndexLocationStore; } set => _IndexLocationStore = value; }
         public UInt32? Index => _IndexLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IndexLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
         #region Label
-        private int? _LabelLocation;
+        private int? _LabelLocationStore;
+        private int? _LabelLocation { get { EnsureFilled(); return _LabelLocationStore; } set => _LabelLocationStore = value; }
         public ITranslatedStringGetter? Label => _LabelLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LabelLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : default(TranslatedString?);
         #endregion
         partial void CustomFactoryEnd(

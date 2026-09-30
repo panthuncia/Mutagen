@@ -1239,7 +1239,8 @@ namespace Mutagen.Bethesda.Fallout4
         public IFormLinkGetter<IComplexLocationGetter> Location => FormLinkBinaryTranslation.Instance.OverlayFactory<IComplexLocationGetter>(_package, _structData.Span.Slice(0x0, 0x4));
         #region Coordinates
         public IReadOnlyList<P2Int16> Coordinates => BinaryOverlayList.FactoryByStartIndex<P2Int16>(_structData.Slice(0x4), _package, 4, (s, p) => P2Int16BinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(s, swapCoords: true));
-        protected int CoordinatesEndingPos;
+        private int CoordinatesEndingPosStore;
+        protected int CoordinatesEndingPos { get { EnsureFilled(); return CoordinatesEndingPosStore; } private set => CoordinatesEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

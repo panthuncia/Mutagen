@@ -1275,10 +1275,14 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public ActivateParents.Flag Flags => EnumBinaryTranslation<ActivateParents.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecord(_FlagsLocation, _recordData, _package, 1);
         #endregion
-        public IReadOnlyList<IActivateParentGetter> Parents { get; private set; } = [];
+        #region Parents
+        private IReadOnlyList<IActivateParentGetter> ParentsStore = [];
+        public IReadOnlyList<IActivateParentGetter> Parents { get { EnsureFilled(); return ParentsStore; } private set => ParentsStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

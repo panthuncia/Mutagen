@@ -1196,7 +1196,8 @@ namespace Mutagen.Bethesda.Fallout4
 
         #region Data
         public IReadOnlyList<Single> Data => BinaryOverlayList.FactoryByCountLength<Single>(_structData, _package, 4, countLength: 4, (s, p) => s.Float());
-        protected int DataEndingPos;
+        private int DataEndingPosStore;
+        protected int DataEndingPos { get { EnsureFilled(); return DataEndingPosStore; } private set => DataEndingPosStore = value; }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

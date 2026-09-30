@@ -1245,7 +1245,8 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        private RangeInt32? _WLEVLocation;
+        private RangeInt32? _WLEVLocationStore;
+        private RangeInt32? _WLEVLocation { get { EnsureFilled(); return _WLEVLocationStore; } set => _WLEVLocationStore = value; }
         #region NorthwestCellCoords
         private int _NorthwestCellCoordsLocation => _WLEVLocation!.Value.Min;
         private bool _NorthwestCellCoords_IsSet => _WLEVLocation.HasValue;
@@ -1257,8 +1258,10 @@ namespace Mutagen.Bethesda.Fallout4
         public P2UInt8 NorthwestCellSize => _NorthwestCellSize_IsSet ? P2UInt8BinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_recordData.Slice(_NorthwestCellSizeLocation, 2)) : default(P2UInt8);
         #endregion
         #region Data
-        private int? _DataLocation;
-        private int? _DataLengthOverride;
+        private int? _DataLocationStore;
+        private int? _DataLocation { get { EnsureFilled(); return _DataLocationStore; } set => _DataLocationStore = value; }
+        private int? _DataLengthOverrideStore;
+        private int? _DataLengthOverride { get { EnsureFilled(); return _DataLengthOverrideStore; } set => _DataLengthOverrideStore = value; }
         public ReadOnlyMemorySlice<Byte>? Data => PluginUtilityTranslation.ReadByteArrayWithOverflow(
             _recordData,
             _package.MetaData.Constants,

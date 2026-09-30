@@ -1533,20 +1533,27 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public QuestLogEntry.Flag? Flags => EnumBinaryTranslation<QuestLogEntry.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 1);
         #endregion
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region Entry
-        private int? _EntryLocation;
+        private int? _EntryLocationStore;
+        private int? _EntryLocation { get { EnsureFilled(); return _EntryLocationStore; } set => _EntryLocationStore = value; }
         public String? Entry => _EntryLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EntryLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region EmbeddedScript
-        private IScriptFieldsGetter? _EmbeddedScript;
+        private IScriptFieldsGetter? _EmbeddedScriptStore;
+        private IScriptFieldsGetter? _EmbeddedScript { get { EnsureFilled(); return _EmbeddedScriptStore; } set => _EmbeddedScriptStore = value; }
         public IScriptFieldsGetter EmbeddedScript => _EmbeddedScript ?? new ScriptFields();
         #endregion
         #region NextQuest
-        private int? _NextQuestLocation;
+        private int? _NextQuestLocationStore;
+        private int? _NextQuestLocation { get { EnsureFilled(); return _NextQuestLocationStore; } set => _NextQuestLocationStore = value; }
         public IFormLinkNullableGetter<IQuestGetter> NextQuest => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IQuestGetter>(_package, _recordData, _NextQuestLocation);
         #endregion
         partial void CustomFactoryEnd(

@@ -4558,30 +4558,37 @@ namespace Mutagen.Bethesda.Fallout4
 
 
         #region FillTexture
-        private int? _FillTextureLocation;
+        private int? _FillTextureLocationStore;
+        private int? _FillTextureLocation { get { EnsureFilled(); return _FillTextureLocationStore; } set => _FillTextureLocationStore = value; }
         public String? FillTexture => _FillTextureLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FillTextureLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ParticleShaderTexture
-        private int? _ParticleShaderTextureLocation;
+        private int? _ParticleShaderTextureLocationStore;
+        private int? _ParticleShaderTextureLocation { get { EnsureFilled(); return _ParticleShaderTextureLocationStore; } set => _ParticleShaderTextureLocationStore = value; }
         public String? ParticleShaderTexture => _ParticleShaderTextureLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ParticleShaderTextureLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region HolesTexture
-        private int? _HolesTextureLocation;
+        private int? _HolesTextureLocationStore;
+        private int? _HolesTextureLocation { get { EnsureFilled(); return _HolesTextureLocationStore; } set => _HolesTextureLocationStore = value; }
         public String? HolesTexture => _HolesTextureLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HolesTextureLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region MembranePaletteTexture
-        private int? _MembranePaletteTextureLocation;
+        private int? _MembranePaletteTextureLocationStore;
+        private int? _MembranePaletteTextureLocation { get { EnsureFilled(); return _MembranePaletteTextureLocationStore; } set => _MembranePaletteTextureLocationStore = value; }
         public String? MembranePaletteTexture => _MembranePaletteTextureLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MembranePaletteTextureLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ParticlePaletteTexture
-        private int? _ParticlePaletteTextureLocation;
+        private int? _ParticlePaletteTextureLocationStore;
+        private int? _ParticlePaletteTextureLocation { get { EnsureFilled(); return _ParticlePaletteTextureLocationStore; } set => _ParticlePaletteTextureLocationStore = value; }
         public String? ParticlePaletteTexture => _ParticlePaletteTextureLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ParticlePaletteTextureLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region DATA
-        private int? _DATALocation;
+        private int? _DATALocationStore;
+        private int? _DATALocation { get { EnsureFilled(); return _DATALocationStore; } set => _DATALocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? DATA => _DATALocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DATALocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
-        private RangeInt32? _DNAMLocation;
+        private RangeInt32? _DNAMLocationStore;
+        private RangeInt32? _DNAMLocation { get { EnsureFilled(); return _DNAMLocationStore; } set => _DNAMLocationStore = value; }
         #region Unknown
         private int _UnknownLocation => _DNAMLocation!.Value.Min;
         private bool _Unknown_IsSet => _DNAMLocation.HasValue && _package.FormVersion!.FormVersion!.Value < 106;
@@ -4813,7 +4820,10 @@ namespace Mutagen.Bethesda.Fallout4
         public UInt16 Unknown6 => _Unknown6_IsSet ? BinaryPrimitives.ReadUInt16LittleEndian(_recordData.Slice(_Unknown6Location, 2)) : default(UInt16);
         int Unknown6VersioningOffset => Unknown5VersioningOffset + (_package.FormVersion!.FormVersion!.Value >= 106 ? -2 : 0);
         #endregion
-        public IModelGetter? Model { get; private set; }
+        #region Model
+        private IModelGetter? ModelStore;
+        public IModelGetter? Model { get { EnsureFilled(); return ModelStore; } private set => ModelStore = value; }
+        #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,
@@ -4835,6 +4845,23 @@ namespace Mutagen.Bethesda.Fallout4
             BinaryOverlayFactoryPackage package,
             TypedParseParams translationParams = default)
         {
+            var lazyHeader = stream.GetMajorRecordHeader();
+            var lazyRecord = stream.RemainingMemory.Slice(0, checked((int)lazyHeader.TotalLength));
+            stream.Position += checked((int)lazyHeader.TotalLength);
+            var ret = new EffectShaderBinaryOverlay(
+                memoryPair: ExtractRecordMemory(lazyRecord, package.MetaData.Constants),
+                package: package);
+            ret._package.FormVersion = ret;
+            ret.DeferFill(lazyRecord, translationParams, static (o, d) => EffectShaderFill((EffectShaderBinaryOverlay)o, new OverlayStream(d.Record, o._package), o._package, d.TranslationParams));
+            return ret;
+        }
+
+        private static void EffectShaderFill(
+            EffectShaderBinaryOverlay ret,
+            OverlayStream stream,
+            BinaryOverlayFactoryPackage package,
+            TypedParseParams translationParams = default)
+        {
             stream = Decompression.DecompressStream(stream);
             stream = ExtractRecordMemory(
                 stream: stream,
@@ -4842,9 +4869,7 @@ namespace Mutagen.Bethesda.Fallout4
                 memoryPair: out var memoryPair,
                 offset: out var offset,
                 finalPos: out var finalPos);
-            var ret = new EffectShaderBinaryOverlay(
-                memoryPair: memoryPair,
-                package: package);
+            ret._recordData = memoryPair.RecordData;
             ret._package.FormVersion = ret;
             ret.CustomFactoryEnd(
                 stream: stream,
@@ -4857,7 +4882,6 @@ namespace Mutagen.Bethesda.Fallout4
                 offset: offset,
                 translationParams: translationParams,
                 fill: ret.FillRecordType);
-            return ret;
         }
 
         public static IEffectShaderGetter EffectShaderFactory(

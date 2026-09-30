@@ -1776,12 +1776,22 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region BehaviorGraph
-        private int? _BehaviorGraphLocation;
+        private int? _BehaviorGraphLocationStore;
+        private int? _BehaviorGraphLocation { get { EnsureFilled(); return _BehaviorGraphLocationStore; } set => _BehaviorGraphLocationStore = value; }
         public String? BehaviorGraph => _BehaviorGraphLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BehaviorGraphLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>> ActorKeywords { get; private set; } = [];
-        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>> TargetKeywords { get; private set; } = [];
-        public IReadOnlyList<String> AnimationPaths { get; private set; } = [];
+        #region ActorKeywords
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>> ActorKeywordsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>> ActorKeywords { get { EnsureFilled(); return ActorKeywordsStore; } private set => ActorKeywordsStore = value; }
+        #endregion
+        #region TargetKeywords
+        private IReadOnlyList<IFormLinkGetter<IKeywordGetter>> TargetKeywordsStore = [];
+        public IReadOnlyList<IFormLinkGetter<IKeywordGetter>> TargetKeywords { get { EnsureFilled(); return TargetKeywordsStore; } private set => TargetKeywordsStore = value; }
+        #endregion
+        #region AnimationPaths
+        private IReadOnlyList<String> AnimationPathsStore = [];
+        public IReadOnlyList<String> AnimationPaths { get { EnsureFilled(); return AnimationPathsStore; } private set => AnimationPathsStore = value; }
+        #endregion
         #region Role
         partial void RoleCustomParse(
             OverlayStream stream,

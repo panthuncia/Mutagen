@@ -3506,78 +3506,99 @@ namespace Mutagen.Bethesda.Oblivion
 
 
         #region Base
-        private int? _BaseLocation;
+        private int? _BaseLocationStore;
+        private int? _BaseLocation { get { EnsureFilled(); return _BaseLocationStore; } set => _BaseLocationStore = value; }
         public IFormLinkNullableGetter<IOblivionMajorRecordGetter> Base => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IOblivionMajorRecordGetter>(_package, _recordData, _BaseLocation);
         #endregion
         #region XPCIFluff
-        private int? _XPCIFluffLocation;
+        private int? _XPCIFluffLocationStore;
+        private int? _XPCIFluffLocation { get { EnsureFilled(); return _XPCIFluffLocationStore; } set => _XPCIFluffLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? XPCIFluff => _XPCIFluffLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _XPCIFluffLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region FULLFluff
-        private int? _FULLFluffLocation;
+        private int? _FULLFluffLocationStore;
+        private int? _FULLFluffLocation { get { EnsureFilled(); return _FULLFluffLocationStore; } set => _FULLFluffLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? FULLFluff => _FULLFluffLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FULLFluffLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region TeleportDestination
-        private RangeInt32? _TeleportDestinationLocation;
+        private RangeInt32? _TeleportDestinationLocationStore;
+        private RangeInt32? _TeleportDestinationLocation { get { EnsureFilled(); return _TeleportDestinationLocationStore; } set => _TeleportDestinationLocationStore = value; }
         public ITeleportDestinationGetter? TeleportDestination => _TeleportDestinationLocation.HasValue ? TeleportDestinationBinaryOverlay.TeleportDestinationFactory(_recordData.Slice(_TeleportDestinationLocation!.Value.Min), _package) : default;
         #endregion
         #region Lock
-        private RangeInt32? _LockLocation;
+        private RangeInt32? _LockLocationStore;
+        private RangeInt32? _LockLocation { get { EnsureFilled(); return _LockLocationStore; } set => _LockLocationStore = value; }
         public ILockInformationGetter? Lock => _LockLocation.HasValue ? LockInformationBinaryOverlay.LockInformationFactory(_recordData.Slice(_LockLocation!.Value.Min), _package) : default;
         #endregion
         #region Owner
-        private int? _OwnerLocation;
+        private int? _OwnerLocationStore;
+        private int? _OwnerLocation { get { EnsureFilled(); return _OwnerLocationStore; } set => _OwnerLocationStore = value; }
         public IFormLinkNullableGetter<IOwnerGetter> Owner => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IOwnerGetter>(_package, _recordData, _OwnerLocation);
         #endregion
         #region FactionRank
-        private int? _FactionRankLocation;
+        private int? _FactionRankLocationStore;
+        private int? _FactionRankLocation { get { EnsureFilled(); return _FactionRankLocationStore; } set => _FactionRankLocationStore = value; }
         public Int32? FactionRank => _FactionRankLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FactionRankLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region GlobalVariable
-        private int? _GlobalVariableLocation;
+        private int? _GlobalVariableLocationStore;
+        private int? _GlobalVariableLocation { get { EnsureFilled(); return _GlobalVariableLocationStore; } set => _GlobalVariableLocationStore = value; }
         public IFormLinkNullableGetter<IGlobalGetter> GlobalVariable => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IGlobalGetter>(_package, _recordData, _GlobalVariableLocation);
         #endregion
         #region EnableParent
-        private RangeInt32? _EnableParentLocation;
+        private RangeInt32? _EnableParentLocationStore;
+        private RangeInt32? _EnableParentLocation { get { EnsureFilled(); return _EnableParentLocationStore; } set => _EnableParentLocationStore = value; }
         public IEnableParentGetter? EnableParent => _EnableParentLocation.HasValue ? EnableParentBinaryOverlay.EnableParentFactory(_recordData.Slice(_EnableParentLocation!.Value.Min), _package) : default;
         #endregion
         #region Target
-        private int? _TargetLocation;
+        private int? _TargetLocationStore;
+        private int? _TargetLocation { get { EnsureFilled(); return _TargetLocationStore; } set => _TargetLocationStore = value; }
         public IFormLinkNullableGetter<IPlacedGetter> Target => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IPlacedGetter>(_package, _recordData, _TargetLocation);
         #endregion
         #region SpeedTreeSeed
-        private int? _SpeedTreeSeedLocation;
+        private int? _SpeedTreeSeedLocationStore;
+        private int? _SpeedTreeSeedLocation { get { EnsureFilled(); return _SpeedTreeSeedLocationStore; } set => _SpeedTreeSeedLocationStore = value; }
         public Byte? SpeedTreeSeed => _SpeedTreeSeedLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SpeedTreeSeedLocation.Value, _package.MetaData.Constants)[0] : default(Byte?);
         #endregion
         #region DistantLODData
-        private RangeInt32? _DistantLODDataLocation;
+        private RangeInt32? _DistantLODDataLocationStore;
+        private RangeInt32? _DistantLODDataLocation { get { EnsureFilled(); return _DistantLODDataLocationStore; } set => _DistantLODDataLocationStore = value; }
         public IDistantLODDataGetter? DistantLODData => _DistantLODDataLocation.HasValue ? DistantLODDataBinaryOverlay.DistantLODDataFactory(_recordData.Slice(_DistantLODDataLocation!.Value.Min), _package) : default;
         #endregion
         #region Charge
-        private int? _ChargeLocation;
+        private int? _ChargeLocationStore;
+        private int? _ChargeLocation { get { EnsureFilled(); return _ChargeLocationStore; } set => _ChargeLocationStore = value; }
         public Single? Charge => _ChargeLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ChargeLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region Health
-        private int? _HealthLocation;
+        private int? _HealthLocationStore;
+        private int? _HealthLocation { get { EnsureFilled(); return _HealthLocationStore; } set => _HealthLocationStore = value; }
         public Int32? Health => _HealthLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HealthLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region LevelModifier
-        private int? _LevelModifierLocation;
+        private int? _LevelModifierLocationStore;
+        private int? _LevelModifierLocation { get { EnsureFilled(); return _LevelModifierLocationStore; } set => _LevelModifierLocationStore = value; }
         public Int32? LevelModifier => _LevelModifierLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LevelModifierLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region XRTM
-        private int? _XRTMLocation;
+        private int? _XRTMLocationStore;
+        private int? _XRTMLocation { get { EnsureFilled(); return _XRTMLocationStore; } set => _XRTMLocationStore = value; }
         public IFormLinkNullableGetter<IOblivionMajorRecordGetter> XRTM => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IOblivionMajorRecordGetter>(_package, _recordData, _XRTMLocation);
         #endregion
         #region ActionFlags
-        private int? _ActionFlagsLocation;
+        private int? _ActionFlagsLocationStore;
+        private int? _ActionFlagsLocation { get { EnsureFilled(); return _ActionFlagsLocationStore; } set => _ActionFlagsLocationStore = value; }
         public PlacedObject.ActionFlag? ActionFlags => EnumBinaryTranslation<PlacedObject.ActionFlag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_ActionFlagsLocation, _recordData, _package, 4);
         #endregion
         #region Count
-        private int? _CountLocation;
+        private int? _CountLocationStore;
+        private int? _CountLocation { get { EnsureFilled(); return _CountLocationStore; } set => _CountLocationStore = value; }
         public Int32? Count => _CountLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _CountLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
-        public IMapMarkerGetter? MapMarker { get; private set; }
+        #region MapMarker
+        private IMapMarkerGetter? MapMarkerStore;
+        public IMapMarkerGetter? MapMarker { get { EnsureFilled(); return MapMarkerStore; } private set => MapMarkerStore = value; }
+        #endregion
         #region OpenByDefault
         partial void OpenByDefaultCustomParse(
             OverlayStream stream,
@@ -3587,24 +3608,32 @@ namespace Mutagen.Bethesda.Oblivion
         public Boolean OpenByDefault => GetOpenByDefaultCustom();
         #endregion
         #region RagdollData
-        private int? _RagdollDataLocation;
+        private int? _RagdollDataLocationStore;
+        private int? _RagdollDataLocation { get { EnsureFilled(); return _RagdollDataLocationStore; } set => _RagdollDataLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? RagdollData => _RagdollDataLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _RagdollDataLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region Scale
-        private int? _ScaleLocation;
+        private int? _ScaleLocationStore;
+        private int? _ScaleLocation { get { EnsureFilled(); return _ScaleLocationStore; } set => _ScaleLocationStore = value; }
         public Single? Scale => _ScaleLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ScaleLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         #region ContainedSoul
-        private int? _ContainedSoulLocation;
+        private int? _ContainedSoulLocationStore;
+        private int? _ContainedSoulLocation { get { EnsureFilled(); return _ContainedSoulLocationStore; } set => _ContainedSoulLocationStore = value; }
         public SoulLevel? ContainedSoul => EnumBinaryTranslation<SoulLevel, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_ContainedSoulLocation, _recordData, _package, 4);
         #endregion
-        public ILocationGetter? Location { get; private set; }
+        #region Location
+        private ILocationGetter? LocationStore;
+        public ILocationGetter? Location { get { EnsureFilled(); return LocationStore; } private set => LocationStore = value; }
+        #endregion
         #region XAAG
-        private int? _XAAGLocation;
+        private int? _XAAGLocationStore;
+        private int? _XAAGLocation { get { EnsureFilled(); return _XAAGLocationStore; } set => _XAAGLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? XAAG => _XAAGLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _XAAGLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         #region XACN
-        private int? _XACNLocation;
+        private int? _XACNLocationStore;
+        private int? _XACNLocation { get { EnsureFilled(); return _XACNLocationStore; } set => _XACNLocationStore = value; }
         public String? XACN => _XACNLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _XACNLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(

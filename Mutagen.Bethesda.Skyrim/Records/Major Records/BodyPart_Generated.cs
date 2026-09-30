@@ -3011,7 +3011,8 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public ITranslatedStringGetter Name => _NameLocation.HasValue ? StringBinaryTranslation.Instance.Parse(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), StringsSource.Normal, parsingBundle: _package.MetaData, eager: false) : TranslatedString.Empty;
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -3019,22 +3020,27 @@ namespace Mutagen.Bethesda.Skyrim
         #endregion
         #endregion
         #region PoseMatching
-        private int? _PoseMatchingLocation;
+        private int? _PoseMatchingLocationStore;
+        private int? _PoseMatchingLocation { get { EnsureFilled(); return _PoseMatchingLocationStore; } set => _PoseMatchingLocationStore = value; }
         public String? PoseMatching => _PoseMatchingLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _PoseMatchingLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region PartNode
-        private int? _PartNodeLocation;
+        private int? _PartNodeLocationStore;
+        private int? _PartNodeLocation { get { EnsureFilled(); return _PartNodeLocationStore; } set => _PartNodeLocationStore = value; }
         public String PartNode => _PartNodeLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _PartNodeLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region VatsTarget
-        private int? _VatsTargetLocation;
+        private int? _VatsTargetLocationStore;
+        private int? _VatsTargetLocation { get { EnsureFilled(); return _VatsTargetLocationStore; } set => _VatsTargetLocationStore = value; }
         public String VatsTarget => _VatsTargetLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _VatsTargetLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region IkStartNode
-        private int? _IkStartNodeLocation;
+        private int? _IkStartNodeLocationStore;
+        private int? _IkStartNodeLocation { get { EnsureFilled(); return _IkStartNodeLocationStore; } set => _IkStartNodeLocationStore = value; }
         public String IkStartNode => _IkStartNodeLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IkStartNodeLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
-        private RangeInt32? _BPNDLocation;
+        private RangeInt32? _BPNDLocationStore;
+        private RangeInt32? _BPNDLocation { get { EnsureFilled(); return _BPNDLocationStore; } set => _BPNDLocationStore = value; }
         #region DamageMult
         private int _DamageMultLocation => _BPNDLocation!.Value.Min;
         private bool _DamageMult_IsSet => _BPNDLocation.HasValue;
@@ -3156,15 +3162,18 @@ namespace Mutagen.Bethesda.Skyrim
         public Single LimbReplacementScale => _LimbReplacementScale_IsSet ? _recordData.Slice(_LimbReplacementScaleLocation, 4).Float() : default(Single);
         #endregion
         #region LimbReplacementModel
-        private int? _LimbReplacementModelLocation;
+        private int? _LimbReplacementModelLocationStore;
+        private int? _LimbReplacementModelLocation { get { EnsureFilled(); return _LimbReplacementModelLocationStore; } set => _LimbReplacementModelLocationStore = value; }
         public String LimbReplacementModel => _LimbReplacementModelLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LimbReplacementModelLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region GoreTargetBone
-        private int? _GoreTargetBoneLocation;
+        private int? _GoreTargetBoneLocationStore;
+        private int? _GoreTargetBoneLocation { get { EnsureFilled(); return _GoreTargetBoneLocationStore; } set => _GoreTargetBoneLocationStore = value; }
         public String GoreTargetBone => _GoreTargetBoneLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _GoreTargetBoneLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : string.Empty;
         #endregion
         #region TextureFilesHashes
-        private int? _TextureFilesHashesLocation;
+        private int? _TextureFilesHashesLocationStore;
+        private int? _TextureFilesHashesLocation { get { EnsureFilled(); return _TextureFilesHashesLocationStore; } set => _TextureFilesHashesLocationStore = value; }
         public ReadOnlyMemorySlice<Byte>? TextureFilesHashes => _TextureFilesHashesLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _TextureFilesHashesLocation.Value, _package.MetaData.Constants) : default(ReadOnlyMemorySlice<byte>?);
         #endregion
         partial void CustomFactoryEnd(

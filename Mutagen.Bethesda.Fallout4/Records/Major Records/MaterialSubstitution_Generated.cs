@@ -1253,11 +1253,13 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region OriginalMaterial
-        private int? _OriginalMaterialLocation;
+        private int? _OriginalMaterialLocationStore;
+        private int? _OriginalMaterialLocation { get { EnsureFilled(); return _OriginalMaterialLocationStore; } set => _OriginalMaterialLocationStore = value; }
         public String? OriginalMaterial => _OriginalMaterialLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _OriginalMaterialLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region ReplacementMaterial
-        private int? _ReplacementMaterialLocation;
+        private int? _ReplacementMaterialLocationStore;
+        private int? _ReplacementMaterialLocation { get { EnsureFilled(); return _ReplacementMaterialLocationStore; } set => _ReplacementMaterialLocationStore = value; }
         public String? ReplacementMaterial => _ReplacementMaterialLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ReplacementMaterialLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         #region FNAMParsing
@@ -1267,7 +1269,8 @@ namespace Mutagen.Bethesda.Fallout4
             PreviousParse lastParsed);
         #endregion
         #region ColorRemappingIndex
-        private int? _ColorRemappingIndexLocation;
+        private int? _ColorRemappingIndexLocationStore;
+        private int? _ColorRemappingIndexLocation { get { EnsureFilled(); return _ColorRemappingIndexLocationStore; } set => _ColorRemappingIndexLocationStore = value; }
         public Single? ColorRemappingIndex => _ColorRemappingIndexLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ColorRemappingIndexLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
         #endregion
         partial void CustomFactoryEnd(

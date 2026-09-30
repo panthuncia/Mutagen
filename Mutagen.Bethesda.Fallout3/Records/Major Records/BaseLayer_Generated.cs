@@ -1144,7 +1144,8 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Header
-        private RangeInt32? _HeaderLocation;
+        private RangeInt32? _HeaderLocationStore;
+        private RangeInt32? _HeaderLocation { get { EnsureFilled(); return _HeaderLocationStore; } set => _HeaderLocationStore = value; }
         public ILayerHeaderGetter? Header => _HeaderLocation.HasValue ? LayerHeaderBinaryOverlay.LayerHeaderFactory(_recordData.Slice(_HeaderLocation!.Value.Min), _package) : default;
         #endregion
         partial void CustomFactoryEnd(

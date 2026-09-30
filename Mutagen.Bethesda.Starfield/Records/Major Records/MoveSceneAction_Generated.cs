@@ -1596,35 +1596,43 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region DNAM
-        private int? _DNAMLocation;
+        private int? _DNAMLocationStore;
+        private int? _DNAMLocation { get { EnsureFilled(); return _DNAMLocationStore; } set => _DNAMLocationStore = value; }
         public Boolean DNAM => _DNAMLocation.HasValue ? true : default(Boolean);
         #endregion
         #region NVCI
-        private int? _NVCILocation;
+        private int? _NVCILocationStore;
+        private int? _NVCILocation { get { EnsureFilled(); return _NVCILocationStore; } set => _NVCILocationStore = value; }
         public Boolean NVCI => _NVCILocation.HasValue ? true : default(Boolean);
         #endregion
         #region ALLA
-        private int? _ALLALocation;
+        private int? _ALLALocationStore;
+        private int? _ALLALocation { get { EnsureFilled(); return _ALLALocationStore; } set => _ALLALocationStore = value; }
         public Int32 ALLA => _ALLALocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ALLALocation.Value, _package.MetaData.Constants)) : default(Int32);
         #endregion
         #region REPL
-        private int? _REPLLocation;
+        private int? _REPLLocationStore;
+        private int? _REPLLocation { get { EnsureFilled(); return _REPLLocationStore; } set => _REPLLocationStore = value; }
         public IFormLinkGetter<IPlacedGetter> REPL => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IPlacedGetter>(_package, _recordData, _REPLLocation);
         #endregion
         #region HNAM
-        private int? _HNAMLocation;
+        private int? _HNAMLocationStore;
+        private int? _HNAMLocation { get { EnsureFilled(); return _HNAMLocationStore; } set => _HNAMLocationStore = value; }
         public Single HNAM => _HNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _HNAMLocation.Value, _package.MetaData.Constants).Float() : default(Single);
         #endregion
         #region VCLR
-        private int? _VCLRLocation;
+        private int? _VCLRLocationStore;
+        private int? _VCLRLocation { get { EnsureFilled(); return _VCLRLocationStore; } set => _VCLRLocationStore = value; }
         public Single VCLR => _VCLRLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _VCLRLocation.Value, _package.MetaData.Constants).Float() : default(Single);
         #endregion
         #region VNML
-        private int? _VNMLLocation;
+        private int? _VNMLLocationStore;
+        private int? _VNMLLocation { get { EnsureFilled(); return _VNMLLocationStore; } set => _VNMLLocationStore = value; }
         public Single VNML => _VNMLLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _VNMLLocation.Value, _package.MetaData.Constants).Float() : default(Single);
         #endregion
         #region FLMV
-        private int? _FLMVLocation;
+        private int? _FLMVLocationStore;
+        private int? _FLMVLocation { get { EnsureFilled(); return _FLMVLocationStore; } set => _FLMVLocationStore = value; }
         public Int32 FLMV => _FLMVLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FLMVLocation.Value, _package.MetaData.Constants)) : default(Int32);
         #endregion
         partial void CustomFactoryEnd(

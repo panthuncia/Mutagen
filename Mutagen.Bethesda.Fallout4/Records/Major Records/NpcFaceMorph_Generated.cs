@@ -1371,10 +1371,12 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Index
-        private int? _IndexLocation;
+        private int? _IndexLocationStore;
+        private int? _IndexLocation { get { EnsureFilled(); return _IndexLocationStore; } set => _IndexLocationStore = value; }
         public UInt32? Index => _IndexLocation.HasValue ? BinaryPrimitives.ReadUInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IndexLocation.Value, _package.MetaData.Constants)) : default(UInt32?);
         #endregion
-        private RangeInt32? _FMRSLocation;
+        private RangeInt32? _FMRSLocationStore;
+        private RangeInt32? _FMRSLocation { get { EnsureFilled(); return _FMRSLocationStore; } set => _FMRSLocationStore = value; }
         #region Position
         private int _PositionLocation => _FMRSLocation!.Value.Min;
         private bool _Position_IsSet => _FMRSLocation.HasValue;

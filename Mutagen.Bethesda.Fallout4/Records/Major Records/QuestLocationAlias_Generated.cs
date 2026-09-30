@@ -2048,7 +2048,8 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Name
-        private int? _NameLocation;
+        private int? _NameLocationStore;
+        private int? _NameLocation { get { EnsureFilled(); return _NameLocationStore; } set => _NameLocationStore = value; }
         public String? Name => _NameLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NameLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #region Aspects
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -2056,23 +2057,39 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #endregion
         #region Flags
-        private int? _FlagsLocation;
+        private int? _FlagsLocationStore;
+        private int? _FlagsLocation { get { EnsureFilled(); return _FlagsLocationStore; } set => _FlagsLocationStore = value; }
         public AQuestAlias.Flag? Flags => EnumBinaryTranslation<AQuestAlias.Flag, MutagenFrame, MutagenWriter>.Instance.ParseRecordNullable(_FlagsLocation, _recordData, _package, 4);
         #endregion
         #region AliasIDToForceIntoWhenFilled
-        private int? _AliasIDToForceIntoWhenFilledLocation;
+        private int? _AliasIDToForceIntoWhenFilledLocationStore;
+        private int? _AliasIDToForceIntoWhenFilledLocation { get { EnsureFilled(); return _AliasIDToForceIntoWhenFilledLocationStore; } set => _AliasIDToForceIntoWhenFilledLocationStore = value; }
         public Int32? AliasIDToForceIntoWhenFilled => _AliasIDToForceIntoWhenFilledLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _AliasIDToForceIntoWhenFilledLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         #region SpecificLocation
-        private int? _SpecificLocationLocation;
+        private int? _SpecificLocationLocationStore;
+        private int? _SpecificLocationLocation { get { EnsureFilled(); return _SpecificLocationLocationStore; } set => _SpecificLocationLocationStore = value; }
         public IFormLinkNullableGetter<ILocationGetter> SpecificLocation => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<ILocationGetter>(_package, _recordData, _SpecificLocationLocation);
         #endregion
-        public IReferenceAliasLocationGetter? ReferenceAliasLocation { get; private set; }
-        public IExternalAliasLocationGetter? ExternalAliasLocation { get; private set; }
-        public IFindMatchingRefFromEventGetter? FindMatchingRefFromEvent { get; private set; }
-        public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
+        #region ReferenceAliasLocation
+        private IReferenceAliasLocationGetter? ReferenceAliasLocationStore;
+        public IReferenceAliasLocationGetter? ReferenceAliasLocation { get { EnsureFilled(); return ReferenceAliasLocationStore; } private set => ReferenceAliasLocationStore = value; }
+        #endregion
+        #region ExternalAliasLocation
+        private IExternalAliasLocationGetter? ExternalAliasLocationStore;
+        public IExternalAliasLocationGetter? ExternalAliasLocation { get { EnsureFilled(); return ExternalAliasLocationStore; } private set => ExternalAliasLocationStore = value; }
+        #endregion
+        #region FindMatchingRefFromEvent
+        private IFindMatchingRefFromEventGetter? FindMatchingRefFromEventStore;
+        public IFindMatchingRefFromEventGetter? FindMatchingRefFromEvent { get { EnsureFilled(); return FindMatchingRefFromEventStore; } private set => FindMatchingRefFromEventStore = value; }
+        #endregion
+        #region Conditions
+        private IReadOnlyList<IConditionGetter> ConditionsStore = [];
+        public IReadOnlyList<IConditionGetter> Conditions { get { EnsureFilled(); return ConditionsStore; } private set => ConditionsStore = value; }
+        #endregion
         #region ClosestToAlias
-        private int? _ClosestToAliasLocation;
+        private int? _ClosestToAliasLocationStore;
+        private int? _ClosestToAliasLocation { get { EnsureFilled(); return _ClosestToAliasLocationStore; } set => _ClosestToAliasLocationStore = value; }
         public Int32? ClosestToAlias => _ClosestToAliasLocation.HasValue ? BinaryPrimitives.ReadInt32LittleEndian(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ClosestToAliasLocation.Value, _package.MetaData.Constants)) : default(Int32?);
         #endregion
         partial void CustomFactoryEnd(

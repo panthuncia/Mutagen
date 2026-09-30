@@ -1165,11 +1165,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Slot
-        private int? _SlotLocation;
+        private int? _SlotLocationStore;
+        private int? _SlotLocation { get { EnsureFilled(); return _SlotLocationStore; } set => _SlotLocationStore = value; }
         public IFormLinkNullableGetter<IEquipTypeGetter> Slot => FormLinkBinaryTranslation.Instance.NullableRecordOverlayFactory<IEquipTypeGetter>(_package, _recordData, _SlotLocation);
         #endregion
         #region Node
-        private int? _NodeLocation;
+        private int? _NodeLocationStore;
+        private int? _NodeLocation { get { EnsureFilled(); return _NodeLocationStore; } set => _NodeLocationStore = value; }
         public String? Node => _NodeLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NodeLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?);
         #endregion
         partial void CustomFactoryEnd(
