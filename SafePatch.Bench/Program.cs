@@ -201,6 +201,7 @@ static int Check(string data, IReadOnlyList<string> plugins, string label)
 {
     var differing = new SortedDictionary<string, int>(StringComparer.Ordinal);
     var unequalToItself = new SortedDictionary<string, int>(StringComparer.Ordinal);
+    var editorIds = new SortedDictionary<string, int>(StringComparer.Ordinal);
     long total = 0;
     foreach (var plugin in plugins)
     {
@@ -225,6 +226,11 @@ static int Check(string data, IReadOnlyList<string> plugins, string label)
             var editorId = record.EditorID;
             var expected = reference[record.FormKey];
             var type = record.GetType().Name.Replace("BinaryOverlay", "");
+            if (editorId != expected.EditorID)
+            {
+                editorIds[type] = editorIds.GetValueOrDefault(type) + 1;
+                if (editorIds[type] == 1) Console.WriteLine($"EditorID of {record.FormKey} {type}: overlay {editorId ?? "(none)"}, full parse {expected.EditorID ?? "(none)"}");
+            }
             if (editorId != expected.EditorID || !expected.Equals(record))
                 differing[type] = differing.GetValueOrDefault(type) + 1;
         }
@@ -233,6 +239,7 @@ static int Check(string data, IReadOnlyList<string> plugins, string label)
                       (differing.Count == 0 ? "none" : string.Join(", ", differing.Select(d => $"{d.Key} {d.Value}"))));
     Console.WriteLine("Unequal to a second full parse of themselves: " +
                       (unequalToItself.Count == 0 ? "none" : string.Join(", ", unequalToItself.Select(d => $"{d.Key} {d.Value}"))));
+    Console.WriteLine("Of those, EditorID differs: " + (editorIds.Count == 0 ? "never" : string.Join(", ", editorIds.Select(d => $"{d.Key} {d.Value}"))));
     foreach (var (type, count) in differing) Console.WriteLine($"PARITY|{label}|{type}|{count}");
     foreach (var (type, count) in unequalToItself) Console.WriteLine($"SELF|{label}|{type}|{count}");
     Console.WriteLine($"PARITY|{label}|(total records)|{total}");
