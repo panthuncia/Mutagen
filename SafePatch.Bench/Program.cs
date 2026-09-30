@@ -11,7 +11,7 @@ using SafePatch.Authoring.Index;
 //   SafePatch.Bench <Data folder> <plugins.txt> [runs=3] [only=<step name part>|-] [label]
 //   SafePatch.Bench check <Data folder> <plugin,...> [label]
 //   SafePatch.Bench check-threads <Data folder> <plugin>
-//   SafePatch.Bench index-check <Data folder> <plugins.txt or .paths>
+//   SafePatch.Bench index-check <Data folder> <plugins.txt or .paths> [cache folder]
 //   SafePatch.Bench index-proto <Data folder> <plugins.txt or .paths> [runs=3] [label] [cache folder]
 //   SafePatch.Bench check-first <Data folder> <plugin,...> <record type,...>
 //   SafePatch.Bench conflict-scan <Data folder> <plugins.txt or .paths> [runs=3] [label] [mask|fields|equals]
@@ -32,10 +32,10 @@ if (args is ["check-hash", var hashData, var hashPlugins, .. var hashRest])
 {
     return CheckHash(hashData, hashPlugins.Split(','), hashRest is [var hashLabel] ? hashLabel : "");
 }
-if (args is ["index-check", var checkIndexData, var checkIndexPlugins])
+if (args is ["index-check", var checkIndexData, var checkIndexPlugins, .. var checkIndexRest])
 {
     System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-    return IndexCheck.Run(checkIndexData, checkIndexPlugins);
+    return IndexCheck.Run(checkIndexData, checkIndexPlugins, checkIndexRest is [var checkIndexCache] ? checkIndexCache : null);
 }
 if (args is ["index-proto", var protoData, var protoPlugins, .. var protoRest])
 {

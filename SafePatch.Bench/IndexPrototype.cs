@@ -596,7 +596,7 @@ internal static unsafe class IndexPrototype
             return -1;
         }
 
-        private static ReadOnlySpan<byte> Winner(LoadOrderIndex index, int chain)
+        public static ReadOnlySpan<byte> Winner(LoadOrderIndex index, int chain)
         {
             // The last version with an EditorID: a deleted or EditorID-less override keeps the earlier name findable.
             for (var v = index.ChainStart[chain + 1] - 1; v >= index.ChainStart[chain]; v--)
