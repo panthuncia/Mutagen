@@ -8,6 +8,9 @@ One file per branch, each measured on its own against 0.54.4, and the branches c
 - [`fix/overlay-declared-defaults`](fix-overlay-declared-defaults.md): Give overlay fields past a break the default a full parse gives them
 - [`fix/cumulative-break-flags`](fix-cumulative-break-flags.md): Set every later break flag when a full parse stops at a break
 - [`fix/gendered-item-equality`](fix-gendered-item-equality.md): Compare gendered items by value
+- [`fix/condition-pack-data-flag`](fix-condition-pack-data-flag.md): Keep a condition's pack-data bit out of Flags in the overlay
+- [`fix/content-equality`](fix-content-equality.md): Compare and hash lists and byte arrays by content
+- [`fix/overlay-float-epsilon`](fix-overlay-float-epsilon.md): Read float.Epsilon as zero in overlays, as the full parse does
 - [`perf/cache-overlay-groups`](perf-cache-overlay-groups.md): Build each group of a mod overlay once
 - [`perf/deferred-overlay-fill`](perf-deferred-overlay-fill.md): Defer an overlay record's fill until a field is read
 - [`perf/record-batches`](perf-record-batches.md): EnumerateMajorRecordBatches: one mod on several threads

@@ -4,26 +4,26 @@ Every fix and performance branch merged onto 0.54.4, the generated code regenera
 
 ## Measurements
 
-Timed in a separate session from the per-branch files, alternating 0.54.4 (`base-paired`) and the combined build
-round by round:
+Timed in the same session as the three later fix branches, alternating 0.54.4 (`base-2`) and the combined build
+(`combined-2`) round by round:
 
-| Workload | base-paired | combined | Change |
+| Workload | base-2 | combined-2 | Change |
 | --- | ---: | ---: | ---: |
-| open, then every record's FormKey and EditorID | 1,156 (1,082) | 705 (396) | -39% |
-| every record's FormKey | 1,068 (1,061) | 194 (179) | -82% |
-| every record's FormKey and EditorID | 1,080 (1,074) | 289 (283) | -73% |
-| keep every record object | 3,079 (2,922) | 1,370 (1,283) | -56% |
-| every record's FormKey and EditorID, within plugins in parallel | 347 (306) | 100 (85) | -71% |
-| open, then the same within plugins in parallel | 334 (300) | 170 (166) | -49% |
-| the same through EnumerateMajorRecordBatches |  | 85 (83) |  |
-| 2,000 statics by key | 941 (923) | 1 (1) | -100% |
-| full parse (CreateFromBinary) of every plugin | 6,192 (6,081) | 6,361 (5,797) | +3% |
-| Scanner: every record's FormKey and EditorID | 146 (103) | 143 (103) | -2% |
+| open, then every record's FormKey and EditorID | 1,358 (1,232) | 786 (532) | -42% |
+| every record's FormKey | 1,239 (1,222) | 275 (212) | -78% |
+| every record's FormKey and EditorID | 1,274 (1,240) | 357 (345) | -72% |
+| keep every record object | 3,258 (3,093) | 1,440 (1,323) | -56% |
+| every record's FormKey and EditorID, within plugins in parallel | 375 (361) | 100 (89) | -73% |
+| open, then the same within plugins in parallel | 364 (325) | 185 (173) | -49% |
+| the same through EnumerateMajorRecordBatches |  | 95 (84) |  |
+| 2,000 statics by key | 1,053 (1,017) | 1 (1) | -100% |
+| full parse (CreateFromBinary) of every plugin | 7,165 (6,942) | 6,932 (6,464) | -3% |
+| Scanner: every record's FormKey and EditorID | 150 (110) | 156 (106) | +4% |
 | Heap holding every record object | 1,578 MiB | 1,170 MiB | |
 
 ## Parity
 
-Records that `CreateFromBinary` and the overlay read differently:
+Records of the five masters that `CreateFromBinary` and the overlay read differently:
 
 | Record type | base | combined |
 | --- | ---: | ---: |
@@ -31,14 +31,14 @@ Records that `CreateFromBinary` and the overlay read differently:
 | ArmorAddon | 1,112 | 0 |
 | AssociationType | 20 | 0 |
 | CombatStyle | 47 | 0 |
-| DialogResponses | 5 | 5 |
-| DialogTopic | 3 | 3 |
-| DialogView | 2 | 2 |
+| DialogResponses | 5 | 0 |
+| DialogTopic | 3 | 0 |
+| DialogView | 2 | 0 |
 | EffectShader | 9 | 0 |
 | Explosion | 6 | 0 |
 | Faction | 16 | 0 |
-| MaterialObject | 23 | 23 |
-| Package | 5,081 | 59 |
+| MaterialObject | 23 | 0 |
+| Package | 5,081 | 0 |
 | Projectile | 4 | 0 |
 | Quest | 316 | 0 |
 | Race | 204 | 0 |
@@ -53,16 +53,63 @@ Records unequal to a second `CreateFromBinary` of the same bytes:
 | Armor | 3,564 | 0 |
 | ArmorAddon | 1,112 | 0 |
 | AssociationType | 20 | 0 |
-| DialogView | 2 | 2 |
+| DialogView | 2 | 0 |
 | Faction | 14 | 0 |
-| MaterialObject | 23 | 23 |
-| Package | 30 | 30 |
+| MaterialObject | 23 | 0 |
+| Package | 30 | 0 |
 | Race | 204 | 0 |
 
-Concurrent reads: 0 differed from a single-threaded read.
+The other 77 plugins (Creation Club content and one landscape mod, 74,320 records), read the same way:
 
-The differences left are not diagnosed yet: dialog responses, topics and views, material objects, and 59 packages
-(30 of which are unequal even to a second full parse of themselves, so `Equals` is at fault there, not the reads).
+| Record type | base-all | combined-all |
+| --- | ---: | ---: |
+| Armor | 453 | 0 |
+| ArmorAddon | 476 | 0 |
+| MaterialObject | 6 | 0 |
+| Package | 354 | 0 |
+| Quest | 88 | 0 |
+| Race | 36 | 0 |
+| Weapon | 6 | 0 |
+
+Every record of the load order now reads the same through both paths and equals a second full parse of itself.
+
+Records equal to the full parse (a second full parse, and the overlay) whose hash code differs:
+
+| Record type | base | combined |
+| --- | ---: | ---: |
+| PlacedObject | 1,720,526 | 0 |
+| Cell | 153,364 | 0 |
+| Landscape | 108,146 | 0 |
+| DialogResponses | 82,371 | 0 |
+| NavigationMesh | 39,848 | 0 |
+| DialogTopic | 39,685 | 0 |
+| PlacedNpc | 25,956 | 0 |
+| Npc | 13,050 | 0 |
+| Static | 12,685 | 0 |
+| Package | 10,111 | 0 |
+| 67 other types | 84,546 | 0 |
+| **All types** | **2,290,288** | **0** |
+| (equal pairs checked) | 2,329,771 | 2,357,086 |
+
+and across the other 77 plugins:
+
+| Record type | base-all | combined-all |
+| --- | ---: | ---: |
+| PlacedObject | 115,706 | 0 |
+| Cell | 2,796 | 0 |
+| PlacedNpc | 2,644 | 0 |
+| Static | 2,452 | 0 |
+| ConstructibleObject | 2,200 | 0 |
+| DialogResponses | 1,984 | 0 |
+| Npc | 1,512 | 0 |
+| DialogTopic | 1,338 | 0 |
+| Weapon | 1,116 | 0 |
+| MagicEffect | 1,112 | 0 |
+| 57 other types | 9,074 | 0 |
+| **All types** | **141,934** | **0** |
+| (equal pairs checked) | 146,250 | 148,640 |
+
+Concurrent reads: 0 differed from a single-threaded read.
 
 ## Setup
 

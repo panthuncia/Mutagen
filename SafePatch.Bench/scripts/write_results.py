@@ -10,18 +10,20 @@ rounds = defaultdict(lambda: defaultdict(list))   # step -> variant -> [(median,
 records = {}
 parity = defaultdict(dict)
 selfeq = defaultdict(dict)
+hashes = defaultdict(dict)   # variant -> type -> equal records whose hash code differs
 threads = {}
 current = None
 def lines():
-    # The first run's combined build was stale (built from an older merge): its lines are replaced by a later run.
+    # The combined build has been rebuilt since the first session (a stale build, then two more fix branches): its
+    # lines there are replaced by later runs. The later fix branches and the rebuilt combined build were timed in a
+    # session of their own, alongside 0.54.4 (base-2) and the combined build (combined-2).
     for line in open(LOG, encoding='utf-8', errors='replace'):
         if '|combined|' in line or line.startswith('== threads combined'): continue
         yield line
-    for extra in ('parity-combined2.log', 'combined-timing.log'):
+    for extra in ('parity-new.log', 'parity-combined3.log', 'parity-all-base.log', 'parity-all-combined.log',
+                  'parity-content.log', 'parity-epsilon.log', 'hash-masters.log', 'hash-all.log', 'timing-new.log', 'threads-combined.log'):
         for line in open(os.path.join(os.path.dirname(LOG), extra), encoding='utf-8', errors='replace'):
             yield line
-    yield '== threads combined'
-    yield '2,297,232 concurrent reads of Dawnguard.esm records: 0 differed from a single-threaded read.'
 for line in lines():
     line = line.rstrip('\n')
     if line.startswith('== threads '):
@@ -37,6 +39,8 @@ for line in lines():
         parity[parts[1]][parts[2]] = int(parts[3])
     elif parts[0] == 'SELF' and len(parts) == 4:
         selfeq[parts[1]][parts[2]] = int(parts[3])
+    elif parts[0] == 'HASH' and len(parts) == 4:
+        hashes[parts[1]][parts[2]] = int(parts[3])
 
 def timing(step, v):
     runs = rounds[step].get(v)
@@ -95,6 +99,18 @@ def parity_table(variants):
     table = '\n'.join(rows) if len(rows) > 2 else 'none; the same records differ, by the same counts, as on 0.54.4.'
     return table, '\n'.join(self_rows) if len(self_rows) > 2 else None
 
+def hash_table(variants, top=10):
+    types = sorted({t for v in variants for t in hashes.get(v, {}) if not t.startswith('(')}, key=lambda t: -hashes[variants[0]].get(t, 0))
+    rows = ['| Record type | ' + ' | '.join(variants) + ' |', '| --- |' + ' ---: |' * len(variants)]
+    for t in types[:top]:
+        rows.append(f'| {t} | ' + ' | '.join(f'{hashes.get(v, {}).get(t, 0):,}' for v in variants) + ' |')
+    if len(types) > top:
+        rest = types[top:]
+        rows.append(f'| {len(rest)} other types | ' + ' | '.join(f'{sum(hashes.get(v, {}).get(t, 0) for t in rest):,}' for v in variants) + ' |')
+    rows.append('| **All types** | ' + ' | '.join(f"**{sum(c for t, c in hashes.get(v, {}).items() if not t.startswith('(')):,}**" for v in variants) + ' |')
+    rows.append('| (equal pairs checked) | ' + ' | '.join(f"{hashes.get(v, {}).get('(equal pairs)', 0):,}" for v in variants) + ' |')
+    return chr(10).join(rows)
+
 SETUP = """Measured on Skyrim SE 1.6.1170 with its base game and Creation Club plugins (82 plugins, 364 MiB,
 1,252,863 records), on a Ryzen 7 9800X3D (8 cores, 16 threads), 126 GB RAM, NVMe SSD, Windows 11, .NET 10.0.301.
 Each branch is built from 0.54.4 on its own, with the same `SafePatch.Bench`. Timings: three rounds, each running
@@ -109,11 +125,11 @@ def write(name, text):
 
 BRANCHES = {}
 
-def fix(file, branch, variant, title, what, tests, parity_note, extra=''):
+def fix(file, branch, variant, title, what, tests, parity_note, extra='', base='base', commits='one commit'):
     pt, st = parity_table(['base', variant])
     body = f"""# {title}
 
-Branch `{branch}` (one commit on 0.54.4).
+Branch `{branch}` ({commits} on 0.54.4).
 
 {what}
 
@@ -136,7 +152,7 @@ Records unequal to a second `CreateFromBinary` of the same bytes:
 
 Reading is no slower. Full parse and overlay timings (unchanged code paths vary by about 10%):
 
-{timing_table(['base', variant], ['Mutagen: full parse (CreateFromBinary) of every plugin', "Mutagen: every record's FormKey and EditorID", 'Mutagen: keep every record object (heap MiB as Checksum)'])}
+{timing_table([base, variant], ['Mutagen: full parse (CreateFromBinary) of every plugin', "Mutagen: every record's FormKey and EditorID", 'Mutagen: keep every record object (heap MiB as Checksum)'])}
 
 ## Tests
 
@@ -221,6 +237,82 @@ code, and the comparison holds across implementations whose declared item types 
 `GenderedItem<ArmorModel?>` against an overlay's `IGenderedItemGetter<IArmorModelGetter?>`).""",
         '`GenderedItemEqualityTests`: two gendered items with the same values are equal with equal hashes; an armor addon equals a second full parse and its overlay; an armor with gendered models equals its overlay both ways round (all fail before the fix).',
         'This fix also exposed a bug in the deferred fill (gendered fields read before the fill), fixed on `perf/deferred-overlay-fill`.')
+    later = 'Timed in a later session than the branches above, alongside 0.54.4 again (`base-2`).'
+    fix('fix-condition-pack-data-flag.md', 'fix/condition-pack-data-flag', 'fix-condition-pack-data',
+        'Keep a condition\'s pack-data bit out of Flags in the overlay',
+        """In Skyrim and Starfield, two of a condition's flag bits, "use aliases" (`0x02`) and "use pack data" (`0x08`),
+are exposed on its data (`UseAliases`, `UsePackageData`), not in `Condition.Flags`, whose enum does not define them.
+`CreateFromBinary` clears both from `Flags`; the overlay cleared only the aliases bit. Example: `WERJ02PlayerThief`
+(`0B8152:Skyrim.esm`): its first response's fifth condition has `Flags` `OR` from the full parse and `9` (`OR` and
+the undefined `0x08`) from the overlay; `HoldPositionWithTravel1024` (`10FAAF:Skyrim.esm`): a procedure's condition
+has `0` against `8`. Besides breaking equality, a condition copied from the overlay kept the bit in `Flags`, so the
+writer, which ORs `UsePackageData` into `Flags`, wrote it even after `UsePackageData` was turned off. The overlay now
+clears the bit as the full parse does. Fallout 4 keeps these bits in its `Flag` enum and is unaffected.""",
+        '`ConditionPackDataFlagTests` (Skyrim and Starfield): a condition written with `UsePackageData` reads back with `Flags` of `OR` alone and `UsePackageData` set, through both paths (the overlay fails before the fix).',
+        """Most packages with such conditions also differ by two-byte enums (see `fix/unsigned-two-byte-enums`), so the
+package count falls by only 10 here. Of the 59 packages that fix leaves, 53 have such conditions and the other 6
+differ only by the lists of `fix/content-equality`; with every branch merged, no package differs (`combined.md`).""",
+        later, base='base-2')
+    fix('fix-content-equality.md', 'fix/content-equality', 'fix-content-equality',
+        'Compare and hash lists and byte arrays by content',
+        f"""Two commits, one for each generated member:
+
+1. **`Equals` on lists of byte arrays.** A list of byte arrays holds memory slices, and the generated `Equals`
+   compared the lists with `SequenceEqualNullable`, which uses the slice's own `Equals`: where it points, not its
+   bytes. So a record with a non-empty list of byte arrays was unequal to every other instance of itself, including
+   a second `CreateFromBinary` of the same bytes. Seven fields have this shape: Skyrim's `MaterialObject.DNAMs`,
+   `DialogView.TNAMs` and `PackageBranch.Unknown`, the same three in Fallout 4, and Starfield's
+   `NavigationMeshObstacleManagerSubObject` field. Example: `SnowMaterialGlacier` (`05E3F0:Skyrim.esm`) and
+   `MQ202ViewShared` (`06C866:Skyrim.esm`) are unequal to themselves read twice, with every property equal by value.
+   The equals mask already compared the elements by content (which is why `GetEqualsMask` reported no difference);
+   `Equals` now does the same.
+2. **`GetHashCode` on lists, dictionaries, 2D arrays and byte arrays.** The generated hash added these fields as
+   objects, whose hash codes are the object's, while `Equals` compares their contents. So records equal by `Equals`
+   hashed differently whenever they held any of these, which is most record types, and so did their parts: across
+   two reads of Skyrim.esm, 985,151 of 1,262,207 equal list elements (faction ranks, perks, effects, quest aliases,
+   cell references) had different hash codes. Anything that keys a dictionary or set by records or their parts found
+   equal ones missing. The hash now adds their contents (`ContentHashExt.AddContents`; order-independent for
+   dictionaries). 894 generated files change, each only in `GetHashCode`.
+
+The generator gains `MutagenListType`, `MutagenArrayType`, `MutagenArray2dType` and `MutagenByteArrayType`, which
+Mutagen now uses in place of Loqui's (as it already did for `Dict`), overriding only these members. The plugin
+translation module registers its generators for them, and the mask module its 2D-array one.
+
+Records equal to the full parse (a second full parse, and the overlay) whose hash code differs, in the five masters:
+
+{hash_table(['base', 'fix-content-equality'])}
+
+(Records unequal to their twin, such as those with gendered fields before `fix/gendered-item-equality`, are not
+counted: the hash code is only required to agree for equal records. See `combined.md` for all branches together.)""",
+        '`ByteArrayListEqualityTests`: two material objects with equal `DNAMs` contents are equal, and unequal once one byte differs; a material object written and read equals a second full parse and its overlay (all fail before the fix). `ContentHashCodeTests`: an NPC with factions and keywords, a spell with a conditioned effect and a material object each hash alike across two full parses and the overlay; list contents hash in order, dictionaries in any order.',
+        """3 material objects still differ between the reads here: their break flags, fixed by
+`fix/cumulative-break-flags` (where the list hid them).""",
+        later, base='base-2', commits='two commits')
+
+    fix('fix-overlay-float-epsilon.md', 'fix/overlay-float-epsilon', 'fix-overlay-float-epsilon',
+        'Read float.Epsilon as zero in overlays, as the full parse does',
+        f"""Files store some zeros as `float.Epsilon` (1E-45, the bits `01 00 00 00`). `CreateFromBinary` reads it as
+zero and the writer writes zero for it, but overlays read the raw value. `Equals` compares floats within a tolerance
+and does not notice; `==` and `GetHashCode` do. Example: `FireStormExplosion02` (`0877F9:Skyrim.esm`) and three
+other explosions have `ISRadius` 0 from the full parse and 1E-45 from the overlay. It showed once
+`fix/content-equality` made hash codes comparable, as the only records in the merged branches that were equal but
+hashed differently.
+
+Overlay float getters, generated (564 files) and hand-written (condition comparison values, navmesh data), now read
+through `FloatBinaryTranslation.GetFloat`, which applies the full parse's rule, and so do `P2Float`'s and `P3Float`'s
+span reads. Integer-backed floats already did. Placed primitives' and worldspaces' bounds read the raw value in both
+paths, and stay so.
+
+Records equal to the full parse whose hash code differs, with `fix/content-equality` and without:
+
+{hash_table(['base', 'fix-content-equality', 'fix-overlay-float-epsilon', 'combined'])}
+
+On this branch alone, lists and byte arrays still hash by reference (`fix/content-equality`), and the four
+explosions are not counted: until `fix/cumulative-break-flags` their break flags make them unequal to the overlay. With
+every branch merged (`combined`), no equal records hash differently; without this fix, those four did.""",
+        '`FloatEpsilonTests`: an explosion radius and a condition comparison value stored as `float.Epsilon` read as zero through both paths, and the explosion hashes alike (fails before the fix).',
+        'The parity check compares with `Equals`, whose tolerance hides this difference, so its counts do not change.',
+        later, base='base-2')
 
     # Performance branches.
     write('perf-cache-overlay-groups.md', f"""# Build each group of a mod overlay once
@@ -332,20 +424,21 @@ tests pass.
     BRANCHES['perf/record-batches'] = ('perf-record-batches.md', 'EnumerateMajorRecordBatches: one mod on several threads')
 
     pt, st = parity_table(['base', 'combined'])
+    all_pt, _ = parity_table(['base-all', 'combined-all'])
     write('combined.md', f"""# All branches together (`safepatch-perf-experiment`)
 
 Every fix and performance branch merged onto 0.54.4, the generated code regenerated from the merged generator.
 
 ## Measurements
 
-Timed in a separate session from the per-branch files, alternating 0.54.4 (`base-paired`) and the combined build
-round by round:
+Timed in the same session as the three later fix branches, alternating 0.54.4 (`base-2`) and the combined build
+(`combined-2`) round by round:
 
-{timing_table(['base-paired', 'combined'])}
+{timing_table(['base-2', 'combined-2'])}
 
 ## Parity
 
-Records that `CreateFromBinary` and the overlay read differently:
+Records of the five masters that `CreateFromBinary` and the overlay read differently:
 
 {pt}
 
@@ -353,10 +446,21 @@ Records unequal to a second `CreateFromBinary` of the same bytes:
 
 {st or 'none'}
 
-Concurrent reads: {threads.get('combined', '').split(': ')[-1]}
+The other 77 plugins (Creation Club content and one landscape mod, 74,320 records), read the same way:
 
-The differences left are not diagnosed yet: dialog responses, topics and views, material objects, and 59 packages
-(30 of which are unequal even to a second full parse of themselves, so `Equals` is at fault there, not the reads).
+{all_pt}
+
+Every record of the load order now reads the same through both paths and equals a second full parse of itself.
+
+Records equal to the full parse (a second full parse, and the overlay) whose hash code differs:
+
+{hash_table(['base', 'combined'])}
+
+and across the other 77 plugins:
+
+{hash_table(['base-all', 'combined-all'])}
+
+Concurrent reads: {threads.get('combined', '').split(': ')[-1]}
 
 ## Setup
 
