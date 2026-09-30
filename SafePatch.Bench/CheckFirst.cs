@@ -42,7 +42,12 @@ internal static class CheckFirst
                         catch (TargetInvocationException ex) { Fail(failures, typeName, property.Name, ex.InnerException!.GetType().Name); continue; }
                         var want = property.GetValue(expected[formKey]);
                         checkedValues++;
-                        if (!Same(actual, want)) Fail(failures, typeName, property.Name, "differs");
+                        if (!Same(actual, want))
+                        {
+                            Fail(failures, typeName, property.Name, "differs");
+                            if (Shown.Add($"{typeName}.{property.Name}") && Environment.GetEnvironmentVariable("CHECK_FIRST_SHOW") == "1")
+                                Console.WriteLine($"  {formKey} {typeName}.{property.Name}: read first {Show(actual)}; full parse {Show(want)}");
+                        }
                     }
                 }
             }
@@ -52,6 +57,16 @@ internal static class CheckFirst
                           (failures.Count == 0 ? "none" : string.Join(", ", failures.Select(f => $"{f.Key} {f.Value}"))));
         return failures.Count == 0 ? 0 : 1;
     }
+
+    private static readonly HashSet<string> Shown = [];
+
+    private static string Show(object? value) => value switch
+    {
+        null => "null",
+        string text => $"\"{text}\"",
+        IEnumerable items and not string => $"[{string.Join(", ", items.Cast<object?>().Take(6).Select(Show))}]",
+        _ => value.ToString() ?? "?",
+    };
 
     private static void Fail(SortedDictionary<string, int> failures, string type, string property, string why)
     {
