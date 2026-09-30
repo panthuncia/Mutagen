@@ -165,7 +165,9 @@
         <Compile Include="Plugins\Analysis\DI\MultiModFileSplitter.cs" />
         <Compile Include="Plugins\Analysis\DI\MultiModFileReader.cs" />
         <Compile Include="Plugins\Analysis\DI\RecordCompactionCompatibilityDetector.cs" />
+        <Compile Include="Plugins\Analysis\LoadOrderRecordIndex.cs" />
         <Compile Include="Plugins\Analysis\MultiModFileAnalysis.cs" />
+        <Compile Include="Plugins\Analysis\PluginRecordIndex.cs" />
         <Compile Include="Plugins\Analysis\RecordCompactionCompatibilityDetection.cs" />
         <Compile Include="Plugins\Analysis\RecordLocationMarker.cs" />
         <Compile Include="Plugins\Analysis\RecordLocator.cs">
@@ -250,6 +252,7 @@
         <Compile Include="Plugins\Binary\Processing\ModTrimmer.cs" />
         <Compile Include="Plugins\Binary\Streams\Decompression.cs" />
         <Compile Include="Plugins\Binary\Streams\EncodingBundle.cs" />
+        <Compile Include="Plugins\Binary\Streams\InflatePrefix.cs" />
         <Compile Include="Plugins\Binary\Streams\StreamOperationsMixIn.cs" />
         <Compile Include="Plugins\Binary\Translations\Array2dBinaryTranslation.cs">
             <CodeLanguage>cs</CodeLanguage>
