@@ -27,7 +27,7 @@ public enum ListBinaryType
 public class PluginListBinaryTranslationGeneration : BinaryTranslationGeneration
 {
     public virtual string TranslatorName => $"ListBinaryTranslation";
-    const string ThreadKey = "ListThread";
+    public const string ThreadKey = "ListThread";
     public const string CounterRecordType = "ListCounterRecordType";
     public const string CounterByteLength = "CounterByteLength";
     public const string NullIfCounterZero = "NullIfCounterZero";

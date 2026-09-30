@@ -6690,6 +6690,236 @@ namespace Mutagen.Bethesda.Skyrim
                 .Catch(e => RecordException.EnrichAndThrow(e, obj.ModKey));
         }
 
+        /// <summary>
+        /// Every major record, as <c>EnumerateMajorRecords</c> yields them, each with the major record it is nested in,
+        /// split into batches that can be read on different threads: each top-level group, and each block of cells (a
+        /// worldspace is a batch with its persistent cell, and its blocks are batches of their own). A single large mod,
+        /// whose worldspaces hold most of its records, then spreads over every core. Overlay records are safe to read from
+        /// several threads.
+        /// </summary>
+        public static IEnumerable<IEnumerable<MajorRecordWithParent>> EnumerateMajorRecordBatches(this ISkyrimModGetter obj)
+        {
+            yield return MajorRecordWithParent.All(obj.GameSettings.Records, null);
+            yield return MajorRecordWithParent.All(obj.Keywords.Records, null);
+            yield return MajorRecordWithParent.All(obj.LocationReferenceTypes.Records, null);
+            yield return MajorRecordWithParent.All(obj.Actions.Records, null);
+            yield return MajorRecordWithParent.All(obj.TextureSets.Records, null);
+            yield return MajorRecordWithParent.All(obj.Globals.Records, null);
+            yield return MajorRecordWithParent.All(obj.Classes.Records, null);
+            yield return MajorRecordWithParent.All(obj.Factions.Records, null);
+            yield return MajorRecordWithParent.All(obj.HeadParts.Records, null);
+            yield return MajorRecordWithParent.All(obj.Hairs.Records, null);
+            yield return MajorRecordWithParent.All(obj.Eyes.Records, null);
+            yield return MajorRecordWithParent.All(obj.Races.Records, null);
+            yield return MajorRecordWithParent.All(obj.SoundMarkers.Records, null);
+            yield return MajorRecordWithParent.All(obj.AcousticSpaces.Records, null);
+            yield return MajorRecordWithParent.All(obj.MagicEffects.Records, null);
+            yield return MajorRecordWithParent.All(obj.LandscapeTextures.Records, null);
+            yield return MajorRecordWithParent.All(obj.ObjectEffects.Records, null);
+            yield return MajorRecordWithParent.All(obj.Spells.Records, null);
+            yield return MajorRecordWithParent.All(obj.Scrolls.Records, null);
+            yield return MajorRecordWithParent.All(obj.Activators.Records, null);
+            yield return MajorRecordWithParent.All(obj.TalkingActivators.Records, null);
+            yield return MajorRecordWithParent.All(obj.Armors.Records, null);
+            yield return MajorRecordWithParent.All(obj.Books.Records, null);
+            yield return MajorRecordWithParent.All(obj.Containers.Records, null);
+            yield return MajorRecordWithParent.All(obj.Doors.Records, null);
+            yield return MajorRecordWithParent.All(obj.Ingredients.Records, null);
+            yield return MajorRecordWithParent.All(obj.Lights.Records, null);
+            yield return MajorRecordWithParent.All(obj.MiscItems.Records, null);
+            yield return MajorRecordWithParent.All(obj.AlchemicalApparatuses.Records, null);
+            yield return MajorRecordWithParent.All(obj.Statics.Records, null);
+            yield return MajorRecordWithParent.All(obj.MoveableStatics.Records, null);
+            yield return MajorRecordWithParent.All(obj.Grasses.Records, null);
+            yield return MajorRecordWithParent.All(obj.Trees.Records, null);
+            yield return MajorRecordWithParent.All(obj.Florae.Records, null);
+            yield return MajorRecordWithParent.All(obj.Furniture.Records, null);
+            yield return MajorRecordWithParent.All(obj.Weapons.Records, null);
+            yield return MajorRecordWithParent.All(obj.Ammunitions.Records, null);
+            yield return MajorRecordWithParent.All(obj.Npcs.Records, null);
+            yield return MajorRecordWithParent.All(obj.LeveledNpcs.Records, null);
+            yield return MajorRecordWithParent.All(obj.Keys.Records, null);
+            yield return MajorRecordWithParent.All(obj.Ingestibles.Records, null);
+            yield return MajorRecordWithParent.All(obj.IdleMarkers.Records, null);
+            yield return MajorRecordWithParent.All(obj.ConstructibleObjects.Records, null);
+            yield return MajorRecordWithParent.All(obj.Projectiles.Records, null);
+            yield return MajorRecordWithParent.All(obj.Hazards.Records, null);
+            yield return MajorRecordWithParent.All(obj.SoulGems.Records, null);
+            yield return MajorRecordWithParent.All(obj.LeveledItems.Records, null);
+            yield return MajorRecordWithParent.All(obj.Weathers.Records, null);
+            yield return MajorRecordWithParent.All(obj.Climates.Records, null);
+            yield return MajorRecordWithParent.All(obj.ShaderParticleGeometries.Records, null);
+            yield return MajorRecordWithParent.All(obj.VisualEffects.Records, null);
+            yield return MajorRecordWithParent.All(obj.Regions.Records, null);
+            yield return MajorRecordWithParent.All(obj.NavigationMeshInfoMaps.Records, null);
+            foreach (var item0 in obj.Cells.Records)
+            {
+                foreach (var item1 in item0.SubBlocks)
+                {
+                    yield return BatchCellSubBlockContents(item1, null);
+                }
+            }
+            foreach (var item2 in obj.Worldspaces.Records)
+            {
+                yield return BatchWorldspaceUnsplit(item2, null);
+                foreach (var item3 in item2.SubCells)
+                {
+                    foreach (var item4 in item3.Items)
+                    {
+                        yield return BatchWorldspaceSubBlockContents(item4, item2);
+                    }
+                }
+            }
+            yield return BatchIDialogTopicGetterList(obj.DialogTopics.Records, null);
+            yield return MajorRecordWithParent.All(obj.Quests.Records, null);
+            yield return MajorRecordWithParent.All(obj.IdleAnimations.Records, null);
+            yield return MajorRecordWithParent.All(obj.Packages.Records, null);
+            yield return MajorRecordWithParent.All(obj.CombatStyles.Records, null);
+            yield return MajorRecordWithParent.All(obj.LoadScreens.Records, null);
+            yield return MajorRecordWithParent.All(obj.LeveledSpells.Records, null);
+            yield return MajorRecordWithParent.All(obj.AnimatedObjects.Records, null);
+            yield return MajorRecordWithParent.All(obj.Waters.Records, null);
+            yield return MajorRecordWithParent.All(obj.EffectShaders.Records, null);
+            yield return MajorRecordWithParent.All(obj.Explosions.Records, null);
+            yield return MajorRecordWithParent.All(obj.Debris.Records, null);
+            yield return MajorRecordWithParent.All(obj.ImageSpaces.Records, null);
+            yield return MajorRecordWithParent.All(obj.ImageSpaceAdapters.Records, null);
+            yield return MajorRecordWithParent.All(obj.FormLists.Records, null);
+            yield return MajorRecordWithParent.All(obj.Perks.Records, null);
+            yield return MajorRecordWithParent.All(obj.BodyParts.Records, null);
+            yield return MajorRecordWithParent.All(obj.AddonNodes.Records, null);
+            yield return MajorRecordWithParent.All(obj.ActorValueInformation.Records, null);
+            yield return MajorRecordWithParent.All(obj.CameraShots.Records, null);
+            yield return MajorRecordWithParent.All(obj.CameraPaths.Records, null);
+            yield return MajorRecordWithParent.All(obj.VoiceTypes.Records, null);
+            yield return MajorRecordWithParent.All(obj.MaterialTypes.Records, null);
+            yield return MajorRecordWithParent.All(obj.Impacts.Records, null);
+            yield return MajorRecordWithParent.All(obj.ImpactDataSets.Records, null);
+            yield return MajorRecordWithParent.All(obj.ArmorAddons.Records, null);
+            yield return MajorRecordWithParent.All(obj.EncounterZones.Records, null);
+            yield return MajorRecordWithParent.All(obj.Locations.Records, null);
+            yield return MajorRecordWithParent.All(obj.Messages.Records, null);
+            yield return MajorRecordWithParent.All(obj.DefaultObjectManagers.Records, null);
+            yield return MajorRecordWithParent.All(obj.LightingTemplates.Records, null);
+            yield return MajorRecordWithParent.All(obj.MusicTypes.Records, null);
+            yield return MajorRecordWithParent.All(obj.Footsteps.Records, null);
+            yield return MajorRecordWithParent.All(obj.FootstepSets.Records, null);
+            yield return MajorRecordWithParent.All(obj.StoryManagerBranchNodes.Records, null);
+            yield return MajorRecordWithParent.All(obj.StoryManagerQuestNodes.Records, null);
+            yield return MajorRecordWithParent.All(obj.StoryManagerEventNodes.Records, null);
+            yield return MajorRecordWithParent.All(obj.DialogBranches.Records, null);
+            yield return MajorRecordWithParent.All(obj.MusicTracks.Records, null);
+            yield return MajorRecordWithParent.All(obj.DialogViews.Records, null);
+            yield return MajorRecordWithParent.All(obj.WordsOfPower.Records, null);
+            yield return MajorRecordWithParent.All(obj.Shouts.Records, null);
+            yield return MajorRecordWithParent.All(obj.EquipTypes.Records, null);
+            yield return MajorRecordWithParent.All(obj.Relationships.Records, null);
+            yield return MajorRecordWithParent.All(obj.Scenes.Records, null);
+            yield return MajorRecordWithParent.All(obj.AssociationTypes.Records, null);
+            yield return MajorRecordWithParent.All(obj.Outfits.Records, null);
+            yield return MajorRecordWithParent.All(obj.ArtObjects.Records, null);
+            yield return MajorRecordWithParent.All(obj.MaterialObjects.Records, null);
+            yield return MajorRecordWithParent.All(obj.MovementTypes.Records, null);
+            yield return MajorRecordWithParent.All(obj.SoundDescriptors.Records, null);
+            yield return MajorRecordWithParent.All(obj.DualCastData.Records, null);
+            yield return MajorRecordWithParent.All(obj.SoundCategories.Records, null);
+            yield return MajorRecordWithParent.All(obj.SoundOutputModels.Records, null);
+            yield return MajorRecordWithParent.All(obj.CollisionLayers.Records, null);
+            yield return MajorRecordWithParent.All(obj.Colors.Records, null);
+            yield return MajorRecordWithParent.All(obj.ReverbParameters.Records, null);
+            yield return MajorRecordWithParent.All(obj.VolumetricLightings.Records, null);
+            yield return MajorRecordWithParent.All(obj.LensFlares.Records, null);
+        }
+
+        private static IEnumerable<MajorRecordWithParent> BatchCellContents(
+            ICellGetter obj,
+            IMajorRecordGetter? parent)
+        {
+            if (obj.Landscape is {} item12)
+            {
+                yield return new MajorRecordWithParent(item12, parent);
+            }
+            foreach (var item13 in obj.NavigationMeshes)
+            {
+                yield return new MajorRecordWithParent(item13, parent);
+            }
+            foreach (var item14 in obj.Persistent)
+            {
+                yield return new MajorRecordWithParent(item14, parent);
+            }
+            foreach (var item15 in obj.Temporary)
+            {
+                yield return new MajorRecordWithParent(item15, parent);
+            }
+        }
+
+        private static IEnumerable<MajorRecordWithParent> BatchCellSubBlockContents(
+            ICellSubBlockGetter obj,
+            IMajorRecordGetter? parent)
+        {
+            foreach (var item5 in obj.Cells)
+            {
+                yield return new MajorRecordWithParent(item5, parent);
+                foreach (var item6 in BatchCellContents(item5, item5))
+                {
+                    yield return item6;
+                }
+            }
+        }
+
+        private static IEnumerable<MajorRecordWithParent> BatchDialogTopicContents(
+            IDialogTopicGetter obj,
+            IMajorRecordGetter? parent)
+        {
+            foreach (var item16 in obj.Responses)
+            {
+                yield return new MajorRecordWithParent(item16, parent);
+            }
+        }
+
+        private static IEnumerable<MajorRecordWithParent> BatchIDialogTopicGetterList(
+            IEnumerable<IDialogTopicGetter> items,
+            IMajorRecordGetter? parent)
+        {
+            foreach (var item in items)
+            {
+                yield return new MajorRecordWithParent(item, parent);
+                foreach (var item11 in BatchDialogTopicContents(item, item))
+                {
+                    yield return item11;
+                }
+            }
+        }
+
+        private static IEnumerable<MajorRecordWithParent> BatchWorldspaceSubBlockContents(
+            IWorldspaceSubBlockGetter obj,
+            IMajorRecordGetter? parent)
+        {
+            foreach (var item9 in obj.Items)
+            {
+                yield return new MajorRecordWithParent(item9, parent);
+                foreach (var item10 in BatchCellContents(item9, item9))
+                {
+                    yield return item10;
+                }
+            }
+        }
+
+        private static IEnumerable<MajorRecordWithParent> BatchWorldspaceUnsplit(
+            IWorldspaceGetter obj,
+            IMajorRecordGetter? parent)
+        {
+            yield return new MajorRecordWithParent(obj, parent);
+            if (obj.TopCell is {} item7)
+            {
+                yield return new MajorRecordWithParent(item7, obj);
+                foreach (var item8 in BatchCellContents(item7, item7))
+                {
+                    yield return item8;
+                }
+            }
+        }
+
         [DebuggerStepThrough]
         public static void Remove(
             this ISkyrimMod obj,
