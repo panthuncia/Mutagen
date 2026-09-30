@@ -48,8 +48,12 @@ public readonly struct CompressionExport : IDisposable
         Span<byte> b = stackalloc byte[4];
         BinaryPrimitives.WriteUInt32LittleEndian(b, (uint)_tributary.Length);
         OriginalWriter.BaseStream.Write(b);
-        using var stream = new ZLibStream(OriginalWriter.BaseStream, CompressionMode.Compress);
-        _tributary.Position = 0;
-        _tributary.CopyTo(stream);
+        // The writer's stream belongs to whoever gave it to the writer: compressing into it mustn't close it.
+        using (var stream = new ZLibStream(OriginalWriter.BaseStream, CompressionMode.Compress, leaveOpen: true))
+        {
+            _tributary.Position = 0;
+            _tributary.CopyTo(stream);
+        }
+        CompressionWriter.Dispose();
     }
 }
