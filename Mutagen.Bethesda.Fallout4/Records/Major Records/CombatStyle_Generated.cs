@@ -4358,7 +4358,7 @@ namespace Mutagen.Bethesda.Fallout4
                     item.LongRangeCrouchMult = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: dataFrame);
                     if (dataFrame.Complete)
                     {
-                        item.CSLRDataTypeState |= CombatStyle.CSLRDataType.Break0;
+                        item.CSLRDataTypeState |= CombatStyle.CSLRDataType.Break0 | CombatStyle.CSLRDataType.Break1;
                         return (int)CombatStyle_FieldIndex.LongRangeCrouchMult;
                     }
                     if (dataFrame.Remaining < 4) return null;

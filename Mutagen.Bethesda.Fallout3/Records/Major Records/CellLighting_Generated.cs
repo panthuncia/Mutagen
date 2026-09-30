@@ -1560,13 +1560,13 @@ namespace Mutagen.Bethesda.Fallout3
             item.DirectionalRotationZ = frame.ReadInt32();
             if (frame.Complete)
             {
-                item.Versioning |= CellLighting.VersioningBreaks.Break0;
+                item.Versioning |= CellLighting.VersioningBreaks.Break0 | CellLighting.VersioningBreaks.Break1 | CellLighting.VersioningBreaks.Break2;
                 return;
             }
             item.DirectionalFade = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);
             if (frame.Complete)
             {
-                item.Versioning |= CellLighting.VersioningBreaks.Break1;
+                item.Versioning |= CellLighting.VersioningBreaks.Break1 | CellLighting.VersioningBreaks.Break2;
                 return;
             }
             item.FogClipDistance = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);

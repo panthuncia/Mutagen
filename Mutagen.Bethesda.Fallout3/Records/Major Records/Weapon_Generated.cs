@@ -10137,14 +10137,14 @@ namespace Mutagen.Bethesda.Fallout3
                     item.LimbDamageMult = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: dataFrame);
                     if (dataFrame.Complete)
                     {
-                        item.DNAMDataTypeState |= Weapon.DNAMDataType.Break0;
+                        item.DNAMDataTypeState |= Weapon.DNAMDataType.Break0 | Weapon.DNAMDataType.Break1 | Weapon.DNAMDataType.Break2 | Weapon.DNAMDataType.Break3 | Weapon.DNAMDataType.Break4 | Weapon.DNAMDataType.Break5 | Weapon.DNAMDataType.Break6 | Weapon.DNAMDataType.Break7;
                         return (int)Weapon_FieldIndex.LimbDamageMult;
                     }
                     if (dataFrame.Remaining < 4) return null;
                     item.ResistType = dataFrame.ReadInt32();
                     if (dataFrame.Complete)
                     {
-                        item.DNAMDataTypeState |= Weapon.DNAMDataType.Break1;
+                        item.DNAMDataTypeState |= Weapon.DNAMDataType.Break1 | Weapon.DNAMDataType.Break2 | Weapon.DNAMDataType.Break3 | Weapon.DNAMDataType.Break4 | Weapon.DNAMDataType.Break5 | Weapon.DNAMDataType.Break6 | Weapon.DNAMDataType.Break7;
                         return (int)Weapon_FieldIndex.ResistType;
                     }
                     if (dataFrame.Remaining < 4) return null;
@@ -10155,7 +10155,7 @@ namespace Mutagen.Bethesda.Fallout3
                     item.SemiAutomaticFireDelayMax = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: dataFrame);
                     if (dataFrame.Complete)
                     {
-                        item.DNAMDataTypeState |= Weapon.DNAMDataType.Break2;
+                        item.DNAMDataTypeState |= Weapon.DNAMDataType.Break2 | Weapon.DNAMDataType.Break3 | Weapon.DNAMDataType.Break4 | Weapon.DNAMDataType.Break5 | Weapon.DNAMDataType.Break6 | Weapon.DNAMDataType.Break7;
                         return (int)Weapon_FieldIndex.SemiAutomaticFireDelayMax;
                     }
                     if (dataFrame.Remaining < 4) return null;
@@ -10180,7 +10180,7 @@ namespace Mutagen.Bethesda.Fallout3
                     item.ValueAMod3 = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: dataFrame);
                     if (dataFrame.Complete)
                     {
-                        item.DNAMDataTypeState |= Weapon.DNAMDataType.Break3;
+                        item.DNAMDataTypeState |= Weapon.DNAMDataType.Break3 | Weapon.DNAMDataType.Break4 | Weapon.DNAMDataType.Break5 | Weapon.DNAMDataType.Break6 | Weapon.DNAMDataType.Break7;
                         return (int)Weapon_FieldIndex.ValueAMod3;
                     }
                     if (dataFrame.Remaining < 4) return null;
@@ -10191,7 +10191,7 @@ namespace Mutagen.Bethesda.Fallout3
                     item.StrengthReq = dataFrame.ReadUInt32();
                     if (dataFrame.Complete)
                     {
-                        item.DNAMDataTypeState |= Weapon.DNAMDataType.Break4;
+                        item.DNAMDataTypeState |= Weapon.DNAMDataType.Break4 | Weapon.DNAMDataType.Break5 | Weapon.DNAMDataType.Break6 | Weapon.DNAMDataType.Break7;
                         return (int)Weapon_FieldIndex.StrengthReq;
                     }
                     if (dataFrame.Remaining < 1) return null;
@@ -10206,7 +10206,7 @@ namespace Mutagen.Bethesda.Fallout3
                     item.RegenRate = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: dataFrame);
                     if (dataFrame.Complete)
                     {
-                        item.DNAMDataTypeState |= Weapon.DNAMDataType.Break5;
+                        item.DNAMDataTypeState |= Weapon.DNAMDataType.Break5 | Weapon.DNAMDataType.Break6 | Weapon.DNAMDataType.Break7;
                         return (int)Weapon_FieldIndex.RegenRate;
                     }
                     if (dataFrame.Remaining < 4) return null;
@@ -10219,7 +10219,7 @@ namespace Mutagen.Bethesda.Fallout3
                     item.ValueBMod3 = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: dataFrame);
                     if (dataFrame.Complete)
                     {
-                        item.DNAMDataTypeState |= Weapon.DNAMDataType.Break6;
+                        item.DNAMDataTypeState |= Weapon.DNAMDataType.Break6 | Weapon.DNAMDataType.Break7;
                         return (int)Weapon_FieldIndex.ValueBMod3;
                     }
                     if (dataFrame.Remaining < 4) return null;

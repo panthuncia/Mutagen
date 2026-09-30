@@ -2184,7 +2184,7 @@ namespace Mutagen.Bethesda.Fallout4
                     item.ProjectionVector = P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: dataFrame);
                     if (dataFrame.Complete)
                     {
-                        item.DATADataTypeState |= MaterialObject.DATADataType.Break0;
+                        item.DATADataTypeState |= MaterialObject.DATADataType.Break0 | MaterialObject.DATADataType.Break1;
                         return (int)MaterialObject_FieldIndex.ProjectionVector;
                     }
                     if (dataFrame.Remaining < 4) return null;

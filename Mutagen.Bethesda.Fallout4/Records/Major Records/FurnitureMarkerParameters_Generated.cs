@@ -1344,7 +1344,7 @@ namespace Mutagen.Bethesda.Fallout4
                 divisor: null);
             if (frame.Complete)
             {
-                item.Versioning |= FurnitureMarkerParameters.VersioningBreaks.Break0;
+                item.Versioning |= FurnitureMarkerParameters.VersioningBreaks.Break0 | FurnitureMarkerParameters.VersioningBreaks.Break1;
                 return;
             }
             item.Keyword.SetTo(FormLinkBinaryTranslation.Instance.Parse(reader: frame));

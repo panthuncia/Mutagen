@@ -2471,7 +2471,7 @@ namespace Mutagen.Bethesda.Oblivion
         {
             if (frame.Complete)
             {
-                item.Versioning |= WaterData.VersioningBreaks.Break0;
+                item.Versioning |= WaterData.VersioningBreaks.Break0 | WaterData.VersioningBreaks.Break1 | WaterData.VersioningBreaks.Break2 | WaterData.VersioningBreaks.Break3;
                 return;
             }
             item.WindVelocity = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);
@@ -2489,7 +2489,7 @@ namespace Mutagen.Bethesda.Oblivion
                 item: item);
             if (frame.Complete)
             {
-                item.Versioning |= WaterData.VersioningBreaks.Break1;
+                item.Versioning |= WaterData.VersioningBreaks.Break1 | WaterData.VersioningBreaks.Break2 | WaterData.VersioningBreaks.Break3;
                 return;
             }
             item.FogDistanceFarPlane = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);
@@ -2503,7 +2503,7 @@ namespace Mutagen.Bethesda.Oblivion
                 item: item);
             if (frame.Complete)
             {
-                item.Versioning |= WaterData.VersioningBreaks.Break2;
+                item.Versioning |= WaterData.VersioningBreaks.Break2 | WaterData.VersioningBreaks.Break3;
                 return;
             }
             item.RainSimulatorForce = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame);

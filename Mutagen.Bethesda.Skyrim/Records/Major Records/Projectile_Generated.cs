@@ -3607,7 +3607,7 @@ namespace Mutagen.Bethesda.Skyrim
                     item.RelaunchInterval = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: dataFrame);
                     if (dataFrame.Complete)
                     {
-                        item.DATADataTypeState |= Projectile.DATADataType.Break0;
+                        item.DATADataTypeState |= Projectile.DATADataType.Break0 | Projectile.DATADataType.Break1;
                         return (int)Projectile_FieldIndex.RelaunchInterval;
                     }
                     if (dataFrame.Remaining < 4) return null;

@@ -1473,7 +1473,7 @@ namespace Mutagen.Bethesda.Fallout3
             item.Unused2 = ByteArrayBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: frame.SpawnWithLength(3));
             if (frame.Complete)
             {
-                item.Versioning |= DialogResponseData.VersioningBreaks.Break0;
+                item.Versioning |= DialogResponseData.VersioningBreaks.Break0 | DialogResponseData.VersioningBreaks.Break1;
                 return;
             }
             item.ResponseSound.SetTo(FormLinkBinaryTranslation.Instance.Parse(reader: frame));

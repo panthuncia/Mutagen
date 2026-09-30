@@ -3969,7 +3969,7 @@ namespace Mutagen.Bethesda.Fallout4
                     item.Scalar = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: dataFrame);
                     if (dataFrame.Complete)
                     {
-                        item.DATADataTypeState |= Light.DATADataType.Break0;
+                        item.DATADataTypeState |= Light.DATADataType.Break0 | Light.DATADataType.Break1;
                         return (int)Light_FieldIndex.Scalar;
                     }
                     if (dataFrame.Remaining < 4) return null;

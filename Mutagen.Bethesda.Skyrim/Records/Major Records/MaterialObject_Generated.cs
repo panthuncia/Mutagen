@@ -2299,14 +2299,14 @@ namespace Mutagen.Bethesda.Skyrim
                     item.ProjectionVector = P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: dataFrame);
                     if (dataFrame.Complete)
                     {
-                        item.DATADataTypeState |= MaterialObject.DATADataType.Break0;
+                        item.DATADataTypeState |= MaterialObject.DATADataType.Break0 | MaterialObject.DATADataType.Break1 | MaterialObject.DATADataType.Break2;
                         return (int)MaterialObject_FieldIndex.ProjectionVector;
                     }
                     if (dataFrame.Remaining < 4) return null;
                     item.NormalDampener = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: dataFrame);
                     if (dataFrame.Complete)
                     {
-                        item.DATADataTypeState |= MaterialObject.DATADataType.Break1;
+                        item.DATADataTypeState |= MaterialObject.DATADataType.Break1 | MaterialObject.DATADataType.Break2;
                         return (int)MaterialObject_FieldIndex.NormalDampener;
                     }
                     if (dataFrame.Remaining < 12) return null;

@@ -1537,7 +1537,7 @@ namespace Mutagen.Bethesda.Fallout3
             item.SecondParameter = frame.ReadInt32();
             if (frame.Complete)
             {
-                item.Versioning |= Condition.VersioningBreaks.Break0;
+                item.Versioning |= Condition.VersioningBreaks.Break0 | Condition.VersioningBreaks.Break1;
                 return;
             }
             item.RunOnType = EnumBinaryTranslation<Condition.RunOn, MutagenFrame, MutagenWriter>.Instance.Parse(

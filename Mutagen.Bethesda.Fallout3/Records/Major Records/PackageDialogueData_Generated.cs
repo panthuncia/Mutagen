@@ -1357,13 +1357,13 @@ namespace Mutagen.Bethesda.Fallout3
                 length: 4);
             if (frame.Complete)
             {
-                item.Versioning |= PackageDialogueData.VersioningBreaks.Break0;
+                item.Versioning |= PackageDialogueData.VersioningBreaks.Break0 | PackageDialogueData.VersioningBreaks.Break1 | PackageDialogueData.VersioningBreaks.Break2;
                 return;
             }
             item.Unused = frame.ReadUInt32();
             if (frame.Complete)
             {
-                item.Versioning |= PackageDialogueData.VersioningBreaks.Break1;
+                item.Versioning |= PackageDialogueData.VersioningBreaks.Break1 | PackageDialogueData.VersioningBreaks.Break2;
                 return;
             }
             item.DialogueType = EnumBinaryTranslation<Package.DialogueType, MutagenFrame, MutagenWriter>.Instance.Parse(

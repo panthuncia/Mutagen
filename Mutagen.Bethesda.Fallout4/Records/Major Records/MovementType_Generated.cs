@@ -3484,14 +3484,14 @@ namespace Mutagen.Bethesda.Fallout4
                     item.ForwardWalk = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: dataFrame);
                     if (dataFrame.Complete)
                     {
-                        item.SPEDDataTypeState |= MovementType.SPEDDataType.Break0;
+                        item.SPEDDataTypeState |= MovementType.SPEDDataType.Break0 | MovementType.SPEDDataType.Break1 | MovementType.SPEDDataType.Break2;
                         return (int)MovementType_FieldIndex.ForwardWalk;
                     }
                     if (dataFrame.Remaining < 4) return null;
                     item.ForwardRun = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: dataFrame);
                     if (dataFrame.Complete)
                     {
-                        item.SPEDDataTypeState |= MovementType.SPEDDataType.Break1;
+                        item.SPEDDataTypeState |= MovementType.SPEDDataType.Break1 | MovementType.SPEDDataType.Break2;
                         return (int)MovementType_FieldIndex.ForwardRun;
                     }
                     if (dataFrame.Remaining < 4) return null;

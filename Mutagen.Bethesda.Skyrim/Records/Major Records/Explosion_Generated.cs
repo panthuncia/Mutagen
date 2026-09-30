@@ -2944,14 +2944,14 @@ namespace Mutagen.Bethesda.Skyrim
                     item.ISRadius = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: dataFrame);
                     if (dataFrame.Complete)
                     {
-                        item.DATADataTypeState |= Explosion.DATADataType.Break0;
+                        item.DATADataTypeState |= Explosion.DATADataType.Break0 | Explosion.DATADataType.Break1 | Explosion.DATADataType.Break2;
                         return (int)Explosion_FieldIndex.ISRadius;
                     }
                     if (dataFrame.Remaining < 4) return null;
                     item.VerticalOffsetMult = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: dataFrame);
                     if (dataFrame.Complete)
                     {
-                        item.DATADataTypeState |= Explosion.DATADataType.Break1;
+                        item.DATADataTypeState |= Explosion.DATADataType.Break1 | Explosion.DATADataType.Break2;
                         return (int)Explosion_FieldIndex.VerticalOffsetMult;
                     }
                     if (dataFrame.Remaining < 4) return null;

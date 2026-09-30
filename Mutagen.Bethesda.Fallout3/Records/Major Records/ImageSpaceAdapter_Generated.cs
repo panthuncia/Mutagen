@@ -12065,7 +12065,7 @@ namespace Mutagen.Bethesda.Fallout3
                         item: item);
                     if (dataFrame.Complete)
                     {
-                        item.DNAMDataTypeState |= ImageSpaceAdapter.DNAMDataType.Break0;
+                        item.DNAMDataTypeState |= ImageSpaceAdapter.DNAMDataType.Break0 | ImageSpaceAdapter.DNAMDataType.Break1 | ImageSpaceAdapter.DNAMDataType.Break2;
                         return (int)ImageSpaceAdapter_FieldIndex.Duration;
                     }
                     if (dataFrame.Remaining < 12) return null;
@@ -12096,7 +12096,7 @@ namespace Mutagen.Bethesda.Fallout3
                         item: item);
                     if (dataFrame.Complete)
                     {
-                        item.DNAMDataTypeState |= ImageSpaceAdapter.DNAMDataType.Break1;
+                        item.DNAMDataTypeState |= ImageSpaceAdapter.DNAMDataType.Break1 | ImageSpaceAdapter.DNAMDataType.Break2;
                         return (int)ImageSpaceAdapter_FieldIndex.Unused;
                     }
                     if (dataFrame.Remaining < 4) return null;

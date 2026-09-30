@@ -6335,7 +6335,7 @@ namespace Mutagen.Bethesda.Skyrim
                     item.FogFarColor = Mutagen.Bethesda.Skyrim.WeatherColor.CreateFromBinary(frame: dataFrame);
                     if (dataFrame.Complete)
                     {
-                        item.NAM0DataTypeState |= Weather.NAM0DataType.Break0;
+                        item.NAM0DataTypeState |= Weather.NAM0DataType.Break0 | Weather.NAM0DataType.Break1;
                         return (int)Weather_FieldIndex.FogFarColor;
                     }
                     if (dataFrame.Complete) return null;

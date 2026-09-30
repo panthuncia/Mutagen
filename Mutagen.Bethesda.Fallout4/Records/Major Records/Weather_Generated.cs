@@ -7641,7 +7641,7 @@ namespace Mutagen.Bethesda.Fallout4
                     item.HorizonColor = Mutagen.Bethesda.Fallout4.WeatherColor.CreateFromBinary(frame: dataFrame);
                     if (dataFrame.Complete)
                     {
-                        item.NAM0DataTypeState |= Weather.NAM0DataType.Break0;
+                        item.NAM0DataTypeState |= Weather.NAM0DataType.Break0 | Weather.NAM0DataType.Break1;
                         return (int)Weather_FieldIndex.HorizonColor;
                     }
                     if (dataFrame.Complete) return null;
@@ -7699,7 +7699,7 @@ namespace Mutagen.Bethesda.Fallout4
                     item.FogDistanceNightMax = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: dataFrame);
                     if (dataFrame.Complete)
                     {
-                        item.FNAMDataTypeState |= Weather.FNAMDataType.Break0;
+                        item.FNAMDataTypeState |= Weather.FNAMDataType.Break0 | Weather.FNAMDataType.Break1;
                         return (int)Weather_FieldIndex.FogDistanceNightMax;
                     }
                     if (dataFrame.Remaining < 4) return null;

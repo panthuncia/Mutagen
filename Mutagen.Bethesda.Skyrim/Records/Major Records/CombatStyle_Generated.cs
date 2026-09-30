@@ -2545,7 +2545,7 @@ namespace Mutagen.Bethesda.Skyrim
                     item.DefensiveMult = FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Parse(reader: dataFrame);
                     if (dataFrame.Complete)
                     {
-                        item.CSGDDataTypeState |= CombatStyle.CSGDDataType.Break0;
+                        item.CSGDDataTypeState |= CombatStyle.CSGDDataType.Break0 | CombatStyle.CSGDDataType.Break1;
                         return (int)CombatStyle_FieldIndex.DefensiveMult;
                     }
                     if (dataFrame.Remaining < 4) return null;
