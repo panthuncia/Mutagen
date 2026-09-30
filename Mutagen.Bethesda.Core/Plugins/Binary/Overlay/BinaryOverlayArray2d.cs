@@ -3,6 +3,18 @@ using Noggog;
 
 namespace Mutagen.Bethesda.Plugins.Binary.Overlay;
 
+/// <summary>
+/// A 2D array read from a plugin: its elements, row by row, each <see cref="ItemLength"/> bytes. Equal bytes read as equal
+/// elements, so comparisons can skip decoding what is byte for byte the same (<c>Array2dEquality</c>).
+/// </summary>
+internal interface IBinaryOverlayArray2d
+{
+    int Width { get; }
+    int Height { get; }
+    int ItemLength { get; }
+    ReadOnlySpan<byte> Bytes { get; }
+}
+
 internal static class BinaryOverlayArray2d
 {
     public static IReadOnlyArray2d<T> Factory<T>(
@@ -15,7 +27,7 @@ internal static class BinaryOverlayArray2d
         return new BinaryOverlayArray2dTypical<T>(mem, package, itemLength, size, getter);
     }
 
-    private sealed class BinaryOverlayArray2dTypical<T> : IReadOnlyArray2d<T>
+    private sealed class BinaryOverlayArray2dTypical<T> : IReadOnlyArray2d<T>, IBinaryOverlayArray2d
     {
         private readonly ReadOnlyMemorySlice<byte> _mem;
         private readonly BinaryOverlayFactoryPackage _package;
@@ -50,6 +62,10 @@ internal static class BinaryOverlayArray2d
         }
 
         public T this[P2Int index] => this[index.X, index.Y];
+
+        public int ItemLength => _itemLength;
+
+        public ReadOnlySpan<byte> Bytes => _mem.Span.Slice(0, Math.Min(_mem.Length, Width * Height * _itemLength));
 
         public IEnumerator<IKeyValue<P2Int, T>> GetEnumerator()
         {
