@@ -27,11 +27,10 @@ internal static class Conflicts
     /// </param>
     public static int Run(string data, string pluginsTxt, int runs, string label, bool self)
     {
-        var listings = LoadOrder.GetLoadOrderListings(GameRelease.SkyrimSE, pluginsTxt, null, data, throwOnMissingMods: false)
-            .Where(l => l.Enabled && File.Exists(Path.Combine(data, l.ModKey.FileName))).ToList();
-        var mods = listings.AsParallel().AsOrdered()
-            .Select(l => SkyrimMod.CreateFromBinaryOverlay(new ModPath(l.ModKey, Path.Combine(data, l.ModKey.FileName)), SkyrimRelease.SkyrimSE))
+        var mods = Paths(data, pluginsTxt).AsParallel().AsOrdered()
+            .Select(path => SkyrimMod.CreateFromBinaryOverlay(path, SkyrimRelease.SkyrimSE))
             .ToArray();
+        Console.WriteLine($"{mods.Length} plugins");
 
         if (self) return RunSelf(data, listings, mods, runs, label);
         for (var run = 0; run < runs; run++)
@@ -119,6 +118,21 @@ internal static class Conflicts
         }
         foreach (var mod in mods.Concat(twins)) (mod as IDisposable)?.Dispose();
         return 0;
+    }
+
+    /// <summary>
+    /// The load order's files: a plugins.txt read against a Data folder, or, for a <c>.paths</c> file (a mod manager's
+    /// load order resolved to where each plugin lives, one full path per line), those files in that order.
+    /// </summary>
+    public static IReadOnlyList<ModPath> Paths(string data, string pluginsTxt)
+    {
+        if (pluginsTxt.EndsWith(".paths", StringComparison.OrdinalIgnoreCase))
+        {
+            return [.. File.ReadAllLines(pluginsTxt).Where(l => l.Length > 0).Select(l => new ModPath(ModKey.FromFileName(Path.GetFileName(l)), l))];
+        }
+        return [.. LoadOrder.GetLoadOrderListings(GameRelease.SkyrimSE, pluginsTxt, null, data, throwOnMissingMods: false)
+            .Where(l => l.Enabled && File.Exists(Path.Combine(data, l.ModKey.FileName)))
+            .Select(l => new ModPath(l.ModKey, Path.Combine(data, l.ModKey.FileName)))];
     }
 
     private static readonly ConcurrentDictionary<Type, Func<IMajorRecordGetter, IMajorRecordGetter, bool>> Comparers = new();
