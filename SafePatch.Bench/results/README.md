@@ -19,6 +19,7 @@ One file per branch, each measured on its own against 0.54.4, and the branches c
 - [Memory](memory.md): retained heap and process peaks, 0.54.4 against the combined build
 - [Conflict enumeration](conflict-scan.md) on a 760-plugin load order: comparison methods, profile, what was tried
 - [The combined build pinned as 0.54.5-safepatch.5](combined-safepatch-5.md): six more branches, parity, conflict enumeration
+- [The combined build pinned as 0.54.5-safepatch.6](combined-safepatch-6.md): audited records defer, the record index
 - [`perf/mutable-link-cache-lookups`](perf-mutable-link-cache-lookups.md): Mutable link caches look records up in their mod's groups (issue 229)
 
 ## Setup
