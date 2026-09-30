@@ -17,11 +17,12 @@ using Mutagen.Bethesda.Skyrim;
 /// <item><c>mask</c>: the generated equals mask, every field with its full result;</item>
 /// <item><c>fields</c>: which top-level fields differ, through the generated <c>Equals</c> restricted to one field at a
 /// time (no allocation; what a generated "differing fields" method would do, a little slower);</item>
-/// <item><c>equals</c>: the generated <c>Equals</c>, stopping at the first difference.</item>
+/// <item><c>equals</c>: the generated <c>Equals</c>, stopping at the first difference;</item>
+/// <item><c>differing</c>: the generated <c>FillDifferingFields</c>, every field (build with <c>-p:SafePatchDiffering=true</c>).</item>
 /// </list>
 /// Header bookkeeping (version control, form version) and child records are left out of <c>fields</c> and
 /// <c>equals</c>, as a conflict view leaves them out.
-/// <code>SafePatch.Bench conflict-scan &lt;Data folder&gt; &lt;plugins.txt or .paths&gt; [runs=3] [label] [mask|fields|equals]</code>
+/// <code>SafePatch.Bench conflict-scan &lt;Data folder&gt; &lt;plugins.txt or .paths&gt; [runs=3] [label] [mask|fields|equals|differing]</code>
 /// Batches need a Mutagen with <c>EnumerateMajorRecordBatches</c> (build with <c>-p:SafePatchBatches=true</c>).
 /// </summary>
 internal static class ConflictScan
@@ -41,6 +42,9 @@ internal static class ConflictScan
             "mask" => (Func<IMajorRecordGetter, IMajorRecordGetter, int>)((a, b) => Masks.GetOrAdd(ClassOf(a), BuildMask)(a, b) ? 0 : 1),
             "fields" => (a, b) => DifferingFields(a, b),
             "equals" => (a, b) => Equalities.GetOrAdd(ClassOf(a), BuildEquals)(a, b) ? 0 : 1,
+#if SAFEPATCH_DIFFERING
+            "differing" => (a, b) => Differing(a, b),
+#endif
             _ => throw new ArgumentException($"Unknown comparer {comparer}"),
         };
 
@@ -119,6 +123,20 @@ internal static class ConflictScan
         return 2;
 #endif
     }
+
+#if SAFEPATCH_DIFFERING
+    private static readonly ConcurrentDictionary<Type, (TranslationCrystal Crystal, int FieldCount)> DifferingCrystals = new();
+
+    /// <summary>Mutagen's generated FillDifferingFields, bookkeeping and child records left out.</summary>
+    private static int Differing(IMajorRecordGetter a, IMajorRecordGetter b)
+    {
+        var (crystal, fieldCount) = DifferingCrystals.GetOrAdd(ClassOf(a), c =>
+            (Crystal(c, MaskFields(c).Where(f => f.Include).Select(f => f.Field)), LoquiRegistration.GetRegister(c).FieldCount));
+        Span<bool> differs = stackalloc bool[fieldCount];
+        a.FillDifferingFields(b, differs, crystal);
+        return differs.Contains(true) ? 1 : 0;
+    }
+#endif
 
     private static Type ClassOf(IMajorRecordGetter record) => ((ILoquiObject)record).Registration.ClassType;
 
