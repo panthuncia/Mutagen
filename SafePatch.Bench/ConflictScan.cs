@@ -60,6 +60,7 @@ internal static class ConflictScan
             var batches = mods.SelectMany((mod, plugin) => mod.EnumerateMajorRecordBatches().Select(batch => (Plugin: plugin, Records: batch))).ToArray();
             var read = new (FormKey FormKey, IMajorRecordGetter Record)[batches.Length][];
             Parallel.For(0, batches.Length, b => read[b] = [.. batches[b].Records.Select(r => (r.Record.FormKey, r.Record))]);
+            var readTime = clock.Elapsed;
             const int Shards = 64;
             var chains = new List<IMajorRecordGetter>[Shards][];
             Parallel.For(0, Shards, shard =>
@@ -113,8 +114,8 @@ internal static class ConflictScan
             var mib = (GC.GetTotalAllocatedBytes(precise: true) - allocated) / (1024 * 1024);
             var gcs = GC.CollectionCount(0) - collections;
             Console.WriteLine($"run {run + 1}: {records:N0} versions, {overridden.Length:N0} overridden, {pairs:N0} pairs, {differing:N0} differing ({failed} failed): " +
-                              $"index {indexed.TotalMilliseconds:N0} ms, compare {compared.TotalMilliseconds:N0} ms; {mib:N0} MiB allocated, {gcs} gen0 collections, {contended:N0} contended locks while comparing");
-            Console.WriteLine($"SCAN|{label}|{comparer}|{run + 1}|{records}|{pairs}|{differing}|{indexed.TotalMilliseconds:F0}|{compared.TotalMilliseconds:F0}|{mib}|{gcs}");
+                              $"index {indexed.TotalMilliseconds:N0} ms (reading {readTime.TotalMilliseconds:N0}), compare {compared.TotalMilliseconds:N0} ms; {mib:N0} MiB allocated, {gcs} gen0 collections, {contended:N0} contended locks while comparing");
+            Console.WriteLine($"SCAN|{label}|{comparer}|{run + 1}|{records}|{pairs}|{differing}|{indexed.TotalMilliseconds:F0}|{compared.TotalMilliseconds:F0}|{mib}|{gcs}|{readTime.TotalMilliseconds:F0}");
         }
         foreach (var mod in mods) (mod as IDisposable)?.Dispose();
         return 0;
