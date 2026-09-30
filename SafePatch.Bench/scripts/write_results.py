@@ -1,8 +1,11 @@
-"""Writes SafePatch.Bench/results/*.md from bench-results2.log: one file per branch, and an index."""
+"""Writes SafePatch.Bench/results/*.md from the run logs in results/logs (or the folder given second): one file per
+branch, and an index.
+    write_results.py <output folder> [logs folder]"""
 import os, statistics, sys
 from collections import defaultdict
 
-LOG = r'C:\Users\matth\source\repos\Mutagen-wt\bench-results2.log'
+LOGS = sys.argv[2] if len(sys.argv) > 2 else os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'results', 'logs')
+LOG = os.path.join(LOGS, 'bench-results2.log')
 OUT = sys.argv[1]
 os.makedirs(OUT, exist_ok=True)
 

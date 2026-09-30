@@ -1,0 +1,337 @@
+== round 1 base-2 22:53:24
+82 plugins, 364 MiB; Mutagen built from C:\Users\matth\source\repos\Mutagen-wt\bench-out\base\Mutagen.Bethesda.Skyrim.dll
+Mutagen: open every plugin (overlay)             median       2 ms  best       2  [first       3]  Result { Records = 82, Checksum = 0 }
+RESULT|base-2|Mutagen: open every plugin (overlay)|2|2|82|0
+Mutagen: open, then every record's FormKey and EditorID median    1412 ms  best    1338  [first    2512]  Result { Records = 1252863, Checksum = 60216266782 }
+RESULT|base-2|Mutagen: open, then every record's FormKey and EditorID|1412|1338|1252863|60216266782
+Mutagen: every record's FormKey                  median    1280 ms  best    1260  [first    1285]  Result { Records = 1252863, Checksum = 41052013858 }
+RESULT|base-2|Mutagen: every record's FormKey|1280|1260|1252863|41052013858
+Mutagen: every record's FormKey and EditorID     median    1294 ms  best    1276  [first    1276]  Result { Records = 1252863, Checksum = 60216266782 }
+RESULT|base-2|Mutagen: every record's FormKey and EditorID|1294|1276|1252863|60216266782
+Mutagen: keep every record object (heap MiB as Checksum) median    3684 ms  best    3478  [first    3684]  Result { Records = 1252863, Checksum = 1578 }
+RESULT|base-2|Mutagen: keep every record object (heap MiB as Checksum)|3684|3478|1252863|1578
+Mutagen: every record's FormKey and EditorID, within plugins in parallel median     389 ms  best     376  [first     389]  Result { Records = 1252863, Checksum = 60216266782 }
+RESULT|base-2|Mutagen: every record's FormKey and EditorID, within plugins in parallel|389|376|1252863|60216266782
+Mutagen: open, then the same within plugins in parallel median     375 ms  best     353  [first     353]  Result { Records = 1252863, Checksum = 60216266782 }
+RESULT|base-2|Mutagen: open, then the same within plugins in parallel|375|353|1252863|60216266782
+Mutagen: full parse (CreateFromBinary) of every plugin median    7165 ms  best    7142  [first    8146]  Result { Records = 1252863, Checksum = 0 }
+RESULT|base-2|Mutagen: full parse (CreateFromBinary) of every plugin|7165|7142|1252863|0
+Mutagen: 2,000 statics by key                    median    1103 ms  best    1087  [first    1211]  Result { Records = 1933, Checksum = 0 }
+RESULT|base-2|Mutagen: 2,000 statics by key|1103|1087|1933|0
+Scanner: every record's FormKey and EditorID     median     150 ms  best     115  [first     177]  Result { Records = 1252863, Checksum = 60216266782 }
+RESULT|base-2|Scanner: every record's FormKey and EditorID|150|115|1252863|60216266782
+== round 1 fix-condition-pack-data 22:54:20
+82 plugins, 364 MiB; Mutagen built from C:\Users\matth\source\repos\Mutagen-wt\bench-out\fix-condition-pack-data\Mutagen.Bethesda.Skyrim.dll
+Mutagen: open every plugin (overlay)             median       3 ms  best       3  [first       3]  Result { Records = 82, Checksum = 0 }
+RESULT|fix-condition-pack-data|Mutagen: open every plugin (overlay)|3|3|82|0
+Mutagen: open, then every record's FormKey and EditorID median    1330 ms  best    1286  [first    2461]  Result { Records = 1252863, Checksum = 111544394085 }
+RESULT|fix-condition-pack-data|Mutagen: open, then every record's FormKey and EditorID|1330|1286|1252863|111544394085
+Mutagen: every record's FormKey                  median    1266 ms  best    1257  [first    1312]  Result { Records = 1252863, Checksum = 41062391546 }
+RESULT|fix-condition-pack-data|Mutagen: every record's FormKey|1266|1257|1252863|41062391546
+Mutagen: every record's FormKey and EditorID     median    1267 ms  best    1253  [first    1269]  Result { Records = 1252863, Checksum = 111544394085 }
+RESULT|fix-condition-pack-data|Mutagen: every record's FormKey and EditorID|1267|1253|1252863|111544394085
+Mutagen: keep every record object (heap MiB as Checksum) median    3364 ms  best    3226  [first    3594]  Result { Records = 1252863, Checksum = 1578 }
+RESULT|fix-condition-pack-data|Mutagen: keep every record object (heap MiB as Checksum)|3364|3226|1252863|1578
+Mutagen: every record's FormKey and EditorID, within plugins in parallel median     370 ms  best     354  [first     392]  Result { Records = 1252863, Checksum = 111544394085 }
+RESULT|fix-condition-pack-data|Mutagen: every record's FormKey and EditorID, within plugins in parallel|370|354|1252863|111544394085
+Mutagen: open, then the same within plugins in parallel median     377 ms  best     362  [first     396]  Result { Records = 1252863, Checksum = 111544394085 }
+RESULT|fix-condition-pack-data|Mutagen: open, then the same within plugins in parallel|377|362|1252863|111544394085
+Mutagen: full parse (CreateFromBinary) of every plugin median    7357 ms  best    6901  [first    8617]  Result { Records = 1252863, Checksum = 0 }
+RESULT|fix-condition-pack-data|Mutagen: full parse (CreateFromBinary) of every plugin|7357|6901|1252863|0
+Mutagen: 2,000 statics by key                    median    1139 ms  best    1128  [first    1188]  Result { Records = 1933, Checksum = 0 }
+RESULT|fix-condition-pack-data|Mutagen: 2,000 statics by key|1139|1128|1933|0
+Scanner: every record's FormKey and EditorID     median     161 ms  best     110  [first     175]  Result { Records = 1252863, Checksum = 111544394085 }
+RESULT|fix-condition-pack-data|Scanner: every record's FormKey and EditorID|161|110|1252863|111544394085
+== round 1 fix-content-equality 22:55:14
+82 plugins, 364 MiB; Mutagen built from C:\Users\matth\source\repos\Mutagen-wt\bench-out\fix-content-equality\Mutagen.Bethesda.Skyrim.dll
+Mutagen: open every plugin (overlay)             median       3 ms  best       2  [first       3]  Result { Records = 82, Checksum = 0 }
+RESULT|fix-content-equality|Mutagen: open every plugin (overlay)|3|2|82|0
+Mutagen: open, then every record's FormKey and EditorID median    1294 ms  best    1255  [first    2359]  Result { Records = 1252863, Checksum = 112578568008 }
+RESULT|fix-content-equality|Mutagen: open, then every record's FormKey and EditorID|1294|1255|1252863|112578568008
+Mutagen: every record's FormKey                  median    1226 ms  best    1210  [first    1210]  Result { Records = 1252863, Checksum = 41013005493 }
+RESULT|fix-content-equality|Mutagen: every record's FormKey|1226|1210|1252863|41013005493
+Mutagen: every record's FormKey and EditorID     median    1268 ms  best    1231  [first    1285]  Result { Records = 1252863, Checksum = 112578568008 }
+RESULT|fix-content-equality|Mutagen: every record's FormKey and EditorID|1268|1231|1252863|112578568008
+Mutagen: keep every record object (heap MiB as Checksum) median    3288 ms  best    3146  [first    3389]  Result { Records = 1252863, Checksum = 1578 }
+RESULT|fix-content-equality|Mutagen: keep every record object (heap MiB as Checksum)|3288|3146|1252863|1578
+Mutagen: every record's FormKey and EditorID, within plugins in parallel median     365 ms  best     344  [first     365]  Result { Records = 1252863, Checksum = 112578568008 }
+RESULT|fix-content-equality|Mutagen: every record's FormKey and EditorID, within plugins in parallel|365|344|1252863|112578568008
+Mutagen: open, then the same within plugins in parallel median     340 ms  best     338  [first     358]  Result { Records = 1252863, Checksum = 112578568008 }
+RESULT|fix-content-equality|Mutagen: open, then the same within plugins in parallel|340|338|1252863|112578568008
+Mutagen: full parse (CreateFromBinary) of every plugin median    6892 ms  best    6701  [first    8392]  Result { Records = 1252863, Checksum = 0 }
+RESULT|fix-content-equality|Mutagen: full parse (CreateFromBinary) of every plugin|6892|6701|1252863|0
+Mutagen: 2,000 statics by key                    median    1061 ms  best    1028  [first    1061]  Result { Records = 1933, Checksum = 0 }
+RESULT|fix-content-equality|Mutagen: 2,000 statics by key|1061|1028|1933|0
+Scanner: every record's FormKey and EditorID     median     138 ms  best     123  [first     174]  Result { Records = 1252863, Checksum = 112578568008 }
+RESULT|fix-content-equality|Scanner: every record's FormKey and EditorID|138|123|1252863|112578568008
+== round 1 fix-overlay-float-epsilon 22:56:06
+82 plugins, 364 MiB; Mutagen built from C:\Users\matth\source\repos\Mutagen-wt\bench-out\fix-overlay-float-epsilon\Mutagen.Bethesda.Skyrim.dll
+Mutagen: open every plugin (overlay)             median       3 ms  best       2  [first       3]  Result { Records = 82, Checksum = 0 }
+RESULT|fix-overlay-float-epsilon|Mutagen: open every plugin (overlay)|3|2|82|0
+Mutagen: open, then every record's FormKey and EditorID median    1255 ms  best    1208  [first    2324]  Result { Records = 1252863, Checksum = 64884577419 }
+RESULT|fix-overlay-float-epsilon|Mutagen: open, then every record's FormKey and EditorID|1255|1208|1252863|64884577419
+Mutagen: every record's FormKey                  median    1203 ms  best    1198  [first    1222]  Result { Records = 1252863, Checksum = 41097152521 }
+RESULT|fix-overlay-float-epsilon|Mutagen: every record's FormKey|1203|1198|1252863|41097152521
+Mutagen: every record's FormKey and EditorID     median    1239 ms  best    1209  [first    1209]  Result { Records = 1252863, Checksum = 64884577419 }
+RESULT|fix-overlay-float-epsilon|Mutagen: every record's FormKey and EditorID|1239|1209|1252863|64884577419
+Mutagen: keep every record object (heap MiB as Checksum) median    3189 ms  best    3054  [first    3424]  Result { Records = 1252863, Checksum = 1578 }
+RESULT|fix-overlay-float-epsilon|Mutagen: keep every record object (heap MiB as Checksum)|3189|3054|1252863|1578
+Mutagen: every record's FormKey and EditorID, within plugins in parallel median     332 ms  best     329  [first     355]  Result { Records = 1252863, Checksum = 64884577419 }
+RESULT|fix-overlay-float-epsilon|Mutagen: every record's FormKey and EditorID, within plugins in parallel|332|329|1252863|64884577419
+Mutagen: open, then the same within plugins in parallel median     361 ms  best     346  [first     346]  Result { Records = 1252863, Checksum = 64884577419 }
+RESULT|fix-overlay-float-epsilon|Mutagen: open, then the same within plugins in parallel|361|346|1252863|64884577419
+Mutagen: full parse (CreateFromBinary) of every plugin median    7733 ms  best    6462  [first    7733]  Result { Records = 1252863, Checksum = 0 }
+RESULT|fix-overlay-float-epsilon|Mutagen: full parse (CreateFromBinary) of every plugin|7733|6462|1252863|0
+Mutagen: 2,000 statics by key                    median    1048 ms  best    1037  [first    1112]  Result { Records = 1933, Checksum = 0 }
+RESULT|fix-overlay-float-epsilon|Mutagen: 2,000 statics by key|1048|1037|1933|0
+Scanner: every record's FormKey and EditorID     median     157 ms  best     108  [first     174]  Result { Records = 1252863, Checksum = 64884577419 }
+RESULT|fix-overlay-float-epsilon|Scanner: every record's FormKey and EditorID|157|108|1252863|64884577419
+== round 1 combined-2 22:56:57
+82 plugins, 364 MiB; Mutagen built from C:\Users\matth\source\repos\Mutagen-wt\bench-out\combined\Mutagen.Bethesda.Skyrim.dll
+Mutagen: open every plugin (overlay)             median       3 ms  best       3  [first       3]  Result { Records = 82, Checksum = 0 }
+RESULT|combined-2|Mutagen: open every plugin (overlay)|3|3|82|0
+Mutagen: open, then every record's FormKey and EditorID median     786 ms  best     574  [first    1883]  Result { Records = 1252863, Checksum = 56071640028 }
+RESULT|combined-2|Mutagen: open, then every record's FormKey and EditorID|786|574|1252863|56071640028
+Mutagen: every record's FormKey                  median     275 ms  best     262  [first     341]  Result { Records = 1252863, Checksum = 41048333793 }
+RESULT|combined-2|Mutagen: every record's FormKey|275|262|1252863|41048333793
+Mutagen: every record's FormKey and EditorID     median     373 ms  best     361  [first     373]  Result { Records = 1252863, Checksum = 56071640028 }
+RESULT|combined-2|Mutagen: every record's FormKey and EditorID|373|361|1252863|56071640028
+Mutagen: keep every record object (heap MiB as Checksum) median    1440 ms  best    1367  [first    1578]  Result { Records = 1252863, Checksum = 1170 }
+RESULT|combined-2|Mutagen: keep every record object (heap MiB as Checksum)|1440|1367|1252863|1170
+Mutagen: every record's FormKey and EditorID, within plugins in parallel median     108 ms  best      93  [first     117]  Result { Records = 1252863, Checksum = 56071640028 }
+RESULT|combined-2|Mutagen: every record's FormKey and EditorID, within plugins in parallel|108|93|1252863|56071640028
+Mutagen: open, then the same within plugins in parallel median     188 ms  best     182  [first     188]  Result { Records = 1252863, Checksum = 56071640028 }
+RESULT|combined-2|Mutagen: open, then the same within plugins in parallel|188|182|1252863|56071640028
+Mutagen: the same through EnumerateMajorRecordBatches median      99 ms  best      87  [first      99]  Result { Records = 1252863, Checksum = 56071640028 }
+RESULT|combined-2|Mutagen: the same through EnumerateMajorRecordBatches|99|87|1252863|56071640028
+Mutagen: full parse (CreateFromBinary) of every plugin median    7517 ms  best    6994  [first    7825]  Result { Records = 1252863, Checksum = 0 }
+RESULT|combined-2|Mutagen: full parse (CreateFromBinary) of every plugin|7517|6994|1252863|0
+Mutagen: 2,000 statics by key                    median       1 ms  best       1  [first       4]  Result { Records = 1933, Checksum = 0 }
+RESULT|combined-2|Mutagen: 2,000 statics by key|1|1|1933|0
+Scanner: every record's FormKey and EditorID     median     156 ms  best     119  [first     156]  Result { Records = 1252863, Checksum = 56071640028 }
+RESULT|combined-2|Scanner: every record's FormKey and EditorID|156|119|1252863|56071640028
+== round 2 base-2 22:57:33
+82 plugins, 364 MiB; Mutagen built from C:\Users\matth\source\repos\Mutagen-wt\bench-out\base\Mutagen.Bethesda.Skyrim.dll
+Mutagen: open every plugin (overlay)             median       3 ms  best       3  [first       3]  Result { Records = 82, Checksum = 0 }
+RESULT|base-2|Mutagen: open every plugin (overlay)|3|3|82|0
+Mutagen: open, then every record's FormKey and EditorID median    1358 ms  best    1237  [first    2461]  Result { Records = 1252863, Checksum = 111120277857 }
+RESULT|base-2|Mutagen: open, then every record's FormKey and EditorID|1358|1237|1252863|111120277857
+Mutagen: every record's FormKey                  median    1239 ms  best    1236  [first    1239]  Result { Records = 1252863, Checksum = 41069551832 }
+RESULT|base-2|Mutagen: every record's FormKey|1239|1236|1252863|41069551832
+Mutagen: every record's FormKey and EditorID     median    1260 ms  best    1240  [first    1260]  Result { Records = 1252863, Checksum = 111120277857 }
+RESULT|base-2|Mutagen: every record's FormKey and EditorID|1260|1240|1252863|111120277857
+Mutagen: keep every record object (heap MiB as Checksum) median    3258 ms  best    3118  [first    3487]  Result { Records = 1252863, Checksum = 1578 }
+RESULT|base-2|Mutagen: keep every record object (heap MiB as Checksum)|3258|3118|1252863|1578
+Mutagen: every record's FormKey and EditorID, within plugins in parallel median     375 ms  best     364  [first     364]  Result { Records = 1252863, Checksum = 111120277857 }
+RESULT|base-2|Mutagen: every record's FormKey and EditorID, within plugins in parallel|375|364|1252863|111120277857
+Mutagen: open, then the same within plugins in parallel median     364 ms  best     339  [first     392]  Result { Records = 1252863, Checksum = 111120277857 }
+RESULT|base-2|Mutagen: open, then the same within plugins in parallel|364|339|1252863|111120277857
+Mutagen: full parse (CreateFromBinary) of every plugin median    6956 ms  best    6943  [first    7514]  Result { Records = 1252863, Checksum = 0 }
+RESULT|base-2|Mutagen: full parse (CreateFromBinary) of every plugin|6956|6943|1252863|0
+Mutagen: 2,000 statics by key                    median    1043 ms  best    1017  [first    1043]  Result { Records = 1933, Checksum = 0 }
+RESULT|base-2|Mutagen: 2,000 statics by key|1043|1017|1933|0
+Scanner: every record's FormKey and EditorID     median     142 ms  best     110  [first     157]  Result { Records = 1252863, Checksum = 111120277857 }
+RESULT|base-2|Scanner: every record's FormKey and EditorID|142|110|1252863|111120277857
+== round 2 fix-condition-pack-data 22:58:25
+82 plugins, 364 MiB; Mutagen built from C:\Users\matth\source\repos\Mutagen-wt\bench-out\fix-condition-pack-data\Mutagen.Bethesda.Skyrim.dll
+Mutagen: open every plugin (overlay)             median       3 ms  best       2  [first       3]  Result { Records = 82, Checksum = 0 }
+RESULT|fix-condition-pack-data|Mutagen: open every plugin (overlay)|3|2|82|0
+Mutagen: open, then every record's FormKey and EditorID median    1279 ms  best    1218  [first    2356]  Result { Records = 1252863, Checksum = 78806664871 }
+RESULT|fix-condition-pack-data|Mutagen: open, then every record's FormKey and EditorID|1279|1218|1252863|78806664871
+Mutagen: every record's FormKey                  median    1223 ms  best    1190  [first    1224]  Result { Records = 1252863, Checksum = 41054104075 }
+RESULT|fix-condition-pack-data|Mutagen: every record's FormKey|1223|1190|1252863|41054104075
+Mutagen: every record's FormKey and EditorID     median    1220 ms  best    1198  [first    1240]  Result { Records = 1252863, Checksum = 78806664871 }
+RESULT|fix-condition-pack-data|Mutagen: every record's FormKey and EditorID|1220|1198|1252863|78806664871
+Mutagen: keep every record object (heap MiB as Checksum) median    3233 ms  best    3110  [first    3407]  Result { Records = 1252863, Checksum = 1578 }
+RESULT|fix-condition-pack-data|Mutagen: keep every record object (heap MiB as Checksum)|3233|3110|1252863|1578
+Mutagen: every record's FormKey and EditorID, within plugins in parallel median     344 ms  best     332  [first     371]  Result { Records = 1252863, Checksum = 78806664871 }
+RESULT|fix-condition-pack-data|Mutagen: every record's FormKey and EditorID, within plugins in parallel|344|332|1252863|78806664871
+Mutagen: open, then the same within plugins in parallel median     335 ms  best     334  [first     335]  Result { Records = 1252863, Checksum = 78806664871 }
+RESULT|fix-condition-pack-data|Mutagen: open, then the same within plugins in parallel|335|334|1252863|78806664871
+Mutagen: full parse (CreateFromBinary) of every plugin median    7068 ms  best    6957  [first    7392]  Result { Records = 1252863, Checksum = 0 }
+RESULT|fix-condition-pack-data|Mutagen: full parse (CreateFromBinary) of every plugin|7068|6957|1252863|0
+Mutagen: 2,000 statics by key                    median    1037 ms  best    1021  [first    1091]  Result { Records = 1933, Checksum = 0 }
+RESULT|fix-condition-pack-data|Mutagen: 2,000 statics by key|1037|1021|1933|0
+Scanner: every record's FormKey and EditorID     median     148 ms  best     128  [first     148]  Result { Records = 1252863, Checksum = 78806664871 }
+RESULT|fix-condition-pack-data|Scanner: every record's FormKey and EditorID|148|128|1252863|78806664871
+== round 2 fix-content-equality 22:59:16
+82 plugins, 364 MiB; Mutagen built from C:\Users\matth\source\repos\Mutagen-wt\bench-out\fix-content-equality\Mutagen.Bethesda.Skyrim.dll
+Mutagen: open every plugin (overlay)             median       3 ms  best       3  [first       3]  Result { Records = 82, Checksum = 0 }
+RESULT|fix-content-equality|Mutagen: open every plugin (overlay)|3|3|82|0
+Mutagen: open, then every record's FormKey and EditorID median    1347 ms  best    1235  [first    2374]  Result { Records = 1252863, Checksum = 86338925343 }
+RESULT|fix-content-equality|Mutagen: open, then every record's FormKey and EditorID|1347|1235|1252863|86338925343
+Mutagen: every record's FormKey                  median    1225 ms  best    1217  [first    1217]  Result { Records = 1252863, Checksum = 41070255232 }
+RESULT|fix-content-equality|Mutagen: every record's FormKey|1225|1217|1252863|41070255232
+Mutagen: every record's FormKey and EditorID     median    1218 ms  best    1214  [first    1214]  Result { Records = 1252863, Checksum = 86338925343 }
+RESULT|fix-content-equality|Mutagen: every record's FormKey and EditorID|1218|1214|1252863|86338925343
+Mutagen: keep every record object (heap MiB as Checksum) median    3356 ms  best    3101  [first    3356]  Result { Records = 1252863, Checksum = 1578 }
+RESULT|fix-content-equality|Mutagen: keep every record object (heap MiB as Checksum)|3356|3101|1252863|1578
+Mutagen: every record's FormKey and EditorID, within plugins in parallel median     348 ms  best     340  [first     348]  Result { Records = 1252863, Checksum = 86338925343 }
+RESULT|fix-content-equality|Mutagen: every record's FormKey and EditorID, within plugins in parallel|348|340|1252863|86338925343
+Mutagen: open, then the same within plugins in parallel median     353 ms  best     346  [first     360]  Result { Records = 1252863, Checksum = 86338925343 }
+RESULT|fix-content-equality|Mutagen: open, then the same within plugins in parallel|353|346|1252863|86338925343
+Mutagen: full parse (CreateFromBinary) of every plugin median    7680 ms  best    6743  [first    7950]  Result { Records = 1252863, Checksum = 0 }
+RESULT|fix-content-equality|Mutagen: full parse (CreateFromBinary) of every plugin|7680|6743|1252863|0
+Mutagen: 2,000 statics by key                    median    1004 ms  best    1001  [first    1124]  Result { Records = 1933, Checksum = 0 }
+RESULT|fix-content-equality|Mutagen: 2,000 statics by key|1004|1001|1933|0
+Scanner: every record's FormKey and EditorID     median     140 ms  best     136  [first     161]  Result { Records = 1252863, Checksum = 86338925343 }
+RESULT|fix-content-equality|Scanner: every record's FormKey and EditorID|140|136|1252863|86338925343
+== round 2 fix-overlay-float-epsilon 23:00:08
+82 plugins, 364 MiB; Mutagen built from C:\Users\matth\source\repos\Mutagen-wt\bench-out\fix-overlay-float-epsilon\Mutagen.Bethesda.Skyrim.dll
+Mutagen: open every plugin (overlay)             median       3 ms  best       2  [first       3]  Result { Records = 82, Checksum = 0 }
+RESULT|fix-overlay-float-epsilon|Mutagen: open every plugin (overlay)|3|2|82|0
+Mutagen: open, then every record's FormKey and EditorID median    1302 ms  best    1232  [first    2416]  Result { Records = 1252863, Checksum = 71340351462 }
+RESULT|fix-overlay-float-epsilon|Mutagen: open, then every record's FormKey and EditorID|1302|1232|1252863|71340351462
+Mutagen: every record's FormKey                  median    1263 ms  best    1235  [first    1263]  Result { Records = 1252863, Checksum = 41119884256 }
+RESULT|fix-overlay-float-epsilon|Mutagen: every record's FormKey|1263|1235|1252863|41119884256
+Mutagen: every record's FormKey and EditorID     median    1244 ms  best    1235  [first    1244]  Result { Records = 1252863, Checksum = 71340351462 }
+RESULT|fix-overlay-float-epsilon|Mutagen: every record's FormKey and EditorID|1244|1235|1252863|71340351462
+Mutagen: keep every record object (heap MiB as Checksum) median    3281 ms  best    3110  [first    3447]  Result { Records = 1252863, Checksum = 1578 }
+RESULT|fix-overlay-float-epsilon|Mutagen: keep every record object (heap MiB as Checksum)|3281|3110|1252863|1578
+Mutagen: every record's FormKey and EditorID, within plugins in parallel median     341 ms  best     321  [first     359]  Result { Records = 1252863, Checksum = 71340351462 }
+RESULT|fix-overlay-float-epsilon|Mutagen: every record's FormKey and EditorID, within plugins in parallel|341|321|1252863|71340351462
+Mutagen: open, then the same within plugins in parallel median     343 ms  best     331  [first     343]  Result { Records = 1252863, Checksum = 71340351462 }
+RESULT|fix-overlay-float-epsilon|Mutagen: open, then the same within plugins in parallel|343|331|1252863|71340351462
+Mutagen: full parse (CreateFromBinary) of every plugin median    7133 ms  best    6835  [first    7924]  Result { Records = 1252863, Checksum = 0 }
+RESULT|fix-overlay-float-epsilon|Mutagen: full parse (CreateFromBinary) of every plugin|7133|6835|1252863|0
+Mutagen: 2,000 statics by key                    median    1066 ms  best    1033  [first    1145]  Result { Records = 1933, Checksum = 0 }
+RESULT|fix-overlay-float-epsilon|Mutagen: 2,000 statics by key|1066|1033|1933|0
+Scanner: every record's FormKey and EditorID     median     158 ms  best     135  [first     160]  Result { Records = 1252863, Checksum = 71340351462 }
+RESULT|fix-overlay-float-epsilon|Scanner: every record's FormKey and EditorID|158|135|1252863|71340351462
+== round 2 combined-2 23:01:00
+82 plugins, 364 MiB; Mutagen built from C:\Users\matth\source\repos\Mutagen-wt\bench-out\combined\Mutagen.Bethesda.Skyrim.dll
+Mutagen: open every plugin (overlay)             median       3 ms  best       2  [first       3]  Result { Records = 82, Checksum = 0 }
+RESULT|combined-2|Mutagen: open every plugin (overlay)|3|2|82|0
+Mutagen: open, then every record's FormKey and EditorID median     737 ms  best     552  [first    2014]  Result { Records = 1252863, Checksum = 54754070840 }
+RESULT|combined-2|Mutagen: open, then every record's FormKey and EditorID|737|552|1252863|54754070840
+Mutagen: every record's FormKey                  median     284 ms  best     269  [first     336]  Result { Records = 1252863, Checksum = 41031925949 }
+RESULT|combined-2|Mutagen: every record's FormKey|284|269|1252863|41031925949
+Mutagen: every record's FormKey and EditorID     median     357 ms  best     348  [first     357]  Result { Records = 1252863, Checksum = 54754070840 }
+RESULT|combined-2|Mutagen: every record's FormKey and EditorID|357|348|1252863|54754070840
+Mutagen: keep every record object (heap MiB as Checksum) median    1476 ms  best    1447  [first    1613]  Result { Records = 1252863, Checksum = 1170 }
+RESULT|combined-2|Mutagen: keep every record object (heap MiB as Checksum)|1476|1447|1252863|1170
+Mutagen: every record's FormKey and EditorID, within plugins in parallel median     100 ms  best      89  [first     115]  Result { Records = 1252863, Checksum = 54754070840 }
+RESULT|combined-2|Mutagen: every record's FormKey and EditorID, within plugins in parallel|100|89|1252863|54754070840
+Mutagen: open, then the same within plugins in parallel median     185 ms  best     181  [first     181]  Result { Records = 1252863, Checksum = 54754070840 }
+RESULT|combined-2|Mutagen: open, then the same within plugins in parallel|185|181|1252863|54754070840
+Mutagen: the same through EnumerateMajorRecordBatches median      95 ms  best      85  [first      99]  Result { Records = 1252863, Checksum = 54754070840 }
+RESULT|combined-2|Mutagen: the same through EnumerateMajorRecordBatches|95|85|1252863|54754070840
+Mutagen: full parse (CreateFromBinary) of every plugin median    6932 ms  best    6519  [first    7796]  Result { Records = 1252863, Checksum = 0 }
+RESULT|combined-2|Mutagen: full parse (CreateFromBinary) of every plugin|6932|6519|1252863|0
+Mutagen: 2,000 statics by key                    median       1 ms  best       1  [first       4]  Result { Records = 1933, Checksum = 0 }
+RESULT|combined-2|Mutagen: 2,000 statics by key|1|1|1933|0
+Scanner: every record's FormKey and EditorID     median     160 ms  best     108  [first     160]  Result { Records = 1252863, Checksum = 54754070840 }
+RESULT|combined-2|Scanner: every record's FormKey and EditorID|160|108|1252863|54754070840
+== round 3 base-2 23:01:35
+82 plugins, 364 MiB; Mutagen built from C:\Users\matth\source\repos\Mutagen-wt\bench-out\base\Mutagen.Bethesda.Skyrim.dll
+Mutagen: open every plugin (overlay)             median       3 ms  best       3  [first       3]  Result { Records = 82, Checksum = 0 }
+RESULT|base-2|Mutagen: open every plugin (overlay)|3|3|82|0
+Mutagen: open, then every record's FormKey and EditorID median    1304 ms  best    1232  [first    2406]  Result { Records = 1252863, Checksum = 94525209233 }
+RESULT|base-2|Mutagen: open, then every record's FormKey and EditorID|1304|1232|1252863|94525209233
+Mutagen: every record's FormKey                  median    1234 ms  best    1222  [first    1222]  Result { Records = 1252863, Checksum = 41084512190 }
+RESULT|base-2|Mutagen: every record's FormKey|1234|1222|1252863|41084512190
+Mutagen: every record's FormKey and EditorID     median    1274 ms  best    1255  [first    1274]  Result { Records = 1252863, Checksum = 94525209233 }
+RESULT|base-2|Mutagen: every record's FormKey and EditorID|1274|1255|1252863|94525209233
+Mutagen: keep every record object (heap MiB as Checksum) median    3170 ms  best    3093  [first    3476]  Result { Records = 1252863, Checksum = 1578 }
+RESULT|base-2|Mutagen: keep every record object (heap MiB as Checksum)|3170|3093|1252863|1578
+Mutagen: every record's FormKey and EditorID, within plugins in parallel median     371 ms  best     361  [first     377]  Result { Records = 1252863, Checksum = 94525209233 }
+RESULT|base-2|Mutagen: every record's FormKey and EditorID, within plugins in parallel|371|361|1252863|94525209233
+Mutagen: open, then the same within plugins in parallel median     337 ms  best     325  [first     353]  Result { Records = 1252863, Checksum = 94525209233 }
+RESULT|base-2|Mutagen: open, then the same within plugins in parallel|337|325|1252863|94525209233
+Mutagen: full parse (CreateFromBinary) of every plugin median    7460 ms  best    6942  [first    7517]  Result { Records = 1252863, Checksum = 0 }
+RESULT|base-2|Mutagen: full parse (CreateFromBinary) of every plugin|7460|6942|1252863|0
+Mutagen: 2,000 statics by key                    median    1053 ms  best    1040  [first    1099]  Result { Records = 1933, Checksum = 0 }
+RESULT|base-2|Mutagen: 2,000 statics by key|1053|1040|1933|0
+Scanner: every record's FormKey and EditorID     median     152 ms  best     114  [first     152]  Result { Records = 1252863, Checksum = 94525209233 }
+RESULT|base-2|Scanner: every record's FormKey and EditorID|152|114|1252863|94525209233
+== round 3 fix-condition-pack-data 23:02:27
+82 plugins, 364 MiB; Mutagen built from C:\Users\matth\source\repos\Mutagen-wt\bench-out\fix-condition-pack-data\Mutagen.Bethesda.Skyrim.dll
+Mutagen: open every plugin (overlay)             median       3 ms  best       2  [first       3]  Result { Records = 82, Checksum = 0 }
+RESULT|fix-condition-pack-data|Mutagen: open every plugin (overlay)|3|2|82|0
+Mutagen: open, then every record's FormKey and EditorID median    1278 ms  best    1261  [first    2430]  Result { Records = 1252863, Checksum = 76784534936 }
+RESULT|fix-condition-pack-data|Mutagen: open, then every record's FormKey and EditorID|1278|1261|1252863|76784534936
+Mutagen: every record's FormKey                  median    1233 ms  best    1226  [first    1226]  Result { Records = 1252863, Checksum = 41048531680 }
+RESULT|fix-condition-pack-data|Mutagen: every record's FormKey|1233|1226|1252863|41048531680
+Mutagen: every record's FormKey and EditorID     median    1278 ms  best    1251  [first    1251]  Result { Records = 1252863, Checksum = 76784534936 }
+RESULT|fix-condition-pack-data|Mutagen: every record's FormKey and EditorID|1278|1251|1252863|76784534936
+Mutagen: keep every record object (heap MiB as Checksum) median    3261 ms  best    3156  [first    3509]  Result { Records = 1252863, Checksum = 1578 }
+RESULT|fix-condition-pack-data|Mutagen: keep every record object (heap MiB as Checksum)|3261|3156|1252863|1578
+Mutagen: every record's FormKey and EditorID, within plugins in parallel median     347 ms  best     338  [first     377]  Result { Records = 1252863, Checksum = 76784534936 }
+RESULT|fix-condition-pack-data|Mutagen: every record's FormKey and EditorID, within plugins in parallel|347|338|1252863|76784534936
+Mutagen: open, then the same within plugins in parallel median     347 ms  best     328  [first     328]  Result { Records = 1252863, Checksum = 76784534936 }
+RESULT|fix-condition-pack-data|Mutagen: open, then the same within plugins in parallel|347|328|1252863|76784534936
+Mutagen: full parse (CreateFromBinary) of every plugin median    6802 ms  best    6471  [first    7494]  Result { Records = 1252863, Checksum = 0 }
+RESULT|fix-condition-pack-data|Mutagen: full parse (CreateFromBinary) of every plugin|6802|6471|1252863|0
+Mutagen: 2,000 statics by key                    median    1048 ms  best    1047  [first    1103]  Result { Records = 1933, Checksum = 0 }
+RESULT|fix-condition-pack-data|Mutagen: 2,000 statics by key|1048|1047|1933|0
+Scanner: every record's FormKey and EditorID     median     155 ms  best     140  [first     155]  Result { Records = 1252863, Checksum = 76784534936 }
+RESULT|fix-condition-pack-data|Scanner: every record's FormKey and EditorID|155|140|1252863|76784534936
+== round 3 fix-content-equality 23:03:18
+82 plugins, 364 MiB; Mutagen built from C:\Users\matth\source\repos\Mutagen-wt\bench-out\fix-content-equality\Mutagen.Bethesda.Skyrim.dll
+Mutagen: open every plugin (overlay)             median       3 ms  best       3  [first       3]  Result { Records = 82, Checksum = 0 }
+RESULT|fix-content-equality|Mutagen: open every plugin (overlay)|3|3|82|0
+Mutagen: open, then every record's FormKey and EditorID median    1279 ms  best    1188  [first    2355]  Result { Records = 1252863, Checksum = 53771115939 }
+RESULT|fix-content-equality|Mutagen: open, then every record's FormKey and EditorID|1279|1188|1252863|53771115939
+Mutagen: every record's FormKey                  median    1205 ms  best    1195  [first    1195]  Result { Records = 1252863, Checksum = 41043019305 }
+RESULT|fix-content-equality|Mutagen: every record's FormKey|1205|1195|1252863|41043019305
+Mutagen: every record's FormKey and EditorID     median    1238 ms  best    1229  [first    1229]  Result { Records = 1252863, Checksum = 53771115939 }
+RESULT|fix-content-equality|Mutagen: every record's FormKey and EditorID|1238|1229|1252863|53771115939
+Mutagen: keep every record object (heap MiB as Checksum) median    3327 ms  best    3069  [first    3535]  Result { Records = 1252863, Checksum = 1578 }
+RESULT|fix-content-equality|Mutagen: keep every record object (heap MiB as Checksum)|3327|3069|1252863|1578
+Mutagen: every record's FormKey and EditorID, within plugins in parallel median     331 ms  best     324  [first     359]  Result { Records = 1252863, Checksum = 53771115939 }
+RESULT|fix-content-equality|Mutagen: every record's FormKey and EditorID, within plugins in parallel|331|324|1252863|53771115939
+Mutagen: open, then the same within plugins in parallel median     348 ms  best     348  [first     348]  Result { Records = 1252863, Checksum = 53771115939 }
+RESULT|fix-content-equality|Mutagen: open, then the same within plugins in parallel|348|348|1252863|53771115939
+Mutagen: full parse (CreateFromBinary) of every plugin median    6724 ms  best    6326  [first    7503]  Result { Records = 1252863, Checksum = 0 }
+RESULT|fix-content-equality|Mutagen: full parse (CreateFromBinary) of every plugin|6724|6326|1252863|0
+Mutagen: 2,000 statics by key                    median    1034 ms  best    1033  [first    1123]  Result { Records = 1933, Checksum = 0 }
+RESULT|fix-content-equality|Mutagen: 2,000 statics by key|1034|1033|1933|0
+Scanner: every record's FormKey and EditorID     median     150 ms  best     123  [first     150]  Result { Records = 1252863, Checksum = 53771115939 }
+RESULT|fix-content-equality|Scanner: every record's FormKey and EditorID|150|123|1252863|53771115939
+== round 3 fix-overlay-float-epsilon 23:04:08
+82 plugins, 364 MiB; Mutagen built from C:\Users\matth\source\repos\Mutagen-wt\bench-out\fix-overlay-float-epsilon\Mutagen.Bethesda.Skyrim.dll
+Mutagen: open every plugin (overlay)             median       3 ms  best       2  [first       3]  Result { Records = 82, Checksum = 0 }
+RESULT|fix-overlay-float-epsilon|Mutagen: open every plugin (overlay)|3|2|82|0
+Mutagen: open, then every record's FormKey and EditorID median    1253 ms  best    1217  [first    2401]  Result { Records = 1252863, Checksum = 49856089704 }
+RESULT|fix-overlay-float-epsilon|Mutagen: open, then every record's FormKey and EditorID|1253|1217|1252863|49856089704
+Mutagen: every record's FormKey                  median    1219 ms  best    1210  [first    1219]  Result { Records = 1252863, Checksum = 41058395436 }
+RESULT|fix-overlay-float-epsilon|Mutagen: every record's FormKey|1219|1210|1252863|41058395436
+Mutagen: every record's FormKey and EditorID     median    1262 ms  best    1208  [first    1208]  Result { Records = 1252863, Checksum = 49856089704 }
+RESULT|fix-overlay-float-epsilon|Mutagen: every record's FormKey and EditorID|1262|1208|1252863|49856089704
+Mutagen: keep every record object (heap MiB as Checksum) median    3206 ms  best    3031  [first    3304]  Result { Records = 1252863, Checksum = 1578 }
+RESULT|fix-overlay-float-epsilon|Mutagen: keep every record object (heap MiB as Checksum)|3206|3031|1252863|1578
+Mutagen: every record's FormKey and EditorID, within plugins in parallel median     339 ms  best     331  [first     361]  Result { Records = 1252863, Checksum = 49856089704 }
+RESULT|fix-overlay-float-epsilon|Mutagen: every record's FormKey and EditorID, within plugins in parallel|339|331|1252863|49856089704
+Mutagen: open, then the same within plugins in parallel median     340 ms  best     338  [first     340]  Result { Records = 1252863, Checksum = 49856089704 }
+RESULT|fix-overlay-float-epsilon|Mutagen: open, then the same within plugins in parallel|340|338|1252863|49856089704
+Mutagen: full parse (CreateFromBinary) of every plugin median    7126 ms  best    6868  [first    7126]  Result { Records = 1252863, Checksum = 0 }
+RESULT|fix-overlay-float-epsilon|Mutagen: full parse (CreateFromBinary) of every plugin|7126|6868|1252863|0
+Mutagen: 2,000 statics by key                    median    1022 ms  best    1021  [first    1077]  Result { Records = 1933, Checksum = 0 }
+RESULT|fix-overlay-float-epsilon|Mutagen: 2,000 statics by key|1022|1021|1933|0
+Scanner: every record's FormKey and EditorID     median     147 ms  best     105  [first     164]  Result { Records = 1252863, Checksum = 49856089704 }
+RESULT|fix-overlay-float-epsilon|Scanner: every record's FormKey and EditorID|147|105|1252863|49856089704
+== round 3 combined-2 23:04:59
+82 plugins, 364 MiB; Mutagen built from C:\Users\matth\source\repos\Mutagen-wt\bench-out\combined\Mutagen.Bethesda.Skyrim.dll
+Mutagen: open every plugin (overlay)             median       3 ms  best       3  [first       3]  Result { Records = 82, Checksum = 0 }
+RESULT|combined-2|Mutagen: open every plugin (overlay)|3|3|82|0
+Mutagen: open, then every record's FormKey and EditorID median     978 ms  best     532  [first    1943]  Result { Records = 1252863, Checksum = 72627810933 }
+RESULT|combined-2|Mutagen: open, then every record's FormKey and EditorID|978|532|1252863|72627810933
+Mutagen: every record's FormKey                  median     244 ms  best     212  [first     301]  Result { Records = 1252863, Checksum = 41036087157 }
+RESULT|combined-2|Mutagen: every record's FormKey|244|212|1252863|41036087157
+Mutagen: every record's FormKey and EditorID     median     351 ms  best     345  [first     357]  Result { Records = 1252863, Checksum = 72627810933 }
+RESULT|combined-2|Mutagen: every record's FormKey and EditorID|351|345|1252863|72627810933
+Mutagen: keep every record object (heap MiB as Checksum) median    1385 ms  best    1323  [first    1526]  Result { Records = 1252863, Checksum = 1170 }
+RESULT|combined-2|Mutagen: keep every record object (heap MiB as Checksum)|1385|1323|1252863|1170
+Mutagen: every record's FormKey and EditorID, within plugins in parallel median      94 ms  best      93  [first     115]  Result { Records = 1252863, Checksum = 72627810933 }
+RESULT|combined-2|Mutagen: every record's FormKey and EditorID, within plugins in parallel|94|93|1252863|72627810933
+Mutagen: open, then the same within plugins in parallel median     181 ms  best     173  [first     192]  Result { Records = 1252863, Checksum = 72627810933 }
+RESULT|combined-2|Mutagen: open, then the same within plugins in parallel|181|173|1252863|72627810933
+Mutagen: the same through EnumerateMajorRecordBatches median      87 ms  best      84  [first      95]  Result { Records = 1252863, Checksum = 72627810933 }
+RESULT|combined-2|Mutagen: the same through EnumerateMajorRecordBatches|87|84|1252863|72627810933
+Mutagen: full parse (CreateFromBinary) of every plugin median    6931 ms  best    6464  [first    7929]  Result { Records = 1252863, Checksum = 0 }
+RESULT|combined-2|Mutagen: full parse (CreateFromBinary) of every plugin|6931|6464|1252863|0
+Mutagen: 2,000 statics by key                    median       1 ms  best       1  [first       4]  Result { Records = 1933, Checksum = 0 }
+RESULT|combined-2|Mutagen: 2,000 statics by key|1|1|1933|0
+Scanner: every record's FormKey and EditorID     median     155 ms  best     106  [first     163]  Result { Records = 1252863, Checksum = 72627810933 }
+RESULT|combined-2|Scanner: every record's FormKey and EditorID|155|106|1252863|72627810933
+done 23:05:33

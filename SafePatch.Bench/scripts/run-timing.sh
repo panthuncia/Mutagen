@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
 # Timings only, round-robin: each round runs every variant once, so a busy spell on the machine is spread across
 # variants instead of landing on one.
-set -u
-OUT=/c/Users/matth/source/repos/Mutagen-wt/bench-out
-D="D:/SteamLibrary/steamapps/common/Skyrim Special Edition/Data"
-P="C:/Users/matth/AppData/Local/Temp/claude/c--Users-matth-source-repos-SynthesisMCP/488b0f26-3ebe-40c5-86ae-97a8c84a2d6c/scratchpad/bench/vanilla-plugins.txt"
+source "$(dirname "$0")/env.sh"
 VARIANTS="base fix-unsigned-enums fix-nullable-fallback fix-overlay-defaults fix-cumulative-breaks fix-gendered-equality fix-condition-pack-data fix-content-equality fix-overlay-float-epsilon perf-group-cache perf-deferred-fill perf-deferred-fill-peek perf-deferred-fill-placed perf-record-batches combined"
 for round in 1 2 3; do
   for v in $VARIANTS; do

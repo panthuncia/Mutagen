@@ -39,9 +39,13 @@ counts records equal to the full parse (a second one, or the overlay) whose hash
 the records of one type the two reads disagree on, the properties to blame; `diag-self` does the same for two full
 parses, and `diag-hash` names the properties of equal records whose hash codes differ.
 
-`scripts/` holds what produced `results/`, with this machine's paths: `build-matrix.sh` builds the bench against
-each branch, `run-bench.sh` runs the parity and thread checks and `run-timing.sh` the interleaved timings, and
-`write_results.py` writes `results/`. `combine.sh` rebuilds `safepatch-perf-experiment`.
+`scripts/` holds what produced `results/`. They work in `.safepatch-work/` at the clone's root (excluded from git
+locally), in temporary worktrees they remove when done; `env.sh` has the settings, and `SKYRIM_DATA` overrides the
+Data folder. `build-matrix.sh` builds the bench against each branch, `run-bench.sh` runs the parity, hash and thread
+checks and `run-timing.sh` the interleaved timings; `run-checks-later.sh`, `run-checks-combined.sh` and
+`run-timing-later.sh` are the later runs for the last three fixes and the combined build. `write_results.py` writes
+`results/` from the run logs in `results/logs/`. `combine.sh` rebuilds `safepatch-perf-experiment`; it needs branch
+`gen-drift`.
 
 ## Generated code
 

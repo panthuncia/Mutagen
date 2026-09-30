@@ -1,0 +1,56 @@
+== parity fix-condition-pack-data
+1,178,543 records in Skyrim.esm, Update.esm, Dawnguard.esm, HearthFires.esm, Dragonborn.esm; differing from the full parse: Armor 3564, ArmorAddon 1112, AssociationType 20, CombatStyle 47, DialogView 2, EffectShader 9, Explosion 6, Faction 16, MaterialObject 23, Package 5071, Projectile 4, Quest 316, Race 204, Static 11915, Weapon 18, Weather 1
+Unequal to a second full parse of themselves: Armor 3564, ArmorAddon 1112, AssociationType 20, DialogView 2, Faction 14, MaterialObject 23, Package 30, Race 204
+Of those, EditorID differs: never
+PARITY|fix-condition-pack-data|Armor|3564
+PARITY|fix-condition-pack-data|ArmorAddon|1112
+PARITY|fix-condition-pack-data|AssociationType|20
+PARITY|fix-condition-pack-data|CombatStyle|47
+PARITY|fix-condition-pack-data|DialogView|2
+PARITY|fix-condition-pack-data|EffectShader|9
+PARITY|fix-condition-pack-data|Explosion|6
+PARITY|fix-condition-pack-data|Faction|16
+PARITY|fix-condition-pack-data|MaterialObject|23
+PARITY|fix-condition-pack-data|Package|5071
+PARITY|fix-condition-pack-data|Projectile|4
+PARITY|fix-condition-pack-data|Quest|316
+PARITY|fix-condition-pack-data|Race|204
+PARITY|fix-condition-pack-data|Static|11915
+PARITY|fix-condition-pack-data|Weapon|18
+PARITY|fix-condition-pack-data|Weather|1
+SELF|fix-condition-pack-data|Armor|3564
+SELF|fix-condition-pack-data|ArmorAddon|1112
+SELF|fix-condition-pack-data|AssociationType|20
+SELF|fix-condition-pack-data|DialogView|2
+SELF|fix-condition-pack-data|Faction|14
+SELF|fix-condition-pack-data|MaterialObject|23
+SELF|fix-condition-pack-data|Package|30
+SELF|fix-condition-pack-data|Race|204
+PARITY|fix-condition-pack-data|(total records)|1178543
+== parity fix-byte-list-equality
+1,178,543 records in Skyrim.esm, Update.esm, Dawnguard.esm, HearthFires.esm, Dragonborn.esm; differing from the full parse: Armor 3564, ArmorAddon 1112, AssociationType 20, CombatStyle 47, DialogResponses 5, DialogTopic 3, EffectShader 9, Explosion 6, Faction 16, MaterialObject 3, Package 5081, Projectile 4, Quest 316, Race 204, Static 11915, Weapon 18, Weather 1
+Unequal to a second full parse of themselves: Armor 3564, ArmorAddon 1112, AssociationType 20, Faction 14, Race 204
+Of those, EditorID differs: never
+PARITY|fix-byte-list-equality|Armor|3564
+PARITY|fix-byte-list-equality|ArmorAddon|1112
+PARITY|fix-byte-list-equality|AssociationType|20
+PARITY|fix-byte-list-equality|CombatStyle|47
+PARITY|fix-byte-list-equality|DialogResponses|5
+PARITY|fix-byte-list-equality|DialogTopic|3
+PARITY|fix-byte-list-equality|EffectShader|9
+PARITY|fix-byte-list-equality|Explosion|6
+PARITY|fix-byte-list-equality|Faction|16
+PARITY|fix-byte-list-equality|MaterialObject|3
+PARITY|fix-byte-list-equality|Package|5081
+PARITY|fix-byte-list-equality|Projectile|4
+PARITY|fix-byte-list-equality|Quest|316
+PARITY|fix-byte-list-equality|Race|204
+PARITY|fix-byte-list-equality|Static|11915
+PARITY|fix-byte-list-equality|Weapon|18
+PARITY|fix-byte-list-equality|Weather|1
+SELF|fix-byte-list-equality|Armor|3564
+SELF|fix-byte-list-equality|ArmorAddon|1112
+SELF|fix-byte-list-equality|AssociationType|20
+SELF|fix-byte-list-equality|Faction|14
+SELF|fix-byte-list-equality|Race|204
+PARITY|fix-byte-list-equality|(total records)|1178543

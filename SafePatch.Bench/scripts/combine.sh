@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 # Rebuilds safepatch-perf-experiment: every fix and perf branch merged onto 0.54.4, then the generated code
-# regenerated from the merged generator (minus the generator's drift at 0.54.4).
-set -u
-PR=/c/Users/matth/source/repos/Mutagen-wt/pr; GEN=/c/Users/matth/source/repos/Mutagen-wt/gen
-cd $PR; git reset -q --hard; git checkout -q -B safepatch-perf-experiment 0188012
+# regenerated from the merged generator (minus the generator's drift at 0.54.4), then safepatch/bench merged in.
+# Uses two temporary worktrees: one for the merges, one to run the generator on top of branch gen-drift. The branch
+# must not be checked out elsewhere.
+source "$(dirname "$0")/env.sh"
+PR="$WORK/combine"; GEN="$WORK/generate"
+worktree combine 0188012 && worktree generate gen-drift || exit 1
+trap 'remove_worktrees combine generate; git -C "$REPO" branch -q -D tmp/combined 2>/dev/null' EXIT
+cd "$PR"; git checkout -q -B safepatch-perf-experiment 0188012 || exit 1
 for b in fix/unsigned-two-byte-enums fix/enum-parsevalue-result fix/nullable-enum-fallback-parse fix/overlay-declared-defaults fix/cumulative-break-flags fix/gendered-item-equality fix/condition-pack-data-flag fix/content-equality fix/overlay-float-epsilon perf/cache-overlay-groups perf/deferred-overlay-fill perf/record-batches; do
   git merge -q --no-ff --no-edit $b > /dev/null 2>&1
   git diff --name-only --diff-filter=U | grep _Generated | while read f; do git checkout -q --ours -- "$f"; git add "$f"; done
@@ -33,13 +37,13 @@ EOF
   done
   git -c core.autocrlf=false commit -q --no-edit > /dev/null 2>&1
 done
-cd $GEN; git reset -q --hard; git checkout -q -B tmp/combined gen-drift && git checkout safepatch-perf-experiment -- Mutagen.Bethesda.Generation
+cd "$GEN"; git checkout -q -B tmp/combined gen-drift && git checkout safepatch-perf-experiment -- Mutagen.Bethesda.Generation
 dotnet build Mutagen.Bethesda.Generator.All -c Release -p:DisableGitVersionTask=true -p:GeneratePackageOnBuild=false 2>&1 | grep -E " error |rror\(s\)" | head -3
-(cd Mutagen.Bethesda.Generator.All/bin/Release/net10.0 && ./Mutagen.Bethesda.Generator.All.exe > ../../../../../gen-fix.log 2>&1)
+(cd Mutagen.Bethesda.Generator.All/bin/Release/net10.0 && ./Mutagen.Bethesda.Generator.All.exe > "$LOGS/generate.log" 2>&1) || { echo "generator failed; see $LOGS/generate.log"; exit 1; }
 git add -A && git -c core.safecrlf=false commit -q -m "tmp: combined"
-python - <<'EOF'
+GEN_W=$(cygpath -w "$GEN") PR_W=$(cygpath -w "$PR") python - <<'EOF'
 import subprocess, os, tempfile
-gen=r'C:\Users\matth\source\repos\Mutagen-wt\gen'; pr=r'C:\Users\matth\source\repos\Mutagen-wt\pr'
+gen=os.environ['GEN_W']; pr=os.environ['PR_W']
 def git(*a): return subprocess.run(['git',*a],cwd=gen,capture_output=True)
 files=[f for f in git('diff','--name-only','gen-drift','tmp/combined').stdout.decode().splitlines() if f.endswith('_Generated.cs')]
 def blob(ref,f):
@@ -57,8 +61,8 @@ for f in files:
     open(os.path.join(pr,f),'wb').write(out)
 print(len(files),'generated files,',conflicts,'conflicts')
 EOF
-cd $PR; git -c core.autocrlf=false add -A -- '*_Generated.cs'
-git status --short | grep -v '^??'
+cd "$PR"; git -c core.autocrlf=false add -A -- '*_Generated.cs'
 git -c core.autocrlf=false commit -q -m "Regenerate for the merged generator changes
 
-Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" && git log --oneline -1
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+git merge -q --no-ff --no-edit safepatch/bench && git log --oneline -1
