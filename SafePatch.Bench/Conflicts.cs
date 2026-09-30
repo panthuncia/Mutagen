@@ -63,8 +63,7 @@ internal static class Conflicts
                         catch (Exception ex)
                         {
                             // Counted and reported, so one unreadable record does not stop the run.
-                            Failures.TryAdd($"{ex.GetType().Name}: {ex.Message.Split('
-')[0]}", chain[i].FormKey);
+                            Failures.TryAdd($"{ex.GetType().Name}: {ex.Message.Split(Environment.NewLine)[0]}", chain[i].FormKey);
                             Interlocked.Increment(ref failed);
                         }
                     }
