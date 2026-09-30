@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using DynamicData;
+using Mutagen.Bethesda.Plugins.Cache.Internals.Implementations.Internal;
 using Mutagen.Bethesda.Plugins.Exceptions;
 using Mutagen.Bethesda.Plugins.Records;
 using Noggog;
@@ -18,6 +19,7 @@ public sealed class MutableModLinkCache : ILinkCache
 {
     private readonly IModGetter _sourceMod;
     private bool _disposed;
+    private readonly TopLevelRecordLookup _lookup;
 
     /// <inheritdoc />
     public IReadOnlyList<IModGetter> ListedOrder { get; }
@@ -34,6 +36,7 @@ public sealed class MutableModLinkCache : ILinkCache
     public MutableModLinkCache(IModGetter sourceMod)
     {
         _sourceMod = sourceMod;
+        _lookup = new TopLevelRecordLookup(sourceMod);
         ListedOrder = new List<IModGetter>()
         {
             sourceMod
@@ -146,8 +149,16 @@ public sealed class MutableModLinkCache : ILinkCache
             return false;
         }
             
-        // ToDo
-        // Upgrade to EnumerateGroups<TMajor>()
+        switch (_lookup.TryFind(formKey, typeof(TMajor), out var found))
+        {
+            case true:
+                majorRec = (TMajor)(object)found!;
+                return true;
+            case false:
+                majorRec = default;
+                return false;
+        }
+        // Its records are not all in top-level groups: enumerate the mod.
         foreach (var item in _sourceMod.EnumerateMajorRecords<TMajor>()
                      // ToDo
                      // Capture and expose errors optionally via TryResolve /w out param
@@ -221,8 +232,16 @@ public sealed class MutableModLinkCache : ILinkCache
             return false;
         }
             
-        // ToDo
-        // Upgrade to EnumerateGroups<TMajor>()
+        switch (_lookup.TryFind(formKey, type, out var found))
+        {
+            case true:
+                majorRec = found!;
+                return true;
+            case false:
+                majorRec = default;
+                return false;
+        }
+        // Its records are not all in top-level groups: enumerate the mod.
         foreach (var major in _sourceMod.EnumerateMajorRecords(type)
                      // ToDo
                      // Capture and expose errors optionally via TryResolve /w out param
@@ -474,8 +493,12 @@ public sealed class MutableModLinkCache : ILinkCache
             return false;
         }
             
-        // ToDo
-        // Upgrade to EnumerateGroups<TMajor>()
+        // A record the mod does not hold needs no enumeration; one it holds is enumerated for its context.
+        if (_lookup.TryFind(formKey, typeof(TMajor), out _) == false)
+        {
+            majorRec = default;
+            return false;
+        }
         foreach (var context in _sourceMod.EnumerateMajorRecordSimpleContexts<TMajor>()
                      // ToDo
                      // Capture and expose errors optionally via TryResolve /w out param
@@ -540,8 +563,12 @@ public sealed class MutableModLinkCache : ILinkCache
             return false;
         }
             
-        // ToDo
-        // Upgrade to EnumerateGroups<TMajor>()
+        // A record the mod does not hold needs no enumeration; one it holds is enumerated for its context.
+        if (_lookup.TryFind(formKey, type, out _) == false)
+        {
+            majorRec = default;
+            return false;
+        }
         foreach (var major in _sourceMod.EnumerateMajorRecordSimpleContexts(type)
                      // ToDo
                      // Capture and expose errors optionally via TryResolve /w out param
@@ -1119,6 +1146,7 @@ public sealed class MutableModLinkCache<TMod, TModGetter> : ILinkCache<TMod, TMo
 {
     private readonly TModGetter _sourceMod;
     private bool _disposed;
+    private readonly TopLevelRecordLookup _lookup;
 
     /// <inheritdoc />
     public IReadOnlyList<IModGetter> ListedOrder { get; }
@@ -1135,6 +1163,7 @@ public sealed class MutableModLinkCache<TMod, TModGetter> : ILinkCache<TMod, TMo
     public MutableModLinkCache(TModGetter sourceMod)
     {
         _sourceMod = sourceMod;
+        _lookup = new TopLevelRecordLookup(sourceMod);
         ListedOrder = new List<IModGetter>()
         {
             sourceMod
@@ -1261,8 +1290,16 @@ public sealed class MutableModLinkCache<TMod, TModGetter> : ILinkCache<TMod, TMo
             return false;
         }
             
-        // ToDo
-        // Upgrade to EnumerateGroups<TMajor>()
+        switch (_lookup.TryFind(formKey, typeof(TMajor), out var found))
+        {
+            case true:
+                majorRec = (TMajor)(object)found!;
+                return true;
+            case false:
+                majorRec = default;
+                return false;
+        }
+        // Its records are not all in top-level groups: enumerate the mod.
         foreach (var item in _sourceMod.EnumerateMajorRecords<TMajor>()
                      // ToDo
                      // Capture and expose errors optionally via TryResolve /w out param
@@ -1336,8 +1373,16 @@ public sealed class MutableModLinkCache<TMod, TModGetter> : ILinkCache<TMod, TMo
             return false;
         }
             
-        // ToDo
-        // Upgrade to EnumerateGroups<TMajor>()
+        switch (_lookup.TryFind(formKey, type, out var found))
+        {
+            case true:
+                majorRec = found!;
+                return true;
+            case false:
+                majorRec = default;
+                return false;
+        }
+        // Its records are not all in top-level groups: enumerate the mod.
         foreach (var major in _sourceMod.EnumerateMajorRecords(type)
                      // ToDo
                      // Capture and expose errors optionally via TryResolve /w out param
@@ -1536,8 +1581,12 @@ public sealed class MutableModLinkCache<TMod, TModGetter> : ILinkCache<TMod, TMo
             return false;
         }
             
-        // ToDo
-        // Upgrade to EnumerateGroups<TMajor>()
+        // A record the mod does not hold needs no enumeration; one it holds is enumerated for its context.
+        if (_lookup.TryFind(formKey, typeof(TMajorGetter), out _) == false)
+        {
+            majorRec = default;
+            return false;
+        }
         foreach (var context in _sourceMod.EnumerateMajorRecordContexts<TMajor, TMajorGetter>(this)
                      // ToDo
                      // Capture and expose errors optionally via TryResolve /w out param
@@ -1605,8 +1654,12 @@ public sealed class MutableModLinkCache<TMod, TModGetter> : ILinkCache<TMod, TMo
             return false;
         }
             
-        // ToDo
-        // Upgrade to EnumerateGroups<TMajor>()
+        // A record the mod does not hold needs no enumeration; one it holds is enumerated for its context.
+        if (_lookup.TryFind(formKey, type, out _) == false)
+        {
+            majorRec = default;
+            return false;
+        }
         foreach (var major in _sourceMod.EnumerateMajorRecordContexts(this, type)
                      // ToDo
                      // Capture and expose errors optionally via TryResolve /w out param
@@ -1808,8 +1861,12 @@ public sealed class MutableModLinkCache<TMod, TModGetter> : ILinkCache<TMod, TMo
             return false;
         }
             
-        // ToDo
-        // Upgrade to EnumerateGroups<TMajor>()
+        // A record the mod does not hold needs no enumeration; one it holds is enumerated for its context.
+        if (_lookup.TryFind(formKey, typeof(TMajor), out _) == false)
+        {
+            majorRec = default;
+            return false;
+        }
         foreach (var context in _sourceMod.EnumerateMajorRecordSimpleContexts<TMajor>()
                      // ToDo
                      // Capture and expose errors optionally via TryResolve /w out param
