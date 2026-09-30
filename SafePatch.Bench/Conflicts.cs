@@ -45,6 +45,8 @@ internal static class Conflicts
             var chains = versions.Values.Where(c => c.Count > 1).ToArray();
             var indexed = clock.Elapsed;
 
+            var allocated = GC.GetTotalAllocatedBytes(precise: true);
+            var collections = GC.CollectionCount(0);
             clock.Restart();
             long pairs = 0, identical = 0, failed = 0;
             Parallel.ForEach(Partitioner.Create(0, chains.Length, 64), range =>
@@ -75,6 +77,8 @@ internal static class Conflicts
                 Interlocked.Add(ref identical, localIdentical);
             });
             var compared = clock.Elapsed;
+            var compareAllocated = (GC.GetTotalAllocatedBytes(precise: true) - allocated) / (1024 * 1024);
+            var compareCollections = GC.CollectionCount(0) - collections;
 
             var records = perPlugin.Sum(p => (long)p.Count);
             if (ByType)
@@ -86,8 +90,9 @@ internal static class Conflicts
             foreach (var (message, formKey) in Failures) Console.WriteLine($"  failed, e.g. {formKey}: {message}");
             if (failed > 0) Console.WriteLine($"  {failed:N0} comparisons failed");
             Console.WriteLine($"conflicts run {run + 1}: {records:N0} versions, {chains.Length:N0} overridden records, {pairs:N0} pairs " +
-                              $"({identical:N0} identical): collect {indexed.TotalMilliseconds:N0} ms, compare {compared.TotalMilliseconds:N0} ms");
-            Console.WriteLine($"CONFLICTS|{label}|{run + 1}|{records}|{chains.Length}|{pairs}|{identical}|{indexed.TotalMilliseconds:F0}|{compared.TotalMilliseconds:F0}");
+                              $"({identical:N0} identical): collect {indexed.TotalMilliseconds:N0} ms, compare {compared.TotalMilliseconds:N0} ms " +
+                              $"({compareAllocated:N0} MiB allocated, {compareCollections} collections)");
+            Console.WriteLine($"CONFLICTS|{label}|{run + 1}|{records}|{chains.Length}|{pairs}|{identical}|{indexed.TotalMilliseconds:F0}|{compared.TotalMilliseconds:F0}|{compareAllocated}|{compareCollections}");
         }
         foreach (var mod in mods) (mod as IDisposable)?.Dispose();
         return 0;
