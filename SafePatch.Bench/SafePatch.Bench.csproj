@@ -6,12 +6,16 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <DisableGitVersionTask>true</DisableGitVersionTask>
     <NoWarn>$(NoWarn);CS0436</NoWarn>
+    <!-- IndexPrototype reads memory-mapped plugins through a pointer. -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <!-- The SafePatch repository, for its scanner. Pass -p:SafePatchRepo=... when this tree is not beside it. -->
     <SafePatchRepo Condition="'$(SafePatchRepo)' == ''">$(MSBuildThisFileDirectory)..\..\SynthesisMCP</SafePatchRepo>
     <!-- Build with -p:SafePatchBatches=true on a tree that has EnumerateMajorRecordBatches. -->
     <DefineConstants Condition="'$(SafePatchBatches)' == 'true'">$(DefineConstants);SAFEPATCH_BATCHES</DefineConstants>
     <!-- Build with -p:SafePatchDiffering=true on a tree that has FillDifferingFields. -->
     <DefineConstants Condition="'$(SafePatchDiffering)' == 'true'">$(DefineConstants);SAFEPATCH_DIFFERING</DefineConstants>
+    <!-- Build with -p:SafePatchRecordIndex=true on a tree that has PluginRecordIndex and LoadOrderRecordIndex. -->
+    <DefineConstants Condition="'$(SafePatchRecordIndex)' == 'true'">$(DefineConstants);SAFEPATCH_RECORD_INDEX</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mutagen.Bethesda.Skyrim\Mutagen.Bethesda.Skyrim.csproj" />

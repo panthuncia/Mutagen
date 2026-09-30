@@ -11,6 +11,10 @@ using SafePatch.Authoring.Index;
 //   SafePatch.Bench <Data folder> <plugins.txt> [runs=3] [only=<step name part>|-] [label]
 //   SafePatch.Bench check <Data folder> <plugin,...> [label]
 //   SafePatch.Bench check-threads <Data folder> <plugin>
+//   SafePatch.Bench index-check <Data folder> <plugins.txt or .paths> [cache folder]
+//   SafePatch.Bench index-proto <Data folder> <plugins.txt or .paths> [runs=3] [label] [cache folder]
+//   SafePatch.Bench record-index <Data folder> <plugins.txt or .paths> [runs=3] [label] [cache folder]
+//   SafePatch.Bench check-first <Data folder> <plugin,...> <record type,...>
 //   SafePatch.Bench conflict-scan <Data folder> <plugins.txt or .paths> [runs=3] [label] [mask|fields|equals]
 //   SafePatch.Bench linkcache <Data folder> <plugins.txt or .paths> [label]
 //   SafePatch.Bench conflicts <Data folder> <plugins.txt or .paths> [runs=3] [label]
@@ -28,6 +32,28 @@ if (args is ["diag" or "diag-self" or "diag-hash", var diagData, var diagPlugin,
 if (args is ["check-hash", var hashData, var hashPlugins, .. var hashRest])
 {
     return CheckHash(hashData, hashPlugins.Split(','), hashRest is [var hashLabel] ? hashLabel : "");
+}
+if (args is ["index-check", var checkIndexData, var checkIndexPlugins, .. var checkIndexRest])
+{
+    System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+    return IndexCheck.Run(checkIndexData, checkIndexPlugins, checkIndexRest is [var checkIndexCache] ? checkIndexCache : null);
+}
+if (args is ["record-index", var recData, var recPlugins, .. var recRest])
+{
+#if SAFEPATCH_RECORD_INDEX
+    return RecordIndexBench.Run(recData, recPlugins, recRest is [var rr, ..] ? int.Parse(rr) : 3, recRest is [_, var rl, ..] ? rl : "", recRest is [_, _, var rc] ? rc : null);
+#else
+    Console.Error.WriteLine("record-index needs the record index: build with -p:SafePatchRecordIndex=true.");
+    return 2;
+#endif
+}
+if (args is ["index-proto", var protoData, var protoPlugins, .. var protoRest])
+{
+    return IndexPrototype.Run(protoData, protoPlugins, protoRest is [var r, ..] ? int.Parse(r) : 3, protoRest is [_, var l, ..] ? l : "", protoRest is [_, _, var c] ? c : null);
+}
+if (args is ["check-first", var firstData, var firstPlugins, var firstTypes])
+{
+    return CheckFirst.Run(firstData, firstPlugins.Split(','), firstTypes.Split(','));
 }
 if (args is ["conflict-scan", var scanData, var scanPlugins, .. var scanRest])
 {
