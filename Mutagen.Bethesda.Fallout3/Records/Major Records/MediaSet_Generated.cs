@@ -3404,51 +3404,51 @@ namespace Mutagen.Bethesda.Fallout3
         #endregion
         #region LoopBattleDayOuterDb
         private int? _LoopBattleDayOuterDbLocation;
-        public Single? LoopBattleDayOuterDb => _LoopBattleDayOuterDbLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _LoopBattleDayOuterDbLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? LoopBattleDayOuterDb => _LoopBattleDayOuterDbLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LoopBattleDayOuterDbLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region ExploreDayMiddleDb
         private int? _ExploreDayMiddleDbLocation;
-        public Single? ExploreDayMiddleDb => _ExploreDayMiddleDbLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ExploreDayMiddleDbLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? ExploreDayMiddleDb => _ExploreDayMiddleDbLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ExploreDayMiddleDbLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region SuspenseDayInnerDb
         private int? _SuspenseDayInnerDbLocation;
-        public Single? SuspenseDayInnerDb => _SuspenseDayInnerDbLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SuspenseDayInnerDbLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? SuspenseDayInnerDb => _SuspenseDayInnerDbLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SuspenseDayInnerDbLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region NightOuterDb
         private int? _NightOuterDbLocation;
-        public Single? NightOuterDb => _NightOuterDbLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NightOuterDbLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? NightOuterDb => _NightOuterDbLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NightOuterDbLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region NightMiddleDb
         private int? _NightMiddleDbLocation;
-        public Single? NightMiddleDb => _NightMiddleDbLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NightMiddleDbLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? NightMiddleDb => _NightMiddleDbLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NightMiddleDbLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region NightInnerDb
         private int? _NightInnerDbLocation;
-        public Single? NightInnerDb => _NightInnerDbLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NightInnerDbLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? NightInnerDb => _NightInnerDbLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NightInnerDbLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region DayOuterBoundaryPercent
         private int? _DayOuterBoundaryPercentLocation;
-        public Single? DayOuterBoundaryPercent => _DayOuterBoundaryPercentLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DayOuterBoundaryPercentLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? DayOuterBoundaryPercent => _DayOuterBoundaryPercentLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DayOuterBoundaryPercentLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region DayMiddleBoundaryPercent
         private int? _DayMiddleBoundaryPercentLocation;
-        public Single? DayMiddleBoundaryPercent => _DayMiddleBoundaryPercentLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DayMiddleBoundaryPercentLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? DayMiddleBoundaryPercent => _DayMiddleBoundaryPercentLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DayMiddleBoundaryPercentLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region DayInnerBoundaryPercent
         private int? _DayInnerBoundaryPercentLocation;
-        public Single? DayInnerBoundaryPercent => _DayInnerBoundaryPercentLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DayInnerBoundaryPercentLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? DayInnerBoundaryPercent => _DayInnerBoundaryPercentLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DayInnerBoundaryPercentLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region NightOuterBoundaryPercent
         private int? _NightOuterBoundaryPercentLocation;
-        public Single? NightOuterBoundaryPercent => _NightOuterBoundaryPercentLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NightOuterBoundaryPercentLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? NightOuterBoundaryPercent => _NightOuterBoundaryPercentLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NightOuterBoundaryPercentLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region NightMiddleBoundaryPercent
         private int? _NightMiddleBoundaryPercentLocation;
-        public Single? NightMiddleBoundaryPercent => _NightMiddleBoundaryPercentLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NightMiddleBoundaryPercentLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? NightMiddleBoundaryPercent => _NightMiddleBoundaryPercentLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NightMiddleBoundaryPercentLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region NightInnerBoundaryPercent
         private int? _NightInnerBoundaryPercentLocation;
-        public Single? NightInnerBoundaryPercent => _NightInnerBoundaryPercentLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NightInnerBoundaryPercentLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? NightInnerBoundaryPercent => _NightInnerBoundaryPercentLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NightInnerBoundaryPercentLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region EnableFlags
         private int? _EnableFlagsLocation;
@@ -3456,19 +3456,19 @@ namespace Mutagen.Bethesda.Fallout3
         #endregion
         #region WaitTimeMinTimeOnDaytimeMin
         private int? _WaitTimeMinTimeOnDaytimeMinLocation;
-        public Single? WaitTimeMinTimeOnDaytimeMin => _WaitTimeMinTimeOnDaytimeMinLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _WaitTimeMinTimeOnDaytimeMinLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? WaitTimeMinTimeOnDaytimeMin => _WaitTimeMinTimeOnDaytimeMinLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _WaitTimeMinTimeOnDaytimeMinLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region LoopFadeOutCrossfadeOverlapNighttimeMin
         private int? _LoopFadeOutCrossfadeOverlapNighttimeMinLocation;
-        public Single? LoopFadeOutCrossfadeOverlapNighttimeMin => _LoopFadeOutCrossfadeOverlapNighttimeMinLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _LoopFadeOutCrossfadeOverlapNighttimeMinLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? LoopFadeOutCrossfadeOverlapNighttimeMin => _LoopFadeOutCrossfadeOverlapNighttimeMinLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LoopFadeOutCrossfadeOverlapNighttimeMinLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region RecoveryTimeCrossfadeTimeDaytimeMax
         private int? _RecoveryTimeCrossfadeTimeDaytimeMaxLocation;
-        public Single? RecoveryTimeCrossfadeTimeDaytimeMax => _RecoveryTimeCrossfadeTimeDaytimeMaxLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _RecoveryTimeCrossfadeTimeDaytimeMaxLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? RecoveryTimeCrossfadeTimeDaytimeMax => _RecoveryTimeCrossfadeTimeDaytimeMaxLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _RecoveryTimeCrossfadeTimeDaytimeMaxLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region NighttimeMax
         private int? _NighttimeMaxLocation;
-        public Single? NighttimeMax => _NighttimeMaxLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NighttimeMaxLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? NighttimeMax => _NighttimeMaxLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NighttimeMaxLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region IntroDaytime
         private int? _IntroDaytimeLocation;

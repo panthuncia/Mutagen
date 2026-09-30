@@ -1106,7 +1106,7 @@ namespace Mutagen.Bethesda.Starfield
         public String Rule => BinaryStringUtility.ParsePrependedString(_structData.Slice(0x0), lengthLength: 1, encoding: _package.MetaData.Encodings.NonTranslated);
         protected int RuleEndingPos;
         #endregion
-        public Single Friction => _structData.Slice(RuleEndingPos, 0x4).Float();
+        public Single Friction => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(RuleEndingPos, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

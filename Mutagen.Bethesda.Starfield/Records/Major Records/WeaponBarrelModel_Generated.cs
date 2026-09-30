@@ -1596,17 +1596,17 @@ namespace Mutagen.Bethesda.Starfield
         #region CoverDetectionDistance
         private int _CoverDetectionDistanceLocation => _ZNAMLocation!.Value.Min + 0x1;
         private bool _CoverDetectionDistance_IsSet => _ZNAMLocation.HasValue;
-        public Single CoverDetectionDistance => _CoverDetectionDistance_IsSet ? _recordData.Slice(_CoverDetectionDistanceLocation, 4).Float() : default(Single);
+        public Single CoverDetectionDistance => _CoverDetectionDistance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CoverDetectionDistanceLocation, 4)) : default(Single);
         #endregion
         #region EnterCoverAnimationTimeSeconds
         private int _EnterCoverAnimationTimeSecondsLocation => _ZNAMLocation!.Value.Min + 0x5;
         private bool _EnterCoverAnimationTimeSeconds_IsSet => _ZNAMLocation.HasValue;
-        public Single EnterCoverAnimationTimeSeconds => _EnterCoverAnimationTimeSeconds_IsSet ? _recordData.Slice(_EnterCoverAnimationTimeSecondsLocation, 4).Float() : default(Single);
+        public Single EnterCoverAnimationTimeSeconds => _EnterCoverAnimationTimeSeconds_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EnterCoverAnimationTimeSecondsLocation, 4)) : default(Single);
         #endregion
         #region HipfireDuringCoverAnimationTimeSeconds
         private int _HipfireDuringCoverAnimationTimeSecondsLocation => _ZNAMLocation!.Value.Min + 0x9;
         private bool _HipfireDuringCoverAnimationTimeSeconds_IsSet => _ZNAMLocation.HasValue;
-        public Single HipfireDuringCoverAnimationTimeSeconds => _HipfireDuringCoverAnimationTimeSeconds_IsSet ? _recordData.Slice(_HipfireDuringCoverAnimationTimeSecondsLocation, 4).Float() : default(Single);
+        public Single HipfireDuringCoverAnimationTimeSeconds => _HipfireDuringCoverAnimationTimeSeconds_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HipfireDuringCoverAnimationTimeSecondsLocation, 4)) : default(Single);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

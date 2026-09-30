@@ -1624,7 +1624,7 @@ namespace Mutagen.Bethesda.Skyrim
         public UInt16 Trespass => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x6, 0x2));
         public UInt16 Pickpocket => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x8, 0x2));
         public UInt16 Unknown => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0xA, 0x2));
-        public Single StealMult => _structData.Length <= 0xC ? default : _structData.Slice(0xC, 0x4).Float();
+        public Single StealMult => _structData.Length <= 0xC ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
         public UInt16 Escape => _structData.Length <= 0x10 ? default : BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x10, 0x2));
         public UInt16 Werewolf => _structData.Length <= 0x12 ? default : BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x12, 0x2));
         partial void CustomFactoryEnd(

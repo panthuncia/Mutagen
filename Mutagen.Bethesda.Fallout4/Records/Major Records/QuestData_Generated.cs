@@ -1286,7 +1286,7 @@ namespace Mutagen.Bethesda.Fallout4
         public Quest.Flag Flags => (Quest.Flag)BinaryPrimitives.ReadUInt16LittleEndian(_structData.Span.Slice(0x0, 0x2));
         public Byte Priority => _structData.Span[0x2];
         public Byte Unused => _structData.Span[0x3];
-        public Single DelayTime => _structData.Slice(0x4, 0x4).Float();
+        public Single DelayTime => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
         public Quest.TypeEnum Type => (Quest.TypeEnum)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x8, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,

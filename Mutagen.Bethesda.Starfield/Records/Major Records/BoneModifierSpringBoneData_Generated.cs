@@ -1520,13 +1520,13 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         public P3Float Strength => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(TargetEndingPos + 0x4, 0xC));
-        public Single Unknown => _structData.Slice(TargetEndingPos + 0x10, 0x4).Float();
+        public Single Unknown => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(TargetEndingPos + 0x10, 0x4));
         public P3Float Damp => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(TargetEndingPos + 0x14, 0xC));
-        public Single Unknown2 => _structData.Slice(TargetEndingPos + 0x20, 0x4).Float();
+        public Single Unknown2 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(TargetEndingPos + 0x20, 0x4));
         public P3Float Scale => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(TargetEndingPos + 0x24, 0xC));
-        public Single Unknown3 => _structData.Slice(TargetEndingPos + 0x30, 0x4).Float();
+        public Single Unknown3 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(TargetEndingPos + 0x30, 0x4));
         public P3Float MaxDist => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(TargetEndingPos + 0x34, 0xC));
-        public Single Unknown4 => _structData.Slice(TargetEndingPos + 0x40, 0x4).Float();
+        public Single Unknown4 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(TargetEndingPos + 0x40, 0x4));
         public Boolean LookAtParent => _structData.Slice(TargetEndingPos + 0x44, 0x1)[0] >= 1;
         partial void CustomFactoryEnd(
             OverlayStream stream,

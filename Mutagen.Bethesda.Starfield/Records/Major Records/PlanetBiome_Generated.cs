@@ -1993,7 +1993,7 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         public IFormLinkGetter<IBiomeGetter> Biome => FormLinkBinaryTranslation.Instance.OverlayFactory<IBiomeGetter>(_package, _structData.Span.Slice(0x0, 0x4));
-        public Single Chance => _structData.Slice(0x4, 0x4).Float();
+        public Single Chance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
         public Int32 Unknown2 => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x8, 0x4));
         public IFormLinkGetter<IStarfieldMajorRecordGetter> ResourceGeneration => FormLinkBinaryTranslation.Instance.OverlayFactory<IStarfieldMajorRecordGetter>(_package, _structData.Span.Slice(0xC, 0x4));
         #region Fauna

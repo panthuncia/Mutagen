@@ -2271,32 +2271,32 @@ namespace Mutagen.Bethesda.Fallout3
         #region TimeMultiplierPlayer
         private int _TimeMultiplierPlayerLocation => _DATALocation!.Value.Min + 0x10;
         private bool _TimeMultiplierPlayer_IsSet => _DATALocation.HasValue;
-        public Single TimeMultiplierPlayer => _TimeMultiplierPlayer_IsSet ? _recordData.Slice(_TimeMultiplierPlayerLocation, 4).Float() : default(Single);
+        public Single TimeMultiplierPlayer => _TimeMultiplierPlayer_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TimeMultiplierPlayerLocation, 4)) : default(Single);
         #endregion
         #region TimeMultiplierTarget
         private int _TimeMultiplierTargetLocation => _DATALocation!.Value.Min + 0x14;
         private bool _TimeMultiplierTarget_IsSet => _DATALocation.HasValue;
-        public Single TimeMultiplierTarget => _TimeMultiplierTarget_IsSet ? _recordData.Slice(_TimeMultiplierTargetLocation, 4).Float() : default(Single);
+        public Single TimeMultiplierTarget => _TimeMultiplierTarget_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TimeMultiplierTargetLocation, 4)) : default(Single);
         #endregion
         #region TimeMultiplierGlobal
         private int _TimeMultiplierGlobalLocation => _DATALocation!.Value.Min + 0x18;
         private bool _TimeMultiplierGlobal_IsSet => _DATALocation.HasValue;
-        public Single TimeMultiplierGlobal => _TimeMultiplierGlobal_IsSet ? _recordData.Slice(_TimeMultiplierGlobalLocation, 4).Float() : default(Single);
+        public Single TimeMultiplierGlobal => _TimeMultiplierGlobal_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TimeMultiplierGlobalLocation, 4)) : default(Single);
         #endregion
         #region MaxTime
         private int _MaxTimeLocation => _DATALocation!.Value.Min + 0x1C;
         private bool _MaxTime_IsSet => _DATALocation.HasValue;
-        public Single MaxTime => _MaxTime_IsSet ? _recordData.Slice(_MaxTimeLocation, 4).Float() : default(Single);
+        public Single MaxTime => _MaxTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MaxTimeLocation, 4)) : default(Single);
         #endregion
         #region MinTime
         private int _MinTimeLocation => _DATALocation!.Value.Min + 0x20;
         private bool _MinTime_IsSet => _DATALocation.HasValue;
-        public Single MinTime => _MinTime_IsSet ? _recordData.Slice(_MinTimeLocation, 4).Float() : default(Single);
+        public Single MinTime => _MinTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MinTimeLocation, 4)) : default(Single);
         #endregion
         #region TargetPercentBetweenActors
         private int _TargetPercentBetweenActorsLocation => _DATALocation!.Value.Min + 0x24;
         private bool _TargetPercentBetweenActors_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(CameraShot.DATADataType.Break0);
-        public Single TargetPercentBetweenActors => _TargetPercentBetweenActors_IsSet ? _recordData.Slice(_TargetPercentBetweenActorsLocation, 4).Float() : default(Single);
+        public Single TargetPercentBetweenActors => _TargetPercentBetweenActors_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TargetPercentBetweenActorsLocation, 4)) : default(Single);
         #endregion
         #region ImageSpaceModifier
         private int? _ImageSpaceModifierLocation;

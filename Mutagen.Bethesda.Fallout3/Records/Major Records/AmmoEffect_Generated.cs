@@ -1678,7 +1678,7 @@ namespace Mutagen.Bethesda.Fallout3
         #region Value
         private int _ValueLocation => _DATALocation!.Value.Min + 0x8;
         private bool _Value_IsSet => _DATALocation.HasValue;
-        public Single Value => _Value_IsSet ? _recordData.Slice(_ValueLocation, 4).Float() : default(Single);
+        public Single Value => _Value_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ValueLocation, 4)) : default(Single);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

@@ -1171,9 +1171,9 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        public Single Saturation => _structData.Slice(0x0, 0x4).Float();
-        public Single Brightness => _structData.Slice(0x4, 0x4).Float();
-        public Single Contrast => _structData.Slice(0x8, 0x4).Float();
+        public Single Saturation => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single Brightness => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single Contrast => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

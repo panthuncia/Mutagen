@@ -1418,8 +1418,8 @@ namespace Mutagen.Bethesda.Starfield
         public P3Float Position => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(TargetEndingPos + 0x10, 0xC));
         public P3Float Angle => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(TargetEndingPos + 0x1C, 0xC));
         public P3Float Scale => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(TargetEndingPos + 0x28, 0xC));
-        public Single InnerRadius => _structData.Slice(TargetEndingPos + 0x34, 0x4).Float();
-        public Single OuterRadius => _structData.Slice(TargetEndingPos + 0x38, 0x4).Float();
+        public Single InnerRadius => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(TargetEndingPos + 0x34, 0x4));
+        public Single OuterRadius => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(TargetEndingPos + 0x38, 0x4));
         public Axis Axis => (Axis)_structData.Span.Slice(TargetEndingPos + 0x3C, 0x1)[0];
         partial void CustomFactoryEnd(
             OverlayStream stream,

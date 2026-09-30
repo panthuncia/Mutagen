@@ -3035,7 +3035,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region DamageMult
         private int _DamageMultLocation => _BPNDLocation!.Value.Min;
         private bool _DamageMult_IsSet => _BPNDLocation.HasValue;
-        public Single DamageMult => _DamageMult_IsSet ? _recordData.Slice(_DamageMultLocation, 4).Float() : default(Single);
+        public Single DamageMult => _DamageMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DamageMultLocation, 4)) : default(Single);
         #endregion
         #region Flags
         private int _FlagsLocation => _BPNDLocation!.Value.Min + 0x4;
@@ -3085,12 +3085,12 @@ namespace Mutagen.Bethesda.Skyrim
         #region TrackingMaxAngle
         private int _TrackingMaxAngleLocation => _BPNDLocation!.Value.Min + 0x14;
         private bool _TrackingMaxAngle_IsSet => _BPNDLocation.HasValue;
-        public Single TrackingMaxAngle => _TrackingMaxAngle_IsSet ? _recordData.Slice(_TrackingMaxAngleLocation, 4).Float() : default(Single);
+        public Single TrackingMaxAngle => _TrackingMaxAngle_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TrackingMaxAngleLocation, 4)) : default(Single);
         #endregion
         #region ExplodableDebrisScale
         private int _ExplodableDebrisScaleLocation => _BPNDLocation!.Value.Min + 0x18;
         private bool _ExplodableDebrisScale_IsSet => _BPNDLocation.HasValue;
-        public Single ExplodableDebrisScale => _ExplodableDebrisScale_IsSet ? _recordData.Slice(_ExplodableDebrisScaleLocation, 4).Float() : default(Single);
+        public Single ExplodableDebrisScale => _ExplodableDebrisScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ExplodableDebrisScaleLocation, 4)) : default(Single);
         #endregion
         #region SeverableDebrisCount
         private int _SeverableDebrisCountLocation => _BPNDLocation!.Value.Min + 0x1C;
@@ -3110,7 +3110,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region SeverableDebrisScale
         private int _SeverableDebrisScaleLocation => _BPNDLocation!.Value.Min + 0x28;
         private bool _SeverableDebrisScale_IsSet => _BPNDLocation.HasValue;
-        public Single SeverableDebrisScale => _SeverableDebrisScale_IsSet ? _recordData.Slice(_SeverableDebrisScaleLocation, 4).Float() : default(Single);
+        public Single SeverableDebrisScale => _SeverableDebrisScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SeverableDebrisScaleLocation, 4)) : default(Single);
         #endregion
         #region GorePositioning
         private int _GorePositioningLocation => _BPNDLocation!.Value.Min + 0x2C;
@@ -3150,7 +3150,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region LimbReplacementScale
         private int _LimbReplacementScaleLocation => _BPNDLocation!.Value.Min + 0x50;
         private bool _LimbReplacementScale_IsSet => _BPNDLocation.HasValue;
-        public Single LimbReplacementScale => _LimbReplacementScale_IsSet ? _recordData.Slice(_LimbReplacementScaleLocation, 4).Float() : default(Single);
+        public Single LimbReplacementScale => _LimbReplacementScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_LimbReplacementScaleLocation, 4)) : default(Single);
         #endregion
         #region LimbReplacementModel
         private int? _LimbReplacementModelLocation;

@@ -1215,8 +1215,8 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         public Int32 Unused1 => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x0, 0x4));
-        public Single Walk => _structData.Slice(0x4, 0x4).Float() * 57.2958f;
-        public Single Run => _structData.Slice(0x8, 0x4).Float() * 57.2958f;
+        public Single Walk => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4)) * 57.2958f;
+        public Single Run => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4)) * 57.2958f;
         public Int32 Unused2 => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0xC, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,

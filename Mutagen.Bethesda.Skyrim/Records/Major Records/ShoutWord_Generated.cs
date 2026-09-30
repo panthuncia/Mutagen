@@ -1200,7 +1200,7 @@ namespace Mutagen.Bethesda.Skyrim
 
         public IFormLinkGetter<IWordOfPowerGetter> Word => FormLinkBinaryTranslation.Instance.OverlayFactory<IWordOfPowerGetter>(_package, _structData.Span.Slice(0x0, 0x4));
         public IFormLinkGetter<ISpellGetter> Spell => FormLinkBinaryTranslation.Instance.OverlayFactory<ISpellGetter>(_package, _structData.Span.Slice(0x4, 0x4));
-        public Single RecoveryTime => _structData.Slice(0x8, 0x4).Float();
+        public Single RecoveryTime => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

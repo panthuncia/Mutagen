@@ -1496,10 +1496,10 @@ namespace Mutagen.Bethesda.Fallout3
         public UInt16 MatchBone3 => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x4, 0x2));
         public Boolean IsDisableOnMove => _structData.Slice(0x6, 0x1)[0] >= 1;
         public Byte Unused => _structData.Span[0x7];
-        public Single MotorsStrength => _structData.Slice(0x8, 0x4).Float();
-        public Single PoseActivationDelayTime => _structData.Slice(0xC, 0x4).Float();
-        public Single MatchErrorAllowance => _structData.Slice(0x10, 0x4).Float();
-        public Single DisplacementToDisable => _structData.Slice(0x14, 0x4).Float();
+        public Single MotorsStrength => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single PoseActivationDelayTime => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single MatchErrorAllowance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
+        public Single DisplacementToDisable => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

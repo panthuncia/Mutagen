@@ -1235,10 +1235,10 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        public Single InputGain => _structData.Slice(0x4, 0x4).Float();
-        public Single OutputGain => _structData.Slice(0x8, 0x4).Float();
-        public Single UpperThreshold => _structData.Slice(0xC, 0x4).Float();
-        public Single LowerThreshold => _structData.Slice(0x10, 0x4).Float();
+        public Single InputGain => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single OutputGain => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single UpperThreshold => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single LowerThreshold => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

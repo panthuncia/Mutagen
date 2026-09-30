@@ -7279,8 +7279,8 @@ namespace Mutagen.Bethesda.Starfield
                 if (!_Height_IsSet) return new GenderedItem<Single>(default(Single), default(Single));
                 var data = _recordData.Slice(_HeightLocation);
                 return new GenderedItem<Single>(
-                    data.Float(),
-                    data.Slice(4).Float());
+                    FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(data),
+                    FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(data.Slice(4)));
             }
         }
         #endregion
@@ -7307,12 +7307,12 @@ namespace Mutagen.Bethesda.Starfield
         #region AccelerationRate
         private int _AccelerationRateLocation => _DAT2Location!.Value.Min + 0x28;
         private bool _AccelerationRate_IsSet => _DAT2Location.HasValue;
-        public Single AccelerationRate => _AccelerationRate_IsSet ? _recordData.Slice(_AccelerationRateLocation, 4).Float() : default(Single);
+        public Single AccelerationRate => _AccelerationRate_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AccelerationRateLocation, 4)) : default(Single);
         #endregion
         #region DecelerationRate
         private int _DecelerationRateLocation => _DAT2Location!.Value.Min + 0x2C;
         private bool _DecelerationRate_IsSet => _DAT2Location.HasValue;
-        public Single DecelerationRate => _DecelerationRate_IsSet ? _recordData.Slice(_DecelerationRateLocation, 4).Float() : default(Single);
+        public Single DecelerationRate => _DecelerationRate_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DecelerationRateLocation, 4)) : default(Single);
         #endregion
         #region Size
         private int _SizeLocation => _DAT2Location!.Value.Min + 0x30;
@@ -7362,12 +7362,12 @@ namespace Mutagen.Bethesda.Starfield
         #region OrientationLimitsPitch
         private int _OrientationLimitsPitchLocation => _DAT2Location!.Value.Min + 0x98;
         private bool _OrientationLimitsPitch_IsSet => _DAT2Location.HasValue;
-        public Single OrientationLimitsPitch => _OrientationLimitsPitch_IsSet ? _recordData.Slice(_OrientationLimitsPitchLocation, 4).Float() : default(Single);
+        public Single OrientationLimitsPitch => _OrientationLimitsPitch_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_OrientationLimitsPitchLocation, 4)) : default(Single);
         #endregion
         #region OrientationLimitsRoll
         private int _OrientationLimitsRollLocation => _DAT2Location!.Value.Min + 0x9C;
         private bool _OrientationLimitsRoll_IsSet => _DAT2Location.HasValue;
-        public Single OrientationLimitsRoll => _OrientationLimitsRoll_IsSet ? _recordData.Slice(_OrientationLimitsRollLocation, 4).Float() : default(Single);
+        public Single OrientationLimitsRoll => _OrientationLimitsRoll_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_OrientationLimitsRollLocation, 4)) : default(Single);
         #endregion
         #region DAT2Unknown3
         private int _DAT2Unknown3Location => _DAT2Location!.Value.Min + 0xA0;
@@ -7403,11 +7403,11 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region FacegenMainClamp
         private int? _FacegenMainClampLocation;
-        public Single FacegenMainClamp => _FacegenMainClampLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FacegenMainClampLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single FacegenMainClamp => _FacegenMainClampLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FacegenMainClampLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region FacegenFaceClamp
         private int? _FacegenFaceClampLocation;
-        public Single FacegenFaceClamp => _FacegenFaceClampLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FacegenFaceClampLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single FacegenFaceClamp => _FacegenFaceClampLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FacegenFaceClampLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         public IReadOnlyList<IAttackGetter> Attacks { get; private set; } = [];
         #region BodyData
@@ -7467,11 +7467,11 @@ namespace Mutagen.Bethesda.Starfield
         public IReadOnlyList<ISubgraphGetter> Subgraphs { get; private set; } = [];
         #region IdleChatterTimeMin
         private int? _IdleChatterTimeMinLocation;
-        public Single? IdleChatterTimeMin => _IdleChatterTimeMinLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _IdleChatterTimeMinLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? IdleChatterTimeMin => _IdleChatterTimeMinLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IdleChatterTimeMinLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region IdleChatterTimeMax
         private int? _IdleChatterTimeMaxLocation;
-        public Single? IdleChatterTimeMax => _IdleChatterTimeMaxLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _IdleChatterTimeMaxLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? IdleChatterTimeMax => _IdleChatterTimeMaxLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IdleChatterTimeMaxLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region DialogueQuest
         private int? _DialogueQuestLocation;

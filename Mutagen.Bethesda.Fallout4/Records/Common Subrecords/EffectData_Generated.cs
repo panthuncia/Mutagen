@@ -1167,7 +1167,7 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        public Single Magnitude => _structData.Slice(0x0, 0x4).Float();
+        public Single Magnitude => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
         public Int32 Area => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x4, 0x4));
         public Int32 Duration => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x8, 0x4));
         partial void CustomFactoryEnd(

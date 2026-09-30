@@ -5288,12 +5288,12 @@ namespace Mutagen.Bethesda.Starfield
         #region ScriptEffectAIDelayTime
         private int _ScriptEffectAIDelayTimeLocation => _DATALocation!.Value.Min + 0x48;
         private bool _ScriptEffectAIDelayTime_IsSet => _DATALocation.HasValue;
-        public Single ScriptEffectAIDelayTime => _ScriptEffectAIDelayTime_IsSet ? _recordData.Slice(_ScriptEffectAIDelayTimeLocation, 4).Float() : default(Single);
+        public Single ScriptEffectAIDelayTime => _ScriptEffectAIDelayTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ScriptEffectAIDelayTimeLocation, 4)) : default(Single);
         #endregion
         #region ScriptEffectAIScore
         private int _ScriptEffectAIScoreLocation => _DATALocation!.Value.Min + 0x4C;
         private bool _ScriptEffectAIScore_IsSet => _DATALocation.HasValue;
-        public Single ScriptEffectAIScore => _ScriptEffectAIScore_IsSet ? _recordData.Slice(_ScriptEffectAIScoreLocation, 4).Float() : default(Single);
+        public Single ScriptEffectAIScore => _ScriptEffectAIScore_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ScriptEffectAIScoreLocation, 4)) : default(Single);
         #endregion
         #region Archetype
         private int _ArchetypeLocation => _DATALocation!.Value.Min + 0x50;
@@ -5303,17 +5303,17 @@ namespace Mutagen.Bethesda.Starfield
         #region SpellmakingArea
         private int _SpellmakingAreaLocation => _DATALocation!.Value.Min + 0x54;
         private bool _SpellmakingArea_IsSet => _DATALocation.HasValue;
-        public Single SpellmakingArea => _SpellmakingArea_IsSet ? _recordData.Slice(_SpellmakingAreaLocation, 4).Float() : default(Single);
+        public Single SpellmakingArea => _SpellmakingArea_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SpellmakingAreaLocation, 4)) : default(Single);
         #endregion
         #region SpellmakingCastingTime
         private int _SpellmakingCastingTimeLocation => _DATALocation!.Value.Min + 0x58;
         private bool _SpellmakingCastingTime_IsSet => _DATALocation.HasValue;
-        public Single SpellmakingCastingTime => _SpellmakingCastingTime_IsSet ? _recordData.Slice(_SpellmakingCastingTimeLocation, 4).Float() : default(Single);
+        public Single SpellmakingCastingTime => _SpellmakingCastingTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SpellmakingCastingTimeLocation, 4)) : default(Single);
         #endregion
         #region BaseCost
         private int _BaseCostLocation => _DATALocation!.Value.Min + 0x5C;
         private bool _BaseCost_IsSet => _DATALocation.HasValue;
-        public Single BaseCost => _BaseCost_IsSet ? _recordData.Slice(_BaseCostLocation, 4).Float() : default(Single);
+        public Single BaseCost => _BaseCost_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BaseCostLocation, 4)) : default(Single);
         #endregion
         #region CastingSoundLevel
         private int _CastingSoundLevelLocation => _DATALocation!.Value.Min + 0x60;
@@ -5333,7 +5333,7 @@ namespace Mutagen.Bethesda.Starfield
         #region DualCastingScale
         private int _DualCastingScaleLocation => _DATALocation!.Value.Min + 0x66;
         private bool _DualCastingScale_IsSet => _DATALocation.HasValue;
-        public Single DualCastingScale => _DualCastingScale_IsSet ? _recordData.Slice(_DualCastingScaleLocation, 4).Float() : default(Single);
+        public Single DualCastingScale => _DualCastingScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DualCastingScaleLocation, 4)) : default(Single);
         #endregion
         #region Flags
         private int _FlagsLocation => _DATALocation!.Value.Min + 0x6A;
@@ -5353,27 +5353,27 @@ namespace Mutagen.Bethesda.Starfield
         #region SecondActorValueWeight
         private int _SecondActorValueWeightLocation => _DATALocation!.Value.Min + 0x74;
         private bool _SecondActorValueWeight_IsSet => _DATALocation.HasValue;
-        public Single SecondActorValueWeight => _SecondActorValueWeight_IsSet ? _recordData.Slice(_SecondActorValueWeightLocation, 4).Float() : default(Single);
+        public Single SecondActorValueWeight => _SecondActorValueWeight_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SecondActorValueWeightLocation, 4)) : default(Single);
         #endregion
         #region SkillUsageMultiplier
         private int _SkillUsageMultiplierLocation => _DATALocation!.Value.Min + 0x78;
         private bool _SkillUsageMultiplier_IsSet => _DATALocation.HasValue;
-        public Single SkillUsageMultiplier => _SkillUsageMultiplier_IsSet ? _recordData.Slice(_SkillUsageMultiplierLocation, 4).Float() : default(Single);
+        public Single SkillUsageMultiplier => _SkillUsageMultiplier_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SkillUsageMultiplierLocation, 4)) : default(Single);
         #endregion
         #region TaperCurve
         private int _TaperCurveLocation => _DATALocation!.Value.Min + 0x7C;
         private bool _TaperCurve_IsSet => _DATALocation.HasValue;
-        public Single TaperCurve => _TaperCurve_IsSet ? _recordData.Slice(_TaperCurveLocation, 4).Float() : default(Single);
+        public Single TaperCurve => _TaperCurve_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TaperCurveLocation, 4)) : default(Single);
         #endregion
         #region TaperDuration
         private int _TaperDurationLocation => _DATALocation!.Value.Min + 0x80;
         private bool _TaperDuration_IsSet => _DATALocation.HasValue;
-        public Single TaperDuration => _TaperDuration_IsSet ? _recordData.Slice(_TaperDurationLocation, 4).Float() : default(Single);
+        public Single TaperDuration => _TaperDuration_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TaperDurationLocation, 4)) : default(Single);
         #endregion
         #region TaperWeight
         private int _TaperWeightLocation => _DATALocation!.Value.Min + 0x84;
         private bool _TaperWeight_IsSet => _DATALocation.HasValue;
-        public Single TaperWeight => _TaperWeight_IsSet ? _recordData.Slice(_TaperWeightLocation, 4).Float() : default(Single);
+        public Single TaperWeight => _TaperWeight_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TaperWeightLocation, 4)) : default(Single);
         #endregion
         #region Unknown2
         private int _Unknown2Location => _DATALocation!.Value.Min + 0x88;

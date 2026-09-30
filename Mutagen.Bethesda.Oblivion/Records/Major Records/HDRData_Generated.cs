@@ -1776,20 +1776,20 @@ namespace Mutagen.Bethesda.Oblivion
                 translationParams: translationParams);
         }
 
-        public Single EyeAdaptSpeed => _structData.Slice(0x0, 0x4).Float();
-        public Single BlurRadius => _structData.Slice(0x4, 0x4).Float();
-        public Single BlurPasses => _structData.Slice(0x8, 0x4).Float();
-        public Single EmissiveMult => _structData.Slice(0xC, 0x4).Float();
-        public Single TargetLum => _structData.Slice(0x10, 0x4).Float();
-        public Single UpperLumClamp => _structData.Slice(0x14, 0x4).Float();
-        public Single BrightScale => _structData.Slice(0x18, 0x4).Float();
-        public Single BrightClamp => _structData.Slice(0x1C, 0x4).Float();
-        public Single LumRampNoTex => _structData.Slice(0x20, 0x4).Float();
-        public Single LumRampMin => _structData.Slice(0x24, 0x4).Float();
-        public Single LumRampMax => _structData.Slice(0x28, 0x4).Float();
-        public Single SunlightDimmer => _structData.Slice(0x2C, 0x4).Float();
-        public Single GrassDimmer => _structData.Slice(0x30, 0x4).Float();
-        public Single TreeDimmer => _structData.Slice(0x34, 0x4).Float();
+        public Single EyeAdaptSpeed => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single BlurRadius => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single BlurPasses => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single EmissiveMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single TargetLum => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
+        public Single UpperLumClamp => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
+        public Single BrightScale => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
+        public Single BrightClamp => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
+        public Single LumRampNoTex => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x20, 0x4));
+        public Single LumRampMin => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x24, 0x4));
+        public Single LumRampMax => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x28, 0x4));
+        public Single SunlightDimmer => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x2C, 0x4));
+        public Single GrassDimmer => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x30, 0x4));
+        public Single TreeDimmer => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x34, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

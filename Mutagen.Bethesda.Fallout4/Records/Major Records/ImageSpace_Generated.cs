@@ -2889,69 +2889,69 @@ namespace Mutagen.Bethesda.Fallout4
         #region HdrEyeAdaptSpeed
         private int _HdrEyeAdaptSpeedLocation => _HNAMLocation!.Value.Min;
         private bool _HdrEyeAdaptSpeed_IsSet => _HNAMLocation.HasValue;
-        public Single HdrEyeAdaptSpeed => _HdrEyeAdaptSpeed_IsSet ? _recordData.Slice(_HdrEyeAdaptSpeedLocation, 4).Float() : default(Single);
+        public Single HdrEyeAdaptSpeed => _HdrEyeAdaptSpeed_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrEyeAdaptSpeedLocation, 4)) : default(Single);
         #endregion
         #region HdrTonemapE
         private int _HdrTonemapELocation => _HNAMLocation!.Value.Min + 0x4;
         private bool _HdrTonemapE_IsSet => _HNAMLocation.HasValue;
-        public Single HdrTonemapE => _HdrTonemapE_IsSet ? _recordData.Slice(_HdrTonemapELocation, 4).Float() : default(Single);
+        public Single HdrTonemapE => _HdrTonemapE_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrTonemapELocation, 4)) : default(Single);
         #endregion
         #region HdrBloomThreshold
         private int _HdrBloomThresholdLocation => _HNAMLocation!.Value.Min + 0x8;
         private bool _HdrBloomThreshold_IsSet => _HNAMLocation.HasValue;
-        public Single HdrBloomThreshold => _HdrBloomThreshold_IsSet ? _recordData.Slice(_HdrBloomThresholdLocation, 4).Float() : default(Single);
+        public Single HdrBloomThreshold => _HdrBloomThreshold_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrBloomThresholdLocation, 4)) : default(Single);
         #endregion
         #region HdrBloomScale
         private int _HdrBloomScaleLocation => _HNAMLocation!.Value.Min + 0xC;
         private bool _HdrBloomScale_IsSet => _HNAMLocation.HasValue;
-        public Single HdrBloomScale => _HdrBloomScale_IsSet ? _recordData.Slice(_HdrBloomScaleLocation, 4).Float() : default(Single);
+        public Single HdrBloomScale => _HdrBloomScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrBloomScaleLocation, 4)) : default(Single);
         #endregion
         #region HdrAutoExposureMax
         private int _HdrAutoExposureMaxLocation => _HNAMLocation!.Value.Min + 0x10;
         private bool _HdrAutoExposureMax_IsSet => _HNAMLocation.HasValue;
-        public Single HdrAutoExposureMax => _HdrAutoExposureMax_IsSet ? _recordData.Slice(_HdrAutoExposureMaxLocation, 4).Float() : default(Single);
+        public Single HdrAutoExposureMax => _HdrAutoExposureMax_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrAutoExposureMaxLocation, 4)) : default(Single);
         #endregion
         #region HdrAutoExposureMin
         private int _HdrAutoExposureMinLocation => _HNAMLocation!.Value.Min + 0x14;
         private bool _HdrAutoExposureMin_IsSet => _HNAMLocation.HasValue;
-        public Single HdrAutoExposureMin => _HdrAutoExposureMin_IsSet ? _recordData.Slice(_HdrAutoExposureMinLocation, 4).Float() : default(Single);
+        public Single HdrAutoExposureMin => _HdrAutoExposureMin_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrAutoExposureMinLocation, 4)) : default(Single);
         #endregion
         #region HdrSunlightScale
         private int _HdrSunlightScaleLocation => _HNAMLocation!.Value.Min + 0x18;
         private bool _HdrSunlightScale_IsSet => _HNAMLocation.HasValue;
-        public Single HdrSunlightScale => _HdrSunlightScale_IsSet ? _recordData.Slice(_HdrSunlightScaleLocation, 4).Float() : default(Single);
+        public Single HdrSunlightScale => _HdrSunlightScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrSunlightScaleLocation, 4)) : default(Single);
         #endregion
         #region HdrSkyScale
         private int _HdrSkyScaleLocation => _HNAMLocation!.Value.Min + 0x1C;
         private bool _HdrSkyScale_IsSet => _HNAMLocation.HasValue;
-        public Single HdrSkyScale => _HdrSkyScale_IsSet ? _recordData.Slice(_HdrSkyScaleLocation, 4).Float() : default(Single);
+        public Single HdrSkyScale => _HdrSkyScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrSkyScaleLocation, 4)) : default(Single);
         #endregion
         #region HdrMiddleGray
         private int _HdrMiddleGrayLocation => _HNAMLocation!.Value.Min + 0x20;
         private bool _HdrMiddleGray_IsSet => _HNAMLocation.HasValue;
-        public Single HdrMiddleGray => _HdrMiddleGray_IsSet ? _recordData.Slice(_HdrMiddleGrayLocation, 4).Float() : default(Single);
+        public Single HdrMiddleGray => _HdrMiddleGray_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrMiddleGrayLocation, 4)) : default(Single);
         #endregion
         private RangeInt32? _CNAMLocation;
         #region CinematicSaturation
         private int _CinematicSaturationLocation => _CNAMLocation!.Value.Min;
         private bool _CinematicSaturation_IsSet => _CNAMLocation.HasValue;
-        public Single CinematicSaturation => _CinematicSaturation_IsSet ? _recordData.Slice(_CinematicSaturationLocation, 4).Float() : default(Single);
+        public Single CinematicSaturation => _CinematicSaturation_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CinematicSaturationLocation, 4)) : default(Single);
         #endregion
         #region CinematicBrightness
         private int _CinematicBrightnessLocation => _CNAMLocation!.Value.Min + 0x4;
         private bool _CinematicBrightness_IsSet => _CNAMLocation.HasValue;
-        public Single CinematicBrightness => _CinematicBrightness_IsSet ? _recordData.Slice(_CinematicBrightnessLocation, 4).Float() : default(Single);
+        public Single CinematicBrightness => _CinematicBrightness_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CinematicBrightnessLocation, 4)) : default(Single);
         #endregion
         #region CinematicContrast
         private int _CinematicContrastLocation => _CNAMLocation!.Value.Min + 0x8;
         private bool _CinematicContrast_IsSet => _CNAMLocation.HasValue;
-        public Single CinematicContrast => _CinematicContrast_IsSet ? _recordData.Slice(_CinematicContrastLocation, 4).Float() : default(Single);
+        public Single CinematicContrast => _CinematicContrast_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CinematicContrastLocation, 4)) : default(Single);
         #endregion
         private RangeInt32? _TNAMLocation;
         #region TintAmount
         private int _TintAmountLocation => _TNAMLocation!.Value.Min;
         private bool _TintAmount_IsSet => _TNAMLocation.HasValue;
-        public Single TintAmount => _TintAmount_IsSet ? _recordData.Slice(_TintAmountLocation, 4).Float() : default(Single);
+        public Single TintAmount => _TintAmount_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TintAmountLocation, 4)) : default(Single);
         #endregion
         #region TintColor
         private int _TintColorLocation => _TNAMLocation!.Value.Min + 0x4;
@@ -2963,17 +2963,17 @@ namespace Mutagen.Bethesda.Fallout4
         #region DepthOfFieldStrength
         private int _DepthOfFieldStrengthLocation => _DNAMLocation!.Value.Min;
         private bool _DepthOfFieldStrength_IsSet => _DNAMLocation.HasValue;
-        public Single DepthOfFieldStrength => _DepthOfFieldStrength_IsSet ? _recordData.Slice(_DepthOfFieldStrengthLocation, 4).Float() : default(Single);
+        public Single DepthOfFieldStrength => _DepthOfFieldStrength_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DepthOfFieldStrengthLocation, 4)) : default(Single);
         #endregion
         #region DepthOfFieldDistance
         private int _DepthOfFieldDistanceLocation => _DNAMLocation!.Value.Min + 0x4;
         private bool _DepthOfFieldDistance_IsSet => _DNAMLocation.HasValue;
-        public Single DepthOfFieldDistance => _DepthOfFieldDistance_IsSet ? _recordData.Slice(_DepthOfFieldDistanceLocation, 4).Float() : default(Single);
+        public Single DepthOfFieldDistance => _DepthOfFieldDistance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DepthOfFieldDistanceLocation, 4)) : default(Single);
         #endregion
         #region DepthOfFieldRange
         private int _DepthOfFieldRangeLocation => _DNAMLocation!.Value.Min + 0x8;
         private bool _DepthOfFieldRange_IsSet => _DNAMLocation.HasValue;
-        public Single DepthOfFieldRange => _DepthOfFieldRange_IsSet ? _recordData.Slice(_DepthOfFieldRangeLocation, 4).Float() : default(Single);
+        public Single DepthOfFieldRange => _DepthOfFieldRange_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DepthOfFieldRangeLocation, 4)) : default(Single);
         #endregion
         #region DepthOfFieldUnused
         private int _DepthOfFieldUnusedLocation => _DNAMLocation!.Value.Min + 0xC;
@@ -2993,12 +2993,12 @@ namespace Mutagen.Bethesda.Fallout4
         #region DepthOfFieldVignetteRadius
         private int _DepthOfFieldVignetteRadiusLocation => _DNAMLocation!.Value.Min + 0x10;
         private bool _DepthOfFieldVignetteRadius_IsSet => _DNAMLocation.HasValue && !DNAMDataTypeState.HasFlag(ImageSpace.DNAMDataType.Break0);
-        public Single DepthOfFieldVignetteRadius => _DepthOfFieldVignetteRadius_IsSet ? _recordData.Slice(_DepthOfFieldVignetteRadiusLocation, 4).Float() : default(Single);
+        public Single DepthOfFieldVignetteRadius => _DepthOfFieldVignetteRadius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DepthOfFieldVignetteRadiusLocation, 4)) : default(Single);
         #endregion
         #region DepthOfFieldVignetteStrength
         private int _DepthOfFieldVignetteStrengthLocation => _DNAMLocation!.Value.Min + 0x14;
         private bool _DepthOfFieldVignetteStrength_IsSet => _DNAMLocation.HasValue && !DNAMDataTypeState.HasFlag(ImageSpace.DNAMDataType.Break0);
-        public Single DepthOfFieldVignetteStrength => _DepthOfFieldVignetteStrength_IsSet ? _recordData.Slice(_DepthOfFieldVignetteStrengthLocation, 4).Float() : default(Single);
+        public Single DepthOfFieldVignetteStrength => _DepthOfFieldVignetteStrength_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DepthOfFieldVignetteStrengthLocation, 4)) : default(Single);
         #endregion
         #region Lut
         private int? _LutLocation;

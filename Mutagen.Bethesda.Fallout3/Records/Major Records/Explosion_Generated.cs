@@ -2738,17 +2738,17 @@ namespace Mutagen.Bethesda.Fallout3
         #region Force
         private int _ForceLocation => _DATALocation!.Value.Min;
         private bool _Force_IsSet => _DATALocation.HasValue;
-        public Single Force => _Force_IsSet ? _recordData.Slice(_ForceLocation, 4).Float() : default(Single);
+        public Single Force => _Force_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ForceLocation, 4)) : default(Single);
         #endregion
         #region Damage
         private int _DamageLocation => _DATALocation!.Value.Min + 0x4;
         private bool _Damage_IsSet => _DATALocation.HasValue;
-        public Single Damage => _Damage_IsSet ? _recordData.Slice(_DamageLocation, 4).Float() : default(Single);
+        public Single Damage => _Damage_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DamageLocation, 4)) : default(Single);
         #endregion
         #region Radius
         private int _RadiusLocation => _DATALocation!.Value.Min + 0x8;
         private bool _Radius_IsSet => _DATALocation.HasValue;
-        public Single Radius => _Radius_IsSet ? _recordData.Slice(_RadiusLocation, 4).Float() : default(Single);
+        public Single Radius => _Radius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RadiusLocation, 4)) : default(Single);
         #endregion
         #region Light
         private int _LightLocation => _DATALocation!.Value.Min + 0xC;
@@ -2768,7 +2768,7 @@ namespace Mutagen.Bethesda.Fallout3
         #region ISRadius
         private int _ISRadiusLocation => _DATALocation!.Value.Min + 0x18;
         private bool _ISRadius_IsSet => _DATALocation.HasValue;
-        public Single ISRadius => _ISRadius_IsSet ? _recordData.Slice(_ISRadiusLocation, 4).Float() : default(Single);
+        public Single ISRadius => _ISRadius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ISRadiusLocation, 4)) : default(Single);
         #endregion
         #region ImpactDataSet
         private int _ImpactDataSetLocation => _DATALocation!.Value.Min + 0x1C;
@@ -2783,17 +2783,17 @@ namespace Mutagen.Bethesda.Fallout3
         #region RadiationLevel
         private int _RadiationLevelLocation => _DATALocation!.Value.Min + 0x24;
         private bool _RadiationLevel_IsSet => _DATALocation.HasValue;
-        public Single RadiationLevel => _RadiationLevel_IsSet ? _recordData.Slice(_RadiationLevelLocation, 4).Float() : default(Single);
+        public Single RadiationLevel => _RadiationLevel_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RadiationLevelLocation, 4)) : default(Single);
         #endregion
         #region RadiationDissipationTime
         private int _RadiationDissipationTimeLocation => _DATALocation!.Value.Min + 0x28;
         private bool _RadiationDissipationTime_IsSet => _DATALocation.HasValue;
-        public Single RadiationDissipationTime => _RadiationDissipationTime_IsSet ? _recordData.Slice(_RadiationDissipationTimeLocation, 4).Float() : default(Single);
+        public Single RadiationDissipationTime => _RadiationDissipationTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RadiationDissipationTimeLocation, 4)) : default(Single);
         #endregion
         #region RadiationRadius
         private int _RadiationRadiusLocation => _DATALocation!.Value.Min + 0x2C;
         private bool _RadiationRadius_IsSet => _DATALocation.HasValue;
-        public Single RadiationRadius => _RadiationRadius_IsSet ? _recordData.Slice(_RadiationRadiusLocation, 4).Float() : default(Single);
+        public Single RadiationRadius => _RadiationRadius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RadiationRadiusLocation, 4)) : default(Single);
         #endregion
         #region SoundLevel
         private int _SoundLevelLocation => _DATALocation!.Value.Min + 0x30;

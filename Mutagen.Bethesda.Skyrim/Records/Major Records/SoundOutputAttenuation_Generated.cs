@@ -1296,8 +1296,8 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         public Int32 Unknown => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x0, 0x4));
-        public Single MinDistance => _structData.Slice(0x4, 0x4).Float();
-        public Single MaxDistance => _structData.Slice(0x8, 0x4).Float();
+        public Single MinDistance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single MaxDistance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
         public ReadOnlyMemorySlice<Byte> Curve => _structData.Span.Slice(0xC, 0x5).ToArray();
         public ReadOnlyMemorySlice<Byte> Unknown2 => _structData.Span.Slice(0x11, 0x3).ToArray();
         partial void CustomFactoryEnd(

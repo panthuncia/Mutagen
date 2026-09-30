@@ -94,19 +94,19 @@ partial class NavigationMeshDataBinaryOverlay
 {
     public uint NavmeshGridDivisor => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(CoverTrianglesLogicEndingPos));
 
-    public float MaxDistanceX => _structData.Slice(CoverTrianglesLogicEndingPos + 4).Float();
+    public float MaxDistanceX => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(CoverTrianglesLogicEndingPos + 4));
 
-    public float MaxDistanceY => _structData.Slice(CoverTrianglesLogicEndingPos + 8).Float();
+    public float MaxDistanceY => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(CoverTrianglesLogicEndingPos + 8));
 
     public P3Float Min => new P3Float(
-        _structData.Slice(CoverTrianglesLogicEndingPos + 12).Float(),
-        _structData.Slice(CoverTrianglesLogicEndingPos + 16).Float(),
-        _structData.Slice(CoverTrianglesLogicEndingPos + 20).Float());
+        FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(CoverTrianglesLogicEndingPos + 12)),
+        FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(CoverTrianglesLogicEndingPos + 16)),
+        FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(CoverTrianglesLogicEndingPos + 20)));
 
     public P3Float Max => new P3Float(
-        _structData.Slice(CoverTrianglesLogicEndingPos + 24).Float(),
-        _structData.Slice(CoverTrianglesLogicEndingPos + 28).Float(),
-        _structData.Slice(CoverTrianglesLogicEndingPos + 32).Float());
+        FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(CoverTrianglesLogicEndingPos + 24)),
+        FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(CoverTrianglesLogicEndingPos + 28)),
+        FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(CoverTrianglesLogicEndingPos + 32)));
 
     public ReadOnlyMemorySlice<byte> NavmeshGrid { get; private set; }
 

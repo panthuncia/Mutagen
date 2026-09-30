@@ -1169,7 +1169,7 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        public Single Version => _structData.Slice(0x0, 0x4).Float();
+        public Single Version => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
         public UInt32 NumRecords => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0x4, 0x4));
         public UInt32 NextFormID => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0x8, 0x4));
         partial void CustomFactoryEnd(

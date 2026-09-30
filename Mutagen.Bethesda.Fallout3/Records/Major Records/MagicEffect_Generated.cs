@@ -3001,7 +3001,7 @@ namespace Mutagen.Bethesda.Fallout3
         #region BaseCost
         private int _BaseCostLocation => _DATALocation!.Value.Min + 0x4;
         private bool _BaseCost_IsSet => _DATALocation.HasValue;
-        public Single BaseCost => _BaseCost_IsSet ? _recordData.Slice(_BaseCostLocation, 4).Float() : default(Single);
+        public Single BaseCost => _BaseCost_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BaseCostLocation, 4)) : default(Single);
         #endregion
         #region AssociatedItem
         private int _AssociatedItemLocation => _DATALocation!.Value.Min + 0x8;
@@ -3033,7 +3033,7 @@ namespace Mutagen.Bethesda.Fallout3
         #region ProjectileSpeed
         private int _ProjectileSpeedLocation => _DATALocation!.Value.Min + 0x1C;
         private bool _ProjectileSpeed_IsSet => _DATALocation.HasValue;
-        public Single ProjectileSpeed => _ProjectileSpeed_IsSet ? _recordData.Slice(_ProjectileSpeedLocation, 4).Float() : default(Single);
+        public Single ProjectileSpeed => _ProjectileSpeed_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ProjectileSpeedLocation, 4)) : default(Single);
         #endregion
         #region EffectShader
         private int _EffectShaderLocation => _DATALocation!.Value.Min + 0x20;
@@ -3068,12 +3068,12 @@ namespace Mutagen.Bethesda.Fallout3
         #region ConstantEffectEnchantmentFactor
         private int _ConstantEffectEnchantmentFactorLocation => _DATALocation!.Value.Min + 0x38;
         private bool _ConstantEffectEnchantmentFactor_IsSet => _DATALocation.HasValue;
-        public Single ConstantEffectEnchantmentFactor => _ConstantEffectEnchantmentFactor_IsSet ? _recordData.Slice(_ConstantEffectEnchantmentFactorLocation, 4).Float() : default(Single);
+        public Single ConstantEffectEnchantmentFactor => _ConstantEffectEnchantmentFactor_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ConstantEffectEnchantmentFactorLocation, 4)) : default(Single);
         #endregion
         #region ConstantEffectBarterFactor
         private int _ConstantEffectBarterFactorLocation => _DATALocation!.Value.Min + 0x3C;
         private bool _ConstantEffectBarterFactor_IsSet => _DATALocation.HasValue;
-        public Single ConstantEffectBarterFactor => _ConstantEffectBarterFactor_IsSet ? _recordData.Slice(_ConstantEffectBarterFactorLocation, 4).Float() : default(Single);
+        public Single ConstantEffectBarterFactor => _ConstantEffectBarterFactor_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ConstantEffectBarterFactorLocation, 4)) : default(Single);
         #endregion
         #region Archetype
         private int _ArchetypeLocation => _DATALocation!.Value.Min + 0x40;

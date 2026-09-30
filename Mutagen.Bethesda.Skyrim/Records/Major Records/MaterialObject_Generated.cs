@@ -2393,22 +2393,22 @@ namespace Mutagen.Bethesda.Skyrim
         #region FalloffScale
         private int _FalloffScaleLocation => _DATALocation!.Value.Min;
         private bool _FalloffScale_IsSet => _DATALocation.HasValue;
-        public Single FalloffScale => _FalloffScale_IsSet ? _recordData.Slice(_FalloffScaleLocation, 4).Float() : default(Single);
+        public Single FalloffScale => _FalloffScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FalloffScaleLocation, 4)) : default(Single);
         #endregion
         #region FalloffBias
         private int _FalloffBiasLocation => _DATALocation!.Value.Min + 0x4;
         private bool _FalloffBias_IsSet => _DATALocation.HasValue;
-        public Single FalloffBias => _FalloffBias_IsSet ? _recordData.Slice(_FalloffBiasLocation, 4).Float() : default(Single);
+        public Single FalloffBias => _FalloffBias_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FalloffBiasLocation, 4)) : default(Single);
         #endregion
         #region NoiseUvScale
         private int _NoiseUvScaleLocation => _DATALocation!.Value.Min + 0x8;
         private bool _NoiseUvScale_IsSet => _DATALocation.HasValue;
-        public Single NoiseUvScale => _NoiseUvScale_IsSet ? _recordData.Slice(_NoiseUvScaleLocation, 4).Float() : default(Single);
+        public Single NoiseUvScale => _NoiseUvScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_NoiseUvScaleLocation, 4)) : default(Single);
         #endregion
         #region MaterialUvScale
         private int _MaterialUvScaleLocation => _DATALocation!.Value.Min + 0xC;
         private bool _MaterialUvScale_IsSet => _DATALocation.HasValue;
-        public Single MaterialUvScale => _MaterialUvScale_IsSet ? _recordData.Slice(_MaterialUvScaleLocation, 4).Float() : default(Single);
+        public Single MaterialUvScale => _MaterialUvScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MaterialUvScaleLocation, 4)) : default(Single);
         #endregion
         #region ProjectionVector
         private int _ProjectionVectorLocation => _DATALocation!.Value.Min + 0x10;
@@ -2418,7 +2418,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region NormalDampener
         private int _NormalDampenerLocation => _DATALocation!.Value.Min + 0x1C;
         private bool _NormalDampener_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(MaterialObject.DATADataType.Break0);
-        public Single NormalDampener => _NormalDampener_IsSet ? _recordData.Slice(_NormalDampenerLocation, 4).Float() : default(Single);
+        public Single NormalDampener => _NormalDampener_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_NormalDampenerLocation, 4)) : default(Single);
         #endregion
         #region SinglePassColor
         private int _SinglePassColorLocation => _DATALocation!.Value.Min + 0x20;

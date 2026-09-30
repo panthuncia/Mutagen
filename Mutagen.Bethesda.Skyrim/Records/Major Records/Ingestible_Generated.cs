@@ -3249,7 +3249,7 @@ namespace Mutagen.Bethesda.Skyrim
         #endregion
         #region Weight
         private int? _WeightLocation;
-        public Single Weight => _WeightLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _WeightLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single Weight => _WeightLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _WeightLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         private RangeInt32? _ENITLocation;
         #region Value
@@ -3270,7 +3270,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region AddictionChance
         private int _AddictionChanceLocation => _ENITLocation!.Value.Min + 0xC;
         private bool _AddictionChance_IsSet => _ENITLocation.HasValue;
-        public Single AddictionChance => _AddictionChance_IsSet ? _recordData.Slice(_AddictionChanceLocation, 4).Float() : default(Single);
+        public Single AddictionChance => _AddictionChance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AddictionChanceLocation, 4)) : default(Single);
         #endregion
         #region ConsumeSound
         private int _ConsumeSoundLocation => _ENITLocation!.Value.Min + 0x10;

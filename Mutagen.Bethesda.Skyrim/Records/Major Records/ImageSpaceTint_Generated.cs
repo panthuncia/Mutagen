@@ -1118,7 +1118,7 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        public Single Amount => _structData.Slice(0x0, 0x4).Float();
+        public Single Amount => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
         public Color Color => _structData.Slice(0x4, 0xC).ReadColor(ColorBinaryType.NoAlphaFloat);
         partial void CustomFactoryEnd(
             OverlayStream stream,

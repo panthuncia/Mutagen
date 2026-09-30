@@ -1400,7 +1400,7 @@ namespace Mutagen.Bethesda.Starfield
 
         #region CDND
         private int? _CDNDLocation;
-        public Single? CDND => _CDNDLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _CDNDLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? CDND => _CDNDLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _CDNDLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region CDNS
         private int? _CDNSLocation;

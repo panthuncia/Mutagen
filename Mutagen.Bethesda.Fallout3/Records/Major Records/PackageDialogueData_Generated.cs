@@ -1442,7 +1442,7 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         public PackageDialogueData.VersioningBreaks Versioning { get; private set; }
-        public Single DialogueFOV => _structData.Slice(0x0, 0x4).Float();
+        public Single DialogueFOV => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
         public IFormLinkGetter<IDialogTopicGetter> DialogueTopic => FormLinkBinaryTranslation.Instance.OverlayFactory<IDialogTopicGetter>(_package, _structData.Span.Slice(0x4, 0x4));
         public Package.DialogueFlag DialogueFlags => (Package.DialogueFlag)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x8, 0x4));
         public UInt32 Unused => _structData.Length <= 0xC ? default : BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0xC, 0x4));

@@ -1613,15 +1613,15 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region HNAM
         private int? _HNAMLocation;
-        public Single HNAM => _HNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _HNAMLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single HNAM => _HNAMLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HNAMLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region VCLR
         private int? _VCLRLocation;
-        public Single VCLR => _VCLRLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _VCLRLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single VCLR => _VCLRLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _VCLRLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region VNML
         private int? _VNMLLocation;
-        public Single VNML => _VNMLLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _VNMLLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single VNML => _VNMLLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _VNMLLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region FLMV
         private int? _FLMVLocation;

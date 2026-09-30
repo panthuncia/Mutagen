@@ -1307,7 +1307,7 @@ namespace Mutagen.Bethesda.Fallout3
         public Quest.Flag Flags => (Quest.Flag)_structData.Span.Slice(0x0, 0x1)[0];
         public Byte Priority => _structData.Span[0x1];
         public UInt16 Unused => _structData.Length <= 0x2 ? default : BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x2, 0x2));
-        public Single QuestDelay => _structData.Length <= 0x4 ? default : _structData.Slice(0x4, 0x4).Float();
+        public Single QuestDelay => _structData.Length <= 0x4 ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

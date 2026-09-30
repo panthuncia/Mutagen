@@ -2026,23 +2026,23 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region ColorInfluence
         private int? _ColorInfluenceLocation;
-        public Single ColorInfluence => _ColorInfluenceLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ColorInfluenceLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single ColorInfluence => _ColorInfluenceLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ColorInfluenceLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region FadeDistanceRadiusScale
         private int? _FadeDistanceRadiusScaleLocation;
-        public Single FadeDistanceRadiusScale => _FadeDistanceRadiusScaleLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FadeDistanceRadiusScaleLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single FadeDistanceRadiusScale => _FadeDistanceRadiusScaleLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FadeDistanceRadiusScaleLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region ExposureInfluence
         private int? _ExposureInfluenceLocation;
-        public Single ExposureInfluence => _ExposureInfluenceLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ExposureInfluenceLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single ExposureInfluence => _ExposureInfluenceLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ExposureInfluenceLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region MinEV100
         private int? _MinEV100Location;
-        public Single MinEV100 => _MinEV100Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MinEV100Location.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single MinEV100 => _MinEV100Location.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MinEV100Location.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region MaxEV100
         private int? _MaxEV100Location;
-        public Single MaxEV100 => _MaxEV100Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaxEV100Location.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single MaxEV100 => _MaxEV100Location.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaxEV100Location.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         public IReadOnlyList<ILensFlareSpriteGetter>? Sprites { get; private set; }
         partial void CustomFactoryEnd(

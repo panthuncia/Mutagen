@@ -1283,10 +1283,10 @@ namespace Mutagen.Bethesda.Oblivion
                 translationParams: translationParams);
         }
 
-        public Single Speed => _structData.Slice(0x0, 0x4).Float();
+        public Single Speed => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
         public AmmunitionData.Flag Flags => (AmmunitionData.Flag)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x4, 0x4));
         public UInt32 Value => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0x8, 0x4));
-        public Single Weight => _structData.Slice(0xC, 0x4).Float();
+        public Single Weight => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
         public UInt16 Damage => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x10, 0x2));
         partial void CustomFactoryEnd(
             OverlayStream stream,

@@ -1860,17 +1860,17 @@ namespace Mutagen.Bethesda.Starfield
         #region Radius
         private int _RadiusLocation => _AOR2Location!.Value.Min;
         private bool _Radius_IsSet => _AOR2Location.HasValue;
-        public Single Radius => _Radius_IsSet ? _recordData.Slice(_RadiusLocation, 4).Float() : default(Single);
+        public Single Radius => _Radius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RadiusLocation, 4)) : default(Single);
         #endregion
         #region MinDelay
         private int _MinDelayLocation => _AOR2Location!.Value.Min + 0x4;
         private bool _MinDelay_IsSet => _AOR2Location.HasValue;
-        public Single MinDelay => _MinDelay_IsSet ? _recordData.Slice(_MinDelayLocation, 4).Float() : default(Single);
+        public Single MinDelay => _MinDelay_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MinDelayLocation, 4)) : default(Single);
         #endregion
         #region MaxDelay
         private int _MaxDelayLocation => _AOR2Location!.Value.Min + 0x8;
         private bool _MaxDelay_IsSet => _AOR2Location.HasValue;
-        public Single MaxDelay => _MaxDelay_IsSet ? _recordData.Slice(_MaxDelayLocation, 4).Float() : default(Single);
+        public Single MaxDelay => _MaxDelay_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MaxDelayLocation, 4)) : default(Single);
         #endregion
         #region RequiresLineOfSight
         private int _RequiresLineOfSightLocation => _AOR2Location!.Value.Min + 0xC;

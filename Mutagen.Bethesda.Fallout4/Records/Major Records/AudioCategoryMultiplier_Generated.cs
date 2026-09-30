@@ -1135,7 +1135,7 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         public IFormLinkGetter<ISoundCategoryGetter> Category => FormLinkBinaryTranslation.Instance.OverlayFactory<ISoundCategoryGetter>(_package, _structData.Span.Slice(0x0, 0x4));
-        public Single Multiplier => _structData.Slice(0x4, 0x4).Float();
+        public Single Multiplier => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

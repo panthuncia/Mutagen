@@ -1187,7 +1187,7 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         public IFormLinkGetter<IActorValueInformationGetter> ActorValue => FormLinkBinaryTranslation.Instance.OverlayFactory<IActorValueInformationGetter>(_package, _structData.Span.Slice(0x0, 0x4));
-        public Single Value => _structData.Slice(0x4, 0x4).Float();
+        public Single Value => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
         #region CurveTable
         public IFormLinkGetter<ICurveTableGetter> CurveTable => FormLinkBinaryTranslation.Instance.OverlayFactory<ICurveTableGetter>(_package, _structData.Span.Slice(0x8, 0x4));
         int CurveTableVersioningOffset => _package.FormVersion!.FormVersion!.Value < 152 ? -4 : 0;

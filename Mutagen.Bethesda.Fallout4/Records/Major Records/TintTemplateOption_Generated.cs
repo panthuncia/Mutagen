@@ -2075,7 +2075,7 @@ namespace Mutagen.Bethesda.Fallout4
         public IReadOnlyList<ITintTemplateColorGetter>? TemplateColors { get; private set; }
         #region Default
         private int? _DefaultLocation;
-        public Single? Default => _DefaultLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DefaultLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? Default => _DefaultLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DefaultLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

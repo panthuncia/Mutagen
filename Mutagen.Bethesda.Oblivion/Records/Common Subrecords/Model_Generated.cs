@@ -1224,7 +1224,7 @@ namespace Mutagen.Bethesda.Oblivion
         #endregion
         #region BoundRadius
         private int? _BoundRadiusLocation;
-        public Single BoundRadius => _BoundRadiusLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _BoundRadiusLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single BoundRadius => _BoundRadiusLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BoundRadiusLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region Hashes
         private int? _HashesLocation;

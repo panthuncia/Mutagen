@@ -2338,22 +2338,22 @@ namespace Mutagen.Bethesda.Fallout3
         #region PositionRange
         private int _PositionRangeLocation => _DATALocation!.Value.Min + 0xC;
         private bool _PositionRange_IsSet => _DATALocation.HasValue;
-        public Single PositionRange => _PositionRange_IsSet ? _recordData.Slice(_PositionRangeLocation, 4).Float() : default(Single);
+        public Single PositionRange => _PositionRange_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_PositionRangeLocation, 4)) : default(Single);
         #endregion
         #region HeightRange
         private int _HeightRangeLocation => _DATALocation!.Value.Min + 0x10;
         private bool _HeightRange_IsSet => _DATALocation.HasValue;
-        public Single HeightRange => _HeightRange_IsSet ? _recordData.Slice(_HeightRangeLocation, 4).Float() : default(Single);
+        public Single HeightRange => _HeightRange_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HeightRangeLocation, 4)) : default(Single);
         #endregion
         #region ColorRange
         private int _ColorRangeLocation => _DATALocation!.Value.Min + 0x14;
         private bool _ColorRange_IsSet => _DATALocation.HasValue;
-        public Single ColorRange => _ColorRange_IsSet ? _recordData.Slice(_ColorRangeLocation, 4).Float() : default(Single);
+        public Single ColorRange => _ColorRange_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ColorRangeLocation, 4)) : default(Single);
         #endregion
         #region WavePeriod
         private int _WavePeriodLocation => _DATALocation!.Value.Min + 0x18;
         private bool _WavePeriod_IsSet => _DATALocation.HasValue;
-        public Single WavePeriod => _WavePeriod_IsSet ? _recordData.Slice(_WavePeriodLocation, 4).Float() : default(Single);
+        public Single WavePeriod => _WavePeriod_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WavePeriodLocation, 4)) : default(Single);
         #endregion
         #region Flags
         private int _FlagsLocation => _DATALocation!.Value.Min + 0x1C;

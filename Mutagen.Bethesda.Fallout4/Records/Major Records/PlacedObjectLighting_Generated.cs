@@ -1415,12 +1415,12 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         public PlacedObjectLighting.VersioningBreaks Versioning { get; private set; }
-        public Single Fov90PlusMinus => _structData.Slice(0x0, 0x4).Float();
-        public Single Fade1PlusMinus => _structData.Slice(0x4, 0x4).Float();
-        public Single EndDistanceCap => _structData.Slice(0x8, 0x4).Float();
-        public Single ShadowDepthBias => _structData.Slice(0xC, 0x4).Float();
-        public Single NearClip => _structData.Length <= 0x10 ? default : _structData.Slice(0x10, 0x4).Float();
-        public Single VolumetricIntensity => _structData.Length <= 0x14 ? default : _structData.Slice(0x14, 0x4).Float();
+        public Single Fov90PlusMinus => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single Fade1PlusMinus => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single EndDistanceCap => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single ShadowDepthBias => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single NearClip => _structData.Length <= 0x10 ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
+        public Single VolumetricIntensity => _structData.Length <= 0x14 ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

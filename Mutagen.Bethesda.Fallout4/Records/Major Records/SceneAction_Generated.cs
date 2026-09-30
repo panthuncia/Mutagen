@@ -4837,7 +4837,7 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #region TimerMaxSeconds
         private int? _TimerMaxSecondsLocation;
-        public Single? TimerMaxSeconds => _TimerMaxSecondsLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _TimerMaxSecondsLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? TimerMaxSeconds => _TimerMaxSecondsLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TimerMaxSecondsLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region SetParentQuestStage
         private int? _SetParentQuestStageLocation;
@@ -4845,7 +4845,7 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #region TimerMinSeconds
         private int? _TimerMinSecondsLocation;
-        public Single? TimerMinSeconds => _TimerMinSecondsLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _TimerMinSecondsLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? TimerMinSeconds => _TimerMinSecondsLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TimerMinSecondsLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region STSC
         private int? _STSCLocation;
@@ -4934,11 +4934,11 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #region LoopingMax
         private int? _LoopingMaxLocation;
-        public Single? LoopingMax => _LoopingMaxLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _LoopingMaxLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? LoopingMax => _LoopingMaxLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LoopingMaxLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region LoopingMin
         private int? _LoopingMinLocation;
-        public Single? LoopingMin => _LoopingMinLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _LoopingMinLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? LoopingMin => _LoopingMinLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LoopingMinLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Camera
         private RangeInt32? _CameraLocation;

@@ -4051,15 +4051,15 @@ namespace Mutagen.Bethesda.Oblivion
         #endregion
         #region TurningSpeed
         private int? _TurningSpeedLocation;
-        public Single? TurningSpeed => _TurningSpeedLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _TurningSpeedLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? TurningSpeed => _TurningSpeedLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TurningSpeedLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region BaseScale
         private int? _BaseScaleLocation;
-        public Single? BaseScale => _BaseScaleLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _BaseScaleLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? BaseScale => _BaseScaleLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BaseScaleLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region FootWeight
         private int? _FootWeightLocation;
-        public Single? FootWeight => _FootWeightLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FootWeightLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? FootWeight => _FootWeightLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FootWeightLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region BloodSpray
         private int? _BloodSprayLocation;

@@ -1519,7 +1519,7 @@ namespace Mutagen.Bethesda.Fallout3
         #endregion
         #region MODB
         private int? _MODBLocation;
-        public Single? MODB => _MODBLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MODBLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? MODB => _MODBLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MODBLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Hashes
         private int? _HashesLocation;

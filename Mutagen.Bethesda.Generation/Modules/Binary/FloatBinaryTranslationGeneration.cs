@@ -111,19 +111,19 @@ public class FloatBinaryTranslationGeneration : PrimitiveBinaryTranslationGenera
         }
         else if (floatType.HasMultiplier && floatType.HasDivisor)
         {
-            return $"{dataAccessor}.Float() * {floatType.MultiplierFloatString} / {floatType.DivisorFloatString}";
+            return $"{GetTranslatorInstance(typeGen, getter: true)}.GetFloat({dataAccessor}) * {floatType.MultiplierFloatString} / {floatType.DivisorFloatString}";
         }
         else if (floatType.HasMultiplier)
         {
-            return $"{dataAccessor}.Float() * {floatType.MultiplierFloatString}";
+            return $"{GetTranslatorInstance(typeGen, getter: true)}.GetFloat({dataAccessor}) * {floatType.MultiplierFloatString}";
         }
         else if (floatType.HasDivisor)
         {
-            return $"{dataAccessor}.Float() / {floatType.DivisorFloatString}";
+            return $"{GetTranslatorInstance(typeGen, getter: true)}.GetFloat({dataAccessor}) / {floatType.DivisorFloatString}";
         }
         else
         {
-            return $"{dataAccessor}.Float()";
+            return $"{GetTranslatorInstance(typeGen, getter: true)}.GetFloat({dataAccessor})";
         }
     }
 

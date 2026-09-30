@@ -2403,7 +2403,7 @@ namespace Mutagen.Bethesda.Fallout3
         #region Orientation
         private int _OrientationLocation => _DATALocation!.Value.Min + 0x14;
         private bool _Orientation_IsSet => _DATALocation.HasValue;
-        public Single Orientation => _Orientation_IsSet ? _recordData.Slice(_OrientationLocation, 4).Float() : default(Single);
+        public Single Orientation => _Orientation_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_OrientationLocation, 4)) : default(Single);
         #endregion
         #region Font
         private int _FontLocation => _DATALocation!.Value.Min + 0x18;
@@ -2413,17 +2413,17 @@ namespace Mutagen.Bethesda.Fallout3
         #region FontColorR
         private int _FontColorRLocation => _DATALocation!.Value.Min + 0x1C;
         private bool _FontColorR_IsSet => _DATALocation.HasValue;
-        public Single FontColorR => _FontColorR_IsSet ? _recordData.Slice(_FontColorRLocation, 4).Float() : default(Single);
+        public Single FontColorR => _FontColorR_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FontColorRLocation, 4)) : default(Single);
         #endregion
         #region FontColorG
         private int _FontColorGLocation => _DATALocation!.Value.Min + 0x20;
         private bool _FontColorG_IsSet => _DATALocation.HasValue;
-        public Single FontColorG => _FontColorG_IsSet ? _recordData.Slice(_FontColorGLocation, 4).Float() : default(Single);
+        public Single FontColorG => _FontColorG_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FontColorGLocation, 4)) : default(Single);
         #endregion
         #region FontColorB
         private int _FontColorBLocation => _DATALocation!.Value.Min + 0x24;
         private bool _FontColorB_IsSet => _DATALocation.HasValue;
-        public Single FontColorB => _FontColorB_IsSet ? _recordData.Slice(_FontColorBLocation, 4).Float() : default(Single);
+        public Single FontColorB => _FontColorB_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FontColorBLocation, 4)) : default(Single);
         #endregion
         #region Alignment
         private int _AlignmentLocation => _DATALocation!.Value.Min + 0x28;
@@ -2443,17 +2443,17 @@ namespace Mutagen.Bethesda.Fallout3
         #region Font2ColorR
         private int _Font2ColorRLocation => _DATALocation!.Value.Min + 0x44;
         private bool _Font2ColorR_IsSet => _DATALocation.HasValue;
-        public Single Font2ColorR => _Font2ColorR_IsSet ? _recordData.Slice(_Font2ColorRLocation, 4).Float() : default(Single);
+        public Single Font2ColorR => _Font2ColorR_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_Font2ColorRLocation, 4)) : default(Single);
         #endregion
         #region Font2ColorG
         private int _Font2ColorGLocation => _DATALocation!.Value.Min + 0x48;
         private bool _Font2ColorG_IsSet => _DATALocation.HasValue;
-        public Single Font2ColorG => _Font2ColorG_IsSet ? _recordData.Slice(_Font2ColorGLocation, 4).Float() : default(Single);
+        public Single Font2ColorG => _Font2ColorG_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_Font2ColorGLocation, 4)) : default(Single);
         #endregion
         #region Font2ColorB
         private int _Font2ColorBLocation => _DATALocation!.Value.Min + 0x4C;
         private bool _Font2ColorB_IsSet => _DATALocation.HasValue;
-        public Single Font2ColorB => _Font2ColorB_IsSet ? _recordData.Slice(_Font2ColorBLocation, 4).Float() : default(Single);
+        public Single Font2ColorB => _Font2ColorB_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_Font2ColorBLocation, 4)) : default(Single);
         #endregion
         #region Unknown2
         private int _Unknown2Location => _DATALocation!.Value.Min + 0x50;

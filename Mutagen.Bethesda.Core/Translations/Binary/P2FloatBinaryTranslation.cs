@@ -18,8 +18,8 @@ public sealed class P2FloatBinaryTranslation<TReader, TWriter> : PrimitiveBinary
     public P2Float Read(ReadOnlySpan<byte> span)
     {
         return new P2Float(
-            span.Float(),
-            span[4..].Float());
+            FloatBinaryTranslation.FromFile(span.Float()),
+            FloatBinaryTranslation.FromFile(span[4..].Float()));
     }
 
     public override P2Float Parse(TReader reader)

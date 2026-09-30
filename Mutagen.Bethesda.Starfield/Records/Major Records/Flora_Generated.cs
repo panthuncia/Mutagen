@@ -4725,15 +4725,15 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region DamageRequiredToHarvest
         private int? _DamageRequiredToHarvestLocation;
-        public Single DamageRequiredToHarvest => _DamageRequiredToHarvestLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DamageRequiredToHarvestLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single DamageRequiredToHarvest => _DamageRequiredToHarvestLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DamageRequiredToHarvestLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region MaxHarvestCount
         private int? _MaxHarvestCountLocation;
-        public Single MaxHarvestCount => _MaxHarvestCountLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaxHarvestCountLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single MaxHarvestCount => _MaxHarvestCountLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaxHarvestCountLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region MinHarvestCount
         private int? _MinHarvestCountLocation;
-        public Single MinHarvestCount => _MinHarvestCountLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MinHarvestCountLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single MinHarvestCount => _MinHarvestCountLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MinHarvestCountLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region MaxGlobal
         private int? _MaxGlobalLocation;

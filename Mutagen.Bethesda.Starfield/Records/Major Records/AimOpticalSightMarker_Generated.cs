@@ -2429,12 +2429,12 @@ namespace Mutagen.Bethesda.Starfield
         #region DelayBeforeSightActivation
         private int _DelayBeforeSightActivationLocation => OpticalSightAttachNodeEndingPos;
         private bool _DelayBeforeSightActivation_IsSet => _ANAMLocation.HasValue;
-        public Single DelayBeforeSightActivation => _DelayBeforeSightActivation_IsSet ? _recordData.Slice(_DelayBeforeSightActivationLocation, 4).Float() : default(Single);
+        public Single DelayBeforeSightActivation => _DelayBeforeSightActivation_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DelayBeforeSightActivationLocation, 4)) : default(Single);
         #endregion
         #region DelayBeforeSightDeactivation
         private int _DelayBeforeSightDeactivationLocation => OpticalSightAttachNodeEndingPos + 0x4;
         private bool _DelayBeforeSightDeactivation_IsSet => _ANAMLocation.HasValue;
-        public Single DelayBeforeSightDeactivation => _DelayBeforeSightDeactivation_IsSet ? _recordData.Slice(_DelayBeforeSightDeactivationLocation, 4).Float() : default(Single);
+        public Single DelayBeforeSightDeactivation => _DelayBeforeSightDeactivation_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DelayBeforeSightDeactivationLocation, 4)) : default(Single);
         #endregion
         #region OpticalSightLight
         private int _OpticalSightLightLocation => OpticalSightAttachNodeEndingPos + 0x8;
@@ -2444,17 +2444,17 @@ namespace Mutagen.Bethesda.Starfield
         #region FocalPointDistance
         private int _FocalPointDistanceLocation => OpticalSightAttachNodeEndingPos + 0xC;
         private bool _FocalPointDistance_IsSet => _ANAMLocation.HasValue;
-        public Single FocalPointDistance => _FocalPointDistance_IsSet ? _recordData.Slice(_FocalPointDistanceLocation, 4).Float() : default(Single);
+        public Single FocalPointDistance => _FocalPointDistance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FocalPointDistanceLocation, 4)) : default(Single);
         #endregion
         #region FocalPointDistanceDuringAiming
         private int _FocalPointDistanceDuringAimingLocation => OpticalSightAttachNodeEndingPos + 0x10;
         private bool _FocalPointDistanceDuringAiming_IsSet => _ANAMLocation.HasValue;
-        public Single FocalPointDistanceDuringAiming => _FocalPointDistanceDuringAiming_IsSet ? _recordData.Slice(_FocalPointDistanceDuringAimingLocation, 4).Float() : default(Single);
+        public Single FocalPointDistanceDuringAiming => _FocalPointDistanceDuringAiming_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FocalPointDistanceDuringAimingLocation, 4)) : default(Single);
         #endregion
         #region DelayBetweenShots
         private int _DelayBetweenShotsLocation => OpticalSightAttachNodeEndingPos + 0x14;
         private bool _DelayBetweenShots_IsSet => _ANAMLocation.HasValue;
-        public Single DelayBetweenShots => _DelayBetweenShots_IsSet ? _recordData.Slice(_DelayBetweenShotsLocation, 4).Float() : default(Single);
+        public Single DelayBetweenShots => _DelayBetweenShots_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DelayBetweenShotsLocation, 4)) : default(Single);
         #endregion
         #region LaserArtObject
         private int _LaserArtObjectLocation => OpticalSightAttachNodeEndingPos + 0x18;
@@ -2469,7 +2469,7 @@ namespace Mutagen.Bethesda.Starfield
         #region MaxLaserPointerDistance
         private int _MaxLaserPointerDistanceLocation => OpticalSightAttachNodeEndingPos + 0x20;
         private bool _MaxLaserPointerDistance_IsSet => _ANAMLocation.HasValue;
-        public Single MaxLaserPointerDistance => _MaxLaserPointerDistance_IsSet ? _recordData.Slice(_MaxLaserPointerDistanceLocation, 4).Float() : default(Single);
+        public Single MaxLaserPointerDistance => _MaxLaserPointerDistance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MaxLaserPointerDistanceLocation, 4)) : default(Single);
         #endregion
         #region SightControlsFiringDirection
         private int _SightControlsFiringDirectionLocation => OpticalSightAttachNodeEndingPos + 0x24;

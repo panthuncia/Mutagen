@@ -1679,7 +1679,7 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region BNAM
         private int? _BNAMLocation;
-        public Single? BNAM => _BNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _BNAMLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? BNAM => _BNAMLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BNAMLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region CNAM
         private int? _CNAMLocation;

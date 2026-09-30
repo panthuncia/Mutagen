@@ -1404,9 +1404,9 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         public IFormLinkGetter<ISpellGetter> VatsEffect => FormLinkBinaryTranslation.Instance.OverlayFactory<ISpellGetter>(_package, _structData.Span.Slice(0x0, 0x4));
-        public Single VatsSkill => _structData.Slice(0x4, 0x4).Float();
-        public Single VatsDamageMult => _structData.Slice(0x8, 0x4).Float();
-        public Single VatsAp => _structData.Slice(0xC, 0x4).Float();
+        public Single VatsSkill => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single VatsDamageMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single VatsAp => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
         public Boolean VatsSilent => _structData.Slice(0x10, 0x1)[0] >= 1;
         public Boolean VatsModRequired => _structData.Slice(0x11, 0x1)[0] >= 1;
         public UInt16 VatsUnused => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x12, 0x2));

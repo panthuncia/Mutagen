@@ -1437,7 +1437,7 @@ namespace Mutagen.Bethesda.Fallout4
         public Color DirectionalZPlus => _structData.Slice(0x10, 0x4).ReadColor(ColorBinaryType.Alpha);
         public Color DirectionalZMinus => _structData.Slice(0x14, 0x4).ReadColor(ColorBinaryType.Alpha);
         public Color Specular => _structData.Slice(0x18, 0x4).ReadColor(ColorBinaryType.Alpha);
-        public Single Scale => _structData.Slice(0x1C, 0x4).Float();
+        public Single Scale => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

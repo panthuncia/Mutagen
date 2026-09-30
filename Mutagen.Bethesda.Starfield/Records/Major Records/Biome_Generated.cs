@@ -4750,15 +4750,15 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region BlockDensityMult
         private int? _BlockDensityMultLocation;
-        public Single? BlockDensityMult => _BlockDensityMultLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _BlockDensityMultLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? BlockDensityMult => _BlockDensityMultLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BlockDensityMultLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region CellDensityMult
         private int? _CellDensityMultLocation;
-        public Single? CellDensityMult => _CellDensityMultLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _CellDensityMultLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? CellDensityMult => _CellDensityMultLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _CellDensityMultLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region ScanWorldspaceMult
         private int? _ScanWorldspaceMultLocation;
-        public Single? ScanWorldspaceMult => _ScanWorldspaceMultLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ScanWorldspaceMultLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? ScanWorldspaceMult => _ScanWorldspaceMultLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ScanWorldspaceMultLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Child
         private int? _ChildLocation;

@@ -1547,7 +1547,7 @@ namespace Mutagen.Bethesda.Skyrim
         public CriticalData.VersioningBreaks Versioning { get; private set; }
         public UInt16 Damage => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x0, 0x2));
         public Int16 Unused => BinaryPrimitives.ReadInt16LittleEndian(_structData.Slice(0x2, 0x2));
-        public Single PercentMult => _structData.Slice(0x4, 0x4).Float();
+        public Single PercentMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
         public CriticalData.Flag Flags => (CriticalData.Flag)_structData.Span.Slice(0x8, 0x1)[0];
         public ReadOnlyMemorySlice<Byte> Unused2 => _structData.Span.Slice(0x9, 0x3).ToArray();
         #region Unused3

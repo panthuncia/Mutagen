@@ -2325,7 +2325,7 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region NAM1
         private int? _NAM1Location;
-        public Single? NAM1 => _NAM1Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM1Location.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? NAM1 => _NAM1Location.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM1Location.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Global
         private int? _GlobalLocation;

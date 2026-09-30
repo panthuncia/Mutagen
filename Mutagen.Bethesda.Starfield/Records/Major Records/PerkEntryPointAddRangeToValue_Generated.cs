@@ -1259,8 +1259,8 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public Single From => _structData.Slice(0x2, 0x4).Float();
-        public Single To => _structData.Slice(0x6, 0x4).Float();
+        public Single From => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x2, 0x4));
+        public Single To => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x6, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

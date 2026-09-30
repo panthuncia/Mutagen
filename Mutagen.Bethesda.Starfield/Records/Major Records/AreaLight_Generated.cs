@@ -1317,9 +1317,9 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public Single Width => _structData.Slice(0x0, 0x4).Float();
-        public Single Height => _structData.Slice(0x4, 0x4).Float();
-        public Single Radius => _structData.Slice(0x8, 0x4).Float();
+        public Single Width => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single Height => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single Radius => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
         public AreaLight.TypeOption Type => (AreaLight.TypeOption)_structData.Span.Slice(0xC, 0x1)[0];
         public Boolean IsDiffuse => _structData.Slice(0xD, 0x1)[0] >= 1;
         public UInt16 Unused => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0xE, 0x2));

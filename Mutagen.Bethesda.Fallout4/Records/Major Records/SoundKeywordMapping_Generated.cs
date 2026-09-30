@@ -2057,7 +2057,7 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #region VatsThreshold
         private int? _VatsThresholdLocation;
-        public Single? VatsThreshold => _VatsThresholdLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _VatsThresholdLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? VatsThreshold => _VatsThresholdLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _VatsThresholdLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Keywords
         public IReadOnlyList<IFormLinkGetter<IKeywordGetter>> Keywords { get; private set; } = [];

@@ -2949,7 +2949,7 @@ namespace Mutagen.Bethesda.Fallout4
         #region MaxAngle
         private int _MaxAngleLocation => _DNAMLocation!.Value.Min;
         private bool _MaxAngle_IsSet => _DNAMLocation.HasValue;
-        public Single MaxAngle => _MaxAngle_IsSet ? _recordData.Slice(_MaxAngleLocation, 4).Float() : default(Single);
+        public Single MaxAngle => _MaxAngle_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MaxAngleLocation, 4)) : default(Single);
         #endregion
         #region Material
         private int _MaterialLocation => _DNAMLocation!.Value.Min + 0x4;
@@ -2959,12 +2959,12 @@ namespace Mutagen.Bethesda.Fallout4
         #region LeafAmplitude
         private int _LeafAmplitudeLocation => _DNAMLocation!.Value.Min + 0x8;
         private bool _LeafAmplitude_IsSet => _DNAMLocation.HasValue && !DNAMDataTypeState.HasFlag(Static.DNAMDataType.Break0);
-        public Single LeafAmplitude => _LeafAmplitude_IsSet ? _recordData.Slice(_LeafAmplitudeLocation, 4).Float() : default(Single);
+        public Single LeafAmplitude => _LeafAmplitude_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_LeafAmplitudeLocation, 4)) : default(Single);
         #endregion
         #region LeafFrequency
         private int _LeafFrequencyLocation => _DNAMLocation!.Value.Min + 0xC;
         private bool _LeafFrequency_IsSet => _DNAMLocation.HasValue && !DNAMDataTypeState.HasFlag(Static.DNAMDataType.Break0);
-        public Single LeafFrequency => _LeafFrequency_IsSet ? _recordData.Slice(_LeafFrequencyLocation, 4).Float() : default(Single);
+        public Single LeafFrequency => _LeafFrequency_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_LeafFrequencyLocation, 4)) : default(Single);
         #endregion
         #region NavmeshGeometry
         private int? _NavmeshGeometryLengthOverride;

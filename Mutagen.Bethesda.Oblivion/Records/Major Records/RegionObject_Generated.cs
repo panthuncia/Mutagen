@@ -1941,18 +1941,18 @@ namespace Mutagen.Bethesda.Oblivion
         public IFormLinkGetter<IOblivionMajorRecordGetter> Object => FormLinkBinaryTranslation.Instance.OverlayFactory<IOblivionMajorRecordGetter>(_package, _structData.Span.Slice(0x0, 0x4));
         public UInt16 ParentIndex => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x4, 0x2));
         public Int16 Unknown => BinaryPrimitives.ReadInt16LittleEndian(_structData.Slice(0x6, 0x2));
-        public Single Density => _structData.Slice(0x8, 0x4).Float();
+        public Single Density => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
         public Byte Clustering => _structData.Span[0xC];
         public Byte MinSlope => _structData.Span[0xD];
         public Byte MaxSlope => _structData.Span[0xE];
         public RegionObject.Flag Flags => (RegionObject.Flag)_structData.Span.Slice(0xF, 0x1)[0];
         public UInt16 RadiusWrtPercent => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x10, 0x2));
         public UInt16 Radius => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x12, 0x2));
-        public Single MinHeight => _structData.Slice(0x14, 0x4).Float();
-        public Single MaxHeight => _structData.Slice(0x18, 0x4).Float();
-        public Single Sink => _structData.Slice(0x1C, 0x4).Float();
-        public Single SinkVariance => _structData.Slice(0x20, 0x4).Float();
-        public Single SizeVariance => _structData.Slice(0x24, 0x4).Float();
+        public Single MinHeight => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
+        public Single MaxHeight => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
+        public Single Sink => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
+        public Single SinkVariance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x20, 0x4));
+        public Single SizeVariance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x24, 0x4));
         public P3UInt16 AngleVariance => P3UInt16BinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(0x28, 0x6));
         public ReadOnlyMemorySlice<Byte> Unknown2 => _structData.Span.Slice(0x2E, 0x6).ToArray();
         partial void CustomFactoryEnd(

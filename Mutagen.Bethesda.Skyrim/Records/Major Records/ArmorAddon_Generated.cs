@@ -2880,7 +2880,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region WeaponAdjust
         private int _WeaponAdjustLocation => _DNAMLocation!.Value.Min + 0x8;
         private bool _WeaponAdjust_IsSet => _DNAMLocation.HasValue;
-        public Single WeaponAdjust => _WeaponAdjust_IsSet ? _recordData.Slice(_WeaponAdjustLocation, 4).Float() : default(Single);
+        public Single WeaponAdjust => _WeaponAdjust_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WeaponAdjustLocation, 4)) : default(Single);
         #endregion
         #region WorldModel
         private IGenderedItemGetter<IModelGetter?>? _WorldModelOverlay;

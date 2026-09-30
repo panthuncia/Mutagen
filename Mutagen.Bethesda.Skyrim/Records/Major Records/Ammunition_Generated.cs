@@ -3084,7 +3084,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region Damage
         private int _DamageLocation => _DATALocation!.Value.Min + 0x8;
         private bool _Damage_IsSet => _DATALocation.HasValue;
-        public Single Damage => _Damage_IsSet ? _recordData.Slice(_DamageLocation, 4).Float() : default(Single);
+        public Single Damage => _Damage_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DamageLocation, 4)) : default(Single);
         #endregion
         #region Value
         private int _ValueLocation => _DATALocation!.Value.Min + 0xC;
@@ -3094,7 +3094,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region Weight
         private int _WeightLocation => _DATALocation!.Value.Min + 0x10;
         private bool _Weight_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(Ammunition.DATADataType.Break0) && _package.FormVersion!.FormVersion!.Value >= 44;
-        public Single Weight => _Weight_IsSet ? _recordData.Slice(_WeightLocation, 4).Float() : default(Single);
+        public Single Weight => _Weight_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WeightLocation, 4)) : default(Single);
         int WeightVersioningOffset => _package.FormVersion!.FormVersion!.Value < 44 ? -4 : 0;
         #endregion
         #region ShortName

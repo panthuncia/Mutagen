@@ -6716,11 +6716,11 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region WaterHeight
         private int? _WaterHeightLocation;
-        public Single? WaterHeight => _WaterHeightLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _WaterHeightLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? WaterHeight => _WaterHeightLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _WaterHeightLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region XILS
         private int? _XILSLocation;
-        public Single? XILS => _XILSLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _XILSLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? XILS => _XILSLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _XILSLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         public IReadOnlyList<ICellXCLAItemGetter> XCLAs { get; private set; } = [];
         #region WaterData

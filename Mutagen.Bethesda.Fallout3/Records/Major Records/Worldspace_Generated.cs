@@ -5435,7 +5435,7 @@ namespace Mutagen.Bethesda.Fallout3
         #endregion
         #region LodWaterHeight
         private int? _LodWaterHeightLocation;
-        public Single? LodWaterHeight => _LodWaterHeightLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _LodWaterHeightLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? LodWaterHeight => _LodWaterHeightLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LodWaterHeightLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region LandData
         private RangeInt32? _LandDataLocation;
@@ -5457,17 +5457,17 @@ namespace Mutagen.Bethesda.Fallout3
         #region WorldMapScale
         private int _WorldMapScaleLocation => _ONAMLocation!.Value.Min;
         private bool _WorldMapScale_IsSet => _ONAMLocation.HasValue;
-        public Single WorldMapScale => _WorldMapScale_IsSet ? _recordData.Slice(_WorldMapScaleLocation, 4).Float() : default(Single);
+        public Single WorldMapScale => _WorldMapScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WorldMapScaleLocation, 4)) : default(Single);
         #endregion
         #region CellXOffset
         private int _CellXOffsetLocation => _ONAMLocation!.Value.Min + 0x4;
         private bool _CellXOffset_IsSet => _ONAMLocation.HasValue;
-        public Single CellXOffset => _CellXOffset_IsSet ? _recordData.Slice(_CellXOffsetLocation, 4).Float() : default(Single);
+        public Single CellXOffset => _CellXOffset_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CellXOffsetLocation, 4)) : default(Single);
         #endregion
         #region CellYOffset
         private int _CellYOffsetLocation => _ONAMLocation!.Value.Min + 0x8;
         private bool _CellYOffset_IsSet => _ONAMLocation.HasValue;
-        public Single CellYOffset => _CellYOffset_IsSet ? _recordData.Slice(_CellYOffsetLocation, 4).Float() : default(Single);
+        public Single CellYOffset => _CellYOffset_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CellYOffsetLocation, 4)) : default(Single);
         #endregion
         #region ImageSpace
         private int? _ImageSpaceLocation;

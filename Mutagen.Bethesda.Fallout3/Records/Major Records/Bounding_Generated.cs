@@ -1373,13 +1373,13 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        public Single Width => _structData.Slice(0x0, 0x4).Float();
-        public Single Height => _structData.Slice(0x4, 0x4).Float();
+        public Single Width => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single Height => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
         public P3Float Position => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(0x8, 0xC));
-        public Single RotationQ1 => _structData.Slice(0x14, 0x4).Float();
-        public Single RotationQ2 => _structData.Slice(0x18, 0x4).Float();
-        public Single RotationQ3 => _structData.Slice(0x1C, 0x4).Float();
-        public Single RotationQ4 => _structData.Slice(0x20, 0x4).Float();
+        public Single RotationQ1 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
+        public Single RotationQ2 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
+        public Single RotationQ3 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
+        public Single RotationQ4 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x20, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

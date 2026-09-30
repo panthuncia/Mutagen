@@ -1352,7 +1352,7 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region SettingValue
         private int? _SettingValueLocation;
-        public Single? SettingValue => _SettingValueLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SettingValueLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? SettingValue => _SettingValueLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SettingValueLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Name
         private int? _NameLocation;
@@ -1368,7 +1368,7 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region RewardValue
         private int? _RewardValueLocation;
-        public Single? RewardValue => _RewardValueLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _RewardValueLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? RewardValue => _RewardValueLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _RewardValueLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

@@ -1282,7 +1282,7 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        public Single Offset => _structData.Slice(0x0, 0x4).Float();
+        public Single Offset => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
         #region HeightMap
         public IReadOnlyArray2d<SByte> HeightMap => BinaryOverlayArray2d.Factory<SByte>(
             mem: _structData.Slice(4),

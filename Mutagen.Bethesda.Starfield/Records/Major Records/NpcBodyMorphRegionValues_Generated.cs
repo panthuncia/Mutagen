@@ -1263,11 +1263,11 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public Single Head => _structData.Slice(0x0, 0x4).Float();
-        public Single UpperTorso => _structData.Slice(0x4, 0x4).Float();
-        public Single Arms => _structData.Slice(0x8, 0x4).Float();
-        public Single LowerTorso => _structData.Slice(0xC, 0x4).Float();
-        public Single Legs => _structData.Slice(0x10, 0x4).Float();
+        public Single Head => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single UpperTorso => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single Arms => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single LowerTorso => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single Legs => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

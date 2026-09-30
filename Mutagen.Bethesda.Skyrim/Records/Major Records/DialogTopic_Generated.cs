@@ -2969,7 +2969,7 @@ namespace Mutagen.Bethesda.Skyrim
         #endregion
         #region Priority
         private int? _PriorityLocation;
-        public Single Priority => _PriorityLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _PriorityLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single Priority => _PriorityLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _PriorityLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region Branch
         private int? _BranchLocation;

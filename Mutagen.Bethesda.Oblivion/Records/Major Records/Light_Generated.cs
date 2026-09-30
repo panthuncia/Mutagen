@@ -1992,7 +1992,7 @@ namespace Mutagen.Bethesda.Oblivion
         #endregion
         #region Fade
         private int? _FadeLocation;
-        public Single? Fade => _FadeLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FadeLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? Fade => _FadeLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FadeLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Sound
         private int? _SoundLocation;

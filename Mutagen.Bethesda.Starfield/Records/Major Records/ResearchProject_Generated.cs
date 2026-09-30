@@ -2806,7 +2806,7 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region SortingPriority
         private int? _SortingPriorityLocation;
-        public Single? SortingPriority => _SortingPriorityLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SortingPriorityLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? SortingPriority => _SortingPriorityLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SortingPriorityLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Tier
         private int? _TierLocation;

@@ -4046,7 +4046,7 @@ namespace Mutagen.Bethesda.Fallout3
         #endregion
         #region FollowStartLocationTriggerRadius
         private int? _FollowStartLocationTriggerRadiusLocation;
-        public Single? FollowStartLocationTriggerRadius => _FollowStartLocationTriggerRadiusLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FollowStartLocationTriggerRadiusLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? FollowStartLocationTriggerRadius => _FollowStartLocationTriggerRadiusLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FollowStartLocationTriggerRadiusLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region IsRepeatable
         partial void IsRepeatableCustomParse(

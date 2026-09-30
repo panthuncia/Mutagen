@@ -1373,8 +1373,8 @@ namespace Mutagen.Bethesda.Starfield
         public IFormLinkGetter<IStarfieldMajorRecordGetter> UnknownLink1 => FormLinkBinaryTranslation.Instance.OverlayFactory<IStarfieldMajorRecordGetter>(_package, _structData.Span.Slice(0x0, 0x4));
         public IFormLinkGetter<IStarfieldMajorRecordGetter> UnknownLink2 => FormLinkBinaryTranslation.Instance.OverlayFactory<IStarfieldMajorRecordGetter>(_package, _structData.Span.Slice(0x4, 0x4));
         public IFormLinkGetter<IStarfieldMajorRecordGetter> UnknownLink3 => FormLinkBinaryTranslation.Instance.OverlayFactory<IStarfieldMajorRecordGetter>(_package, _structData.Span.Slice(0x8, 0x4));
-        public Single UnknownFloat1 => _structData.Slice(0xC, 0x4).Float();
-        public Single UnknownFloat2 => _structData.Slice(0x10, 0x4).Float();
+        public Single UnknownFloat1 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single UnknownFloat2 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
         public Int32 UnknownInt => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x14, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,

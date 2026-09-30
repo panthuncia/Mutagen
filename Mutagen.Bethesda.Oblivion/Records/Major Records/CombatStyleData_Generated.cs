@@ -3123,43 +3123,43 @@ namespace Mutagen.Bethesda.Oblivion
         public CombatStyleData.VersioningBreaks Versioning { get; private set; }
         public Byte DodgePercentChance => _structData.Span[0x0];
         public Byte LeftRightPercentChance => _structData.Span[0x1];
-        public Single DodgeLeftRightTimerMin => _structData.Slice(0x4, 0x4).Float();
-        public Single DodgeLeftRightTimerMax => _structData.Slice(0x8, 0x4).Float();
-        public Single DodgeForwardTimerMin => _structData.Slice(0xC, 0x4).Float();
-        public Single DodgeForwardTimerMax => _structData.Slice(0x10, 0x4).Float();
-        public Single DodgeBackTimerMin => _structData.Slice(0x14, 0x4).Float();
-        public Single DodgeBackTimerMax => _structData.Slice(0x18, 0x4).Float();
-        public Single IdleTimerMin => _structData.Slice(0x1C, 0x4).Float();
-        public Single IdleTimerMax => _structData.Slice(0x20, 0x4).Float();
+        public Single DodgeLeftRightTimerMin => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single DodgeLeftRightTimerMax => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single DodgeForwardTimerMin => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single DodgeForwardTimerMax => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
+        public Single DodgeBackTimerMin => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
+        public Single DodgeBackTimerMax => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
+        public Single IdleTimerMin => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
+        public Single IdleTimerMax => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x20, 0x4));
         public Byte BlockPercentChance => _structData.Span[0x24];
         public Byte AttackPercentChance => _structData.Span[0x25];
-        public Single RecoilStaggerBonusToAttack => _structData.Slice(0x28, 0x4).Float();
-        public Single UnconsciousBonusToAttack => _structData.Slice(0x2C, 0x4).Float();
-        public Single HandToHandBonusToAttack => _structData.Slice(0x30, 0x4).Float();
+        public Single RecoilStaggerBonusToAttack => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x28, 0x4));
+        public Single UnconsciousBonusToAttack => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x2C, 0x4));
+        public Single HandToHandBonusToAttack => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x30, 0x4));
         public Byte PowerAttackPercentChance => _structData.Span[0x34];
-        public Single RecoilStaggerBonusToPowerAttack => _structData.Slice(0x38, 0x4).Float();
-        public Single UnconsciousBonusToPowerAttack => _structData.Slice(0x3C, 0x4).Float();
+        public Single RecoilStaggerBonusToPowerAttack => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x38, 0x4));
+        public Single UnconsciousBonusToPowerAttack => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x3C, 0x4));
         public Byte PowerAttackNormal => _structData.Span[0x40];
         public Byte PowerAttackForward => _structData.Span[0x41];
         public Byte PowerAttackBack => _structData.Span[0x42];
         public Byte PowerAttackLeft => _structData.Span[0x43];
         public Byte PowerAttackRight => _structData.Span[0x44];
-        public Single HoldTimerMin => _structData.Slice(0x48, 0x4).Float();
-        public Single HoldTimerMax => _structData.Slice(0x4C, 0x4).Float();
+        public Single HoldTimerMin => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x48, 0x4));
+        public Single HoldTimerMax => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4C, 0x4));
         #region Flags
         public partial CombatStyle.Flag GetFlagsCustom(int location);
         public CombatStyle.Flag Flags => GetFlagsCustom(location: 0x50);
         #endregion
         public Byte AcrobaticDodgePercentChance => _structData.Span[0x51];
-        public Single RangeMultOptimal => _structData.Length <= 0x54 ? default : _structData.Slice(0x54, 0x4).Float();
-        public Single RangeMultMax => _structData.Length <= 0x58 ? default : _structData.Slice(0x58, 0x4).Float();
-        public Single SwitchDistanceMelee => _structData.Length <= 0x5C ? default : _structData.Slice(0x5C, 0x4).Float();
-        public Single SwitchDistanceRanged => _structData.Length <= 0x60 ? default : _structData.Slice(0x60, 0x4).Float();
-        public Single BuffStandoffDistance => _structData.Length <= 0x64 ? default : _structData.Slice(0x64, 0x4).Float();
-        public Single RangedStandoffDistance => _structData.Length <= 0x68 ? default : _structData.Slice(0x68, 0x4).Float();
-        public Single GroupStandoffDistance => _structData.Length <= 0x6C ? default : _structData.Slice(0x6C, 0x4).Float();
+        public Single RangeMultOptimal => _structData.Length <= 0x54 ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x54, 0x4));
+        public Single RangeMultMax => _structData.Length <= 0x58 ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x58, 0x4));
+        public Single SwitchDistanceMelee => _structData.Length <= 0x5C ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x5C, 0x4));
+        public Single SwitchDistanceRanged => _structData.Length <= 0x60 ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x60, 0x4));
+        public Single BuffStandoffDistance => _structData.Length <= 0x64 ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x64, 0x4));
+        public Single RangedStandoffDistance => _structData.Length <= 0x68 ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x68, 0x4));
+        public Single GroupStandoffDistance => _structData.Length <= 0x6C ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x6C, 0x4));
         public Byte RushingAttackPercentChance => _structData.Length <= 0x70 ? default : _structData.Span[0x70];
-        public Single RushingAttackDistanceMult => _structData.Length <= 0x74 ? default : _structData.Slice(0x74, 0x4).Float();
+        public Single RushingAttackDistanceMult => _structData.Length <= 0x74 ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x74, 0x4));
         #region SecondaryFlags
         partial void SecondaryFlagsCustomParse(
             OverlayStream stream,

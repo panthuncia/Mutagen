@@ -934,7 +934,7 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         public IFormLinkGetter<IStarfieldMajorRecordGetter> Record => FormLinkBinaryTranslation.Instance.OverlayFactory<IStarfieldMajorRecordGetter>(_package, _structData.Span.Slice(0x5, 0x4));
-        public Single Value => _structData.Slice(0x9, 0x4).Float();
+        public Single Value => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x9, 0x4));
         public ObjectModProperty.FloatFunctionType FunctionType => (ObjectModProperty.FloatFunctionType)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0xD, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,

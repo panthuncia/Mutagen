@@ -4771,7 +4771,7 @@ namespace Mutagen.Bethesda.Fallout4
         #region FogDepthAmount
         private int _FogDepthAmountLocation => _DNAMLocation!.Value.Min;
         private bool _FogDepthAmount_IsSet => _DNAMLocation.HasValue;
-        public Single FogDepthAmount => _FogDepthAmount_IsSet ? _recordData.Slice(_FogDepthAmountLocation, 4).Float() : default(Single);
+        public Single FogDepthAmount => _FogDepthAmount_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogDepthAmountLocation, 4)) : default(Single);
         #endregion
         #region FogShallowColor
         private int _FogShallowColorLocation => _DNAMLocation!.Value.Min + 0x4;
@@ -4786,32 +4786,32 @@ namespace Mutagen.Bethesda.Fallout4
         #region FogColorShallowRange
         private int _FogColorShallowRangeLocation => _DNAMLocation!.Value.Min + 0xC;
         private bool _FogColorShallowRange_IsSet => _DNAMLocation.HasValue;
-        public Single FogColorShallowRange => _FogColorShallowRange_IsSet ? _recordData.Slice(_FogColorShallowRangeLocation, 4).Float() : default(Single);
+        public Single FogColorShallowRange => _FogColorShallowRange_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogColorShallowRangeLocation, 4)) : default(Single);
         #endregion
         #region FogColorDeepRange
         private int _FogColorDeepRangeLocation => _DNAMLocation!.Value.Min + 0x10;
         private bool _FogColorDeepRange_IsSet => _DNAMLocation.HasValue;
-        public Single FogColorDeepRange => _FogColorDeepRange_IsSet ? _recordData.Slice(_FogColorDeepRangeLocation, 4).Float() : default(Single);
+        public Single FogColorDeepRange => _FogColorDeepRange_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogColorDeepRangeLocation, 4)) : default(Single);
         #endregion
         #region FogShallowAlpha
         private int _FogShallowAlphaLocation => _DNAMLocation!.Value.Min + 0x14;
         private bool _FogShallowAlpha_IsSet => _DNAMLocation.HasValue;
-        public Single FogShallowAlpha => _FogShallowAlpha_IsSet ? _recordData.Slice(_FogShallowAlphaLocation, 4).Float() : default(Single);
+        public Single FogShallowAlpha => _FogShallowAlpha_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogShallowAlphaLocation, 4)) : default(Single);
         #endregion
         #region FogDeepAlpha
         private int _FogDeepAlphaLocation => _DNAMLocation!.Value.Min + 0x18;
         private bool _FogDeepAlpha_IsSet => _DNAMLocation.HasValue;
-        public Single FogDeepAlpha => _FogDeepAlpha_IsSet ? _recordData.Slice(_FogDeepAlphaLocation, 4).Float() : default(Single);
+        public Single FogDeepAlpha => _FogDeepAlpha_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogDeepAlphaLocation, 4)) : default(Single);
         #endregion
         #region FogAlphaShallowRange
         private int _FogAlphaShallowRangeLocation => _DNAMLocation!.Value.Min + 0x1C;
         private bool _FogAlphaShallowRange_IsSet => _DNAMLocation.HasValue;
-        public Single FogAlphaShallowRange => _FogAlphaShallowRange_IsSet ? _recordData.Slice(_FogAlphaShallowRangeLocation, 4).Float() : default(Single);
+        public Single FogAlphaShallowRange => _FogAlphaShallowRange_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogAlphaShallowRangeLocation, 4)) : default(Single);
         #endregion
         #region FogAlphaDeepRange
         private int _FogAlphaDeepRangeLocation => _DNAMLocation!.Value.Min + 0x20;
         private bool _FogAlphaDeepRange_IsSet => _DNAMLocation.HasValue;
-        public Single FogAlphaDeepRange => _FogAlphaDeepRange_IsSet ? _recordData.Slice(_FogAlphaDeepRangeLocation, 4).Float() : default(Single);
+        public Single FogAlphaDeepRange => _FogAlphaDeepRange_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogAlphaDeepRangeLocation, 4)) : default(Single);
         #endregion
         #region FogUnderwaterColor
         private int _FogUnderwaterColorLocation => _DNAMLocation!.Value.Min + 0x24;
@@ -4821,72 +4821,72 @@ namespace Mutagen.Bethesda.Fallout4
         #region FogUnderwaterAmount
         private int _FogUnderwaterAmountLocation => _DNAMLocation!.Value.Min + 0x28;
         private bool _FogUnderwaterAmount_IsSet => _DNAMLocation.HasValue;
-        public Single FogUnderwaterAmount => _FogUnderwaterAmount_IsSet ? _recordData.Slice(_FogUnderwaterAmountLocation, 4).Float() : default(Single);
+        public Single FogUnderwaterAmount => _FogUnderwaterAmount_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogUnderwaterAmountLocation, 4)) : default(Single);
         #endregion
         #region FogUnderwaterNear
         private int _FogUnderwaterNearLocation => _DNAMLocation!.Value.Min + 0x2C;
         private bool _FogUnderwaterNear_IsSet => _DNAMLocation.HasValue;
-        public Single FogUnderwaterNear => _FogUnderwaterNear_IsSet ? _recordData.Slice(_FogUnderwaterNearLocation, 4).Float() : default(Single);
+        public Single FogUnderwaterNear => _FogUnderwaterNear_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogUnderwaterNearLocation, 4)) : default(Single);
         #endregion
         #region FogUnderwaterFar
         private int _FogUnderwaterFarLocation => _DNAMLocation!.Value.Min + 0x30;
         private bool _FogUnderwaterFar_IsSet => _DNAMLocation.HasValue;
-        public Single FogUnderwaterFar => _FogUnderwaterFar_IsSet ? _recordData.Slice(_FogUnderwaterFarLocation, 4).Float() : default(Single);
+        public Single FogUnderwaterFar => _FogUnderwaterFar_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogUnderwaterFarLocation, 4)) : default(Single);
         #endregion
         #region PhysicalNormalMagnitude
         private int _PhysicalNormalMagnitudeLocation => _DNAMLocation!.Value.Min + 0x34;
         private bool _PhysicalNormalMagnitude_IsSet => _DNAMLocation.HasValue;
-        public Single PhysicalNormalMagnitude => _PhysicalNormalMagnitude_IsSet ? _recordData.Slice(_PhysicalNormalMagnitudeLocation, 4).Float() : default(Single);
+        public Single PhysicalNormalMagnitude => _PhysicalNormalMagnitude_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_PhysicalNormalMagnitudeLocation, 4)) : default(Single);
         #endregion
         #region PhysicalShallowNormalFalloff
         private int _PhysicalShallowNormalFalloffLocation => _DNAMLocation!.Value.Min + 0x38;
         private bool _PhysicalShallowNormalFalloff_IsSet => _DNAMLocation.HasValue;
-        public Single PhysicalShallowNormalFalloff => _PhysicalShallowNormalFalloff_IsSet ? _recordData.Slice(_PhysicalShallowNormalFalloffLocation, 4).Float() : default(Single);
+        public Single PhysicalShallowNormalFalloff => _PhysicalShallowNormalFalloff_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_PhysicalShallowNormalFalloffLocation, 4)) : default(Single);
         #endregion
         #region PhysicalDeepNormalFalloff
         private int _PhysicalDeepNormalFalloffLocation => _DNAMLocation!.Value.Min + 0x3C;
         private bool _PhysicalDeepNormalFalloff_IsSet => _DNAMLocation.HasValue;
-        public Single PhysicalDeepNormalFalloff => _PhysicalDeepNormalFalloff_IsSet ? _recordData.Slice(_PhysicalDeepNormalFalloffLocation, 4).Float() : default(Single);
+        public Single PhysicalDeepNormalFalloff => _PhysicalDeepNormalFalloff_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_PhysicalDeepNormalFalloffLocation, 4)) : default(Single);
         #endregion
         #region PhysicalReflectivityAmount
         private int _PhysicalReflectivityAmountLocation => _DNAMLocation!.Value.Min + 0x40;
         private bool _PhysicalReflectivityAmount_IsSet => _DNAMLocation.HasValue;
-        public Single PhysicalReflectivityAmount => _PhysicalReflectivityAmount_IsSet ? _recordData.Slice(_PhysicalReflectivityAmountLocation, 4).Float() : default(Single);
+        public Single PhysicalReflectivityAmount => _PhysicalReflectivityAmount_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_PhysicalReflectivityAmountLocation, 4)) : default(Single);
         #endregion
         #region PhysicalFresnelAmount
         private int _PhysicalFresnelAmountLocation => _DNAMLocation!.Value.Min + 0x44;
         private bool _PhysicalFresnelAmount_IsSet => _DNAMLocation.HasValue;
-        public Single PhysicalFresnelAmount => _PhysicalFresnelAmount_IsSet ? _recordData.Slice(_PhysicalFresnelAmountLocation, 4).Float() : default(Single);
+        public Single PhysicalFresnelAmount => _PhysicalFresnelAmount_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_PhysicalFresnelAmountLocation, 4)) : default(Single);
         #endregion
         #region PhysicalSurfaceEffectFalloff
         private int _PhysicalSurfaceEffectFalloffLocation => _DNAMLocation!.Value.Min + 0x48;
         private bool _PhysicalSurfaceEffectFalloff_IsSet => _DNAMLocation.HasValue;
-        public Single PhysicalSurfaceEffectFalloff => _PhysicalSurfaceEffectFalloff_IsSet ? _recordData.Slice(_PhysicalSurfaceEffectFalloffLocation, 4).Float() : default(Single);
+        public Single PhysicalSurfaceEffectFalloff => _PhysicalSurfaceEffectFalloff_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_PhysicalSurfaceEffectFalloffLocation, 4)) : default(Single);
         #endregion
         #region PhysicalDisplacementSimulatorForce
         private int _PhysicalDisplacementSimulatorForceLocation => _DNAMLocation!.Value.Min + 0x4C;
         private bool _PhysicalDisplacementSimulatorForce_IsSet => _DNAMLocation.HasValue;
-        public Single PhysicalDisplacementSimulatorForce => _PhysicalDisplacementSimulatorForce_IsSet ? _recordData.Slice(_PhysicalDisplacementSimulatorForceLocation, 4).Float() : default(Single);
+        public Single PhysicalDisplacementSimulatorForce => _PhysicalDisplacementSimulatorForce_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_PhysicalDisplacementSimulatorForceLocation, 4)) : default(Single);
         #endregion
         #region PhysicalDisplacementSimulatorVelocity
         private int _PhysicalDisplacementSimulatorVelocityLocation => _DNAMLocation!.Value.Min + 0x50;
         private bool _PhysicalDisplacementSimulatorVelocity_IsSet => _DNAMLocation.HasValue;
-        public Single PhysicalDisplacementSimulatorVelocity => _PhysicalDisplacementSimulatorVelocity_IsSet ? _recordData.Slice(_PhysicalDisplacementSimulatorVelocityLocation, 4).Float() : default(Single);
+        public Single PhysicalDisplacementSimulatorVelocity => _PhysicalDisplacementSimulatorVelocity_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_PhysicalDisplacementSimulatorVelocityLocation, 4)) : default(Single);
         #endregion
         #region PhysicalDisplacementSimulatorFalloff
         private int _PhysicalDisplacementSimulatorFalloffLocation => _DNAMLocation!.Value.Min + 0x54;
         private bool _PhysicalDisplacementSimulatorFalloff_IsSet => _DNAMLocation.HasValue;
-        public Single PhysicalDisplacementSimulatorFalloff => _PhysicalDisplacementSimulatorFalloff_IsSet ? _recordData.Slice(_PhysicalDisplacementSimulatorFalloffLocation, 4).Float() : default(Single);
+        public Single PhysicalDisplacementSimulatorFalloff => _PhysicalDisplacementSimulatorFalloff_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_PhysicalDisplacementSimulatorFalloffLocation, 4)) : default(Single);
         #endregion
         #region PhysicalDisplacementSimulatorDampener
         private int _PhysicalDisplacementSimulatorDampenerLocation => _DNAMLocation!.Value.Min + 0x58;
         private bool _PhysicalDisplacementSimulatorDampener_IsSet => _DNAMLocation.HasValue;
-        public Single PhysicalDisplacementSimulatorDampener => _PhysicalDisplacementSimulatorDampener_IsSet ? _recordData.Slice(_PhysicalDisplacementSimulatorDampenerLocation, 4).Float() : default(Single);
+        public Single PhysicalDisplacementSimulatorDampener => _PhysicalDisplacementSimulatorDampener_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_PhysicalDisplacementSimulatorDampenerLocation, 4)) : default(Single);
         #endregion
         #region PhysicalDisplacementSimulatorStartingSize
         private int _PhysicalDisplacementSimulatorStartingSizeLocation => _DNAMLocation!.Value.Min + 0x5C;
         private bool _PhysicalDisplacementSimulatorStartingSize_IsSet => _DNAMLocation.HasValue;
-        public Single PhysicalDisplacementSimulatorStartingSize => _PhysicalDisplacementSimulatorStartingSize_IsSet ? _recordData.Slice(_PhysicalDisplacementSimulatorStartingSizeLocation, 4).Float() : default(Single);
+        public Single PhysicalDisplacementSimulatorStartingSize => _PhysicalDisplacementSimulatorStartingSize_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_PhysicalDisplacementSimulatorStartingSizeLocation, 4)) : default(Single);
         #endregion
         #region PhysicalReflectionColor
         private int _PhysicalReflectionColorLocation => _DNAMLocation!.Value.Min + 0x60;
@@ -4896,37 +4896,37 @@ namespace Mutagen.Bethesda.Fallout4
         #region SpecularSunSpecularPower
         private int _SpecularSunSpecularPowerLocation => _DNAMLocation!.Value.Min + 0x64;
         private bool _SpecularSunSpecularPower_IsSet => _DNAMLocation.HasValue;
-        public Single SpecularSunSpecularPower => _SpecularSunSpecularPower_IsSet ? _recordData.Slice(_SpecularSunSpecularPowerLocation, 4).Float() : default(Single);
+        public Single SpecularSunSpecularPower => _SpecularSunSpecularPower_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SpecularSunSpecularPowerLocation, 4)) : default(Single);
         #endregion
         #region SpecularSunSpecularMagnitude
         private int _SpecularSunSpecularMagnitudeLocation => _DNAMLocation!.Value.Min + 0x68;
         private bool _SpecularSunSpecularMagnitude_IsSet => _DNAMLocation.HasValue;
-        public Single SpecularSunSpecularMagnitude => _SpecularSunSpecularMagnitude_IsSet ? _recordData.Slice(_SpecularSunSpecularMagnitudeLocation, 4).Float() : default(Single);
+        public Single SpecularSunSpecularMagnitude => _SpecularSunSpecularMagnitude_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SpecularSunSpecularMagnitudeLocation, 4)) : default(Single);
         #endregion
         #region SpecularSunSparklePower
         private int _SpecularSunSparklePowerLocation => _DNAMLocation!.Value.Min + 0x6C;
         private bool _SpecularSunSparklePower_IsSet => _DNAMLocation.HasValue;
-        public Single SpecularSunSparklePower => _SpecularSunSparklePower_IsSet ? _recordData.Slice(_SpecularSunSparklePowerLocation, 4).Float() : default(Single);
+        public Single SpecularSunSparklePower => _SpecularSunSparklePower_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SpecularSunSparklePowerLocation, 4)) : default(Single);
         #endregion
         #region SpecularSunSparkleMagnitude
         private int _SpecularSunSparkleMagnitudeLocation => _DNAMLocation!.Value.Min + 0x70;
         private bool _SpecularSunSparkleMagnitude_IsSet => _DNAMLocation.HasValue;
-        public Single SpecularSunSparkleMagnitude => _SpecularSunSparkleMagnitude_IsSet ? _recordData.Slice(_SpecularSunSparkleMagnitudeLocation, 4).Float() : default(Single);
+        public Single SpecularSunSparkleMagnitude => _SpecularSunSparkleMagnitude_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SpecularSunSparkleMagnitudeLocation, 4)) : default(Single);
         #endregion
         #region SpecularInteriorSpecularRadius
         private int _SpecularInteriorSpecularRadiusLocation => _DNAMLocation!.Value.Min + 0x74;
         private bool _SpecularInteriorSpecularRadius_IsSet => _DNAMLocation.HasValue;
-        public Single SpecularInteriorSpecularRadius => _SpecularInteriorSpecularRadius_IsSet ? _recordData.Slice(_SpecularInteriorSpecularRadiusLocation, 4).Float() : default(Single);
+        public Single SpecularInteriorSpecularRadius => _SpecularInteriorSpecularRadius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SpecularInteriorSpecularRadiusLocation, 4)) : default(Single);
         #endregion
         #region SpecularInteriorSpecularBrightness
         private int _SpecularInteriorSpecularBrightnessLocation => _DNAMLocation!.Value.Min + 0x78;
         private bool _SpecularInteriorSpecularBrightness_IsSet => _DNAMLocation.HasValue;
-        public Single SpecularInteriorSpecularBrightness => _SpecularInteriorSpecularBrightness_IsSet ? _recordData.Slice(_SpecularInteriorSpecularBrightnessLocation, 4).Float() : default(Single);
+        public Single SpecularInteriorSpecularBrightness => _SpecularInteriorSpecularBrightness_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SpecularInteriorSpecularBrightnessLocation, 4)) : default(Single);
         #endregion
         #region SpecularInteriorSpecularPower
         private int _SpecularInteriorSpecularPowerLocation => _DNAMLocation!.Value.Min + 0x7C;
         private bool _SpecularInteriorSpecularPower_IsSet => _DNAMLocation.HasValue;
-        public Single SpecularInteriorSpecularPower => _SpecularInteriorSpecularPower_IsSet ? _recordData.Slice(_SpecularInteriorSpecularPowerLocation, 4).Float() : default(Single);
+        public Single SpecularInteriorSpecularPower => _SpecularInteriorSpecularPower_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SpecularInteriorSpecularPowerLocation, 4)) : default(Single);
         #endregion
         #region NoiseLayerParsing
         private int _NoiseLayerParsingLocation => _DNAMLocation!.Value.Min + 0x80;
@@ -4938,7 +4938,7 @@ namespace Mutagen.Bethesda.Fallout4
         #region SiltAmount
         private int _SiltAmountLocation => _DNAMLocation!.Value.Min + 0xBC;
         private bool _SiltAmount_IsSet => _DNAMLocation.HasValue && !DNAMDataTypeState.HasFlag(Water.DNAMDataType.Break0);
-        public Single SiltAmount => _SiltAmount_IsSet ? _recordData.Slice(_SiltAmountLocation, 4).Float() : default(Single);
+        public Single SiltAmount => _SiltAmount_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SiltAmountLocation, 4)) : default(Single);
         #endregion
         #region SiltLightColor
         private int _SiltLightColorLocation => _DNAMLocation!.Value.Min + 0xC0;

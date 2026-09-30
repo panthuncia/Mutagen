@@ -1555,7 +1555,7 @@ namespace Mutagen.Bethesda.Fallout3
         public UInt16 CalcMin => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0xA, 0x2));
         public UInt16 CalcMax => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0xC, 0x2));
         public UInt16 SpeedMultiplier => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0xE, 0x2));
-        public Single Karma => _structData.Slice(0x10, 0x4).Float();
+        public Single Karma => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
         public Int16 DispositionBase => BinaryPrimitives.ReadInt16LittleEndian(_structData.Slice(0x14, 0x2));
         public Npc.TemplateFlag TemplateFlags => (Npc.TemplateFlag)BinaryPrimitives.ReadUInt16LittleEndian(_structData.Span.Slice(0x16, 0x2));
         partial void CustomFactoryEnd(

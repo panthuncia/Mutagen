@@ -1356,8 +1356,8 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         public PlacedObjectSpline.VersioningBreaks Versioning { get; private set; }
-        public Single Slack => _structData.Slice(0x0, 0x4).Float();
-        public Single Thickness => _structData.Slice(0x4, 0x4).Float();
+        public Single Slack => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single Thickness => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
         public P3Float HalfExtents => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(0x8, 0xC));
         public Boolean IsWindDetachedEnd => _structData.Length <= 0x14 ? default : _structData.Slice(0x14, 0x1)[0] >= 1;
         #region Unknown

@@ -1348,10 +1348,10 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         public LightData.VersioningBreaks Versioning { get; private set; }
-        public Single FovOffset => _structData.Slice(0x0, 0x4).Float();
-        public Single FadeOffset => _structData.Slice(0x4, 0x4).Float();
-        public Single EndDistanceCap => _structData.Slice(0x8, 0x4).Float();
-        public Single ShadowDepthBias => _structData.Slice(0xC, 0x4).Float();
+        public Single FovOffset => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single FadeOffset => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single EndDistanceCap => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single ShadowDepthBias => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
         public Int32 Unknown => _structData.Length <= 0x10 ? default : BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x10, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,

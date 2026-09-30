@@ -1244,7 +1244,7 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #region HoursUntilReset
         private int? _HoursUntilResetLocation;
-        public Single? HoursUntilReset => _HoursUntilResetLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _HoursUntilResetLocation.Value, _package.MetaData.Constants).Float() / 24f : default(Single?);
+        public Single? HoursUntilReset => _HoursUntilResetLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HoursUntilResetLocation.Value, _package.MetaData.Constants)) / 24f : default(Single?);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

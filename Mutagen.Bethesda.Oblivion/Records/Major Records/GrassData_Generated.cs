@@ -1667,10 +1667,10 @@ namespace Mutagen.Bethesda.Oblivion
         public UInt16 UnitFromWaterAmount => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x4, 0x2));
         public UInt16 Fluff2 => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x6, 0x2));
         public Grass.UnitFromWaterType UnitFromWaterMode => (Grass.UnitFromWaterType)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x8, 0x4));
-        public Single PositionRange => _structData.Slice(0xC, 0x4).Float();
-        public Single HeightRange => _structData.Slice(0x10, 0x4).Float();
-        public Single ColorRange => _structData.Slice(0x14, 0x4).Float();
-        public Single WavePeriod => _structData.Slice(0x18, 0x4).Float();
+        public Single PositionRange => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single HeightRange => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
+        public Single ColorRange => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
+        public Single WavePeriod => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
         public Grass.GrassFlag Flags => (Grass.GrassFlag)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x1C, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,

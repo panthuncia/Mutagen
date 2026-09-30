@@ -1425,7 +1425,7 @@ namespace Mutagen.Bethesda.Fallout4
         public Int16 EdgeLink_0_1 => BinaryPrimitives.ReadInt16LittleEndian(_structData.Slice(0x6, 0x2));
         public Int16 EdgeLink_1_2 => BinaryPrimitives.ReadInt16LittleEndian(_structData.Slice(0x8, 0x2));
         public Int16 EdgeLink_2_0 => BinaryPrimitives.ReadInt16LittleEndian(_structData.Slice(0xA, 0x2));
-        public Single Height => _structData.Slice(0xC, 0x4).Float();
+        public Single Height => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
         public Byte Unknown => _structData.Span[0x10];
         public NavmeshTriangle.Flag Flags => (NavmeshTriangle.Flag)BinaryPrimitives.ReadUInt16LittleEndian(_structData.Span.Slice(0x11, 0x2));
         public UInt16 CoverFlags => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x13, 0x2));

@@ -1343,27 +1343,27 @@ namespace Mutagen.Bethesda.Starfield
 
         #region Value1
         private int? _Value1Location;
-        public Single? Value1 => _Value1Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _Value1Location.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? Value1 => _Value1Location.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _Value1Location.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Value2
         private int? _Value2Location;
-        public Single? Value2 => _Value2Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _Value2Location.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? Value2 => _Value2Location.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _Value2Location.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         private RangeInt32? _GPODLocation;
         #region Min
         private int _MinLocation => _GPODLocation!.Value.Min;
         private bool _Min_IsSet => _GPODLocation.HasValue;
-        public Single Min => _Min_IsSet ? _recordData.Slice(_MinLocation, 4).Float() : default(Single);
+        public Single Min => _Min_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MinLocation, 4)) : default(Single);
         #endregion
         #region Max
         private int _MaxLocation => _GPODLocation!.Value.Min + 0x4;
         private bool _Max_IsSet => _GPODLocation.HasValue;
-        public Single Max => _Max_IsSet ? _recordData.Slice(_MaxLocation, 4).Float() : default(Single);
+        public Single Max => _Max_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MaxLocation, 4)) : default(Single);
         #endregion
         #region Step
         private int _StepLocation => _GPODLocation!.Value.Min + 0x8;
         private bool _Step_IsSet => _GPODLocation.HasValue;
-        public Single Step => _Step_IsSet ? _recordData.Slice(_StepLocation, 4).Float() : default(Single);
+        public Single Step => _Step_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_StepLocation, 4)) : default(Single);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

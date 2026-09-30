@@ -2153,25 +2153,25 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         public ObjectPaletteDefaults.Flag Flags => (ObjectPaletteDefaults.Flag)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x0, 0x4));
-        public Single SinkMeters => _structData.Slice(0x4, 0x4).Float();
-        public Single SinkVariance => _structData.Slice(0x8, 0x4).Float();
-        public Single XYOffsetVariance => _structData.Slice(0xC, 0x4).Float();
+        public Single SinkMeters => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single SinkVariance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single XYOffsetVariance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
         public ObjectPaletteDefaults.FootprintSizes FootprintSize => (ObjectPaletteDefaults.FootprintSizes)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x10, 0x4));
-        public Single ScalePercent => _structData.Slice(0x14, 0x4).Float();
-        public Single ScaleVariance => _structData.Slice(0x18, 0x4).Float();
-        public Single AngleXDegrees => _structData.Slice(0x1C, 0x4).Float() * 57.2958f;
-        public Single AngleXVariance => _structData.Slice(0x20, 0x4).Float() * 57.2958f;
-        public Single AngleYDegrees => _structData.Slice(0x24, 0x4).Float() * 57.2958f;
-        public Single AngleYVariance => _structData.Slice(0x28, 0x4).Float() * 57.2958f;
-        public Single AngleZDegrees => _structData.Slice(0x2C, 0x4).Float() * 57.2958f;
-        public Single AngleZVariance => _structData.Slice(0x30, 0x4).Float() * 57.2958f;
-        public Single SlopePercent => _structData.Slice(0x34, 0x4).Float();
-        public Single SlopePercentVariance => _structData.Slice(0x38, 0x4).Float();
-        public Single Density => _structData.Slice(0x3C, 0x4).Float();
-        public Single FrequencyPercent => _structData.Slice(0x40, 0x4).Float() / 100f;
-        public Single SlopeLimit => _structData.Slice(0x44, 0x4).Float() * 57.2958f;
-        public Single DistanceBelowWater => _structData.Slice(0x48, 0x4).Float();
-        public Single DistanceAboveWater => _structData.Slice(0x4C, 0x4).Float();
+        public Single ScalePercent => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
+        public Single ScaleVariance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
+        public Single AngleXDegrees => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4)) * 57.2958f;
+        public Single AngleXVariance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x20, 0x4)) * 57.2958f;
+        public Single AngleYDegrees => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x24, 0x4)) * 57.2958f;
+        public Single AngleYVariance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x28, 0x4)) * 57.2958f;
+        public Single AngleZDegrees => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x2C, 0x4)) * 57.2958f;
+        public Single AngleZVariance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x30, 0x4)) * 57.2958f;
+        public Single SlopePercent => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x34, 0x4));
+        public Single SlopePercentVariance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x38, 0x4));
+        public Single Density => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x3C, 0x4));
+        public Single FrequencyPercent => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x40, 0x4)) / 100f;
+        public Single SlopeLimit => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x44, 0x4)) * 57.2958f;
+        public Single DistanceBelowWater => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x48, 0x4));
+        public Single DistanceAboveWater => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4C, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

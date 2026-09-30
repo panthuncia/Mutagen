@@ -1442,9 +1442,9 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         public ImageSpaceDepthOfField.VersioningBreaks Versioning { get; private set; }
-        public Single Strength => _structData.Slice(0x0, 0x4).Float();
-        public Single Distance => _structData.Slice(0x4, 0x4).Float();
-        public Single Range => _structData.Slice(0x8, 0x4).Float();
+        public Single Strength => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single Distance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single Range => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
         public Int16 Unknown => _structData.Length <= 0xC ? default : BinaryPrimitives.ReadInt16LittleEndian(_structData.Slice(0xC, 0x2));
         #region BlurRadius
         public partial Byte GetBlurRadiusCustom(int location);

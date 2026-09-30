@@ -1245,9 +1245,9 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         public IFormLinkGetter<IAtmosphereGetter> Atmosphere => FormLinkBinaryTranslation.Instance.OverlayFactory<IAtmosphereGetter>(_package, _structData.Span.Slice(0x0, 0x4));
-        public Single AverageDensityFrac => _structData.Slice(0x4, 0x4).Float();
-        public Single RayleighScatteringCoefficient => _structData.Slice(0x8, 0x4).Float();
-        public Single MieScatteringCoefficient => _structData.Slice(0xC, 0x4).Float();
+        public Single AverageDensityFrac => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single RayleighScatteringCoefficient => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single MieScatteringCoefficient => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

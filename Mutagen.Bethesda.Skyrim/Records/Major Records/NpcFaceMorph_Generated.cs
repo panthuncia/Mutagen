@@ -2051,25 +2051,25 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        public Single NoseLongVsShort => _structData.Slice(0x0, 0x4).Float();
-        public Single NoseUpVsDown => _structData.Slice(0x4, 0x4).Float();
-        public Single JawUpVsDown => _structData.Slice(0x8, 0x4).Float();
-        public Single JawNarrowVsWide => _structData.Slice(0xC, 0x4).Float();
-        public Single JawForwardVsBack => _structData.Slice(0x10, 0x4).Float();
-        public Single CheeksUpVsDown => _structData.Slice(0x14, 0x4).Float();
-        public Single CheeksForwardVsBack => _structData.Slice(0x18, 0x4).Float();
-        public Single EyesUpVsDown => _structData.Slice(0x1C, 0x4).Float();
-        public Single EyesInVsOut => _structData.Slice(0x20, 0x4).Float();
-        public Single BrowsUpVsDown => _structData.Slice(0x24, 0x4).Float();
-        public Single BrowsInVsOut => _structData.Slice(0x28, 0x4).Float();
-        public Single BrowsForwardVsBack => _structData.Slice(0x2C, 0x4).Float();
-        public Single LipsUpVsDown => _structData.Slice(0x30, 0x4).Float();
-        public Single LipsInVsOut => _structData.Slice(0x34, 0x4).Float();
-        public Single ChinNarrowVsWide => _structData.Slice(0x38, 0x4).Float();
-        public Single ChinUpVsDown => _structData.Slice(0x3C, 0x4).Float();
-        public Single ChinUnderbiteVsOverbite => _structData.Slice(0x40, 0x4).Float();
-        public Single EyesForwardVsBack => _structData.Slice(0x44, 0x4).Float();
-        public Single Unknown => _structData.Slice(0x48, 0x4).Float();
+        public Single NoseLongVsShort => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single NoseUpVsDown => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single JawUpVsDown => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single JawNarrowVsWide => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single JawForwardVsBack => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
+        public Single CheeksUpVsDown => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
+        public Single CheeksForwardVsBack => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
+        public Single EyesUpVsDown => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
+        public Single EyesInVsOut => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x20, 0x4));
+        public Single BrowsUpVsDown => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x24, 0x4));
+        public Single BrowsInVsOut => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x28, 0x4));
+        public Single BrowsForwardVsBack => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x2C, 0x4));
+        public Single LipsUpVsDown => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x30, 0x4));
+        public Single LipsInVsOut => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x34, 0x4));
+        public Single ChinNarrowVsWide => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x38, 0x4));
+        public Single ChinUpVsDown => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x3C, 0x4));
+        public Single ChinUnderbiteVsOverbite => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x40, 0x4));
+        public Single EyesForwardVsBack => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x44, 0x4));
+        public Single Unknown => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x48, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

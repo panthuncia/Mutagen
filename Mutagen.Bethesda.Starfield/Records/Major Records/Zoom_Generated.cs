@@ -1897,7 +1897,7 @@ namespace Mutagen.Bethesda.Starfield
         #region FovMult
         private int _FovMultLocation => _ZNAMLocation!.Value.Min + 0x10;
         private bool _FovMult_IsSet => _ZNAMLocation.HasValue;
-        public Single FovMult => _FovMult_IsSet ? _recordData.Slice(_FovMultLocation, 4).Float() : default(Single);
+        public Single FovMult => _FovMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FovMultLocation, 4)) : default(Single);
         #endregion
         #region Overlay
         private int _OverlayLocation => _ZNAMLocation!.Value.Min + 0x14;
@@ -1907,7 +1907,7 @@ namespace Mutagen.Bethesda.Starfield
         #region AdsDistanceFromCameraOffset
         private int _AdsDistanceFromCameraOffsetLocation => _ZNAMLocation!.Value.Min + 0x15;
         private bool _AdsDistanceFromCameraOffset_IsSet => _ZNAMLocation.HasValue;
-        public Single AdsDistanceFromCameraOffset => _AdsDistanceFromCameraOffset_IsSet ? _recordData.Slice(_AdsDistanceFromCameraOffsetLocation, 4).Float() : default(Single);
+        public Single AdsDistanceFromCameraOffset => _AdsDistanceFromCameraOffset_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AdsDistanceFromCameraOffsetLocation, 4)) : default(Single);
         #endregion
         #region AdsHeightDelayEnabled
         private int _AdsHeightDelayEnabledLocation => _ZNAMLocation!.Value.Min + 0x19;
@@ -1917,7 +1917,7 @@ namespace Mutagen.Bethesda.Starfield
         #region AdsHeightDelaySeconds
         private int _AdsHeightDelaySecondsLocation => _ZNAMLocation!.Value.Min + 0x1A;
         private bool _AdsHeightDelaySeconds_IsSet => _ZNAMLocation.HasValue;
-        public Single AdsHeightDelaySeconds => _AdsHeightDelaySeconds_IsSet ? _recordData.Slice(_AdsHeightDelaySecondsLocation, 4).Float() : default(Single);
+        public Single AdsHeightDelaySeconds => _AdsHeightDelaySeconds_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AdsHeightDelaySecondsLocation, 4)) : default(Single);
         #endregion
         #region AdsDepthEnabled
         private int _AdsDepthEnabledLocation => _ZNAMLocation!.Value.Min + 0x1E;
@@ -1927,7 +1927,7 @@ namespace Mutagen.Bethesda.Starfield
         #region AdsDepthDelaySeconds
         private int _AdsDepthDelaySecondsLocation => _ZNAMLocation!.Value.Min + 0x1F;
         private bool _AdsDepthDelaySeconds_IsSet => _ZNAMLocation.HasValue;
-        public Single AdsDepthDelaySeconds => _AdsDepthDelaySeconds_IsSet ? _recordData.Slice(_AdsDepthDelaySecondsLocation, 4).Float() : default(Single);
+        public Single AdsDepthDelaySeconds => _AdsDepthDelaySeconds_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AdsDepthDelaySecondsLocation, 4)) : default(Single);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

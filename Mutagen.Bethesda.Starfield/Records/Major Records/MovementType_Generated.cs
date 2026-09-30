@@ -1810,11 +1810,11 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region FlightAngleGain
         private int? _FlightAngleGainLocation;
-        public Single? FlightAngleGain => _FlightAngleGainLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FlightAngleGainLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? FlightAngleGain => _FlightAngleGainLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FlightAngleGainLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region KNAM
         private int? _KNAMLocation;
-        public Single? KNAM => _KNAMLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _KNAMLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? KNAM => _KNAMLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _KNAMLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region INTV
         private int? _INTVLocation;

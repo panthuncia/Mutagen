@@ -1415,11 +1415,11 @@ namespace Mutagen.Bethesda.Fallout4
         public IReadOnlyList<IRegionGrassGetter>? Grasses { get; private set; }
         #region LodDisplayDistanceMultiplier
         private int? _LodDisplayDistanceMultiplierLocation;
-        public override Single? LodDisplayDistanceMultiplier => _LodDisplayDistanceMultiplierLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _LodDisplayDistanceMultiplierLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public override Single? LodDisplayDistanceMultiplier => _LodDisplayDistanceMultiplierLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LodDisplayDistanceMultiplierLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region OcclusionAccuracyDist
         private int? _OcclusionAccuracyDistLocation;
-        public override Single? OcclusionAccuracyDist => _OcclusionAccuracyDistLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _OcclusionAccuracyDistLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public override Single? OcclusionAccuracyDist => _OcclusionAccuracyDistLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _OcclusionAccuracyDistLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

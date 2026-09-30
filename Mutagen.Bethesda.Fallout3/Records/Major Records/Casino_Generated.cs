@@ -4093,12 +4093,12 @@ namespace Mutagen.Bethesda.Fallout3
         #region DecksPercentBeforeShuffle
         private int _DecksPercentBeforeShuffleLocation => _DATALocation!.Value.Min;
         private bool _DecksPercentBeforeShuffle_IsSet => _DATALocation.HasValue;
-        public Single DecksPercentBeforeShuffle => _DecksPercentBeforeShuffle_IsSet ? _recordData.Slice(_DecksPercentBeforeShuffleLocation, 4).Float() : default(Single);
+        public Single DecksPercentBeforeShuffle => _DecksPercentBeforeShuffle_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DecksPercentBeforeShuffleLocation, 4)) : default(Single);
         #endregion
         #region BlackJackPayoutRatio
         private int _BlackJackPayoutRatioLocation => _DATALocation!.Value.Min + 0x4;
         private bool _BlackJackPayoutRatio_IsSet => _DATALocation.HasValue;
-        public Single BlackJackPayoutRatio => _BlackJackPayoutRatio_IsSet ? _recordData.Slice(_BlackJackPayoutRatioLocation, 4).Float() : default(Single);
+        public Single BlackJackPayoutRatio => _BlackJackPayoutRatio_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BlackJackPayoutRatioLocation, 4)) : default(Single);
         #endregion
         #region SlotReelSymbol1
         private int _SlotReelSymbol1Location => _DATALocation!.Value.Min + 0x8;

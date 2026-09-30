@@ -1171,9 +1171,9 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        public Single Directional => _structData.Slice(0x0, 0x4).Float();
-        public Single MovementSpeed => _structData.Slice(0x4, 0x4).Float();
-        public Single RotationSpeed => _structData.Slice(0x8, 0x4).Float();
+        public Single Directional => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single MovementSpeed => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single RotationSpeed => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

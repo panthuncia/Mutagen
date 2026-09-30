@@ -9408,8 +9408,8 @@ namespace Mutagen.Bethesda.Fallout4
                 if (!_Height_IsSet) return new GenderedItem<Single>(default(Single), default(Single));
                 var data = _recordData.Slice(_HeightLocation);
                 return new GenderedItem<Single>(
-                    data.Float(),
-                    data.Slice(4).Float());
+                    FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(data),
+                    FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(data.Slice(4)));
             }
         }
         #endregion
@@ -9437,12 +9437,12 @@ namespace Mutagen.Bethesda.Fallout4
         #region AccelerationRate
         private int _AccelerationRateLocation => _DATALocation!.Value.Min + DefaultWeightVersioningOffset + 0x24;
         private bool _AccelerationRate_IsSet => _DATALocation.HasValue;
-        public Single AccelerationRate => _AccelerationRate_IsSet ? _recordData.Slice(_AccelerationRateLocation, 4).Float() : default(Single);
+        public Single AccelerationRate => _AccelerationRate_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AccelerationRateLocation, 4)) : default(Single);
         #endregion
         #region DecelerationRate
         private int _DecelerationRateLocation => _DATALocation!.Value.Min + DefaultWeightVersioningOffset + 0x28;
         private bool _DecelerationRate_IsSet => _DATALocation.HasValue;
-        public Single DecelerationRate => _DecelerationRate_IsSet ? _recordData.Slice(_DecelerationRateLocation, 4).Float() : default(Single);
+        public Single DecelerationRate => _DecelerationRate_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DecelerationRateLocation, 4)) : default(Single);
         #endregion
         #region Size
         private int _SizeLocation => _DATALocation!.Value.Min + DefaultWeightVersioningOffset + 0x2C;
@@ -9457,7 +9457,7 @@ namespace Mutagen.Bethesda.Fallout4
         #region InjuredHealthPercent
         private int _InjuredHealthPercentLocation => _DATALocation!.Value.Min + DefaultWeightVersioningOffset + 0x38;
         private bool _InjuredHealthPercent_IsSet => _DATALocation.HasValue;
-        public Single InjuredHealthPercent => _InjuredHealthPercent_IsSet ? _recordData.Slice(_InjuredHealthPercentLocation, 4).Float() : default(Single);
+        public Single InjuredHealthPercent => _InjuredHealthPercent_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_InjuredHealthPercentLocation, 4)) : default(Single);
         #endregion
         #region ShieldBipedObject
         private int _ShieldBipedObjectLocation => _DATALocation!.Value.Min + DefaultWeightVersioningOffset + 0x3C;
@@ -9478,22 +9478,22 @@ namespace Mutagen.Bethesda.Fallout4
         #region AimAngleTolerance
         private int _AimAngleToleranceLocation => _DATALocation!.Value.Min + BeardBipedObjectVersioningOffset + 0x48;
         private bool _AimAngleTolerance_IsSet => _DATALocation.HasValue;
-        public Single AimAngleTolerance => _AimAngleTolerance_IsSet ? _recordData.Slice(_AimAngleToleranceLocation, 4).Float() : default(Single);
+        public Single AimAngleTolerance => _AimAngleTolerance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AimAngleToleranceLocation, 4)) : default(Single);
         #endregion
         #region FlightRadius
         private int _FlightRadiusLocation => _DATALocation!.Value.Min + BeardBipedObjectVersioningOffset + 0x4C;
         private bool _FlightRadius_IsSet => _DATALocation.HasValue;
-        public Single FlightRadius => _FlightRadius_IsSet ? _recordData.Slice(_FlightRadiusLocation, 4).Float() : default(Single);
+        public Single FlightRadius => _FlightRadius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FlightRadiusLocation, 4)) : default(Single);
         #endregion
         #region AngularAccelerationRate
         private int _AngularAccelerationRateLocation => _DATALocation!.Value.Min + BeardBipedObjectVersioningOffset + 0x50;
         private bool _AngularAccelerationRate_IsSet => _DATALocation.HasValue;
-        public Single AngularAccelerationRate => _AngularAccelerationRate_IsSet ? _recordData.Slice(_AngularAccelerationRateLocation, 4).Float() : default(Single);
+        public Single AngularAccelerationRate => _AngularAccelerationRate_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AngularAccelerationRateLocation, 4)) : default(Single);
         #endregion
         #region AngularTolerance
         private int _AngularToleranceLocation => _DATALocation!.Value.Min + BeardBipedObjectVersioningOffset + 0x54;
         private bool _AngularTolerance_IsSet => _DATALocation.HasValue;
-        public Single AngularTolerance => _AngularTolerance_IsSet ? _recordData.Slice(_AngularToleranceLocation, 4).Float() : default(Single);
+        public Single AngularTolerance => _AngularTolerance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AngularToleranceLocation, 4)) : default(Single);
         #endregion
         #region Flags2
         private int _Flags2Location => _DATALocation!.Value.Min + BeardBipedObjectVersioningOffset + 0x58;
@@ -9520,7 +9520,7 @@ namespace Mutagen.Bethesda.Fallout4
         #region SeverableDebrisScale
         private int _SeverableDebrisScaleLocation => _DATALocation!.Value.Min + BeardBipedObjectVersioningOffset + 0x86;
         private bool _SeverableDebrisScale_IsSet => _DATALocation.HasValue;
-        public Single SeverableDebrisScale => _SeverableDebrisScale_IsSet ? _recordData.Slice(_SeverableDebrisScaleLocation, 4).Float() : default(Single);
+        public Single SeverableDebrisScale => _SeverableDebrisScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SeverableDebrisScaleLocation, 4)) : default(Single);
         #endregion
         #region SeverableDebrisCount
         private int _SeverableDebrisCountLocation => _DATALocation!.Value.Min + BeardBipedObjectVersioningOffset + 0x8A;
@@ -9535,7 +9535,7 @@ namespace Mutagen.Bethesda.Fallout4
         #region ExplodableDebrisScale
         private int _ExplodableDebrisScaleLocation => _DATALocation!.Value.Min + BeardBipedObjectVersioningOffset + 0x8C;
         private bool _ExplodableDebrisScale_IsSet => _DATALocation.HasValue;
-        public Single ExplodableDebrisScale => _ExplodableDebrisScale_IsSet ? _recordData.Slice(_ExplodableDebrisScaleLocation, 4).Float() : default(Single);
+        public Single ExplodableDebrisScale => _ExplodableDebrisScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ExplodableDebrisScaleLocation, 4)) : default(Single);
         #endregion
         #region ExplodableDebrisCount
         private int _ExplodableDebrisCountLocation => _DATALocation!.Value.Min + BeardBipedObjectVersioningOffset + 0x90;
@@ -9580,7 +9580,7 @@ namespace Mutagen.Bethesda.Fallout4
         #region OnCrippleDebrisScale
         private int _OnCrippleDebrisScaleLocation => _DATALocation!.Value.Min + BeardBipedObjectVersioningOffset + 0xAA;
         private bool _OnCrippleDebrisScale_IsSet => _DATALocation.HasValue && _package.FormVersion!.FormVersion!.Value >= 96;
-        public Single OnCrippleDebrisScale => _OnCrippleDebrisScale_IsSet ? _recordData.Slice(_OnCrippleDebrisScaleLocation, 4).Float() : default(Single);
+        public Single OnCrippleDebrisScale => _OnCrippleDebrisScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_OnCrippleDebrisScaleLocation, 4)) : default(Single);
         int OnCrippleDebrisScaleVersioningOffset => BeardBipedObjectVersioningOffset + (_package.FormVersion!.FormVersion!.Value < 96 ? -4 : 0);
         #endregion
         #region OnCrippleDebrisCount
@@ -9622,13 +9622,13 @@ namespace Mutagen.Bethesda.Fallout4
         #region OrientationLimitsPitch
         private int _OrientationLimitsPitchLocation => _DATALocation!.Value.Min + ExplodableSubsegmentExplosionVersioningOffset + 0xC0;
         private bool _OrientationLimitsPitch_IsSet => _DATALocation.HasValue && _package.FormVersion!.FormVersion!.Value >= 98;
-        public Single OrientationLimitsPitch => _OrientationLimitsPitch_IsSet ? _recordData.Slice(_OrientationLimitsPitchLocation, 4).Float() : default(Single);
+        public Single OrientationLimitsPitch => _OrientationLimitsPitch_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_OrientationLimitsPitchLocation, 4)) : default(Single);
         int OrientationLimitsPitchVersioningOffset => ExplodableSubsegmentExplosionVersioningOffset + (_package.FormVersion!.FormVersion!.Value < 98 ? -4 : 0);
         #endregion
         #region OrientationLimitsRoll
         private int _OrientationLimitsRollLocation => _DATALocation!.Value.Min + OrientationLimitsPitchVersioningOffset + 0xC4;
         private bool _OrientationLimitsRoll_IsSet => _DATALocation.HasValue && _package.FormVersion!.FormVersion!.Value >= 98;
-        public Single OrientationLimitsRoll => _OrientationLimitsRoll_IsSet ? _recordData.Slice(_OrientationLimitsRollLocation, 4).Float() : default(Single);
+        public Single OrientationLimitsRoll => _OrientationLimitsRoll_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_OrientationLimitsRollLocation, 4)) : default(Single);
         int OrientationLimitsRollVersioningOffset => OrientationLimitsPitchVersioningOffset + (_package.FormVersion!.FormVersion!.Value < 98 ? -4 : 0);
         #endregion
         #region SkeletalModel
@@ -9670,11 +9670,11 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #region FacegenMainClamp
         private int? _FacegenMainClampLocation;
-        public Single FacegenMainClamp => _FacegenMainClampLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FacegenMainClampLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single FacegenMainClamp => _FacegenMainClampLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FacegenMainClampLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region FacegenFaceClamp
         private int? _FacegenFaceClampLocation;
-        public Single FacegenFaceClamp => _FacegenFaceClampLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FacegenFaceClampLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single FacegenFaceClamp => _FacegenFaceClampLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FacegenFaceClampLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region AttackRace
         private int? _AttackRaceLocation;
@@ -9788,11 +9788,11 @@ namespace Mutagen.Bethesda.Fallout4
         public IReadOnlyList<ISubgraphGetter> Subgraphs { get; private set; } = [];
         #region IdleChatterTimeMin
         private int? _IdleChatterTimeMinLocation;
-        public Single? IdleChatterTimeMin => _IdleChatterTimeMinLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _IdleChatterTimeMinLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? IdleChatterTimeMin => _IdleChatterTimeMinLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IdleChatterTimeMinLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region IdleChatterTimeMax
         private int? _IdleChatterTimeMaxLocation;
-        public Single? IdleChatterTimeMax => _IdleChatterTimeMaxLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _IdleChatterTimeMaxLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? IdleChatterTimeMax => _IdleChatterTimeMaxLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IdleChatterTimeMaxLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region MorphValues
         partial void MorphValuesCustomParse(

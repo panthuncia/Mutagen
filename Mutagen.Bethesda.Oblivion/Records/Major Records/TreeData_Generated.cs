@@ -1444,14 +1444,14 @@ namespace Mutagen.Bethesda.Oblivion
                 translationParams: translationParams);
         }
 
-        public Single LeafCurvature => _structData.Slice(0x0, 0x4).Float();
-        public Single MinimumLeafAngle => _structData.Slice(0x4, 0x4).Float();
-        public Single MaximumLeafAngle => _structData.Slice(0x8, 0x4).Float();
-        public Single BranchDimmingValue => _structData.Slice(0xC, 0x4).Float();
-        public Single LeafDimmingValue => _structData.Slice(0x10, 0x4).Float();
+        public Single LeafCurvature => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single MinimumLeafAngle => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single MaximumLeafAngle => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single BranchDimmingValue => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single LeafDimmingValue => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
         public Int32 ShadowRadius => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x14, 0x4));
-        public Single RockingSpeed => _structData.Slice(0x18, 0x4).Float();
-        public Single RustleSpeed => _structData.Slice(0x1C, 0x4).Float();
+        public Single RockingSpeed => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
+        public Single RustleSpeed => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

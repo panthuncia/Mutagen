@@ -6619,19 +6619,19 @@ namespace Mutagen.Bethesda.Fallout3
         #endregion
         #region Radius
         private int? _RadiusLocation;
-        public Single? Radius => _RadiusLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _RadiusLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? Radius => _RadiusLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _RadiusLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Health
         private int? _HealthLocation;
-        public Single? Health => _HealthLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _HealthLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? Health => _HealthLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HealthLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Radiation
         private int? _RadiationLocation;
-        public Single? Radiation => _RadiationLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _RadiationLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? Radiation => _RadiationLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _RadiationLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Charge
         private int? _ChargeLocation;
-        public Single? Charge => _ChargeLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ChargeLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? Charge => _ChargeLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ChargeLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region AmmoType
         private int? _AmmoTypeLocation;
@@ -6702,7 +6702,7 @@ namespace Mutagen.Bethesda.Fallout3
         public IReadOnlyList<Single>? DistantLodData { get; private set; }
         #region Scale
         private int? _ScaleLocation;
-        public Single? Scale => _ScaleLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ScaleLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? Scale => _ScaleLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ScaleLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Placement
         private RangeInt32? _PlacementLocation;
@@ -7094,7 +7094,7 @@ namespace Mutagen.Bethesda.Fallout3
                         package: _package,
                         finalPos: finalPos,
                         itemLength: 4,
-                        getter: (s, p) => s.Float());
+                        getter: (s, p) => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(s));
                     return (int)PlacedObject_FieldIndex.DistantLodData;
                 }
                 case RecordTypeInts.XSCL:

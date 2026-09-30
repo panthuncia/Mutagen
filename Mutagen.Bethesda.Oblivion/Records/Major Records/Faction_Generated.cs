@@ -1971,7 +1971,7 @@ namespace Mutagen.Bethesda.Oblivion
         #endregion
         #region CrimeGoldMultiplier
         private int? _CrimeGoldMultiplierLocation;
-        public Single? CrimeGoldMultiplier => _CrimeGoldMultiplierLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _CrimeGoldMultiplierLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? CrimeGoldMultiplier => _CrimeGoldMultiplierLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _CrimeGoldMultiplierLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         public IReadOnlyList<IRankGetter> Ranks { get; private set; } = [];
         partial void CustomFactoryEnd(

@@ -3620,168 +3620,168 @@ namespace Mutagen.Bethesda.Fallout3
         #region HdrEyeAdaptSpeed
         private int _HdrEyeAdaptSpeedLocation => _DNAMLocation!.Value.Min;
         private bool _HdrEyeAdaptSpeed_IsSet => _DNAMLocation.HasValue;
-        public Single HdrEyeAdaptSpeed => _HdrEyeAdaptSpeed_IsSet ? _recordData.Slice(_HdrEyeAdaptSpeedLocation, 4).Float() : default(Single);
+        public Single HdrEyeAdaptSpeed => _HdrEyeAdaptSpeed_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrEyeAdaptSpeedLocation, 4)) : default(Single);
         #endregion
         #region HdrBlurRadius
         private int _HdrBlurRadiusLocation => _DNAMLocation!.Value.Min + 0x4;
         private bool _HdrBlurRadius_IsSet => _DNAMLocation.HasValue;
-        public Single HdrBlurRadius => _HdrBlurRadius_IsSet ? _recordData.Slice(_HdrBlurRadiusLocation, 4).Float() : default(Single);
+        public Single HdrBlurRadius => _HdrBlurRadius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrBlurRadiusLocation, 4)) : default(Single);
         #endregion
         #region HdrBlurPasses
         private int _HdrBlurPassesLocation => _DNAMLocation!.Value.Min + 0x8;
         private bool _HdrBlurPasses_IsSet => _DNAMLocation.HasValue;
-        public Single HdrBlurPasses => _HdrBlurPasses_IsSet ? _recordData.Slice(_HdrBlurPassesLocation, 4).Float() : default(Single);
+        public Single HdrBlurPasses => _HdrBlurPasses_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrBlurPassesLocation, 4)) : default(Single);
         #endregion
         #region HdrEmissiveMult
         private int _HdrEmissiveMultLocation => _DNAMLocation!.Value.Min + 0xC;
         private bool _HdrEmissiveMult_IsSet => _DNAMLocation.HasValue;
-        public Single HdrEmissiveMult => _HdrEmissiveMult_IsSet ? _recordData.Slice(_HdrEmissiveMultLocation, 4).Float() : default(Single);
+        public Single HdrEmissiveMult => _HdrEmissiveMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrEmissiveMultLocation, 4)) : default(Single);
         #endregion
         #region HdrTargetLum
         private int _HdrTargetLumLocation => _DNAMLocation!.Value.Min + 0x10;
         private bool _HdrTargetLum_IsSet => _DNAMLocation.HasValue;
-        public Single HdrTargetLum => _HdrTargetLum_IsSet ? _recordData.Slice(_HdrTargetLumLocation, 4).Float() : default(Single);
+        public Single HdrTargetLum => _HdrTargetLum_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrTargetLumLocation, 4)) : default(Single);
         #endregion
         #region HdrUpperLumClamp
         private int _HdrUpperLumClampLocation => _DNAMLocation!.Value.Min + 0x14;
         private bool _HdrUpperLumClamp_IsSet => _DNAMLocation.HasValue;
-        public Single HdrUpperLumClamp => _HdrUpperLumClamp_IsSet ? _recordData.Slice(_HdrUpperLumClampLocation, 4).Float() : default(Single);
+        public Single HdrUpperLumClamp => _HdrUpperLumClamp_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrUpperLumClampLocation, 4)) : default(Single);
         #endregion
         #region HdrBrightScale
         private int _HdrBrightScaleLocation => _DNAMLocation!.Value.Min + 0x18;
         private bool _HdrBrightScale_IsSet => _DNAMLocation.HasValue;
-        public Single HdrBrightScale => _HdrBrightScale_IsSet ? _recordData.Slice(_HdrBrightScaleLocation, 4).Float() : default(Single);
+        public Single HdrBrightScale => _HdrBrightScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrBrightScaleLocation, 4)) : default(Single);
         #endregion
         #region HdrBrightClamp
         private int _HdrBrightClampLocation => _DNAMLocation!.Value.Min + 0x1C;
         private bool _HdrBrightClamp_IsSet => _DNAMLocation.HasValue;
-        public Single HdrBrightClamp => _HdrBrightClamp_IsSet ? _recordData.Slice(_HdrBrightClampLocation, 4).Float() : default(Single);
+        public Single HdrBrightClamp => _HdrBrightClamp_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrBrightClampLocation, 4)) : default(Single);
         #endregion
         #region HdrLumRampNoTex
         private int _HdrLumRampNoTexLocation => _DNAMLocation!.Value.Min + 0x20;
         private bool _HdrLumRampNoTex_IsSet => _DNAMLocation.HasValue;
-        public Single HdrLumRampNoTex => _HdrLumRampNoTex_IsSet ? _recordData.Slice(_HdrLumRampNoTexLocation, 4).Float() : default(Single);
+        public Single HdrLumRampNoTex => _HdrLumRampNoTex_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrLumRampNoTexLocation, 4)) : default(Single);
         #endregion
         #region HdrLumRampMin
         private int _HdrLumRampMinLocation => _DNAMLocation!.Value.Min + 0x24;
         private bool _HdrLumRampMin_IsSet => _DNAMLocation.HasValue;
-        public Single HdrLumRampMin => _HdrLumRampMin_IsSet ? _recordData.Slice(_HdrLumRampMinLocation, 4).Float() : default(Single);
+        public Single HdrLumRampMin => _HdrLumRampMin_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrLumRampMinLocation, 4)) : default(Single);
         #endregion
         #region HdrLumRampMax
         private int _HdrLumRampMaxLocation => _DNAMLocation!.Value.Min + 0x28;
         private bool _HdrLumRampMax_IsSet => _DNAMLocation.HasValue;
-        public Single HdrLumRampMax => _HdrLumRampMax_IsSet ? _recordData.Slice(_HdrLumRampMaxLocation, 4).Float() : default(Single);
+        public Single HdrLumRampMax => _HdrLumRampMax_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrLumRampMaxLocation, 4)) : default(Single);
         #endregion
         #region HdrSunlightDimmer
         private int _HdrSunlightDimmerLocation => _DNAMLocation!.Value.Min + 0x2C;
         private bool _HdrSunlightDimmer_IsSet => _DNAMLocation.HasValue;
-        public Single HdrSunlightDimmer => _HdrSunlightDimmer_IsSet ? _recordData.Slice(_HdrSunlightDimmerLocation, 4).Float() : default(Single);
+        public Single HdrSunlightDimmer => _HdrSunlightDimmer_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrSunlightDimmerLocation, 4)) : default(Single);
         #endregion
         #region HdrGrassDimmer
         private int _HdrGrassDimmerLocation => _DNAMLocation!.Value.Min + 0x30;
         private bool _HdrGrassDimmer_IsSet => _DNAMLocation.HasValue;
-        public Single HdrGrassDimmer => _HdrGrassDimmer_IsSet ? _recordData.Slice(_HdrGrassDimmerLocation, 4).Float() : default(Single);
+        public Single HdrGrassDimmer => _HdrGrassDimmer_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrGrassDimmerLocation, 4)) : default(Single);
         #endregion
         #region HdrTreeDimmer
         private int _HdrTreeDimmerLocation => _DNAMLocation!.Value.Min + 0x34;
         private bool _HdrTreeDimmer_IsSet => _DNAMLocation.HasValue;
-        public Single HdrTreeDimmer => _HdrTreeDimmer_IsSet ? _recordData.Slice(_HdrTreeDimmerLocation, 4).Float() : default(Single);
+        public Single HdrTreeDimmer => _HdrTreeDimmer_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrTreeDimmerLocation, 4)) : default(Single);
         #endregion
         #region HdrSkinDimmer
         private int _HdrSkinDimmerLocation => _DNAMLocation!.Value.Min + 0x38;
         private bool _HdrSkinDimmer_IsSet => _DNAMLocation.HasValue && _package.FormVersion!.FormVersion!.Value >= 10;
-        public Single HdrSkinDimmer => _HdrSkinDimmer_IsSet ? _recordData.Slice(_HdrSkinDimmerLocation, 4).Float() : default(Single);
+        public Single HdrSkinDimmer => _HdrSkinDimmer_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HdrSkinDimmerLocation, 4)) : default(Single);
         int HdrSkinDimmerVersioningOffset => _package.FormVersion!.FormVersion!.Value < 10 ? -4 : 0;
         #endregion
         #region BloomBlurRadius
         private int _BloomBlurRadiusLocation => _DNAMLocation!.Value.Min + HdrSkinDimmerVersioningOffset + 0x3C;
         private bool _BloomBlurRadius_IsSet => _DNAMLocation.HasValue;
-        public Single BloomBlurRadius => _BloomBlurRadius_IsSet ? _recordData.Slice(_BloomBlurRadiusLocation, 4).Float() : default(Single);
+        public Single BloomBlurRadius => _BloomBlurRadius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BloomBlurRadiusLocation, 4)) : default(Single);
         #endregion
         #region BloomAlphaMultInterior
         private int _BloomAlphaMultInteriorLocation => _DNAMLocation!.Value.Min + HdrSkinDimmerVersioningOffset + 0x40;
         private bool _BloomAlphaMultInterior_IsSet => _DNAMLocation.HasValue;
-        public Single BloomAlphaMultInterior => _BloomAlphaMultInterior_IsSet ? _recordData.Slice(_BloomAlphaMultInteriorLocation, 4).Float() : default(Single);
+        public Single BloomAlphaMultInterior => _BloomAlphaMultInterior_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BloomAlphaMultInteriorLocation, 4)) : default(Single);
         #endregion
         #region BloomAlphaMultExterior
         private int _BloomAlphaMultExteriorLocation => _DNAMLocation!.Value.Min + HdrSkinDimmerVersioningOffset + 0x44;
         private bool _BloomAlphaMultExterior_IsSet => _DNAMLocation.HasValue;
-        public Single BloomAlphaMultExterior => _BloomAlphaMultExterior_IsSet ? _recordData.Slice(_BloomAlphaMultExteriorLocation, 4).Float() : default(Single);
+        public Single BloomAlphaMultExterior => _BloomAlphaMultExterior_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BloomAlphaMultExteriorLocation, 4)) : default(Single);
         #endregion
         #region GetHitBlurRadius
         private int _GetHitBlurRadiusLocation => _DNAMLocation!.Value.Min + HdrSkinDimmerVersioningOffset + 0x48;
         private bool _GetHitBlurRadius_IsSet => _DNAMLocation.HasValue;
-        public Single GetHitBlurRadius => _GetHitBlurRadius_IsSet ? _recordData.Slice(_GetHitBlurRadiusLocation, 4).Float() : default(Single);
+        public Single GetHitBlurRadius => _GetHitBlurRadius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_GetHitBlurRadiusLocation, 4)) : default(Single);
         #endregion
         #region GetHitBlurDampingConstant
         private int _GetHitBlurDampingConstantLocation => _DNAMLocation!.Value.Min + HdrSkinDimmerVersioningOffset + 0x4C;
         private bool _GetHitBlurDampingConstant_IsSet => _DNAMLocation.HasValue;
-        public Single GetHitBlurDampingConstant => _GetHitBlurDampingConstant_IsSet ? _recordData.Slice(_GetHitBlurDampingConstantLocation, 4).Float() : default(Single);
+        public Single GetHitBlurDampingConstant => _GetHitBlurDampingConstant_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_GetHitBlurDampingConstantLocation, 4)) : default(Single);
         #endregion
         #region GetHitDampingConstant
         private int _GetHitDampingConstantLocation => _DNAMLocation!.Value.Min + HdrSkinDimmerVersioningOffset + 0x50;
         private bool _GetHitDampingConstant_IsSet => _DNAMLocation.HasValue;
-        public Single GetHitDampingConstant => _GetHitDampingConstant_IsSet ? _recordData.Slice(_GetHitDampingConstantLocation, 4).Float() : default(Single);
+        public Single GetHitDampingConstant => _GetHitDampingConstant_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_GetHitDampingConstantLocation, 4)) : default(Single);
         #endregion
         #region NightEyeTintRed
         private int _NightEyeTintRedLocation => _DNAMLocation!.Value.Min + HdrSkinDimmerVersioningOffset + 0x54;
         private bool _NightEyeTintRed_IsSet => _DNAMLocation.HasValue;
-        public Single NightEyeTintRed => _NightEyeTintRed_IsSet ? _recordData.Slice(_NightEyeTintRedLocation, 4).Float() : default(Single);
+        public Single NightEyeTintRed => _NightEyeTintRed_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_NightEyeTintRedLocation, 4)) : default(Single);
         #endregion
         #region NightEyeTintGreen
         private int _NightEyeTintGreenLocation => _DNAMLocation!.Value.Min + HdrSkinDimmerVersioningOffset + 0x58;
         private bool _NightEyeTintGreen_IsSet => _DNAMLocation.HasValue;
-        public Single NightEyeTintGreen => _NightEyeTintGreen_IsSet ? _recordData.Slice(_NightEyeTintGreenLocation, 4).Float() : default(Single);
+        public Single NightEyeTintGreen => _NightEyeTintGreen_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_NightEyeTintGreenLocation, 4)) : default(Single);
         #endregion
         #region NightEyeTintBlue
         private int _NightEyeTintBlueLocation => _DNAMLocation!.Value.Min + HdrSkinDimmerVersioningOffset + 0x5C;
         private bool _NightEyeTintBlue_IsSet => _DNAMLocation.HasValue;
-        public Single NightEyeTintBlue => _NightEyeTintBlue_IsSet ? _recordData.Slice(_NightEyeTintBlueLocation, 4).Float() : default(Single);
+        public Single NightEyeTintBlue => _NightEyeTintBlue_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_NightEyeTintBlueLocation, 4)) : default(Single);
         #endregion
         #region NightEyeBrightness
         private int _NightEyeBrightnessLocation => _DNAMLocation!.Value.Min + HdrSkinDimmerVersioningOffset + 0x60;
         private bool _NightEyeBrightness_IsSet => _DNAMLocation.HasValue;
-        public Single NightEyeBrightness => _NightEyeBrightness_IsSet ? _recordData.Slice(_NightEyeBrightnessLocation, 4).Float() : default(Single);
+        public Single NightEyeBrightness => _NightEyeBrightness_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_NightEyeBrightnessLocation, 4)) : default(Single);
         #endregion
         #region CinematicSaturation
         private int _CinematicSaturationLocation => _DNAMLocation!.Value.Min + HdrSkinDimmerVersioningOffset + 0x64;
         private bool _CinematicSaturation_IsSet => _DNAMLocation.HasValue;
-        public Single CinematicSaturation => _CinematicSaturation_IsSet ? _recordData.Slice(_CinematicSaturationLocation, 4).Float() : default(Single);
+        public Single CinematicSaturation => _CinematicSaturation_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CinematicSaturationLocation, 4)) : default(Single);
         #endregion
         #region CinematicContrastAvgLumValue
         private int _CinematicContrastAvgLumValueLocation => _DNAMLocation!.Value.Min + HdrSkinDimmerVersioningOffset + 0x68;
         private bool _CinematicContrastAvgLumValue_IsSet => _DNAMLocation.HasValue;
-        public Single CinematicContrastAvgLumValue => _CinematicContrastAvgLumValue_IsSet ? _recordData.Slice(_CinematicContrastAvgLumValueLocation, 4).Float() : default(Single);
+        public Single CinematicContrastAvgLumValue => _CinematicContrastAvgLumValue_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CinematicContrastAvgLumValueLocation, 4)) : default(Single);
         #endregion
         #region CinematicContrastValue
         private int _CinematicContrastValueLocation => _DNAMLocation!.Value.Min + HdrSkinDimmerVersioningOffset + 0x6C;
         private bool _CinematicContrastValue_IsSet => _DNAMLocation.HasValue;
-        public Single CinematicContrastValue => _CinematicContrastValue_IsSet ? _recordData.Slice(_CinematicContrastValueLocation, 4).Float() : default(Single);
+        public Single CinematicContrastValue => _CinematicContrastValue_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CinematicContrastValueLocation, 4)) : default(Single);
         #endregion
         #region CinematicBrightnessValue
         private int _CinematicBrightnessValueLocation => _DNAMLocation!.Value.Min + HdrSkinDimmerVersioningOffset + 0x70;
         private bool _CinematicBrightnessValue_IsSet => _DNAMLocation.HasValue;
-        public Single CinematicBrightnessValue => _CinematicBrightnessValue_IsSet ? _recordData.Slice(_CinematicBrightnessValueLocation, 4).Float() : default(Single);
+        public Single CinematicBrightnessValue => _CinematicBrightnessValue_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CinematicBrightnessValueLocation, 4)) : default(Single);
         #endregion
         #region CinematicTintRed
         private int _CinematicTintRedLocation => _DNAMLocation!.Value.Min + HdrSkinDimmerVersioningOffset + 0x74;
         private bool _CinematicTintRed_IsSet => _DNAMLocation.HasValue;
-        public Single CinematicTintRed => _CinematicTintRed_IsSet ? _recordData.Slice(_CinematicTintRedLocation, 4).Float() : default(Single);
+        public Single CinematicTintRed => _CinematicTintRed_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CinematicTintRedLocation, 4)) : default(Single);
         #endregion
         #region CinematicTintGreen
         private int _CinematicTintGreenLocation => _DNAMLocation!.Value.Min + HdrSkinDimmerVersioningOffset + 0x78;
         private bool _CinematicTintGreen_IsSet => _DNAMLocation.HasValue;
-        public Single CinematicTintGreen => _CinematicTintGreen_IsSet ? _recordData.Slice(_CinematicTintGreenLocation, 4).Float() : default(Single);
+        public Single CinematicTintGreen => _CinematicTintGreen_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CinematicTintGreenLocation, 4)) : default(Single);
         #endregion
         #region CinematicTintBlue
         private int _CinematicTintBlueLocation => _DNAMLocation!.Value.Min + HdrSkinDimmerVersioningOffset + 0x7C;
         private bool _CinematicTintBlue_IsSet => _DNAMLocation.HasValue;
-        public Single CinematicTintBlue => _CinematicTintBlue_IsSet ? _recordData.Slice(_CinematicTintBlueLocation, 4).Float() : default(Single);
+        public Single CinematicTintBlue => _CinematicTintBlue_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CinematicTintBlueLocation, 4)) : default(Single);
         #endregion
         #region CinematicTintValue
         private int _CinematicTintValueLocation => _DNAMLocation!.Value.Min + HdrSkinDimmerVersioningOffset + 0x80;
         private bool _CinematicTintValue_IsSet => _DNAMLocation.HasValue;
-        public Single CinematicTintValue => _CinematicTintValue_IsSet ? _recordData.Slice(_CinematicTintValueLocation, 4).Float() : default(Single);
+        public Single CinematicTintValue => _CinematicTintValue_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CinematicTintValueLocation, 4)) : default(Single);
         #endregion
         #region Unknown
         private int _UnknownLocation => _DNAMLocation!.Value.Min + HdrSkinDimmerVersioningOffset + 0x84;

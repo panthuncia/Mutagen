@@ -1691,11 +1691,11 @@ namespace Mutagen.Bethesda.Fallout4
 
         #region ColorInfluence
         private int? _ColorInfluenceLocation;
-        public Single? ColorInfluence => _ColorInfluenceLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ColorInfluenceLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? ColorInfluence => _ColorInfluenceLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ColorInfluenceLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region FadeDistanceRadiusScale
         private int? _FadeDistanceRadiusScaleLocation;
-        public Single? FadeDistanceRadiusScale => _FadeDistanceRadiusScaleLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FadeDistanceRadiusScaleLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? FadeDistanceRadiusScale => _FadeDistanceRadiusScaleLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FadeDistanceRadiusScaleLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         public IReadOnlyList<ILensFlareSpriteGetter>? Sprites { get; private set; }
         partial void CustomFactoryEnd(

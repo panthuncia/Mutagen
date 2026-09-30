@@ -2154,7 +2154,7 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region DefaultValue
         private int? _DefaultValueLocation;
-        public Single? DefaultValue => _DefaultValueLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DefaultValueLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? DefaultValue => _DefaultValueLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DefaultValueLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Flags
         private int? _FlagsLocation;
@@ -2166,11 +2166,11 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region Min
         private int? _MinLocation;
-        public Single? Min => _MinLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MinLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? Min => _MinLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MinLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Max
         private int? _MaxLocation;
-        public Single? Max => _MaxLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaxLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? Max => _MaxLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaxLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

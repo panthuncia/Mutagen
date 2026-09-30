@@ -1183,8 +1183,8 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        public Single CenterFrequency => _structData.Slice(0x4, 0x4).Float();
-        public Single QValue => _structData.Slice(0x8, 0x4).Float();
+        public Single CenterFrequency => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single QValue => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
         public StateVariableFilterAudioEffect.FilterMode Mode => (StateVariableFilterAudioEffect.FilterMode)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0xC, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,

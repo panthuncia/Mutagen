@@ -1340,7 +1340,7 @@ namespace Mutagen.Bethesda.Starfield
         public Double TerrainHeightFrequency => BinaryPrimitives.ReadDoubleLittleEndian(_structData.Slice(NoiseFilenameEndingPos + 0x8, 0x8));
         public Byte NoiseType => _structData.Span[NoiseFilenameEndingPos + 0x10];
         public Int32 TerrainHeightSeed => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(NoiseFilenameEndingPos + 0x11, 0x4));
-        public Single TerrainMaxHeightMeters => _structData.Slice(NoiseFilenameEndingPos + 0x15, 0x4).Float();
+        public Single TerrainMaxHeightMeters => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(NoiseFilenameEndingPos + 0x15, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

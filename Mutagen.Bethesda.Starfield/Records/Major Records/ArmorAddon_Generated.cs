@@ -3950,7 +3950,7 @@ namespace Mutagen.Bethesda.Starfield
         #region WeaponAdjust
         private int _WeaponAdjustLocation => _DNAMLocation!.Value.Min;
         private bool _WeaponAdjust_IsSet => _DNAMLocation.HasValue;
-        public Single WeaponAdjust => _WeaponAdjust_IsSet ? _recordData.Slice(_WeaponAdjustLocation, 4).Float() : default(Single);
+        public Single WeaponAdjust => _WeaponAdjust_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WeaponAdjustLocation, 4)) : default(Single);
         #endregion
         #region MalePriority
         private int _MalePriorityLocation => _DNAMLocation!.Value.Min + 0x4;
@@ -3975,7 +3975,7 @@ namespace Mutagen.Bethesda.Starfield
         #region HealthBarOffset
         private int _HealthBarOffsetLocation => _DNAMLocation!.Value.Min + 0x9;
         private bool _HealthBarOffset_IsSet => _DNAMLocation.HasValue;
-        public Single HealthBarOffset => _HealthBarOffset_IsSet ? _recordData.Slice(_HealthBarOffsetLocation, 4).Float() : default(Single);
+        public Single HealthBarOffset => _HealthBarOffset_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HealthBarOffsetLocation, 4)) : default(Single);
         #endregion
         #region WorldModel
         private IGenderedItemGetter<IModelGetter?>? _WorldModelOverlay;

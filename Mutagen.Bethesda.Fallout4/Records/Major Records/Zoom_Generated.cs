@@ -1611,7 +1611,7 @@ namespace Mutagen.Bethesda.Fallout4
         #region FovMult
         private int _FovMultLocation => _GNAMLocation!.Value.Min;
         private bool _FovMult_IsSet => _GNAMLocation.HasValue;
-        public Single FovMult => _FovMult_IsSet ? _recordData.Slice(_FovMultLocation, 4).Float() : default(Single);
+        public Single FovMult => _FovMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FovMultLocation, 4)) : default(Single);
         #endregion
         #region Overlay
         private int _OverlayLocation => _GNAMLocation!.Value.Min + 0x4;

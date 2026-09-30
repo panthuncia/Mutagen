@@ -1397,11 +1397,11 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         public Color Tint => _structData.Slice(0x0, 0xC).ReadColor(ColorBinaryType.NoAlphaFloat);
-        public Single Width => _structData.Slice(0xC, 0x4).Float();
-        public Single Height => _structData.Slice(0x10, 0x4).Float();
-        public Single Position => _structData.Slice(0x14, 0x4).Float();
-        public Single AngularFade => _structData.Slice(0x18, 0x4).Float();
-        public Single Opacity => _structData.Slice(0x1C, 0x4).Float();
+        public Single Width => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single Height => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
+        public Single Position => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
+        public Single AngularFade => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
+        public Single Opacity => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
         public LensFlareSpriteData.Flag Flags => (LensFlareSpriteData.Flag)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x20, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,

@@ -1598,11 +1598,11 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region LoopingMax
         private int? _LoopingMaxLocation;
-        public Single? LoopingMax => _LoopingMaxLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _LoopingMaxLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? LoopingMax => _LoopingMaxLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LoopingMaxLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region LoopingMin
         private int? _LoopingMinLocation;
-        public Single? LoopingMin => _LoopingMinLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _LoopingMinLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? LoopingMin => _LoopingMinLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LoopingMinLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region HNAM
         private IHeadTrackingGetter? _HNAM;

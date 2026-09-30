@@ -1208,10 +1208,10 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        public Single Sunrise => _structData.Slice(0x0, 0x4).Float();
-        public Single Day => _structData.Slice(0x4, 0x4).Float();
-        public Single Sunset => _structData.Slice(0x8, 0x4).Float();
-        public Single Night => _structData.Slice(0xC, 0x4).Float();
+        public Single Sunrise => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single Day => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single Sunset => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single Night => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

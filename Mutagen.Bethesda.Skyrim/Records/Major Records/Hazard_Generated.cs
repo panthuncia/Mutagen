@@ -2508,22 +2508,22 @@ namespace Mutagen.Bethesda.Skyrim
         #region Radius
         private int _RadiusLocation => _DATALocation!.Value.Min + 0x4;
         private bool _Radius_IsSet => _DATALocation.HasValue;
-        public Single Radius => _Radius_IsSet ? _recordData.Slice(_RadiusLocation, 4).Float() : default(Single);
+        public Single Radius => _Radius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RadiusLocation, 4)) : default(Single);
         #endregion
         #region Lifetime
         private int _LifetimeLocation => _DATALocation!.Value.Min + 0x8;
         private bool _Lifetime_IsSet => _DATALocation.HasValue;
-        public Single Lifetime => _Lifetime_IsSet ? _recordData.Slice(_LifetimeLocation, 4).Float() : default(Single);
+        public Single Lifetime => _Lifetime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_LifetimeLocation, 4)) : default(Single);
         #endregion
         #region ImageSpaceRadius
         private int _ImageSpaceRadiusLocation => _DATALocation!.Value.Min + 0xC;
         private bool _ImageSpaceRadius_IsSet => _DATALocation.HasValue;
-        public Single ImageSpaceRadius => _ImageSpaceRadius_IsSet ? _recordData.Slice(_ImageSpaceRadiusLocation, 4).Float() : default(Single);
+        public Single ImageSpaceRadius => _ImageSpaceRadius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ImageSpaceRadiusLocation, 4)) : default(Single);
         #endregion
         #region TargetInterval
         private int _TargetIntervalLocation => _DATALocation!.Value.Min + 0x10;
         private bool _TargetInterval_IsSet => _DATALocation.HasValue;
-        public Single TargetInterval => _TargetInterval_IsSet ? _recordData.Slice(_TargetIntervalLocation, 4).Float() : default(Single);
+        public Single TargetInterval => _TargetInterval_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TargetIntervalLocation, 4)) : default(Single);
         #endregion
         #region Flags
         private int _FlagsLocation => _DATALocation!.Value.Min + 0x14;

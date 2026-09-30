@@ -2205,7 +2205,7 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region Buoyancy
         private int? _BuoyancyLocation;
-        public Single? Buoyancy => _BuoyancyLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _BuoyancyLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? Buoyancy => _BuoyancyLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BuoyancyLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Flags
         private int? _FlagsLocation;

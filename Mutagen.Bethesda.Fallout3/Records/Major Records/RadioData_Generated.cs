@@ -1247,9 +1247,9 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        public Single RangeRadius => _structData.Slice(0x0, 0x4).Float();
+        public Single RangeRadius => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
         public RadioData.BroadcastRangeTypeEnum BroadcastRangeType => (RadioData.BroadcastRangeTypeEnum)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x4, 0x4));
-        public Single StaticPercentage => _structData.Slice(0x8, 0x4).Float();
+        public Single StaticPercentage => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
         public IFormLinkGetter<IPlacedGetter> PositionReference => FormLinkBinaryTranslation.Instance.OverlayFactory<IPlacedGetter>(_package, _structData.Span.Slice(0xC, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,

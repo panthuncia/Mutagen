@@ -1146,7 +1146,7 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region Intensity
         private int? _IntensityLocation;
-        public Single Intensity => _IntensityLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _IntensityLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single Intensity => _IntensityLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IntensityLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

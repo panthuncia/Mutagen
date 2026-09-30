@@ -1252,8 +1252,8 @@ namespace Mutagen.Bethesda.Oblivion
             }
         }
         #endregion
-        public Single Value => _structData.Slice(0x2, 0x4).Float();
-        public Single Weight => _structData.Slice(0x6, 0x4).Float();
+        public Single Value => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x2, 0x4));
+        public Single Weight => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x6, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

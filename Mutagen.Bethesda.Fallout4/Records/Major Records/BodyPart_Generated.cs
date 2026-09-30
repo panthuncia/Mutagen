@@ -4182,7 +4182,7 @@ namespace Mutagen.Bethesda.Fallout4
         #region DamageMult
         private int _DamageMultLocation => _BPNDLocation!.Value.Min;
         private bool _DamageMult_IsSet => _BPNDLocation.HasValue;
-        public Single DamageMult => _DamageMult_IsSet ? _recordData.Slice(_DamageMultLocation, 4).Float() : default(Single);
+        public Single DamageMult => _DamageMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DamageMultLocation, 4)) : default(Single);
         #endregion
         #region ExplodableDebris
         private int _ExplodableDebrisLocation => _BPNDLocation!.Value.Min + 0x4;
@@ -4197,7 +4197,7 @@ namespace Mutagen.Bethesda.Fallout4
         #region ExplodableDebrisScale
         private int _ExplodableDebrisScaleLocation => _BPNDLocation!.Value.Min + 0xC;
         private bool _ExplodableDebrisScale_IsSet => _BPNDLocation.HasValue;
-        public Single ExplodableDebrisScale => _ExplodableDebrisScale_IsSet ? _recordData.Slice(_ExplodableDebrisScaleLocation, 4).Float() : default(Single);
+        public Single ExplodableDebrisScale => _ExplodableDebrisScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ExplodableDebrisScaleLocation, 4)) : default(Single);
         #endregion
         #region SeverableDebris
         private int _SeverableDebrisLocation => _BPNDLocation!.Value.Min + 0x10;
@@ -4212,37 +4212,37 @@ namespace Mutagen.Bethesda.Fallout4
         #region SeverableDebrisScale
         private int _SeverableDebrisScaleLocation => _BPNDLocation!.Value.Min + 0x18;
         private bool _SeverableDebrisScale_IsSet => _BPNDLocation.HasValue;
-        public Single SeverableDebrisScale => _SeverableDebrisScale_IsSet ? _recordData.Slice(_SeverableDebrisScaleLocation, 4).Float() : default(Single);
+        public Single SeverableDebrisScale => _SeverableDebrisScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SeverableDebrisScaleLocation, 4)) : default(Single);
         #endregion
         #region CutMin
         private int _CutMinLocation => _BPNDLocation!.Value.Min + 0x1C;
         private bool _CutMin_IsSet => _BPNDLocation.HasValue;
-        public Single CutMin => _CutMin_IsSet ? _recordData.Slice(_CutMinLocation, 4).Float() : default(Single);
+        public Single CutMin => _CutMin_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CutMinLocation, 4)) : default(Single);
         #endregion
         #region CutMax
         private int _CutMaxLocation => _BPNDLocation!.Value.Min + 0x20;
         private bool _CutMax_IsSet => _BPNDLocation.HasValue;
-        public Single CutMax => _CutMax_IsSet ? _recordData.Slice(_CutMaxLocation, 4).Float() : default(Single);
+        public Single CutMax => _CutMax_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CutMaxLocation, 4)) : default(Single);
         #endregion
         #region CutRadius
         private int _CutRadiusLocation => _BPNDLocation!.Value.Min + 0x24;
         private bool _CutRadius_IsSet => _BPNDLocation.HasValue;
-        public Single CutRadius => _CutRadius_IsSet ? _recordData.Slice(_CutRadiusLocation, 4).Float() : default(Single);
+        public Single CutRadius => _CutRadius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CutRadiusLocation, 4)) : default(Single);
         #endregion
         #region GoreEffectsLocalRotateX
         private int _GoreEffectsLocalRotateXLocation => _BPNDLocation!.Value.Min + 0x28;
         private bool _GoreEffectsLocalRotateX_IsSet => _BPNDLocation.HasValue;
-        public Single GoreEffectsLocalRotateX => _GoreEffectsLocalRotateX_IsSet ? _recordData.Slice(_GoreEffectsLocalRotateXLocation, 4).Float() * 57.2958f : default(Single);
+        public Single GoreEffectsLocalRotateX => _GoreEffectsLocalRotateX_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_GoreEffectsLocalRotateXLocation, 4)) * 57.2958f : default(Single);
         #endregion
         #region GoreEffectsLocalRotateY
         private int _GoreEffectsLocalRotateYLocation => _BPNDLocation!.Value.Min + 0x2C;
         private bool _GoreEffectsLocalRotateY_IsSet => _BPNDLocation.HasValue;
-        public Single GoreEffectsLocalRotateY => _GoreEffectsLocalRotateY_IsSet ? _recordData.Slice(_GoreEffectsLocalRotateYLocation, 4).Float() * 57.2958f : default(Single);
+        public Single GoreEffectsLocalRotateY => _GoreEffectsLocalRotateY_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_GoreEffectsLocalRotateYLocation, 4)) * 57.2958f : default(Single);
         #endregion
         #region CutTesselation
         private int _CutTesselationLocation => _BPNDLocation!.Value.Min + 0x30;
         private bool _CutTesselation_IsSet => _BPNDLocation.HasValue;
-        public Single CutTesselation => _CutTesselation_IsSet ? _recordData.Slice(_CutTesselationLocation, 4).Float() : default(Single);
+        public Single CutTesselation => _CutTesselation_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CutTesselationLocation, 4)) : default(Single);
         #endregion
         #region SeverableImpactData
         private int _SeverableImpactDataLocation => _BPNDLocation!.Value.Min + 0x34;
@@ -4257,7 +4257,7 @@ namespace Mutagen.Bethesda.Fallout4
         #region ExplodableLimbReplacementScale
         private int _ExplodableLimbReplacementScaleLocation => _BPNDLocation!.Value.Min + 0x3C;
         private bool _ExplodableLimbReplacementScale_IsSet => _BPNDLocation.HasValue;
-        public Single ExplodableLimbReplacementScale => _ExplodableLimbReplacementScale_IsSet ? _recordData.Slice(_ExplodableLimbReplacementScaleLocation, 4).Float() : default(Single);
+        public Single ExplodableLimbReplacementScale => _ExplodableLimbReplacementScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ExplodableLimbReplacementScaleLocation, 4)) : default(Single);
         #endregion
         #region Flags
         private int _FlagsLocation => _BPNDLocation!.Value.Min + 0x40;
@@ -4342,7 +4342,7 @@ namespace Mutagen.Bethesda.Fallout4
         #region OnCrippleDebrisScale
         private int _OnCrippleDebrisScaleLocation => _BPNDLocation!.Value.Min + 0x5F;
         private bool _OnCrippleDebrisScale_IsSet => _BPNDLocation.HasValue;
-        public Single OnCrippleDebrisScale => _OnCrippleDebrisScale_IsSet ? _recordData.Slice(_OnCrippleDebrisScaleLocation, 4).Float() : default(Single);
+        public Single OnCrippleDebrisScale => _OnCrippleDebrisScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_OnCrippleDebrisScaleLocation, 4)) : default(Single);
         #endregion
         #region OnCrippleDebrisCount
         private int _OnCrippleDebrisCountLocation => _BPNDLocation!.Value.Min + 0x63;

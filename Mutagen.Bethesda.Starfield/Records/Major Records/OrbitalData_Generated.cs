@@ -1772,10 +1772,10 @@ namespace Mutagen.Bethesda.Starfield
         public Double Eccentricity => BinaryPrimitives.ReadDoubleLittleEndian(_structData.Slice(0x18, 0x8));
         public Double Incline => BinaryPrimitives.ReadDoubleLittleEndian(_structData.Slice(0x20, 0x8));
         public Double MeanOrbit => BinaryPrimitives.ReadDoubleLittleEndian(_structData.Slice(0x28, 0x8));
-        public Single AxialTilt => _structData.Slice(0x30, 0x4).Float();
-        public Single RotationalVelocity => _structData.Slice(0x34, 0x4).Float();
-        public Single StartAngle => _structData.Slice(0x38, 0x4).Float() * 57.2958f;
-        public Single PerihelionAngle => _structData.Slice(0x3C, 0x4).Float() * 57.2958f;
+        public Single AxialTilt => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x30, 0x4));
+        public Single RotationalVelocity => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x34, 0x4));
+        public Single StartAngle => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x38, 0x4)) * 57.2958f;
+        public Single PerihelionAngle => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x3C, 0x4)) * 57.2958f;
         public Boolean ApplyOrbitalVelocity => _structData.Slice(0x40, 0x1)[0] >= 1;
         public Boolean GeostationaryOrbit => _structData.Slice(0x41, 0x1)[0] >= 1;
         public UInt32 Unknown1 => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0x42, 0x4));

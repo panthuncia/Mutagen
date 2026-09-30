@@ -2381,15 +2381,15 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         public Double Perihelion => BinaryPrimitives.ReadDoubleLittleEndian(_structData.Slice(SpecialEndingPos, 0x8));
         public Double StarDistance => BinaryPrimitives.ReadDoubleLittleEndian(_structData.Slice(SpecialEndingPos + 0x8, 0x8));
-        public Single Density => _structData.Slice(SpecialEndingPos + 0x10, 0x4).Float();
-        public Single Heat => _structData.Slice(SpecialEndingPos + 0x14, 0x4).Float();
-        public Single Hydro => _structData.Slice(SpecialEndingPos + 0x18, 0x4).Float();
-        public Single InnerHz => _structData.Slice(SpecialEndingPos + 0x1C, 0x4).Float();
-        public Single OuterHz => _structData.Slice(SpecialEndingPos + 0x20, 0x4).Float();
-        public Single PerihelionAngle => _structData.Slice(SpecialEndingPos + 0x24, 0x4).Float();
+        public Single Density => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(SpecialEndingPos + 0x10, 0x4));
+        public Single Heat => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(SpecialEndingPos + 0x14, 0x4));
+        public Single Hydro => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(SpecialEndingPos + 0x18, 0x4));
+        public Single InnerHz => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(SpecialEndingPos + 0x1C, 0x4));
+        public Single OuterHz => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(SpecialEndingPos + 0x20, 0x4));
+        public Single PerihelionAngle => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(SpecialEndingPos + 0x24, 0x4));
         public Int32 Unknown2 => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(SpecialEndingPos + 0x28, 0x4));
-        public Single StartAngleInDegrees => _structData.Slice(SpecialEndingPos + 0x2C, 0x4).Float();
-        public Single YearLengthInDays => _structData.Slice(SpecialEndingPos + 0x30, 0x4).Float();
+        public Single StartAngleInDegrees => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(SpecialEndingPos + 0x2C, 0x4));
+        public Single YearLengthInDays => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(SpecialEndingPos + 0x30, 0x4));
         public UInt32 Asteroids => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(SpecialEndingPos + 0x34, 0x4));
         public Boolean Geostationary => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(SpecialEndingPos + 0x38, 0x4)) >= 1;
         public Int32 RandomSeed => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(SpecialEndingPos + 0x3C, 0x4));

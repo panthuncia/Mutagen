@@ -2870,7 +2870,7 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region WHGT
         private int? _WHGTLocation;
-        public Single WHGT => _WHGTLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _WHGTLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single WHGT => _WHGTLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _WHGTLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region NAM0
         private int? _NAM0Location;

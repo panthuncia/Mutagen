@@ -1336,12 +1336,12 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        public Single DayNear => _structData.Slice(0x0, 0x4).Float();
-        public Single DayFar => _structData.Slice(0x4, 0x4).Float();
-        public Single NightNear => _structData.Slice(0x8, 0x4).Float();
-        public Single NightFar => _structData.Slice(0xC, 0x4).Float();
-        public Single DayPower => _structData.Slice(0x10, 0x4).Float();
-        public Single NightPower => _structData.Slice(0x14, 0x4).Float();
+        public Single DayNear => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single DayFar => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single NightNear => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single NightFar => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single DayPower => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
+        public Single NightPower => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

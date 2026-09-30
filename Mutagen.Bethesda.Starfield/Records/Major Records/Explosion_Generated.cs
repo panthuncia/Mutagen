@@ -4071,32 +4071,32 @@ namespace Mutagen.Bethesda.Starfield
         #region Force
         private int _ForceLocation => _ENAMLocation!.Value.Min + 0x64;
         private bool _Force_IsSet => _ENAMLocation.HasValue;
-        public Single Force => _Force_IsSet ? _recordData.Slice(_ForceLocation, 4).Float() : default(Single);
+        public Single Force => _Force_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ForceLocation, 4)) : default(Single);
         #endregion
         #region Damage
         private int _DamageLocation => _ENAMLocation!.Value.Min + 0x68;
         private bool _Damage_IsSet => _ENAMLocation.HasValue;
-        public Single Damage => _Damage_IsSet ? _recordData.Slice(_DamageLocation, 4).Float() : default(Single);
+        public Single Damage => _Damage_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DamageLocation, 4)) : default(Single);
         #endregion
         #region InnerRadius
         private int _InnerRadiusLocation => _ENAMLocation!.Value.Min + 0x6C;
         private bool _InnerRadius_IsSet => _ENAMLocation.HasValue;
-        public Single InnerRadius => _InnerRadius_IsSet ? _recordData.Slice(_InnerRadiusLocation, 4).Float() : default(Single);
+        public Single InnerRadius => _InnerRadius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_InnerRadiusLocation, 4)) : default(Single);
         #endregion
         #region OuterRadius
         private int _OuterRadiusLocation => _ENAMLocation!.Value.Min + 0x70;
         private bool _OuterRadius_IsSet => _ENAMLocation.HasValue;
-        public Single OuterRadius => _OuterRadius_IsSet ? _recordData.Slice(_OuterRadiusLocation, 4).Float() : default(Single);
+        public Single OuterRadius => _OuterRadius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_OuterRadiusLocation, 4)) : default(Single);
         #endregion
         #region ISRadius
         private int _ISRadiusLocation => _ENAMLocation!.Value.Min + 0x74;
         private bool _ISRadius_IsSet => _ENAMLocation.HasValue;
-        public Single ISRadius => _ISRadius_IsSet ? _recordData.Slice(_ISRadiusLocation, 4).Float() : default(Single);
+        public Single ISRadius => _ISRadius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ISRadiusLocation, 4)) : default(Single);
         #endregion
         #region VerticalOffsetMult
         private int _VerticalOffsetMultLocation => _ENAMLocation!.Value.Min + 0x78;
         private bool _VerticalOffsetMult_IsSet => _ENAMLocation.HasValue;
-        public Single VerticalOffsetMult => _VerticalOffsetMult_IsSet ? _recordData.Slice(_VerticalOffsetMultLocation, 4).Float() : default(Single);
+        public Single VerticalOffsetMult => _VerticalOffsetMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_VerticalOffsetMultLocation, 4)) : default(Single);
         #endregion
         #region Flags
         private int _FlagsLocation => _ENAMLocation!.Value.Min + 0x7C;
@@ -4111,7 +4111,7 @@ namespace Mutagen.Bethesda.Starfield
         #region PlacedObjectAutofadeDelay
         private int _PlacedObjectAutofadeDelayLocation => _ENAMLocation!.Value.Min + 0x84;
         private bool _PlacedObjectAutofadeDelay_IsSet => _ENAMLocation.HasValue;
-        public Single PlacedObjectAutofadeDelay => _PlacedObjectAutofadeDelay_IsSet ? _recordData.Slice(_PlacedObjectAutofadeDelayLocation, 4).Float() : default(Single);
+        public Single PlacedObjectAutofadeDelay => _PlacedObjectAutofadeDelay_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_PlacedObjectAutofadeDelayLocation, 4)) : default(Single);
         #endregion
         #region Stagger
         private int _StaggerLocation => _ENAMLocation!.Value.Min + 0x88;
@@ -4126,7 +4126,7 @@ namespace Mutagen.Bethesda.Starfield
         #region SpawnSpreadDegrees
         private int _SpawnSpreadDegreesLocation => _ENAMLocation!.Value.Min + 0x98;
         private bool _SpawnSpreadDegrees_IsSet => _ENAMLocation.HasValue;
-        public Single SpawnSpreadDegrees => _SpawnSpreadDegrees_IsSet ? _recordData.Slice(_SpawnSpreadDegreesLocation, 4).Float() : default(Single);
+        public Single SpawnSpreadDegrees => _SpawnSpreadDegrees_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SpawnSpreadDegreesLocation, 4)) : default(Single);
         #endregion
         #region Count
         private int _CountLocation => _ENAMLocation!.Value.Min + 0x9C;
@@ -4136,7 +4136,7 @@ namespace Mutagen.Bethesda.Starfield
         #region Duration
         private int _DurationLocation => _ENAMLocation!.Value.Min + 0xA0;
         private bool _Duration_IsSet => _ENAMLocation.HasValue;
-        public Single Duration => _Duration_IsSet ? _recordData.Slice(_DurationLocation, 4).Float() : default(Single);
+        public Single Duration => _Duration_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DurationLocation, 4)) : default(Single);
         #endregion
         public IReadOnlyList<IDamageTypeValueGetter>? DamageType { get; private set; }
         partial void CustomFactoryEnd(

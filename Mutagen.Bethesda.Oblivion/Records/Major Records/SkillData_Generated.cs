@@ -1293,8 +1293,8 @@ namespace Mutagen.Bethesda.Oblivion
         public ActorValue Action => (ActorValue)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x0, 0x4));
         public ActorValue Attribute => (ActorValue)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x4, 0x4));
         public Specialization Specialization => (Specialization)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x8, 0x4));
-        public Single UseValueFirst => _structData.Slice(0xC, 0x4).Float();
-        public Single UseValueSecond => _structData.Slice(0x10, 0x4).Float();
+        public Single UseValueFirst => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single UseValueSecond => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

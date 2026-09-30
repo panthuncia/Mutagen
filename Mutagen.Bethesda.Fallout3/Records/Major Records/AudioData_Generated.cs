@@ -1388,11 +1388,11 @@ namespace Mutagen.Bethesda.Fallout3
         #endregion
         #region Layer2TriggerPercent
         private int? _Layer2TriggerPercentLocation;
-        public Single? Layer2TriggerPercent => _Layer2TriggerPercentLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _Layer2TriggerPercentLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? Layer2TriggerPercent => _Layer2TriggerPercentLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _Layer2TriggerPercentLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Layer3TriggerPercent
         private int? _Layer3TriggerPercentLocation;
-        public Single? Layer3TriggerPercent => _Layer3TriggerPercentLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _Layer3TriggerPercentLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? Layer3TriggerPercent => _Layer3TriggerPercentLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _Layer3TriggerPercentLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

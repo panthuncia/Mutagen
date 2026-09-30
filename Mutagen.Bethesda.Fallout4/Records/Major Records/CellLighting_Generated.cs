@@ -2614,30 +2614,30 @@ namespace Mutagen.Bethesda.Fallout4
         public Color AmbientColor => _structData.Slice(0x0, 0x4).ReadColor(ColorBinaryType.Alpha);
         public Color DirectionalColor => _structData.Slice(0x4, 0x4).ReadColor(ColorBinaryType.Alpha);
         public Color FogNearColor => _structData.Slice(0x8, 0x4).ReadColor(ColorBinaryType.Alpha);
-        public Single FogNear => _structData.Slice(0xC, 0x4).Float();
-        public Single FogFar => _structData.Slice(0x10, 0x4).Float();
+        public Single FogNear => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single FogFar => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
         public Int32 DirectionalRotationXY => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x14, 0x4));
         public Int32 DirectionalRotationZ => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x18, 0x4));
-        public Single DirectionalFade => _structData.Slice(0x1C, 0x4).Float();
-        public Single FogClipDistance => _structData.Slice(0x20, 0x4).Float();
-        public Single FogPower => _structData.Slice(0x24, 0x4).Float();
+        public Single DirectionalFade => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
+        public Single FogClipDistance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x20, 0x4));
+        public Single FogPower => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x24, 0x4));
         public IAmbientColorsGetter AmbientColors => AmbientColorsBinaryOverlay.AmbientColorsFactory(_structData.Slice(0x28), _package, default(TypedParseParams));
         public Color FogFarColor => _structData.Slice(0x48, 0x4).ReadColor(ColorBinaryType.Alpha);
-        public Single FogMax => _structData.Slice(0x4C, 0x4).Float();
-        public Single LightFadeBegin => _structData.Slice(0x50, 0x4).Float();
-        public Single LightFadeEnd => _structData.Slice(0x54, 0x4).Float();
+        public Single FogMax => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4C, 0x4));
+        public Single LightFadeBegin => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x50, 0x4));
+        public Single LightFadeEnd => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x54, 0x4));
         public CellLighting.Inherit Inherits => (CellLighting.Inherit)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x58, 0x4));
-        public Single NearHeightMid => _structData.Length <= 0x5C ? default : _structData.Slice(0x5C, 0x4).Float();
-        public Single NearHeightRange => _structData.Length <= 0x60 ? default : _structData.Slice(0x60, 0x4).Float();
+        public Single NearHeightMid => _structData.Length <= 0x5C ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x5C, 0x4));
+        public Single NearHeightRange => _structData.Length <= 0x60 ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x60, 0x4));
         public Color ForColorHighNear => _structData.Length <= 0x64 ? default : _structData.Slice(0x64, 0x4).ReadColor(ColorBinaryType.Alpha);
         public Color ForColorHighFar => _structData.Length <= 0x68 ? default : _structData.Slice(0x68, 0x4).ReadColor(ColorBinaryType.Alpha);
-        public Single HighDensityScale => _structData.Length <= 0x6C ? default : _structData.Slice(0x6C, 0x4).Float();
-        public Single FogNearScale => _structData.Length <= 0x70 ? default : _structData.Slice(0x70, 0x4).Float();
-        public Single FogFarScale => _structData.Length <= 0x74 ? default : _structData.Slice(0x74, 0x4).Float();
-        public Single FogHighNearScale => _structData.Length <= 0x78 ? default : _structData.Slice(0x78, 0x4).Float();
-        public Single FogHighFarScale => _structData.Length <= 0x7C ? default : _structData.Slice(0x7C, 0x4).Float();
-        public Single FarHeightMid => _structData.Length <= 0x80 ? default : _structData.Slice(0x80, 0x4).Float();
-        public Single FarHeightRange => _structData.Length <= 0x84 ? default : _structData.Slice(0x84, 0x4).Float();
+        public Single HighDensityScale => _structData.Length <= 0x6C ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x6C, 0x4));
+        public Single FogNearScale => _structData.Length <= 0x70 ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x70, 0x4));
+        public Single FogFarScale => _structData.Length <= 0x74 ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x74, 0x4));
+        public Single FogHighNearScale => _structData.Length <= 0x78 ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x78, 0x4));
+        public Single FogHighFarScale => _structData.Length <= 0x7C ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x7C, 0x4));
+        public Single FarHeightMid => _structData.Length <= 0x80 ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x80, 0x4));
+        public Single FarHeightRange => _structData.Length <= 0x84 ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x84, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

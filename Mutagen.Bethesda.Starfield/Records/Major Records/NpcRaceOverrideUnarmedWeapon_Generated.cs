@@ -1116,7 +1116,7 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public Single Unknown => _structData.Slice(0x0, 0x4).Float();
+        public Single Unknown => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
         public IFormLinkGetter<IWeaponGetter> UnarmedWeapon => FormLinkBinaryTranslation.Instance.OverlayFactory<IWeaponGetter>(_package, _structData.Span.Slice(0x4, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,

@@ -1293,7 +1293,7 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         public P3Float Offset => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(0x0, 0xC));
-        public Single RotationZ => _structData.Slice(0xC, 0x4).Float() * 57.2958f;
+        public Single RotationZ => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4)) * 57.2958f;
         public IFormLinkGetter<IKeywordGetter> Keyword => FormLinkBinaryTranslation.Instance.OverlayFactory<IKeywordGetter>(_package, _structData.Span.Slice(0x10, 0x4));
         public Furniture.EntryParameterType EntryTypes => (Furniture.EntryParameterType)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x14, 0x4));
         public Furniture.EntryParameterType ExitTypes => (Furniture.EntryParameterType)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x18, 0x4));

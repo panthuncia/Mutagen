@@ -3369,7 +3369,7 @@ namespace Mutagen.Bethesda.Fallout4
         #region Weight
         private int _WeightLocation => _DATALocation!.Value.Min + 0x1;
         private bool _Weight_IsSet => _DATALocation.HasValue;
-        public Single Weight => _Weight_IsSet ? _recordData.Slice(_WeightLocation, 4).Float() : default(Single);
+        public Single Weight => _Weight_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WeightLocation, 4)) : default(Single);
         #endregion
         #region Keywords
         public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get; private set; }
