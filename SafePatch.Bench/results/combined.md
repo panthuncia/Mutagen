@@ -5,7 +5,11 @@ Every fix and performance branch merged onto 0.54.4, the generated code regenera
 ## Measurements
 
 Timed in the same session as the three later fix branches, alternating 0.54.4 (`base-2`) and the combined build
-(`combined-2`) round by round:
+(`combined-2`) round by round. The combined build then also deferred Skyrim's placed objects, since dropped from
+`perf/deferred-overlay-fill` (no measurable gain; see that file); that cost about
+65 MiB, so the heap holding every record is about that much smaller now, and it made no difference to the timings
+beyond noise. The parity and hash checks below are of the
+combined build as it stands.
 
 | Workload | base-2 | combined-2 | Change |
 | --- | ---: | ---: | ---: |

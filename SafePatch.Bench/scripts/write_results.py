@@ -21,7 +21,8 @@ def lines():
         if '|combined|' in line or line.startswith('== threads combined'): continue
         yield line
     for extra in ('parity-new.log', 'parity-combined3.log', 'parity-all-base.log', 'parity-all-combined.log',
-                  'parity-content.log', 'parity-epsilon.log', 'hash-masters.log', 'hash-all.log', 'timing-new.log', 'threads-combined.log'):
+                  'parity-content.log', 'parity-epsilon.log', 'hash-masters.log', 'hash-all.log', 'timing-new.log', 'threads-combined.log',
+                  'hash-combined.log', 'hash-all-combined.log'):
         for line in open(os.path.join(os.path.dirname(LOG), extra), encoding='utf-8', errors='replace'):
             yield line
 for line in lines():
@@ -345,15 +346,17 @@ Reads are unchanged: the parity check matches 0.54.4 exactly on all 1,178,543 re
     pt, st = parity_table(['base', 'perf-deferred-fill', 'perf-deferred-fill-peek', 'perf-deferred-fill-placed'])
     write('perf-deferred-overlay-fill.md', f"""# Defer an overlay record's fill until a field is read
 
-Branch `perf/deferred-overlay-fill`, three commits on 0.54.4, measured one by one:
+Branch `perf/deferred-overlay-fill` (one commit on 0.54.4). A major record's overlay is created from its header
+and runs decompression and the subrecord walk on the first read of anything else, once and thread-safely; the
+generator routes every member the fill sets through `LazyFill`. While the fill is pending, the EditorID comes from the
+first subrecord, inflating a compressed record only that far (`InflatePrefix`).
 
-1. `Defer an overlay record's fill until a field is read` (`perf-deferred-fill`): a major record's overlay is created
-   from its header and runs decompression and the subrecord walk on the first read of anything else, once and
-   thread-safely. The generator routes every member the fill sets through `LazyFill`.
-2. `Read a deferred record's EditorID without filling it` (`perf-deferred-fill-peek`): the EditorID comes from the
-   first subrecord, inflating a compressed record only that far (`InflatePrefix`).
-3. `Defer Skyrim placed objects' fill` (`perf-deferred-fill-placed`): placed objects' hand-written overlay code audited
-   so they can be deferred too.
+The branch was measured as three steps, and the columns below keep them apart:
+
+1. `perf-deferred-fill`: the fill alone.
+2. `perf-deferred-fill-peek`: with the EditorID peek. This is the branch as it stands.
+3. `perf-deferred-fill-placed`: also deferring Skyrim's placed objects, after auditing their hand-written overlay
+   code. Measured and dropped (below).
 
 ## Measurements
 
@@ -366,7 +369,7 @@ Branch `perf/deferred-overlay-fill`, three commits on 0.54.4, measured one by on
 - **Deferring placed objects is not justified by these numbers.** Against the commit before it, its best runs are
   the same (the open-and-read workload's medians swing by hundreds of milliseconds between rounds, so its median gain
   is not to be trusted), and it holds 65 MiB more: a deferred-state object for each of the 916,540 placed objects,
-  which were cheap to fill eagerly. The third commit can be left out of a pull request.
+  which were cheap to fill eagerly. The branch leaves placed objects eager.
 
 ## Parity
 
@@ -432,7 +435,11 @@ Every fix and performance branch merged onto 0.54.4, the generated code regenera
 ## Measurements
 
 Timed in the same session as the three later fix branches, alternating 0.54.4 (`base-2`) and the combined build
-(`combined-2`) round by round:
+(`combined-2`) round by round. The combined build then also deferred Skyrim's placed objects, since dropped from
+`perf/deferred-overlay-fill` (no measurable gain; see that file); that cost about
+65 MiB, so the heap holding every record is about that much smaller now, and it made no difference to the timings
+beyond noise. The parity and hash checks below are of the
+combined build as it stands.
 
 {timing_table(['base-2', 'combined-2'])}
 
