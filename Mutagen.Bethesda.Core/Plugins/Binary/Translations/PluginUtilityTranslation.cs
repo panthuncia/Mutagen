@@ -603,7 +603,7 @@ internal static class PluginUtilityTranslation
                     writeRecordTypes(item, writerToUse, translationParams);
                     if (endMarker != null)
                     {
-                        using (HeaderExport.Subrecord(writer, endMarker.Value)) {}
+                        using (HeaderExport.Subrecord(writerToUse, endMarker.Value)) {}
                     }
                 }
                 writer.MetaData.FormVersion = null;
