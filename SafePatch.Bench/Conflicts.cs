@@ -35,9 +35,9 @@ internal static class Conflicts
             var perPlugin = new List<IMajorRecordGetter>[mods.Length];
             Parallel.For(0, mods.Length, i => perPlugin[i] = [.. mods[i].EnumerateMajorRecords()]);
             var versions = new Dictionary<FormKey, List<IMajorRecordGetter>>();
-            foreach (var records in perPlugin)
+            foreach (var pluginRecords in perPlugin)
             {
-                foreach (var record in records)
+                foreach (var record in pluginRecords)
                 {
                     if (!versions.TryGetValue(record.FormKey, out var chain)) versions[record.FormKey] = chain = [];
                     chain.Add(record);
@@ -106,11 +106,11 @@ internal static class Conflicts
         else
         {
             var maskType = classType.GetNestedType("TranslationMask")!;
-            var translationMask = Activator.CreateInstance(maskType, true, true)!;
+            var translationMask = System.Activator.CreateInstance(maskType, true, true)!;
             foreach (var name in children)
             {
                 var field = maskType.GetField(name)!;
-                field.SetValue(translationMask, field.FieldType == typeof(bool) ? false : Activator.CreateInstance(field.FieldType, false, false));
+                field.SetValue(translationMask, field.FieldType == typeof(bool) ? false : System.Activator.CreateInstance(field.FieldType, false, false));
             }
             var method = mixIn.GetMethods(BindingFlags.Public | BindingFlags.Static)
                 .Single(m => m.Name == "Equals" && m.GetParameters() is [var p, var q, var r]
