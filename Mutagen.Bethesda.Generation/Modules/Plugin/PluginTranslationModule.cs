@@ -2889,7 +2889,7 @@ public class PluginTranslationModule : BinaryTranslationModule
     [
         "Skyrim.Armor", "Skyrim.ArmorAddon", "Skyrim.CameraPath", "Skyrim.Cell", "Skyrim.DialogTopic", "Skyrim.FootstepSet",
         "Skyrim.Furniture", "Skyrim.IdleMarker", "Skyrim.MagicEffect", "Skyrim.Npc", "Skyrim.Package", "Skyrim.Perk",
-        "Skyrim.Quest", "Skyrim.Race", "Skyrim.Region", "Skyrim.Weather", "Skyrim.Worldspace",
+        "Skyrim.PlacedObject", "Skyrim.Quest", "Skyrim.Race", "Skyrim.Region", "Skyrim.Weather", "Skyrim.Worldspace",
     ];
 
     private static bool Audited(ObjectGeneration obj) =>
