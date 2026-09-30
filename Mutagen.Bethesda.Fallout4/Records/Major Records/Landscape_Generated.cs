@@ -1855,7 +1855,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 if ((equalsMask?.GetShouldTranslate((int)Landscape_FieldIndex.VertexNormals) ?? true))
                 {
-                    if (!lhs.VertexNormals.SequenceEqualNullable(rhs.VertexNormals)) return false;
+                    if (!lhs.VertexNormals.Array2dEquals(rhs.VertexNormals)) return false;
                 }
                 return true;
             }
@@ -1877,7 +1877,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 if ((equalsMask?.GetShouldTranslate((int)Landscape_FieldIndex.VertexColors) ?? true))
                 {
-                    if (!lhs.VertexColors.SequenceEqualNullable(rhs.VertexColors)) return false;
+                    if (!lhs.VertexColors.Array2dEquals(rhs.VertexColors)) return false;
                 }
                 return true;
             }

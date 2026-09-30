@@ -1474,7 +1474,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 if ((equalsMask?.GetShouldTranslate((int)DialogView_FieldIndex.TNAMs) ?? true))
                 {
-                    if (!lhs.TNAMs.SequenceEqualNullable(rhs.TNAMs)) return false;
+                    if (!lhs.TNAMs.SequenceEqualNullable(rhs.TNAMs, (l, r) => MemoryExtensions.SequenceEqual(l.Span, r.Span))) return false;
                 }
                 return true;
             }
