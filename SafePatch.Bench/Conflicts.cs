@@ -58,7 +58,10 @@ internal static class Conflicts
                         localPairs++;
                         try
                         {
+                            var start = ByType ? Stopwatch.GetTimestamp() : 0;
                             if (Same(chain[i - 1], chain[i])) localIdentical++;
+                            if (ByType) TypeTimes.AddOrUpdate(chain[i].GetType().Name.Replace("BinaryOverlay", ""), _ => (Stopwatch.GetTimestamp() - start, 1),
+                                (_, t) => (t.Ticks + Stopwatch.GetTimestamp() - start, t.Count + 1));
                         }
                         catch (Exception ex)
                         {
@@ -74,6 +77,12 @@ internal static class Conflicts
             var compared = clock.Elapsed;
 
             var records = perPlugin.Sum(p => (long)p.Count);
+            if (ByType)
+            {
+                foreach (var (type, (ticks, count)) in TypeTimes.OrderByDescending(t => t.Value.Ticks).Take(12))
+                    Console.WriteLine($"  {type,-24} {count,8:N0} pairs {ticks * 1000.0 / Stopwatch.Frequency,9:N0} ms  {ticks * 1_000_000.0 / Stopwatch.Frequency / count,8:N1} us/pair");
+                TypeTimes.Clear();
+            }
             foreach (var (message, formKey) in Failures) Console.WriteLine($"  failed, e.g. {formKey}: {message}");
             if (failed > 0) Console.WriteLine($"  {failed:N0} comparisons failed");
             Console.WriteLine($"conflicts run {run + 1}: {records:N0} versions, {chains.Length:N0} overridden records, {pairs:N0} pairs " +
@@ -101,6 +110,10 @@ internal static class Conflicts
 
     private static readonly ConcurrentDictionary<Type, Func<IMajorRecordGetter, IMajorRecordGetter, bool>> Comparers = new();
     private static readonly ConcurrentDictionary<string, FormKey> Failures = new();
+
+    /// <summary>With <c>SAFEPATCH_BENCH_BY_TYPE=1</c>, each run prints the comparison time by record type (summed over threads).</summary>
+    private static readonly bool ByType = Environment.GetEnvironmentVariable("SAFEPATCH_BENCH_BY_TYPE") == "1";
+    private static readonly ConcurrentDictionary<string, (long Ticks, long Count)> TypeTimes = new();
 
     private static bool Same(IMajorRecordGetter a, IMajorRecordGetter b)
     {
