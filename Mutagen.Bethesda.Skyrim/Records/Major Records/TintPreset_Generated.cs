@@ -1235,7 +1235,7 @@ namespace Mutagen.Bethesda.Skyrim
         #endregion
         #region DefaultValue
         private int? _DefaultValueLocation;
-        public Single? DefaultValue => _DefaultValueLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DefaultValueLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? DefaultValue => _DefaultValueLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DefaultValueLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Index
         private int? _IndexLocation;

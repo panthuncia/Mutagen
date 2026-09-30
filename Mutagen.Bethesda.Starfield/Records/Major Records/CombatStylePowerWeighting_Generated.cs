@@ -1492,15 +1492,15 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public Single Engines => _structData.Slice(0x0, 0x4).Float();
-        public Single Shields => _structData.Slice(0x4, 0x4).Float();
-        public Single Guns => _structData.Slice(0x8, 0x4).Float();
-        public Single ShieldBasedGunsEM => _structData.Slice(0xC, 0x4).Float();
-        public Single ShieldBasedGunsHull => _structData.Slice(0x10, 0x4).Float();
-        public Single ShieldBasedGunsShield => _structData.Slice(0x14, 0x4).Float();
-        public Single HullBasedGunsEM => _structData.Slice(0x18, 0x4).Float();
-        public Single HullBasedGunsHull => _structData.Slice(0x1C, 0x4).Float();
-        public Single HullBasedGunsShield => _structData.Slice(0x20, 0x4).Float();
+        public Single Engines => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single Shields => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single Guns => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single ShieldBasedGunsEM => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single ShieldBasedGunsHull => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
+        public Single ShieldBasedGunsShield => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
+        public Single HullBasedGunsEM => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
+        public Single HullBasedGunsHull => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
+        public Single HullBasedGunsShield => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x20, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

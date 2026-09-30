@@ -3297,12 +3297,12 @@ namespace Mutagen.Bethesda.Fallout4
         #region FogNear
         private int _FogNearLocation => _DATALocation!.Value.Min + 0xC;
         private bool _FogNear_IsSet => _DATALocation.HasValue;
-        public Single FogNear => _FogNear_IsSet ? _recordData.Slice(_FogNearLocation, 4).Float() : default(Single);
+        public Single FogNear => _FogNear_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogNearLocation, 4)) : default(Single);
         #endregion
         #region FogFar
         private int _FogFarLocation => _DATALocation!.Value.Min + 0x10;
         private bool _FogFar_IsSet => _DATALocation.HasValue;
-        public Single FogFar => _FogFar_IsSet ? _recordData.Slice(_FogFarLocation, 4).Float() : default(Single);
+        public Single FogFar => _FogFar_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogFarLocation, 4)) : default(Single);
         #endregion
         #region DirectionalRotationXY
         private int _DirectionalRotationXYLocation => _DATALocation!.Value.Min + 0x14;
@@ -3317,17 +3317,17 @@ namespace Mutagen.Bethesda.Fallout4
         #region DirectionalFade
         private int _DirectionalFadeLocation => _DATALocation!.Value.Min + 0x1C;
         private bool _DirectionalFade_IsSet => _DATALocation.HasValue;
-        public Single DirectionalFade => _DirectionalFade_IsSet ? _recordData.Slice(_DirectionalFadeLocation, 4).Float() : default(Single);
+        public Single DirectionalFade => _DirectionalFade_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DirectionalFadeLocation, 4)) : default(Single);
         #endregion
         #region FogClipDistance
         private int _FogClipDistanceLocation => _DATALocation!.Value.Min + 0x20;
         private bool _FogClipDistance_IsSet => _DATALocation.HasValue;
-        public Single FogClipDistance => _FogClipDistance_IsSet ? _recordData.Slice(_FogClipDistanceLocation, 4).Float() : default(Single);
+        public Single FogClipDistance => _FogClipDistance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogClipDistanceLocation, 4)) : default(Single);
         #endregion
         #region FogPower
         private int _FogPowerLocation => _DATALocation!.Value.Min + 0x24;
         private bool _FogPower_IsSet => _DATALocation.HasValue;
-        public Single FogPower => _FogPower_IsSet ? _recordData.Slice(_FogPowerLocation, 4).Float() : default(Single);
+        public Single FogPower => _FogPower_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogPowerLocation, 4)) : default(Single);
         #endregion
         #region Unused
         private int _UnusedLocation => _DATALocation!.Value.Min + 0x28;
@@ -3342,17 +3342,17 @@ namespace Mutagen.Bethesda.Fallout4
         #region FogMax
         private int _FogMaxLocation => _DATALocation!.Value.Min + 0x4C;
         private bool _FogMax_IsSet => _DATALocation.HasValue;
-        public Single FogMax => _FogMax_IsSet ? _recordData.Slice(_FogMaxLocation, 4).Float() : default(Single);
+        public Single FogMax => _FogMax_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogMaxLocation, 4)) : default(Single);
         #endregion
         #region LightFadeStartDistance
         private int _LightFadeStartDistanceLocation => _DATALocation!.Value.Min + 0x50;
         private bool _LightFadeStartDistance_IsSet => _DATALocation.HasValue;
-        public Single LightFadeStartDistance => _LightFadeStartDistance_IsSet ? _recordData.Slice(_LightFadeStartDistanceLocation, 4).Float() : default(Single);
+        public Single LightFadeStartDistance => _LightFadeStartDistance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_LightFadeStartDistanceLocation, 4)) : default(Single);
         #endregion
         #region LightFadeEndDistance
         private int _LightFadeEndDistanceLocation => _DATALocation!.Value.Min + 0x54;
         private bool _LightFadeEndDistance_IsSet => _DATALocation.HasValue;
-        public Single LightFadeEndDistance => _LightFadeEndDistance_IsSet ? _recordData.Slice(_LightFadeEndDistanceLocation, 4).Float() : default(Single);
+        public Single LightFadeEndDistance => _LightFadeEndDistance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_LightFadeEndDistanceLocation, 4)) : default(Single);
         #endregion
         #region Unknown
         private int _UnknownLocation => _DATALocation!.Value.Min + 0x58;
@@ -3362,12 +3362,12 @@ namespace Mutagen.Bethesda.Fallout4
         #region NearHeightMid
         private int _NearHeightMidLocation => _DATALocation!.Value.Min + 0x5C;
         private bool _NearHeightMid_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(LightingTemplate.DATADataType.Break0);
-        public Single NearHeightMid => _NearHeightMid_IsSet ? _recordData.Slice(_NearHeightMidLocation, 4).Float() : default(Single);
+        public Single NearHeightMid => _NearHeightMid_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_NearHeightMidLocation, 4)) : default(Single);
         #endregion
         #region NearHeightRange
         private int _NearHeightRangeLocation => _DATALocation!.Value.Min + 0x60;
         private bool _NearHeightRange_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(LightingTemplate.DATADataType.Break0);
-        public Single NearHeightRange => _NearHeightRange_IsSet ? _recordData.Slice(_NearHeightRangeLocation, 4).Float() : default(Single);
+        public Single NearHeightRange => _NearHeightRange_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_NearHeightRangeLocation, 4)) : default(Single);
         #endregion
         #region FogColorHighNear
         private int _FogColorHighNearLocation => _DATALocation!.Value.Min + 0x64;
@@ -3382,37 +3382,37 @@ namespace Mutagen.Bethesda.Fallout4
         #region HighDensityScale
         private int _HighDensityScaleLocation => _DATALocation!.Value.Min + 0x6C;
         private bool _HighDensityScale_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(LightingTemplate.DATADataType.Break0);
-        public Single HighDensityScale => _HighDensityScale_IsSet ? _recordData.Slice(_HighDensityScaleLocation, 4).Float() : default(Single);
+        public Single HighDensityScale => _HighDensityScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HighDensityScaleLocation, 4)) : default(Single);
         #endregion
         #region FogNearScale
         private int _FogNearScaleLocation => _DATALocation!.Value.Min + 0x70;
         private bool _FogNearScale_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(LightingTemplate.DATADataType.Break0);
-        public Single FogNearScale => _FogNearScale_IsSet ? _recordData.Slice(_FogNearScaleLocation, 4).Float() : default(Single);
+        public Single FogNearScale => _FogNearScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogNearScaleLocation, 4)) : default(Single);
         #endregion
         #region FogFarScale
         private int _FogFarScaleLocation => _DATALocation!.Value.Min + 0x74;
         private bool _FogFarScale_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(LightingTemplate.DATADataType.Break0);
-        public Single FogFarScale => _FogFarScale_IsSet ? _recordData.Slice(_FogFarScaleLocation, 4).Float() : default(Single);
+        public Single FogFarScale => _FogFarScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogFarScaleLocation, 4)) : default(Single);
         #endregion
         #region FogHighNearScale
         private int _FogHighNearScaleLocation => _DATALocation!.Value.Min + 0x78;
         private bool _FogHighNearScale_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(LightingTemplate.DATADataType.Break0);
-        public Single FogHighNearScale => _FogHighNearScale_IsSet ? _recordData.Slice(_FogHighNearScaleLocation, 4).Float() : default(Single);
+        public Single FogHighNearScale => _FogHighNearScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogHighNearScaleLocation, 4)) : default(Single);
         #endregion
         #region FogHighFarScale
         private int _FogHighFarScaleLocation => _DATALocation!.Value.Min + 0x7C;
         private bool _FogHighFarScale_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(LightingTemplate.DATADataType.Break0);
-        public Single FogHighFarScale => _FogHighFarScale_IsSet ? _recordData.Slice(_FogHighFarScaleLocation, 4).Float() : default(Single);
+        public Single FogHighFarScale => _FogHighFarScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogHighFarScaleLocation, 4)) : default(Single);
         #endregion
         #region FogHeightMid
         private int _FogHeightMidLocation => _DATALocation!.Value.Min + 0x80;
         private bool _FogHeightMid_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(LightingTemplate.DATADataType.Break1);
-        public Single FogHeightMid => _FogHeightMid_IsSet ? _recordData.Slice(_FogHeightMidLocation, 4).Float() : default(Single);
+        public Single FogHeightMid => _FogHeightMid_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogHeightMidLocation, 4)) : default(Single);
         #endregion
         #region FogHeightRange
         private int _FogHeightRangeLocation => _DATALocation!.Value.Min + 0x84;
         private bool _FogHeightRange_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(LightingTemplate.DATADataType.Break1);
-        public Single FogHeightRange => _FogHeightRange_IsSet ? _recordData.Slice(_FogHeightRangeLocation, 4).Float() : default(Single);
+        public Single FogHeightRange => _FogHeightRange_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogHeightRangeLocation, 4)) : default(Single);
         #endregion
         public IAmbientColorsGetter? DirectionalAmbientColors { get; private set; }
         #region GodRays

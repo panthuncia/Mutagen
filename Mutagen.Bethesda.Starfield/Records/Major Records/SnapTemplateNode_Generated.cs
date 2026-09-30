@@ -3139,7 +3139,7 @@ namespace Mutagen.Bethesda.Starfield
                     this.SnapAngles = BinaryOverlayList.FactoryByArray<Single>(
                         mem: stream.RemainingMemory,
                         package: _package,
-                        getter: (s, p) => s.Float(),
+                        getter: (s, p) => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(s),
                         locs: ParseRecordLocations(
                             stream: stream,
                             constants: _package.MetaData.Constants.SubConstants,

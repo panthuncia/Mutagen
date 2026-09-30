@@ -2833,7 +2833,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region ChargeTime
         private int _ChargeTimeLocation => _SPITLocation!.Value.Min + 0xC;
         private bool _ChargeTime_IsSet => _SPITLocation.HasValue;
-        public Single ChargeTime => _ChargeTime_IsSet ? _recordData.Slice(_ChargeTimeLocation, 4).Float() : default(Single);
+        public Single ChargeTime => _ChargeTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ChargeTimeLocation, 4)) : default(Single);
         #endregion
         #region CastType
         private int _CastTypeLocation => _SPITLocation!.Value.Min + 0x10;
@@ -2848,12 +2848,12 @@ namespace Mutagen.Bethesda.Skyrim
         #region CastDuration
         private int _CastDurationLocation => _SPITLocation!.Value.Min + 0x18;
         private bool _CastDuration_IsSet => _SPITLocation.HasValue;
-        public Single CastDuration => _CastDuration_IsSet ? _recordData.Slice(_CastDurationLocation, 4).Float() : default(Single);
+        public Single CastDuration => _CastDuration_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CastDurationLocation, 4)) : default(Single);
         #endregion
         #region Range
         private int _RangeLocation => _SPITLocation!.Value.Min + 0x1C;
         private bool _Range_IsSet => _SPITLocation.HasValue;
-        public Single Range => _Range_IsSet ? _recordData.Slice(_RangeLocation, 4).Float() : default(Single);
+        public Single Range => _Range_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RangeLocation, 4)) : default(Single);
         #endregion
         #region HalfCostPerk
         private int _HalfCostPerkLocation => _SPITLocation!.Value.Min + 0x20;

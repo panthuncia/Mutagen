@@ -1686,11 +1686,11 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region Obstruction
         private int? _ObstructionLocation;
-        public Single? Obstruction => _ObstructionLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ObstructionLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? Obstruction => _ObstructionLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ObstructionLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Occlusion
         private int? _OcclusionLocation;
-        public Single? Occlusion => _OcclusionLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _OcclusionLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? Occlusion => _OcclusionLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _OcclusionLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

@@ -1626,7 +1626,7 @@ namespace Mutagen.Bethesda.Fallout3
             int offset);
         #endregion
         public ReadOnlyMemorySlice<Byte> Fluff => _structData.Span.Slice(0x1, 0x3).ToArray();
-        public Single ComparisonValue => _structData.Slice(0x4, 0x4).Float();
+        public Single ComparisonValue => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
         public Condition.FunctionEnum Function => (Condition.FunctionEnum)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x8, 0x4));
         public Int32 FirstParameter => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0xC, 0x4));
         public Int32 SecondParameter => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x10, 0x4));

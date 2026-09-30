@@ -1098,8 +1098,8 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public Single TerrainHeight => _structData.Slice(0x0, 0x4).Float();
-        public Single WaterHeight => _structData.Slice(0x4, 0x4).Float();
+        public Single TerrainHeight => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single WaterHeight => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

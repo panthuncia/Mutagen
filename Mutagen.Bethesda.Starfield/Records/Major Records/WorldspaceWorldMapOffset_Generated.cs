@@ -1116,7 +1116,7 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public Single WorldMapOffsetScale => _structData.Slice(0x0, 0x4).Float();
+        public Single WorldMapOffsetScale => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
         public P3Float WorldMapCellOffset => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(0x4, 0xC));
         partial void CustomFactoryEnd(
             OverlayStream stream,

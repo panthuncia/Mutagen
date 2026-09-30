@@ -1827,19 +1827,19 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        public Single DynamicKeyframeBlendAmount => _structData.Slice(0x0, 0x4).Float();
-        public Single HierarchyGain => _structData.Slice(0x4, 0x4).Float();
-        public Single PositionGain => _structData.Slice(0x8, 0x4).Float();
-        public Single VelocityGain => _structData.Slice(0xC, 0x4).Float();
-        public Single AccelerationGain => _structData.Slice(0x10, 0x4).Float();
-        public Single SnapGain => _structData.Slice(0x14, 0x4).Float();
-        public Single VelocityDamping => _structData.Slice(0x18, 0x4).Float();
-        public Single SnapMaxLinearVelocity => _structData.Slice(0x1C, 0x4).Float();
-        public Single SnapMaxAngularVelocity => _structData.Slice(0x20, 0x4).Float();
-        public Single SnapMaxLinearDistance => _structData.Slice(0x24, 0x4).Float();
-        public Single SnapMaxAngularDistance => _structData.Slice(0x28, 0x4).Float();
-        public Single PositionMaxVelocityLinear => _structData.Slice(0x2C, 0x4).Float();
-        public Single PositionMaxVelocityAngular => _structData.Slice(0x30, 0x4).Float();
+        public Single DynamicKeyframeBlendAmount => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single HierarchyGain => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single PositionGain => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single VelocityGain => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single AccelerationGain => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
+        public Single SnapGain => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
+        public Single VelocityDamping => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
+        public Single SnapMaxLinearVelocity => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
+        public Single SnapMaxAngularVelocity => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x20, 0x4));
+        public Single SnapMaxLinearDistance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x24, 0x4));
+        public Single SnapMaxAngularDistance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x28, 0x4));
+        public Single PositionMaxVelocityLinear => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x2C, 0x4));
+        public Single PositionMaxVelocityAngular => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x30, 0x4));
         public Int32 ProjectilePositionMaxVelocity => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x34, 0x4));
         public Int32 MeleePositionMaxVelocity => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x38, 0x4));
         partial void CustomFactoryEnd(

@@ -1930,12 +1930,12 @@ namespace Mutagen.Bethesda.Fallout3
         #region FogNear
         private int _FogNearLocation => _DATALocation!.Value.Min + 0xC;
         private bool _FogNear_IsSet => _DATALocation.HasValue;
-        public Single FogNear => _FogNear_IsSet ? _recordData.Slice(_FogNearLocation, 4).Float() : default(Single);
+        public Single FogNear => _FogNear_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogNearLocation, 4)) : default(Single);
         #endregion
         #region FogFar
         private int _FogFarLocation => _DATALocation!.Value.Min + 0x10;
         private bool _FogFar_IsSet => _DATALocation.HasValue;
-        public Single FogFar => _FogFar_IsSet ? _recordData.Slice(_FogFarLocation, 4).Float() : default(Single);
+        public Single FogFar => _FogFar_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogFarLocation, 4)) : default(Single);
         #endregion
         #region DirectionalRotationXY
         private int _DirectionalRotationXYLocation => _DATALocation!.Value.Min + 0x14;
@@ -1950,17 +1950,17 @@ namespace Mutagen.Bethesda.Fallout3
         #region DirectionalFade
         private int _DirectionalFadeLocation => _DATALocation!.Value.Min + 0x1C;
         private bool _DirectionalFade_IsSet => _DATALocation.HasValue;
-        public Single DirectionalFade => _DirectionalFade_IsSet ? _recordData.Slice(_DirectionalFadeLocation, 4).Float() : default(Single);
+        public Single DirectionalFade => _DirectionalFade_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DirectionalFadeLocation, 4)) : default(Single);
         #endregion
         #region FogClipDistance
         private int _FogClipDistanceLocation => _DATALocation!.Value.Min + 0x20;
         private bool _FogClipDistance_IsSet => _DATALocation.HasValue;
-        public Single FogClipDistance => _FogClipDistance_IsSet ? _recordData.Slice(_FogClipDistanceLocation, 4).Float() : default(Single);
+        public Single FogClipDistance => _FogClipDistance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogClipDistanceLocation, 4)) : default(Single);
         #endregion
         #region FogPower
         private int _FogPowerLocation => _DATALocation!.Value.Min + 0x24;
         private bool _FogPower_IsSet => _DATALocation.HasValue;
-        public Single FogPower => _FogPower_IsSet ? _recordData.Slice(_FogPowerLocation, 4).Float() : default(Single);
+        public Single FogPower => _FogPower_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogPowerLocation, 4)) : default(Single);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

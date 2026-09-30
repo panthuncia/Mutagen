@@ -1283,9 +1283,9 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         public Double GravityWell => BinaryPrimitives.ReadDoubleLittleEndian(_structData.Slice(0x0, 0x8));
-        public Single MassComparedToEarth => _structData.Slice(0x8, 0x4).Float() / 5.972E+24f;
-        public Single RadiusInKilometers => _structData.Slice(0xC, 0x4).Float();
-        public Single Gravity => _structData.Slice(0x10, 0x4).Float();
+        public Single MassComparedToEarth => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4)) / 5.972E+24f;
+        public Single RadiusInKilometers => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single Gravity => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
         public Int32 Unknown2 => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x14, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,

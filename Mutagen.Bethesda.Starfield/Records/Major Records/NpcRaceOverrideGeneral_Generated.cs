@@ -1606,7 +1606,7 @@ namespace Mutagen.Bethesda.Starfield
         public IFormLinkGetter<IExplosionGetter> UnknownForm1 => FormLinkBinaryTranslation.Instance.OverlayFactory<IExplosionGetter>(_package, _structData.Span.Slice(0x54, 0x4));
         public IFormLinkGetter<IDebrisGetter> UnknownForm2 => FormLinkBinaryTranslation.Instance.OverlayFactory<IDebrisGetter>(_package, _structData.Span.Slice(0x58, 0x4));
         public IFormLinkGetter<IImpactDataSetGetter> UnknownForm3 => FormLinkBinaryTranslation.Instance.OverlayFactory<IImpactDataSetGetter>(_package, _structData.Span.Slice(0x5C, 0x4));
-        public Single UnknownFloat => _structData.Slice(0x60, 0x4).Float();
+        public Single UnknownFloat => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x60, 0x4));
         public UInt16 UnknownInt16 => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x64, 0x2));
         public NpcRaceOverrideGeneral.ActiveOverride ActiveOverrides => (NpcRaceOverrideGeneral.ActiveOverride)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x66, 0x4));
         partial void CustomFactoryEnd(

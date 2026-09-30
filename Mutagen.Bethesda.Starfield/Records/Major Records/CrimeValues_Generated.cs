@@ -1667,7 +1667,7 @@ namespace Mutagen.Bethesda.Starfield
         public UInt16 Trespass => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x6, 0x2));
         public UInt16 Pickpocket => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x8, 0x2));
         public UInt16 Unknown => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0xA, 0x2));
-        public Single StealMultiplier => _structData.Slice(0xC, 0x4).Float();
+        public Single StealMultiplier => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
         public UInt16 Escape => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x10, 0x2));
         public UInt16 Piracy => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x12, 0x2));
         public UInt32 SmuggleMultiplier => _structData.Length <= 0x14 ? default : BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0x14, 0x4));

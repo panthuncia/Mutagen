@@ -1501,12 +1501,12 @@ namespace Mutagen.Bethesda.Oblivion
         public Color AmbientColor => _structData.Slice(0x0, 0x4).ReadColor(ColorBinaryType.Alpha);
         public Color DirectionalColor => _structData.Slice(0x4, 0x4).ReadColor(ColorBinaryType.Alpha);
         public Color FogColor => _structData.Slice(0x8, 0x4).ReadColor(ColorBinaryType.Alpha);
-        public Single FogNear => _structData.Slice(0xC, 0x4).Float();
-        public Single FogFar => _structData.Slice(0x10, 0x4).Float();
+        public Single FogNear => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single FogFar => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
         public Int32 DirectionalRotationXY => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x14, 0x4));
         public Int32 DirectionalRotationZ => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x18, 0x4));
-        public Single DirectionalFade => _structData.Slice(0x1C, 0x4).Float();
-        public Single FogClipDistance => _structData.Slice(0x20, 0x4).Float();
+        public Single DirectionalFade => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
+        public Single FogClipDistance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x20, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

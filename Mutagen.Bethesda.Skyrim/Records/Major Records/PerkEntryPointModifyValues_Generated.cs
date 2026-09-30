@@ -1325,8 +1325,8 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         public PerkEntryPointModifyValue.ModificationType Modification => (PerkEntryPointModifyValue.ModificationType)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x2, 0x4));
-        public Single? Value => _structData.Length >= 10 ? _structData.Slice(0x6, 0x4).Float() : default(Single?);
-        public Single? Value2 => _structData.Length >= 14 ? _structData.Slice(0xA, 0x4).Float() : default(Single?);
+        public Single? Value => _structData.Length >= 10 ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x6, 0x4)) : default(Single?);
+        public Single? Value2 => _structData.Length >= 14 ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xA, 0x4)) : default(Single?);
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

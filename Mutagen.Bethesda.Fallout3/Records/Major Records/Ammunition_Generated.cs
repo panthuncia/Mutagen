@@ -2990,7 +2990,7 @@ namespace Mutagen.Bethesda.Fallout3
         #region Speed
         private int _SpeedLocation => _DATALocation!.Value.Min;
         private bool _Speed_IsSet => _DATALocation.HasValue;
-        public Single Speed => _Speed_IsSet ? _recordData.Slice(_SpeedLocation, 4).Float() : default(Single);
+        public Single Speed => _Speed_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SpeedLocation, 4)) : default(Single);
         #endregion
         #region Flags
         private int _FlagsLocation => _DATALocation!.Value.Min + 0x4;

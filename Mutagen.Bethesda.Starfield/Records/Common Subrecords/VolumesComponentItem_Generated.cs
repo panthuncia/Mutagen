@@ -1629,9 +1629,9 @@ namespace Mutagen.Bethesda.Starfield
         public IVolumesMatrixGetter Matrix2 => VolumesMatrixBinaryOverlay.VolumesMatrixFactory(_structData.Slice(0x14), _package, default(TypedParseParams));
         public IVolumesMatrixGetter Matrix3 => VolumesMatrixBinaryOverlay.VolumesMatrixFactory(_structData.Slice(0x24), _package, default(TypedParseParams));
         public IVolumesMatrixGetter Matrix4 => VolumesMatrixBinaryOverlay.VolumesMatrixFactory(_structData.Slice(0x34), _package, default(TypedParseParams));
-        public Single Unknown1 => _structData.Slice(0x44, 0x4).Float();
-        public Single Unknown2 => _structData.Slice(0x48, 0x4).Float();
-        public Single Unknown3 => _structData.Slice(0x4C, 0x4).Float();
+        public Single Unknown1 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x44, 0x4));
+        public Single Unknown2 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x48, 0x4));
+        public Single Unknown3 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4C, 0x4));
         #region Ender
         public partial IAVolumesUnknownEnderGetter GetEnderCustom(int location);
         public IAVolumesUnknownEnderGetter Ender => GetEnderCustom(location: 0x50);

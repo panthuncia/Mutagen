@@ -1100,7 +1100,7 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        public Single Time => _structData.Slice(0x0, 0x4).Float();
+        public Single Time => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
         public Color Color => _structData.Slice(0x4, 0x10).ReadColor(ColorBinaryType.AlphaFloat);
         partial void CustomFactoryEnd(
             OverlayStream stream,

@@ -2366,7 +2366,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region BleedoutDefault
         private int _BleedoutDefaultLocation => _DATALocation!.Value.Min + 0x18;
         private bool _BleedoutDefault_IsSet => _DATALocation.HasValue;
-        public Single BleedoutDefault => _BleedoutDefault_IsSet ? _recordData.Slice(_BleedoutDefaultLocation, 4).Float() : default(Single);
+        public Single BleedoutDefault => _BleedoutDefault_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BleedoutDefaultLocation, 4)) : default(Single);
         #endregion
         #region VoicePoints
         private int _VoicePointsLocation => _DATALocation!.Value.Min + 0x1C;

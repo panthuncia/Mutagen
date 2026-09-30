@@ -1233,8 +1233,8 @@ namespace Mutagen.Bethesda.Oblivion
 
         public AlchemicalApparatus.ApparatusType Type => (AlchemicalApparatus.ApparatusType)_structData.Span.Slice(0x0, 0x1)[0];
         public UInt32 Value => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0x1, 0x4));
-        public Single Weight => _structData.Slice(0x5, 0x4).Float();
-        public Single Quality => _structData.Slice(0x9, 0x4).Float();
+        public Single Weight => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x5, 0x4));
+        public Single Quality => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x9, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

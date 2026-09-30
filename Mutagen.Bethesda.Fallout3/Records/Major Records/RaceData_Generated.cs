@@ -1852,8 +1852,8 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 var data = _structData.Span.Slice(0x12, 8);
                 return new GenderedItem<Single>(
-                    data.Float(),
-                    data.Slice(4).Float());
+                    FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(data),
+                    FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(data.Slice(4)));
             }
         }
         #endregion
@@ -1864,8 +1864,8 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 var data = _structData.Span.Slice(0x1A, 8);
                 return new GenderedItem<Single>(
-                    data.Float(),
-                    data.Slice(4).Float());
+                    FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(data),
+                    FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(data.Slice(4)));
             }
         }
         #endregion

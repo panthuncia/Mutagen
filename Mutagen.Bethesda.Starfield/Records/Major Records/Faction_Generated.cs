@@ -3695,7 +3695,7 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region FormationRadius
         private int? _FormationRadiusLocation;
-        public Single? FormationRadius => _FormationRadiusLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FormationRadiusLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? FormationRadius => _FormationRadiusLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FormationRadiusLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

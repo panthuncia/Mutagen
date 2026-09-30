@@ -1381,7 +1381,7 @@ namespace Mutagen.Bethesda.Starfield
 
         public UInt16 StartHour => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x0, 0x2));
         public UInt16 EndHour => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x2, 0x2));
-        public Single Radius => _structData.Slice(0x4, 0x4).Float();
+        public Single Radius => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
         public Boolean BuysStolenItems => _structData.Slice(0x8, 0x1)[0] >= 1;
         public Boolean BuySellEverythingNotInList => _structData.Slice(0x9, 0x1)[0] >= 1;
         public Boolean BuysNonStolenItems => _structData.Slice(0xA, 0x1)[0] >= 1;

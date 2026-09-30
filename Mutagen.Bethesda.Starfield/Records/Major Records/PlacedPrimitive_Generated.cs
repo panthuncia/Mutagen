@@ -1255,7 +1255,7 @@ namespace Mutagen.Bethesda.Starfield
         public P3Float Bounds => GetBoundsCustom(location: 0x0);
         #endregion
         public Color Color => _structData.Slice(0xC, 0xC).ReadColor(ColorBinaryType.NoAlphaFloat);
-        public Single Unknown => _structData.Slice(0x18, 0x4).Float();
+        public Single Unknown => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
         public PlacedPrimitive.TypeEnum Type => (PlacedPrimitive.TypeEnum)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x1C, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,

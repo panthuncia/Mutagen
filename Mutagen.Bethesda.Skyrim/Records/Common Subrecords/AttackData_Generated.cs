@@ -1641,17 +1641,17 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        public Single DamageMult => _structData.Slice(0x0, 0x4).Float();
-        public Single Chance => _structData.Slice(0x4, 0x4).Float();
+        public Single DamageMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single Chance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
         public IFormLinkGetter<ISpellRecordGetter> Spell => FormLinkBinaryTranslation.Instance.OverlayFactory<ISpellRecordGetter>(_package, _structData.Span.Slice(0x8, 0x4));
         public AttackData.Flag Flags => (AttackData.Flag)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0xC, 0x4));
-        public Single AttackAngle => _structData.Slice(0x10, 0x4).Float();
-        public Single StrikeAngle => _structData.Slice(0x14, 0x4).Float();
-        public Single Stagger => _structData.Slice(0x18, 0x4).Float();
+        public Single AttackAngle => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
+        public Single StrikeAngle => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
+        public Single Stagger => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
         public IFormLinkGetter<IKeywordGetter> AttackType => FormLinkBinaryTranslation.Instance.OverlayFactory<IKeywordGetter>(_package, _structData.Span.Slice(0x1C, 0x4));
-        public Single Knockdown => _structData.Slice(0x20, 0x4).Float();
-        public Single RecoveryTime => _structData.Slice(0x24, 0x4).Float();
-        public Single StaminaMult => _structData.Slice(0x28, 0x4).Float();
+        public Single Knockdown => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x20, 0x4));
+        public Single RecoveryTime => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x24, 0x4));
+        public Single StaminaMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x28, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

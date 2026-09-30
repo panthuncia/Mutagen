@@ -4949,7 +4949,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region BaseCost
         private int _BaseCostLocation => _DATALocation!.Value.Min + 0x4;
         private bool _BaseCost_IsSet => _DATALocation.HasValue;
-        public Single BaseCost => _BaseCost_IsSet ? _recordData.Slice(_BaseCostLocation, 4).Float() : default(Single);
+        public Single BaseCost => _BaseCost_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BaseCostLocation, 4)) : default(Single);
         #endregion
         #region AssociatedItem
         private int _AssociatedItemLocation => _DATALocation!.Value.Min + 0x8;
@@ -4988,7 +4988,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region TaperWeight
         private int _TaperWeightLocation => _DATALocation!.Value.Min + 0x1C;
         private bool _TaperWeight_IsSet => _DATALocation.HasValue;
-        public Single TaperWeight => _TaperWeight_IsSet ? _recordData.Slice(_TaperWeightLocation, 4).Float() : default(Single);
+        public Single TaperWeight => _TaperWeight_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TaperWeightLocation, 4)) : default(Single);
         #endregion
         #region HitShader
         private int _HitShaderLocation => _DATALocation!.Value.Min + 0x20;
@@ -5013,22 +5013,22 @@ namespace Mutagen.Bethesda.Skyrim
         #region SpellmakingCastingTime
         private int _SpellmakingCastingTimeLocation => _DATALocation!.Value.Min + 0x30;
         private bool _SpellmakingCastingTime_IsSet => _DATALocation.HasValue;
-        public Single SpellmakingCastingTime => _SpellmakingCastingTime_IsSet ? _recordData.Slice(_SpellmakingCastingTimeLocation, 4).Float() : default(Single);
+        public Single SpellmakingCastingTime => _SpellmakingCastingTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SpellmakingCastingTimeLocation, 4)) : default(Single);
         #endregion
         #region TaperCurve
         private int _TaperCurveLocation => _DATALocation!.Value.Min + 0x34;
         private bool _TaperCurve_IsSet => _DATALocation.HasValue;
-        public Single TaperCurve => _TaperCurve_IsSet ? _recordData.Slice(_TaperCurveLocation, 4).Float() : default(Single);
+        public Single TaperCurve => _TaperCurve_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TaperCurveLocation, 4)) : default(Single);
         #endregion
         #region TaperDuration
         private int _TaperDurationLocation => _DATALocation!.Value.Min + 0x38;
         private bool _TaperDuration_IsSet => _DATALocation.HasValue;
-        public Single TaperDuration => _TaperDuration_IsSet ? _recordData.Slice(_TaperDurationLocation, 4).Float() : default(Single);
+        public Single TaperDuration => _TaperDuration_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TaperDurationLocation, 4)) : default(Single);
         #endregion
         #region SecondActorValueWeight
         private int _SecondActorValueWeightLocation => _DATALocation!.Value.Min + 0x3C;
         private bool _SecondActorValueWeight_IsSet => _DATALocation.HasValue;
-        public Single SecondActorValueWeight => _SecondActorValueWeight_IsSet ? _recordData.Slice(_SecondActorValueWeightLocation, 4).Float() : default(Single);
+        public Single SecondActorValueWeight => _SecondActorValueWeight_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SecondActorValueWeightLocation, 4)) : default(Single);
         #endregion
         #region Archetype
         private int _ArchetypeLocation => _DATALocation!.Value.Min + 0x40;
@@ -5078,7 +5078,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region SkillUsageMultiplier
         private int _SkillUsageMultiplierLocation => _DATALocation!.Value.Min + 0x68;
         private bool _SkillUsageMultiplier_IsSet => _DATALocation.HasValue;
-        public Single SkillUsageMultiplier => _SkillUsageMultiplier_IsSet ? _recordData.Slice(_SkillUsageMultiplierLocation, 4).Float() : default(Single);
+        public Single SkillUsageMultiplier => _SkillUsageMultiplier_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SkillUsageMultiplierLocation, 4)) : default(Single);
         #endregion
         #region DualCastArt
         private int _DualCastArtLocation => _DATALocation!.Value.Min + 0x6C;
@@ -5088,7 +5088,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region DualCastScale
         private int _DualCastScaleLocation => _DATALocation!.Value.Min + 0x70;
         private bool _DualCastScale_IsSet => _DATALocation.HasValue;
-        public Single DualCastScale => _DualCastScale_IsSet ? _recordData.Slice(_DualCastScaleLocation, 4).Float() : default(Single);
+        public Single DualCastScale => _DualCastScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DualCastScaleLocation, 4)) : default(Single);
         #endregion
         #region EnchantArt
         private int _EnchantArtLocation => _DATALocation!.Value.Min + 0x74;
@@ -5128,12 +5128,12 @@ namespace Mutagen.Bethesda.Skyrim
         #region ScriptEffectAIScore
         private int _ScriptEffectAIScoreLocation => _DATALocation!.Value.Min + 0x90;
         private bool _ScriptEffectAIScore_IsSet => _DATALocation.HasValue;
-        public Single ScriptEffectAIScore => _ScriptEffectAIScore_IsSet ? _recordData.Slice(_ScriptEffectAIScoreLocation, 4).Float() : default(Single);
+        public Single ScriptEffectAIScore => _ScriptEffectAIScore_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ScriptEffectAIScoreLocation, 4)) : default(Single);
         #endregion
         #region ScriptEffectAIDelayTime
         private int _ScriptEffectAIDelayTimeLocation => _DATALocation!.Value.Min + 0x94;
         private bool _ScriptEffectAIDelayTime_IsSet => _DATALocation.HasValue;
-        public Single ScriptEffectAIDelayTime => _ScriptEffectAIDelayTime_IsSet ? _recordData.Slice(_ScriptEffectAIDelayTimeLocation, 4).Float() : default(Single);
+        public Single ScriptEffectAIDelayTime => _ScriptEffectAIDelayTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ScriptEffectAIDelayTimeLocation, 4)) : default(Single);
         #endregion
         public IReadOnlyList<IFormLinkGetter<IMagicEffectGetter>> CounterEffects { get; private set; } = [];
         public IReadOnlyList<IMagicEffectSoundGetter>? Sounds { get; private set; }

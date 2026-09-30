@@ -8389,8 +8389,8 @@ namespace Mutagen.Bethesda.Skyrim
                 if (!_Height_IsSet) return new GenderedItem<Single>(default(Single), default(Single));
                 var data = _recordData.Slice(_HeightLocation);
                 return new GenderedItem<Single>(
-                    data.Float(),
-                    data.Slice(4).Float());
+                    FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(data),
+                    FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(data.Slice(4)));
             }
         }
         #endregion
@@ -8404,8 +8404,8 @@ namespace Mutagen.Bethesda.Skyrim
                 if (!_Weight_IsSet) return new GenderedItem<Single>(default(Single), default(Single));
                 var data = _recordData.Slice(_WeightLocation);
                 return new GenderedItem<Single>(
-                    data.Float(),
-                    data.Slice(4).Float());
+                    FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(data),
+                    FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(data.Slice(4)));
             }
         }
         #endregion
@@ -8425,22 +8425,22 @@ namespace Mutagen.Bethesda.Skyrim
         #region BaseCarryWeight
         private int _BaseCarryWeightLocation => _DATALocation!.Value.Min + 0x30;
         private bool _BaseCarryWeight_IsSet => _DATALocation.HasValue;
-        public Single BaseCarryWeight => _BaseCarryWeight_IsSet ? _recordData.Slice(_BaseCarryWeightLocation, 4).Float() : default(Single);
+        public Single BaseCarryWeight => _BaseCarryWeight_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BaseCarryWeightLocation, 4)) : default(Single);
         #endregion
         #region BaseMass
         private int _BaseMassLocation => _DATALocation!.Value.Min + 0x34;
         private bool _BaseMass_IsSet => _DATALocation.HasValue;
-        public Single BaseMass => _BaseMass_IsSet ? _recordData.Slice(_BaseMassLocation, 4).Float() : default(Single);
+        public Single BaseMass => _BaseMass_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BaseMassLocation, 4)) : default(Single);
         #endregion
         #region AccelerationRate
         private int _AccelerationRateLocation => _DATALocation!.Value.Min + 0x38;
         private bool _AccelerationRate_IsSet => _DATALocation.HasValue;
-        public Single AccelerationRate => _AccelerationRate_IsSet ? _recordData.Slice(_AccelerationRateLocation, 4).Float() : default(Single);
+        public Single AccelerationRate => _AccelerationRate_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AccelerationRateLocation, 4)) : default(Single);
         #endregion
         #region DecelerationRate
         private int _DecelerationRateLocation => _DATALocation!.Value.Min + 0x3C;
         private bool _DecelerationRate_IsSet => _DATALocation.HasValue;
-        public Single DecelerationRate => _DecelerationRate_IsSet ? _recordData.Slice(_DecelerationRateLocation, 4).Float() : default(Single);
+        public Single DecelerationRate => _DecelerationRate_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DecelerationRateLocation, 4)) : default(Single);
         #endregion
         #region Size
         private int _SizeLocation => _DATALocation!.Value.Min + 0x40;
@@ -8460,7 +8460,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region InjuredHealthPercent
         private int _InjuredHealthPercentLocation => _DATALocation!.Value.Min + 0x4C;
         private bool _InjuredHealthPercent_IsSet => _DATALocation.HasValue;
-        public Single InjuredHealthPercent => _InjuredHealthPercent_IsSet ? _recordData.Slice(_InjuredHealthPercentLocation, 4).Float() : default(Single);
+        public Single InjuredHealthPercent => _InjuredHealthPercent_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_InjuredHealthPercentLocation, 4)) : default(Single);
         #endregion
         #region ShieldBipedObject
         private int _ShieldBipedObjectLocation => _DATALocation!.Value.Min + 0x50;
@@ -8478,12 +8478,12 @@ namespace Mutagen.Bethesda.Skyrim
         #region UnarmedDamage
         private int _UnarmedDamageLocation => _DATALocation!.Value.Min + 0x60;
         private bool _UnarmedDamage_IsSet => _DATALocation.HasValue;
-        public Single UnarmedDamage => _UnarmedDamage_IsSet ? _recordData.Slice(_UnarmedDamageLocation, 4).Float() : default(Single);
+        public Single UnarmedDamage => _UnarmedDamage_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_UnarmedDamageLocation, 4)) : default(Single);
         #endregion
         #region UnarmedReach
         private int _UnarmedReachLocation => _DATALocation!.Value.Min + 0x64;
         private bool _UnarmedReach_IsSet => _DATALocation.HasValue;
-        public Single UnarmedReach => _UnarmedReach_IsSet ? _recordData.Slice(_UnarmedReachLocation, 4).Float() : default(Single);
+        public Single UnarmedReach => _UnarmedReach_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_UnarmedReachLocation, 4)) : default(Single);
         #endregion
         #region BodyBipedObject
         private int _BodyBipedObjectLocation => _DATALocation!.Value.Min + 0x68;
@@ -8493,22 +8493,22 @@ namespace Mutagen.Bethesda.Skyrim
         #region AimAngleTolerance
         private int _AimAngleToleranceLocation => _DATALocation!.Value.Min + 0x6C;
         private bool _AimAngleTolerance_IsSet => _DATALocation.HasValue;
-        public Single AimAngleTolerance => _AimAngleTolerance_IsSet ? _recordData.Slice(_AimAngleToleranceLocation, 4).Float() : default(Single);
+        public Single AimAngleTolerance => _AimAngleTolerance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AimAngleToleranceLocation, 4)) : default(Single);
         #endregion
         #region FlightRadius
         private int _FlightRadiusLocation => _DATALocation!.Value.Min + 0x70;
         private bool _FlightRadius_IsSet => _DATALocation.HasValue;
-        public Single FlightRadius => _FlightRadius_IsSet ? _recordData.Slice(_FlightRadiusLocation, 4).Float() : default(Single);
+        public Single FlightRadius => _FlightRadius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FlightRadiusLocation, 4)) : default(Single);
         #endregion
         #region AngularAccelerationRate
         private int _AngularAccelerationRateLocation => _DATALocation!.Value.Min + 0x74;
         private bool _AngularAccelerationRate_IsSet => _DATALocation.HasValue;
-        public Single AngularAccelerationRate => _AngularAccelerationRate_IsSet ? _recordData.Slice(_AngularAccelerationRateLocation, 4).Float() : default(Single);
+        public Single AngularAccelerationRate => _AngularAccelerationRate_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AngularAccelerationRateLocation, 4)) : default(Single);
         #endregion
         #region AngularTolerance
         private int _AngularToleranceLocation => _DATALocation!.Value.Min + 0x78;
         private bool _AngularTolerance_IsSet => _DATALocation.HasValue;
-        public Single AngularTolerance => _AngularTolerance_IsSet ? _recordData.Slice(_AngularToleranceLocation, 4).Float() : default(Single);
+        public Single AngularTolerance => _AngularTolerance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AngularToleranceLocation, 4)) : default(Single);
         #endregion
         #region Flags2
         private int _Flags2Location => _DATALocation!.Value.Min + 0x7C;
@@ -8576,11 +8576,11 @@ namespace Mutagen.Bethesda.Skyrim
         #endregion
         #region FacegenMainClamp
         private int? _FacegenMainClampLocation;
-        public Single FacegenMainClamp => _FacegenMainClampLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FacegenMainClampLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single FacegenMainClamp => _FacegenMainClampLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FacegenMainClampLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region FacegenFaceClamp
         private int? _FacegenFaceClampLocation;
-        public Single FacegenFaceClamp => _FacegenFaceClampLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FacegenFaceClampLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single FacegenFaceClamp => _FacegenFaceClampLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FacegenFaceClampLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region AttackRace
         private int? _AttackRaceLocation;

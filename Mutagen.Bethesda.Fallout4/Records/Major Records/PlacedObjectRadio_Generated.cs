@@ -1229,9 +1229,9 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        public Single Frequency => _structData.Slice(0x0, 0x4).Float();
-        public Single MinWeakDistance => _structData.Slice(0x4, 0x4).Float();
-        public Single MaxWeakDistance => _structData.Slice(0x8, 0x4).Float();
+        public Single Frequency => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single MinWeakDistance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single MaxWeakDistance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
         public PlacedObjectRadio.Flag Flags => (PlacedObjectRadio.Flag)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0xC, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,

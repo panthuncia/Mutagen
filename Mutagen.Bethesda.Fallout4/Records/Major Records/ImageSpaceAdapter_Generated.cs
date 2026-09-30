@@ -12820,7 +12820,7 @@ namespace Mutagen.Bethesda.Fallout4
         #region Duration
         private int _DurationLocation => _DNAMLocation!.Value.Min + 0x4;
         private bool _Duration_IsSet => _DNAMLocation.HasValue;
-        public Single Duration => _Duration_IsSet ? _recordData.Slice(_DurationLocation, 4).Float() : default(Single);
+        public Single Duration => _Duration_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DurationLocation, 4)) : default(Single);
         #endregion
         #region Counts1
         private int _Counts1Location => _DNAMLocation!.Value.Min + 0x8;

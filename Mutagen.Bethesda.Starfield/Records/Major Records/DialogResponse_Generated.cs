@@ -2118,7 +2118,7 @@ namespace Mutagen.Bethesda.Starfield
         #region EmotionOut
         private int _EmotionOutLocation => _TRDALocation!.Value.Min + 0x8;
         private bool _EmotionOut_IsSet => _TRDALocation.HasValue;
-        public Single EmotionOut => _EmotionOut_IsSet ? _recordData.Slice(_EmotionOutLocation, 4).Float() : default(Single);
+        public Single EmotionOut => _EmotionOut_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EmotionOutLocation, 4)) : default(Single);
         #endregion
         public IReadOnlyList<IDialogResponseTROTGetter> TROTs { get; private set; } = [];
         #region ResponseText

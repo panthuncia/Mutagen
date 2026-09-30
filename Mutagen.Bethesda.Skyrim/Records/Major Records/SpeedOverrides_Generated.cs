@@ -1611,17 +1611,17 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        public Single LeftWalk => _structData.Slice(0x0, 0x4).Float();
-        public Single LeftRun => _structData.Slice(0x4, 0x4).Float();
-        public Single RightWalk => _structData.Slice(0x8, 0x4).Float();
-        public Single RightRun => _structData.Slice(0xC, 0x4).Float();
-        public Single ForwardWalk => _structData.Slice(0x10, 0x4).Float();
-        public Single ForwardRun => _structData.Slice(0x14, 0x4).Float();
-        public Single BackWalk => _structData.Slice(0x18, 0x4).Float();
-        public Single BackRun => _structData.Slice(0x1C, 0x4).Float();
-        public Single RotateWalk => _structData.Slice(0x20, 0x4).Float();
-        public Single RotateRun => _structData.Slice(0x24, 0x4).Float();
-        public Single Unknown => _structData.Slice(0x28, 0x4).Float();
+        public Single LeftWalk => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single LeftRun => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single RightWalk => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single RightRun => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single ForwardWalk => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
+        public Single ForwardRun => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
+        public Single BackWalk => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
+        public Single BackRun => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
+        public Single RotateWalk => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x20, 0x4));
+        public Single RotateRun => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x24, 0x4));
+        public Single Unknown => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x28, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

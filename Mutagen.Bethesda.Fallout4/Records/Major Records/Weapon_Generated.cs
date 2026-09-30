@@ -7159,42 +7159,42 @@ namespace Mutagen.Bethesda.Fallout4
         #region Speed
         private int _SpeedLocation => _DNAMLocation!.Value.Min + 0x4;
         private bool _Speed_IsSet => _DNAMLocation.HasValue;
-        public Single Speed => _Speed_IsSet ? _recordData.Slice(_SpeedLocation, 4).Float() : default(Single);
+        public Single Speed => _Speed_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SpeedLocation, 4)) : default(Single);
         #endregion
         #region ReloadSpeed
         private int _ReloadSpeedLocation => _DNAMLocation!.Value.Min + 0x8;
         private bool _ReloadSpeed_IsSet => _DNAMLocation.HasValue;
-        public Single ReloadSpeed => _ReloadSpeed_IsSet ? _recordData.Slice(_ReloadSpeedLocation, 4).Float() : default(Single);
+        public Single ReloadSpeed => _ReloadSpeed_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ReloadSpeedLocation, 4)) : default(Single);
         #endregion
         #region Reach
         private int _ReachLocation => _DNAMLocation!.Value.Min + 0xC;
         private bool _Reach_IsSet => _DNAMLocation.HasValue;
-        public Single Reach => _Reach_IsSet ? _recordData.Slice(_ReachLocation, 4).Float() : default(Single);
+        public Single Reach => _Reach_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ReachLocation, 4)) : default(Single);
         #endregion
         #region MinRange
         private int _MinRangeLocation => _DNAMLocation!.Value.Min + 0x10;
         private bool _MinRange_IsSet => _DNAMLocation.HasValue;
-        public Single MinRange => _MinRange_IsSet ? _recordData.Slice(_MinRangeLocation, 4).Float() : default(Single);
+        public Single MinRange => _MinRange_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MinRangeLocation, 4)) : default(Single);
         #endregion
         #region MaxRange
         private int _MaxRangeLocation => _DNAMLocation!.Value.Min + 0x14;
         private bool _MaxRange_IsSet => _DNAMLocation.HasValue;
-        public Single MaxRange => _MaxRange_IsSet ? _recordData.Slice(_MaxRangeLocation, 4).Float() : default(Single);
+        public Single MaxRange => _MaxRange_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MaxRangeLocation, 4)) : default(Single);
         #endregion
         #region AttackDelay
         private int _AttackDelayLocation => _DNAMLocation!.Value.Min + 0x18;
         private bool _AttackDelay_IsSet => _DNAMLocation.HasValue;
-        public Single AttackDelay => _AttackDelay_IsSet ? _recordData.Slice(_AttackDelayLocation, 4).Float() : default(Single);
+        public Single AttackDelay => _AttackDelay_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AttackDelayLocation, 4)) : default(Single);
         #endregion
         #region Unknown
         private int _UnknownLocation => _DNAMLocation!.Value.Min + 0x1C;
         private bool _Unknown_IsSet => _DNAMLocation.HasValue;
-        public Single Unknown => _Unknown_IsSet ? _recordData.Slice(_UnknownLocation, 4).Float() : default(Single);
+        public Single Unknown => _Unknown_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_UnknownLocation, 4)) : default(Single);
         #endregion
         #region DamageOutOfRangeMult
         private int _DamageOutOfRangeMultLocation => _DNAMLocation!.Value.Min + 0x20;
         private bool _DamageOutOfRangeMult_IsSet => _DNAMLocation.HasValue;
-        public Single DamageOutOfRangeMult => _DamageOutOfRangeMult_IsSet ? _recordData.Slice(_DamageOutOfRangeMultLocation, 4).Float() : default(Single);
+        public Single DamageOutOfRangeMult => _DamageOutOfRangeMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DamageOutOfRangeMultLocation, 4)) : default(Single);
         #endregion
         #region OnHit
         private int _OnHitLocation => _DNAMLocation!.Value.Min + 0x24;
@@ -7229,12 +7229,12 @@ namespace Mutagen.Bethesda.Fallout4
         #region SecondaryDamage
         private int _SecondaryDamageLocation => _DNAMLocation!.Value.Min + 0x37;
         private bool _SecondaryDamage_IsSet => _DNAMLocation.HasValue;
-        public Single SecondaryDamage => _SecondaryDamage_IsSet ? _recordData.Slice(_SecondaryDamageLocation, 4).Float() : default(Single);
+        public Single SecondaryDamage => _SecondaryDamage_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SecondaryDamageLocation, 4)) : default(Single);
         #endregion
         #region Weight
         private int _WeightLocation => _DNAMLocation!.Value.Min + 0x3B;
         private bool _Weight_IsSet => _DNAMLocation.HasValue;
-        public Single Weight => _Weight_IsSet ? _recordData.Slice(_WeightLocation, 4).Float() : default(Single);
+        public Single Weight => _Weight_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WeightLocation, 4)) : default(Single);
         #endregion
         #region Value
         private int _ValueLocation => _DNAMLocation!.Value.Min + 0x3F;
@@ -7299,7 +7299,7 @@ namespace Mutagen.Bethesda.Fallout4
         #region AnimationAttackSeconds
         private int _AnimationAttackSecondsLocation => _DNAMLocation!.Value.Min + 0x6A;
         private bool _AnimationAttackSeconds_IsSet => _DNAMLocation.HasValue;
-        public Single AnimationAttackSeconds => _AnimationAttackSeconds_IsSet ? _recordData.Slice(_AnimationAttackSecondsLocation, 4).Float() : default(Single);
+        public Single AnimationAttackSeconds => _AnimationAttackSeconds_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AnimationAttackSecondsLocation, 4)) : default(Single);
         #endregion
         #region Unknown2
         private int _Unknown2Location => _DNAMLocation!.Value.Min + 0x6E;
@@ -7309,17 +7309,17 @@ namespace Mutagen.Bethesda.Fallout4
         #region ActionPointCost
         private int _ActionPointCostLocation => _DNAMLocation!.Value.Min + 0x70;
         private bool _ActionPointCost_IsSet => _DNAMLocation.HasValue;
-        public Single ActionPointCost => _ActionPointCost_IsSet ? _recordData.Slice(_ActionPointCostLocation, 4).Float() : default(Single);
+        public Single ActionPointCost => _ActionPointCost_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ActionPointCostLocation, 4)) : default(Single);
         #endregion
         #region FullPowerSeconds
         private int _FullPowerSecondsLocation => _DNAMLocation!.Value.Min + 0x74;
         private bool _FullPowerSeconds_IsSet => _DNAMLocation.HasValue;
-        public Single FullPowerSeconds => _FullPowerSeconds_IsSet ? _recordData.Slice(_FullPowerSecondsLocation, 4).Float() : default(Single);
+        public Single FullPowerSeconds => _FullPowerSeconds_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FullPowerSecondsLocation, 4)) : default(Single);
         #endregion
         #region MinPowerPerShot
         private int _MinPowerPerShotLocation => _DNAMLocation!.Value.Min + 0x78;
         private bool _MinPowerPerShot_IsSet => _DNAMLocation.HasValue;
-        public Single MinPowerPerShot => _MinPowerPerShot_IsSet ? _recordData.Slice(_MinPowerPerShotLocation, 4).Float() : default(Single);
+        public Single MinPowerPerShot => _MinPowerPerShot_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MinPowerPerShotLocation, 4)) : default(Single);
         #endregion
         #region Stagger
         private int _StaggerLocation => _DNAMLocation!.Value.Min + 0x7C;
@@ -7339,12 +7339,12 @@ namespace Mutagen.Bethesda.Fallout4
         #region CritDamageMult
         private int _CritDamageMultLocation => _CRDTLocation!.Value.Min;
         private bool _CritDamageMult_IsSet => _CRDTLocation.HasValue;
-        public Single CritDamageMult => _CritDamageMult_IsSet ? _recordData.Slice(_CritDamageMultLocation, 4).Float() : default(Single);
+        public Single CritDamageMult => _CritDamageMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CritDamageMultLocation, 4)) : default(Single);
         #endregion
         #region CritChargeBonus
         private int _CritChargeBonusLocation => _CRDTLocation!.Value.Min + 0x4;
         private bool _CritChargeBonus_IsSet => _CRDTLocation.HasValue;
-        public Single CritChargeBonus => _CritChargeBonus_IsSet ? _recordData.Slice(_CritChargeBonusLocation, 4).Float() : default(Single);
+        public Single CritChargeBonus => _CritChargeBonus_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CritChargeBonusLocation, 4)) : default(Single);
         #endregion
         #region CritEffect
         private int _CritEffectLocation => _CRDTLocation!.Value.Min + 0x8;

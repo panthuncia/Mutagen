@@ -3210,7 +3210,7 @@ namespace Mutagen.Bethesda.Fallout3
         #endregion
         #region LocationDelay
         private int? _LocationDelayLocation;
-        public Single? LocationDelay => _LocationDelayLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _LocationDelayLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? LocationDelay => _LocationDelayLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LocationDelayLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region DayStart
         private int? _DayStartLocation;
@@ -3222,7 +3222,7 @@ namespace Mutagen.Bethesda.Fallout3
         #endregion
         #region RetriggerDelay
         private int? _RetriggerDelayLocation;
-        public Single? RetriggerDelay => _RetriggerDelayLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _RetriggerDelayLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? RetriggerDelay => _RetriggerDelayLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _RetriggerDelayLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         public IReadOnlyList<IFormLinkGetter<IMediaSetGetter>> NeutralSets { get; private set; } = [];
         public IReadOnlyList<IFormLinkGetter<IMediaSetGetter>> AllySets { get; private set; } = [];

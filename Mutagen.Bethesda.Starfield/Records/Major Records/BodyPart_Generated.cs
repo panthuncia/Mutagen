@@ -2524,7 +2524,7 @@ namespace Mutagen.Bethesda.Starfield
         #region DamageMult
         private int _DamageMultLocation => _BPD2Location!.Value.Min;
         private bool _DamageMult_IsSet => _BPD2Location.HasValue;
-        public Single DamageMult => _DamageMult_IsSet ? _recordData.Slice(_DamageMultLocation, 4).Float() : default(Single);
+        public Single DamageMult => _DamageMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DamageMultLocation, 4)) : default(Single);
         #endregion
         #region Flags
         private int _FlagsLocation => _BPD2Location!.Value.Min + 0x4;
@@ -2574,7 +2574,7 @@ namespace Mutagen.Bethesda.Starfield
         #region OnCrippleDebrisScale
         private int _OnCrippleDebrisScaleLocation => _BPD2Location!.Value.Min + 0x1C;
         private bool _OnCrippleDebrisScale_IsSet => _BPD2Location.HasValue;
-        public Single OnCrippleDebrisScale => _OnCrippleDebrisScale_IsSet ? _recordData.Slice(_OnCrippleDebrisScaleLocation, 4).Float() : default(Single);
+        public Single OnCrippleDebrisScale => _OnCrippleDebrisScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_OnCrippleDebrisScaleLocation, 4)) : default(Single);
         #endregion
         #region OnCrippleDebrisCount
         private int _OnCrippleDebrisCountLocation => _BPD2Location!.Value.Min + 0x20;

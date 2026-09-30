@@ -2302,23 +2302,23 @@ namespace Mutagen.Bethesda.Starfield
         public IFormLinkGetter<IImageSpaceGetter> ImageSpace => FormLinkBinaryTranslation.Instance.OverlayFactory<IImageSpaceGetter>(_package, _structData.Span.Slice(0x8, 0x4));
         public IFormLinkGetter<IFogVolumeGetter> FogVolume => FormLinkBinaryTranslation.Instance.OverlayFactory<IFogVolumeGetter>(_package, _structData.Span.Slice(0xC, 0x4));
         public Int32 Unknown3 => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x10, 0x4));
-        public Single Unknown4 => _structData.Slice(0x14, 0x4).Float();
-        public Single Unknown5 => _structData.Slice(0x18, 0x4).Float();
-        public Single Unknown6 => _structData.Slice(0x1C, 0x4).Float();
-        public Single Unknown7 => _structData.Slice(0x20, 0x4).Float();
+        public Single Unknown4 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
+        public Single Unknown5 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
+        public Single Unknown6 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
+        public Single Unknown7 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x20, 0x4));
         public Int32 Unknown8 => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x24, 0x4));
-        public Single Unknown9 => _structData.Slice(0x28, 0x4).Float();
-        public Single Unknown10 => _structData.Slice(0x2C, 0x4).Float();
-        public Single Unknown11 => _structData.Slice(0x30, 0x4).Float();
+        public Single Unknown9 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x28, 0x4));
+        public Single Unknown10 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x2C, 0x4));
+        public Single Unknown11 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x30, 0x4));
         public Int32 Unknown12 => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x34, 0x4));
-        public Single Unknown13 => _structData.Slice(0x38, 0x4).Float();
-        public Single Unknown14 => _structData.Slice(0x3C, 0x4).Float();
-        public Single Unknown15 => _structData.Slice(0x40, 0x4).Float();
-        public Single Unknown16 => _structData.Slice(0x44, 0x4).Float();
-        public Single Unknown17 => _structData.Slice(0x48, 0x4).Float();
-        public Single Unknown18 => _structData.Slice(0x4C, 0x4).Float();
+        public Single Unknown13 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x38, 0x4));
+        public Single Unknown14 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x3C, 0x4));
+        public Single Unknown15 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x40, 0x4));
+        public Single Unknown16 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x44, 0x4));
+        public Single Unknown17 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x48, 0x4));
+        public Single Unknown18 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4C, 0x4));
         public SByte Unknown19 => (sbyte)_structData.Slice(0x50, 0x1)[0];
-        public Single Unknown20 => _structData.Length <= 0x51 ? default : _structData.Slice(0x51, 0x4).Float();
+        public Single Unknown20 => _structData.Length <= 0x51 ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x51, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

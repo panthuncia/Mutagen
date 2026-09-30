@@ -5847,7 +5847,7 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #region LodWaterHeight
         private int? _LodWaterHeightLocation;
-        public Single? LodWaterHeight => _LodWaterHeightLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _LodWaterHeightLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? LodWaterHeight => _LodWaterHeightLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LodWaterHeightLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region LandDefaults
         private RangeInt32? _LandDefaultsLocation;
@@ -5866,7 +5866,7 @@ namespace Mutagen.Bethesda.Fallout4
         #region WorldMapOffsetScale
         private int _WorldMapOffsetScaleLocation => _ONAMLocation!.Value.Min;
         private bool _WorldMapOffsetScale_IsSet => _ONAMLocation.HasValue;
-        public Single WorldMapOffsetScale => _WorldMapOffsetScale_IsSet ? _recordData.Slice(_WorldMapOffsetScaleLocation, 4).Float() : default(Single);
+        public Single WorldMapOffsetScale => _WorldMapOffsetScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WorldMapOffsetScaleLocation, 4)) : default(Single);
         #endregion
         #region WorldMapCellOffset
         private int _WorldMapCellOffsetLocation => _ONAMLocation!.Value.Min + 0x4;
@@ -5875,7 +5875,7 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #region DistantLodMultiplier
         private int? _DistantLodMultiplierLocation;
-        public Single? DistantLodMultiplier => _DistantLodMultiplierLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DistantLodMultiplierLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? DistantLodMultiplier => _DistantLodMultiplierLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DistantLodMultiplierLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Flags
         private int? _FlagsLocation;

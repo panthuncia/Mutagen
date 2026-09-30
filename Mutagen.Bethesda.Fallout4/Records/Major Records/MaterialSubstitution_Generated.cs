@@ -1268,7 +1268,7 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #region ColorRemappingIndex
         private int? _ColorRemappingIndexLocation;
-        public Single? ColorRemappingIndex => _ColorRemappingIndexLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ColorRemappingIndexLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? ColorRemappingIndex => _ColorRemappingIndexLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ColorRemappingIndexLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

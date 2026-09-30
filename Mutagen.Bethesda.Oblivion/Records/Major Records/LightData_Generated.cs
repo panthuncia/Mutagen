@@ -1523,10 +1523,10 @@ namespace Mutagen.Bethesda.Oblivion
         public UInt32 Radius => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0x4, 0x4));
         public Color Color => _structData.Slice(0x8, 0x4).ReadColor(ColorBinaryType.Alpha);
         public Light.LightFlag Flags => (Light.LightFlag)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0xC, 0x4));
-        public Single FalloffExponent => _structData.Slice(0x10, 0x4).Float();
-        public Single FOV => _structData.Slice(0x14, 0x4).Float();
+        public Single FalloffExponent => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
+        public Single FOV => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
         public UInt32 Value => _structData.Length <= 0x18 ? default : BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0x18, 0x4));
-        public Single Weight => _structData.Length <= 0x1C ? default : _structData.Slice(0x1C, 0x4).Float();
+        public Single Weight => _structData.Length <= 0x1C ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

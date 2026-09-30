@@ -4471,62 +4471,62 @@ namespace Mutagen.Bethesda.Fallout4
         #region OffensiveMult
         private int _OffensiveMultLocation => _CSGDLocation!.Value.Min;
         private bool _OffensiveMult_IsSet => _CSGDLocation.HasValue;
-        public Single OffensiveMult => _OffensiveMult_IsSet ? _recordData.Slice(_OffensiveMultLocation, 4).Float() : default(Single);
+        public Single OffensiveMult => _OffensiveMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_OffensiveMultLocation, 4)) : default(Single);
         #endregion
         #region DefensiveMult
         private int _DefensiveMultLocation => _CSGDLocation!.Value.Min + 0x4;
         private bool _DefensiveMult_IsSet => _CSGDLocation.HasValue;
-        public Single DefensiveMult => _DefensiveMult_IsSet ? _recordData.Slice(_DefensiveMultLocation, 4).Float() : default(Single);
+        public Single DefensiveMult => _DefensiveMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DefensiveMultLocation, 4)) : default(Single);
         #endregion
         #region GroupOffensiveMult
         private int _GroupOffensiveMultLocation => _CSGDLocation!.Value.Min + 0x8;
         private bool _GroupOffensiveMult_IsSet => _CSGDLocation.HasValue;
-        public Single GroupOffensiveMult => _GroupOffensiveMult_IsSet ? _recordData.Slice(_GroupOffensiveMultLocation, 4).Float() : default(Single);
+        public Single GroupOffensiveMult => _GroupOffensiveMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_GroupOffensiveMultLocation, 4)) : default(Single);
         #endregion
         #region EquipmentScoreMultMelee
         private int _EquipmentScoreMultMeleeLocation => _CSGDLocation!.Value.Min + 0xC;
         private bool _EquipmentScoreMultMelee_IsSet => _CSGDLocation.HasValue;
-        public Single EquipmentScoreMultMelee => _EquipmentScoreMultMelee_IsSet ? _recordData.Slice(_EquipmentScoreMultMeleeLocation, 4).Float() : default(Single);
+        public Single EquipmentScoreMultMelee => _EquipmentScoreMultMelee_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EquipmentScoreMultMeleeLocation, 4)) : default(Single);
         #endregion
         #region EquipmentScoreMultMagic
         private int _EquipmentScoreMultMagicLocation => _CSGDLocation!.Value.Min + 0x10;
         private bool _EquipmentScoreMultMagic_IsSet => _CSGDLocation.HasValue;
-        public Single EquipmentScoreMultMagic => _EquipmentScoreMultMagic_IsSet ? _recordData.Slice(_EquipmentScoreMultMagicLocation, 4).Float() : default(Single);
+        public Single EquipmentScoreMultMagic => _EquipmentScoreMultMagic_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EquipmentScoreMultMagicLocation, 4)) : default(Single);
         #endregion
         #region EquipmentScoreMultRanged
         private int _EquipmentScoreMultRangedLocation => _CSGDLocation!.Value.Min + 0x14;
         private bool _EquipmentScoreMultRanged_IsSet => _CSGDLocation.HasValue;
-        public Single EquipmentScoreMultRanged => _EquipmentScoreMultRanged_IsSet ? _recordData.Slice(_EquipmentScoreMultRangedLocation, 4).Float() : default(Single);
+        public Single EquipmentScoreMultRanged => _EquipmentScoreMultRanged_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EquipmentScoreMultRangedLocation, 4)) : default(Single);
         #endregion
         #region EquipmentScoreMultShout
         private int _EquipmentScoreMultShoutLocation => _CSGDLocation!.Value.Min + 0x18;
         private bool _EquipmentScoreMultShout_IsSet => _CSGDLocation.HasValue;
-        public Single EquipmentScoreMultShout => _EquipmentScoreMultShout_IsSet ? _recordData.Slice(_EquipmentScoreMultShoutLocation, 4).Float() : default(Single);
+        public Single EquipmentScoreMultShout => _EquipmentScoreMultShout_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EquipmentScoreMultShoutLocation, 4)) : default(Single);
         #endregion
         #region EquipmentScoreMultUnarmed
         private int _EquipmentScoreMultUnarmedLocation => _CSGDLocation!.Value.Min + 0x1C;
         private bool _EquipmentScoreMultUnarmed_IsSet => _CSGDLocation.HasValue;
-        public Single EquipmentScoreMultUnarmed => _EquipmentScoreMultUnarmed_IsSet ? _recordData.Slice(_EquipmentScoreMultUnarmedLocation, 4).Float() : default(Single);
+        public Single EquipmentScoreMultUnarmed => _EquipmentScoreMultUnarmed_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EquipmentScoreMultUnarmedLocation, 4)) : default(Single);
         #endregion
         #region EquipmentScoreMultStaff
         private int _EquipmentScoreMultStaffLocation => _CSGDLocation!.Value.Min + 0x20;
         private bool _EquipmentScoreMultStaff_IsSet => _CSGDLocation.HasValue;
-        public Single EquipmentScoreMultStaff => _EquipmentScoreMultStaff_IsSet ? _recordData.Slice(_EquipmentScoreMultStaffLocation, 4).Float() : default(Single);
+        public Single EquipmentScoreMultStaff => _EquipmentScoreMultStaff_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EquipmentScoreMultStaffLocation, 4)) : default(Single);
         #endregion
         #region AvoidThreatChance
         private int _AvoidThreatChanceLocation => _CSGDLocation!.Value.Min + 0x24;
         private bool _AvoidThreatChance_IsSet => _CSGDLocation.HasValue;
-        public Single AvoidThreatChance => _AvoidThreatChance_IsSet ? _recordData.Slice(_AvoidThreatChanceLocation, 4).Float() : default(Single);
+        public Single AvoidThreatChance => _AvoidThreatChance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AvoidThreatChanceLocation, 4)) : default(Single);
         #endregion
         #region DodgeThreadChance
         private int _DodgeThreadChanceLocation => _CSGDLocation!.Value.Min + 0x28;
         private bool _DodgeThreadChance_IsSet => _CSGDLocation.HasValue;
-        public Single DodgeThreadChance => _DodgeThreadChance_IsSet ? _recordData.Slice(_DodgeThreadChanceLocation, 4).Float() : default(Single);
+        public Single DodgeThreadChance => _DodgeThreadChance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DodgeThreadChanceLocation, 4)) : default(Single);
         #endregion
         #region EvadeThreatChance
         private int _EvadeThreatChanceLocation => _CSGDLocation!.Value.Min + 0x2C;
         private bool _EvadeThreatChance_IsSet => _CSGDLocation.HasValue;
-        public Single EvadeThreatChance => _EvadeThreatChance_IsSet ? _recordData.Slice(_EvadeThreatChanceLocation, 4).Float() : default(Single);
+        public Single EvadeThreatChance => _EvadeThreatChance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EvadeThreatChanceLocation, 4)) : default(Single);
         #endregion
         #region CSMD
         private int? _CSMDLocation;
@@ -4537,102 +4537,102 @@ namespace Mutagen.Bethesda.Fallout4
         #region MeleeAttackStaggeredMult
         private int _MeleeAttackStaggeredMultLocation => _CSMELocation!.Value.Min;
         private bool _MeleeAttackStaggeredMult_IsSet => _CSMELocation.HasValue;
-        public Single MeleeAttackStaggeredMult => _MeleeAttackStaggeredMult_IsSet ? _recordData.Slice(_MeleeAttackStaggeredMultLocation, 4).Float() : default(Single);
+        public Single MeleeAttackStaggeredMult => _MeleeAttackStaggeredMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MeleeAttackStaggeredMultLocation, 4)) : default(Single);
         #endregion
         #region MeleePowerAttackStaggeredMult
         private int _MeleePowerAttackStaggeredMultLocation => _CSMELocation!.Value.Min + 0x4;
         private bool _MeleePowerAttackStaggeredMult_IsSet => _CSMELocation.HasValue;
-        public Single MeleePowerAttackStaggeredMult => _MeleePowerAttackStaggeredMult_IsSet ? _recordData.Slice(_MeleePowerAttackStaggeredMultLocation, 4).Float() : default(Single);
+        public Single MeleePowerAttackStaggeredMult => _MeleePowerAttackStaggeredMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MeleePowerAttackStaggeredMultLocation, 4)) : default(Single);
         #endregion
         #region MeleePowerAttackBlockingMult
         private int _MeleePowerAttackBlockingMultLocation => _CSMELocation!.Value.Min + 0x8;
         private bool _MeleePowerAttackBlockingMult_IsSet => _CSMELocation.HasValue;
-        public Single MeleePowerAttackBlockingMult => _MeleePowerAttackBlockingMult_IsSet ? _recordData.Slice(_MeleePowerAttackBlockingMultLocation, 4).Float() : default(Single);
+        public Single MeleePowerAttackBlockingMult => _MeleePowerAttackBlockingMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MeleePowerAttackBlockingMultLocation, 4)) : default(Single);
         #endregion
         #region MeleeBashMult
         private int _MeleeBashMultLocation => _CSMELocation!.Value.Min + 0xC;
         private bool _MeleeBashMult_IsSet => _CSMELocation.HasValue;
-        public Single MeleeBashMult => _MeleeBashMult_IsSet ? _recordData.Slice(_MeleeBashMultLocation, 4).Float() : default(Single);
+        public Single MeleeBashMult => _MeleeBashMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MeleeBashMultLocation, 4)) : default(Single);
         #endregion
         #region MeleeBashRecoilMult
         private int _MeleeBashRecoilMultLocation => _CSMELocation!.Value.Min + 0x10;
         private bool _MeleeBashRecoilMult_IsSet => _CSMELocation.HasValue;
-        public Single MeleeBashRecoilMult => _MeleeBashRecoilMult_IsSet ? _recordData.Slice(_MeleeBashRecoilMultLocation, 4).Float() : default(Single);
+        public Single MeleeBashRecoilMult => _MeleeBashRecoilMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MeleeBashRecoilMultLocation, 4)) : default(Single);
         #endregion
         #region MeleeBashAttackMult
         private int _MeleeBashAttackMultLocation => _CSMELocation!.Value.Min + 0x14;
         private bool _MeleeBashAttackMult_IsSet => _CSMELocation.HasValue;
-        public Single MeleeBashAttackMult => _MeleeBashAttackMult_IsSet ? _recordData.Slice(_MeleeBashAttackMultLocation, 4).Float() : default(Single);
+        public Single MeleeBashAttackMult => _MeleeBashAttackMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MeleeBashAttackMultLocation, 4)) : default(Single);
         #endregion
         #region MeleeBashPowerAttackMult
         private int _MeleeBashPowerAttackMultLocation => _CSMELocation!.Value.Min + 0x18;
         private bool _MeleeBashPowerAttackMult_IsSet => _CSMELocation.HasValue;
-        public Single MeleeBashPowerAttackMult => _MeleeBashPowerAttackMult_IsSet ? _recordData.Slice(_MeleeBashPowerAttackMultLocation, 4).Float() : default(Single);
+        public Single MeleeBashPowerAttackMult => _MeleeBashPowerAttackMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MeleeBashPowerAttackMultLocation, 4)) : default(Single);
         #endregion
         #region MeleeSpecialAttackMult
         private int _MeleeSpecialAttackMultLocation => _CSMELocation!.Value.Min + 0x1C;
         private bool _MeleeSpecialAttackMult_IsSet => _CSMELocation.HasValue;
-        public Single MeleeSpecialAttackMult => _MeleeSpecialAttackMult_IsSet ? _recordData.Slice(_MeleeSpecialAttackMultLocation, 4).Float() : default(Single);
+        public Single MeleeSpecialAttackMult => _MeleeSpecialAttackMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MeleeSpecialAttackMultLocation, 4)) : default(Single);
         #endregion
         #region MeleeBlockWhenStaggeredMult
         private int _MeleeBlockWhenStaggeredMultLocation => _CSMELocation!.Value.Min + 0x20;
         private bool _MeleeBlockWhenStaggeredMult_IsSet => _CSMELocation.HasValue;
-        public Single MeleeBlockWhenStaggeredMult => _MeleeBlockWhenStaggeredMult_IsSet ? _recordData.Slice(_MeleeBlockWhenStaggeredMultLocation, 4).Float() : default(Single);
+        public Single MeleeBlockWhenStaggeredMult => _MeleeBlockWhenStaggeredMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MeleeBlockWhenStaggeredMultLocation, 4)) : default(Single);
         #endregion
         #region MeleeAttackWhenStaggeredMult
         private int _MeleeAttackWhenStaggeredMultLocation => _CSMELocation!.Value.Min + 0x24;
         private bool _MeleeAttackWhenStaggeredMult_IsSet => _CSMELocation.HasValue && !CSMEDataTypeState.HasFlag(CombatStyle.CSMEDataType.Break0);
-        public Single MeleeAttackWhenStaggeredMult => _MeleeAttackWhenStaggeredMult_IsSet ? _recordData.Slice(_MeleeAttackWhenStaggeredMultLocation, 4).Float() : default(Single);
+        public Single MeleeAttackWhenStaggeredMult => _MeleeAttackWhenStaggeredMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MeleeAttackWhenStaggeredMultLocation, 4)) : default(Single);
         #endregion
         #region RangedAccuracyMult
         private int? _RangedAccuracyMultLocation;
-        public Single? RangedAccuracyMult => _RangedAccuracyMultLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _RangedAccuracyMultLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? RangedAccuracyMult => _RangedAccuracyMultLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _RangedAccuracyMultLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         private RangeInt32? _CSCRLocation;
         #region CloseRangeDuelingCircleMult
         private int _CloseRangeDuelingCircleMultLocation => _CSCRLocation!.Value.Min;
         private bool _CloseRangeDuelingCircleMult_IsSet => _CSCRLocation.HasValue;
-        public Single CloseRangeDuelingCircleMult => _CloseRangeDuelingCircleMult_IsSet ? _recordData.Slice(_CloseRangeDuelingCircleMultLocation, 4).Float() : default(Single);
+        public Single CloseRangeDuelingCircleMult => _CloseRangeDuelingCircleMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CloseRangeDuelingCircleMultLocation, 4)) : default(Single);
         #endregion
         #region CloseRangeDuelingFallbackMult
         private int _CloseRangeDuelingFallbackMultLocation => _CSCRLocation!.Value.Min + 0x4;
         private bool _CloseRangeDuelingFallbackMult_IsSet => _CSCRLocation.HasValue;
-        public Single CloseRangeDuelingFallbackMult => _CloseRangeDuelingFallbackMult_IsSet ? _recordData.Slice(_CloseRangeDuelingFallbackMultLocation, 4).Float() : default(Single);
+        public Single CloseRangeDuelingFallbackMult => _CloseRangeDuelingFallbackMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CloseRangeDuelingFallbackMultLocation, 4)) : default(Single);
         #endregion
         #region CloseRangeFlankDistance
         private int _CloseRangeFlankDistanceLocation => _CSCRLocation!.Value.Min + 0x8;
         private bool _CloseRangeFlankDistance_IsSet => _CSCRLocation.HasValue;
-        public Single CloseRangeFlankDistance => _CloseRangeFlankDistance_IsSet ? _recordData.Slice(_CloseRangeFlankDistanceLocation, 4).Float() : default(Single);
+        public Single CloseRangeFlankDistance => _CloseRangeFlankDistance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CloseRangeFlankDistanceLocation, 4)) : default(Single);
         #endregion
         #region CloseRangeFlankingStalkTime
         private int _CloseRangeFlankingStalkTimeLocation => _CSCRLocation!.Value.Min + 0xC;
         private bool _CloseRangeFlankingStalkTime_IsSet => _CSCRLocation.HasValue;
-        public Single CloseRangeFlankingStalkTime => _CloseRangeFlankingStalkTime_IsSet ? _recordData.Slice(_CloseRangeFlankingStalkTimeLocation, 4).Float() : default(Single);
+        public Single CloseRangeFlankingStalkTime => _CloseRangeFlankingStalkTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CloseRangeFlankingStalkTimeLocation, 4)) : default(Single);
         #endregion
         #region CloseRangeChargeDistance
         private int _CloseRangeChargeDistanceLocation => _CSCRLocation!.Value.Min + 0x10;
         private bool _CloseRangeChargeDistance_IsSet => _CSCRLocation.HasValue;
-        public Single CloseRangeChargeDistance => _CloseRangeChargeDistance_IsSet ? _recordData.Slice(_CloseRangeChargeDistanceLocation, 4).Float() : default(Single);
+        public Single CloseRangeChargeDistance => _CloseRangeChargeDistance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CloseRangeChargeDistanceLocation, 4)) : default(Single);
         #endregion
         #region CloseRangeChargingThrowProbability
         private int _CloseRangeChargingThrowProbabilityLocation => _CSCRLocation!.Value.Min + 0x14;
         private bool _CloseRangeChargingThrowProbability_IsSet => _CSCRLocation.HasValue;
-        public Single CloseRangeChargingThrowProbability => _CloseRangeChargingThrowProbability_IsSet ? _recordData.Slice(_CloseRangeChargingThrowProbabilityLocation, 4).Float() : default(Single);
+        public Single CloseRangeChargingThrowProbability => _CloseRangeChargingThrowProbability_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CloseRangeChargingThrowProbabilityLocation, 4)) : default(Single);
         #endregion
         #region CloseRangeChargingSprintFastProbability
         private int _CloseRangeChargingSprintFastProbabilityLocation => _CSCRLocation!.Value.Min + 0x18;
         private bool _CloseRangeChargingSprintFastProbability_IsSet => _CSCRLocation.HasValue;
-        public Single CloseRangeChargingSprintFastProbability => _CloseRangeChargingSprintFastProbability_IsSet ? _recordData.Slice(_CloseRangeChargingSprintFastProbabilityLocation, 4).Float() : default(Single);
+        public Single CloseRangeChargingSprintFastProbability => _CloseRangeChargingSprintFastProbability_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CloseRangeChargingSprintFastProbabilityLocation, 4)) : default(Single);
         #endregion
         #region CloseRangeChargingSideswipeProbability
         private int _CloseRangeChargingSideswipeProbabilityLocation => _CSCRLocation!.Value.Min + 0x1C;
         private bool _CloseRangeChargingSideswipeProbability_IsSet => _CSCRLocation.HasValue;
-        public Single CloseRangeChargingSideswipeProbability => _CloseRangeChargingSideswipeProbability_IsSet ? _recordData.Slice(_CloseRangeChargingSideswipeProbabilityLocation, 4).Float() : default(Single);
+        public Single CloseRangeChargingSideswipeProbability => _CloseRangeChargingSideswipeProbability_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CloseRangeChargingSideswipeProbabilityLocation, 4)) : default(Single);
         #endregion
         #region CloseRangeChargingDisengageProbability
         private int _CloseRangeChargingDisengageProbabilityLocation => _CSCRLocation!.Value.Min + 0x20;
         private bool _CloseRangeChargingDisengageProbability_IsSet => _CSCRLocation.HasValue;
-        public Single CloseRangeChargingDisengageProbability => _CloseRangeChargingDisengageProbability_IsSet ? _recordData.Slice(_CloseRangeChargingDisengageProbabilityLocation, 4).Float() : default(Single);
+        public Single CloseRangeChargingDisengageProbability => _CloseRangeChargingDisengageProbability_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CloseRangeChargingDisengageProbabilityLocation, 4)) : default(Single);
         #endregion
         #region CloseRangeChargingThrowMaxTargets
         private int _CloseRangeChargingThrowMaxTargetsLocation => _CSCRLocation!.Value.Min + 0x24;
@@ -4642,79 +4642,79 @@ namespace Mutagen.Bethesda.Fallout4
         #region CloseRangeFlankingVariance
         private int _CloseRangeFlankingVarianceLocation => _CSCRLocation!.Value.Min + 0x28;
         private bool _CloseRangeFlankingVariance_IsSet => _CSCRLocation.HasValue;
-        public Single CloseRangeFlankingVariance => _CloseRangeFlankingVariance_IsSet ? _recordData.Slice(_CloseRangeFlankingVarianceLocation, 4).Float() : default(Single);
+        public Single CloseRangeFlankingVariance => _CloseRangeFlankingVariance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CloseRangeFlankingVarianceLocation, 4)) : default(Single);
         #endregion
         private RangeInt32? _CSLRLocation;
         public CombatStyle.CSLRDataType CSLRDataTypeState { get; private set; }
         #region LongRangeStrafeMult
         private int _LongRangeStrafeMultLocation => _CSLRLocation!.Value.Min;
         private bool _LongRangeStrafeMult_IsSet => _CSLRLocation.HasValue;
-        public Single LongRangeStrafeMult => _LongRangeStrafeMult_IsSet ? _recordData.Slice(_LongRangeStrafeMultLocation, 4).Float() : default(Single);
+        public Single LongRangeStrafeMult => _LongRangeStrafeMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_LongRangeStrafeMultLocation, 4)) : default(Single);
         #endregion
         #region LongRangeAdjustRangeMult
         private int _LongRangeAdjustRangeMultLocation => _CSLRLocation!.Value.Min + 0x4;
         private bool _LongRangeAdjustRangeMult_IsSet => _CSLRLocation.HasValue;
-        public Single LongRangeAdjustRangeMult => _LongRangeAdjustRangeMult_IsSet ? _recordData.Slice(_LongRangeAdjustRangeMultLocation, 4).Float() : default(Single);
+        public Single LongRangeAdjustRangeMult => _LongRangeAdjustRangeMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_LongRangeAdjustRangeMultLocation, 4)) : default(Single);
         #endregion
         #region LongRangeCrouchMult
         private int _LongRangeCrouchMultLocation => _CSLRLocation!.Value.Min + 0x8;
         private bool _LongRangeCrouchMult_IsSet => _CSLRLocation.HasValue;
-        public Single LongRangeCrouchMult => _LongRangeCrouchMult_IsSet ? _recordData.Slice(_LongRangeCrouchMultLocation, 4).Float() : default(Single);
+        public Single LongRangeCrouchMult => _LongRangeCrouchMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_LongRangeCrouchMultLocation, 4)) : default(Single);
         #endregion
         #region LongRangeWaitMult
         private int _LongRangeWaitMultLocation => _CSLRLocation!.Value.Min + 0xC;
         private bool _LongRangeWaitMult_IsSet => _CSLRLocation.HasValue && !CSLRDataTypeState.HasFlag(CombatStyle.CSLRDataType.Break0);
-        public Single LongRangeWaitMult => _LongRangeWaitMult_IsSet ? _recordData.Slice(_LongRangeWaitMultLocation, 4).Float() : default(Single);
+        public Single LongRangeWaitMult => _LongRangeWaitMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_LongRangeWaitMultLocation, 4)) : default(Single);
         #endregion
         #region LongRangeRangeMult
         private int _LongRangeRangeMultLocation => _CSLRLocation!.Value.Min + 0x10;
         private bool _LongRangeRangeMult_IsSet => _CSLRLocation.HasValue && !CSLRDataTypeState.HasFlag(CombatStyle.CSLRDataType.Break1);
-        public Single LongRangeRangeMult => _LongRangeRangeMult_IsSet ? _recordData.Slice(_LongRangeRangeMultLocation, 4).Float() : default(Single);
+        public Single LongRangeRangeMult => _LongRangeRangeMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_LongRangeRangeMultLocation, 4)) : default(Single);
         #endregion
         #region CoverSearchDistanceMult
         private int? _CoverSearchDistanceMultLocation;
-        public Single? CoverSearchDistanceMult => _CoverSearchDistanceMultLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _CoverSearchDistanceMultLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? CoverSearchDistanceMult => _CoverSearchDistanceMultLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _CoverSearchDistanceMultLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         private RangeInt32? _CSFLLocation;
         #region HoverChance
         private int _HoverChanceLocation => _CSFLLocation!.Value.Min;
         private bool _HoverChance_IsSet => _CSFLLocation.HasValue;
-        public Single HoverChance => _HoverChance_IsSet ? _recordData.Slice(_HoverChanceLocation, 4).Float() : default(Single);
+        public Single HoverChance => _HoverChance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HoverChanceLocation, 4)) : default(Single);
         #endregion
         #region DiveBombChance
         private int _DiveBombChanceLocation => _CSFLLocation!.Value.Min + 0x4;
         private bool _DiveBombChance_IsSet => _CSFLLocation.HasValue;
-        public Single DiveBombChance => _DiveBombChance_IsSet ? _recordData.Slice(_DiveBombChanceLocation, 4).Float() : default(Single);
+        public Single DiveBombChance => _DiveBombChance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DiveBombChanceLocation, 4)) : default(Single);
         #endregion
         #region GroundAttackChance
         private int _GroundAttackChanceLocation => _CSFLLocation!.Value.Min + 0x8;
         private bool _GroundAttackChance_IsSet => _CSFLLocation.HasValue;
-        public Single GroundAttackChance => _GroundAttackChance_IsSet ? _recordData.Slice(_GroundAttackChanceLocation, 4).Float() : default(Single);
+        public Single GroundAttackChance => _GroundAttackChance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_GroundAttackChanceLocation, 4)) : default(Single);
         #endregion
         #region HoverTime
         private int _HoverTimeLocation => _CSFLLocation!.Value.Min + 0xC;
         private bool _HoverTime_IsSet => _CSFLLocation.HasValue;
-        public Single HoverTime => _HoverTime_IsSet ? _recordData.Slice(_HoverTimeLocation, 4).Float() : default(Single);
+        public Single HoverTime => _HoverTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HoverTimeLocation, 4)) : default(Single);
         #endregion
         #region GroundAttackTime
         private int _GroundAttackTimeLocation => _CSFLLocation!.Value.Min + 0x10;
         private bool _GroundAttackTime_IsSet => _CSFLLocation.HasValue;
-        public Single GroundAttackTime => _GroundAttackTime_IsSet ? _recordData.Slice(_GroundAttackTimeLocation, 4).Float() : default(Single);
+        public Single GroundAttackTime => _GroundAttackTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_GroundAttackTimeLocation, 4)) : default(Single);
         #endregion
         #region PerchAttackChance
         private int _PerchAttackChanceLocation => _CSFLLocation!.Value.Min + 0x14;
         private bool _PerchAttackChance_IsSet => _CSFLLocation.HasValue;
-        public Single PerchAttackChance => _PerchAttackChance_IsSet ? _recordData.Slice(_PerchAttackChanceLocation, 4).Float() : default(Single);
+        public Single PerchAttackChance => _PerchAttackChance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_PerchAttackChanceLocation, 4)) : default(Single);
         #endregion
         #region PerchAttackTime
         private int _PerchAttackTimeLocation => _CSFLLocation!.Value.Min + 0x18;
         private bool _PerchAttackTime_IsSet => _CSFLLocation.HasValue;
-        public Single PerchAttackTime => _PerchAttackTime_IsSet ? _recordData.Slice(_PerchAttackTimeLocation, 4).Float() : default(Single);
+        public Single PerchAttackTime => _PerchAttackTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_PerchAttackTimeLocation, 4)) : default(Single);
         #endregion
         #region FlyingAttackChance
         private int _FlyingAttackChanceLocation => _CSFLLocation!.Value.Min + 0x1C;
         private bool _FlyingAttackChance_IsSet => _CSFLLocation.HasValue;
-        public Single FlyingAttackChance => _FlyingAttackChance_IsSet ? _recordData.Slice(_FlyingAttackChanceLocation, 4).Float() : default(Single);
+        public Single FlyingAttackChance => _FlyingAttackChance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FlyingAttackChanceLocation, 4)) : default(Single);
         #endregion
         #region Flags
         private int? _FlagsLocation;

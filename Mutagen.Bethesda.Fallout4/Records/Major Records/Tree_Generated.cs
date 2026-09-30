@@ -2898,62 +2898,62 @@ namespace Mutagen.Bethesda.Fallout4
         #region TrunkFlexibility
         private int _TrunkFlexibilityLocation => _CNAMLocation!.Value.Min;
         private bool _TrunkFlexibility_IsSet => _CNAMLocation.HasValue;
-        public Single TrunkFlexibility => _TrunkFlexibility_IsSet ? _recordData.Slice(_TrunkFlexibilityLocation, 4).Float() : default(Single);
+        public Single TrunkFlexibility => _TrunkFlexibility_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TrunkFlexibilityLocation, 4)) : default(Single);
         #endregion
         #region BranchFlexibility
         private int _BranchFlexibilityLocation => _CNAMLocation!.Value.Min + 0x4;
         private bool _BranchFlexibility_IsSet => _CNAMLocation.HasValue;
-        public Single BranchFlexibility => _BranchFlexibility_IsSet ? _recordData.Slice(_BranchFlexibilityLocation, 4).Float() : default(Single);
+        public Single BranchFlexibility => _BranchFlexibility_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BranchFlexibilityLocation, 4)) : default(Single);
         #endregion
         #region TrunkAmplitude
         private int _TrunkAmplitudeLocation => _CNAMLocation!.Value.Min + 0x8;
         private bool _TrunkAmplitude_IsSet => _CNAMLocation.HasValue;
-        public Single TrunkAmplitude => _TrunkAmplitude_IsSet ? _recordData.Slice(_TrunkAmplitudeLocation, 4).Float() : default(Single);
+        public Single TrunkAmplitude => _TrunkAmplitude_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TrunkAmplitudeLocation, 4)) : default(Single);
         #endregion
         #region FrontAmplitude
         private int _FrontAmplitudeLocation => _CNAMLocation!.Value.Min + 0xC;
         private bool _FrontAmplitude_IsSet => _CNAMLocation.HasValue;
-        public Single FrontAmplitude => _FrontAmplitude_IsSet ? _recordData.Slice(_FrontAmplitudeLocation, 4).Float() : default(Single);
+        public Single FrontAmplitude => _FrontAmplitude_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FrontAmplitudeLocation, 4)) : default(Single);
         #endregion
         #region BackAmplitude
         private int _BackAmplitudeLocation => _CNAMLocation!.Value.Min + 0x10;
         private bool _BackAmplitude_IsSet => _CNAMLocation.HasValue;
-        public Single BackAmplitude => _BackAmplitude_IsSet ? _recordData.Slice(_BackAmplitudeLocation, 4).Float() : default(Single);
+        public Single BackAmplitude => _BackAmplitude_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BackAmplitudeLocation, 4)) : default(Single);
         #endregion
         #region SideAmplitude
         private int _SideAmplitudeLocation => _CNAMLocation!.Value.Min + 0x14;
         private bool _SideAmplitude_IsSet => _CNAMLocation.HasValue;
-        public Single SideAmplitude => _SideAmplitude_IsSet ? _recordData.Slice(_SideAmplitudeLocation, 4).Float() : default(Single);
+        public Single SideAmplitude => _SideAmplitude_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SideAmplitudeLocation, 4)) : default(Single);
         #endregion
         #region FrontFrequency
         private int _FrontFrequencyLocation => _CNAMLocation!.Value.Min + 0x18;
         private bool _FrontFrequency_IsSet => _CNAMLocation.HasValue;
-        public Single FrontFrequency => _FrontFrequency_IsSet ? _recordData.Slice(_FrontFrequencyLocation, 4).Float() : default(Single);
+        public Single FrontFrequency => _FrontFrequency_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FrontFrequencyLocation, 4)) : default(Single);
         #endregion
         #region BackFrequency
         private int _BackFrequencyLocation => _CNAMLocation!.Value.Min + 0x1C;
         private bool _BackFrequency_IsSet => _CNAMLocation.HasValue;
-        public Single BackFrequency => _BackFrequency_IsSet ? _recordData.Slice(_BackFrequencyLocation, 4).Float() : default(Single);
+        public Single BackFrequency => _BackFrequency_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BackFrequencyLocation, 4)) : default(Single);
         #endregion
         #region SideFrequency
         private int _SideFrequencyLocation => _CNAMLocation!.Value.Min + 0x20;
         private bool _SideFrequency_IsSet => _CNAMLocation.HasValue;
-        public Single SideFrequency => _SideFrequency_IsSet ? _recordData.Slice(_SideFrequencyLocation, 4).Float() : default(Single);
+        public Single SideFrequency => _SideFrequency_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SideFrequencyLocation, 4)) : default(Single);
         #endregion
         #region LeafFlexibility
         private int _LeafFlexibilityLocation => _CNAMLocation!.Value.Min + 0x24;
         private bool _LeafFlexibility_IsSet => _CNAMLocation.HasValue;
-        public Single LeafFlexibility => _LeafFlexibility_IsSet ? _recordData.Slice(_LeafFlexibilityLocation, 4).Float() : default(Single);
+        public Single LeafFlexibility => _LeafFlexibility_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_LeafFlexibilityLocation, 4)) : default(Single);
         #endregion
         #region LeafAmplitude
         private int _LeafAmplitudeLocation => _CNAMLocation!.Value.Min + 0x28;
         private bool _LeafAmplitude_IsSet => _CNAMLocation.HasValue;
-        public Single LeafAmplitude => _LeafAmplitude_IsSet ? _recordData.Slice(_LeafAmplitudeLocation, 4).Float() : default(Single);
+        public Single LeafAmplitude => _LeafAmplitude_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_LeafAmplitudeLocation, 4)) : default(Single);
         #endregion
         #region LeafFrequency
         private int _LeafFrequencyLocation => _CNAMLocation!.Value.Min + 0x2C;
         private bool _LeafFrequency_IsSet => _CNAMLocation.HasValue;
-        public Single LeafFrequency => _LeafFrequency_IsSet ? _recordData.Slice(_LeafFrequencyLocation, 4).Float() : default(Single);
+        public Single LeafFrequency => _LeafFrequency_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_LeafFrequencyLocation, 4)) : default(Single);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

@@ -1508,8 +1508,8 @@ namespace Mutagen.Bethesda.Fallout3
         public UInt16 NumberOfBursts => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x6, 0x2));
         public UInt16 ShootsPerVolleyMin => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x8, 0x2));
         public UInt16 ShootsPerVolleyMax => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0xA, 0x2));
-        public Single PauseBetweenVolleysMin => _structData.Slice(0xC, 0x4).Float();
-        public Single PauseBetweenVolleysMax => _structData.Slice(0x10, 0x4).Float();
+        public Single PauseBetweenVolleysMin => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single PauseBetweenVolleysMax => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
         public Int32 Unused => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x14, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,

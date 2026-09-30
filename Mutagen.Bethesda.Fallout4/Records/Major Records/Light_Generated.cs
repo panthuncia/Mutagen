@@ -4145,52 +4145,52 @@ namespace Mutagen.Bethesda.Fallout4
         #region FalloffExponent
         private int _FalloffExponentLocation => _DATALocation!.Value.Min + 0x10;
         private bool _FalloffExponent_IsSet => _DATALocation.HasValue;
-        public Single FalloffExponent => _FalloffExponent_IsSet ? _recordData.Slice(_FalloffExponentLocation, 4).Float() : default(Single);
+        public Single FalloffExponent => _FalloffExponent_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FalloffExponentLocation, 4)) : default(Single);
         #endregion
         #region FOV
         private int _FOVLocation => _DATALocation!.Value.Min + 0x14;
         private bool _FOV_IsSet => _DATALocation.HasValue;
-        public Single FOV => _FOV_IsSet ? _recordData.Slice(_FOVLocation, 4).Float() : default(Single);
+        public Single FOV => _FOV_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FOVLocation, 4)) : default(Single);
         #endregion
         #region NearClip
         private int _NearClipLocation => _DATALocation!.Value.Min + 0x18;
         private bool _NearClip_IsSet => _DATALocation.HasValue;
-        public Single NearClip => _NearClip_IsSet ? _recordData.Slice(_NearClipLocation, 4).Float() : default(Single);
+        public Single NearClip => _NearClip_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_NearClipLocation, 4)) : default(Single);
         #endregion
         #region FlickerPeriod
         private int _FlickerPeriodLocation => _DATALocation!.Value.Min + 0x1C;
         private bool _FlickerPeriod_IsSet => _DATALocation.HasValue;
-        public Single FlickerPeriod => _FlickerPeriod_IsSet ? _recordData.Slice(_FlickerPeriodLocation, 4).Float() : default(Single);
+        public Single FlickerPeriod => _FlickerPeriod_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FlickerPeriodLocation, 4)) : default(Single);
         #endregion
         #region FlickerIntensityAmplitude
         private int _FlickerIntensityAmplitudeLocation => _DATALocation!.Value.Min + 0x20;
         private bool _FlickerIntensityAmplitude_IsSet => _DATALocation.HasValue;
-        public Single FlickerIntensityAmplitude => _FlickerIntensityAmplitude_IsSet ? _recordData.Slice(_FlickerIntensityAmplitudeLocation, 4).Float() : default(Single);
+        public Single FlickerIntensityAmplitude => _FlickerIntensityAmplitude_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FlickerIntensityAmplitudeLocation, 4)) : default(Single);
         #endregion
         #region FlickerMovementAmplitude
         private int _FlickerMovementAmplitudeLocation => _DATALocation!.Value.Min + 0x24;
         private bool _FlickerMovementAmplitude_IsSet => _DATALocation.HasValue;
-        public Single FlickerMovementAmplitude => _FlickerMovementAmplitude_IsSet ? _recordData.Slice(_FlickerMovementAmplitudeLocation, 4).Float() : default(Single);
+        public Single FlickerMovementAmplitude => _FlickerMovementAmplitude_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FlickerMovementAmplitudeLocation, 4)) : default(Single);
         #endregion
         #region Constant
         private int _ConstantLocation => _DATALocation!.Value.Min + 0x28;
         private bool _Constant_IsSet => _DATALocation.HasValue;
-        public Single Constant => _Constant_IsSet ? _recordData.Slice(_ConstantLocation, 4).Float() : default(Single);
+        public Single Constant => _Constant_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ConstantLocation, 4)) : default(Single);
         #endregion
         #region Scalar
         private int _ScalarLocation => _DATALocation!.Value.Min + 0x2C;
         private bool _Scalar_IsSet => _DATALocation.HasValue;
-        public Single Scalar => _Scalar_IsSet ? _recordData.Slice(_ScalarLocation, 4).Float() : default(Single);
+        public Single Scalar => _Scalar_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ScalarLocation, 4)) : default(Single);
         #endregion
         #region Exponent
         private int _ExponentLocation => _DATALocation!.Value.Min + 0x30;
         private bool _Exponent_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(Light.DATADataType.Break0);
-        public Single Exponent => _Exponent_IsSet ? _recordData.Slice(_ExponentLocation, 4).Float() : default(Single);
+        public Single Exponent => _Exponent_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ExponentLocation, 4)) : default(Single);
         #endregion
         #region GodRaysNearClip
         private int _GodRaysNearClipLocation => _DATALocation!.Value.Min + 0x34;
         private bool _GodRaysNearClip_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(Light.DATADataType.Break0);
-        public Single GodRaysNearClip => _GodRaysNearClip_IsSet ? _recordData.Slice(_GodRaysNearClipLocation, 4).Float() : default(Single);
+        public Single GodRaysNearClip => _GodRaysNearClip_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_GodRaysNearClipLocation, 4)) : default(Single);
         #endregion
         #region Value
         private int _ValueLocation => _DATALocation!.Value.Min + 0x38;
@@ -4200,11 +4200,11 @@ namespace Mutagen.Bethesda.Fallout4
         #region Weight
         private int _WeightLocation => _DATALocation!.Value.Min + 0x3C;
         private bool _Weight_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(Light.DATADataType.Break1);
-        public Single Weight => _Weight_IsSet ? _recordData.Slice(_WeightLocation, 4).Float() : default(Single);
+        public Single Weight => _Weight_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WeightLocation, 4)) : default(Single);
         #endregion
         #region FadeValue
         private int? _FadeValueLocation;
-        public Single FadeValue => _FadeValueLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FadeValueLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single FadeValue => _FadeValueLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FadeValueLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region Gobo
         private int? _GoboLocation;

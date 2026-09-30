@@ -1460,7 +1460,7 @@ namespace Mutagen.Bethesda.Fallout4
                         package: _package,
                         finalPos: finalPos,
                         itemLength: 4,
-                        getter: (s, p) => s.Float());
+                        getter: (s, p) => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(s));
                     return (int)Bone_FieldIndex.Values;
                 }
                 case RecordTypeInts.BMMP:

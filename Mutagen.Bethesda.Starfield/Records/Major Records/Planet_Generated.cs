@@ -3736,7 +3736,7 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region ScanWorldspaceMultiplier
         private int? _ScanWorldspaceMultiplierLocation;
-        public Single? ScanWorldspaceMultiplier => _ScanWorldspaceMultiplierLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ScanWorldspaceMultiplierLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? ScanWorldspaceMultiplier => _ScanWorldspaceMultiplierLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ScanWorldspaceMultiplierLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Name
         private int? _NameLocation;
@@ -3785,15 +3785,15 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region Temperature
         private int? _TemperatureLocation;
-        public Single? Temperature => _TemperatureLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _TemperatureLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? Temperature => _TemperatureLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TemperatureLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Density
         private int? _DensityLocation;
-        public Single? Density => _DensityLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DensityLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? Density => _DensityLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DensityLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region PerihelionAngleDegrees
         private int? _PerihelionAngleDegreesLocation;
-        public Single? PerihelionAngleDegrees => _PerihelionAngleDegreesLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _PerihelionAngleDegreesLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? PerihelionAngleDegrees => _PerihelionAngleDegreesLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _PerihelionAngleDegreesLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region ResourceCreationSeed
         private int? _ResourceCreationSeedLocation;

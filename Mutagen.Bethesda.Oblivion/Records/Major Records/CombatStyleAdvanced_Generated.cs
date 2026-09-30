@@ -2161,27 +2161,27 @@ namespace Mutagen.Bethesda.Oblivion
                 translationParams: translationParams);
         }
 
-        public Single DodgeFatigueModMult => _structData.Slice(0x0, 0x4).Float();
-        public Single DodgeFatigueModBase => _structData.Slice(0x4, 0x4).Float();
-        public Single EncumbSpeedModBase => _structData.Slice(0x8, 0x4).Float();
-        public Single EncumbSpeedModMult => _structData.Slice(0xC, 0x4).Float();
-        public Single DodgeWhileUnderAttackMult => _structData.Slice(0x10, 0x4).Float();
-        public Single DodgeNotUnderAttackMult => _structData.Slice(0x14, 0x4).Float();
-        public Single DodgeBackWhileUnderAttackMult => _structData.Slice(0x18, 0x4).Float();
-        public Single DodgeBackNotUnderAttackMult => _structData.Slice(0x1C, 0x4).Float();
-        public Single DodgeForwardWhileUnderAttackMult => _structData.Slice(0x20, 0x4).Float();
-        public Single DodgeForwardNotUnderAttackMult => _structData.Slice(0x24, 0x4).Float();
-        public Single BlockSkillModifierMult => _structData.Slice(0x28, 0x4).Float();
-        public Single BlockSkillModifierBase => _structData.Slice(0x2C, 0x4).Float();
-        public Single BlockWhileUnderAttackMult => _structData.Slice(0x30, 0x4).Float();
-        public Single BlockNotUnderAttackMult => _structData.Slice(0x34, 0x4).Float();
-        public Single AttackSkillModifierMult => _structData.Slice(0x38, 0x4).Float();
-        public Single AttackSkillModifierBase => _structData.Slice(0x3C, 0x4).Float();
-        public Single AttackWhileUnderAttackMult => _structData.Slice(0x40, 0x4).Float();
-        public Single AttackNotUnderAttackMult => _structData.Slice(0x44, 0x4).Float();
-        public Single AttackDuringBlockMult => _structData.Slice(0x48, 0x4).Float();
-        public Single PowerAttackFatigueModBase => _structData.Slice(0x4C, 0x4).Float();
-        public Single PowerAttackFatigueModMult => _structData.Slice(0x50, 0x4).Float();
+        public Single DodgeFatigueModMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single DodgeFatigueModBase => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single EncumbSpeedModBase => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single EncumbSpeedModMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single DodgeWhileUnderAttackMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
+        public Single DodgeNotUnderAttackMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
+        public Single DodgeBackWhileUnderAttackMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
+        public Single DodgeBackNotUnderAttackMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
+        public Single DodgeForwardWhileUnderAttackMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x20, 0x4));
+        public Single DodgeForwardNotUnderAttackMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x24, 0x4));
+        public Single BlockSkillModifierMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x28, 0x4));
+        public Single BlockSkillModifierBase => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x2C, 0x4));
+        public Single BlockWhileUnderAttackMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x30, 0x4));
+        public Single BlockNotUnderAttackMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x34, 0x4));
+        public Single AttackSkillModifierMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x38, 0x4));
+        public Single AttackSkillModifierBase => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x3C, 0x4));
+        public Single AttackWhileUnderAttackMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x40, 0x4));
+        public Single AttackNotUnderAttackMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x44, 0x4));
+        public Single AttackDuringBlockMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x48, 0x4));
+        public Single PowerAttackFatigueModBase => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4C, 0x4));
+        public Single PowerAttackFatigueModMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x50, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

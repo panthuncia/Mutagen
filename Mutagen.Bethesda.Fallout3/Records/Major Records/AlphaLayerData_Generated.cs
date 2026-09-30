@@ -1151,7 +1151,7 @@ namespace Mutagen.Bethesda.Fallout3
 
         public UInt16 Position => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x0, 0x2));
         public UInt16 Unused => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x2, 0x2));
-        public Single Opacity => _structData.Slice(0x4, 0x4).Float();
+        public Single Opacity => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

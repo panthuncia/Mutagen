@@ -2255,7 +2255,7 @@ namespace Mutagen.Bethesda.Starfield
         #region Unknown2
         private int _Unknown2Location => _DEVTLocation!.Value.Min + 0x4;
         private bool _Unknown2_IsSet => _DEVTLocation.HasValue;
-        public Single Unknown2 => _Unknown2_IsSet ? _recordData.Slice(_Unknown2Location, 4).Float() : default(Single);
+        public Single Unknown2 => _Unknown2_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_Unknown2Location, 4)) : default(Single);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

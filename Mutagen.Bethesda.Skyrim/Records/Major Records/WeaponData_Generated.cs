@@ -2504,32 +2504,32 @@ namespace Mutagen.Bethesda.Skyrim
 
         public WeaponAnimationType AnimationType => (WeaponAnimationType)_structData.Span.Slice(0x0, 0x1)[0];
         public ReadOnlyMemorySlice<Byte> Unused => _structData.Span.Slice(0x1, 0x3).ToArray();
-        public Single Speed => _structData.Slice(0x4, 0x4).Float();
-        public Single Reach => _structData.Slice(0x8, 0x4).Float();
+        public Single Speed => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single Reach => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
         #region Flags
         public partial WeaponData.Flag GetFlagsCustom(int location);
         public WeaponData.Flag Flags => GetFlagsCustom(location: 0xC);
         #endregion
         public Int16 Unused2 => BinaryPrimitives.ReadInt16LittleEndian(_structData.Slice(0xE, 0x2));
-        public Single SightFOV => _structData.Slice(0x10, 0x4).Float();
+        public Single SightFOV => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
         public Int32 Unknown => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x14, 0x4));
         public Byte BaseVATStoHitChance => _structData.Span[0x18];
         public WeaponData.AttackAnimationType AttackAnimation => (WeaponData.AttackAnimationType)_structData.Span.Slice(0x19, 0x1)[0];
         public Byte NumProjectiles => _structData.Span[0x1A];
         public Byte EmbeddedWeaponAV => _structData.Span[0x1B];
-        public Single RangeMin => _structData.Slice(0x1C, 0x4).Float();
-        public Single RangeMax => _structData.Slice(0x20, 0x4).Float();
+        public Single RangeMin => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
+        public Single RangeMax => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x20, 0x4));
         public WeaponData.OnHitType OnHit => (WeaponData.OnHitType)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x24, 0x4));
         #region Flags2
         partial void Flags2CustomParse(
             OverlayStream stream,
             int offset);
         #endregion
-        public Single AnimationAttackMult => _structData.Slice(0x2C, 0x4).Float();
+        public Single AnimationAttackMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x2C, 0x4));
         public Int32 Unknown2 => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x30, 0x4));
-        public Single RumbleLeftMotorStrength => _structData.Slice(0x34, 0x4).Float();
-        public Single RumbleRightMotorStrength => _structData.Slice(0x38, 0x4).Float();
-        public Single RumbleDuration => _structData.Slice(0x3C, 0x4).Float();
+        public Single RumbleLeftMotorStrength => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x34, 0x4));
+        public Single RumbleRightMotorStrength => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x38, 0x4));
+        public Single RumbleDuration => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x3C, 0x4));
         public ReadOnlyMemorySlice<Byte> Unknown3 => _structData.Span.Slice(0x40, 0xC).ToArray();
         #region Skill
         public Skill? Skill
@@ -2545,7 +2545,7 @@ namespace Mutagen.Bethesda.Skyrim
         public Int64 Unknown4 => BinaryPrimitives.ReadInt64LittleEndian(_structData.Slice(0x50, 0x8));
         public ActorValue Resist => (ActorValue)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x58, 0x4));
         public Int32 Unknown5 => BinaryPrimitives.ReadInt32LittleEndian(_structData.Slice(0x5C, 0x4));
-        public Single Stagger => _structData.Slice(0x60, 0x4).Float();
+        public Single Stagger => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x60, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

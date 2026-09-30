@@ -1650,10 +1650,10 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        public Single FadeInDistanceStart => _structData.Slice(0x0, 0x4).Float();
-        public Single FadeInDistanceEnd => _structData.Slice(0x4, 0x4).Float();
-        public Single FadeOutDistanceStart => _structData.Slice(0x8, 0x4).Float();
-        public Single FadeOutDistanceEnd => _structData.Slice(0xC, 0x4).Float();
+        public Single FadeInDistanceStart => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single FadeInDistanceEnd => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single FadeOutDistanceStart => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single FadeOutDistanceEnd => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
         public Byte FadeInCurveValue1 => _structData.Span[0x10];
         public Byte FadeInCurveValue2 => _structData.Span[0x11];
         public Byte FadeInCurveValue3 => _structData.Span[0x12];

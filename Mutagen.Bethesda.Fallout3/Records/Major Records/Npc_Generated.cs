@@ -5620,7 +5620,7 @@ namespace Mutagen.Bethesda.Fallout3
         #endregion
         #region HairLength
         private int? _HairLengthLocation;
-        public Single? HairLength => _HairLengthLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _HairLengthLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? HairLength => _HairLengthLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HairLengthLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Eyes
         private int? _EyesLocation;
@@ -5656,11 +5656,11 @@ namespace Mutagen.Bethesda.Fallout3
         #endregion
         #region Height
         private int? _HeightLocation;
-        public Single Height => _HeightLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _HeightLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single Height => _HeightLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HeightLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region Weight
         private int? _WeightLocation;
-        public Single Weight => _WeightLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _WeightLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single Weight => _WeightLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _WeightLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

@@ -2217,27 +2217,27 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public Single StaticRotation => _structData.Slice(0x0, 0x4).Float();
-        public Single AnimatedRotationSpeed => _structData.Slice(0x4, 0x4).Float();
-        public Single AnimatedWaveRotationSpeed => _structData.Slice(0x8, 0x4).Float();
-        public Single AnimatedWaveRotationAmount => _structData.Slice(0xC, 0x4).Float();
-        public Single StaticScaleU => _structData.Slice(0x10, 0x4).Float();
-        public Single StaticScaleV => _structData.Slice(0x14, 0x4).Float();
-        public Single WaveScalingSpeedU => _structData.Slice(0x18, 0x4).Float();
-        public Single WaveScalingSpeedV => _structData.Slice(0x1C, 0x4).Float();
-        public Single WaveScalingAmountU => _structData.Slice(0x20, 0x4).Float();
-        public Single WaveScalingAmountV => _structData.Slice(0x24, 0x4).Float();
-        public Single StaticOffsetU => _structData.Slice(0x28, 0x4).Float();
-        public Single StaticOffsetV => _structData.Slice(0x2C, 0x4).Float();
-        public Single RotationPivotU => _structData.Slice(0x30, 0x4).Float();
-        public Single RotationPivotV => _structData.Slice(0x34, 0x4).Float();
-        public Single ScrollSpeedU => _structData.Slice(0x38, 0x4).Float();
-        public Single ScrollSpeedV => _structData.Slice(0x3C, 0x4).Float();
-        public Single WaveScrollSpeedU => _structData.Slice(0x40, 0x4).Float();
-        public Single WaveScrollSpeedV => _structData.Slice(0x44, 0x4).Float();
-        public Single WaveScrollAmountU => _structData.Slice(0x48, 0x4).Float();
-        public Single WaveScrollAmountV => _structData.Slice(0x4C, 0x4).Float();
-        public Single RandomTimeOffsetRange => _structData.Slice(0x50, 0x4).Float();
+        public Single StaticRotation => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single AnimatedRotationSpeed => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single AnimatedWaveRotationSpeed => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single AnimatedWaveRotationAmount => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single StaticScaleU => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
+        public Single StaticScaleV => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
+        public Single WaveScalingSpeedU => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
+        public Single WaveScalingSpeedV => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
+        public Single WaveScalingAmountU => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x20, 0x4));
+        public Single WaveScalingAmountV => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x24, 0x4));
+        public Single StaticOffsetU => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x28, 0x4));
+        public Single StaticOffsetV => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x2C, 0x4));
+        public Single RotationPivotU => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x30, 0x4));
+        public Single RotationPivotV => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x34, 0x4));
+        public Single ScrollSpeedU => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x38, 0x4));
+        public Single ScrollSpeedV => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x3C, 0x4));
+        public Single WaveScrollSpeedU => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x40, 0x4));
+        public Single WaveScrollSpeedV => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x44, 0x4));
+        public Single WaveScrollAmountU => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x48, 0x4));
+        public Single WaveScrollAmountV => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4C, 0x4));
+        public Single RandomTimeOffsetRange => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x50, 0x4));
         public Boolean IsAnimated => _structData.Slice(0x54, 0x4)[0] >= 1;
         partial void CustomFactoryEnd(
             OverlayStream stream,

@@ -1388,17 +1388,17 @@ namespace Mutagen.Bethesda.Fallout4
         #region Scale
         private int _ScaleLocation => _FMRSLocation!.Value.Min + 0x18;
         private bool _Scale_IsSet => _FMRSLocation.HasValue;
-        public Single Scale => _Scale_IsSet ? _recordData.Slice(_ScaleLocation, 4).Float() : default(Single);
+        public Single Scale => _Scale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ScaleLocation, 4)) : default(Single);
         #endregion
         #region Unknown1
         private int _Unknown1Location => _FMRSLocation!.Value.Min + 0x1C;
         private bool _Unknown1_IsSet => _FMRSLocation.HasValue;
-        public Single Unknown1 => _Unknown1_IsSet ? _recordData.Slice(_Unknown1Location, 4).Float() : default(Single);
+        public Single Unknown1 => _Unknown1_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_Unknown1Location, 4)) : default(Single);
         #endregion
         #region Unknown2
         private int _Unknown2Location => _FMRSLocation!.Value.Min + 0x20;
         private bool _Unknown2_IsSet => _FMRSLocation.HasValue;
-        public Single Unknown2 => _Unknown2_IsSet ? _recordData.Slice(_Unknown2Location, 4).Float() : default(Single);
+        public Single Unknown2 => _Unknown2_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_Unknown2Location, 4)) : default(Single);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

@@ -3516,7 +3516,7 @@ namespace Mutagen.Bethesda.Fallout3
         #endregion
         #region Priority
         private int? _PriorityLocation;
-        public Single? Priority => _PriorityLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _PriorityLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? Priority => _PriorityLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _PriorityLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region DumbResponse
         private int? _DumbResponseLocation;

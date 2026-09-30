@@ -1227,8 +1227,8 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public Single Slack => _structData.Slice(0x0, 0x4).Float();
-        public Single Thickness => _structData.Slice(0x4, 0x4).Float();
+        public Single Slack => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single Thickness => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
         public P3Float HalfExtents => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(0x8, 0xC));
         public Boolean IsWindDetachedEnd => _structData.Slice(0x14, 0x4)[0] >= 1;
         partial void CustomFactoryEnd(

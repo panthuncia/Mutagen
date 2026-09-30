@@ -1,11 +1,12 @@
 ﻿using Mutagen.Bethesda.Plugins.Binary.Streams;
+using Mutagen.Bethesda.Translations.Binary;
 using Noggog;
 
 namespace Mutagen.Bethesda.Starfield;
 
 partial class ConditionFloatBinaryOverlay
 {
-    public float ComparisonValue => _structData.Slice(4).Float();
+    public float ComparisonValue => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(4));
 }
 
 partial class ConditionFloatBinaryCreateTranslation

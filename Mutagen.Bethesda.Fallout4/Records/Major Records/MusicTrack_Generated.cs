@@ -2408,11 +2408,11 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #region Duration
         private int? _DurationLocation;
-        public Single? Duration => _DurationLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DurationLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? Duration => _DurationLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DurationLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region FadeOut
         private int? _FadeOutLocation;
-        public Single? FadeOut => _FadeOutLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FadeOutLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? FadeOut => _FadeOutLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FadeOutLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region TrackFilename
         private int? _TrackFilenameLocation;
@@ -2535,7 +2535,7 @@ namespace Mutagen.Bethesda.Fallout4
                         package: _package,
                         finalPos: finalPos,
                         itemLength: 4,
-                        getter: (s, p) => s.Float());
+                        getter: (s, p) => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(s));
                     return (int)MusicTrack_FieldIndex.CuePoints;
                 }
                 case RecordTypeInts.CTDA:

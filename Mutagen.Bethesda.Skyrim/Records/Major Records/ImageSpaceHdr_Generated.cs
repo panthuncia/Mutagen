@@ -1501,15 +1501,15 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        public Single EyeAdaptSpeed => _structData.Slice(0x0, 0x4).Float();
-        public Single BloomBlurRadius => _structData.Slice(0x4, 0x4).Float();
-        public Single BloomThreshold => _structData.Slice(0x8, 0x4).Float();
-        public Single BloomScale => _structData.Slice(0xC, 0x4).Float();
-        public Single ReceiveBloomThreshold => _structData.Slice(0x10, 0x4).Float();
-        public Single White => _structData.Slice(0x14, 0x4).Float();
-        public Single SunlightScale => _structData.Slice(0x18, 0x4).Float();
-        public Single SkyScale => _structData.Slice(0x1C, 0x4).Float();
-        public Single EyeAdaptStrength => _structData.Slice(0x20, 0x4).Float();
+        public Single EyeAdaptSpeed => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single BloomBlurRadius => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single BloomThreshold => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single BloomScale => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single ReceiveBloomThreshold => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
+        public Single White => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
+        public Single SunlightScale => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
+        public Single SkyScale => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
+        public Single EyeAdaptStrength => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x20, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

@@ -2721,27 +2721,27 @@ namespace Mutagen.Bethesda.Fallout3
         #region LeafCurvature
         private int _LeafCurvatureLocation => _CNAMLocation!.Value.Min;
         private bool _LeafCurvature_IsSet => _CNAMLocation.HasValue;
-        public Single LeafCurvature => _LeafCurvature_IsSet ? _recordData.Slice(_LeafCurvatureLocation, 4).Float() : default(Single);
+        public Single LeafCurvature => _LeafCurvature_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_LeafCurvatureLocation, 4)) : default(Single);
         #endregion
         #region MinimumLeafAngle
         private int _MinimumLeafAngleLocation => _CNAMLocation!.Value.Min + 0x4;
         private bool _MinimumLeafAngle_IsSet => _CNAMLocation.HasValue;
-        public Single MinimumLeafAngle => _MinimumLeafAngle_IsSet ? _recordData.Slice(_MinimumLeafAngleLocation, 4).Float() : default(Single);
+        public Single MinimumLeafAngle => _MinimumLeafAngle_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MinimumLeafAngleLocation, 4)) : default(Single);
         #endregion
         #region MaximumLeafAngle
         private int _MaximumLeafAngleLocation => _CNAMLocation!.Value.Min + 0x8;
         private bool _MaximumLeafAngle_IsSet => _CNAMLocation.HasValue;
-        public Single MaximumLeafAngle => _MaximumLeafAngle_IsSet ? _recordData.Slice(_MaximumLeafAngleLocation, 4).Float() : default(Single);
+        public Single MaximumLeafAngle => _MaximumLeafAngle_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MaximumLeafAngleLocation, 4)) : default(Single);
         #endregion
         #region BranchDimmingValue
         private int _BranchDimmingValueLocation => _CNAMLocation!.Value.Min + 0xC;
         private bool _BranchDimmingValue_IsSet => _CNAMLocation.HasValue;
-        public Single BranchDimmingValue => _BranchDimmingValue_IsSet ? _recordData.Slice(_BranchDimmingValueLocation, 4).Float() : default(Single);
+        public Single BranchDimmingValue => _BranchDimmingValue_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BranchDimmingValueLocation, 4)) : default(Single);
         #endregion
         #region LeafDimmingValue
         private int _LeafDimmingValueLocation => _CNAMLocation!.Value.Min + 0x10;
         private bool _LeafDimmingValue_IsSet => _CNAMLocation.HasValue;
-        public Single LeafDimmingValue => _LeafDimmingValue_IsSet ? _recordData.Slice(_LeafDimmingValueLocation, 4).Float() : default(Single);
+        public Single LeafDimmingValue => _LeafDimmingValue_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_LeafDimmingValueLocation, 4)) : default(Single);
         #endregion
         #region ShadowRadius
         private int _ShadowRadiusLocation => _CNAMLocation!.Value.Min + 0x14;
@@ -2751,23 +2751,23 @@ namespace Mutagen.Bethesda.Fallout3
         #region RockSpeed
         private int _RockSpeedLocation => _CNAMLocation!.Value.Min + 0x18;
         private bool _RockSpeed_IsSet => _CNAMLocation.HasValue;
-        public Single RockSpeed => _RockSpeed_IsSet ? _recordData.Slice(_RockSpeedLocation, 4).Float() : default(Single);
+        public Single RockSpeed => _RockSpeed_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RockSpeedLocation, 4)) : default(Single);
         #endregion
         #region RustleSpeed
         private int _RustleSpeedLocation => _CNAMLocation!.Value.Min + 0x1C;
         private bool _RustleSpeed_IsSet => _CNAMLocation.HasValue;
-        public Single RustleSpeed => _RustleSpeed_IsSet ? _recordData.Slice(_RustleSpeedLocation, 4).Float() : default(Single);
+        public Single RustleSpeed => _RustleSpeed_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RustleSpeedLocation, 4)) : default(Single);
         #endregion
         private RangeInt32? _BNAMLocation;
         #region Width
         private int _WidthLocation => _BNAMLocation!.Value.Min;
         private bool _Width_IsSet => _BNAMLocation.HasValue;
-        public Single Width => _Width_IsSet ? _recordData.Slice(_WidthLocation, 4).Float() : default(Single);
+        public Single Width => _Width_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WidthLocation, 4)) : default(Single);
         #endregion
         #region Height
         private int _HeightLocation => _BNAMLocation!.Value.Min + 0x4;
         private bool _Height_IsSet => _BNAMLocation.HasValue;
-        public Single Height => _Height_IsSet ? _recordData.Slice(_HeightLocation, 4).Float() : default(Single);
+        public Single Height => _Height_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HeightLocation, 4)) : default(Single);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

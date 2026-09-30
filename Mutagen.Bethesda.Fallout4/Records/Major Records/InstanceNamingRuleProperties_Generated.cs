@@ -1177,7 +1177,7 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        public Single Value => _structData.Slice(0x0, 0x4).Float();
+        public Single Value => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
         public InstanceNamingRule.PropertyTarget Target => (InstanceNamingRule.PropertyTarget)_structData.Span.Slice(0x4, 0x1)[0];
         public InstanceNamingRule.Operations Operation => (InstanceNamingRule.Operations)_structData.Span.Slice(0x5, 0x1)[0];
         partial void CustomFactoryEnd(

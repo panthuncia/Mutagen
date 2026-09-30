@@ -1454,11 +1454,11 @@ namespace Mutagen.Bethesda.Starfield
 
         #region MaxSeconds
         private int? _MaxSecondsLocation;
-        public Single? MaxSeconds => _MaxSecondsLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaxSecondsLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? MaxSeconds => _MaxSecondsLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MaxSecondsLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region MinSeconds
         private int? _MinSecondsLocation;
-        public Single? MinSeconds => _MinSecondsLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MinSecondsLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? MinSeconds => _MinSecondsLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MinSecondsLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region HNAM
         private int? _HNAMLocation;

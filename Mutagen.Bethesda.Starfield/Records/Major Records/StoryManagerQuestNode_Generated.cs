@@ -2031,7 +2031,7 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region HoursUntilReset
         private int? _HoursUntilResetLocation;
-        public Single? HoursUntilReset => _HoursUntilResetLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _HoursUntilResetLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? HoursUntilReset => _HoursUntilResetLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HoursUntilResetLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         public IReadOnlyList<IStoryManagerQuestGetter> Quests { get; private set; } = [];
         partial void CustomFactoryEnd(

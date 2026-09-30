@@ -2017,7 +2017,7 @@ namespace Mutagen.Bethesda.Fallout4
         #region DefaultNumberOfTiles
         private int _DefaultNumberOfTilesLocation => _DNAMLocation!.Value.Min;
         private bool _DefaultNumberOfTiles_IsSet => _DNAMLocation.HasValue;
-        public Single DefaultNumberOfTiles => _DefaultNumberOfTiles_IsSet ? _recordData.Slice(_DefaultNumberOfTilesLocation, 4).Float() : default(Single);
+        public Single DefaultNumberOfTiles => _DefaultNumberOfTiles_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DefaultNumberOfTilesLocation, 4)) : default(Single);
         #endregion
         #region DefaultNumberOfSlices
         private int _DefaultNumberOfSlicesLocation => _DNAMLocation!.Value.Min + 0x4;
@@ -2037,12 +2037,12 @@ namespace Mutagen.Bethesda.Fallout4
         #region WindSensibility
         private int _WindSensibilityLocation => _DNAMLocation!.Value.Min + 0x18;
         private bool _WindSensibility_IsSet => _DNAMLocation.HasValue;
-        public Single WindSensibility => _WindSensibility_IsSet ? _recordData.Slice(_WindSensibilityLocation, 4).Float() : default(Single);
+        public Single WindSensibility => _WindSensibility_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WindSensibilityLocation, 4)) : default(Single);
         #endregion
         #region WindFlexibility
         private int _WindFlexibilityLocation => _DNAMLocation!.Value.Min + 0x1C;
         private bool _WindFlexibility_IsSet => _DNAMLocation.HasValue && !DNAMDataTypeState.HasFlag(BendableSpline.DNAMDataType.Break0);
-        public Single WindFlexibility => _WindFlexibility_IsSet ? _recordData.Slice(_WindFlexibilityLocation, 4).Float() : default(Single);
+        public Single WindFlexibility => _WindFlexibility_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WindFlexibilityLocation, 4)) : default(Single);
         #endregion
         #region Texture
         private int? _TextureLocation;

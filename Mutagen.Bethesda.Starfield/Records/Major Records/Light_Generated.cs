@@ -5215,7 +5215,7 @@ namespace Mutagen.Bethesda.Starfield
         #region Radius
         private int _RadiusLocation => _DAT2Location!.Value.Min + 0x4;
         private bool _Radius_IsSet => _DAT2Location.HasValue;
-        public Single Radius => _Radius_IsSet ? _recordData.Slice(_RadiusLocation, 4).Float() : default(Single);
+        public Single Radius => _Radius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RadiusLocation, 4)) : default(Single);
         #endregion
         #region Color
         private int _ColorLocation => _DAT2Location!.Value.Min + 0x8;
@@ -5230,42 +5230,42 @@ namespace Mutagen.Bethesda.Starfield
         #region FalloffExponent
         private int _FalloffExponentLocation => _DAT2Location!.Value.Min + 0x10;
         private bool _FalloffExponent_IsSet => _DAT2Location.HasValue;
-        public Single FalloffExponent => _FalloffExponent_IsSet ? _recordData.Slice(_FalloffExponentLocation, 4).Float() : default(Single);
+        public Single FalloffExponent => _FalloffExponent_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FalloffExponentLocation, 4)) : default(Single);
         #endregion
         #region FOV
         private int _FOVLocation => _DAT2Location!.Value.Min + 0x14;
         private bool _FOV_IsSet => _DAT2Location.HasValue;
-        public Single FOV => _FOV_IsSet ? _recordData.Slice(_FOVLocation, 4).Float() : default(Single);
+        public Single FOV => _FOV_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FOVLocation, 4)) : default(Single);
         #endregion
         #region NearClip
         private int _NearClipLocation => _DAT2Location!.Value.Min + 0x18;
         private bool _NearClip_IsSet => _DAT2Location.HasValue;
-        public Single NearClip => _NearClip_IsSet ? _recordData.Slice(_NearClipLocation, 4).Float() : default(Single);
+        public Single NearClip => _NearClip_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_NearClipLocation, 4)) : default(Single);
         #endregion
         #region FlickerPeriod
         private int _FlickerPeriodLocation => _DAT2Location!.Value.Min + 0x1C;
         private bool _FlickerPeriod_IsSet => _DAT2Location.HasValue;
-        public Single FlickerPeriod => _FlickerPeriod_IsSet ? _recordData.Slice(_FlickerPeriodLocation, 4).Float() : default(Single);
+        public Single FlickerPeriod => _FlickerPeriod_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FlickerPeriodLocation, 4)) : default(Single);
         #endregion
         #region FlickerIntensityAmplitude
         private int _FlickerIntensityAmplitudeLocation => _DAT2Location!.Value.Min + 0x20;
         private bool _FlickerIntensityAmplitude_IsSet => _DAT2Location.HasValue;
-        public Single FlickerIntensityAmplitude => _FlickerIntensityAmplitude_IsSet ? _recordData.Slice(_FlickerIntensityAmplitudeLocation, 4).Float() : default(Single);
+        public Single FlickerIntensityAmplitude => _FlickerIntensityAmplitude_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FlickerIntensityAmplitudeLocation, 4)) : default(Single);
         #endregion
         #region FlickerMovementAmplitude
         private int _FlickerMovementAmplitudeLocation => _DAT2Location!.Value.Min + 0x24;
         private bool _FlickerMovementAmplitude_IsSet => _DAT2Location.HasValue;
-        public Single FlickerMovementAmplitude => _FlickerMovementAmplitude_IsSet ? _recordData.Slice(_FlickerMovementAmplitudeLocation, 4).Float() : default(Single);
+        public Single FlickerMovementAmplitude => _FlickerMovementAmplitude_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FlickerMovementAmplitudeLocation, 4)) : default(Single);
         #endregion
         #region ShadowOffset
         private int _ShadowOffsetLocation => _DAT2Location!.Value.Min + 0x28;
         private bool _ShadowOffset_IsSet => _DAT2Location.HasValue;
-        public Single ShadowOffset => _ShadowOffset_IsSet ? _recordData.Slice(_ShadowOffsetLocation, 4).Float() : default(Single);
+        public Single ShadowOffset => _ShadowOffset_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ShadowOffsetLocation, 4)) : default(Single);
         #endregion
         #region InnerFOV
         private int _InnerFOVLocation => _DAT2Location!.Value.Min + 0x2C;
         private bool _InnerFOV_IsSet => _DAT2Location.HasValue;
-        public Single InnerFOV => _InnerFOV_IsSet ? _recordData.Slice(_InnerFOVLocation, 4).Float() : default(Single);
+        public Single InnerFOV => _InnerFOV_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_InnerFOVLocation, 4)) : default(Single);
         #endregion
         #region PbrLightTemperatureK
         private int _PbrLightTemperatureKLocation => _DAT2Location!.Value.Min + 0x30;
@@ -5295,22 +5295,22 @@ namespace Mutagen.Bethesda.Starfield
         #region AdaptiveLightEc
         private int _AdaptiveLightEcLocation => _DAT2Location!.Value.Min + 0x3C;
         private bool _AdaptiveLightEc_IsSet => _DAT2Location.HasValue;
-        public Single AdaptiveLightEc => _AdaptiveLightEc_IsSet ? _recordData.Slice(_AdaptiveLightEcLocation, 4).Float() : default(Single);
+        public Single AdaptiveLightEc => _AdaptiveLightEc_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AdaptiveLightEcLocation, 4)) : default(Single);
         #endregion
         #region AdaptiveLightEv100Min
         private int _AdaptiveLightEv100MinLocation => _DAT2Location!.Value.Min + 0x40;
         private bool _AdaptiveLightEv100Min_IsSet => _DAT2Location.HasValue;
-        public Single AdaptiveLightEv100Min => _AdaptiveLightEv100Min_IsSet ? _recordData.Slice(_AdaptiveLightEv100MinLocation, 4).Float() : default(Single);
+        public Single AdaptiveLightEv100Min => _AdaptiveLightEv100Min_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AdaptiveLightEv100MinLocation, 4)) : default(Single);
         #endregion
         #region AdaptiveLightEv100Max
         private int _AdaptiveLightEv100MaxLocation => _DAT2Location!.Value.Min + 0x44;
         private bool _AdaptiveLightEv100Max_IsSet => _DAT2Location.HasValue;
-        public Single AdaptiveLightEv100Max => _AdaptiveLightEv100Max_IsSet ? _recordData.Slice(_AdaptiveLightEv100MaxLocation, 4).Float() : default(Single);
+        public Single AdaptiveLightEv100Max => _AdaptiveLightEv100Max_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AdaptiveLightEv100MaxLocation, 4)) : default(Single);
         #endregion
         #region RadiusFalloutExponent
         private int _RadiusFalloutExponentLocation => _DAT2Location!.Value.Min + 0x48;
         private bool _RadiusFalloutExponent_IsSet => _DAT2Location.HasValue;
-        public Single RadiusFalloutExponent => _RadiusFalloutExponent_IsSet ? _recordData.Slice(_RadiusFalloutExponentLocation, 4).Float() : default(Single);
+        public Single RadiusFalloutExponent => _RadiusFalloutExponent_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RadiusFalloutExponentLocation, 4)) : default(Single);
         #endregion
         #region Gobo
         private int? _GoboLocation;
@@ -5344,7 +5344,7 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region VolumetricLightIntensityScale
         private int? _VolumetricLightIntensityScaleLocation;
-        public Single? VolumetricLightIntensityScale => _VolumetricLightIntensityScaleLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _VolumetricLightIntensityScaleLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? VolumetricLightIntensityScale => _VolumetricLightIntensityScaleLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _VolumetricLightIntensityScaleLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

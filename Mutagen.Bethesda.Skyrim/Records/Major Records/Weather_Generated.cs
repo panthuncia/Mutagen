@@ -6788,42 +6788,42 @@ namespace Mutagen.Bethesda.Skyrim
         #region FogDistanceDayNear
         private int _FogDistanceDayNearLocation => _FNAMLocation!.Value.Min;
         private bool _FogDistanceDayNear_IsSet => _FNAMLocation.HasValue;
-        public Single FogDistanceDayNear => _FogDistanceDayNear_IsSet ? _recordData.Slice(_FogDistanceDayNearLocation, 4).Float() : default(Single);
+        public Single FogDistanceDayNear => _FogDistanceDayNear_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogDistanceDayNearLocation, 4)) : default(Single);
         #endregion
         #region FogDistanceDayFar
         private int _FogDistanceDayFarLocation => _FNAMLocation!.Value.Min + 0x4;
         private bool _FogDistanceDayFar_IsSet => _FNAMLocation.HasValue;
-        public Single FogDistanceDayFar => _FogDistanceDayFar_IsSet ? _recordData.Slice(_FogDistanceDayFarLocation, 4).Float() : default(Single);
+        public Single FogDistanceDayFar => _FogDistanceDayFar_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogDistanceDayFarLocation, 4)) : default(Single);
         #endregion
         #region FogDistanceNightNear
         private int _FogDistanceNightNearLocation => _FNAMLocation!.Value.Min + 0x8;
         private bool _FogDistanceNightNear_IsSet => _FNAMLocation.HasValue;
-        public Single FogDistanceNightNear => _FogDistanceNightNear_IsSet ? _recordData.Slice(_FogDistanceNightNearLocation, 4).Float() : default(Single);
+        public Single FogDistanceNightNear => _FogDistanceNightNear_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogDistanceNightNearLocation, 4)) : default(Single);
         #endregion
         #region FogDistanceNightFar
         private int _FogDistanceNightFarLocation => _FNAMLocation!.Value.Min + 0xC;
         private bool _FogDistanceNightFar_IsSet => _FNAMLocation.HasValue;
-        public Single FogDistanceNightFar => _FogDistanceNightFar_IsSet ? _recordData.Slice(_FogDistanceNightFarLocation, 4).Float() : default(Single);
+        public Single FogDistanceNightFar => _FogDistanceNightFar_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogDistanceNightFarLocation, 4)) : default(Single);
         #endregion
         #region FogDistanceDayPower
         private int _FogDistanceDayPowerLocation => _FNAMLocation!.Value.Min + 0x10;
         private bool _FogDistanceDayPower_IsSet => _FNAMLocation.HasValue;
-        public Single FogDistanceDayPower => _FogDistanceDayPower_IsSet ? _recordData.Slice(_FogDistanceDayPowerLocation, 4).Float() : default(Single);
+        public Single FogDistanceDayPower => _FogDistanceDayPower_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogDistanceDayPowerLocation, 4)) : default(Single);
         #endregion
         #region FogDistanceNightPower
         private int _FogDistanceNightPowerLocation => _FNAMLocation!.Value.Min + 0x14;
         private bool _FogDistanceNightPower_IsSet => _FNAMLocation.HasValue;
-        public Single FogDistanceNightPower => _FogDistanceNightPower_IsSet ? _recordData.Slice(_FogDistanceNightPowerLocation, 4).Float() : default(Single);
+        public Single FogDistanceNightPower => _FogDistanceNightPower_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogDistanceNightPowerLocation, 4)) : default(Single);
         #endregion
         #region FogDistanceDayMax
         private int _FogDistanceDayMaxLocation => _FNAMLocation!.Value.Min + 0x18;
         private bool _FogDistanceDayMax_IsSet => _FNAMLocation.HasValue;
-        public Single FogDistanceDayMax => _FogDistanceDayMax_IsSet ? _recordData.Slice(_FogDistanceDayMaxLocation, 4).Float() : default(Single);
+        public Single FogDistanceDayMax => _FogDistanceDayMax_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogDistanceDayMaxLocation, 4)) : default(Single);
         #endregion
         #region FogDistanceNightMax
         private int _FogDistanceNightMaxLocation => _FNAMLocation!.Value.Min + 0x1C;
         private bool _FogDistanceNightMax_IsSet => _FNAMLocation.HasValue;
-        public Single FogDistanceNightMax => _FogDistanceNightMax_IsSet ? _recordData.Slice(_FogDistanceNightMaxLocation, 4).Float() : default(Single);
+        public Single FogDistanceNightMax => _FogDistanceNightMax_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FogDistanceNightMaxLocation, 4)) : default(Single);
         #endregion
         private RangeInt32? _DATALocation;
         #region WindSpeed

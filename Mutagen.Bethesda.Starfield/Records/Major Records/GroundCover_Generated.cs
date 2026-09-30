@@ -2196,7 +2196,7 @@ namespace Mutagen.Bethesda.Starfield
         public IReadOnlyList<IFormLinkGetter<ILandscapeTextureGetter>> LandscapeTextures { get; private set; } = [];
         #region PaintedMaterialThreshold
         private int? _PaintedMaterialThresholdLocation;
-        public Single? PaintedMaterialThreshold => _PaintedMaterialThresholdLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _PaintedMaterialThresholdLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? PaintedMaterialThreshold => _PaintedMaterialThresholdLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _PaintedMaterialThresholdLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

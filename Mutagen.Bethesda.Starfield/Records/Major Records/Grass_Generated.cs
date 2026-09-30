@@ -2954,12 +2954,12 @@ namespace Mutagen.Bethesda.Starfield
         #region Contrast
         private int _ContrastLocation => _DNAMLocation!.Value.Min;
         private bool _Contrast_IsSet => _DNAMLocation.HasValue;
-        public Single Contrast => _Contrast_IsSet ? _recordData.Slice(_ContrastLocation, 4).Float() : default(Single);
+        public Single Contrast => _Contrast_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ContrastLocation, 4)) : default(Single);
         #endregion
         #region ClusterScale
         private int _ClusterScaleLocation => _DNAMLocation!.Value.Min + 0x4;
         private bool _ClusterScale_IsSet => _DNAMLocation.HasValue;
-        public Single ClusterScale => _ClusterScale_IsSet ? _recordData.Slice(_ClusterScaleLocation, 4).Float() : default(Single);
+        public Single ClusterScale => _ClusterScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ClusterScaleLocation, 4)) : default(Single);
         #endregion
         #region HeightRange
         private int _HeightRangeLocation => _DNAMLocation!.Value.Min + 0x8;
@@ -2974,17 +2974,17 @@ namespace Mutagen.Bethesda.Starfield
         #region WindFrequency
         private int _WindFrequencyLocation => _DNAMLocation!.Value.Min + 0x10;
         private bool _WindFrequency_IsSet => _DNAMLocation.HasValue;
-        public Single WindFrequency => _WindFrequency_IsSet ? _recordData.Slice(_WindFrequencyLocation, 4).Float() : default(Single);
+        public Single WindFrequency => _WindFrequency_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WindFrequencyLocation, 4)) : default(Single);
         #endregion
         #region AboveWaterClamp
         private int _AboveWaterClampLocation => _DNAMLocation!.Value.Min + 0x14;
         private bool _AboveWaterClamp_IsSet => _DNAMLocation.HasValue;
-        public Single AboveWaterClamp => _AboveWaterClamp_IsSet ? _recordData.Slice(_AboveWaterClampLocation, 4).Float() : default(Single);
+        public Single AboveWaterClamp => _AboveWaterClamp_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AboveWaterClampLocation, 4)) : default(Single);
         #endregion
         #region BelowWaterClamp
         private int _BelowWaterClampLocation => _DNAMLocation!.Value.Min + 0x18;
         private bool _BelowWaterClamp_IsSet => _DNAMLocation.HasValue;
-        public Single BelowWaterClamp => _BelowWaterClamp_IsSet ? _recordData.Slice(_BelowWaterClampLocation, 4).Float() : default(Single);
+        public Single BelowWaterClamp => _BelowWaterClamp_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BelowWaterClampLocation, 4)) : default(Single);
         #endregion
         #region MaxDensity
         private int _MaxDensityLocation => _DNAMLocation!.Value.Min + 0x1C;
@@ -3009,7 +3009,7 @@ namespace Mutagen.Bethesda.Starfield
         #region Coverage
         private int _CoverageLocation => _DNAMLocation!.Value.Min + 0x20;
         private bool _Coverage_IsSet => _DNAMLocation.HasValue;
-        public Single Coverage => _Coverage_IsSet ? _recordData.Slice(_CoverageLocation, 4).Float() : default(Single);
+        public Single Coverage => _Coverage_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CoverageLocation, 4)) : default(Single);
         #endregion
         #region DirtinessMin
         private int _DirtinessMinLocation => _DNAMLocation!.Value.Min + 0x24;

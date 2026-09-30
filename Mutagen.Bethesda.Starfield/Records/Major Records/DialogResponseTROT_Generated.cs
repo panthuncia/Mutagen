@@ -1135,7 +1135,7 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         public IFormLinkGetter<IVoiceTypeGetter> VoiceType => FormLinkBinaryTranslation.Instance.OverlayFactory<IVoiceTypeGetter>(_package, _structData.Span.Slice(0x0, 0x4));
-        public Single EmotionOut => _structData.Slice(0x4, 0x4).Float();
+        public Single EmotionOut => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

@@ -2391,7 +2391,7 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region DelayStartTimeAction
         private int? _DelayStartTimeActionLocation;
-        public Single? DelayStartTimeAction => _DelayStartTimeActionLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DelayStartTimeActionLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? DelayStartTimeAction => _DelayStartTimeActionLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DelayStartTimeActionLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         public IReadOnlyList<IConditionGetter> Conditions { get; private set; } = [];
         #region Action

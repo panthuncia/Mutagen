@@ -1628,13 +1628,13 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        public Single AnimationFireSeconds => _structData.Slice(0x0, 0x4).Float();
-        public Single RumbleLeftMotorStrength => _structData.Slice(0x4, 0x4).Float();
-        public Single RumbleRightMotorStrength => _structData.Slice(0x8, 0x4).Float();
-        public Single RumbleDuration => _structData.Slice(0xC, 0x4).Float();
-        public Single AnimationReloadSeconds => _structData.Slice(0x10, 0x4).Float();
-        public Single BoltAnimSeconds => _structData.Slice(0x14, 0x4).Float();
-        public Single SightedTransitionSeconds => _structData.Slice(0x18, 0x4).Float();
+        public Single AnimationFireSeconds => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single RumbleLeftMotorStrength => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single RumbleRightMotorStrength => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single RumbleDuration => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single AnimationReloadSeconds => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
+        public Single BoltAnimSeconds => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
+        public Single SightedTransitionSeconds => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
         public Byte NumProjectiles => _structData.Span[0x1C];
         public IFormLinkGetter<IProjectileGetter> ProjectileOverride => FormLinkBinaryTranslation.Instance.OverlayFactory<IProjectileGetter>(_package, _structData.Span.Slice(0x1D, 0x4));
         public Weapon.PatternType Pattern => (Weapon.PatternType)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0x21, 0x4));

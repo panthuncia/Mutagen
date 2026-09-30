@@ -841,7 +841,7 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         public T Property => Enums<T>.Convert(_structData.Span.Slice(0x0, 0x1)[0]);
-        public Single Step => _structData.Slice(0x1, 0x4).Float();
+        public Single Step => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

@@ -2329,7 +2329,7 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #region IdleTimer
         private int? _IdleTimerLocation;
-        public Single? IdleTimer => _IdleTimerLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _IdleTimerLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? IdleTimer => _IdleTimerLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _IdleTimerLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Animations
         partial void AnimationsCustomParse(

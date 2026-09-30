@@ -1775,11 +1775,11 @@ namespace Mutagen.Bethesda.Skyrim
         #endregion
         #region HorizontalPosition
         private int? _HorizontalPositionLocation;
-        public Single? HorizontalPosition => _HorizontalPositionLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _HorizontalPositionLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? HorizontalPosition => _HorizontalPositionLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HorizontalPositionLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region VerticalPosition
         private int? _VerticalPositionLocation;
-        public Single? VerticalPosition => _VerticalPositionLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _VerticalPositionLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? VerticalPosition => _VerticalPositionLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _VerticalPositionLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region AssociatedSkill
         private int? _AssociatedSkillLocation;

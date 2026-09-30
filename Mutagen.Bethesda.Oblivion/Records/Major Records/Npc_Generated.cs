@@ -3982,7 +3982,7 @@ namespace Mutagen.Bethesda.Oblivion
         #endregion
         #region HairLength
         private int? _HairLengthLocation;
-        public Single? HairLength => _HairLengthLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _HairLengthLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? HairLength => _HairLengthLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HairLengthLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         public IReadOnlyList<IFormLinkGetter<IEyeGetter>>? Eyes { get; private set; }
         #region HairColor

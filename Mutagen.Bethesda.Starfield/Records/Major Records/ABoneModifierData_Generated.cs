@@ -1152,7 +1152,7 @@ namespace Mutagen.Bethesda.Starfield
         public String Target => BinaryStringUtility.ParsePrependedString(_structData.Slice(DriverEndingPos), lengthLength: 4, encoding: _package.MetaData.Encodings.NonTranslated);
         protected int TargetEndingPos;
         #endregion
-        public Single MaxAnimationDistance => _structData.Slice(TargetEndingPos, 0x4).Float();
+        public Single MaxAnimationDistance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(TargetEndingPos, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

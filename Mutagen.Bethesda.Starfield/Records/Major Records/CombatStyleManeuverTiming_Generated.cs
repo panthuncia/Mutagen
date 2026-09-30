@@ -1435,14 +1435,14 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public Single Engage => _structData.Slice(0x0, 0x4).Float();
-        public Single Evade => _structData.Slice(0x4, 0x4).Float();
-        public Single Acquire => _structData.Slice(0x8, 0x4).Float();
-        public Single Persue => _structData.Slice(0xC, 0x4).Float();
-        public Single Disengage => _structData.Slice(0x10, 0x4).Float();
-        public Single Surround => _structData.Slice(0x14, 0x4).Float();
-        public Single Unknown => _structData.Slice(0x18, 0x4).Float();
-        public Single BreakStalemate => _structData.Slice(0x1C, 0x4).Float();
+        public Single Engage => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single Evade => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single Acquire => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single Persue => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single Disengage => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
+        public Single Surround => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
+        public Single Unknown => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
+        public Single BreakStalemate => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

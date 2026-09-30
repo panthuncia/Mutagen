@@ -1436,14 +1436,14 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        public Single Sunrise => _structData.Slice(0x0, 0x4).Float();
-        public Single Day => _structData.Slice(0x4, 0x4).Float();
-        public Single Sunset => _structData.Slice(0x8, 0x4).Float();
-        public Single Night => _structData.Slice(0xC, 0x4).Float();
-        public Single EarlySunrise => _structData.Slice(0x10, 0x4).Float();
-        public Single LateSunrise => _structData.Slice(0x14, 0x4).Float();
-        public Single EarlySunset => _structData.Slice(0x18, 0x4).Float();
-        public Single LateSunset => _structData.Slice(0x1C, 0x4).Float();
+        public Single Sunrise => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single Day => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single Sunset => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single Night => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single EarlySunrise => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
+        public Single LateSunrise => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
+        public Single EarlySunset => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
+        public Single LateSunset => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

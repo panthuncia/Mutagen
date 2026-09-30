@@ -2803,7 +2803,7 @@ namespace Mutagen.Bethesda.Starfield
         #region EdgeEffectFallOff
         private int _EdgeEffectFallOffLocation => _DNAMLocation!.Value.Min;
         private bool _EdgeEffectFallOff_IsSet => _DNAMLocation.HasValue;
-        public Single EdgeEffectFallOff => _EdgeEffectFallOff_IsSet ? _recordData.Slice(_EdgeEffectFallOffLocation, 4).Float() : default(Single);
+        public Single EdgeEffectFallOff => _EdgeEffectFallOff_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EdgeEffectFallOffLocation, 4)) : default(Single);
         #endregion
         #region EdgeEffectColor
         private int _EdgeEffectColorLocation => _DNAMLocation!.Value.Min + 0x4;
@@ -2813,17 +2813,17 @@ namespace Mutagen.Bethesda.Starfield
         #region EdgeEffectAlphaFadeInTime
         private int _EdgeEffectAlphaFadeInTimeLocation => _DNAMLocation!.Value.Min + 0x8;
         private bool _EdgeEffectAlphaFadeInTime_IsSet => _DNAMLocation.HasValue;
-        public Single EdgeEffectAlphaFadeInTime => _EdgeEffectAlphaFadeInTime_IsSet ? _recordData.Slice(_EdgeEffectAlphaFadeInTimeLocation, 4).Float() : default(Single);
+        public Single EdgeEffectAlphaFadeInTime => _EdgeEffectAlphaFadeInTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EdgeEffectAlphaFadeInTimeLocation, 4)) : default(Single);
         #endregion
         #region EdgeEffectFullAlphaTime
         private int _EdgeEffectFullAlphaTimeLocation => _DNAMLocation!.Value.Min + 0xC;
         private bool _EdgeEffectFullAlphaTime_IsSet => _DNAMLocation.HasValue;
-        public Single EdgeEffectFullAlphaTime => _EdgeEffectFullAlphaTime_IsSet ? _recordData.Slice(_EdgeEffectFullAlphaTimeLocation, 4).Float() : default(Single);
+        public Single EdgeEffectFullAlphaTime => _EdgeEffectFullAlphaTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EdgeEffectFullAlphaTimeLocation, 4)) : default(Single);
         #endregion
         #region EdgeEffectAlphaFadeOutTime
         private int _EdgeEffectAlphaFadeOutTimeLocation => _DNAMLocation!.Value.Min + 0x10;
         private bool _EdgeEffectAlphaFadeOutTime_IsSet => _DNAMLocation.HasValue;
-        public Single EdgeEffectAlphaFadeOutTime => _EdgeEffectAlphaFadeOutTime_IsSet ? _recordData.Slice(_EdgeEffectAlphaFadeOutTimeLocation, 4).Float() : default(Single);
+        public Single EdgeEffectAlphaFadeOutTime => _EdgeEffectAlphaFadeOutTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EdgeEffectAlphaFadeOutTimeLocation, 4)) : default(Single);
         #endregion
         #region EdgeEffectPersistentAlphaRatio
         private int _EdgeEffectPersistentAlphaRatioLocation => _DNAMLocation!.Value.Min + 0x14;
@@ -2833,12 +2833,12 @@ namespace Mutagen.Bethesda.Starfield
         #region EdgeEffectAlphaPulseAmplitude
         private int _EdgeEffectAlphaPulseAmplitudeLocation => _DNAMLocation!.Value.Min + 0x18;
         private bool _EdgeEffectAlphaPulseAmplitude_IsSet => _DNAMLocation.HasValue;
-        public Single EdgeEffectAlphaPulseAmplitude => _EdgeEffectAlphaPulseAmplitude_IsSet ? _recordData.Slice(_EdgeEffectAlphaPulseAmplitudeLocation, 4).Float() : default(Single);
+        public Single EdgeEffectAlphaPulseAmplitude => _EdgeEffectAlphaPulseAmplitude_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EdgeEffectAlphaPulseAmplitudeLocation, 4)) : default(Single);
         #endregion
         #region EdgeEffectAlphaPulseFrequency
         private int _EdgeEffectAlphaPulseFrequencyLocation => _DNAMLocation!.Value.Min + 0x1C;
         private bool _EdgeEffectAlphaPulseFrequency_IsSet => _DNAMLocation.HasValue;
-        public Single EdgeEffectAlphaPulseFrequency => _EdgeEffectAlphaPulseFrequency_IsSet ? _recordData.Slice(_EdgeEffectAlphaPulseFrequencyLocation, 4).Float() : default(Single);
+        public Single EdgeEffectAlphaPulseFrequency => _EdgeEffectAlphaPulseFrequency_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EdgeEffectAlphaPulseFrequencyLocation, 4)) : default(Single);
         #endregion
         #region EdgeEffectFullAlphaRatio
         private int _EdgeEffectFullAlphaRatioLocation => _DNAMLocation!.Value.Min + 0x20;
@@ -2848,22 +2848,22 @@ namespace Mutagen.Bethesda.Starfield
         #region HolesAlphaTestAnimationStartTime
         private int _HolesAlphaTestAnimationStartTimeLocation => _DNAMLocation!.Value.Min + 0x24;
         private bool _HolesAlphaTestAnimationStartTime_IsSet => _DNAMLocation.HasValue;
-        public Single HolesAlphaTestAnimationStartTime => _HolesAlphaTestAnimationStartTime_IsSet ? _recordData.Slice(_HolesAlphaTestAnimationStartTimeLocation, 4).Float() : default(Single);
+        public Single HolesAlphaTestAnimationStartTime => _HolesAlphaTestAnimationStartTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HolesAlphaTestAnimationStartTimeLocation, 4)) : default(Single);
         #endregion
         #region HolesAlphaTestAnimationStopTime
         private int _HolesAlphaTestAnimationStopTimeLocation => _DNAMLocation!.Value.Min + 0x28;
         private bool _HolesAlphaTestAnimationStopTime_IsSet => _DNAMLocation.HasValue;
-        public Single HolesAlphaTestAnimationStopTime => _HolesAlphaTestAnimationStopTime_IsSet ? _recordData.Slice(_HolesAlphaTestAnimationStopTimeLocation, 4).Float() : default(Single);
+        public Single HolesAlphaTestAnimationStopTime => _HolesAlphaTestAnimationStopTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HolesAlphaTestAnimationStopTimeLocation, 4)) : default(Single);
         #endregion
         #region HolesAlphaTestAnimationStartValue
         private int _HolesAlphaTestAnimationStartValueLocation => _DNAMLocation!.Value.Min + 0x2C;
         private bool _HolesAlphaTestAnimationStartValue_IsSet => _DNAMLocation.HasValue;
-        public Single HolesAlphaTestAnimationStartValue => _HolesAlphaTestAnimationStartValue_IsSet ? _recordData.Slice(_HolesAlphaTestAnimationStartValueLocation, 4).Float() : default(Single);
+        public Single HolesAlphaTestAnimationStartValue => _HolesAlphaTestAnimationStartValue_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HolesAlphaTestAnimationStartValueLocation, 4)) : default(Single);
         #endregion
         #region HolesAlphaTestAnimationStopValue
         private int _HolesAlphaTestAnimationStopValueLocation => _DNAMLocation!.Value.Min + 0x30;
         private bool _HolesAlphaTestAnimationStopValue_IsSet => _DNAMLocation.HasValue;
-        public Single HolesAlphaTestAnimationStopValue => _HolesAlphaTestAnimationStopValue_IsSet ? _recordData.Slice(_HolesAlphaTestAnimationStopValueLocation, 4).Float() : default(Single);
+        public Single HolesAlphaTestAnimationStopValue => _HolesAlphaTestAnimationStopValue_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HolesAlphaTestAnimationStopValueLocation, 4)) : default(Single);
         #endregion
         #region Sounds
         private int _SoundsLocation => _DNAMLocation!.Value.Min + 0x34;

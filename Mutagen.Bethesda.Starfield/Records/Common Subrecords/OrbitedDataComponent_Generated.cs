@@ -1292,17 +1292,17 @@ namespace Mutagen.Bethesda.Starfield
         #region MassInSm
         private int _MassInSmLocation => _DATALocation!.Value.Min + 0x8;
         private bool _MassInSm_IsSet => _DATALocation.HasValue;
-        public Single MassInSm => _MassInSm_IsSet ? _recordData.Slice(_MassInSmLocation, 4).Float() / 1.98847E+30f : default(Single);
+        public Single MassInSm => _MassInSm_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MassInSmLocation, 4)) / 1.98847E+30f : default(Single);
         #endregion
         #region RadiusInKm
         private int _RadiusInKmLocation => _DATALocation!.Value.Min + 0xC;
         private bool _RadiusInKm_IsSet => _DATALocation.HasValue;
-        public Single RadiusInKm => _RadiusInKm_IsSet ? _recordData.Slice(_RadiusInKmLocation, 4).Float() : default(Single);
+        public Single RadiusInKm => _RadiusInKm_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RadiusInKmLocation, 4)) : default(Single);
         #endregion
         #region Unknown2
         private int _Unknown2Location => _DATALocation!.Value.Min + 0x10;
         private bool _Unknown2_IsSet => _DATALocation.HasValue;
-        public Single Unknown2 => _Unknown2_IsSet ? _recordData.Slice(_Unknown2Location, 4).Float() : default(Single);
+        public Single Unknown2 => _Unknown2_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_Unknown2Location, 4)) : default(Single);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

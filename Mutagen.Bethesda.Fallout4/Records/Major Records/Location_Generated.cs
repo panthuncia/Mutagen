@@ -5424,11 +5424,11 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #region WorldLocationRadius
         private int? _WorldLocationRadiusLocation;
-        public Single? WorldLocationRadius => _WorldLocationRadiusLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _WorldLocationRadiusLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? WorldLocationRadius => _WorldLocationRadiusLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _WorldLocationRadiusLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region ActorFadeMult
         private int? _ActorFadeMultLocation;
-        public Single? ActorFadeMult => _ActorFadeMultLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ActorFadeMultLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? ActorFadeMult => _ActorFadeMultLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ActorFadeMultLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Color
         private int? _ColorLocation;

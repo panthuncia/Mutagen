@@ -2599,107 +2599,107 @@ namespace Mutagen.Bethesda.Starfield
         #region InnerConeAngleDegrees
         private int _InnerConeAngleDegreesLocation => _SNAMLocation!.Value.Min;
         private bool _InnerConeAngleDegrees_IsSet => _SNAMLocation.HasValue;
-        public Single InnerConeAngleDegrees => _InnerConeAngleDegrees_IsSet ? _recordData.Slice(_InnerConeAngleDegreesLocation, 4).Float() : default(Single);
+        public Single InnerConeAngleDegrees => _InnerConeAngleDegrees_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_InnerConeAngleDegreesLocation, 4)) : default(Single);
         #endregion
         #region OuterConeAngleDegrees
         private int _OuterConeAngleDegreesLocation => _SNAMLocation!.Value.Min + 0x4;
         private bool _OuterConeAngleDegrees_IsSet => _SNAMLocation.HasValue;
-        public Single OuterConeAngleDegrees => _OuterConeAngleDegrees_IsSet ? _recordData.Slice(_OuterConeAngleDegreesLocation, 4).Float() : default(Single);
+        public Single OuterConeAngleDegrees => _OuterConeAngleDegrees_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_OuterConeAngleDegreesLocation, 4)) : default(Single);
         #endregion
         #region SteeringDegreesPerSec
         private int _SteeringDegreesPerSecLocation => _SNAMLocation!.Value.Min + 0x8;
         private bool _SteeringDegreesPerSec_IsSet => _SNAMLocation.HasValue;
-        public Single SteeringDegreesPerSec => _SteeringDegreesPerSec_IsSet ? _recordData.Slice(_SteeringDegreesPerSecLocation, 4).Float() : default(Single);
+        public Single SteeringDegreesPerSec => _SteeringDegreesPerSec_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SteeringDegreesPerSecLocation, 4)) : default(Single);
         #endregion
         #region PitchScale
         private int _PitchScaleLocation => _SNAMLocation!.Value.Min + 0xC;
         private bool _PitchScale_IsSet => _SNAMLocation.HasValue;
-        public Single PitchScale => _PitchScale_IsSet ? _recordData.Slice(_PitchScaleLocation, 4).Float() : default(Single);
+        public Single PitchScale => _PitchScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_PitchScaleLocation, 4)) : default(Single);
         #endregion
         #region InnerSteeringRing
         private int _InnerSteeringRingLocation => _SNAMLocation!.Value.Min + 0x10;
         private bool _InnerSteeringRing_IsSet => _SNAMLocation.HasValue;
-        public Single InnerSteeringRing => _InnerSteeringRing_IsSet ? _recordData.Slice(_InnerSteeringRingLocation, 4).Float() : default(Single);
+        public Single InnerSteeringRing => _InnerSteeringRing_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_InnerSteeringRingLocation, 4)) : default(Single);
         #endregion
         #region OuterSteeringRing
         private int _OuterSteeringRingLocation => _SNAMLocation!.Value.Min + 0x14;
         private bool _OuterSteeringRing_IsSet => _SNAMLocation.HasValue;
-        public Single OuterSteeringRing => _OuterSteeringRing_IsSet ? _recordData.Slice(_OuterSteeringRingLocation, 4).Float() : default(Single);
+        public Single OuterSteeringRing => _OuterSteeringRing_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_OuterSteeringRingLocation, 4)) : default(Single);
         #endregion
         #region Friction
         private int _FrictionLocation => _SNAMLocation!.Value.Min + 0x18;
         private bool _Friction_IsSet => _SNAMLocation.HasValue;
-        public Single Friction => _Friction_IsSet ? _recordData.Slice(_FrictionLocation, 4).Float() : default(Single);
+        public Single Friction => _Friction_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FrictionLocation, 4)) : default(Single);
         #endregion
         #region MoveFollowDegreesPerSec
         private int _MoveFollowDegreesPerSecLocation => _SNAMLocation!.Value.Min + 0x1C;
         private bool _MoveFollowDegreesPerSec_IsSet => _SNAMLocation.HasValue;
-        public Single MoveFollowDegreesPerSec => _MoveFollowDegreesPerSec_IsSet ? _recordData.Slice(_MoveFollowDegreesPerSecLocation, 4).Float() : default(Single);
+        public Single MoveFollowDegreesPerSec => _MoveFollowDegreesPerSec_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MoveFollowDegreesPerSecLocation, 4)) : default(Single);
         #endregion
         #region AdsSnapSteeringMult
         private int _AdsSnapSteeringMultLocation => _SNAMLocation!.Value.Min + 0x20;
         private bool _AdsSnapSteeringMult_IsSet => _SNAMLocation.HasValue;
-        public Single AdsSnapSteeringMult => _AdsSnapSteeringMult_IsSet ? _recordData.Slice(_AdsSnapSteeringMultLocation, 4).Float() : default(Single);
+        public Single AdsSnapSteeringMult => _AdsSnapSteeringMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AdsSnapSteeringMultLocation, 4)) : default(Single);
         #endregion
         #region AdsSnapSeconds
         private int _AdsSnapSecondsLocation => _SNAMLocation!.Value.Min + 0x24;
         private bool _AdsSnapSeconds_IsSet => _SNAMLocation.HasValue;
-        public Single AdsSnapSeconds => _AdsSnapSeconds_IsSet ? _recordData.Slice(_AdsSnapSecondsLocation, 4).Float() : default(Single);
+        public Single AdsSnapSeconds => _AdsSnapSeconds_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AdsSnapSecondsLocation, 4)) : default(Single);
         #endregion
         #region AdsSnapConeAngleDegrees
         private int _AdsSnapConeAngleDegreesLocation => _SNAMLocation!.Value.Min + 0x28;
         private bool _AdsSnapConeAngleDegrees_IsSet => _SNAMLocation.HasValue;
-        public Single AdsSnapConeAngleDegrees => _AdsSnapConeAngleDegrees_IsSet ? _recordData.Slice(_AdsSnapConeAngleDegreesLocation, 4).Float() : default(Single);
+        public Single AdsSnapConeAngleDegrees => _AdsSnapConeAngleDegrees_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AdsSnapConeAngleDegreesLocation, 4)) : default(Single);
         #endregion
         #region NoSteering
         private int _NoSteeringLocation => _SNAMLocation!.Value.Min + 0x2C;
         private bool _NoSteering_IsSet => _SNAMLocation.HasValue;
-        public Single NoSteering => _NoSteering_IsSet ? _recordData.Slice(_NoSteeringLocation, 4).Float() : default(Single);
+        public Single NoSteering => _NoSteering_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_NoSteeringLocation, 4)) : default(Single);
         #endregion
         #region BulletBendingConeAngleDegrees
         private int _BulletBendingConeAngleDegreesLocation => _SNAMLocation!.Value.Min + 0x30;
         private bool _BulletBendingConeAngleDegrees_IsSet => _SNAMLocation.HasValue;
-        public Single BulletBendingConeAngleDegrees => _BulletBendingConeAngleDegrees_IsSet ? _recordData.Slice(_BulletBendingConeAngleDegreesLocation, 4).Float() : default(Single);
+        public Single BulletBendingConeAngleDegrees => _BulletBendingConeAngleDegrees_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BulletBendingConeAngleDegreesLocation, 4)) : default(Single);
         #endregion
         #region AdsSnapSteeringMultiplierInnerRing
         private int _AdsSnapSteeringMultiplierInnerRingLocation => _SNAMLocation!.Value.Min + 0x34;
         private bool _AdsSnapSteeringMultiplierInnerRing_IsSet => _SNAMLocation.HasValue;
-        public Single AdsSnapSteeringMultiplierInnerRing => _AdsSnapSteeringMultiplierInnerRing_IsSet ? _recordData.Slice(_AdsSnapSteeringMultiplierInnerRingLocation, 4).Float() : default(Single);
+        public Single AdsSnapSteeringMultiplierInnerRing => _AdsSnapSteeringMultiplierInnerRing_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AdsSnapSteeringMultiplierInnerRingLocation, 4)) : default(Single);
         #endregion
         #region AdsSnapSteeringMultiplierOuterRing
         private int _AdsSnapSteeringMultiplierOuterRingLocation => _SNAMLocation!.Value.Min + 0x38;
         private bool _AdsSnapSteeringMultiplierOuterRing_IsSet => _SNAMLocation.HasValue;
-        public Single AdsSnapSteeringMultiplierOuterRing => _AdsSnapSteeringMultiplierOuterRing_IsSet ? _recordData.Slice(_AdsSnapSteeringMultiplierOuterRingLocation, 4).Float() : default(Single);
+        public Single AdsSnapSteeringMultiplierOuterRing => _AdsSnapSteeringMultiplierOuterRing_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AdsSnapSteeringMultiplierOuterRingLocation, 4)) : default(Single);
         #endregion
         #region AdsMultiplierInnerConeAngleDegrees
         private int _AdsMultiplierInnerConeAngleDegreesLocation => _SNAMLocation!.Value.Min + 0x3C;
         private bool _AdsMultiplierInnerConeAngleDegrees_IsSet => _SNAMLocation.HasValue;
-        public Single AdsMultiplierInnerConeAngleDegrees => _AdsMultiplierInnerConeAngleDegrees_IsSet ? _recordData.Slice(_AdsMultiplierInnerConeAngleDegreesLocation, 4).Float() : default(Single);
+        public Single AdsMultiplierInnerConeAngleDegrees => _AdsMultiplierInnerConeAngleDegrees_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AdsMultiplierInnerConeAngleDegreesLocation, 4)) : default(Single);
         #endregion
         #region AdsMultiplierOuterConeAngleDegrees
         private int _AdsMultiplierOuterConeAngleDegreesLocation => _SNAMLocation!.Value.Min + 0x40;
         private bool _AdsMultiplierOuterConeAngleDegrees_IsSet => _SNAMLocation.HasValue;
-        public Single AdsMultiplierOuterConeAngleDegrees => _AdsMultiplierOuterConeAngleDegrees_IsSet ? _recordData.Slice(_AdsMultiplierOuterConeAngleDegreesLocation, 4).Float() : default(Single);
+        public Single AdsMultiplierOuterConeAngleDegrees => _AdsMultiplierOuterConeAngleDegrees_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AdsMultiplierOuterConeAngleDegreesLocation, 4)) : default(Single);
         #endregion
         #region AdsMultiplierInnerSteeringRing
         private int _AdsMultiplierInnerSteeringRingLocation => _SNAMLocation!.Value.Min + 0x44;
         private bool _AdsMultiplierInnerSteeringRing_IsSet => _SNAMLocation.HasValue;
-        public Single AdsMultiplierInnerSteeringRing => _AdsMultiplierInnerSteeringRing_IsSet ? _recordData.Slice(_AdsMultiplierInnerSteeringRingLocation, 4).Float() : default(Single);
+        public Single AdsMultiplierInnerSteeringRing => _AdsMultiplierInnerSteeringRing_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AdsMultiplierInnerSteeringRingLocation, 4)) : default(Single);
         #endregion
         #region AdsMultiplierOuterSteeringRing
         private int _AdsMultiplierOuterSteeringRingLocation => _SNAMLocation!.Value.Min + 0x48;
         private bool _AdsMultiplierOuterSteeringRing_IsSet => _SNAMLocation.HasValue;
-        public Single AdsMultiplierOuterSteeringRing => _AdsMultiplierOuterSteeringRing_IsSet ? _recordData.Slice(_AdsMultiplierOuterSteeringRingLocation, 4).Float() : default(Single);
+        public Single AdsMultiplierOuterSteeringRing => _AdsMultiplierOuterSteeringRing_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AdsMultiplierOuterSteeringRingLocation, 4)) : default(Single);
         #endregion
         #region AdsMultiplierFriction
         private int _AdsMultiplierFrictionLocation => _SNAMLocation!.Value.Min + 0x4C;
         private bool _AdsMultiplierFriction_IsSet => _SNAMLocation.HasValue;
-        public Single AdsMultiplierFriction => _AdsMultiplierFriction_IsSet ? _recordData.Slice(_AdsMultiplierFrictionLocation, 4).Float() : default(Single);
+        public Single AdsMultiplierFriction => _AdsMultiplierFriction_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AdsMultiplierFrictionLocation, 4)) : default(Single);
         #endregion
         #region AdsMultiplierSteeringDegreesPerSec
         private int _AdsMultiplierSteeringDegreesPerSecLocation => _SNAMLocation!.Value.Min + 0x50;
         private bool _AdsMultiplierSteeringDegreesPerSec_IsSet => _SNAMLocation.HasValue;
-        public Single AdsMultiplierSteeringDegreesPerSec => _AdsMultiplierSteeringDegreesPerSec_IsSet ? _recordData.Slice(_AdsMultiplierSteeringDegreesPerSecLocation, 4).Float() : default(Single);
+        public Single AdsMultiplierSteeringDegreesPerSec => _AdsMultiplierSteeringDegreesPerSec_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AdsMultiplierSteeringDegreesPerSecLocation, 4)) : default(Single);
         #endregion
         #region AimAssistEnabled
         private int _AimAssistEnabledLocation => _SNAMLocation!.Value.Min + 0x54;

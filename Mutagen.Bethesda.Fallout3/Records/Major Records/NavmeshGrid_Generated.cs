@@ -1464,8 +1464,8 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         public UInt32 Divisor => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0x0, 0x4));
-        public Single MaxDistanceX => _structData.Slice(0x4, 0x4).Float();
-        public Single MaxDistanceY => _structData.Slice(0x8, 0x4).Float();
+        public Single MaxDistanceX => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single MaxDistanceY => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
         public P3Float Min => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(0xC, 0xC));
         public P3Float Max => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(0x18, 0xC));
         #region Cells

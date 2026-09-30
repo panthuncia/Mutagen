@@ -1155,7 +1155,7 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region Value
         private int? _ValueLocation;
-        public Single? Value => _ValueLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ValueLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? Value => _ValueLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ValueLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

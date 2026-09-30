@@ -9995,15 +9995,15 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #region HeightMin
         private int? _HeightMinLocation;
-        public Single HeightMin => _HeightMinLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _HeightMinLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single HeightMin => _HeightMinLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HeightMinLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region NAM7
         private int? _NAM7Location;
-        public Single? NAM7 => _NAM7Location.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM7Location.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? NAM7 => _NAM7Location.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _NAM7Location.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region HeightMax
         private int? _HeightMaxLocation;
-        public Single HeightMax => _HeightMaxLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _HeightMaxLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single HeightMax => _HeightMaxLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HeightMaxLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region Weight
         private RangeInt32? _WeightLocation;
@@ -10061,7 +10061,7 @@ namespace Mutagen.Bethesda.Fallout4
         public IReadOnlyList<INpcFaceMorphGetter> FaceMorphs { get; private set; } = [];
         #region FacialMorphIntensity
         private int? _FacialMorphIntensityLocation;
-        public Single? FacialMorphIntensity => _FacialMorphIntensityLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FacialMorphIntensityLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? FacialMorphIntensity => _FacialMorphIntensityLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FacialMorphIntensityLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region ActivateTextOverride
         private int? _ActivateTextOverrideLocation;

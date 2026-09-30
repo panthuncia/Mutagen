@@ -3178,7 +3178,7 @@ namespace Mutagen.Bethesda.Fallout3
         #region Weight
         private int _WeightLocation => _DATALocation!.Value.Min + 0x8;
         private bool _Weight_IsSet => _DATALocation.HasValue;
-        public Single Weight => _Weight_IsSet ? _recordData.Slice(_WeightLocation, 4).Float() : default(Single);
+        public Single Weight => _Weight_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WeightLocation, 4)) : default(Single);
         #endregion
         private RangeInt32? _DNAMLocation;
         public ArmorAddon.DNAMDataType DNAMDataTypeState { get; private set; }
@@ -3195,7 +3195,7 @@ namespace Mutagen.Bethesda.Fallout3
         #region DamageThreshold
         private int _DamageThresholdLocation => _DNAMLocation!.Value.Min + 0x4;
         private bool _DamageThreshold_IsSet => _DNAMLocation.HasValue && !DNAMDataTypeState.HasFlag(ArmorAddon.DNAMDataType.Break0) && _package.MetaData.ModHeaderVersion!.Value >= 1.32f;
-        public Single DamageThreshold => _DamageThreshold_IsSet ? _recordData.Slice(_DamageThresholdLocation, 4).Float() : default(Single);
+        public Single DamageThreshold => _DamageThreshold_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DamageThresholdLocation, 4)) : default(Single);
         int DamageThresholdModHeaderVersioningOffset => _package.MetaData.ModHeaderVersion!.Value < 1.32f ? -4 : 0;
         #endregion
         #region Unused

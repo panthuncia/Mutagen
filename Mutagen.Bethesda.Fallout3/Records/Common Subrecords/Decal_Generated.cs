@@ -1611,13 +1611,13 @@ namespace Mutagen.Bethesda.Fallout3
                 translationParams: translationParams);
         }
 
-        public Single MinWidth => _structData.Slice(0x0, 0x4).Float();
-        public Single MaxWidth => _structData.Slice(0x4, 0x4).Float();
-        public Single MinHeight => _structData.Slice(0x8, 0x4).Float();
-        public Single MaxHeight => _structData.Slice(0xC, 0x4).Float();
-        public Single Depth => _structData.Slice(0x10, 0x4).Float();
-        public Single Shininess => _structData.Slice(0x14, 0x4).Float();
-        public Single ParallaxScale => _structData.Slice(0x18, 0x4).Float();
+        public Single MinWidth => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single MaxWidth => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single MinHeight => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single MaxHeight => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single Depth => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
+        public Single Shininess => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
+        public Single ParallaxScale => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
         public Byte ParallaxPasses => _structData.Span[0x1C];
         public Decal.Flag Flags => (Decal.Flag)_structData.Span.Slice(0x1D, 0x1)[0];
         public UInt16 Unknown => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x1E, 0x2));

@@ -12780,7 +12780,7 @@ namespace Mutagen.Bethesda.Starfield
         #region SightedTransitionSeconds
         private int _SightedTransitionSecondsLocation => _WAIMLocation!.Value.Min;
         private bool _SightedTransitionSeconds_IsSet => _WAIMLocation.HasValue;
-        public Single SightedTransitionSeconds => _SightedTransitionSeconds_IsSet ? _recordData.Slice(_SightedTransitionSecondsLocation, 4).Float() : default(Single);
+        public Single SightedTransitionSeconds => _SightedTransitionSeconds_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SightedTransitionSecondsLocation, 4)) : default(Single);
         #endregion
         #region AimDownSightTemplate
         private int _AimDownSightTemplateLocation => _WAIMLocation!.Value.Min + 0x4;
@@ -12953,17 +12953,17 @@ namespace Mutagen.Bethesda.Starfield
         #region ChargeFullPowerSeconds
         private int _ChargeFullPowerSecondsLocation => _WCHGLocation!.Value.Min;
         private bool _ChargeFullPowerSeconds_IsSet => _WCHGLocation.HasValue;
-        public Single ChargeFullPowerSeconds => _ChargeFullPowerSeconds_IsSet ? _recordData.Slice(_ChargeFullPowerSecondsLocation, 4).Float() : default(Single);
+        public Single ChargeFullPowerSeconds => _ChargeFullPowerSeconds_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ChargeFullPowerSecondsLocation, 4)) : default(Single);
         #endregion
         #region ChargeMinPowerPerShot
         private int _ChargeMinPowerPerShotLocation => _WCHGLocation!.Value.Min + 0x4;
         private bool _ChargeMinPowerPerShot_IsSet => _WCHGLocation.HasValue;
-        public Single ChargeMinPowerPerShot => _ChargeMinPowerPerShot_IsSet ? _recordData.Slice(_ChargeMinPowerPerShotLocation, 4).Float() : default(Single);
+        public Single ChargeMinPowerPerShot => _ChargeMinPowerPerShot_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ChargeMinPowerPerShotLocation, 4)) : default(Single);
         #endregion
         #region ChargeCritBonus
         private int _ChargeCritBonusLocation => _WCHGLocation!.Value.Min + 0x8;
         private bool _ChargeCritBonus_IsSet => _WCHGLocation.HasValue;
-        public Single ChargeCritBonus => _ChargeCritBonus_IsSet ? _recordData.Slice(_ChargeCritBonusLocation, 4).Float() : default(Single);
+        public Single ChargeCritBonus => _ChargeCritBonus_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ChargeCritBonusLocation, 4)) : default(Single);
         #endregion
         #region ChargeHoldInput
         private int _ChargeHoldInputLocation => _WCHGLocation!.Value.Min + 0xC;
@@ -12979,27 +12979,27 @@ namespace Mutagen.Bethesda.Starfield
         #region AttackDamage
         private int _AttackDamageLocation => _WDMGLocation!.Value.Min;
         private bool _AttackDamage_IsSet => _WDMGLocation.HasValue;
-        public Single AttackDamage => _AttackDamage_IsSet ? _recordData.Slice(_AttackDamageLocation, 4).Float() : default(Single);
+        public Single AttackDamage => _AttackDamage_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AttackDamageLocation, 4)) : default(Single);
         #endregion
         #region MinRange
         private int _MinRangeLocation => _WDMGLocation!.Value.Min + 0x4;
         private bool _MinRange_IsSet => _WDMGLocation.HasValue;
-        public Single MinRange => _MinRange_IsSet ? _recordData.Slice(_MinRangeLocation, 4).Float() : default(Single);
+        public Single MinRange => _MinRange_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MinRangeLocation, 4)) : default(Single);
         #endregion
         #region MaxRange
         private int _MaxRangeLocation => _WDMGLocation!.Value.Min + 0x8;
         private bool _MaxRange_IsSet => _WDMGLocation.HasValue;
-        public Single MaxRange => _MaxRange_IsSet ? _recordData.Slice(_MaxRangeLocation, 4).Float() : default(Single);
+        public Single MaxRange => _MaxRange_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MaxRangeLocation, 4)) : default(Single);
         #endregion
         #region OutOfRangeDamageMult
         private int _OutOfRangeDamageMultLocation => _WDMGLocation!.Value.Min + 0xC;
         private bool _OutOfRangeDamageMult_IsSet => _WDMGLocation.HasValue;
-        public Single OutOfRangeDamageMult => _OutOfRangeDamageMult_IsSet ? _recordData.Slice(_OutOfRangeDamageMultLocation, 4).Float() : default(Single);
+        public Single OutOfRangeDamageMult => _OutOfRangeDamageMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_OutOfRangeDamageMultLocation, 4)) : default(Single);
         #endregion
         #region CritDamageMult
         private int _CritDamageMultLocation => _WDMGLocation!.Value.Min + 0x10;
         private bool _CritDamageMult_IsSet => _WDMGLocation.HasValue;
-        public Single CritDamageMult => _CritDamageMult_IsSet ? _recordData.Slice(_CritDamageMultLocation, 4).Float() : default(Single);
+        public Single CritDamageMult => _CritDamageMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CritDamageMultLocation, 4)) : default(Single);
         #endregion
         #region CriticalHitSpell
         private int _CriticalHitSpellLocation => _WDMGLocation!.Value.Min + 0x14;
@@ -13029,37 +13029,37 @@ namespace Mutagen.Bethesda.Starfield
         #region WDMGUnknown4
         private int _WDMGUnknown4Location => _WDMGLocation!.Value.Min + 0x22;
         private bool _WDMGUnknown4_IsSet => _WDMGLocation.HasValue;
-        public Single WDMGUnknown4 => _WDMGUnknown4_IsSet ? _recordData.Slice(_WDMGUnknown4Location, 4).Float() : default(Single);
+        public Single WDMGUnknown4 => _WDMGUnknown4_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WDMGUnknown4Location, 4)) : default(Single);
         #endregion
         #region WDMGUnknown5
         private int _WDMGUnknown5Location => _WDMGLocation!.Value.Min + 0x26;
         private bool _WDMGUnknown5_IsSet => _WDMGLocation.HasValue;
-        public Single WDMGUnknown5 => _WDMGUnknown5_IsSet ? _recordData.Slice(_WDMGUnknown5Location, 4).Float() : default(Single);
+        public Single WDMGUnknown5 => _WDMGUnknown5_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WDMGUnknown5Location, 4)) : default(Single);
         #endregion
         #region WDMGUnknown6
         private int _WDMGUnknown6Location => _WDMGLocation!.Value.Min + 0x2A;
         private bool _WDMGUnknown6_IsSet => _WDMGLocation.HasValue;
-        public Single WDMGUnknown6 => _WDMGUnknown6_IsSet ? _recordData.Slice(_WDMGUnknown6Location, 4).Float() : default(Single);
+        public Single WDMGUnknown6 => _WDMGUnknown6_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WDMGUnknown6Location, 4)) : default(Single);
         #endregion
         #region WDMGUnknown7
         private int _WDMGUnknown7Location => _WDMGLocation!.Value.Min + 0x2E;
         private bool _WDMGUnknown7_IsSet => _WDMGLocation.HasValue;
-        public Single WDMGUnknown7 => _WDMGUnknown7_IsSet ? _recordData.Slice(_WDMGUnknown7Location, 4).Float() : default(Single);
+        public Single WDMGUnknown7 => _WDMGUnknown7_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WDMGUnknown7Location, 4)) : default(Single);
         #endregion
         #region WDMGUnknown8
         private int _WDMGUnknown8Location => _WDMGLocation!.Value.Min + 0x32;
         private bool _WDMGUnknown8_IsSet => _WDMGLocation.HasValue;
-        public Single WDMGUnknown8 => _WDMGUnknown8_IsSet ? _recordData.Slice(_WDMGUnknown8Location, 4).Float() : default(Single);
+        public Single WDMGUnknown8 => _WDMGUnknown8_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WDMGUnknown8Location, 4)) : default(Single);
         #endregion
         #region WDMGUnknown9
         private int _WDMGUnknown9Location => _WDMGLocation!.Value.Min + 0x36;
         private bool _WDMGUnknown9_IsSet => _WDMGLocation.HasValue;
-        public Single WDMGUnknown9 => _WDMGUnknown9_IsSet ? _recordData.Slice(_WDMGUnknown9Location, 4).Float() : default(Single);
+        public Single WDMGUnknown9 => _WDMGUnknown9_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WDMGUnknown9Location, 4)) : default(Single);
         #endregion
         #region CritChanceIncMult
         private int _CritChanceIncMultLocation => _WDMGLocation!.Value.Min + 0x3A;
         private bool _CritChanceIncMult_IsSet => _WDMGLocation.HasValue;
-        public Single CritChanceIncMult => _CritChanceIncMult_IsSet ? _recordData.Slice(_CritChanceIncMultLocation, 4).Float() : default(Single);
+        public Single CritChanceIncMult => _CritChanceIncMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CritChanceIncMultLocation, 4)) : default(Single);
         #endregion
         public IReadOnlyList<IWeaponDamageTypeGetter>? DamageTypes { get; private set; }
         private RangeInt32? _WFIRLocation;
@@ -13081,22 +13081,22 @@ namespace Mutagen.Bethesda.Starfield
         #region AttackSeconds
         private int _AttackSecondsLocation => _WFIRLocation!.Value.Min + 0x3;
         private bool _AttackSeconds_IsSet => _WFIRLocation.HasValue;
-        public Single AttackSeconds => _AttackSeconds_IsSet ? _recordData.Slice(_AttackSecondsLocation, 4).Float() : default(Single);
+        public Single AttackSeconds => _AttackSeconds_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AttackSecondsLocation, 4)) : default(Single);
         #endregion
         #region FireSeconds
         private int _FireSecondsLocation => _WFIRLocation!.Value.Min + 0x7;
         private bool _FireSeconds_IsSet => _WFIRLocation.HasValue;
-        public Single FireSeconds => _FireSeconds_IsSet ? _recordData.Slice(_FireSecondsLocation, 4).Float() : default(Single);
+        public Single FireSeconds => _FireSeconds_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FireSecondsLocation, 4)) : default(Single);
         #endregion
         #region AttackDelaySeconds
         private int _AttackDelaySecondsLocation => _WFIRLocation!.Value.Min + 0xB;
         private bool _AttackDelaySeconds_IsSet => _WFIRLocation.HasValue;
-        public Single AttackDelaySeconds => _AttackDelaySeconds_IsSet ? _recordData.Slice(_AttackDelaySecondsLocation, 4).Float() : default(Single);
+        public Single AttackDelaySeconds => _AttackDelaySeconds_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AttackDelaySecondsLocation, 4)) : default(Single);
         #endregion
         #region BoltChargeSeconds
         private int _BoltChargeSecondsLocation => _WFIRLocation!.Value.Min + 0xF;
         private bool _BoltChargeSeconds_IsSet => _WFIRLocation.HasValue;
-        public Single BoltChargeSeconds => _BoltChargeSeconds_IsSet ? _recordData.Slice(_BoltChargeSecondsLocation, 4).Float() : default(Single);
+        public Single BoltChargeSeconds => _BoltChargeSeconds_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BoltChargeSecondsLocation, 4)) : default(Single);
         #endregion
         #region BoltAction
         private int _BoltActionLocation => _WFIRLocation!.Value.Min + 0x13;
@@ -13111,12 +13111,12 @@ namespace Mutagen.Bethesda.Starfield
         #region ShotsPerSecond
         private int _ShotsPerSecondLocation => _WFIRLocation!.Value.Min + 0x15;
         private bool _ShotsPerSecond_IsSet => _WFIRLocation.HasValue;
-        public Single ShotsPerSecond => _ShotsPerSecond_IsSet ? _recordData.Slice(_ShotsPerSecondLocation, 4).Float() : default(Single);
+        public Single ShotsPerSecond => _ShotsPerSecond_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ShotsPerSecondLocation, 4)) : default(Single);
         #endregion
         #region WFIRUnknown7
         private int _WFIRUnknown7Location => _WFIRLocation!.Value.Min + 0x19;
         private bool _WFIRUnknown7_IsSet => _WFIRLocation.HasValue;
-        public Single WFIRUnknown7 => _WFIRUnknown7_IsSet ? _recordData.Slice(_WFIRUnknown7Location, 4).Float() : default(Single);
+        public Single WFIRUnknown7 => _WFIRUnknown7_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WFIRUnknown7Location, 4)) : default(Single);
         #endregion
         #region OverrideRateOfFire
         private int _OverrideRateOfFireLocation => _WFIRLocation!.Value.Min + 0x1D;
@@ -13126,7 +13126,7 @@ namespace Mutagen.Bethesda.Starfield
         #region TriggerThresholdPrimaryTrigger
         private int _TriggerThresholdPrimaryTriggerLocation => _WFIRLocation!.Value.Min + 0x1E;
         private bool _TriggerThresholdPrimaryTrigger_IsSet => _WFIRLocation.HasValue;
-        public Single TriggerThresholdPrimaryTrigger => _TriggerThresholdPrimaryTrigger_IsSet ? _recordData.Slice(_TriggerThresholdPrimaryTriggerLocation, 4).Float() : default(Single);
+        public Single TriggerThresholdPrimaryTrigger => _TriggerThresholdPrimaryTrigger_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TriggerThresholdPrimaryTriggerLocation, 4)) : default(Single);
         #endregion
         #region WFIRUnknown10
         private int _WFIRUnknown10Location => _WFIRLocation!.Value.Min + 0x22;
@@ -13136,7 +13136,7 @@ namespace Mutagen.Bethesda.Starfield
         #region TriggerThresholdSecondStage
         private int _TriggerThresholdSecondStageLocation => _WFIRLocation!.Value.Min + 0x23;
         private bool _TriggerThresholdSecondStage_IsSet => _WFIRLocation.HasValue;
-        public Single TriggerThresholdSecondStage => _TriggerThresholdSecondStage_IsSet ? _recordData.Slice(_TriggerThresholdSecondStageLocation, 4).Float() : default(Single);
+        public Single TriggerThresholdSecondStage => _TriggerThresholdSecondStage_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TriggerThresholdSecondStageLocation, 4)) : default(Single);
         #endregion
         #region HasStagedTrigger
         private int _HasStagedTriggerLocation => _WFIRLocation!.Value.Min + 0x27;
@@ -13151,7 +13151,7 @@ namespace Mutagen.Bethesda.Starfield
         #region BurstDelaySeconds
         private int _BurstDelaySecondsLocation => _WFIRLocation!.Value.Min + 0x29;
         private bool _BurstDelaySeconds_IsSet => _WFIRLocation.HasValue;
-        public Single BurstDelaySeconds => _BurstDelaySeconds_IsSet ? _recordData.Slice(_BurstDelaySecondsLocation, 4).Float() : default(Single);
+        public Single BurstDelaySeconds => _BurstDelaySeconds_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BurstDelaySecondsLocation, 4)) : default(Single);
         #endregion
         private RangeInt32? _WFLGLocation;
         #region NonPlayable
@@ -13223,7 +13223,7 @@ namespace Mutagen.Bethesda.Starfield
         #region BaseWeight
         private int _BaseWeightLocation => _WGENLocation!.Value.Min + 0x4;
         private bool _BaseWeight_IsSet => _WGENLocation.HasValue;
-        public Single BaseWeight => _BaseWeight_IsSet ? _recordData.Slice(_BaseWeightLocation, 4).Float() : default(Single);
+        public Single BaseWeight => _BaseWeight_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BaseWeightLocation, 4)) : default(Single);
         #endregion
         #region BaseValue
         private int _BaseValueLocation => _WGENLocation!.Value.Min + 0x8;
@@ -13233,12 +13233,12 @@ namespace Mutagen.Bethesda.Starfield
         #region BaseSpeed
         private int _BaseSpeedLocation => _WGENLocation!.Value.Min + 0xC;
         private bool _BaseSpeed_IsSet => _WGENLocation.HasValue;
-        public Single BaseSpeed => _BaseSpeed_IsSet ? _recordData.Slice(_BaseSpeedLocation, 4).Float() : default(Single);
+        public Single BaseSpeed => _BaseSpeed_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BaseSpeedLocation, 4)) : default(Single);
         #endregion
         #region AttackOxygenCost
         private int _AttackOxygenCostLocation => _WGENLocation!.Value.Min + 0x10;
         private bool _AttackOxygenCost_IsSet => _WGENLocation.HasValue;
-        public Single AttackOxygenCost => _AttackOxygenCost_IsSet ? _recordData.Slice(_AttackOxygenCostLocation, 4).Float() : default(Single);
+        public Single AttackOxygenCost => _AttackOxygenCost_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AttackOxygenCostLocation, 4)) : default(Single);
         #endregion
         #region WeaponBarrel
         private int _WeaponBarrelLocation => _WGENLocation!.Value.Min + 0x14;
@@ -13258,12 +13258,12 @@ namespace Mutagen.Bethesda.Starfield
         #region MeleeBashDamage
         private int _MeleeBashDamageLocation => _WMELLocation!.Value.Min + 0x1;
         private bool _MeleeBashDamage_IsSet => _WMELLocation.HasValue;
-        public Single MeleeBashDamage => _MeleeBashDamage_IsSet ? _recordData.Slice(_MeleeBashDamageLocation, 4).Float() : default(Single);
+        public Single MeleeBashDamage => _MeleeBashDamage_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MeleeBashDamageLocation, 4)) : default(Single);
         #endregion
         #region MeleeReach
         private int _MeleeReachLocation => _WMELLocation!.Value.Min + 0x5;
         private bool _MeleeReach_IsSet => _WMELLocation.HasValue;
-        public Single MeleeReach => _MeleeReach_IsSet ? _recordData.Slice(_MeleeReachLocation, 4).Float() : default(Single);
+        public Single MeleeReach => _MeleeReach_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MeleeReachLocation, 4)) : default(Single);
         #endregion
         #region MeleeStagger
         private int _MeleeStaggerLocation => _WMELLocation!.Value.Min + 0x9;
@@ -13279,12 +13279,12 @@ namespace Mutagen.Bethesda.Starfield
         #region PowerRechargeTime
         private int _PowerRechargeTimeLocation => _QNAMLocation!.Value.Min + 0x4;
         private bool _PowerRechargeTime_IsSet => _QNAMLocation.HasValue;
-        public Single PowerRechargeTime => _PowerRechargeTime_IsSet ? _recordData.Slice(_PowerRechargeTimeLocation, 4).Float() : default(Single);
+        public Single PowerRechargeTime => _PowerRechargeTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_PowerRechargeTimeLocation, 4)) : default(Single);
         #endregion
         #region PowerRechargeDelay
         private int _PowerRechargeDelayLocation => _QNAMLocation!.Value.Min + 0x8;
         private bool _PowerRechargeDelay_IsSet => _QNAMLocation.HasValue;
-        public Single PowerRechargeDelay => _PowerRechargeDelay_IsSet ? _recordData.Slice(_PowerRechargeDelayLocation, 4).Float() : default(Single);
+        public Single PowerRechargeDelay => _PowerRechargeDelay_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_PowerRechargeDelayLocation, 4)) : default(Single);
         #endregion
         #region ConsumeAmmo
         private int _ConsumeAmmoLocation => _QNAMLocation!.Value.Min + 0xC;
@@ -13309,7 +13309,7 @@ namespace Mutagen.Bethesda.Starfield
         #region QNAMUnknown2
         private int _QNAMUnknown2Location => _QNAMLocation!.Value.Min + 0x13;
         private bool _QNAMUnknown2_IsSet => _QNAMLocation.HasValue;
-        public Single QNAMUnknown2 => _QNAMUnknown2_IsSet ? _recordData.Slice(_QNAMUnknown2Location, 4).Float() : default(Single);
+        public Single QNAMUnknown2 => _QNAMUnknown2_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_QNAMUnknown2Location, 4)) : default(Single);
         #endregion
         #region QNAMUnknown3
         private int _QNAMUnknown3Location => _QNAMLocation!.Value.Min + 0x17;
@@ -13324,7 +13324,7 @@ namespace Mutagen.Bethesda.Starfield
         #region QNAMUnknown5
         private int _QNAMUnknown5Location => _QNAMLocation!.Value.Min + 0x1C;
         private bool _QNAMUnknown5_IsSet => _QNAMLocation.HasValue;
-        public Single QNAMUnknown5 => _QNAMUnknown5_IsSet ? _recordData.Slice(_QNAMUnknown5Location, 4).Float() : default(Single);
+        public Single QNAMUnknown5 => _QNAMUnknown5_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_QNAMUnknown5Location, 4)) : default(Single);
         #endregion
         #region PowerConsumption
         private int _PowerConsumptionLocation => _QNAMLocation!.Value.Min + 0x20;
@@ -13335,12 +13335,12 @@ namespace Mutagen.Bethesda.Starfield
         #region WRLOUnknown1
         private int _WRLOUnknown1Location => _WRLOLocation!.Value.Min;
         private bool _WRLOUnknown1_IsSet => _WRLOLocation.HasValue;
-        public Single WRLOUnknown1 => _WRLOUnknown1_IsSet ? _recordData.Slice(_WRLOUnknown1Location, 4).Float() : default(Single);
+        public Single WRLOUnknown1 => _WRLOUnknown1_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WRLOUnknown1Location, 4)) : default(Single);
         #endregion
         #region ReloadSpeed
         private int _ReloadSpeedLocation => _WRLOLocation!.Value.Min + 0x4;
         private bool _ReloadSpeed_IsSet => _WRLOLocation.HasValue;
-        public Single ReloadSpeed => _ReloadSpeed_IsSet ? _recordData.Slice(_ReloadSpeedLocation, 4).Float() : default(Single);
+        public Single ReloadSpeed => _ReloadSpeed_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ReloadSpeedLocation, 4)) : default(Single);
         #endregion
         #region ReloadCharging
         private int _ReloadChargingLocation => _WRLOLocation!.Value.Min + 0x8;
@@ -13360,62 +13360,62 @@ namespace Mutagen.Bethesda.Starfield
         #region ApertureValueMin
         private int _ApertureValueMinLocation => _WVARLocation!.Value.Min;
         private bool _ApertureValueMin_IsSet => _WVARLocation.HasValue;
-        public Single ApertureValueMin => _ApertureValueMin_IsSet ? _recordData.Slice(_ApertureValueMinLocation, 4).Float() : default(Single);
+        public Single ApertureValueMin => _ApertureValueMin_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ApertureValueMinLocation, 4)) : default(Single);
         #endregion
         #region ApertureValueMax
         private int _ApertureValueMaxLocation => _WVARLocation!.Value.Min + 0x4;
         private bool _ApertureValueMax_IsSet => _WVARLocation.HasValue;
-        public Single ApertureValueMax => _ApertureValueMax_IsSet ? _recordData.Slice(_ApertureValueMaxLocation, 4).Float() : default(Single);
+        public Single ApertureValueMax => _ApertureValueMax_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ApertureValueMaxLocation, 4)) : default(Single);
         #endregion
         #region ApertureInputMin
         private int _ApertureInputMinLocation => _WVARLocation!.Value.Min + 0x8;
         private bool _ApertureInputMin_IsSet => _WVARLocation.HasValue;
-        public Single ApertureInputMin => _ApertureInputMin_IsSet ? _recordData.Slice(_ApertureInputMinLocation, 4).Float() : default(Single);
+        public Single ApertureInputMin => _ApertureInputMin_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ApertureInputMinLocation, 4)) : default(Single);
         #endregion
         #region ApertureInputMax
         private int _ApertureInputMaxLocation => _WVARLocation!.Value.Min + 0xC;
         private bool _ApertureInputMax_IsSet => _WVARLocation.HasValue;
-        public Single ApertureInputMax => _ApertureInputMax_IsSet ? _recordData.Slice(_ApertureInputMaxLocation, 4).Float() : default(Single);
+        public Single ApertureInputMax => _ApertureInputMax_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ApertureInputMaxLocation, 4)) : default(Single);
         #endregion
         #region ApertureAcceleration
         private int _ApertureAccelerationLocation => _WVARLocation!.Value.Min + 0x10;
         private bool _ApertureAcceleration_IsSet => _WVARLocation.HasValue;
-        public Single ApertureAcceleration => _ApertureAcceleration_IsSet ? _recordData.Slice(_ApertureAccelerationLocation, 4).Float() : default(Single);
+        public Single ApertureAcceleration => _ApertureAcceleration_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ApertureAccelerationLocation, 4)) : default(Single);
         #endregion
         #region ApertureDeceleration
         private int _ApertureDecelerationLocation => _WVARLocation!.Value.Min + 0x14;
         private bool _ApertureDeceleration_IsSet => _WVARLocation.HasValue;
-        public Single ApertureDeceleration => _ApertureDeceleration_IsSet ? _recordData.Slice(_ApertureDecelerationLocation, 4).Float() : default(Single);
+        public Single ApertureDeceleration => _ApertureDeceleration_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ApertureDecelerationLocation, 4)) : default(Single);
         #endregion
         #region DistanceValueMin
         private int _DistanceValueMinLocation => _WVARLocation!.Value.Min + 0x18;
         private bool _DistanceValueMin_IsSet => _WVARLocation.HasValue;
-        public Single DistanceValueMin => _DistanceValueMin_IsSet ? _recordData.Slice(_DistanceValueMinLocation, 4).Float() : default(Single);
+        public Single DistanceValueMin => _DistanceValueMin_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DistanceValueMinLocation, 4)) : default(Single);
         #endregion
         #region DistanceValueMax
         private int _DistanceValueMaxLocation => _WVARLocation!.Value.Min + 0x1C;
         private bool _DistanceValueMax_IsSet => _WVARLocation.HasValue;
-        public Single DistanceValueMax => _DistanceValueMax_IsSet ? _recordData.Slice(_DistanceValueMaxLocation, 4).Float() : default(Single);
+        public Single DistanceValueMax => _DistanceValueMax_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DistanceValueMaxLocation, 4)) : default(Single);
         #endregion
         #region DistanceInputMin
         private int _DistanceInputMinLocation => _WVARLocation!.Value.Min + 0x20;
         private bool _DistanceInputMin_IsSet => _WVARLocation.HasValue;
-        public Single DistanceInputMin => _DistanceInputMin_IsSet ? _recordData.Slice(_DistanceInputMinLocation, 4).Float() : default(Single);
+        public Single DistanceInputMin => _DistanceInputMin_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DistanceInputMinLocation, 4)) : default(Single);
         #endregion
         #region DistanceInputMax
         private int _DistanceInputMaxLocation => _WVARLocation!.Value.Min + 0x24;
         private bool _DistanceInputMax_IsSet => _WVARLocation.HasValue;
-        public Single DistanceInputMax => _DistanceInputMax_IsSet ? _recordData.Slice(_DistanceInputMaxLocation, 4).Float() : default(Single);
+        public Single DistanceInputMax => _DistanceInputMax_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DistanceInputMaxLocation, 4)) : default(Single);
         #endregion
         #region DistanceAcceleration
         private int _DistanceAccelerationLocation => _WVARLocation!.Value.Min + 0x28;
         private bool _DistanceAcceleration_IsSet => _WVARLocation.HasValue;
-        public Single DistanceAcceleration => _DistanceAcceleration_IsSet ? _recordData.Slice(_DistanceAccelerationLocation, 4).Float() : default(Single);
+        public Single DistanceAcceleration => _DistanceAcceleration_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DistanceAccelerationLocation, 4)) : default(Single);
         #endregion
         #region DistanceDeceleration
         private int _DistanceDecelerationLocation => _WVARLocation!.Value.Min + 0x2C;
         private bool _DistanceDeceleration_IsSet => _WVARLocation.HasValue;
-        public Single DistanceDeceleration => _DistanceDeceleration_IsSet ? _recordData.Slice(_DistanceDecelerationLocation, 4).Float() : default(Single);
+        public Single DistanceDeceleration => _DistanceDeceleration_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DistanceDecelerationLocation, 4)) : default(Single);
         #endregion
         #region UseVariableRange
         private int _UseVariableRangeLocation => _WVARLocation!.Value.Min + 0x30;
@@ -13447,7 +13447,7 @@ namespace Mutagen.Bethesda.Starfield
         #region ColorRemappingIndex
         private int _ColorRemappingIndexLocation => _WVISLocation!.Value.Min + 0x10;
         private bool _ColorRemappingIndex_IsSet => _WVISLocation.HasValue;
-        public Single ColorRemappingIndex => _ColorRemappingIndex_IsSet ? _recordData.Slice(_ColorRemappingIndexLocation, 4).Float() : default(Single);
+        public Single ColorRemappingIndex => _ColorRemappingIndex_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ColorRemappingIndexLocation, 4)) : default(Single);
         #endregion
         #region ImageSpaceAdapter
         private int _ImageSpaceAdapterLocation => _WVISLocation!.Value.Min + 0x14;
@@ -13458,7 +13458,7 @@ namespace Mutagen.Bethesda.Starfield
         #region WTRMUnknown1
         private int _WTRMUnknown1Location => _WTRMLocation!.Value.Min;
         private bool _WTRMUnknown1_IsSet => _WTRMLocation.HasValue;
-        public Single WTRMUnknown1 => _WTRMUnknown1_IsSet ? _recordData.Slice(_WTRMUnknown1Location, 4).Float() : default(Single);
+        public Single WTRMUnknown1 => _WTRMUnknown1_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WTRMUnknown1Location, 4)) : default(Single);
         #endregion
         #region WTRMUnknown2
         private int _WTRMUnknown2Location => _WTRMLocation!.Value.Min + 0x4;
@@ -13468,17 +13468,17 @@ namespace Mutagen.Bethesda.Starfield
         #region WTRMUnknown3
         private int _WTRMUnknown3Location => _WTRMLocation!.Value.Min + 0x5;
         private bool _WTRMUnknown3_IsSet => _WTRMLocation.HasValue;
-        public Single WTRMUnknown3 => _WTRMUnknown3_IsSet ? _recordData.Slice(_WTRMUnknown3Location, 4).Float() : default(Single);
+        public Single WTRMUnknown3 => _WTRMUnknown3_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WTRMUnknown3Location, 4)) : default(Single);
         #endregion
         #region WTRMUnknown4
         private int _WTRMUnknown4Location => _WTRMLocation!.Value.Min + 0x9;
         private bool _WTRMUnknown4_IsSet => _WTRMLocation.HasValue;
-        public Single WTRMUnknown4 => _WTRMUnknown4_IsSet ? _recordData.Slice(_WTRMUnknown4Location, 4).Float() : default(Single);
+        public Single WTRMUnknown4 => _WTRMUnknown4_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WTRMUnknown4Location, 4)) : default(Single);
         #endregion
         #region WTRMUnknown5
         private int _WTRMUnknown5Location => _WTRMLocation!.Value.Min + 0xD;
         private bool _WTRMUnknown5_IsSet => _WTRMLocation.HasValue;
-        public Single WTRMUnknown5 => _WTRMUnknown5_IsSet ? _recordData.Slice(_WTRMUnknown5Location, 4).Float() : default(Single);
+        public Single WTRMUnknown5 => _WTRMUnknown5_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_WTRMUnknown5Location, 4)) : default(Single);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

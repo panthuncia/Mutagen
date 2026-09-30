@@ -5258,17 +5258,17 @@ namespace Mutagen.Bethesda.Starfield
         #region Gravity
         private int _GravityLocation => _PRODLocation!.Value.Min + 0x4;
         private bool _Gravity_IsSet => _PRODLocation.HasValue;
-        public Single Gravity => _Gravity_IsSet ? _recordData.Slice(_GravityLocation, 4).Float() : default(Single);
+        public Single Gravity => _Gravity_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_GravityLocation, 4)) : default(Single);
         #endregion
         #region Speed
         private int _SpeedLocation => _PRODLocation!.Value.Min + 0x8;
         private bool _Speed_IsSet => _PRODLocation.HasValue;
-        public Single Speed => _Speed_IsSet ? _recordData.Slice(_SpeedLocation, 4).Float() : default(Single);
+        public Single Speed => _Speed_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SpeedLocation, 4)) : default(Single);
         #endregion
         #region Range
         private int _RangeLocation => _PRODLocation!.Value.Min + 0xC;
         private bool _Range_IsSet => _PRODLocation.HasValue;
-        public Single Range => _Range_IsSet ? _recordData.Slice(_RangeLocation, 4).Float() : default(Single);
+        public Single Range => _Range_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RangeLocation, 4)) : default(Single);
         #endregion
         #region Light
         private int _LightLocation => _PRODLocation!.Value.Min + 0x10;
@@ -5283,12 +5283,12 @@ namespace Mutagen.Bethesda.Starfield
         #region ExplosionAltTriggerProximity
         private int _ExplosionAltTriggerProximityLocation => _PRODLocation!.Value.Min + 0x18;
         private bool _ExplosionAltTriggerProximity_IsSet => _PRODLocation.HasValue;
-        public Single ExplosionAltTriggerProximity => _ExplosionAltTriggerProximity_IsSet ? _recordData.Slice(_ExplosionAltTriggerProximityLocation, 4).Float() : default(Single);
+        public Single ExplosionAltTriggerProximity => _ExplosionAltTriggerProximity_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ExplosionAltTriggerProximityLocation, 4)) : default(Single);
         #endregion
         #region ExplosionAltTriggerTimer
         private int _ExplosionAltTriggerTimerLocation => _PRODLocation!.Value.Min + 0x1C;
         private bool _ExplosionAltTriggerTimer_IsSet => _PRODLocation.HasValue;
-        public Single ExplosionAltTriggerTimer => _ExplosionAltTriggerTimer_IsSet ? _recordData.Slice(_ExplosionAltTriggerTimerLocation, 4).Float() : default(Single);
+        public Single ExplosionAltTriggerTimer => _ExplosionAltTriggerTimer_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ExplosionAltTriggerTimerLocation, 4)) : default(Single);
         #endregion
         #region Explosion
         private int _ExplosionLocation => _PRODLocation!.Value.Min + 0x20;
@@ -5298,17 +5298,17 @@ namespace Mutagen.Bethesda.Starfield
         #region MuzzleFlashDuration
         private int _MuzzleFlashDurationLocation => _PRODLocation!.Value.Min + 0x24;
         private bool _MuzzleFlashDuration_IsSet => _PRODLocation.HasValue;
-        public Single MuzzleFlashDuration => _MuzzleFlashDuration_IsSet ? _recordData.Slice(_MuzzleFlashDurationLocation, 4).Float() : default(Single);
+        public Single MuzzleFlashDuration => _MuzzleFlashDuration_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MuzzleFlashDurationLocation, 4)) : default(Single);
         #endregion
         #region FadeDuration
         private int _FadeDurationLocation => _PRODLocation!.Value.Min + 0x28;
         private bool _FadeDuration_IsSet => _PRODLocation.HasValue;
-        public Single FadeDuration => _FadeDuration_IsSet ? _recordData.Slice(_FadeDurationLocation, 4).Float() : default(Single);
+        public Single FadeDuration => _FadeDuration_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FadeDurationLocation, 4)) : default(Single);
         #endregion
         #region ImpactForce
         private int _ImpactForceLocation => _PRODLocation!.Value.Min + 0x2C;
         private bool _ImpactForce_IsSet => _PRODLocation.HasValue;
-        public Single ImpactForce => _ImpactForce_IsSet ? _recordData.Slice(_ImpactForceLocation, 4).Float() : default(Single);
+        public Single ImpactForce => _ImpactForce_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ImpactForceLocation, 4)) : default(Single);
         #endregion
         #region DefaultWeaponSource
         private int _DefaultWeaponSourceLocation => _PRODLocation!.Value.Min + 0x30;
@@ -5318,22 +5318,22 @@ namespace Mutagen.Bethesda.Starfield
         #region ConeSpread
         private int _ConeSpreadLocation => _PRODLocation!.Value.Min + 0x34;
         private bool _ConeSpread_IsSet => _PRODLocation.HasValue;
-        public Single ConeSpread => _ConeSpread_IsSet ? _recordData.Slice(_ConeSpreadLocation, 4).Float() : default(Single);
+        public Single ConeSpread => _ConeSpread_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ConeSpreadLocation, 4)) : default(Single);
         #endregion
         #region CollisionRadius
         private int _CollisionRadiusLocation => _PRODLocation!.Value.Min + 0x38;
         private bool _CollisionRadius_IsSet => _PRODLocation.HasValue;
-        public Single CollisionRadius => _CollisionRadius_IsSet ? _recordData.Slice(_CollisionRadiusLocation, 4).Float() : default(Single);
+        public Single CollisionRadius => _CollisionRadius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CollisionRadiusLocation, 4)) : default(Single);
         #endregion
         #region Lifetime
         private int _LifetimeLocation => _PRODLocation!.Value.Min + 0x3C;
         private bool _Lifetime_IsSet => _PRODLocation.HasValue;
-        public Single Lifetime => _Lifetime_IsSet ? _recordData.Slice(_LifetimeLocation, 4).Float() : default(Single);
+        public Single Lifetime => _Lifetime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_LifetimeLocation, 4)) : default(Single);
         #endregion
         #region RelaunchInterval
         private int _RelaunchIntervalLocation => _PRODLocation!.Value.Min + 0x40;
         private bool _RelaunchInterval_IsSet => _PRODLocation.HasValue;
-        public Single RelaunchInterval => _RelaunchInterval_IsSet ? _recordData.Slice(_RelaunchIntervalLocation, 4).Float() : default(Single);
+        public Single RelaunchInterval => _RelaunchInterval_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RelaunchIntervalLocation, 4)) : default(Single);
         #endregion
         #region DecalData
         private int _DecalDataLocation => _PRODLocation!.Value.Min + 0x44;
@@ -5364,7 +5364,7 @@ namespace Mutagen.Bethesda.Starfield
         #region UnknownPROD2
         private int _UnknownPROD2Location => UnknownPRODString1EndingPos;
         private bool _UnknownPROD2_IsSet => _PRODLocation.HasValue;
-        public Single UnknownPROD2 => _UnknownPROD2_IsSet ? _recordData.Slice(_UnknownPROD2Location, 4).Float() : default(Single);
+        public Single UnknownPROD2 => _UnknownPROD2_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_UnknownPROD2Location, 4)) : default(Single);
         #endregion
         #region UnknownPROD3
         private int _UnknownPROD3Location => UnknownPRODString1EndingPos + 0x4;
@@ -5385,22 +5385,22 @@ namespace Mutagen.Bethesda.Starfield
         #region UnknownPROD5
         private int _UnknownPROD5Location => UnknownPRODString2EndingPos;
         private bool _UnknownPROD5_IsSet => _PRODLocation.HasValue;
-        public Single UnknownPROD5 => _UnknownPROD5_IsSet ? _recordData.Slice(_UnknownPROD5Location, 4).Float() : default(Single);
+        public Single UnknownPROD5 => _UnknownPROD5_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_UnknownPROD5Location, 4)) : default(Single);
         #endregion
         #region UnknownPROD6
         private int _UnknownPROD6Location => UnknownPRODString2EndingPos + 0x4;
         private bool _UnknownPROD6_IsSet => _PRODLocation.HasValue;
-        public Single UnknownPROD6 => _UnknownPROD6_IsSet ? _recordData.Slice(_UnknownPROD6Location, 4).Float() : default(Single);
+        public Single UnknownPROD6 => _UnknownPROD6_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_UnknownPROD6Location, 4)) : default(Single);
         #endregion
         #region UnknownPROD7
         private int _UnknownPROD7Location => UnknownPRODString2EndingPos + 0x8;
         private bool _UnknownPROD7_IsSet => _PRODLocation.HasValue;
-        public Single UnknownPROD7 => _UnknownPROD7_IsSet ? _recordData.Slice(_UnknownPROD7Location, 4).Float() : default(Single);
+        public Single UnknownPROD7 => _UnknownPROD7_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_UnknownPROD7Location, 4)) : default(Single);
         #endregion
         #region UnknownPROD8
         private int _UnknownPROD8Location => UnknownPRODString2EndingPos + 0xC;
         private bool _UnknownPROD8_IsSet => _PRODLocation.HasValue;
-        public Single UnknownPROD8 => _UnknownPROD8_IsSet ? _recordData.Slice(_UnknownPROD8Location, 4).Float() : default(Single);
+        public Single UnknownPROD8 => _UnknownPROD8_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_UnknownPROD8Location, 4)) : default(Single);
         #endregion
         #region MuzzleFlashModel
         private int? _MuzzleFlashModelLocation;

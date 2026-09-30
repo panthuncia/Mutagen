@@ -1428,14 +1428,14 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public Single NoiseOffsetU => _structData.Slice(0x0, 0x4).Float();
-        public Single NoiseOffsetV => _structData.Slice(0x4, 0x4).Float();
-        public Single NoiseScaleU => _structData.Slice(0x8, 0x4).Float();
-        public Single NoiseScaleV => _structData.Slice(0xC, 0x4).Float();
-        public Single NoiseContrast => _structData.Slice(0x10, 0x4).Float();
-        public Single AltTextureCoverage => _structData.Slice(0x14, 0x4).Float();
-        public Single AlternateDataContributionMin => _structData.Slice(0x18, 0x4).Float();
-        public Single AlternateDataContributionMax => _structData.Slice(0x1C, 0x4).Float();
+        public Single NoiseOffsetU => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single NoiseOffsetV => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single NoiseScaleU => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single NoiseScaleV => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single NoiseContrast => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
+        public Single AltTextureCoverage => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
+        public Single AlternateDataContributionMin => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
+        public Single AlternateDataContributionMax => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

@@ -1838,17 +1838,17 @@ namespace Mutagen.Bethesda.Starfield
         #region Scale
         private int _ScaleLocation => _DATALocation!.Value.Min + 0x18;
         private bool _Scale_IsSet => _DATALocation.HasValue;
-        public Single Scale => _Scale_IsSet ? _recordData.Slice(_ScaleLocation, 4).Float() : default(Single);
+        public Single Scale => _Scale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ScaleLocation, 4)) : default(Single);
         #endregion
         #region ZoomMin
         private int _ZoomMinLocation => _DATALocation!.Value.Min + 0x1C;
         private bool _ZoomMin_IsSet => _DATALocation.HasValue;
-        public Single ZoomMin => _ZoomMin_IsSet ? _recordData.Slice(_ZoomMinLocation, 4).Float() : default(Single);
+        public Single ZoomMin => _ZoomMin_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ZoomMinLocation, 4)) : default(Single);
         #endregion
         #region ZoomMax
         private int _ZoomMaxLocation => _DATALocation!.Value.Min + 0x20;
         private bool _ZoomMax_IsSet => _DATALocation.HasValue;
-        public Single ZoomMax => _ZoomMax_IsSet ? _recordData.Slice(_ZoomMaxLocation, 4).Float() : default(Single);
+        public Single ZoomMax => _ZoomMax_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ZoomMaxLocation, 4)) : default(Single);
         #endregion
         #region BNAM
         private int? _BNAMLocation;

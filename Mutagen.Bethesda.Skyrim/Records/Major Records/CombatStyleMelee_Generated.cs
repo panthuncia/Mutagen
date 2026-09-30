@@ -1515,14 +1515,14 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         public CombatStyleMelee.VersioningBreaks Versioning { get; private set; }
-        public Single AttackStaggeredMult => _structData.Slice(0x0, 0x4).Float();
-        public Single PowerAttackStaggeredMult => _structData.Slice(0x4, 0x4).Float();
-        public Single PowerAttackBlockingMult => _structData.Slice(0x8, 0x4).Float();
-        public Single BashMult => _structData.Slice(0xC, 0x4).Float();
-        public Single BashRecoilMult => _structData.Slice(0x10, 0x4).Float();
-        public Single BashAttackMult => _structData.Slice(0x14, 0x4).Float();
-        public Single BashPowerAttackMult => _structData.Slice(0x18, 0x4).Float();
-        public Single SpecialAttackMult => _structData.Length <= 0x1C ? default : _structData.Slice(0x1C, 0x4).Float();
+        public Single AttackStaggeredMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single PowerAttackStaggeredMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single PowerAttackBlockingMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single BashMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single BashRecoilMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
+        public Single BashAttackMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
+        public Single BashPowerAttackMult => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
+        public Single SpecialAttackMult => _structData.Length <= 0x1C ? default : FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

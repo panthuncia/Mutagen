@@ -10152,7 +10152,7 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region Radius
         private int? _RadiusLocation;
-        public Single? Radius => _RadiusLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _RadiusLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? Radius => _RadiusLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _RadiusLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Lighting
         private RangeInt32? _LightingLocation;
@@ -10241,11 +10241,11 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region LightVolumetricData
         private int? _LightVolumetricDataLocation;
-        public Single? LightVolumetricData => _LightVolumetricDataLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _LightVolumetricDataLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? LightVolumetricData => _LightVolumetricDataLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LightVolumetricDataLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region LightRadiusFalloutExponent
         private int? _LightRadiusFalloutExponentLocation;
-        public Single? LightRadiusFalloutExponent => _LightRadiusFalloutExponentLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _LightRadiusFalloutExponentLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? LightRadiusFalloutExponent => _LightRadiusFalloutExponentLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _LightRadiusFalloutExponentLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         public IOwnershipGetter? Ownership { get; private set; }
         #region LightColors
@@ -10298,7 +10298,7 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region GeometryDirtinessScale
         private int? _GeometryDirtinessScaleLocation;
-        public Single? GeometryDirtinessScale => _GeometryDirtinessScaleLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _GeometryDirtinessScaleLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? GeometryDirtinessScale => _GeometryDirtinessScaleLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _GeometryDirtinessScaleLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Lock
         private RangeInt32? _LockLocation;
@@ -10311,7 +10311,7 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region HeadTrackingWeight
         private int? _HeadTrackingWeightLocation;
-        public Single? HeadTrackingWeight => _HeadTrackingWeightLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _HeadTrackingWeightLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? HeadTrackingWeight => _HeadTrackingWeightLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HeadTrackingWeightLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Spline
         private RangeInt32? _SplineLocation;
@@ -10359,7 +10359,7 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region Scale
         private int? _ScaleLocation;
-        public Single? Scale => _ScaleLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ScaleLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? Scale => _ScaleLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ScaleLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region OpenByDefault
         private int? _OpenByDefaultLocation;

@@ -2947,92 +2947,92 @@ namespace Mutagen.Bethesda.Starfield
         #region GravityVelocity
         private int _GravityVelocityLocation => _DATALocation!.Value.Min;
         private bool _GravityVelocity_IsSet => _DATALocation.HasValue;
-        public Single GravityVelocity => _GravityVelocity_IsSet ? _recordData.Slice(_GravityVelocityLocation, 4).Float() : default(Single);
+        public Single GravityVelocity => _GravityVelocity_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_GravityVelocityLocation, 4)) : default(Single);
         #endregion
         #region Unknown1
         private int _Unknown1Location => _DATALocation!.Value.Min + 0x4;
         private bool _Unknown1_IsSet => _DATALocation.HasValue;
-        public Single Unknown1 => _Unknown1_IsSet ? _recordData.Slice(_Unknown1Location, 4).Float() : default(Single);
+        public Single Unknown1 => _Unknown1_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_Unknown1Location, 4)) : default(Single);
         #endregion
         #region RotationVelocity
         private int _RotationVelocityLocation => _DATALocation!.Value.Min + 0x8;
         private bool _RotationVelocity_IsSet => _DATALocation.HasValue;
-        public Single RotationVelocity => _RotationVelocity_IsSet ? _recordData.Slice(_RotationVelocityLocation, 4).Float() : default(Single);
+        public Single RotationVelocity => _RotationVelocity_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RotationVelocityLocation, 4)) : default(Single);
         #endregion
         #region Unknown2
         private int _Unknown2Location => _DATALocation!.Value.Min + 0xC;
         private bool _Unknown2_IsSet => _DATALocation.HasValue;
-        public Single Unknown2 => _Unknown2_IsSet ? _recordData.Slice(_Unknown2Location, 4).Float() : default(Single);
+        public Single Unknown2 => _Unknown2_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_Unknown2Location, 4)) : default(Single);
         #endregion
         #region ParticleSizeX
         private int _ParticleSizeXLocation => _DATALocation!.Value.Min + 0x10;
         private bool _ParticleSizeX_IsSet => _DATALocation.HasValue;
-        public Single ParticleSizeX => _ParticleSizeX_IsSet ? _recordData.Slice(_ParticleSizeXLocation, 4).Float() : default(Single);
+        public Single ParticleSizeX => _ParticleSizeX_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleSizeXLocation, 4)) : default(Single);
         #endregion
         #region Unknown3
         private int _Unknown3Location => _DATALocation!.Value.Min + 0x14;
         private bool _Unknown3_IsSet => _DATALocation.HasValue;
-        public Single Unknown3 => _Unknown3_IsSet ? _recordData.Slice(_Unknown3Location, 4).Float() : default(Single);
+        public Single Unknown3 => _Unknown3_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_Unknown3Location, 4)) : default(Single);
         #endregion
         #region ParticleSizeY
         private int _ParticleSizeYLocation => _DATALocation!.Value.Min + 0x18;
         private bool _ParticleSizeY_IsSet => _DATALocation.HasValue;
-        public Single ParticleSizeY => _ParticleSizeY_IsSet ? _recordData.Slice(_ParticleSizeYLocation, 4).Float() : default(Single);
+        public Single ParticleSizeY => _ParticleSizeY_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleSizeYLocation, 4)) : default(Single);
         #endregion
         #region Unknown4
         private int _Unknown4Location => _DATALocation!.Value.Min + 0x1C;
         private bool _Unknown4_IsSet => _DATALocation.HasValue;
-        public Single Unknown4 => _Unknown4_IsSet ? _recordData.Slice(_Unknown4Location, 4).Float() : default(Single);
+        public Single Unknown4 => _Unknown4_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_Unknown4Location, 4)) : default(Single);
         #endregion
         #region CenterOffsetMin
         private int _CenterOffsetMinLocation => _DATALocation!.Value.Min + 0x20;
         private bool _CenterOffsetMin_IsSet => _DATALocation.HasValue;
-        public Single CenterOffsetMin => _CenterOffsetMin_IsSet ? _recordData.Slice(_CenterOffsetMinLocation, 4).Float() : default(Single);
+        public Single CenterOffsetMin => _CenterOffsetMin_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CenterOffsetMinLocation, 4)) : default(Single);
         #endregion
         #region Unknown5
         private int _Unknown5Location => _DATALocation!.Value.Min + 0x24;
         private bool _Unknown5_IsSet => _DATALocation.HasValue;
-        public Single Unknown5 => _Unknown5_IsSet ? _recordData.Slice(_Unknown5Location, 4).Float() : default(Single);
+        public Single Unknown5 => _Unknown5_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_Unknown5Location, 4)) : default(Single);
         #endregion
         #region CenterOffsetMax
         private int _CenterOffsetMaxLocation => _DATALocation!.Value.Min + 0x28;
         private bool _CenterOffsetMax_IsSet => _DATALocation.HasValue;
-        public Single CenterOffsetMax => _CenterOffsetMax_IsSet ? _recordData.Slice(_CenterOffsetMaxLocation, 4).Float() : default(Single);
+        public Single CenterOffsetMax => _CenterOffsetMax_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_CenterOffsetMaxLocation, 4)) : default(Single);
         #endregion
         #region Unknown6
         private int _Unknown6Location => _DATALocation!.Value.Min + 0x2C;
         private bool _Unknown6_IsSet => _DATALocation.HasValue;
-        public Single Unknown6 => _Unknown6_IsSet ? _recordData.Slice(_Unknown6Location, 4).Float() : default(Single);
+        public Single Unknown6 => _Unknown6_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_Unknown6Location, 4)) : default(Single);
         #endregion
         #region InitialRotation
         private int _InitialRotationLocation => _DATALocation!.Value.Min + 0x30;
         private bool _InitialRotation_IsSet => _DATALocation.HasValue;
-        public Single InitialRotation => _InitialRotation_IsSet ? _recordData.Slice(_InitialRotationLocation, 4).Float() : default(Single);
+        public Single InitialRotation => _InitialRotation_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_InitialRotationLocation, 4)) : default(Single);
         #endregion
         #region Unknown7
         private int _Unknown7Location => _DATALocation!.Value.Min + 0x34;
         private bool _Unknown7_IsSet => _DATALocation.HasValue;
-        public Single Unknown7 => _Unknown7_IsSet ? _recordData.Slice(_Unknown7Location, 4).Float() : default(Single);
+        public Single Unknown7 => _Unknown7_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_Unknown7Location, 4)) : default(Single);
         #endregion
         #region NumSubtexturesX
         private int _NumSubtexturesXLocation => _DATALocation!.Value.Min + 0x38;
         private bool _NumSubtexturesX_IsSet => _DATALocation.HasValue;
-        public Single NumSubtexturesX => _NumSubtexturesX_IsSet ? _recordData.Slice(_NumSubtexturesXLocation, 4).Float() : default(Single);
+        public Single NumSubtexturesX => _NumSubtexturesX_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_NumSubtexturesXLocation, 4)) : default(Single);
         #endregion
         #region Unknown8
         private int _Unknown8Location => _DATALocation!.Value.Min + 0x3C;
         private bool _Unknown8_IsSet => _DATALocation.HasValue;
-        public Single Unknown8 => _Unknown8_IsSet ? _recordData.Slice(_Unknown8Location, 4).Float() : default(Single);
+        public Single Unknown8 => _Unknown8_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_Unknown8Location, 4)) : default(Single);
         #endregion
         #region NumSubtexturesY
         private int _NumSubtexturesYLocation => _DATALocation!.Value.Min + 0x40;
         private bool _NumSubtexturesY_IsSet => _DATALocation.HasValue;
-        public Single NumSubtexturesY => _NumSubtexturesY_IsSet ? _recordData.Slice(_NumSubtexturesYLocation, 4).Float() : default(Single);
+        public Single NumSubtexturesY => _NumSubtexturesY_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_NumSubtexturesYLocation, 4)) : default(Single);
         #endregion
         #region Unknown9
         private int _Unknown9Location => _DATALocation!.Value.Min + 0x44;
         private bool _Unknown9_IsSet => _DATALocation.HasValue;
-        public Single Unknown9 => _Unknown9_IsSet ? _recordData.Slice(_Unknown9Location, 4).Float() : default(Single);
+        public Single Unknown9 => _Unknown9_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_Unknown9Location, 4)) : default(Single);
         #endregion
         #region Type
         private int _TypeLocation => _DATALocation!.Value.Min + 0x48;
@@ -3042,7 +3042,7 @@ namespace Mutagen.Bethesda.Starfield
         #region Unknown10
         private int _Unknown10Location => _DATALocation!.Value.Min + 0x4C;
         private bool _Unknown10_IsSet => _DATALocation.HasValue;
-        public Single Unknown10 => _Unknown10_IsSet ? _recordData.Slice(_Unknown10Location, 4).Float() : default(Single);
+        public Single Unknown10 => _Unknown10_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_Unknown10Location, 4)) : default(Single);
         #endregion
         #region BoxSize
         private int _BoxSizeLocation => _DATALocation!.Value.Min + 0x50;
@@ -3052,17 +3052,17 @@ namespace Mutagen.Bethesda.Starfield
         #region Unknown11
         private int _Unknown11Location => _DATALocation!.Value.Min + 0x54;
         private bool _Unknown11_IsSet => _DATALocation.HasValue;
-        public Single Unknown11 => _Unknown11_IsSet ? _recordData.Slice(_Unknown11Location, 4).Float() : default(Single);
+        public Single Unknown11 => _Unknown11_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_Unknown11Location, 4)) : default(Single);
         #endregion
         #region ParticleDensity
         private int _ParticleDensityLocation => _DATALocation!.Value.Min + 0x58;
         private bool _ParticleDensity_IsSet => _DATALocation.HasValue;
-        public Single ParticleDensity => _ParticleDensity_IsSet ? _recordData.Slice(_ParticleDensityLocation, 4).Float() : default(Single);
+        public Single ParticleDensity => _ParticleDensity_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleDensityLocation, 4)) : default(Single);
         #endregion
         #region Unknown12
         private int _Unknown12Location => _DATALocation!.Value.Min + 0x5C;
         private bool _Unknown12_IsSet => _DATALocation.HasValue;
-        public Single Unknown12 => _Unknown12_IsSet ? _recordData.Slice(_Unknown12Location, 4).Float() : default(Single);
+        public Single Unknown12 => _Unknown12_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_Unknown12Location, 4)) : default(Single);
         #endregion
         #region ParticleTexture
         private int? _ParticleTextureLocation;

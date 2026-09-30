@@ -4206,7 +4206,7 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region MenuSortOrder
         private int? _MenuSortOrderLocation;
-        public Single MenuSortOrder => _MenuSortOrderLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MenuSortOrderLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single MenuSortOrder => _MenuSortOrderLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MenuSortOrderLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region Tier
         private int? _TierLocation;

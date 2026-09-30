@@ -2049,12 +2049,12 @@ namespace Mutagen.Bethesda.Starfield
         #region XOffset
         private int _XOffsetLocation => _FNAMLocation!.Value.Min + 0x1;
         private bool _XOffset_IsSet => _FNAMLocation.HasValue;
-        public Single XOffset => _XOffset_IsSet ? _recordData.Slice(_XOffsetLocation, 4).Float() : default(Single);
+        public Single XOffset => _XOffset_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_XOffsetLocation, 4)) : default(Single);
         #endregion
         #region YOffset
         private int _YOffsetLocation => _FNAMLocation!.Value.Min + 0x5;
         private bool _YOffset_IsSet => _FNAMLocation.HasValue;
-        public Single YOffset => _YOffset_IsSet ? _recordData.Slice(_YOffsetLocation, 4).Float() : default(Single);
+        public Single YOffset => _YOffset_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_YOffsetLocation, 4)) : default(Single);
         #endregion
         #region UnknownFNAM1
         private int _UnknownFNAM1Location => _FNAMLocation!.Value.Min + 0x9;

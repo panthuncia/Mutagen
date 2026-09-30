@@ -894,7 +894,7 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public Single Value => _structData.Slice(0x0, 0x4).Float();
+        public Single Value => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
         public T Target => Enums<T>.Convert(_structData.Span.Slice(0x4, 0x1)[0]);
         public InstanceNamingRules.Operator Operator => (InstanceNamingRules.Operator)_structData.Span.Slice(0x5, 0x1)[0];
         partial void CustomFactoryEnd(

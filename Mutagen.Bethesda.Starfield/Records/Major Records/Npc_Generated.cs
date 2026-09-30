@@ -10474,11 +10474,11 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region HeightMin
         private int? _HeightMinLocation;
-        public Single HeightMin => _HeightMinLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _HeightMinLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single HeightMin => _HeightMinLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HeightMinLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region HeightMax
         private int? _HeightMaxLocation;
-        public Single HeightMax => _HeightMaxLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _HeightMaxLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single HeightMax => _HeightMaxLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _HeightMaxLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region Weight
         private RangeInt32? _WeightLocation;

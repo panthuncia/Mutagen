@@ -1146,7 +1146,7 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region BlendIntensity
         private int? _BlendIntensityLocation;
-        public Single BlendIntensity => _BlendIntensityLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _BlendIntensityLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single BlendIntensity => _BlendIntensityLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _BlendIntensityLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

@@ -2827,11 +2827,11 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         #region ExteriorWeatherAttenuation
         private int? _ExteriorWeatherAttenuationLocation;
-        public Single ExteriorWeatherAttenuation => _ExteriorWeatherAttenuationLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _ExteriorWeatherAttenuationLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single ExteriorWeatherAttenuation => _ExteriorWeatherAttenuationLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _ExteriorWeatherAttenuationLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region InteriorExteriorRatio
         private int? _InteriorExteriorRatioLocation;
-        public Single? InteriorExteriorRatio => _InteriorExteriorRatioLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _InteriorExteriorRatioLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? InteriorExteriorRatio => _InteriorExteriorRatioLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _InteriorExteriorRatioLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region IsInterior
         private int? _IsInteriorLocation;

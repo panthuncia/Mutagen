@@ -2500,7 +2500,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region Duration
         private int _DurationLocation => _DATALocation!.Value.Min;
         private bool _Duration_IsSet => _DATALocation.HasValue;
-        public Single Duration => _Duration_IsSet ? _recordData.Slice(_DurationLocation, 4).Float() : default(Single);
+        public Single Duration => _Duration_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DurationLocation, 4)) : default(Single);
         #endregion
         #region Orientation
         private int _OrientationLocation => _DATALocation!.Value.Min + 0x4;
@@ -2510,12 +2510,12 @@ namespace Mutagen.Bethesda.Skyrim
         #region AngleThreshold
         private int _AngleThresholdLocation => _DATALocation!.Value.Min + 0x8;
         private bool _AngleThreshold_IsSet => _DATALocation.HasValue;
-        public Single AngleThreshold => _AngleThreshold_IsSet ? _recordData.Slice(_AngleThresholdLocation, 4).Float() : default(Single);
+        public Single AngleThreshold => _AngleThreshold_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AngleThresholdLocation, 4)) : default(Single);
         #endregion
         #region PlacementRadius
         private int _PlacementRadiusLocation => _DATALocation!.Value.Min + 0xC;
         private bool _PlacementRadius_IsSet => _DATALocation.HasValue;
-        public Single PlacementRadius => _PlacementRadius_IsSet ? _recordData.Slice(_PlacementRadiusLocation, 4).Float() : default(Single);
+        public Single PlacementRadius => _PlacementRadius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_PlacementRadiusLocation, 4)) : default(Single);
         #endregion
         #region SoundLevel
         private int _SoundLevelLocation => _DATALocation!.Value.Min + 0x10;

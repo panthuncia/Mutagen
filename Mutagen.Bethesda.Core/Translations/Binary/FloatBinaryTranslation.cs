@@ -14,12 +14,16 @@ public sealed class FloatBinaryTranslation<TReader, TWriter> : PrimitiveBinaryTr
 
     public override float Parse(TReader reader)
     {
-        var ret = reader.ReadFloat();
-        if (ret == float.Epsilon)
-        {
-            return 0f;
-        }
-        return ret;
+        return FloatBinaryTranslation.FromFile(reader.ReadFloat());
+    }
+
+    /// <summary>
+    /// A float as stored, read as <see cref="Parse(TReader)"/> reads it: <see cref="float.Epsilon"/> is zero.
+    /// Overlays read through this, so that they agree with the full parse.
+    /// </summary>
+    public float GetFloat(ReadOnlySpan<byte> bytes)
+    {
+        return FloatBinaryTranslation.FromFile(bytes.Float());
     }
 
     public float Parse(TReader reader, FloatIntegerType integerType,
@@ -153,6 +157,9 @@ public sealed class FloatBinaryTranslation<TReader, TWriter> : PrimitiveBinaryTr
 
 internal static class FloatBinaryTranslation
 {
+    /// <summary>Files store some zeros as <see cref="float.Epsilon"/>; Mutagen reads and writes them as zero.</summary>
+    public static float FromFile(float value) => value == float.Epsilon ? 0f : value;
+
     public static float ApplyTransformations(float input, float? multiplier, float? divisor)
     {
         if (multiplier == null && divisor == null)

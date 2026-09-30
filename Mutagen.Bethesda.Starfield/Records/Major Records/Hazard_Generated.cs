@@ -3469,42 +3469,42 @@ namespace Mutagen.Bethesda.Starfield
         #region Radius
         private int _RadiusLocation => _DNAMLocation!.Value.Min + 0x34;
         private bool _Radius_IsSet => _DNAMLocation.HasValue;
-        public Single Radius => _Radius_IsSet ? _recordData.Slice(_RadiusLocation, 4).Float() : default(Single);
+        public Single Radius => _Radius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RadiusLocation, 4)) : default(Single);
         #endregion
         #region Lifetime
         private int _LifetimeLocation => _DNAMLocation!.Value.Min + 0x38;
         private bool _Lifetime_IsSet => _DNAMLocation.HasValue;
-        public Single Lifetime => _Lifetime_IsSet ? _recordData.Slice(_LifetimeLocation, 4).Float() : default(Single);
+        public Single Lifetime => _Lifetime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_LifetimeLocation, 4)) : default(Single);
         #endregion
         #region ImageSpaceRadius
         private int _ImageSpaceRadiusLocation => _DNAMLocation!.Value.Min + 0x3C;
         private bool _ImageSpaceRadius_IsSet => _DNAMLocation.HasValue;
-        public Single ImageSpaceRadius => _ImageSpaceRadius_IsSet ? _recordData.Slice(_ImageSpaceRadiusLocation, 4).Float() : default(Single);
+        public Single ImageSpaceRadius => _ImageSpaceRadius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ImageSpaceRadiusLocation, 4)) : default(Single);
         #endregion
         #region TargetInterval
         private int _TargetIntervalLocation => _DNAMLocation!.Value.Min + 0x40;
         private bool _TargetInterval_IsSet => _DNAMLocation.HasValue;
-        public Single TargetInterval => _TargetInterval_IsSet ? _recordData.Slice(_TargetIntervalLocation, 4).Float() : default(Single);
+        public Single TargetInterval => _TargetInterval_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TargetIntervalLocation, 4)) : default(Single);
         #endregion
         #region TaperFullEffectRadius
         private int _TaperFullEffectRadiusLocation => _DNAMLocation!.Value.Min + 0x44;
         private bool _TaperFullEffectRadius_IsSet => _DNAMLocation.HasValue;
-        public Single TaperFullEffectRadius => _TaperFullEffectRadius_IsSet ? _recordData.Slice(_TaperFullEffectRadiusLocation, 4).Float() : default(Single);
+        public Single TaperFullEffectRadius => _TaperFullEffectRadius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TaperFullEffectRadiusLocation, 4)) : default(Single);
         #endregion
         #region TaperWeight
         private int _TaperWeightLocation => _DNAMLocation!.Value.Min + 0x48;
         private bool _TaperWeight_IsSet => _DNAMLocation.HasValue;
-        public Single TaperWeight => _TaperWeight_IsSet ? _recordData.Slice(_TaperWeightLocation, 4).Float() : default(Single);
+        public Single TaperWeight => _TaperWeight_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TaperWeightLocation, 4)) : default(Single);
         #endregion
         #region TaperCurse
         private int _TaperCurseLocation => _DNAMLocation!.Value.Min + 0x4C;
         private bool _TaperCurse_IsSet => _DNAMLocation.HasValue;
-        public Single TaperCurse => _TaperCurse_IsSet ? _recordData.Slice(_TaperCurseLocation, 4).Float() : default(Single);
+        public Single TaperCurse => _TaperCurse_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TaperCurseLocation, 4)) : default(Single);
         #endregion
         #region Gravity
         private int _GravityLocation => _DNAMLocation!.Value.Min + 0x50;
         private bool _Gravity_IsSet => _DNAMLocation.HasValue;
-        public Single Gravity => _Gravity_IsSet ? _recordData.Slice(_GravityLocation, 4).Float() : default(Single);
+        public Single Gravity => _Gravity_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_GravityLocation, 4)) : default(Single);
         #endregion
         #region Limit
         private int _LimitLocation => _DNAMLocation!.Value.Min + 0x54;

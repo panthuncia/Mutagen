@@ -1158,7 +1158,7 @@ namespace Mutagen.Bethesda.Fallout3
 
         public P3Float Position => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(0x0, 0xC));
         public P3Float Rotation => P3FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Read(_structData.Slice(0xC, 0xC));
-        public Single Scale => _structData.Slice(0x18, 0x4).Float();
+        public Single Scale => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

@@ -1178,8 +1178,8 @@ namespace Mutagen.Bethesda.Fallout4
                 translationParams: translationParams);
         }
 
-        public Single FeedbackPercent => _structData.Slice(0x4, 0x4).Float();
-        public Single WetMixPercent => _structData.Slice(0x8, 0x4).Float();
+        public Single FeedbackPercent => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single WetMixPercent => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
         public UInt32 Milliseconds => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0xC, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,

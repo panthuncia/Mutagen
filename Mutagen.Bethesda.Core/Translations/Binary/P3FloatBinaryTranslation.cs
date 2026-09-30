@@ -27,8 +27,8 @@ public sealed class P3FloatBinaryTranslation<TReader, TWriter> : PrimitiveBinary
     public P3Float Read(ReadOnlySpan<byte> span)
     {
         return new P3Float(
-            span.Float(),
-            span.Slice(4).Float(),
-            span.Slice(8).Float());
+            FloatBinaryTranslation.FromFile(span.Float()),
+            FloatBinaryTranslation.FromFile(span.Slice(4).Float()),
+            FloatBinaryTranslation.FromFile(span.Slice(8).Float()));
     }
 }

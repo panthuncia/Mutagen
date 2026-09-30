@@ -3130,33 +3130,33 @@ namespace Mutagen.Bethesda.Fallout4
         #region Force
         private int _ForceLocation => _DATALocation!.Value.Min + 0x18;
         private bool _Force_IsSet => _DATALocation.HasValue;
-        public Single Force => _Force_IsSet ? _recordData.Slice(_ForceLocation, 4).Float() : default(Single);
+        public Single Force => _Force_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ForceLocation, 4)) : default(Single);
         #endregion
         #region Damage
         private int _DamageLocation => _DATALocation!.Value.Min + 0x1C;
         private bool _Damage_IsSet => _DATALocation.HasValue;
-        public Single Damage => _Damage_IsSet ? _recordData.Slice(_DamageLocation, 4).Float() : default(Single);
+        public Single Damage => _Damage_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DamageLocation, 4)) : default(Single);
         #endregion
         #region InnerRadius
         private int _InnerRadiusLocation => _DATALocation!.Value.Min + 0x20;
         private bool _InnerRadius_IsSet => _DATALocation.HasValue && _package.FormVersion!.FormVersion!.Value >= 97;
-        public Single InnerRadius => _InnerRadius_IsSet ? _recordData.Slice(_InnerRadiusLocation, 4).Float() : default(Single);
+        public Single InnerRadius => _InnerRadius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_InnerRadiusLocation, 4)) : default(Single);
         int InnerRadiusVersioningOffset => _package.FormVersion!.FormVersion!.Value < 97 ? -4 : 0;
         #endregion
         #region OuterRadius
         private int _OuterRadiusLocation => _DATALocation!.Value.Min + InnerRadiusVersioningOffset + 0x24;
         private bool _OuterRadius_IsSet => _DATALocation.HasValue;
-        public Single OuterRadius => _OuterRadius_IsSet ? _recordData.Slice(_OuterRadiusLocation, 4).Float() : default(Single);
+        public Single OuterRadius => _OuterRadius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_OuterRadiusLocation, 4)) : default(Single);
         #endregion
         #region ISRadius
         private int _ISRadiusLocation => _DATALocation!.Value.Min + InnerRadiusVersioningOffset + 0x28;
         private bool _ISRadius_IsSet => _DATALocation.HasValue;
-        public Single ISRadius => _ISRadius_IsSet ? _recordData.Slice(_ISRadiusLocation, 4).Float() : default(Single);
+        public Single ISRadius => _ISRadius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ISRadiusLocation, 4)) : default(Single);
         #endregion
         #region VerticalOffsetMult
         private int _VerticalOffsetMultLocation => _DATALocation!.Value.Min + InnerRadiusVersioningOffset + 0x2C;
         private bool _VerticalOffsetMult_IsSet => _DATALocation.HasValue;
-        public Single VerticalOffsetMult => _VerticalOffsetMult_IsSet ? _recordData.Slice(_VerticalOffsetMultLocation, 4).Float() : default(Single);
+        public Single VerticalOffsetMult => _VerticalOffsetMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_VerticalOffsetMultLocation, 4)) : default(Single);
         #endregion
         #region Flags
         private int _FlagsLocation => _DATALocation!.Value.Min + InnerRadiusVersioningOffset + 0x30;
@@ -3171,7 +3171,7 @@ namespace Mutagen.Bethesda.Fallout4
         #region PlacedObjectAutoFadeDelay
         private int _PlacedObjectAutoFadeDelayLocation => _DATALocation!.Value.Min + InnerRadiusVersioningOffset + 0x38;
         private bool _PlacedObjectAutoFadeDelay_IsSet => _DATALocation.HasValue && _package.FormVersion!.FormVersion!.Value >= 70;
-        public Single PlacedObjectAutoFadeDelay => _PlacedObjectAutoFadeDelay_IsSet ? _recordData.Slice(_PlacedObjectAutoFadeDelayLocation, 4).Float() : default(Single);
+        public Single PlacedObjectAutoFadeDelay => _PlacedObjectAutoFadeDelay_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_PlacedObjectAutoFadeDelayLocation, 4)) : default(Single);
         int PlacedObjectAutoFadeDelayVersioningOffset => InnerRadiusVersioningOffset + (_package.FormVersion!.FormVersion!.Value < 70 ? -4 : 0);
         #endregion
         #region Stagger
@@ -3189,7 +3189,7 @@ namespace Mutagen.Bethesda.Fallout4
         #region SpawnSpreadDegrees
         private int _SpawnSpreadDegreesLocation => _DATALocation!.Value.Min + SpawnPositionVersioningOffset + 0x4C;
         private bool _SpawnSpreadDegrees_IsSet => _DATALocation.HasValue && _package.FormVersion!.FormVersion!.Value >= 112;
-        public Single SpawnSpreadDegrees => _SpawnSpreadDegrees_IsSet ? _recordData.Slice(_SpawnSpreadDegreesLocation, 4).Float() : default(Single);
+        public Single SpawnSpreadDegrees => _SpawnSpreadDegrees_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SpawnSpreadDegreesLocation, 4)) : default(Single);
         int SpawnSpreadDegreesVersioningOffset => SpawnPositionVersioningOffset + (_package.FormVersion!.FormVersion!.Value < 112 ? -4 : 0);
         #endregion
         #region SpawnCount

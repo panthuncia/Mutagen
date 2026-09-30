@@ -1116,8 +1116,8 @@ namespace Mutagen.Bethesda.Skyrim
                 translationParams: translationParams);
         }
 
-        public Single DefaultLandHeight => _structData.Slice(0x0, 0x4).Float();
-        public Single DefaultWaterHeight => _structData.Slice(0x4, 0x4).Float();
+        public Single DefaultLandHeight => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single DefaultWaterHeight => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

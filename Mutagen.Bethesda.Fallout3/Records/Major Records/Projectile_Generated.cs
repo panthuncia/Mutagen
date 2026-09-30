@@ -3445,17 +3445,17 @@ namespace Mutagen.Bethesda.Fallout3
         #region Gravity
         private int _GravityLocation => _DATALocation!.Value.Min + 0x4;
         private bool _Gravity_IsSet => _DATALocation.HasValue;
-        public Single Gravity => _Gravity_IsSet ? _recordData.Slice(_GravityLocation, 4).Float() : default(Single);
+        public Single Gravity => _Gravity_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_GravityLocation, 4)) : default(Single);
         #endregion
         #region Speed
         private int _SpeedLocation => _DATALocation!.Value.Min + 0x8;
         private bool _Speed_IsSet => _DATALocation.HasValue;
-        public Single Speed => _Speed_IsSet ? _recordData.Slice(_SpeedLocation, 4).Float() : default(Single);
+        public Single Speed => _Speed_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SpeedLocation, 4)) : default(Single);
         #endregion
         #region Range
         private int _RangeLocation => _DATALocation!.Value.Min + 0xC;
         private bool _Range_IsSet => _DATALocation.HasValue;
-        public Single Range => _Range_IsSet ? _recordData.Slice(_RangeLocation, 4).Float() : default(Single);
+        public Single Range => _Range_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RangeLocation, 4)) : default(Single);
         #endregion
         #region Light
         private int _LightLocation => _DATALocation!.Value.Min + 0x10;
@@ -3470,17 +3470,17 @@ namespace Mutagen.Bethesda.Fallout3
         #region TracerChance
         private int _TracerChanceLocation => _DATALocation!.Value.Min + 0x18;
         private bool _TracerChance_IsSet => _DATALocation.HasValue;
-        public Single TracerChance => _TracerChance_IsSet ? _recordData.Slice(_TracerChanceLocation, 4).Float() : default(Single);
+        public Single TracerChance => _TracerChance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_TracerChanceLocation, 4)) : default(Single);
         #endregion
         #region ExplosionAltTriggerProximity
         private int _ExplosionAltTriggerProximityLocation => _DATALocation!.Value.Min + 0x1C;
         private bool _ExplosionAltTriggerProximity_IsSet => _DATALocation.HasValue;
-        public Single ExplosionAltTriggerProximity => _ExplosionAltTriggerProximity_IsSet ? _recordData.Slice(_ExplosionAltTriggerProximityLocation, 4).Float() : default(Single);
+        public Single ExplosionAltTriggerProximity => _ExplosionAltTriggerProximity_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ExplosionAltTriggerProximityLocation, 4)) : default(Single);
         #endregion
         #region ExplosionAltTriggerTimer
         private int _ExplosionAltTriggerTimerLocation => _DATALocation!.Value.Min + 0x20;
         private bool _ExplosionAltTriggerTimer_IsSet => _DATALocation.HasValue;
-        public Single ExplosionAltTriggerTimer => _ExplosionAltTriggerTimer_IsSet ? _recordData.Slice(_ExplosionAltTriggerTimerLocation, 4).Float() : default(Single);
+        public Single ExplosionAltTriggerTimer => _ExplosionAltTriggerTimer_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ExplosionAltTriggerTimerLocation, 4)) : default(Single);
         #endregion
         #region Explosion
         private int _ExplosionLocation => _DATALocation!.Value.Min + 0x24;
@@ -3495,17 +3495,17 @@ namespace Mutagen.Bethesda.Fallout3
         #region MuzzleFlashDuration
         private int _MuzzleFlashDurationLocation => _DATALocation!.Value.Min + 0x2C;
         private bool _MuzzleFlashDuration_IsSet => _DATALocation.HasValue;
-        public Single MuzzleFlashDuration => _MuzzleFlashDuration_IsSet ? _recordData.Slice(_MuzzleFlashDurationLocation, 4).Float() : default(Single);
+        public Single MuzzleFlashDuration => _MuzzleFlashDuration_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MuzzleFlashDurationLocation, 4)) : default(Single);
         #endregion
         #region FadeDuration
         private int _FadeDurationLocation => _DATALocation!.Value.Min + 0x30;
         private bool _FadeDuration_IsSet => _DATALocation.HasValue;
-        public Single FadeDuration => _FadeDuration_IsSet ? _recordData.Slice(_FadeDurationLocation, 4).Float() : default(Single);
+        public Single FadeDuration => _FadeDuration_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FadeDurationLocation, 4)) : default(Single);
         #endregion
         #region ImpactForce
         private int _ImpactForceLocation => _DATALocation!.Value.Min + 0x34;
         private bool _ImpactForce_IsSet => _DATALocation.HasValue;
-        public Single ImpactForce => _ImpactForce_IsSet ? _recordData.Slice(_ImpactForceLocation, 4).Float() : default(Single);
+        public Single ImpactForce => _ImpactForce_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ImpactForceLocation, 4)) : default(Single);
         #endregion
         #region CountdownSound
         private int _CountdownSoundLocation => _DATALocation!.Value.Min + 0x38;
@@ -3531,7 +3531,7 @@ namespace Mutagen.Bethesda.Fallout3
         #region BouncyMult
         private int _BouncyMultLocation => _DATALocation!.Value.Min + RotationModHeaderVersioningOffset + 0x50;
         private bool _BouncyMult_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(Projectile.DATADataType.Break1) && _package.MetaData.ModHeaderVersion!.Value >= 1.32f;
-        public Single BouncyMult => _BouncyMult_IsSet ? _recordData.Slice(_BouncyMultLocation, 4).Float() : default(Single);
+        public Single BouncyMult => _BouncyMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BouncyMultLocation, 4)) : default(Single);
         int BouncyMultModHeaderVersioningOffset => RotationModHeaderVersioningOffset + (_package.MetaData.ModHeaderVersion!.Value < 1.32f ? -4 : 0);
         #endregion
         #region MuzzleFlashModel

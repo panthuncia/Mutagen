@@ -1767,7 +1767,7 @@ namespace Mutagen.Bethesda.Skyrim
         public UInt16 Magicka => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x26, 0x2));
         public UInt16 Stamina => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x28, 0x2));
         public UInt16 Unused => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x2A, 0x2));
-        public Single FarAwayModelDistance => _structData.Slice(0x2C, 0x4).Float();
+        public Single FarAwayModelDistance => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x2C, 0x4));
         public Byte GearedUpWeapons => _structData.Span[0x30];
         public ReadOnlyMemorySlice<Byte> Unused2 => _structData.Span.Slice(0x31, 0x3).ToArray();
         partial void CustomFactoryEnd(

@@ -1512,7 +1512,7 @@ namespace Mutagen.Bethesda.Fallout3
         #endregion
         #region TimerSetting
         private int? _TimerSettingLocation;
-        public Single TimerSetting => _TimerSettingLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _TimerSettingLocation.Value, _package.MetaData.Constants).Float() : default(Single);
+        public Single TimerSetting => _TimerSettingLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _TimerSettingLocation.Value, _package.MetaData.Constants)) : default(Single);
         #endregion
         #region Animations
         partial void AnimationsCustomParse(

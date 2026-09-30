@@ -1887,27 +1887,27 @@ namespace Mutagen.Bethesda.Fallout4
         #region Intensity
         private int _IntensityLocation => _DATALocation!.Value.Min + 0x18;
         private bool _Intensity_IsSet => _DATALocation.HasValue;
-        public Single Intensity => _Intensity_IsSet ? _recordData.Slice(_IntensityLocation, 4).Float() : default(Single);
+        public Single Intensity => _Intensity_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_IntensityLocation, 4)) : default(Single);
         #endregion
         #region AirColorScale
         private int _AirColorScaleLocation => _DATALocation!.Value.Min + 0x1C;
         private bool _AirColorScale_IsSet => _DATALocation.HasValue;
-        public Single AirColorScale => _AirColorScale_IsSet ? _recordData.Slice(_AirColorScaleLocation, 4).Float() : default(Single);
+        public Single AirColorScale => _AirColorScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AirColorScaleLocation, 4)) : default(Single);
         #endregion
         #region BackColorScale
         private int _BackColorScaleLocation => _DATALocation!.Value.Min + 0x20;
         private bool _BackColorScale_IsSet => _DATALocation.HasValue;
-        public Single BackColorScale => _BackColorScale_IsSet ? _recordData.Slice(_BackColorScaleLocation, 4).Float() : default(Single);
+        public Single BackColorScale => _BackColorScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BackColorScaleLocation, 4)) : default(Single);
         #endregion
         #region ForwardColorScale
         private int _ForwardColorScaleLocation => _DATALocation!.Value.Min + 0x24;
         private bool _ForwardColorScale_IsSet => _DATALocation.HasValue;
-        public Single ForwardColorScale => _ForwardColorScale_IsSet ? _recordData.Slice(_ForwardColorScaleLocation, 4).Float() : default(Single);
+        public Single ForwardColorScale => _ForwardColorScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ForwardColorScaleLocation, 4)) : default(Single);
         #endregion
         #region BackPhase
         private int _BackPhaseLocation => _DATALocation!.Value.Min + 0x28;
         private bool _BackPhase_IsSet => _DATALocation.HasValue;
-        public Single BackPhase => _BackPhase_IsSet ? _recordData.Slice(_BackPhaseLocation, 4).Float() : default(Single);
+        public Single BackPhase => _BackPhase_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BackPhaseLocation, 4)) : default(Single);
         #endregion
         #region AirColor
         private int _AirColorLocation => _DATALocation!.Value.Min + 0x2C;
@@ -1917,7 +1917,7 @@ namespace Mutagen.Bethesda.Fallout4
         #region ForwardPhase
         private int _ForwardPhaseLocation => _DATALocation!.Value.Min + 0x38;
         private bool _ForwardPhase_IsSet => _DATALocation.HasValue;
-        public Single ForwardPhase => _ForwardPhase_IsSet ? _recordData.Slice(_ForwardPhaseLocation, 4).Float() : default(Single);
+        public Single ForwardPhase => _ForwardPhase_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ForwardPhaseLocation, 4)) : default(Single);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

@@ -3793,7 +3793,7 @@ namespace Mutagen.Bethesda.Starfield
         public ISoundReferenceGetter? MSLS { get; private set; }
         #region MSMO
         private int? _MSMOLocation;
-        public Single? MSMO => _MSMOLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MSMOLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? MSMO => _MSMOLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MSMOLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

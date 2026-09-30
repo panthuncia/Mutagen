@@ -1815,32 +1815,32 @@ namespace Mutagen.Bethesda.Starfield
         #region OuterConeAngleDegrees
         private int _OuterConeAngleDegreesLocation => _SNAMLocation!.Value.Min;
         private bool _OuterConeAngleDegrees_IsSet => _SNAMLocation.HasValue;
-        public Single OuterConeAngleDegrees => _OuterConeAngleDegrees_IsSet ? _recordData.Slice(_OuterConeAngleDegreesLocation, 4).Float() : default(Single);
+        public Single OuterConeAngleDegrees => _OuterConeAngleDegrees_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_OuterConeAngleDegreesLocation, 4)) : default(Single);
         #endregion
         #region InnerConeAngleDegrees
         private int _InnerConeAngleDegreesLocation => _SNAMLocation!.Value.Min + 0x4;
         private bool _InnerConeAngleDegrees_IsSet => _SNAMLocation.HasValue;
-        public Single InnerConeAngleDegrees => _InnerConeAngleDegrees_IsSet ? _recordData.Slice(_InnerConeAngleDegreesLocation, 4).Float() : default(Single);
+        public Single InnerConeAngleDegrees => _InnerConeAngleDegrees_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_InnerConeAngleDegreesLocation, 4)) : default(Single);
         #endregion
         #region SteeringDegreesPerSec
         private int _SteeringDegreesPerSecLocation => _SNAMLocation!.Value.Min + 0x8;
         private bool _SteeringDegreesPerSec_IsSet => _SNAMLocation.HasValue;
-        public Single SteeringDegreesPerSec => _SteeringDegreesPerSec_IsSet ? _recordData.Slice(_SteeringDegreesPerSecLocation, 4).Float() : default(Single);
+        public Single SteeringDegreesPerSec => _SteeringDegreesPerSec_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SteeringDegreesPerSecLocation, 4)) : default(Single);
         #endregion
         #region SnapSteeringMultiplierOuterRing
         private int _SnapSteeringMultiplierOuterRingLocation => _SNAMLocation!.Value.Min + 0xC;
         private bool _SnapSteeringMultiplierOuterRing_IsSet => _SNAMLocation.HasValue;
-        public Single SnapSteeringMultiplierOuterRing => _SnapSteeringMultiplierOuterRing_IsSet ? _recordData.Slice(_SnapSteeringMultiplierOuterRingLocation, 4).Float() : default(Single);
+        public Single SnapSteeringMultiplierOuterRing => _SnapSteeringMultiplierOuterRing_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SnapSteeringMultiplierOuterRingLocation, 4)) : default(Single);
         #endregion
         #region SnapSteeringMultiplierInnerRing
         private int _SnapSteeringMultiplierInnerRingLocation => _SNAMLocation!.Value.Min + 0x10;
         private bool _SnapSteeringMultiplierInnerRing_IsSet => _SNAMLocation.HasValue;
-        public Single SnapSteeringMultiplierInnerRing => _SnapSteeringMultiplierInnerRing_IsSet ? _recordData.Slice(_SnapSteeringMultiplierInnerRingLocation, 4).Float() : default(Single);
+        public Single SnapSteeringMultiplierInnerRing => _SnapSteeringMultiplierInnerRing_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_SnapSteeringMultiplierInnerRingLocation, 4)) : default(Single);
         #endregion
         #region MaxAimAssistDistance
         private int _MaxAimAssistDistanceLocation => _SNAMLocation!.Value.Min + 0x14;
         private bool _MaxAimAssistDistance_IsSet => _SNAMLocation.HasValue;
-        public Single MaxAimAssistDistance => _MaxAimAssistDistance_IsSet ? _recordData.Slice(_MaxAimAssistDistanceLocation, 4).Float() : default(Single);
+        public Single MaxAimAssistDistance => _MaxAimAssistDistance_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MaxAimAssistDistanceLocation, 4)) : default(Single);
         #endregion
         #region MeleeAimAssistEnabled
         private int _MeleeAimAssistEnabledLocation => _SNAMLocation!.Value.Min + 0x18;
@@ -1850,7 +1850,7 @@ namespace Mutagen.Bethesda.Starfield
         #region Unknown
         private int _UnknownLocation => _SNAMLocation!.Value.Min + 0x19;
         private bool _Unknown_IsSet => _SNAMLocation.HasValue;
-        public Single Unknown => _Unknown_IsSet ? _recordData.Slice(_UnknownLocation, 4).Float() : default(Single);
+        public Single Unknown => _Unknown_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_UnknownLocation, 4)) : default(Single);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

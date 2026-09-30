@@ -3595,15 +3595,15 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #region CameraDistanceOverride
         private int? _CameraDistanceOverrideLocation;
-        public Single? CameraDistanceOverride => _CameraDistanceOverrideLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _CameraDistanceOverrideLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? CameraDistanceOverride => _CameraDistanceOverrideLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _CameraDistanceOverrideLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region DialogueDistanceOverride
         private int? _DialogueDistanceOverrideLocation;
-        public Single? DialogueDistanceOverride => _DialogueDistanceOverrideLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DialogueDistanceOverrideLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? DialogueDistanceOverride => _DialogueDistanceOverrideLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DialogueDistanceOverrideLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region FovOverride
         private int? _FovOverrideLocation;
-        public Single? FovOverride => _FovOverrideLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FovOverrideLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? FovOverride => _FovOverrideLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FovOverrideLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region Keywords
         public IReadOnlyList<IFormLinkGetter<IKeywordGetter>>? Keywords { get; private set; }

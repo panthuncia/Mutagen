@@ -7837,47 +7837,47 @@ namespace Mutagen.Bethesda.Skyrim
         #region FillAlphaFadeInTime
         private int _FillAlphaFadeInTimeLocation => _DATALocation!.Value.Min + 0x14;
         private bool _FillAlphaFadeInTime_IsSet => _DATALocation.HasValue;
-        public Single FillAlphaFadeInTime => _FillAlphaFadeInTime_IsSet ? _recordData.Slice(_FillAlphaFadeInTimeLocation, 4).Float() : default(Single);
+        public Single FillAlphaFadeInTime => _FillAlphaFadeInTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FillAlphaFadeInTimeLocation, 4)) : default(Single);
         #endregion
         #region FillFullAlphaTime
         private int _FillFullAlphaTimeLocation => _DATALocation!.Value.Min + 0x18;
         private bool _FillFullAlphaTime_IsSet => _DATALocation.HasValue;
-        public Single FillFullAlphaTime => _FillFullAlphaTime_IsSet ? _recordData.Slice(_FillFullAlphaTimeLocation, 4).Float() : default(Single);
+        public Single FillFullAlphaTime => _FillFullAlphaTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FillFullAlphaTimeLocation, 4)) : default(Single);
         #endregion
         #region FillFadeOutTime
         private int _FillFadeOutTimeLocation => _DATALocation!.Value.Min + 0x1C;
         private bool _FillFadeOutTime_IsSet => _DATALocation.HasValue;
-        public Single FillFadeOutTime => _FillFadeOutTime_IsSet ? _recordData.Slice(_FillFadeOutTimeLocation, 4).Float() : default(Single);
+        public Single FillFadeOutTime => _FillFadeOutTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FillFadeOutTimeLocation, 4)) : default(Single);
         #endregion
         #region FillPersistentAlphaRatio
         private int _FillPersistentAlphaRatioLocation => _DATALocation!.Value.Min + 0x20;
         private bool _FillPersistentAlphaRatio_IsSet => _DATALocation.HasValue;
-        public Single FillPersistentAlphaRatio => _FillPersistentAlphaRatio_IsSet ? _recordData.Slice(_FillPersistentAlphaRatioLocation, 4).Float() : default(Single);
+        public Single FillPersistentAlphaRatio => _FillPersistentAlphaRatio_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FillPersistentAlphaRatioLocation, 4)) : default(Single);
         #endregion
         #region FillAlphaPulseAmplitude
         private int _FillAlphaPulseAmplitudeLocation => _DATALocation!.Value.Min + 0x24;
         private bool _FillAlphaPulseAmplitude_IsSet => _DATALocation.HasValue;
-        public Single FillAlphaPulseAmplitude => _FillAlphaPulseAmplitude_IsSet ? _recordData.Slice(_FillAlphaPulseAmplitudeLocation, 4).Float() : default(Single);
+        public Single FillAlphaPulseAmplitude => _FillAlphaPulseAmplitude_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FillAlphaPulseAmplitudeLocation, 4)) : default(Single);
         #endregion
         #region FillAlphaPulseFrequency
         private int _FillAlphaPulseFrequencyLocation => _DATALocation!.Value.Min + 0x28;
         private bool _FillAlphaPulseFrequency_IsSet => _DATALocation.HasValue;
-        public Single FillAlphaPulseFrequency => _FillAlphaPulseFrequency_IsSet ? _recordData.Slice(_FillAlphaPulseFrequencyLocation, 4).Float() : default(Single);
+        public Single FillAlphaPulseFrequency => _FillAlphaPulseFrequency_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FillAlphaPulseFrequencyLocation, 4)) : default(Single);
         #endregion
         #region FillTextureAnimationSpeedU
         private int _FillTextureAnimationSpeedULocation => _DATALocation!.Value.Min + 0x2C;
         private bool _FillTextureAnimationSpeedU_IsSet => _DATALocation.HasValue;
-        public Single FillTextureAnimationSpeedU => _FillTextureAnimationSpeedU_IsSet ? _recordData.Slice(_FillTextureAnimationSpeedULocation, 4).Float() : default(Single);
+        public Single FillTextureAnimationSpeedU => _FillTextureAnimationSpeedU_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FillTextureAnimationSpeedULocation, 4)) : default(Single);
         #endregion
         #region FillTextureAnimationSpeedV
         private int _FillTextureAnimationSpeedVLocation => _DATALocation!.Value.Min + 0x30;
         private bool _FillTextureAnimationSpeedV_IsSet => _DATALocation.HasValue;
-        public Single FillTextureAnimationSpeedV => _FillTextureAnimationSpeedV_IsSet ? _recordData.Slice(_FillTextureAnimationSpeedVLocation, 4).Float() : default(Single);
+        public Single FillTextureAnimationSpeedV => _FillTextureAnimationSpeedV_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FillTextureAnimationSpeedVLocation, 4)) : default(Single);
         #endregion
         #region EdgeEffectFallOff
         private int _EdgeEffectFallOffLocation => _DATALocation!.Value.Min + 0x34;
         private bool _EdgeEffectFallOff_IsSet => _DATALocation.HasValue;
-        public Single EdgeEffectFallOff => _EdgeEffectFallOff_IsSet ? _recordData.Slice(_EdgeEffectFallOffLocation, 4).Float() : default(Single);
+        public Single EdgeEffectFallOff => _EdgeEffectFallOff_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EdgeEffectFallOffLocation, 4)) : default(Single);
         #endregion
         #region EdgeEffectColor
         private int _EdgeEffectColorLocation => _DATALocation!.Value.Min + 0x38;
@@ -7887,42 +7887,42 @@ namespace Mutagen.Bethesda.Skyrim
         #region EdgeEffectAlphaFadeInTime
         private int _EdgeEffectAlphaFadeInTimeLocation => _DATALocation!.Value.Min + 0x3C;
         private bool _EdgeEffectAlphaFadeInTime_IsSet => _DATALocation.HasValue;
-        public Single EdgeEffectAlphaFadeInTime => _EdgeEffectAlphaFadeInTime_IsSet ? _recordData.Slice(_EdgeEffectAlphaFadeInTimeLocation, 4).Float() : default(Single);
+        public Single EdgeEffectAlphaFadeInTime => _EdgeEffectAlphaFadeInTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EdgeEffectAlphaFadeInTimeLocation, 4)) : default(Single);
         #endregion
         #region EdgeEffectFullAlphaTime
         private int _EdgeEffectFullAlphaTimeLocation => _DATALocation!.Value.Min + 0x40;
         private bool _EdgeEffectFullAlphaTime_IsSet => _DATALocation.HasValue;
-        public Single EdgeEffectFullAlphaTime => _EdgeEffectFullAlphaTime_IsSet ? _recordData.Slice(_EdgeEffectFullAlphaTimeLocation, 4).Float() : default(Single);
+        public Single EdgeEffectFullAlphaTime => _EdgeEffectFullAlphaTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EdgeEffectFullAlphaTimeLocation, 4)) : default(Single);
         #endregion
         #region EdgeEffectAlphaFadeOutTime
         private int _EdgeEffectAlphaFadeOutTimeLocation => _DATALocation!.Value.Min + 0x44;
         private bool _EdgeEffectAlphaFadeOutTime_IsSet => _DATALocation.HasValue;
-        public Single EdgeEffectAlphaFadeOutTime => _EdgeEffectAlphaFadeOutTime_IsSet ? _recordData.Slice(_EdgeEffectAlphaFadeOutTimeLocation, 4).Float() : default(Single);
+        public Single EdgeEffectAlphaFadeOutTime => _EdgeEffectAlphaFadeOutTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EdgeEffectAlphaFadeOutTimeLocation, 4)) : default(Single);
         #endregion
         #region EdgeEffectPersistentAlphaRatio
         private int _EdgeEffectPersistentAlphaRatioLocation => _DATALocation!.Value.Min + 0x48;
         private bool _EdgeEffectPersistentAlphaRatio_IsSet => _DATALocation.HasValue;
-        public Single EdgeEffectPersistentAlphaRatio => _EdgeEffectPersistentAlphaRatio_IsSet ? _recordData.Slice(_EdgeEffectPersistentAlphaRatioLocation, 4).Float() : default(Single);
+        public Single EdgeEffectPersistentAlphaRatio => _EdgeEffectPersistentAlphaRatio_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EdgeEffectPersistentAlphaRatioLocation, 4)) : default(Single);
         #endregion
         #region EdgeEffectAlphaPulseAmplitude
         private int _EdgeEffectAlphaPulseAmplitudeLocation => _DATALocation!.Value.Min + 0x4C;
         private bool _EdgeEffectAlphaPulseAmplitude_IsSet => _DATALocation.HasValue;
-        public Single EdgeEffectAlphaPulseAmplitude => _EdgeEffectAlphaPulseAmplitude_IsSet ? _recordData.Slice(_EdgeEffectAlphaPulseAmplitudeLocation, 4).Float() : default(Single);
+        public Single EdgeEffectAlphaPulseAmplitude => _EdgeEffectAlphaPulseAmplitude_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EdgeEffectAlphaPulseAmplitudeLocation, 4)) : default(Single);
         #endregion
         #region EdgeEffectAlphaPulseFrequency
         private int _EdgeEffectAlphaPulseFrequencyLocation => _DATALocation!.Value.Min + 0x50;
         private bool _EdgeEffectAlphaPulseFrequency_IsSet => _DATALocation.HasValue;
-        public Single EdgeEffectAlphaPulseFrequency => _EdgeEffectAlphaPulseFrequency_IsSet ? _recordData.Slice(_EdgeEffectAlphaPulseFrequencyLocation, 4).Float() : default(Single);
+        public Single EdgeEffectAlphaPulseFrequency => _EdgeEffectAlphaPulseFrequency_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EdgeEffectAlphaPulseFrequencyLocation, 4)) : default(Single);
         #endregion
         #region FillFullAlphaRatio
         private int _FillFullAlphaRatioLocation => _DATALocation!.Value.Min + 0x54;
         private bool _FillFullAlphaRatio_IsSet => _DATALocation.HasValue;
-        public Single FillFullAlphaRatio => _FillFullAlphaRatio_IsSet ? _recordData.Slice(_FillFullAlphaRatioLocation, 4).Float() : default(Single);
+        public Single FillFullAlphaRatio => _FillFullAlphaRatio_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FillFullAlphaRatioLocation, 4)) : default(Single);
         #endregion
         #region EdgeEffectFullAlphaRatio
         private int _EdgeEffectFullAlphaRatioLocation => _DATALocation!.Value.Min + 0x58;
         private bool _EdgeEffectFullAlphaRatio_IsSet => _DATALocation.HasValue;
-        public Single EdgeEffectFullAlphaRatio => _EdgeEffectFullAlphaRatio_IsSet ? _recordData.Slice(_EdgeEffectFullAlphaRatioLocation, 4).Float() : default(Single);
+        public Single EdgeEffectFullAlphaRatio => _EdgeEffectFullAlphaRatio_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EdgeEffectFullAlphaRatioLocation, 4)) : default(Single);
         #endregion
         #region MembraneDestBlendMode
         private int _MembraneDestBlendModeLocation => _DATALocation!.Value.Min + 0x5C;
@@ -7952,97 +7952,97 @@ namespace Mutagen.Bethesda.Skyrim
         #region ParticleBirthRampUpTime
         private int _ParticleBirthRampUpTimeLocation => _DATALocation!.Value.Min + 0x70;
         private bool _ParticleBirthRampUpTime_IsSet => _DATALocation.HasValue;
-        public Single ParticleBirthRampUpTime => _ParticleBirthRampUpTime_IsSet ? _recordData.Slice(_ParticleBirthRampUpTimeLocation, 4).Float() : default(Single);
+        public Single ParticleBirthRampUpTime => _ParticleBirthRampUpTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleBirthRampUpTimeLocation, 4)) : default(Single);
         #endregion
         #region ParticleFullBirthTime
         private int _ParticleFullBirthTimeLocation => _DATALocation!.Value.Min + 0x74;
         private bool _ParticleFullBirthTime_IsSet => _DATALocation.HasValue;
-        public Single ParticleFullBirthTime => _ParticleFullBirthTime_IsSet ? _recordData.Slice(_ParticleFullBirthTimeLocation, 4).Float() : default(Single);
+        public Single ParticleFullBirthTime => _ParticleFullBirthTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleFullBirthTimeLocation, 4)) : default(Single);
         #endregion
         #region ParticleBirthRampDownTime
         private int _ParticleBirthRampDownTimeLocation => _DATALocation!.Value.Min + 0x78;
         private bool _ParticleBirthRampDownTime_IsSet => _DATALocation.HasValue;
-        public Single ParticleBirthRampDownTime => _ParticleBirthRampDownTime_IsSet ? _recordData.Slice(_ParticleBirthRampDownTimeLocation, 4).Float() : default(Single);
+        public Single ParticleBirthRampDownTime => _ParticleBirthRampDownTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleBirthRampDownTimeLocation, 4)) : default(Single);
         #endregion
         #region ParticleFullBirthRatio
         private int _ParticleFullBirthRatioLocation => _DATALocation!.Value.Min + 0x7C;
         private bool _ParticleFullBirthRatio_IsSet => _DATALocation.HasValue;
-        public Single ParticleFullBirthRatio => _ParticleFullBirthRatio_IsSet ? _recordData.Slice(_ParticleFullBirthRatioLocation, 4).Float() : default(Single);
+        public Single ParticleFullBirthRatio => _ParticleFullBirthRatio_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleFullBirthRatioLocation, 4)) : default(Single);
         #endregion
         #region ParticlePeristentCount
         private int _ParticlePeristentCountLocation => _DATALocation!.Value.Min + 0x80;
         private bool _ParticlePeristentCount_IsSet => _DATALocation.HasValue;
-        public Single ParticlePeristentCount => _ParticlePeristentCount_IsSet ? _recordData.Slice(_ParticlePeristentCountLocation, 4).Float() : default(Single);
+        public Single ParticlePeristentCount => _ParticlePeristentCount_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticlePeristentCountLocation, 4)) : default(Single);
         #endregion
         #region ParticleLifetime
         private int _ParticleLifetimeLocation => _DATALocation!.Value.Min + 0x84;
         private bool _ParticleLifetime_IsSet => _DATALocation.HasValue;
-        public Single ParticleLifetime => _ParticleLifetime_IsSet ? _recordData.Slice(_ParticleLifetimeLocation, 4).Float() : default(Single);
+        public Single ParticleLifetime => _ParticleLifetime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleLifetimeLocation, 4)) : default(Single);
         #endregion
         #region ParticleLifetimePlusMinus
         private int _ParticleLifetimePlusMinusLocation => _DATALocation!.Value.Min + 0x88;
         private bool _ParticleLifetimePlusMinus_IsSet => _DATALocation.HasValue;
-        public Single ParticleLifetimePlusMinus => _ParticleLifetimePlusMinus_IsSet ? _recordData.Slice(_ParticleLifetimePlusMinusLocation, 4).Float() : default(Single);
+        public Single ParticleLifetimePlusMinus => _ParticleLifetimePlusMinus_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleLifetimePlusMinusLocation, 4)) : default(Single);
         #endregion
         #region ParticleInitialSpeedAlongNormal
         private int _ParticleInitialSpeedAlongNormalLocation => _DATALocation!.Value.Min + 0x8C;
         private bool _ParticleInitialSpeedAlongNormal_IsSet => _DATALocation.HasValue;
-        public Single ParticleInitialSpeedAlongNormal => _ParticleInitialSpeedAlongNormal_IsSet ? _recordData.Slice(_ParticleInitialSpeedAlongNormalLocation, 4).Float() : default(Single);
+        public Single ParticleInitialSpeedAlongNormal => _ParticleInitialSpeedAlongNormal_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleInitialSpeedAlongNormalLocation, 4)) : default(Single);
         #endregion
         #region ParticleAccelerationAlongNormal
         private int _ParticleAccelerationAlongNormalLocation => _DATALocation!.Value.Min + 0x90;
         private bool _ParticleAccelerationAlongNormal_IsSet => _DATALocation.HasValue;
-        public Single ParticleAccelerationAlongNormal => _ParticleAccelerationAlongNormal_IsSet ? _recordData.Slice(_ParticleAccelerationAlongNormalLocation, 4).Float() : default(Single);
+        public Single ParticleAccelerationAlongNormal => _ParticleAccelerationAlongNormal_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleAccelerationAlongNormalLocation, 4)) : default(Single);
         #endregion
         #region ParticleInitialVelocity1
         private int _ParticleInitialVelocity1Location => _DATALocation!.Value.Min + 0x94;
         private bool _ParticleInitialVelocity1_IsSet => _DATALocation.HasValue;
-        public Single ParticleInitialVelocity1 => _ParticleInitialVelocity1_IsSet ? _recordData.Slice(_ParticleInitialVelocity1Location, 4).Float() : default(Single);
+        public Single ParticleInitialVelocity1 => _ParticleInitialVelocity1_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleInitialVelocity1Location, 4)) : default(Single);
         #endregion
         #region ParticleInitialVelocity2
         private int _ParticleInitialVelocity2Location => _DATALocation!.Value.Min + 0x98;
         private bool _ParticleInitialVelocity2_IsSet => _DATALocation.HasValue;
-        public Single ParticleInitialVelocity2 => _ParticleInitialVelocity2_IsSet ? _recordData.Slice(_ParticleInitialVelocity2Location, 4).Float() : default(Single);
+        public Single ParticleInitialVelocity2 => _ParticleInitialVelocity2_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleInitialVelocity2Location, 4)) : default(Single);
         #endregion
         #region ParticleInitialVelocity3
         private int _ParticleInitialVelocity3Location => _DATALocation!.Value.Min + 0x9C;
         private bool _ParticleInitialVelocity3_IsSet => _DATALocation.HasValue;
-        public Single ParticleInitialVelocity3 => _ParticleInitialVelocity3_IsSet ? _recordData.Slice(_ParticleInitialVelocity3Location, 4).Float() : default(Single);
+        public Single ParticleInitialVelocity3 => _ParticleInitialVelocity3_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleInitialVelocity3Location, 4)) : default(Single);
         #endregion
         #region ParticleAcceleration1
         private int _ParticleAcceleration1Location => _DATALocation!.Value.Min + 0xA0;
         private bool _ParticleAcceleration1_IsSet => _DATALocation.HasValue;
-        public Single ParticleAcceleration1 => _ParticleAcceleration1_IsSet ? _recordData.Slice(_ParticleAcceleration1Location, 4).Float() : default(Single);
+        public Single ParticleAcceleration1 => _ParticleAcceleration1_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleAcceleration1Location, 4)) : default(Single);
         #endregion
         #region ParticleAcceleration2
         private int _ParticleAcceleration2Location => _DATALocation!.Value.Min + 0xA4;
         private bool _ParticleAcceleration2_IsSet => _DATALocation.HasValue;
-        public Single ParticleAcceleration2 => _ParticleAcceleration2_IsSet ? _recordData.Slice(_ParticleAcceleration2Location, 4).Float() : default(Single);
+        public Single ParticleAcceleration2 => _ParticleAcceleration2_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleAcceleration2Location, 4)) : default(Single);
         #endregion
         #region ParticleAcceleration3
         private int _ParticleAcceleration3Location => _DATALocation!.Value.Min + 0xA8;
         private bool _ParticleAcceleration3_IsSet => _DATALocation.HasValue;
-        public Single ParticleAcceleration3 => _ParticleAcceleration3_IsSet ? _recordData.Slice(_ParticleAcceleration3Location, 4).Float() : default(Single);
+        public Single ParticleAcceleration3 => _ParticleAcceleration3_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleAcceleration3Location, 4)) : default(Single);
         #endregion
         #region ParticleScaleKey1
         private int _ParticleScaleKey1Location => _DATALocation!.Value.Min + 0xAC;
         private bool _ParticleScaleKey1_IsSet => _DATALocation.HasValue;
-        public Single ParticleScaleKey1 => _ParticleScaleKey1_IsSet ? _recordData.Slice(_ParticleScaleKey1Location, 4).Float() : default(Single);
+        public Single ParticleScaleKey1 => _ParticleScaleKey1_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleScaleKey1Location, 4)) : default(Single);
         #endregion
         #region ParticleScaleKey2
         private int _ParticleScaleKey2Location => _DATALocation!.Value.Min + 0xB0;
         private bool _ParticleScaleKey2_IsSet => _DATALocation.HasValue;
-        public Single ParticleScaleKey2 => _ParticleScaleKey2_IsSet ? _recordData.Slice(_ParticleScaleKey2Location, 4).Float() : default(Single);
+        public Single ParticleScaleKey2 => _ParticleScaleKey2_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleScaleKey2Location, 4)) : default(Single);
         #endregion
         #region ParticleScaleKey1Time
         private int _ParticleScaleKey1TimeLocation => _DATALocation!.Value.Min + 0xB4;
         private bool _ParticleScaleKey1Time_IsSet => _DATALocation.HasValue;
-        public Single ParticleScaleKey1Time => _ParticleScaleKey1Time_IsSet ? _recordData.Slice(_ParticleScaleKey1TimeLocation, 4).Float() : default(Single);
+        public Single ParticleScaleKey1Time => _ParticleScaleKey1Time_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleScaleKey1TimeLocation, 4)) : default(Single);
         #endregion
         #region ParticleScaleKey2Time
         private int _ParticleScaleKey2TimeLocation => _DATALocation!.Value.Min + 0xB8;
         private bool _ParticleScaleKey2Time_IsSet => _DATALocation.HasValue;
-        public Single ParticleScaleKey2Time => _ParticleScaleKey2Time_IsSet ? _recordData.Slice(_ParticleScaleKey2TimeLocation, 4).Float() : default(Single);
+        public Single ParticleScaleKey2Time => _ParticleScaleKey2Time_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleScaleKey2TimeLocation, 4)) : default(Single);
         #endregion
         #region ColorKey1
         private int _ColorKey1Location => _DATALocation!.Value.Min + 0xBC;
@@ -8062,57 +8062,57 @@ namespace Mutagen.Bethesda.Skyrim
         #region ColorKey1Alpha
         private int _ColorKey1AlphaLocation => _DATALocation!.Value.Min + 0xC8;
         private bool _ColorKey1Alpha_IsSet => _DATALocation.HasValue;
-        public Single ColorKey1Alpha => _ColorKey1Alpha_IsSet ? _recordData.Slice(_ColorKey1AlphaLocation, 4).Float() : default(Single);
+        public Single ColorKey1Alpha => _ColorKey1Alpha_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ColorKey1AlphaLocation, 4)) : default(Single);
         #endregion
         #region ColorKey2Alpha
         private int _ColorKey2AlphaLocation => _DATALocation!.Value.Min + 0xCC;
         private bool _ColorKey2Alpha_IsSet => _DATALocation.HasValue;
-        public Single ColorKey2Alpha => _ColorKey2Alpha_IsSet ? _recordData.Slice(_ColorKey2AlphaLocation, 4).Float() : default(Single);
+        public Single ColorKey2Alpha => _ColorKey2Alpha_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ColorKey2AlphaLocation, 4)) : default(Single);
         #endregion
         #region ColorKey3Alpha
         private int _ColorKey3AlphaLocation => _DATALocation!.Value.Min + 0xD0;
         private bool _ColorKey3Alpha_IsSet => _DATALocation.HasValue;
-        public Single ColorKey3Alpha => _ColorKey3Alpha_IsSet ? _recordData.Slice(_ColorKey3AlphaLocation, 4).Float() : default(Single);
+        public Single ColorKey3Alpha => _ColorKey3Alpha_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ColorKey3AlphaLocation, 4)) : default(Single);
         #endregion
         #region ColorKey1Time
         private int _ColorKey1TimeLocation => _DATALocation!.Value.Min + 0xD4;
         private bool _ColorKey1Time_IsSet => _DATALocation.HasValue;
-        public Single ColorKey1Time => _ColorKey1Time_IsSet ? _recordData.Slice(_ColorKey1TimeLocation, 4).Float() : default(Single);
+        public Single ColorKey1Time => _ColorKey1Time_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ColorKey1TimeLocation, 4)) : default(Single);
         #endregion
         #region ColorKey2Time
         private int _ColorKey2TimeLocation => _DATALocation!.Value.Min + 0xD8;
         private bool _ColorKey2Time_IsSet => _DATALocation.HasValue;
-        public Single ColorKey2Time => _ColorKey2Time_IsSet ? _recordData.Slice(_ColorKey2TimeLocation, 4).Float() : default(Single);
+        public Single ColorKey2Time => _ColorKey2Time_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ColorKey2TimeLocation, 4)) : default(Single);
         #endregion
         #region ColorKey3Time
         private int _ColorKey3TimeLocation => _DATALocation!.Value.Min + 0xDC;
         private bool _ColorKey3Time_IsSet => _DATALocation.HasValue;
-        public Single ColorKey3Time => _ColorKey3Time_IsSet ? _recordData.Slice(_ColorKey3TimeLocation, 4).Float() : default(Single);
+        public Single ColorKey3Time => _ColorKey3Time_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ColorKey3TimeLocation, 4)) : default(Single);
         #endregion
         #region ParticleInitialSpeedAlongNormalPlusMinus
         private int _ParticleInitialSpeedAlongNormalPlusMinusLocation => _DATALocation!.Value.Min + 0xE0;
         private bool _ParticleInitialSpeedAlongNormalPlusMinus_IsSet => _DATALocation.HasValue;
-        public Single ParticleInitialSpeedAlongNormalPlusMinus => _ParticleInitialSpeedAlongNormalPlusMinus_IsSet ? _recordData.Slice(_ParticleInitialSpeedAlongNormalPlusMinusLocation, 4).Float() : default(Single);
+        public Single ParticleInitialSpeedAlongNormalPlusMinus => _ParticleInitialSpeedAlongNormalPlusMinus_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleInitialSpeedAlongNormalPlusMinusLocation, 4)) : default(Single);
         #endregion
         #region ParticleInitialRotationDegree
         private int _ParticleInitialRotationDegreeLocation => _DATALocation!.Value.Min + 0xE4;
         private bool _ParticleInitialRotationDegree_IsSet => _DATALocation.HasValue;
-        public Single ParticleInitialRotationDegree => _ParticleInitialRotationDegree_IsSet ? _recordData.Slice(_ParticleInitialRotationDegreeLocation, 4).Float() : default(Single);
+        public Single ParticleInitialRotationDegree => _ParticleInitialRotationDegree_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleInitialRotationDegreeLocation, 4)) : default(Single);
         #endregion
         #region ParticleInitialRotationDegreePlusMinus
         private int _ParticleInitialRotationDegreePlusMinusLocation => _DATALocation!.Value.Min + 0xE8;
         private bool _ParticleInitialRotationDegreePlusMinus_IsSet => _DATALocation.HasValue;
-        public Single ParticleInitialRotationDegreePlusMinus => _ParticleInitialRotationDegreePlusMinus_IsSet ? _recordData.Slice(_ParticleInitialRotationDegreePlusMinusLocation, 4).Float() : default(Single);
+        public Single ParticleInitialRotationDegreePlusMinus => _ParticleInitialRotationDegreePlusMinus_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleInitialRotationDegreePlusMinusLocation, 4)) : default(Single);
         #endregion
         #region ParticleRotationSpeedDegreePerSec
         private int _ParticleRotationSpeedDegreePerSecLocation => _DATALocation!.Value.Min + 0xEC;
         private bool _ParticleRotationSpeedDegreePerSec_IsSet => _DATALocation.HasValue;
-        public Single ParticleRotationSpeedDegreePerSec => _ParticleRotationSpeedDegreePerSec_IsSet ? _recordData.Slice(_ParticleRotationSpeedDegreePerSecLocation, 4).Float() : default(Single);
+        public Single ParticleRotationSpeedDegreePerSec => _ParticleRotationSpeedDegreePerSec_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleRotationSpeedDegreePerSecLocation, 4)) : default(Single);
         #endregion
         #region ParticleRotationSpeedDegreePerSecPlusMinus
         private int _ParticleRotationSpeedDegreePerSecPlusMinusLocation => _DATALocation!.Value.Min + 0xF0;
         private bool _ParticleRotationSpeedDegreePerSecPlusMinus_IsSet => _DATALocation.HasValue;
-        public Single ParticleRotationSpeedDegreePerSecPlusMinus => _ParticleRotationSpeedDegreePerSecPlusMinus_IsSet ? _recordData.Slice(_ParticleRotationSpeedDegreePerSecPlusMinusLocation, 4).Float() : default(Single);
+        public Single ParticleRotationSpeedDegreePerSecPlusMinus => _ParticleRotationSpeedDegreePerSecPlusMinus_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ParticleRotationSpeedDegreePerSecPlusMinusLocation, 4)) : default(Single);
         #endregion
         #region AddonModels
         private int _AddonModelsLocation => _DATALocation!.Value.Min + 0xF4;
@@ -8122,27 +8122,27 @@ namespace Mutagen.Bethesda.Skyrim
         #region HolesStartTime
         private int _HolesStartTimeLocation => _DATALocation!.Value.Min + 0xF8;
         private bool _HolesStartTime_IsSet => _DATALocation.HasValue;
-        public Single HolesStartTime => _HolesStartTime_IsSet ? _recordData.Slice(_HolesStartTimeLocation, 4).Float() : default(Single);
+        public Single HolesStartTime => _HolesStartTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HolesStartTimeLocation, 4)) : default(Single);
         #endregion
         #region HolesEndTime
         private int _HolesEndTimeLocation => _DATALocation!.Value.Min + 0xFC;
         private bool _HolesEndTime_IsSet => _DATALocation.HasValue;
-        public Single HolesEndTime => _HolesEndTime_IsSet ? _recordData.Slice(_HolesEndTimeLocation, 4).Float() : default(Single);
+        public Single HolesEndTime => _HolesEndTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HolesEndTimeLocation, 4)) : default(Single);
         #endregion
         #region HolesStartValue
         private int _HolesStartValueLocation => _DATALocation!.Value.Min + 0x100;
         private bool _HolesStartValue_IsSet => _DATALocation.HasValue;
-        public Single HolesStartValue => _HolesStartValue_IsSet ? _recordData.Slice(_HolesStartValueLocation, 4).Float() : default(Single);
+        public Single HolesStartValue => _HolesStartValue_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HolesStartValueLocation, 4)) : default(Single);
         #endregion
         #region HolesEndValue
         private int _HolesEndValueLocation => _DATALocation!.Value.Min + 0x104;
         private bool _HolesEndValue_IsSet => _DATALocation.HasValue;
-        public Single HolesEndValue => _HolesEndValue_IsSet ? _recordData.Slice(_HolesEndValueLocation, 4).Float() : default(Single);
+        public Single HolesEndValue => _HolesEndValue_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_HolesEndValueLocation, 4)) : default(Single);
         #endregion
         #region EdgeWidth
         private int _EdgeWidthLocation => _DATALocation!.Value.Min + 0x108;
         private bool _EdgeWidth_IsSet => _DATALocation.HasValue;
-        public Single EdgeWidth => _EdgeWidth_IsSet ? _recordData.Slice(_EdgeWidthLocation, 4).Float() : default(Single);
+        public Single EdgeWidth => _EdgeWidth_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_EdgeWidthLocation, 4)) : default(Single);
         #endregion
         #region EdgeColor
         private int _EdgeColorLocation => _DATALocation!.Value.Min + 0x10C;
@@ -8152,7 +8152,7 @@ namespace Mutagen.Bethesda.Skyrim
         #region ExplosionWindSpeed
         private int _ExplosionWindSpeedLocation => _DATALocation!.Value.Min + 0x110;
         private bool _ExplosionWindSpeed_IsSet => _DATALocation.HasValue;
-        public Single ExplosionWindSpeed => _ExplosionWindSpeed_IsSet ? _recordData.Slice(_ExplosionWindSpeedLocation, 4).Float() : default(Single);
+        public Single ExplosionWindSpeed => _ExplosionWindSpeed_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ExplosionWindSpeedLocation, 4)) : default(Single);
         #endregion
         #region TextureCountU
         private int _TextureCountULocation => _DATALocation!.Value.Min + 0x114;
@@ -8167,32 +8167,32 @@ namespace Mutagen.Bethesda.Skyrim
         #region AddonModelsFadeInTime
         private int _AddonModelsFadeInTimeLocation => _DATALocation!.Value.Min + 0x11C;
         private bool _AddonModelsFadeInTime_IsSet => _DATALocation.HasValue;
-        public Single AddonModelsFadeInTime => _AddonModelsFadeInTime_IsSet ? _recordData.Slice(_AddonModelsFadeInTimeLocation, 4).Float() : default(Single);
+        public Single AddonModelsFadeInTime => _AddonModelsFadeInTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AddonModelsFadeInTimeLocation, 4)) : default(Single);
         #endregion
         #region AddonModelsFadeOutTime
         private int _AddonModelsFadeOutTimeLocation => _DATALocation!.Value.Min + 0x120;
         private bool _AddonModelsFadeOutTime_IsSet => _DATALocation.HasValue;
-        public Single AddonModelsFadeOutTime => _AddonModelsFadeOutTime_IsSet ? _recordData.Slice(_AddonModelsFadeOutTimeLocation, 4).Float() : default(Single);
+        public Single AddonModelsFadeOutTime => _AddonModelsFadeOutTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AddonModelsFadeOutTimeLocation, 4)) : default(Single);
         #endregion
         #region AddonModelsScaleStart
         private int _AddonModelsScaleStartLocation => _DATALocation!.Value.Min + 0x124;
         private bool _AddonModelsScaleStart_IsSet => _DATALocation.HasValue;
-        public Single AddonModelsScaleStart => _AddonModelsScaleStart_IsSet ? _recordData.Slice(_AddonModelsScaleStartLocation, 4).Float() : default(Single);
+        public Single AddonModelsScaleStart => _AddonModelsScaleStart_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AddonModelsScaleStartLocation, 4)) : default(Single);
         #endregion
         #region AddonModelsScaleEnd
         private int _AddonModelsScaleEndLocation => _DATALocation!.Value.Min + 0x128;
         private bool _AddonModelsScaleEnd_IsSet => _DATALocation.HasValue;
-        public Single AddonModelsScaleEnd => _AddonModelsScaleEnd_IsSet ? _recordData.Slice(_AddonModelsScaleEndLocation, 4).Float() : default(Single);
+        public Single AddonModelsScaleEnd => _AddonModelsScaleEnd_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AddonModelsScaleEndLocation, 4)) : default(Single);
         #endregion
         #region AddonModelsScaleInTime
         private int _AddonModelsScaleInTimeLocation => _DATALocation!.Value.Min + 0x12C;
         private bool _AddonModelsScaleInTime_IsSet => _DATALocation.HasValue;
-        public Single AddonModelsScaleInTime => _AddonModelsScaleInTime_IsSet ? _recordData.Slice(_AddonModelsScaleInTimeLocation, 4).Float() : default(Single);
+        public Single AddonModelsScaleInTime => _AddonModelsScaleInTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AddonModelsScaleInTimeLocation, 4)) : default(Single);
         #endregion
         #region AddonModelsScaleOutTime
         private int _AddonModelsScaleOutTimeLocation => _DATALocation!.Value.Min + 0x130;
         private bool _AddonModelsScaleOutTime_IsSet => _DATALocation.HasValue;
-        public Single AddonModelsScaleOutTime => _AddonModelsScaleOutTime_IsSet ? _recordData.Slice(_AddonModelsScaleOutTimeLocation, 4).Float() : default(Single);
+        public Single AddonModelsScaleOutTime => _AddonModelsScaleOutTime_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AddonModelsScaleOutTimeLocation, 4)) : default(Single);
         #endregion
         #region AmbientSound
         private int _AmbientSoundLocation => _DATALocation!.Value.Min + 0x134;
@@ -8212,47 +8212,47 @@ namespace Mutagen.Bethesda.Skyrim
         #region FillColorKey1Scale
         private int _FillColorKey1ScaleLocation => _DATALocation!.Value.Min + 0x140;
         private bool _FillColorKey1Scale_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(EffectShader.DATADataType.Break1);
-        public Single FillColorKey1Scale => _FillColorKey1Scale_IsSet ? _recordData.Slice(_FillColorKey1ScaleLocation, 4).Float() : default(Single);
+        public Single FillColorKey1Scale => _FillColorKey1Scale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FillColorKey1ScaleLocation, 4)) : default(Single);
         #endregion
         #region FillColorKey2Scale
         private int _FillColorKey2ScaleLocation => _DATALocation!.Value.Min + 0x144;
         private bool _FillColorKey2Scale_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(EffectShader.DATADataType.Break1);
-        public Single FillColorKey2Scale => _FillColorKey2Scale_IsSet ? _recordData.Slice(_FillColorKey2ScaleLocation, 4).Float() : default(Single);
+        public Single FillColorKey2Scale => _FillColorKey2Scale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FillColorKey2ScaleLocation, 4)) : default(Single);
         #endregion
         #region FillColorKey3Scale
         private int _FillColorKey3ScaleLocation => _DATALocation!.Value.Min + 0x148;
         private bool _FillColorKey3Scale_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(EffectShader.DATADataType.Break1);
-        public Single FillColorKey3Scale => _FillColorKey3Scale_IsSet ? _recordData.Slice(_FillColorKey3ScaleLocation, 4).Float() : default(Single);
+        public Single FillColorKey3Scale => _FillColorKey3Scale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FillColorKey3ScaleLocation, 4)) : default(Single);
         #endregion
         #region FillColorKey1Time
         private int _FillColorKey1TimeLocation => _DATALocation!.Value.Min + 0x14C;
         private bool _FillColorKey1Time_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(EffectShader.DATADataType.Break1);
-        public Single FillColorKey1Time => _FillColorKey1Time_IsSet ? _recordData.Slice(_FillColorKey1TimeLocation, 4).Float() : default(Single);
+        public Single FillColorKey1Time => _FillColorKey1Time_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FillColorKey1TimeLocation, 4)) : default(Single);
         #endregion
         #region FillColorKey2Time
         private int _FillColorKey2TimeLocation => _DATALocation!.Value.Min + 0x150;
         private bool _FillColorKey2Time_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(EffectShader.DATADataType.Break1);
-        public Single FillColorKey2Time => _FillColorKey2Time_IsSet ? _recordData.Slice(_FillColorKey2TimeLocation, 4).Float() : default(Single);
+        public Single FillColorKey2Time => _FillColorKey2Time_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FillColorKey2TimeLocation, 4)) : default(Single);
         #endregion
         #region FillColorKey3Time
         private int _FillColorKey3TimeLocation => _DATALocation!.Value.Min + 0x154;
         private bool _FillColorKey3Time_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(EffectShader.DATADataType.Break1);
-        public Single FillColorKey3Time => _FillColorKey3Time_IsSet ? _recordData.Slice(_FillColorKey3TimeLocation, 4).Float() : default(Single);
+        public Single FillColorKey3Time => _FillColorKey3Time_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FillColorKey3TimeLocation, 4)) : default(Single);
         #endregion
         #region ColorScale
         private int _ColorScaleLocation => _DATALocation!.Value.Min + 0x158;
         private bool _ColorScale_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(EffectShader.DATADataType.Break2);
-        public Single ColorScale => _ColorScale_IsSet ? _recordData.Slice(_ColorScaleLocation, 4).Float() : default(Single);
+        public Single ColorScale => _ColorScale_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ColorScaleLocation, 4)) : default(Single);
         #endregion
         #region BirthPositionOffset
         private int _BirthPositionOffsetLocation => _DATALocation!.Value.Min + 0x15C;
         private bool _BirthPositionOffset_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(EffectShader.DATADataType.Break2);
-        public Single BirthPositionOffset => _BirthPositionOffset_IsSet ? _recordData.Slice(_BirthPositionOffsetLocation, 4).Float() : default(Single);
+        public Single BirthPositionOffset => _BirthPositionOffset_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BirthPositionOffsetLocation, 4)) : default(Single);
         #endregion
         #region BirthPositionOffsetRangePlusMinus
         private int _BirthPositionOffsetRangePlusMinusLocation => _DATALocation!.Value.Min + 0x160;
         private bool _BirthPositionOffsetRangePlusMinus_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(EffectShader.DATADataType.Break2);
-        public Single BirthPositionOffsetRangePlusMinus => _BirthPositionOffsetRangePlusMinus_IsSet ? _recordData.Slice(_BirthPositionOffsetRangePlusMinusLocation, 4).Float() : default(Single);
+        public Single BirthPositionOffsetRangePlusMinus => _BirthPositionOffsetRangePlusMinus_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BirthPositionOffsetRangePlusMinusLocation, 4)) : default(Single);
         #endregion
         #region ParticleAnimatedStartFrame
         private int _ParticleAnimatedStartFrameLocation => _DATALocation!.Value.Min + 0x164;
@@ -8297,12 +8297,12 @@ namespace Mutagen.Bethesda.Skyrim
         #region FillTextureScaleU
         private int _FillTextureScaleULocation => _DATALocation!.Value.Min + 0x184;
         private bool _FillTextureScaleU_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(EffectShader.DATADataType.Break2);
-        public Single FillTextureScaleU => _FillTextureScaleU_IsSet ? _recordData.Slice(_FillTextureScaleULocation, 4).Float() : default(Single);
+        public Single FillTextureScaleU => _FillTextureScaleU_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FillTextureScaleULocation, 4)) : default(Single);
         #endregion
         #region FillTextureScaleV
         private int _FillTextureScaleVLocation => _DATALocation!.Value.Min + 0x188;
         private bool _FillTextureScaleV_IsSet => _DATALocation.HasValue && !DATADataTypeState.HasFlag(EffectShader.DATADataType.Break2);
-        public Single FillTextureScaleV => _FillTextureScaleV_IsSet ? _recordData.Slice(_FillTextureScaleVLocation, 4).Float() : default(Single);
+        public Single FillTextureScaleV => _FillTextureScaleV_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_FillTextureScaleVLocation, 4)) : default(Single);
         #endregion
         #region SceneGraphEmitDepthLimit
         private int _SceneGraphEmitDepthLimitLocation => _DATALocation!.Value.Min + 0x18C;

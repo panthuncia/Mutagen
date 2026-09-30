@@ -1810,7 +1810,7 @@ namespace Mutagen.Bethesda.Skyrim
         #endregion
         #region FadeDuration
         private int? _FadeDurationLocation;
-        public Single? FadeDuration => _FadeDurationLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FadeDurationLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? FadeDuration => _FadeDurationLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FadeDurationLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         public IReadOnlyList<IFormLinkGetter<IMusicTrackGetter>>? Tracks { get; private set; }
         partial void CustomFactoryEnd(

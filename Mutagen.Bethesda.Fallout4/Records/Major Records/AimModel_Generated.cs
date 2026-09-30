@@ -2261,22 +2261,22 @@ namespace Mutagen.Bethesda.Fallout4
         #region ConeOfFireMinAngle
         private int _ConeOfFireMinAngleLocation => _DNAMLocation!.Value.Min;
         private bool _ConeOfFireMinAngle_IsSet => _DNAMLocation.HasValue;
-        public Single ConeOfFireMinAngle => _ConeOfFireMinAngle_IsSet ? _recordData.Slice(_ConeOfFireMinAngleLocation, 4).Float() : default(Single);
+        public Single ConeOfFireMinAngle => _ConeOfFireMinAngle_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ConeOfFireMinAngleLocation, 4)) : default(Single);
         #endregion
         #region ConeOfFireMaxAngle
         private int _ConeOfFireMaxAngleLocation => _DNAMLocation!.Value.Min + 0x4;
         private bool _ConeOfFireMaxAngle_IsSet => _DNAMLocation.HasValue;
-        public Single ConeOfFireMaxAngle => _ConeOfFireMaxAngle_IsSet ? _recordData.Slice(_ConeOfFireMaxAngleLocation, 4).Float() : default(Single);
+        public Single ConeOfFireMaxAngle => _ConeOfFireMaxAngle_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ConeOfFireMaxAngleLocation, 4)) : default(Single);
         #endregion
         #region ConeOfFireIncreasePerShot
         private int _ConeOfFireIncreasePerShotLocation => _DNAMLocation!.Value.Min + 0x8;
         private bool _ConeOfFireIncreasePerShot_IsSet => _DNAMLocation.HasValue;
-        public Single ConeOfFireIncreasePerShot => _ConeOfFireIncreasePerShot_IsSet ? _recordData.Slice(_ConeOfFireIncreasePerShotLocation, 4).Float() : default(Single);
+        public Single ConeOfFireIncreasePerShot => _ConeOfFireIncreasePerShot_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ConeOfFireIncreasePerShotLocation, 4)) : default(Single);
         #endregion
         #region ConeOfFireIncreasePerSec
         private int _ConeOfFireIncreasePerSecLocation => _DNAMLocation!.Value.Min + 0xC;
         private bool _ConeOfFireIncreasePerSec_IsSet => _DNAMLocation.HasValue;
-        public Single ConeOfFireIncreasePerSec => _ConeOfFireIncreasePerSec_IsSet ? _recordData.Slice(_ConeOfFireIncreasePerSecLocation, 4).Float() : default(Single);
+        public Single ConeOfFireIncreasePerSec => _ConeOfFireIncreasePerSec_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ConeOfFireIncreasePerSecLocation, 4)) : default(Single);
         #endregion
         #region ConeOfFireDecreaseDelayMilliseconds
         private int _ConeOfFireDecreaseDelayMillisecondsLocation => _DNAMLocation!.Value.Min + 0x10;
@@ -2286,32 +2286,32 @@ namespace Mutagen.Bethesda.Fallout4
         #region ConeOfFireSneakMult
         private int _ConeOfFireSneakMultLocation => _DNAMLocation!.Value.Min + 0x14;
         private bool _ConeOfFireSneakMult_IsSet => _DNAMLocation.HasValue;
-        public Single ConeOfFireSneakMult => _ConeOfFireSneakMult_IsSet ? _recordData.Slice(_ConeOfFireSneakMultLocation, 4).Float() : default(Single);
+        public Single ConeOfFireSneakMult => _ConeOfFireSneakMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ConeOfFireSneakMultLocation, 4)) : default(Single);
         #endregion
         #region RecoilDiminishSpringForce
         private int _RecoilDiminishSpringForceLocation => _DNAMLocation!.Value.Min + 0x18;
         private bool _RecoilDiminishSpringForce_IsSet => _DNAMLocation.HasValue;
-        public Single RecoilDiminishSpringForce => _RecoilDiminishSpringForce_IsSet ? _recordData.Slice(_RecoilDiminishSpringForceLocation, 4).Float() : default(Single);
+        public Single RecoilDiminishSpringForce => _RecoilDiminishSpringForce_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RecoilDiminishSpringForceLocation, 4)) : default(Single);
         #endregion
         #region RecoilDiminishSightsMult
         private int _RecoilDiminishSightsMultLocation => _DNAMLocation!.Value.Min + 0x1C;
         private bool _RecoilDiminishSightsMult_IsSet => _DNAMLocation.HasValue;
-        public Single RecoilDiminishSightsMult => _RecoilDiminishSightsMult_IsSet ? _recordData.Slice(_RecoilDiminishSightsMultLocation, 4).Float() : default(Single);
+        public Single RecoilDiminishSightsMult => _RecoilDiminishSightsMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RecoilDiminishSightsMultLocation, 4)) : default(Single);
         #endregion
         #region RecoilMaxPerShot
         private int _RecoilMaxPerShotLocation => _DNAMLocation!.Value.Min + 0x20;
         private bool _RecoilMaxPerShot_IsSet => _DNAMLocation.HasValue;
-        public Single RecoilMaxPerShot => _RecoilMaxPerShot_IsSet ? _recordData.Slice(_RecoilMaxPerShotLocation, 4).Float() : default(Single);
+        public Single RecoilMaxPerShot => _RecoilMaxPerShot_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RecoilMaxPerShotLocation, 4)) : default(Single);
         #endregion
         #region RecoilMinPerShot
         private int _RecoilMinPerShotLocation => _DNAMLocation!.Value.Min + 0x24;
         private bool _RecoilMinPerShot_IsSet => _DNAMLocation.HasValue;
-        public Single RecoilMinPerShot => _RecoilMinPerShot_IsSet ? _recordData.Slice(_RecoilMinPerShotLocation, 4).Float() : default(Single);
+        public Single RecoilMinPerShot => _RecoilMinPerShot_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RecoilMinPerShotLocation, 4)) : default(Single);
         #endregion
         #region RecoilHipMult
         private int _RecoilHipMultLocation => _DNAMLocation!.Value.Min + 0x28;
         private bool _RecoilHipMult_IsSet => _DNAMLocation.HasValue;
-        public Single RecoilHipMult => _RecoilHipMult_IsSet ? _recordData.Slice(_RecoilHipMultLocation, 4).Float() : default(Single);
+        public Single RecoilHipMult => _RecoilHipMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RecoilHipMultLocation, 4)) : default(Single);
         #endregion
         #region RunawayRecoilShots
         private int _RunawayRecoilShotsLocation => _DNAMLocation!.Value.Min + 0x2C;
@@ -2321,22 +2321,22 @@ namespace Mutagen.Bethesda.Fallout4
         #region RecoilArc
         private int _RecoilArcLocation => _DNAMLocation!.Value.Min + 0x30;
         private bool _RecoilArc_IsSet => _DNAMLocation.HasValue;
-        public Single RecoilArc => _RecoilArc_IsSet ? _recordData.Slice(_RecoilArcLocation, 4).Float() : default(Single);
+        public Single RecoilArc => _RecoilArc_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RecoilArcLocation, 4)) : default(Single);
         #endregion
         #region RecoilArcRotate
         private int _RecoilArcRotateLocation => _DNAMLocation!.Value.Min + 0x34;
         private bool _RecoilArcRotate_IsSet => _DNAMLocation.HasValue;
-        public Single RecoilArcRotate => _RecoilArcRotate_IsSet ? _recordData.Slice(_RecoilArcRotateLocation, 4).Float() : default(Single);
+        public Single RecoilArcRotate => _RecoilArcRotate_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_RecoilArcRotateLocation, 4)) : default(Single);
         #endregion
         #region ConeOfFireIronSightsMult
         private int _ConeOfFireIronSightsMultLocation => _DNAMLocation!.Value.Min + 0x38;
         private bool _ConeOfFireIronSightsMult_IsSet => _DNAMLocation.HasValue;
-        public Single ConeOfFireIronSightsMult => _ConeOfFireIronSightsMult_IsSet ? _recordData.Slice(_ConeOfFireIronSightsMultLocation, 4).Float() : default(Single);
+        public Single ConeOfFireIronSightsMult => _ConeOfFireIronSightsMult_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_ConeOfFireIronSightsMultLocation, 4)) : default(Single);
         #endregion
         #region BaseStability
         private int _BaseStabilityLocation => _DNAMLocation!.Value.Min + 0x3C;
         private bool _BaseStability_IsSet => _DNAMLocation.HasValue;
-        public Single BaseStability => _BaseStability_IsSet ? _recordData.Slice(_BaseStabilityLocation, 4).Float() : default(Single);
+        public Single BaseStability => _BaseStability_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_BaseStabilityLocation, 4)) : default(Single);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

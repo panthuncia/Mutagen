@@ -1440,11 +1440,11 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public Single Bottom => _structData.Slice(0x0, 0x4).Float();
-        public Single Right => _structData.Slice(0x4, 0x4).Float();
-        public Single Left => _structData.Slice(0x8, 0x4).Float();
-        public Single Top => _structData.Slice(0xC, 0x4).Float();
-        public Single FalloffIntensity => _structData.Slice(0x10, 0x4).Float();
+        public Single Bottom => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single Right => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single Left => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single Top => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single FalloffIntensity => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
         public Boolean HasBarndoor => _structData.Slice(0x14, 0x1)[0] >= 1;
         public Boolean HasFalloff => _structData.Slice(0x15, 0x1)[0] >= 1;
         public UInt16 Unused => BinaryPrimitives.ReadUInt16LittleEndian(_structData.Slice(0x16, 0x2));

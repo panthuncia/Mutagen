@@ -3238,7 +3238,7 @@ namespace Mutagen.Bethesda.Starfield
         #region Duration
         private int _DurationLocation => _DATALocation!.Value.Min;
         private bool _Duration_IsSet => _DATALocation.HasValue;
-        public Single Duration => _Duration_IsSet ? _recordData.Slice(_DurationLocation, 4).Float() : default(Single);
+        public Single Duration => _Duration_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_DurationLocation, 4)) : default(Single);
         #endregion
         #region Orientation
         private int _OrientationLocation => _DATALocation!.Value.Min + 0x4;
@@ -3248,12 +3248,12 @@ namespace Mutagen.Bethesda.Starfield
         #region AngleThreshold
         private int _AngleThresholdLocation => _DATALocation!.Value.Min + 0x8;
         private bool _AngleThreshold_IsSet => _DATALocation.HasValue;
-        public Single AngleThreshold => _AngleThreshold_IsSet ? _recordData.Slice(_AngleThresholdLocation, 4).Float() : default(Single);
+        public Single AngleThreshold => _AngleThreshold_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_AngleThresholdLocation, 4)) : default(Single);
         #endregion
         #region PlacementRadius
         private int _PlacementRadiusLocation => _DATALocation!.Value.Min + 0xC;
         private bool _PlacementRadius_IsSet => _DATALocation.HasValue;
-        public Single PlacementRadius => _PlacementRadius_IsSet ? _recordData.Slice(_PlacementRadiusLocation, 4).Float() : default(Single);
+        public Single PlacementRadius => _PlacementRadius_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_PlacementRadiusLocation, 4)) : default(Single);
         #endregion
         #region SoundLevel
         private int _SoundLevelLocation => _DATALocation!.Value.Min + 0x10;
@@ -3286,11 +3286,11 @@ namespace Mutagen.Bethesda.Starfield
         public ISoundReferenceGetter? ImpactSoundPlayerThirdTarget { get; private set; }
         #region FootstepParticleMaxDist
         private int? _FootstepParticleMaxDistLocation;
-        public Single? FootstepParticleMaxDist => _FootstepParticleMaxDistLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _FootstepParticleMaxDistLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? FootstepParticleMaxDist => _FootstepParticleMaxDistLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _FootstepParticleMaxDistLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region DecalLifetime
         private int? _DecalLifetimeLocation;
-        public Single? DecalLifetime => _DecalLifetimeLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _DecalLifetimeLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? DecalLifetime => _DecalLifetimeLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _DecalLifetimeLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

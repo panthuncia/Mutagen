@@ -1593,17 +1593,17 @@ namespace Mutagen.Bethesda.Starfield
                 translationParams: translationParams);
         }
 
-        public Single TextureOffsetU => _structData.Slice(0x0, 0x4).Float();
-        public Single TextureOffsetV => _structData.Slice(0x4, 0x4).Float();
-        public Single TextureScaleU => _structData.Slice(0x8, 0x4).Float();
-        public Single TextureScaleV => _structData.Slice(0xC, 0x4).Float();
-        public Single Unknown1 => _structData.Slice(0x10, 0x4).Float();
-        public Single Unknown2 => _structData.Slice(0x14, 0x4).Float();
-        public Single Unknown3 => _structData.Slice(0x18, 0x4).Float();
-        public Single Unknown4 => _structData.Slice(0x1C, 0x4).Float();
-        public Single NormalStrength => _structData.Slice(0x20, 0x4).Float();
-        public Single SlopeStart => _structData.Slice(0x24, 0x4).Float();
-        public Single SlopeRange => _structData.Slice(0x28, 0x4).Float();
+        public Single TextureOffsetU => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x0, 0x4));
+        public Single TextureOffsetV => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x4, 0x4));
+        public Single TextureScaleU => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
+        public Single TextureScaleV => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0xC, 0x4));
+        public Single Unknown1 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
+        public Single Unknown2 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x14, 0x4));
+        public Single Unknown3 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x18, 0x4));
+        public Single Unknown4 => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x1C, 0x4));
+        public Single NormalStrength => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x20, 0x4));
+        public Single SlopeStart => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x24, 0x4));
+        public Single SlopeRange => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x28, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

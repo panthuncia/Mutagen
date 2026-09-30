@@ -1581,22 +1581,22 @@ namespace Mutagen.Bethesda.Starfield
         #region Magnitude
         private int _MagnitudeLocation => SpectralClassEndingPos;
         private bool _Magnitude_IsSet => _DATALocation.HasValue;
-        public Single Magnitude => _Magnitude_IsSet ? _recordData.Slice(_MagnitudeLocation, 4).Float() : default(Single);
+        public Single Magnitude => _Magnitude_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MagnitudeLocation, 4)) : default(Single);
         #endregion
         #region MassInSm
         private int _MassInSmLocation => SpectralClassEndingPos + 0x4;
         private bool _MassInSm_IsSet => _DATALocation.HasValue;
-        public Single MassInSm => _MassInSm_IsSet ? _recordData.Slice(_MassInSmLocation, 4).Float() / 1.98847E+30f : default(Single);
+        public Single MassInSm => _MassInSm_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_MassInSmLocation, 4)) / 1.98847E+30f : default(Single);
         #endregion
         #region InnerHabitableZone
         private int _InnerHabitableZoneLocation => SpectralClassEndingPos + 0x8;
         private bool _InnerHabitableZone_IsSet => _DATALocation.HasValue;
-        public Single InnerHabitableZone => _InnerHabitableZone_IsSet ? _recordData.Slice(_InnerHabitableZoneLocation, 4).Float() : default(Single);
+        public Single InnerHabitableZone => _InnerHabitableZone_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_InnerHabitableZoneLocation, 4)) : default(Single);
         #endregion
         #region OuterHabitableZone
         private int _OuterHabitableZoneLocation => SpectralClassEndingPos + 0xC;
         private bool _OuterHabitableZone_IsSet => _DATALocation.HasValue;
-        public Single OuterHabitableZone => _OuterHabitableZone_IsSet ? _recordData.Slice(_OuterHabitableZoneLocation, 4).Float() : default(Single);
+        public Single OuterHabitableZone => _OuterHabitableZone_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_OuterHabitableZoneLocation, 4)) : default(Single);
         #endregion
         #region HIP
         private int _HIPLocation => SpectralClassEndingPos + 0x10;

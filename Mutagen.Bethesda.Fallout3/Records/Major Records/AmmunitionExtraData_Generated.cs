@@ -1308,9 +1308,9 @@ namespace Mutagen.Bethesda.Fallout3
 
         public UInt32 ProjectilesPerShot => BinaryPrimitives.ReadUInt32LittleEndian(_structData.Slice(0x0, 0x4));
         public IFormLinkGetter<IProjectileGetter> Projectile => FormLinkBinaryTranslation.Instance.OverlayFactory<IProjectileGetter>(_package, _structData.Span.Slice(0x4, 0x4));
-        public Single Weight => _structData.Slice(0x8, 0x4).Float();
+        public Single Weight => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x8, 0x4));
         public IFormLinkGetter<IItemGetter> ConsumedAmmo => FormLinkBinaryTranslation.Instance.OverlayFactory<IItemGetter>(_package, _structData.Span.Slice(0xC, 0x4));
-        public Single ConsumedPercentage => _structData.Slice(0x10, 0x4).Float();
+        public Single ConsumedPercentage => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x10, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,
             int finalPos,

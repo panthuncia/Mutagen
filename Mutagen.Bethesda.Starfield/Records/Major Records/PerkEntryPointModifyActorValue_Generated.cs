@@ -1336,7 +1336,7 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         public IFormLinkGetter<IActorValueInformationGetter> ActorValue => FormLinkBinaryTranslation.Instance.OverlayFactory<IActorValueInformationGetter>(_package, _structData.Span.Slice(0x2, 0x4));
-        public Single Value => _structData.Slice(0x6, 0x4).Float();
+        public Single Value => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(0x6, 0x4));
         public PerkEntryPointModifyActorValue.ModificationType Modification => (PerkEntryPointModifyActorValue.ModificationType)BinaryPrimitives.ReadInt32LittleEndian(_structData.Span.Slice(0xA, 0x4));
         partial void CustomFactoryEnd(
             OverlayStream stream,

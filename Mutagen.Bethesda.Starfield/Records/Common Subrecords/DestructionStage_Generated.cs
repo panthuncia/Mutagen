@@ -1940,7 +1940,7 @@ namespace Mutagen.Bethesda.Starfield
         #region Unknown
         private int _UnknownLocation => _DSTDLocation!.Value.Min + 0x14;
         private bool _Unknown_IsSet => _DSTDLocation.HasValue;
-        public Single Unknown => _Unknown_IsSet ? _recordData.Slice(_UnknownLocation, 4).Float() : default(Single);
+        public Single Unknown => _Unknown_IsSet ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_recordData.Slice(_UnknownLocation, 4)) : default(Single);
         #endregion
         #region SequenceName
         private int? _SequenceNameLocation;

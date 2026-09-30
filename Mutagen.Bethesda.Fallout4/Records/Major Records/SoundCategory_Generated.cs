@@ -2018,11 +2018,11 @@ namespace Mutagen.Bethesda.Fallout4
         #endregion
         #region MinFrequencyMultiplier
         private int? _MinFrequencyMultiplierLocation;
-        public Single? MinFrequencyMultiplier => _MinFrequencyMultiplierLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _MinFrequencyMultiplierLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? MinFrequencyMultiplier => _MinFrequencyMultiplierLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _MinFrequencyMultiplierLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         #region SidechainTargetMultiplier
         private int? _SidechainTargetMultiplierLocation;
-        public Single? SidechainTargetMultiplier => _SidechainTargetMultiplierLocation.HasValue ? HeaderTranslation.ExtractSubrecordMemory(_recordData, _SidechainTargetMultiplierLocation.Value, _package.MetaData.Constants).Float() : default(Single?);
+        public Single? SidechainTargetMultiplier => _SidechainTargetMultiplierLocation.HasValue ? FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(HeaderTranslation.ExtractSubrecordMemory(_recordData, _SidechainTargetMultiplierLocation.Value, _package.MetaData.Constants)) : default(Single?);
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

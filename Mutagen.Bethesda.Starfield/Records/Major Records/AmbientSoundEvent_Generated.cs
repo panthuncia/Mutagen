@@ -1816,7 +1816,7 @@ namespace Mutagen.Bethesda.Starfield
         #endregion
         public Guid SwitchGroup => new Guid(_structData.Slice(MarkerKeywordsEndingPos, 0x10).Slice(0, 16));
         public Boolean ReEvaluateIntervalUseCustom => _structData.Slice(MarkerKeywordsEndingPos + 0x10, 0x1)[0] >= 1;
-        public Single ReEvaluateIntervalSeconds => _structData.Slice(MarkerKeywordsEndingPos + 0x11, 0x4).Float();
+        public Single ReEvaluateIntervalSeconds => FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(_structData.Slice(MarkerKeywordsEndingPos + 0x11, 0x4));
         #region PlanetCustomizations
         public IReadOnlyList<IAmbientSoundPlanetCustomizationGetter> PlanetCustomizations { get; private set; } = null!;
         protected int PlanetCustomizationsEndingPos;
