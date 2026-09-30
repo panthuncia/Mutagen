@@ -12,7 +12,7 @@ using SafePatch.Authoring.Index;
 //   SafePatch.Bench check <Data folder> <plugin,...> [label]
 //   SafePatch.Bench check-threads <Data folder> <plugin>
 //   SafePatch.Bench index-check <Data folder> <plugins.txt or .paths>
-//   SafePatch.Bench index-proto <Data folder> <plugins.txt or .paths> [runs=3] [label]
+//   SafePatch.Bench index-proto <Data folder> <plugins.txt or .paths> [runs=3] [label] [cache folder]
 //   SafePatch.Bench check-first <Data folder> <plugin,...> <record type,...>
 //   SafePatch.Bench conflict-scan <Data folder> <plugins.txt or .paths> [runs=3] [label] [mask|fields|equals]
 //   SafePatch.Bench linkcache <Data folder> <plugins.txt or .paths> [label]
@@ -39,7 +39,7 @@ if (args is ["index-check", var checkIndexData, var checkIndexPlugins])
 }
 if (args is ["index-proto", var protoData, var protoPlugins, .. var protoRest])
 {
-    return IndexPrototype.Run(protoData, protoPlugins, protoRest is [var r, ..] ? int.Parse(r) : 3, protoRest is [_, var l] ? l : "");
+    return IndexPrototype.Run(protoData, protoPlugins, protoRest is [var r, ..] ? int.Parse(r) : 3, protoRest is [_, var l, ..] ? l : "", protoRest is [_, _, var c] ? c : null);
 }
 if (args is ["check-first", var firstData, var firstPlugins, var firstTypes])
 {

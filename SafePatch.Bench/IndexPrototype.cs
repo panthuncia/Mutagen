@@ -54,27 +54,35 @@ internal static unsafe class IndexPrototype
         public int Overridden;
     }
 
-    public static int Run(string data, string pluginsTxt, int runs, string label)
+    public static int Run(string data, string pluginsTxt, int runs, string label, string? cache)
     {
         var paths = Conflicts.Paths(data, pluginsTxt).Select(p => p.Path.Path).ToArray();
         for (var run = 0; run < runs; run++)
         {
             GC.Collect();
+            var heapBefore = GC.GetTotalMemory(forceFullCollection: true);
             var allocated = GC.GetTotalAllocatedBytes(precise: true);
             var clock = Stopwatch.StartNew();
-            var (index, scanTime) = Build(paths);
-            var total = clock.Elapsed;
+            var (index, scanTime) = Build(paths, cache);
+            var built = clock.Elapsed;
+            clock.Restart();
+            var editorIds = EditorIdIndex.Build(index);
+            var editorIdTime = clock.Elapsed;
+            var retained = (GC.GetTotalMemory(forceFullCollection: true) - heapBefore) / 1048576;
             var versions = index.Versions.Length;
             Console.WriteLine($"run {run + 1}: {index.Plugins.Length} plugins, {versions:N0} versions, {index.SortedKeys.Length:N0} records, " +
-                              $"{index.Overridden:N0} overridden: scan {scanTime.TotalMilliseconds:N0} ms, grouping {(total - scanTime).TotalMilliseconds:N0} ms, " +
-                              $"total {total.TotalMilliseconds:N0} ms; {(GC.GetTotalAllocatedBytes(precise: true) - allocated) / 1048576:N0} MiB allocated");
-            Console.WriteLine($"INDEX|{label}|{run + 1}|{versions}|{index.Overridden}|{scanTime.TotalMilliseconds:F0}|{(total - scanTime).TotalMilliseconds:F0}|{total.TotalMilliseconds:F0}");
+                              $"{index.Overridden:N0} overridden: {(cache == null ? "scan" : "scan or cache")} {scanTime.TotalMilliseconds:N0} ms, " +
+                              $"grouping {(built - scanTime).TotalMilliseconds:N0} ms, EditorIDs {editorIdTime.TotalMilliseconds:N0} ms " +
+                              $"({editorIds.Count:N0}); total {(built + editorIdTime).TotalMilliseconds:N0} ms; " +
+                              $"{(GC.GetTotalAllocatedBytes(precise: true) - allocated) / 1048576:N0} MiB allocated, {retained:N0} MiB kept");
+            Console.WriteLine($"INDEX|{label}|{run + 1}|{versions}|{index.Overridden}|{scanTime.TotalMilliseconds:F0}|{(built - scanTime).TotalMilliseconds:F0}|{editorIdTime.TotalMilliseconds:F0}|{(built + editorIdTime).TotalMilliseconds:F0}|{retained}");
             GC.KeepAlive(index);
+            GC.KeepAlive(editorIds);
         }
         return 0;
     }
 
-    public static (LoadOrderIndex Index, TimeSpan ScanTime) Build(IReadOnlyList<string> paths)
+    public static (LoadOrderIndex Index, TimeSpan ScanTime) Build(IReadOnlyList<string> paths, string? cache = null)
     {
         var clock = Stopwatch.StartNew();
         var mods = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
@@ -95,7 +103,7 @@ internal static unsafe class IndexPrototype
         Parallel.ForEach(Partitioner.Create(order, EnumerablePartitionerOptions.NoBuffering), new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount }, i =>
         {
             var start = Stopwatch.GetTimestamp();
-            plugins[i] = Scan(paths[i], Mod);
+            plugins[i] = cache == null ? Scan(paths[i], Mod) : PluginCache.LoadOrScan(cache, paths[i], Mod);
             took[i] = Stopwatch.GetElapsedTime(start).TotalMilliseconds;
         });
         var scanTime = clock.Elapsed;
@@ -422,9 +430,194 @@ internal static unsafe class IndexPrototype
         public PluginIndex Finish()
         {
             _index.EditorIdPoolLength = _pool;
+            var n = _index.Count;
+            Array.Resize(ref _index.FormIds, n);
+            Array.Resize(ref _index.Signatures, n);
+            Array.Resize(ref _index.Flags, n);
+            Array.Resize(ref _index.Offsets, n);
+            Array.Resize(ref _index.Parents, n);
+            Array.Resize(ref _index.EditorIdStart, n);
+            Array.Resize(ref _index.EditorIdLength, n);
+            Array.Resize(ref _index.EditorIdPool, _pool);
             return _index;
         }
     }
 
     private static uint U32(ReadOnlySpan<byte> bytes, int pos) => BinaryPrimitives.ReadUInt32LittleEndian(bytes[pos..]);
+
+    /// <summary>
+    /// Each plugin's index saved to a file of its own, reused while the plugin's size and last write time are unchanged:
+    /// a later session loads what it scanned, and a changed plugin is scanned again on its own.
+    /// </summary>
+    public static class PluginCache
+    {
+        private const int Version = 1;
+
+        public static PluginIndex LoadOrScan(string folder, string path, Func<string, int> mod)
+        {
+            var info = new FileInfo(path);
+            var file = Path.Combine(folder, info.Name + ".idx");
+            if (TryLoad(file, info, mod) is { } loaded) return loaded;
+            var scanned = Scan(path, mod);
+            Save(file, info, scanned, MasterNames(path));
+            return scanned;
+        }
+
+        private static string[] MasterNames(string path)
+        {
+            // The master names, as the scan resolved them, are read back from the header when saving.
+            using var stream = File.OpenRead(path);
+            var header = new byte[24];
+            stream.ReadExactly(header);
+            var body = new byte[BinaryPrimitives.ReadUInt32LittleEndian(header.AsSpan(4))];
+            stream.ReadExactly(body);
+            var names = new List<string>();
+            for (var pos = 0; pos < body.Length;)
+            {
+                var sig = BinaryPrimitives.ReadUInt32LittleEndian(body.AsSpan(pos));
+                var len = BinaryPrimitives.ReadUInt16LittleEndian(body.AsSpan(pos + 4));
+                if (sig == Mast) names.Add(Encoding.ASCII.GetString(body, pos + 6, len).TrimEnd('\0'));
+                pos += 6 + len;
+            }
+            return [.. names];
+        }
+
+        private static void Save(string file, FileInfo info, PluginIndex index, string[] masters)
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(file)!);
+            using var stream = new BufferedStream(File.Create(file), 1 << 20);
+            using var writer = new BinaryWriter(stream);
+            writer.Write(Version);
+            writer.Write(info.Length);
+            writer.Write(info.LastWriteTimeUtc.Ticks);
+            writer.Write(masters.Length);
+            foreach (var master in masters) writer.Write(master);
+            writer.Write(index.Count);
+            writer.Write(index.EditorIdPoolLength);
+            void Array<T>(T[] values, int count) where T : unmanaged => writer.Write(System.Runtime.InteropServices.MemoryMarshal.AsBytes(values.AsSpan(0, count)));
+            Array(index.FormIds, index.Count);
+            Array(index.Signatures, index.Count);
+            Array(index.Flags, index.Count);
+            Array(index.Offsets, index.Count);
+            Array(index.Parents, index.Count);
+            Array(index.EditorIdStart, index.Count);
+            Array(index.EditorIdLength, index.Count);
+            Array(index.EditorIdPool, index.EditorIdPoolLength);
+        }
+
+        private static PluginIndex? TryLoad(string file, FileInfo info, Func<string, int> mod)
+        {
+            if (!File.Exists(file)) return null;
+            using var stream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read, 1 << 20);
+            using var reader = new BinaryReader(stream);
+            if (reader.ReadInt32() != Version || reader.ReadInt64() != info.Length || reader.ReadInt64() != info.LastWriteTimeUtc.Ticks) return null;
+            var masters = new int[reader.ReadInt32() + 1];
+            for (var m = 0; m < masters.Length - 1; m++) masters[m] = mod(reader.ReadString());
+            masters[^1] = mod(info.Name);
+            var count = reader.ReadInt32();
+            var pool = reader.ReadInt32();
+            T[] Array<T>(int n) where T : unmanaged
+            {
+                var values = new T[n];
+                stream.ReadExactly(System.Runtime.InteropServices.MemoryMarshal.AsBytes(values.AsSpan()));
+                return values;
+            }
+            return new PluginIndex
+            {
+                FileName = info.Name, MasterMods = masters, Count = count,
+                FormIds = Array<uint>(count), Signatures = Array<uint>(count), Flags = Array<uint>(count), Offsets = Array<long>(count),
+                Parents = Array<int>(count), EditorIdStart = Array<int>(count), EditorIdLength = Array<ushort>(count),
+                EditorIdPool = Array<byte>(pool), EditorIdPoolLength = pool,
+            };
+        }
+    }
+
+    /// <summary>
+    /// Every record's winning EditorID, for case-insensitive lookup: a sorted array of (hash, chain), searched by the
+    /// query's hash and confirmed against the stored bytes.
+    /// </summary>
+    public sealed class EditorIdIndex
+    {
+        private readonly LoadOrderIndex _index;
+        private readonly ulong[] _entries; // hash in the high 40 bits, chain in the low 24
+
+        private EditorIdIndex(LoadOrderIndex index, ulong[] entries)
+        {
+            _index = index;
+            _entries = entries;
+        }
+
+        public int Count => _entries.Length;
+
+        public static EditorIdIndex Build(LoadOrderIndex index)
+        {
+            var chains = index.SortedKeys.Length;
+            var entries = new ulong[chains];
+            var count = 0;
+            var lockObj = new object();
+            Parallel.ForEach(Partitioner.Create(0, chains, 16384), range =>
+            {
+                var local = new List<ulong>(range.Item2 - range.Item1);
+                for (var c = range.Item1; c < range.Item2; c++)
+                {
+                    var text = Winner(index, c);
+                    if (text.IsEmpty) continue;
+                    local.Add((Hash(text) << 24) | (uint)c);
+                }
+                lock (lockObj)
+                {
+                    local.CopyTo(entries, count);
+                    count += local.Count;
+                }
+            });
+            System.Array.Resize(ref entries, count);
+            entries.AsSpan().Sort();
+            return new EditorIdIndex(index, entries);
+        }
+
+        /// <summary>The chain (record) whose winning EditorID is <paramref name="editorId"/>, in any letter case, or -1.</summary>
+        public int Find(string editorId)
+        {
+            Span<byte> query = stackalloc byte[editorId.Length];
+            for (var i = 0; i < editorId.Length; i++) query[i] = (byte)editorId[i];
+            var hash = Hash(query);
+            var lo = 0;
+            var hi = _entries.Length;
+            while (lo < hi)
+            {
+                var mid = (lo + hi) / 2;
+                if (_entries[mid] >> 24 < hash) lo = mid + 1; else hi = mid;
+            }
+            for (var i = lo; i < _entries.Length && _entries[i] >> 24 == hash; i++)
+            {
+                var chain = (int)(_entries[i] & 0xFFFFFF);
+                if (System.Text.Ascii.EqualsIgnoreCase(Winner(_index, chain), query)) return chain;
+            }
+            return -1;
+        }
+
+        private static ReadOnlySpan<byte> Winner(LoadOrderIndex index, int chain)
+        {
+            // The last version with an EditorID: a deleted or EditorID-less override keeps the earlier name findable.
+            for (var v = index.ChainStart[chain + 1] - 1; v >= index.ChainStart[chain]; v--)
+            {
+                var version = index.Versions[v];
+                var plugin = System.Array.BinarySearch(index.PluginStart, version);
+                if (plugin < 0) plugin = ~plugin - 1;
+                while (plugin + 1 < index.PluginStart.Length && index.PluginStart[plugin + 1] == version) plugin++;
+                var p = index.Plugins[plugin];
+                var r = version - index.PluginStart[plugin];
+                if (p.EditorIdStart[r] >= 0) return p.EditorIdPool.AsSpan(p.EditorIdStart[r], p.EditorIdLength[r]);
+            }
+            return default;
+        }
+
+        /// <summary>FNV-1a over ASCII-lowercased bytes, 40 bits.</summary>
+        private static ulong Hash(ReadOnlySpan<byte> text)
+        {
+            var hash = 14695981039346656037UL;
+            foreach (var b in text) hash = (hash ^ (b is >= (byte)'A' and <= (byte)'Z' ? (uint)(b + 32) : b)) * 1099511628211UL;
+            return hash >> 24;
+        }
+    }
 }
