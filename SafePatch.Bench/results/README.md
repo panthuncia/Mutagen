@@ -16,6 +16,7 @@ One file per branch, each measured on its own against 0.54.4, and the branches c
 - [`perf/record-batches`](perf-record-batches.md): EnumerateMajorRecordBatches: one mod on several threads
 - [All combined](combined.md)
 - [The combined build with generated batches](generated-batches.md), timed against 0.54.4 only
+- [Memory](memory.md): retained heap and process peaks, 0.54.4 against the combined build
 
 ## Setup
 
