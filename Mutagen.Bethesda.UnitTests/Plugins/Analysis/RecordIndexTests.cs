@@ -53,7 +53,7 @@ public class RecordIndexTests
         var topic = mod.DialogTopics.AddNew("Topic");
         topic.Responses.Add(new DialogResponses(mod) { EditorID = "Response" });
         topic.Responses.Add(new DialogResponses(mod));
-        // Records Mutagen writes compressed when flagged (it writes a worldspace or topic with the flag uncompressed).
+        // Not worldspaces: before fix/parallel-worldspace-writes, a flagged worldspace was written uncompressed.
         foreach (var record in mod.EnumerateMajorRecords().Where(r => r is Npc or Cell or PlacedObject or DialogResponses)) record.IsCompressed = compressed;
         var path = Path.Combine(folder, mod.ModKey.FileName);
         mod.WriteToBinary(path);
