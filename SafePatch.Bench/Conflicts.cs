@@ -46,7 +46,7 @@ internal static class Conflicts
             var indexed = clock.Elapsed;
 
             clock.Restart();
-            long pairs = 0, identical = 0;
+            long pairs = 0, identical = 0, failed = 0;
             Parallel.ForEach(Partitioner.Create(0, chains.Length, 64), range =>
             {
                 long localPairs = 0, localIdentical = 0;
@@ -56,7 +56,17 @@ internal static class Conflicts
                     for (var i = 1; i < chain.Count; i++)
                     {
                         localPairs++;
-                        if (Same(chain[i - 1], chain[i])) localIdentical++;
+                        try
+                        {
+                            if (Same(chain[i - 1], chain[i])) localIdentical++;
+                        }
+                        catch (Exception ex)
+                        {
+                            // Counted and reported, so one unreadable record does not stop the run.
+                            Failures.TryAdd($"{ex.GetType().Name}: {ex.Message.Split('
+')[0]}", chain[i].FormKey);
+                            Interlocked.Increment(ref failed);
+                        }
                     }
                 }
                 Interlocked.Add(ref pairs, localPairs);
@@ -65,6 +75,8 @@ internal static class Conflicts
             var compared = clock.Elapsed;
 
             var records = perPlugin.Sum(p => (long)p.Count);
+            foreach (var (message, formKey) in Failures) Console.WriteLine($"  failed, e.g. {formKey}: {message}");
+            if (failed > 0) Console.WriteLine($"  {failed:N0} comparisons failed");
             Console.WriteLine($"conflicts run {run + 1}: {records:N0} versions, {chains.Length:N0} overridden records, {pairs:N0} pairs " +
                               $"({identical:N0} identical): collect {indexed.TotalMilliseconds:N0} ms, compare {compared.TotalMilliseconds:N0} ms");
             Console.WriteLine($"CONFLICTS|{label}|{run + 1}|{records}|{chains.Length}|{pairs}|{identical}|{indexed.TotalMilliseconds:F0}|{compared.TotalMilliseconds:F0}");
@@ -89,6 +101,7 @@ internal static class Conflicts
     }
 
     private static readonly ConcurrentDictionary<Type, Func<IMajorRecordGetter, IMajorRecordGetter, bool>> Comparers = new();
+    private static readonly ConcurrentDictionary<string, FormKey> Failures = new();
 
     private static bool Same(IMajorRecordGetter a, IMajorRecordGetter b)
     {
