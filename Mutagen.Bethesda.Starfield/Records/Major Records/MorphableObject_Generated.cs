@@ -845,6 +845,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IMorphableObjectGetter item,
+            IMorphableObjectGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((MorphableObjectCommon)((IMorphableObjectGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static MorphableObject Duplicate(
             this IMorphableObjectGetter item,
             FormKey formKey,
@@ -1380,6 +1398,86 @@ namespace Mutagen.Bethesda.Starfield
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IMorphableObjectGetter lhs,
+            IMorphableObjectGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)MorphableObject_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MorphableObject_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)MorphableObject_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)MorphableObject_FieldIndex.Model] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MorphableObject_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)MorphableObject_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)MorphableObject_FieldIndex.TMPP] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MorphableObject_FieldIndex.TMPP) ?? true))
+                {
+                    if (!string.Equals(lhs.TMPP, rhs.TMPP)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)MorphableObject_FieldIndex.TCMP] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MorphableObject_FieldIndex.TCMP) ?? true))
+                {
+                    if (!string.Equals(lhs.TCMP, rhs.TCMP)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)MorphableObject_FieldIndex.MOBC] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MorphableObject_FieldIndex.MOBC) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.MOBC, rhs.MOBC)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMorphableObjectGetter)lhs, (IMorphableObjectGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMorphableObjectGetter)lhs, (IMorphableObjectGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IMorphableObjectGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

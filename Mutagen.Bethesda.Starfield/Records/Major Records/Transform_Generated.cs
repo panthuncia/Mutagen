@@ -857,6 +857,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ITransformGetter item,
+            ITransformGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((TransformCommon)((ITransformGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Transform Duplicate(
             this ITransformGetter item,
             FormKey formKey,
@@ -1337,6 +1355,96 @@ namespace Mutagen.Bethesda.Starfield
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ITransformGetter lhs,
+            ITransformGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Transform_FieldIndex.Position] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Transform_FieldIndex.Position) ?? true))
+                {
+                    if (!lhs.Position.Equals(rhs.Position)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Transform_FieldIndex.Rotation] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Transform_FieldIndex.Rotation) ?? true))
+                {
+                    if (!lhs.Rotation.Equals(rhs.Rotation)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Transform_FieldIndex.Scale] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Transform_FieldIndex.Scale) ?? true))
+                {
+                    if (!lhs.Scale.EqualsWithin(rhs.Scale)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Transform_FieldIndex.ZoomMin] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Transform_FieldIndex.ZoomMin) ?? true))
+                {
+                    if (!lhs.ZoomMin.EqualsWithin(rhs.ZoomMin)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Transform_FieldIndex.ZoomMax] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Transform_FieldIndex.ZoomMax) ?? true))
+                {
+                    if (!lhs.ZoomMax.EqualsWithin(rhs.ZoomMax)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Transform_FieldIndex.BNAM] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Transform_FieldIndex.BNAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.BNAM, rhs.BNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Transform_FieldIndex.ENAM] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Transform_FieldIndex.ENAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.ENAM, rhs.ENAM)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ITransformGetter)lhs, (ITransformGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ITransformGetter)lhs, (ITransformGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

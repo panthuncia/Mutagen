@@ -872,6 +872,24 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ISkillRecordGetter item,
+            ISkillRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((SkillRecordCommon)((ISkillRecordGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static SkillRecord Duplicate(
             this ISkillRecordGetter item,
             FormKey formKey,
@@ -1395,6 +1413,109 @@ namespace Mutagen.Bethesda.Oblivion
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ISkillRecordGetter lhs,
+            ISkillRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IOblivionMajorRecordGetter)lhs, (IOblivionMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)SkillRecord_FieldIndex.Skill] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SkillRecord_FieldIndex.Skill) ?? true))
+                {
+                    if (lhs.Skill != rhs.Skill) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)SkillRecord_FieldIndex.Description] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SkillRecord_FieldIndex.Description) ?? true))
+                {
+                    if (!string.Equals(lhs.Description, rhs.Description)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)SkillRecord_FieldIndex.Icon] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SkillRecord_FieldIndex.Icon) ?? true))
+                {
+                    if (!string.Equals(lhs.Icon, rhs.Icon)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)SkillRecord_FieldIndex.Data] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SkillRecord_FieldIndex.Data) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Data, rhs.Data, out var lhsData, out var rhsData, out var isDataEqual))
+                    {
+                        if (!((SkillDataCommon)((ISkillDataGetter)lhsData).CommonInstance()!).Equals(lhsData, rhsData, equalsMask?.GetSubCrystal((int)SkillRecord_FieldIndex.Data))) return false;
+                    }
+                    else if (!isDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)SkillRecord_FieldIndex.ApprenticeText] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SkillRecord_FieldIndex.ApprenticeText) ?? true))
+                {
+                    if (!string.Equals(lhs.ApprenticeText, rhs.ApprenticeText)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)SkillRecord_FieldIndex.JourneymanText] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SkillRecord_FieldIndex.JourneymanText) ?? true))
+                {
+                    if (!string.Equals(lhs.JourneymanText, rhs.JourneymanText)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)SkillRecord_FieldIndex.ExpertText] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SkillRecord_FieldIndex.ExpertText) ?? true))
+                {
+                    if (!string.Equals(lhs.ExpertText, rhs.ExpertText)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)SkillRecord_FieldIndex.MasterText] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SkillRecord_FieldIndex.MasterText) ?? true))
+                {
+                    if (!string.Equals(lhs.MasterText, rhs.MasterText)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IOblivionMajorRecordGetter lhs,
+            IOblivionMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISkillRecordGetter)lhs, (ISkillRecordGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISkillRecordGetter)lhs, (ISkillRecordGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

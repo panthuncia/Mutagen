@@ -991,6 +991,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IActionRecordGetter item,
+            IActionRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ActionRecordCommon)((IActionRecordGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ActionRecord Duplicate(
             this IActionRecordGetter item,
             FormKey formKey,
@@ -1530,6 +1548,109 @@ namespace Mutagen.Bethesda.Starfield
                 yield return AttractionRuleInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IActionRecordGetter lhs,
+            IActionRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ActionRecord_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActionRecord_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)ActionRecord_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)ActionRecord_FieldIndex.Color] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActionRecord_FieldIndex.Color) ?? true))
+                {
+                    if (!lhs.Color.ColorOnlyEquals(rhs.Color)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)ActionRecord_FieldIndex.Notes] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActionRecord_FieldIndex.Notes) ?? true))
+                {
+                    if (!string.Equals(lhs.Notes, rhs.Notes)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)ActionRecord_FieldIndex.Type] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActionRecord_FieldIndex.Type) ?? true))
+                {
+                    if (lhs.Type != rhs.Type) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)ActionRecord_FieldIndex.FNAM] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActionRecord_FieldIndex.FNAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.FNAM, rhs.FNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)ActionRecord_FieldIndex.Name] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActionRecord_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)ActionRecord_FieldIndex.AttractionRule] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActionRecord_FieldIndex.AttractionRule) ?? true))
+                {
+                    if (!lhs.AttractionRule.Equals(rhs.AttractionRule)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)ActionRecord_FieldIndex.FlashLinkageName] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActionRecord_FieldIndex.FlashLinkageName) ?? true))
+                {
+                    if (!string.Equals(lhs.FlashLinkageName, rhs.FlashLinkageName)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IActionRecordGetter)lhs, (IActionRecordGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IActionRecordGetter)lhs, (IActionRecordGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

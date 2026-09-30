@@ -928,6 +928,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ICameraPathGetter item,
+            ICameraPathGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((CameraPathCommon)((ICameraPathGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static CameraPath Duplicate(
             this ICameraPathGetter item,
             FormKey formKey,
@@ -1420,6 +1438,78 @@ namespace Mutagen.Bethesda.Starfield
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ICameraPathGetter lhs,
+            ICameraPathGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)CameraPath_FieldIndex.Conditions] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CameraPath_FieldIndex.Conditions) ?? true))
+                {
+                    if (!lhs.Conditions.SequenceEqual(rhs.Conditions, (l, r) => ((ConditionCommon)((IConditionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)CameraPath_FieldIndex.Conditions)))) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)CameraPath_FieldIndex.Parent] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CameraPath_FieldIndex.Parent) ?? true))
+                {
+                    if (!lhs.Parent.Equals(rhs.Parent)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)CameraPath_FieldIndex.Previous] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CameraPath_FieldIndex.Previous) ?? true))
+                {
+                    if (!lhs.Previous.Equals(rhs.Previous)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)CameraPath_FieldIndex.Zoom] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CameraPath_FieldIndex.Zoom) ?? true))
+                {
+                    if (lhs.Zoom != rhs.Zoom) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)CameraPath_FieldIndex.Shots] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CameraPath_FieldIndex.Shots) ?? true))
+                {
+                    if (!lhs.Shots.SequenceEqualNullable(rhs.Shots)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ICameraPathGetter)lhs, (ICameraPathGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ICameraPathGetter)lhs, (ICameraPathGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

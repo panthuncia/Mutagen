@@ -1325,6 +1325,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IFloraGetter item,
+            IFloraGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((FloraCommon)((IFloraGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Flora Duplicate(
             this IFloraGetter item,
             FormKey formKey,
@@ -2032,6 +2050,161 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return HarvestSoundInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IFloraGetter lhs,
+            IFloraGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Flora_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Flora_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)Flora_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Flora_FieldIndex.ObjectBounds] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Flora_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)Flora_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Flora_FieldIndex.Name] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Flora_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Flora_FieldIndex.Model] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Flora_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)Flora_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Flora_FieldIndex.Destructible] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Flora_FieldIndex.Destructible) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Destructible, rhs.Destructible, out var lhsDestructible, out var rhsDestructible, out var isDestructibleEqual))
+                    {
+                        if (!((DestructibleCommon)((IDestructibleGetter)lhsDestructible).CommonInstance()!).Equals(lhsDestructible, rhsDestructible, equalsMask?.GetSubCrystal((int)Flora_FieldIndex.Destructible))) return false;
+                    }
+                    else if (!isDestructibleEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Flora_FieldIndex.Keywords] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Flora_FieldIndex.Keywords) ?? true))
+                {
+                    if (!lhs.Keywords.SequenceEqualNullable(rhs.Keywords)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Flora_FieldIndex.PNAM] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Flora_FieldIndex.PNAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.PNAM, rhs.PNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Flora_FieldIndex.ActivateTextOverride] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Flora_FieldIndex.ActivateTextOverride) ?? true))
+                {
+                    if (!object.Equals(lhs.ActivateTextOverride, rhs.ActivateTextOverride)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Flora_FieldIndex.FNAM] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Flora_FieldIndex.FNAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.FNAM, rhs.FNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Flora_FieldIndex.Ingredient] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Flora_FieldIndex.Ingredient) ?? true))
+                {
+                    if (!lhs.Ingredient.Equals(rhs.Ingredient)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Flora_FieldIndex.HarvestSound] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Flora_FieldIndex.HarvestSound) ?? true))
+                {
+                    if (!lhs.HarvestSound.Equals(rhs.HarvestSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Flora_FieldIndex.Production] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Flora_FieldIndex.Production) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Production, rhs.Production, out var lhsProduction, out var rhsProduction, out var isProductionEqual))
+                    {
+                        if (!((SeasonalIngredientProductionCommon)((ISeasonalIngredientProductionGetter)lhsProduction).CommonInstance()!).Equals(lhsProduction, rhsProduction, equalsMask?.GetSubCrystal((int)Flora_FieldIndex.Production))) return false;
+                    }
+                    else if (!isProductionEqual) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IFloraGetter)lhs, (IFloraGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IFloraGetter)lhs, (IFloraGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IFloraGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

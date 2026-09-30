@@ -995,6 +995,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ISoundKeywordMappingGetter item,
+            ISoundKeywordMappingGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((SoundKeywordMappingCommon)((ISoundKeywordMappingGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static SoundKeywordMapping Duplicate(
             this ISoundKeywordMappingGetter item,
             FormKey formKey,
@@ -1513,6 +1531,87 @@ namespace Mutagen.Bethesda.Fallout4
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ISoundKeywordMappingGetter lhs,
+            ISoundKeywordMappingGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)SoundKeywordMapping_FieldIndex.PrimaryDescriptor] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundKeywordMapping_FieldIndex.PrimaryDescriptor) ?? true))
+                {
+                    if (!lhs.PrimaryDescriptor.Equals(rhs.PrimaryDescriptor)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)SoundKeywordMapping_FieldIndex.ExteriorTail] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundKeywordMapping_FieldIndex.ExteriorTail) ?? true))
+                {
+                    if (!lhs.ExteriorTail.Equals(rhs.ExteriorTail)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)SoundKeywordMapping_FieldIndex.VatsDescriptor] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundKeywordMapping_FieldIndex.VatsDescriptor) ?? true))
+                {
+                    if (!lhs.VatsDescriptor.Equals(rhs.VatsDescriptor)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)SoundKeywordMapping_FieldIndex.VatsThreshold] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundKeywordMapping_FieldIndex.VatsThreshold) ?? true))
+                {
+                    if (!lhs.VatsThreshold.EqualsWithin(rhs.VatsThreshold)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)SoundKeywordMapping_FieldIndex.Keywords] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundKeywordMapping_FieldIndex.Keywords) ?? true))
+                {
+                    if (!lhs.Keywords.SequenceEqualNullable(rhs.Keywords)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)SoundKeywordMapping_FieldIndex.Sounds] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundKeywordMapping_FieldIndex.Sounds) ?? true))
+                {
+                    if (!lhs.Sounds.SequenceEqual(rhs.Sounds, (l, r) => ((MappingSoundCommon)((IMappingSoundGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)SoundKeywordMapping_FieldIndex.Sounds)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISoundKeywordMappingGetter)lhs, (ISoundKeywordMappingGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISoundKeywordMappingGetter)lhs, (ISoundKeywordMappingGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

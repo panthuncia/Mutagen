@@ -720,6 +720,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IWeaponBarrelModelGetter item,
+            IWeaponBarrelModelGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((WeaponBarrelModelCommon)((IWeaponBarrelModelGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static WeaponBarrelModel Duplicate(
             this IWeaponBarrelModelGetter item,
             FormKey formKey,
@@ -1154,6 +1172,69 @@ namespace Mutagen.Bethesda.Starfield
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IWeaponBarrelModelGetter lhs,
+            IWeaponBarrelModelGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)WeaponBarrelModel_FieldIndex.AllowCoverState] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)WeaponBarrelModel_FieldIndex.AllowCoverState) ?? true))
+                {
+                    if (lhs.AllowCoverState != rhs.AllowCoverState) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)WeaponBarrelModel_FieldIndex.CoverDetectionDistance] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)WeaponBarrelModel_FieldIndex.CoverDetectionDistance) ?? true))
+                {
+                    if (!lhs.CoverDetectionDistance.EqualsWithin(rhs.CoverDetectionDistance)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)WeaponBarrelModel_FieldIndex.EnterCoverAnimationTimeSeconds] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)WeaponBarrelModel_FieldIndex.EnterCoverAnimationTimeSeconds) ?? true))
+                {
+                    if (!lhs.EnterCoverAnimationTimeSeconds.EqualsWithin(rhs.EnterCoverAnimationTimeSeconds)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)WeaponBarrelModel_FieldIndex.HipfireDuringCoverAnimationTimeSeconds] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)WeaponBarrelModel_FieldIndex.HipfireDuringCoverAnimationTimeSeconds) ?? true))
+                {
+                    if (!lhs.HipfireDuringCoverAnimationTimeSeconds.EqualsWithin(rhs.HipfireDuringCoverAnimationTimeSeconds)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IWeaponBarrelModelGetter)lhs, (IWeaponBarrelModelGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IWeaponBarrelModelGetter)lhs, (IWeaponBarrelModelGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

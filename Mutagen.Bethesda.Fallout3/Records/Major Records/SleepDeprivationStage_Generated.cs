@@ -651,6 +651,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ISleepDeprivationStageGetter item,
+            ISleepDeprivationStageGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((SleepDeprivationStageCommon)((ISleepDeprivationStageGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static SleepDeprivationStage Duplicate(
             this ISleepDeprivationStageGetter item,
             FormKey formKey,
@@ -1063,6 +1081,51 @@ namespace Mutagen.Bethesda.Fallout3
             }
             yield return FormLinkInformation.Factory(obj.ActorEffect);
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ISleepDeprivationStageGetter lhs,
+            ISleepDeprivationStageGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)SleepDeprivationStage_FieldIndex.TriggerThreshold] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SleepDeprivationStage_FieldIndex.TriggerThreshold) ?? true))
+                {
+                    if (lhs.TriggerThreshold != rhs.TriggerThreshold) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)SleepDeprivationStage_FieldIndex.ActorEffect] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SleepDeprivationStage_FieldIndex.ActorEffect) ?? true))
+                {
+                    if (!lhs.ActorEffect.Equals(rhs.ActorEffect)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISleepDeprivationStageGetter)lhs, (ISleepDeprivationStageGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISleepDeprivationStageGetter)lhs, (ISleepDeprivationStageGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

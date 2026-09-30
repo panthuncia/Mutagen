@@ -687,6 +687,24 @@ namespace Mutagen.Bethesda.Oblivion
                 .Select(m => (IMajorRecord)m);
         }
 
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IOblivionMajorRecordGetter item,
+            IOblivionMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((OblivionMajorRecordCommon)((IOblivionMajorRecordGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         [DebuggerStepThrough]
         public static void Remove(
             this IOblivionMajorRecordInternal obj,
@@ -1352,6 +1370,33 @@ namespace Mutagen.Bethesda.Oblivion
                         yield break;
                     }
             }
+        }
+        
+        public virtual void FillDifferingFields(
+            IOblivionMajorRecordGetter lhs,
+            IOblivionMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IMajorRecordGetter)lhs, (IMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)OblivionMajorRecord_FieldIndex.OblivionMajorRecordFlags] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)OblivionMajorRecord_FieldIndex.OblivionMajorRecordFlags) ?? true))
+                {
+                    if (lhs.OblivionMajorRecordFlags != rhs.OblivionMajorRecordFlags) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IOblivionMajorRecordGetter)lhs, (IOblivionMajorRecordGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IOblivionMajorRecordGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

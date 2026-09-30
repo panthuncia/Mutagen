@@ -1836,6 +1836,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IArmorAddonGetter item,
+            IArmorAddonGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ArmorAddonCommon)((IArmorAddonGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ArmorAddon Duplicate(
             this IArmorAddonGetter item,
             FormKey formKey,
@@ -2869,6 +2887,262 @@ namespace Mutagen.Bethesda.Starfield
                 yield return BodyPartDataInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IArmorAddonGetter lhs,
+            IArmorAddonGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ArmorAddon_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)ArmorAddon_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)ArmorAddon_FieldIndex.Components] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ArmorAddon_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)ArmorAddon_FieldIndex.FirstPersonFlags] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.FirstPersonFlags) ?? true))
+                {
+                    if (lhs.FirstPersonFlags != rhs.FirstPersonFlags) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)ArmorAddon_FieldIndex.Race] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.Race) ?? true))
+                {
+                    if (!lhs.Race.Equals(rhs.Race)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)ArmorAddon_FieldIndex.WeaponAdjust] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.WeaponAdjust) ?? true))
+                {
+                    if (!lhs.WeaponAdjust.EqualsWithin(rhs.WeaponAdjust)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)ArmorAddon_FieldIndex.MalePriority] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.MalePriority) ?? true))
+                {
+                    if (lhs.MalePriority != rhs.MalePriority) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)ArmorAddon_FieldIndex.FemalePriority] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.FemalePriority) ?? true))
+                {
+                    if (lhs.FemalePriority != rhs.FemalePriority) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)ArmorAddon_FieldIndex.Unknown] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.Unknown) ?? true))
+                {
+                    if (lhs.Unknown != rhs.Unknown) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)ArmorAddon_FieldIndex.DetectionSoundValue] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.DetectionSoundValue) ?? true))
+                {
+                    if (lhs.DetectionSoundValue != rhs.DetectionSoundValue) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)ArmorAddon_FieldIndex.HealthBarOffset] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.HealthBarOffset) ?? true))
+                {
+                    if (!lhs.HealthBarOffset.EqualsWithin(rhs.HealthBarOffset)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)ArmorAddon_FieldIndex.WorldModel] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.WorldModel) ?? true))
+                {
+                    if (!Equals(lhs.WorldModel, rhs.WorldModel)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)ArmorAddon_FieldIndex.FirstPersonModel] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.FirstPersonModel) ?? true))
+                {
+                    if (!Equals(lhs.FirstPersonModel, rhs.FirstPersonModel)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)ArmorAddon_FieldIndex.AltSkeleton] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.AltSkeleton) ?? true))
+                {
+                    if (!Equals(lhs.AltSkeleton, rhs.AltSkeleton)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)ArmorAddon_FieldIndex.ExtraLightLayers] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.ExtraLightLayers) ?? true))
+                {
+                    if (!lhs.ExtraLightLayers.SequenceEqualNullable(rhs.ExtraLightLayers)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)ArmorAddon_FieldIndex.SkinTexture] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.SkinTexture) ?? true))
+                {
+                    if (!Equals(lhs.SkinTexture, rhs.SkinTexture)) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)ArmorAddon_FieldIndex.Morphs] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.Morphs) ?? true))
+                {
+                    if (!Equals(lhs.Morphs, rhs.Morphs)) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)ArmorAddon_FieldIndex.AdditionalRaces] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.AdditionalRaces) ?? true))
+                {
+                    if (!lhs.AdditionalRaces.SequenceEqualNullable(rhs.AdditionalRaces)) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)ArmorAddon_FieldIndex.FootstepSound] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.FootstepSound) ?? true))
+                {
+                    if (!lhs.FootstepSound.Equals(rhs.FootstepSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)ArmorAddon_FieldIndex.ArtObject] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.ArtObject) ?? true))
+                {
+                    if (!lhs.ArtObject.Equals(rhs.ArtObject)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)ArmorAddon_FieldIndex.BodyPartData] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.BodyPartData) ?? true))
+                {
+                    if (!lhs.BodyPartData.Equals(rhs.BodyPartData)) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)ArmorAddon_FieldIndex.ActorValueModulationGroupType] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.ActorValueModulationGroupType) ?? true))
+                {
+                    if (lhs.ActorValueModulationGroupType != rhs.ActorValueModulationGroupType) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)ArmorAddon_FieldIndex.ActorValueModulationEntryType] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.ActorValueModulationEntryType) ?? true))
+                {
+                    if (!string.Equals(lhs.ActorValueModulationEntryType, rhs.ActorValueModulationEntryType)) return false;
+                }
+                return true;
+            }
+            if (!Equal22()) differs[(int)ArmorAddon_FieldIndex.ActorValueModulationSubType] = true;
+            bool Equal22()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.ActorValueModulationSubType) ?? true))
+                {
+                    if (!string.Equals(lhs.ActorValueModulationSubType, rhs.ActorValueModulationSubType)) return false;
+                }
+                return true;
+            }
+            if (!Equal23()) differs[(int)ArmorAddon_FieldIndex.ActorValueModulationEntryValue] = true;
+            bool Equal23()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.ActorValueModulationEntryValue) ?? true))
+                {
+                    if (!string.Equals(lhs.ActorValueModulationEntryValue, rhs.ActorValueModulationEntryValue)) return false;
+                }
+                return true;
+            }
+            if (!Equal24()) differs[(int)ArmorAddon_FieldIndex.BoneDataModifiers] = true;
+            bool Equal24()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ArmorAddon_FieldIndex.BoneDataModifiers) ?? true))
+                {
+                    if (!Equals(lhs.BoneDataModifiers, rhs.BoneDataModifiers)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IArmorAddonGetter)lhs, (IArmorAddonGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IArmorAddonGetter)lhs, (IArmorAddonGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IArmorAddonGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

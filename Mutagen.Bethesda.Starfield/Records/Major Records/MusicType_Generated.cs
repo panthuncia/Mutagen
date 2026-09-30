@@ -974,6 +974,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IMusicTypeGetter item,
+            IMusicTypeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((MusicTypeCommon)((IMusicTypeGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static MusicType Duplicate(
             this IMusicTypeGetter item,
             FormKey formKey,
@@ -1517,6 +1535,104 @@ namespace Mutagen.Bethesda.Starfield
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IMusicTypeGetter lhs,
+            IMusicTypeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)MusicType_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MusicType_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)MusicType_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)MusicType_FieldIndex.Flags] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MusicType_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)MusicType_FieldIndex.Data] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MusicType_FieldIndex.Data) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Data, rhs.Data, out var lhsData, out var rhsData, out var isDataEqual))
+                    {
+                        if (!((MusicTypeDataCommon)((IMusicTypeDataGetter)lhsData).CommonInstance()!).Equals(lhsData, rhsData, equalsMask?.GetSubCrystal((int)MusicType_FieldIndex.Data))) return false;
+                    }
+                    else if (!isDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)MusicType_FieldIndex.FadeDuration] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MusicType_FieldIndex.FadeDuration) ?? true))
+                {
+                    if (!lhs.FadeDuration.EqualsWithin(rhs.FadeDuration)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)MusicType_FieldIndex.VNAM] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MusicType_FieldIndex.VNAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.VNAM, rhs.VNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)MusicType_FieldIndex.UNAM] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MusicType_FieldIndex.UNAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.UNAM, rhs.UNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)MusicType_FieldIndex.Tracks] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MusicType_FieldIndex.Tracks) ?? true))
+                {
+                    if (!lhs.Tracks.SequenceEqualNullable(rhs.Tracks)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMusicTypeGetter)lhs, (IMusicTypeGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMusicTypeGetter)lhs, (IMusicTypeGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

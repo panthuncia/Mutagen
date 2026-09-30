@@ -833,6 +833,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this INavigationMeshInfoMapGetter item,
+            INavigationMeshInfoMapGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((NavigationMeshInfoMapCommon)((INavigationMeshInfoMapGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static NavigationMeshInfoMap Duplicate(
             this INavigationMeshInfoMapGetter item,
             FormKey formKey,
@@ -1297,6 +1315,60 @@ namespace Mutagen.Bethesda.Fallout3
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            INavigationMeshInfoMapGetter lhs,
+            INavigationMeshInfoMapGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)NavigationMeshInfoMap_FieldIndex.Version] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)NavigationMeshInfoMap_FieldIndex.Version) ?? true))
+                {
+                    if (lhs.Version != rhs.Version) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)NavigationMeshInfoMap_FieldIndex.Infos] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)NavigationMeshInfoMap_FieldIndex.Infos) ?? true))
+                {
+                    if (!lhs.Infos.SequenceEqual(rhs.Infos, (l, r) => ((NavigationMeshInfoCommon)((INavigationMeshInfoGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)NavigationMeshInfoMap_FieldIndex.Infos)))) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)NavigationMeshInfoMap_FieldIndex.Connections] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)NavigationMeshInfoMap_FieldIndex.Connections) ?? true))
+                {
+                    if (!lhs.Connections.SequenceEqual(rhs.Connections, (l, r) => ((NavigationConnectionInfoCommon)((INavigationConnectionInfoGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)NavigationMeshInfoMap_FieldIndex.Connections)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((INavigationMeshInfoMapGetter)lhs, (INavigationMeshInfoMapGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((INavigationMeshInfoMapGetter)lhs, (INavigationMeshInfoMapGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

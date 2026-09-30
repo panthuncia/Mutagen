@@ -1368,6 +1368,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IProjectedDecalGetter item,
+            IProjectedDecalGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ProjectedDecalCommon)((IProjectedDecalGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ProjectedDecal Duplicate(
             this IProjectedDecalGetter item,
             FormKey formKey,
@@ -2086,6 +2104,197 @@ namespace Mutagen.Bethesda.Starfield
                 yield return MaterialInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IProjectedDecalGetter lhs,
+            IProjectedDecalGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ProjectedDecal_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ProjectedDecal_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)ProjectedDecal_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)ProjectedDecal_FieldIndex.ObjectBounds] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ProjectedDecal_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)ProjectedDecal_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)ProjectedDecal_FieldIndex.DirtinessScale] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ProjectedDecal_FieldIndex.DirtinessScale) ?? true))
+                {
+                    if (!lhs.DirtinessScale.Equals(rhs.DirtinessScale)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)ProjectedDecal_FieldIndex.ObjectPaletteDefaults] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ProjectedDecal_FieldIndex.ObjectPaletteDefaults) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectPaletteDefaults, rhs.ObjectPaletteDefaults, out var lhsObjectPaletteDefaults, out var rhsObjectPaletteDefaults, out var isObjectPaletteDefaultsEqual))
+                    {
+                        if (!((ObjectPaletteDefaultsCommon)((IObjectPaletteDefaultsGetter)lhsObjectPaletteDefaults).CommonInstance()!).Equals(lhsObjectPaletteDefaults, rhsObjectPaletteDefaults, equalsMask?.GetSubCrystal((int)ProjectedDecal_FieldIndex.ObjectPaletteDefaults))) return false;
+                    }
+                    else if (!isObjectPaletteDefaultsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)ProjectedDecal_FieldIndex.Components] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ProjectedDecal_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ProjectedDecal_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)ProjectedDecal_FieldIndex.Transforms] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ProjectedDecal_FieldIndex.Transforms) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Transforms, rhs.Transforms, out var lhsTransforms, out var rhsTransforms, out var isTransformsEqual))
+                    {
+                        if (!((TransformsCommon)((ITransformsGetter)lhsTransforms).CommonInstance()!).Equals(lhsTransforms, rhsTransforms, equalsMask?.GetSubCrystal((int)ProjectedDecal_FieldIndex.Transforms))) return false;
+                    }
+                    else if (!isTransformsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)ProjectedDecal_FieldIndex.PTTA] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ProjectedDecal_FieldIndex.PTTA) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.PTTA, rhs.PTTA, out var lhsPTTA, out var rhsPTTA, out var isPTTAEqual))
+                    {
+                        if (!((PTTACommon)((IPTTAGetter)lhsPTTA).CommonInstance()!).Equals(lhsPTTA, rhsPTTA, equalsMask?.GetSubCrystal((int)ProjectedDecal_FieldIndex.PTTA))) return false;
+                    }
+                    else if (!isPTTAEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)ProjectedDecal_FieldIndex.SnapBehavior] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ProjectedDecal_FieldIndex.SnapBehavior) ?? true))
+                {
+                    if (!lhs.SnapBehavior.Equals(rhs.SnapBehavior)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)ProjectedDecal_FieldIndex.Material] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ProjectedDecal_FieldIndex.Material) ?? true))
+                {
+                    if (!lhs.Material.Equals(rhs.Material)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)ProjectedDecal_FieldIndex.UnknownData1] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ProjectedDecal_FieldIndex.UnknownData1) ?? true))
+                {
+                    if (!lhs.UnknownData1.EqualsWithin(rhs.UnknownData1)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)ProjectedDecal_FieldIndex.UnknownData2] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ProjectedDecal_FieldIndex.UnknownData2) ?? true))
+                {
+                    if (!lhs.UnknownData2.EqualsWithin(rhs.UnknownData2)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)ProjectedDecal_FieldIndex.UnknownData3] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ProjectedDecal_FieldIndex.UnknownData3) ?? true))
+                {
+                    if (!lhs.UnknownData3.EqualsWithin(rhs.UnknownData3)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)ProjectedDecal_FieldIndex.UnknownData4] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ProjectedDecal_FieldIndex.UnknownData4) ?? true))
+                {
+                    if (!lhs.UnknownData4.EqualsWithin(rhs.UnknownData4)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)ProjectedDecal_FieldIndex.UnknownData5] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ProjectedDecal_FieldIndex.UnknownData5) ?? true))
+                {
+                    if (!lhs.UnknownData5.EqualsWithin(rhs.UnknownData5)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)ProjectedDecal_FieldIndex.UnknownData6] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ProjectedDecal_FieldIndex.UnknownData6) ?? true))
+                {
+                    if (!lhs.UnknownData6.EqualsWithin(rhs.UnknownData6)) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)ProjectedDecal_FieldIndex.DATADataTypeState] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ProjectedDecal_FieldIndex.DATADataTypeState) ?? true))
+                {
+                    if (lhs.DATADataTypeState != rhs.DATADataTypeState) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IProjectedDecalGetter)lhs, (IProjectedDecalGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IProjectedDecalGetter)lhs, (IProjectedDecalGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IProjectedDecalGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

@@ -7167,6 +7167,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IImageSpaceAdapterGetter item,
+            IImageSpaceAdapterGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ImageSpaceAdapterCommon)((IImageSpaceAdapterGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ImageSpaceAdapter Duplicate(
             this IImageSpaceAdapterGetter item,
             FormKey formKey,
@@ -9176,6 +9194,609 @@ namespace Mutagen.Bethesda.Fallout4
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IImageSpaceAdapterGetter lhs,
+            IImageSpaceAdapterGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ImageSpaceAdapter_FieldIndex.Animatable] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.Animatable) ?? true))
+                {
+                    if (lhs.Animatable != rhs.Animatable) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)ImageSpaceAdapter_FieldIndex.Duration] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.Duration) ?? true))
+                {
+                    if (!lhs.Duration.EqualsWithin(rhs.Duration)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)ImageSpaceAdapter_FieldIndex.RadialBlurUseTarget] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.RadialBlurUseTarget) ?? true))
+                {
+                    if (lhs.RadialBlurUseTarget != rhs.RadialBlurUseTarget) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)ImageSpaceAdapter_FieldIndex.RadialBlurCenter] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.RadialBlurCenter) ?? true))
+                {
+                    if (!lhs.RadialBlurCenter.Equals(rhs.RadialBlurCenter)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)ImageSpaceAdapter_FieldIndex.DepthOfFieldFlags] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.DepthOfFieldFlags) ?? true))
+                {
+                    if (lhs.DepthOfFieldFlags != rhs.DepthOfFieldFlags) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)ImageSpaceAdapter_FieldIndex.Unknown] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.Unknown) ?? true))
+                {
+                    if (lhs.Unknown != rhs.Unknown) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)ImageSpaceAdapter_FieldIndex.BlurRadius] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.BlurRadius) ?? true))
+                {
+                    if (!lhs.BlurRadius.SequenceEqualNullable(rhs.BlurRadius, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.BlurRadius)))) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)ImageSpaceAdapter_FieldIndex.DoubleVisionStrength] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.DoubleVisionStrength) ?? true))
+                {
+                    if (!lhs.DoubleVisionStrength.SequenceEqualNullable(rhs.DoubleVisionStrength, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.DoubleVisionStrength)))) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)ImageSpaceAdapter_FieldIndex.TintColor] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.TintColor) ?? true))
+                {
+                    if (!lhs.TintColor.SequenceEqualNullable(rhs.TintColor, (l, r) => ((ColorFrameCommon)((IColorFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.TintColor)))) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)ImageSpaceAdapter_FieldIndex.FadeColor] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.FadeColor) ?? true))
+                {
+                    if (!lhs.FadeColor.SequenceEqualNullable(rhs.FadeColor, (l, r) => ((ColorFrameCommon)((IColorFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.FadeColor)))) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)ImageSpaceAdapter_FieldIndex.RadialBlurStrength] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.RadialBlurStrength) ?? true))
+                {
+                    if (!lhs.RadialBlurStrength.SequenceEqualNullable(rhs.RadialBlurStrength, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.RadialBlurStrength)))) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)ImageSpaceAdapter_FieldIndex.RadialBlurRampUp] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.RadialBlurRampUp) ?? true))
+                {
+                    if (!lhs.RadialBlurRampUp.SequenceEqualNullable(rhs.RadialBlurRampUp, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.RadialBlurRampUp)))) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)ImageSpaceAdapter_FieldIndex.RadialBlurStart] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.RadialBlurStart) ?? true))
+                {
+                    if (!lhs.RadialBlurStart.SequenceEqualNullable(rhs.RadialBlurStart, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.RadialBlurStart)))) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)ImageSpaceAdapter_FieldIndex.RadialBlurRampDown] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.RadialBlurRampDown) ?? true))
+                {
+                    if (!lhs.RadialBlurRampDown.SequenceEqualNullable(rhs.RadialBlurRampDown, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.RadialBlurRampDown)))) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)ImageSpaceAdapter_FieldIndex.RadialBlurDownStart] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.RadialBlurDownStart) ?? true))
+                {
+                    if (!lhs.RadialBlurDownStart.SequenceEqualNullable(rhs.RadialBlurDownStart, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.RadialBlurDownStart)))) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)ImageSpaceAdapter_FieldIndex.DepthOfFieldStrength] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.DepthOfFieldStrength) ?? true))
+                {
+                    if (!lhs.DepthOfFieldStrength.SequenceEqualNullable(rhs.DepthOfFieldStrength, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.DepthOfFieldStrength)))) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)ImageSpaceAdapter_FieldIndex.DepthOfFieldDistance] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.DepthOfFieldDistance) ?? true))
+                {
+                    if (!lhs.DepthOfFieldDistance.SequenceEqualNullable(rhs.DepthOfFieldDistance, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.DepthOfFieldDistance)))) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)ImageSpaceAdapter_FieldIndex.DepthOfFieldRange] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.DepthOfFieldRange) ?? true))
+                {
+                    if (!lhs.DepthOfFieldRange.SequenceEqualNullable(rhs.DepthOfFieldRange, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.DepthOfFieldRange)))) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)ImageSpaceAdapter_FieldIndex.DepthOfFieldVignetteRadius] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.DepthOfFieldVignetteRadius) ?? true))
+                {
+                    if (!lhs.DepthOfFieldVignetteRadius.SequenceEqualNullable(rhs.DepthOfFieldVignetteRadius, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.DepthOfFieldVignetteRadius)))) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)ImageSpaceAdapter_FieldIndex.DepthOfFieldVignetteStrength] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.DepthOfFieldVignetteStrength) ?? true))
+                {
+                    if (!lhs.DepthOfFieldVignetteStrength.SequenceEqualNullable(rhs.DepthOfFieldVignetteStrength, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.DepthOfFieldVignetteStrength)))) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)ImageSpaceAdapter_FieldIndex.MotionBlurStrength] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.MotionBlurStrength) ?? true))
+                {
+                    if (!lhs.MotionBlurStrength.SequenceEqualNullable(rhs.MotionBlurStrength, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.MotionBlurStrength)))) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)ImageSpaceAdapter_FieldIndex.HdrEyeAdaptSpeedMult] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.HdrEyeAdaptSpeedMult) ?? true))
+                {
+                    if (!lhs.HdrEyeAdaptSpeedMult.SequenceEqualNullable(rhs.HdrEyeAdaptSpeedMult, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.HdrEyeAdaptSpeedMult)))) return false;
+                }
+                return true;
+            }
+            if (!Equal22()) differs[(int)ImageSpaceAdapter_FieldIndex.HdrEyeAdaptSpeedAdd] = true;
+            bool Equal22()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.HdrEyeAdaptSpeedAdd) ?? true))
+                {
+                    if (!lhs.HdrEyeAdaptSpeedAdd.SequenceEqualNullable(rhs.HdrEyeAdaptSpeedAdd, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.HdrEyeAdaptSpeedAdd)))) return false;
+                }
+                return true;
+            }
+            if (!Equal23()) differs[(int)ImageSpaceAdapter_FieldIndex.HdrBloomBlurRadiusMult] = true;
+            bool Equal23()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.HdrBloomBlurRadiusMult) ?? true))
+                {
+                    if (!lhs.HdrBloomBlurRadiusMult.SequenceEqualNullable(rhs.HdrBloomBlurRadiusMult, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.HdrBloomBlurRadiusMult)))) return false;
+                }
+                return true;
+            }
+            if (!Equal24()) differs[(int)ImageSpaceAdapter_FieldIndex.HdrBloomBlurRadiusAdd] = true;
+            bool Equal24()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.HdrBloomBlurRadiusAdd) ?? true))
+                {
+                    if (!lhs.HdrBloomBlurRadiusAdd.SequenceEqualNullable(rhs.HdrBloomBlurRadiusAdd, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.HdrBloomBlurRadiusAdd)))) return false;
+                }
+                return true;
+            }
+            if (!Equal25()) differs[(int)ImageSpaceAdapter_FieldIndex.HdrBloomThresholdMult] = true;
+            bool Equal25()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.HdrBloomThresholdMult) ?? true))
+                {
+                    if (!lhs.HdrBloomThresholdMult.SequenceEqualNullable(rhs.HdrBloomThresholdMult, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.HdrBloomThresholdMult)))) return false;
+                }
+                return true;
+            }
+            if (!Equal26()) differs[(int)ImageSpaceAdapter_FieldIndex.HdrBloomThresholdAdd] = true;
+            bool Equal26()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.HdrBloomThresholdAdd) ?? true))
+                {
+                    if (!lhs.HdrBloomThresholdAdd.SequenceEqualNullable(rhs.HdrBloomThresholdAdd, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.HdrBloomThresholdAdd)))) return false;
+                }
+                return true;
+            }
+            if (!Equal27()) differs[(int)ImageSpaceAdapter_FieldIndex.HdrBloomScaleMult] = true;
+            bool Equal27()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.HdrBloomScaleMult) ?? true))
+                {
+                    if (!lhs.HdrBloomScaleMult.SequenceEqualNullable(rhs.HdrBloomScaleMult, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.HdrBloomScaleMult)))) return false;
+                }
+                return true;
+            }
+            if (!Equal28()) differs[(int)ImageSpaceAdapter_FieldIndex.HdrBloomScaleAdd] = true;
+            bool Equal28()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.HdrBloomScaleAdd) ?? true))
+                {
+                    if (!lhs.HdrBloomScaleAdd.SequenceEqualNullable(rhs.HdrBloomScaleAdd, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.HdrBloomScaleAdd)))) return false;
+                }
+                return true;
+            }
+            if (!Equal29()) differs[(int)ImageSpaceAdapter_FieldIndex.HdrTargetLumMinMult] = true;
+            bool Equal29()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.HdrTargetLumMinMult) ?? true))
+                {
+                    if (!lhs.HdrTargetLumMinMult.SequenceEqualNullable(rhs.HdrTargetLumMinMult, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.HdrTargetLumMinMult)))) return false;
+                }
+                return true;
+            }
+            if (!Equal30()) differs[(int)ImageSpaceAdapter_FieldIndex.HdrTargetLumMinAdd] = true;
+            bool Equal30()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.HdrTargetLumMinAdd) ?? true))
+                {
+                    if (!lhs.HdrTargetLumMinAdd.SequenceEqualNullable(rhs.HdrTargetLumMinAdd, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.HdrTargetLumMinAdd)))) return false;
+                }
+                return true;
+            }
+            if (!Equal31()) differs[(int)ImageSpaceAdapter_FieldIndex.HdrTargetLumMaxMult] = true;
+            bool Equal31()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.HdrTargetLumMaxMult) ?? true))
+                {
+                    if (!lhs.HdrTargetLumMaxMult.SequenceEqualNullable(rhs.HdrTargetLumMaxMult, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.HdrTargetLumMaxMult)))) return false;
+                }
+                return true;
+            }
+            if (!Equal32()) differs[(int)ImageSpaceAdapter_FieldIndex.HdrTargetLumMaxAdd] = true;
+            bool Equal32()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.HdrTargetLumMaxAdd) ?? true))
+                {
+                    if (!lhs.HdrTargetLumMaxAdd.SequenceEqualNullable(rhs.HdrTargetLumMaxAdd, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.HdrTargetLumMaxAdd)))) return false;
+                }
+                return true;
+            }
+            if (!Equal33()) differs[(int)ImageSpaceAdapter_FieldIndex.HdrSunlightScaleMult] = true;
+            bool Equal33()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.HdrSunlightScaleMult) ?? true))
+                {
+                    if (!lhs.HdrSunlightScaleMult.SequenceEqualNullable(rhs.HdrSunlightScaleMult, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.HdrSunlightScaleMult)))) return false;
+                }
+                return true;
+            }
+            if (!Equal34()) differs[(int)ImageSpaceAdapter_FieldIndex.HdrSunlightScaleAdd] = true;
+            bool Equal34()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.HdrSunlightScaleAdd) ?? true))
+                {
+                    if (!lhs.HdrSunlightScaleAdd.SequenceEqualNullable(rhs.HdrSunlightScaleAdd, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.HdrSunlightScaleAdd)))) return false;
+                }
+                return true;
+            }
+            if (!Equal35()) differs[(int)ImageSpaceAdapter_FieldIndex.HdrSkyScaleMult] = true;
+            bool Equal35()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.HdrSkyScaleMult) ?? true))
+                {
+                    if (!lhs.HdrSkyScaleMult.SequenceEqualNullable(rhs.HdrSkyScaleMult, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.HdrSkyScaleMult)))) return false;
+                }
+                return true;
+            }
+            if (!Equal36()) differs[(int)ImageSpaceAdapter_FieldIndex.HdrSkyScaleAdd] = true;
+            bool Equal36()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.HdrSkyScaleAdd) ?? true))
+                {
+                    if (!lhs.HdrSkyScaleAdd.SequenceEqualNullable(rhs.HdrSkyScaleAdd, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.HdrSkyScaleAdd)))) return false;
+                }
+                return true;
+            }
+            if (!Equal37()) differs[(int)ImageSpaceAdapter_FieldIndex.Unknown08] = true;
+            bool Equal37()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.Unknown08) ?? true))
+                {
+                    if (!lhs.Unknown08.SequenceEqualNullable(rhs.Unknown08, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.Unknown08)))) return false;
+                }
+                return true;
+            }
+            if (!Equal38()) differs[(int)ImageSpaceAdapter_FieldIndex.Unknown48] = true;
+            bool Equal38()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.Unknown48) ?? true))
+                {
+                    if (!lhs.Unknown48.SequenceEqualNullable(rhs.Unknown48, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.Unknown48)))) return false;
+                }
+                return true;
+            }
+            if (!Equal39()) differs[(int)ImageSpaceAdapter_FieldIndex.Unknown09] = true;
+            bool Equal39()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.Unknown09) ?? true))
+                {
+                    if (!lhs.Unknown09.SequenceEqualNullable(rhs.Unknown09, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.Unknown09)))) return false;
+                }
+                return true;
+            }
+            if (!Equal40()) differs[(int)ImageSpaceAdapter_FieldIndex.Unknown49] = true;
+            bool Equal40()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.Unknown49) ?? true))
+                {
+                    if (!lhs.Unknown49.SequenceEqualNullable(rhs.Unknown49, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.Unknown49)))) return false;
+                }
+                return true;
+            }
+            if (!Equal41()) differs[(int)ImageSpaceAdapter_FieldIndex.Unknown0A] = true;
+            bool Equal41()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.Unknown0A) ?? true))
+                {
+                    if (!lhs.Unknown0A.SequenceEqualNullable(rhs.Unknown0A, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.Unknown0A)))) return false;
+                }
+                return true;
+            }
+            if (!Equal42()) differs[(int)ImageSpaceAdapter_FieldIndex.Unknown4A] = true;
+            bool Equal42()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.Unknown4A) ?? true))
+                {
+                    if (!lhs.Unknown4A.SequenceEqualNullable(rhs.Unknown4A, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.Unknown4A)))) return false;
+                }
+                return true;
+            }
+            if (!Equal43()) differs[(int)ImageSpaceAdapter_FieldIndex.Unknown0B] = true;
+            bool Equal43()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.Unknown0B) ?? true))
+                {
+                    if (!lhs.Unknown0B.SequenceEqualNullable(rhs.Unknown0B, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.Unknown0B)))) return false;
+                }
+                return true;
+            }
+            if (!Equal44()) differs[(int)ImageSpaceAdapter_FieldIndex.Unknown4B] = true;
+            bool Equal44()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.Unknown4B) ?? true))
+                {
+                    if (!lhs.Unknown4B.SequenceEqualNullable(rhs.Unknown4B, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.Unknown4B)))) return false;
+                }
+                return true;
+            }
+            if (!Equal45()) differs[(int)ImageSpaceAdapter_FieldIndex.Unknown0C] = true;
+            bool Equal45()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.Unknown0C) ?? true))
+                {
+                    if (!lhs.Unknown0C.SequenceEqualNullable(rhs.Unknown0C, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.Unknown0C)))) return false;
+                }
+                return true;
+            }
+            if (!Equal46()) differs[(int)ImageSpaceAdapter_FieldIndex.Unknown4C] = true;
+            bool Equal46()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.Unknown4C) ?? true))
+                {
+                    if (!lhs.Unknown4C.SequenceEqualNullable(rhs.Unknown4C, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.Unknown4C)))) return false;
+                }
+                return true;
+            }
+            if (!Equal47()) differs[(int)ImageSpaceAdapter_FieldIndex.Unknown0D] = true;
+            bool Equal47()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.Unknown0D) ?? true))
+                {
+                    if (!lhs.Unknown0D.SequenceEqualNullable(rhs.Unknown0D, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.Unknown0D)))) return false;
+                }
+                return true;
+            }
+            if (!Equal48()) differs[(int)ImageSpaceAdapter_FieldIndex.Unknown4D] = true;
+            bool Equal48()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.Unknown4D) ?? true))
+                {
+                    if (!lhs.Unknown4D.SequenceEqualNullable(rhs.Unknown4D, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.Unknown4D)))) return false;
+                }
+                return true;
+            }
+            if (!Equal49()) differs[(int)ImageSpaceAdapter_FieldIndex.Unknown0E] = true;
+            bool Equal49()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.Unknown0E) ?? true))
+                {
+                    if (!lhs.Unknown0E.SequenceEqualNullable(rhs.Unknown0E, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.Unknown0E)))) return false;
+                }
+                return true;
+            }
+            if (!Equal50()) differs[(int)ImageSpaceAdapter_FieldIndex.Unknown4E] = true;
+            bool Equal50()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.Unknown4E) ?? true))
+                {
+                    if (!lhs.Unknown4E.SequenceEqualNullable(rhs.Unknown4E, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.Unknown4E)))) return false;
+                }
+                return true;
+            }
+            if (!Equal51()) differs[(int)ImageSpaceAdapter_FieldIndex.Unknown0F] = true;
+            bool Equal51()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.Unknown0F) ?? true))
+                {
+                    if (!lhs.Unknown0F.SequenceEqualNullable(rhs.Unknown0F, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.Unknown0F)))) return false;
+                }
+                return true;
+            }
+            if (!Equal52()) differs[(int)ImageSpaceAdapter_FieldIndex.Unknown4F] = true;
+            bool Equal52()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.Unknown4F) ?? true))
+                {
+                    if (!lhs.Unknown4F.SequenceEqualNullable(rhs.Unknown4F, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.Unknown4F)))) return false;
+                }
+                return true;
+            }
+            if (!Equal53()) differs[(int)ImageSpaceAdapter_FieldIndex.Unknown10] = true;
+            bool Equal53()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.Unknown10) ?? true))
+                {
+                    if (!lhs.Unknown10.SequenceEqualNullable(rhs.Unknown10, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.Unknown10)))) return false;
+                }
+                return true;
+            }
+            if (!Equal54()) differs[(int)ImageSpaceAdapter_FieldIndex.Unknown50] = true;
+            bool Equal54()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.Unknown50) ?? true))
+                {
+                    if (!lhs.Unknown50.SequenceEqualNullable(rhs.Unknown50, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.Unknown50)))) return false;
+                }
+                return true;
+            }
+            if (!Equal55()) differs[(int)ImageSpaceAdapter_FieldIndex.CinematicSaturationMult] = true;
+            bool Equal55()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.CinematicSaturationMult) ?? true))
+                {
+                    if (!lhs.CinematicSaturationMult.SequenceEqualNullable(rhs.CinematicSaturationMult, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.CinematicSaturationMult)))) return false;
+                }
+                return true;
+            }
+            if (!Equal56()) differs[(int)ImageSpaceAdapter_FieldIndex.CinematicSaturationAdd] = true;
+            bool Equal56()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.CinematicSaturationAdd) ?? true))
+                {
+                    if (!lhs.CinematicSaturationAdd.SequenceEqualNullable(rhs.CinematicSaturationAdd, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.CinematicSaturationAdd)))) return false;
+                }
+                return true;
+            }
+            if (!Equal57()) differs[(int)ImageSpaceAdapter_FieldIndex.CinematicBrightnessMult] = true;
+            bool Equal57()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.CinematicBrightnessMult) ?? true))
+                {
+                    if (!lhs.CinematicBrightnessMult.SequenceEqualNullable(rhs.CinematicBrightnessMult, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.CinematicBrightnessMult)))) return false;
+                }
+                return true;
+            }
+            if (!Equal58()) differs[(int)ImageSpaceAdapter_FieldIndex.CinematicBrightnessAdd] = true;
+            bool Equal58()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.CinematicBrightnessAdd) ?? true))
+                {
+                    if (!lhs.CinematicBrightnessAdd.SequenceEqualNullable(rhs.CinematicBrightnessAdd, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.CinematicBrightnessAdd)))) return false;
+                }
+                return true;
+            }
+            if (!Equal59()) differs[(int)ImageSpaceAdapter_FieldIndex.CinematicContrastMult] = true;
+            bool Equal59()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.CinematicContrastMult) ?? true))
+                {
+                    if (!lhs.CinematicContrastMult.SequenceEqualNullable(rhs.CinematicContrastMult, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.CinematicContrastMult)))) return false;
+                }
+                return true;
+            }
+            if (!Equal60()) differs[(int)ImageSpaceAdapter_FieldIndex.CinematicContrastAdd] = true;
+            bool Equal60()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.CinematicContrastAdd) ?? true))
+                {
+                    if (!lhs.CinematicContrastAdd.SequenceEqualNullable(rhs.CinematicContrastAdd, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.CinematicContrastAdd)))) return false;
+                }
+                return true;
+            }
+            if (!Equal61()) differs[(int)ImageSpaceAdapter_FieldIndex.Unknown14] = true;
+            bool Equal61()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.Unknown14) ?? true))
+                {
+                    if (!lhs.Unknown14.SequenceEqualNullable(rhs.Unknown14, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.Unknown14)))) return false;
+                }
+                return true;
+            }
+            if (!Equal62()) differs[(int)ImageSpaceAdapter_FieldIndex.Unknown54] = true;
+            bool Equal62()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.Unknown54) ?? true))
+                {
+                    if (!lhs.Unknown54.SequenceEqualNullable(rhs.Unknown54, (l, r) => ((KeyFrameCommon)((IKeyFrameGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImageSpaceAdapter_FieldIndex.Unknown54)))) return false;
+                }
+                return true;
+            }
+            if (!Equal63()) differs[(int)ImageSpaceAdapter_FieldIndex.DNAMDataTypeState] = true;
+            bool Equal63()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpaceAdapter_FieldIndex.DNAMDataTypeState) ?? true))
+                {
+                    if (lhs.DNAMDataTypeState != rhs.DNAMDataTypeState) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IImageSpaceAdapterGetter)lhs, (IImageSpaceAdapterGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IImageSpaceAdapterGetter)lhs, (IImageSpaceAdapterGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

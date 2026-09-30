@@ -1195,6 +1195,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IObjectEffectGetter item,
+            IObjectEffectGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ObjectEffectCommon)((IObjectEffectGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ObjectEffect Duplicate(
             this IObjectEffectGetter item,
             FormKey formKey,
@@ -1805,6 +1823,122 @@ namespace Mutagen.Bethesda.Starfield
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IObjectEffectGetter lhs,
+            IObjectEffectGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ObjectEffect_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ObjectEffect_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)ObjectEffect_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)ObjectEffect_FieldIndex.ObjectBounds] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ObjectEffect_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)ObjectEffect_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)ObjectEffect_FieldIndex.DirtinessScale] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ObjectEffect_FieldIndex.DirtinessScale) ?? true))
+                {
+                    if (!lhs.DirtinessScale.Equals(rhs.DirtinessScale)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)ObjectEffect_FieldIndex.Components] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ObjectEffect_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ObjectEffect_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)ObjectEffect_FieldIndex.Name] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ObjectEffect_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)ObjectEffect_FieldIndex.MAGF] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ObjectEffect_FieldIndex.MAGF) ?? true))
+                {
+                    if (lhs.MAGF != rhs.MAGF) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)ObjectEffect_FieldIndex.MUID] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ObjectEffect_FieldIndex.MUID) ?? true))
+                {
+                    if (lhs.MUID != rhs.MUID) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)ObjectEffect_FieldIndex.UnknownENIT] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ObjectEffect_FieldIndex.UnknownENIT) ?? true))
+                {
+                    if (!MemoryExtensions.SequenceEqual(lhs.UnknownENIT.Span, rhs.UnknownENIT.Span)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)ObjectEffect_FieldIndex.Effects] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ObjectEffect_FieldIndex.Effects) ?? true))
+                {
+                    if (!lhs.Effects.SequenceEqual(rhs.Effects, (l, r) => ((EffectCommon)((IEffectGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ObjectEffect_FieldIndex.Effects)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IObjectEffectGetter)lhs, (IObjectEffectGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IObjectEffectGetter)lhs, (IObjectEffectGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IObjectEffectGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

@@ -1000,6 +1000,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IReverbParametersGetter item,
+            IReverbParametersGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ReverbParametersCommon)((IReverbParametersGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ReverbParameters Duplicate(
             this IReverbParametersGetter item,
             FormKey formKey,
@@ -1530,6 +1548,141 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IReverbParametersGetter lhs,
+            IReverbParametersGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ReverbParameters_FieldIndex.DecayMilliseconds] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ReverbParameters_FieldIndex.DecayMilliseconds) ?? true))
+                {
+                    if (lhs.DecayMilliseconds != rhs.DecayMilliseconds) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)ReverbParameters_FieldIndex.HfReferenceHertz] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ReverbParameters_FieldIndex.HfReferenceHertz) ?? true))
+                {
+                    if (lhs.HfReferenceHertz != rhs.HfReferenceHertz) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)ReverbParameters_FieldIndex.RoomFilter] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ReverbParameters_FieldIndex.RoomFilter) ?? true))
+                {
+                    if (lhs.RoomFilter != rhs.RoomFilter) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)ReverbParameters_FieldIndex.RoomHfFilter] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ReverbParameters_FieldIndex.RoomHfFilter) ?? true))
+                {
+                    if (lhs.RoomHfFilter != rhs.RoomHfFilter) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)ReverbParameters_FieldIndex.Reflections] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ReverbParameters_FieldIndex.Reflections) ?? true))
+                {
+                    if (lhs.Reflections != rhs.Reflections) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)ReverbParameters_FieldIndex.ReverbAmp] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ReverbParameters_FieldIndex.ReverbAmp) ?? true))
+                {
+                    if (lhs.ReverbAmp != rhs.ReverbAmp) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)ReverbParameters_FieldIndex.DecayHfRatio] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ReverbParameters_FieldIndex.DecayHfRatio) ?? true))
+                {
+                    if (!lhs.DecayHfRatio.EqualsWithin(rhs.DecayHfRatio)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)ReverbParameters_FieldIndex.ReflectDelayMS] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ReverbParameters_FieldIndex.ReflectDelayMS) ?? true))
+                {
+                    if (lhs.ReflectDelayMS != rhs.ReflectDelayMS) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)ReverbParameters_FieldIndex.ReverbDelayMS] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ReverbParameters_FieldIndex.ReverbDelayMS) ?? true))
+                {
+                    if (lhs.ReverbDelayMS != rhs.ReverbDelayMS) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)ReverbParameters_FieldIndex.DiffusionPercent] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ReverbParameters_FieldIndex.DiffusionPercent) ?? true))
+                {
+                    if (!lhs.DiffusionPercent.Equals(rhs.DiffusionPercent)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)ReverbParameters_FieldIndex.DensityPercent] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ReverbParameters_FieldIndex.DensityPercent) ?? true))
+                {
+                    if (!lhs.DensityPercent.Equals(rhs.DensityPercent)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)ReverbParameters_FieldIndex.Unknown] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ReverbParameters_FieldIndex.Unknown) ?? true))
+                {
+                    if (lhs.Unknown != rhs.Unknown) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IReverbParametersGetter)lhs, (IReverbParametersGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IReverbParametersGetter)lhs, (IReverbParametersGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

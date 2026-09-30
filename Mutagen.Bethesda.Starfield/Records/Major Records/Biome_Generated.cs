@@ -2490,6 +2490,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IBiomeGetter item,
+            IBiomeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((BiomeCommon)((IBiomeGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Biome Duplicate(
             this IBiomeGetter item,
             FormKey formKey,
@@ -3542,6 +3560,325 @@ namespace Mutagen.Bethesda.Starfield
                 yield return ScanWorldspaceMultGlobalInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IBiomeGetter lhs,
+            IBiomeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Biome_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Biome_FieldIndex.Keywords] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.Keywords) ?? true))
+                {
+                    if (!lhs.Keywords.SequenceEqualNullable(rhs.Keywords)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Biome_FieldIndex.FilterString] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.FilterString) ?? true))
+                {
+                    if (!string.Equals(lhs.FilterString, rhs.FilterString)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Biome_FieldIndex.Flora] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.Flora) ?? true))
+                {
+                    if (!lhs.Flora.SequenceEqualNullable(rhs.Flora)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Biome_FieldIndex.ResourceGeneration] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.ResourceGeneration) ?? true))
+                {
+                    if (!lhs.ResourceGeneration.SequenceEqualNullable(rhs.ResourceGeneration)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Biome_FieldIndex.ProceduralObjectGeneration] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.ProceduralObjectGeneration) ?? true))
+                {
+                    if (!lhs.ProceduralObjectGeneration.SequenceEqual(rhs.ProceduralObjectGeneration, (l, r) => ((BiomeProceduralObjectGenerationCommon)((IBiomeProceduralObjectGenerationGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Biome_FieldIndex.ProceduralObjectGeneration)))) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Biome_FieldIndex.ObjectSwaps] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.ObjectSwaps) ?? true))
+                {
+                    if (!lhs.ObjectSwaps.SequenceEqualNullable(rhs.ObjectSwaps)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Biome_FieldIndex.MaterialSwaps] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.MaterialSwaps) ?? true))
+                {
+                    if (!lhs.MaterialSwaps.SequenceEqualNullable(rhs.MaterialSwaps)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Biome_FieldIndex.Climate] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.Climate) ?? true))
+                {
+                    if (!lhs.Climate.Equals(rhs.Climate)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Biome_FieldIndex.Water] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.Water) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Water, rhs.Water, out var lhsWater, out var rhsWater, out var isWaterEqual))
+                    {
+                        if (!((BiomeWaterDataCommon)((IBiomeWaterDataGetter)lhsWater).CommonInstance()!).Equals(lhsWater, rhsWater, equalsMask?.GetSubCrystal((int)Biome_FieldIndex.Water))) return false;
+                    }
+                    else if (!isWaterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Biome_FieldIndex.BlockDensityMult] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.BlockDensityMult) ?? true))
+                {
+                    if (!lhs.BlockDensityMult.EqualsWithin(rhs.BlockDensityMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Biome_FieldIndex.CellDensityMult] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.CellDensityMult) ?? true))
+                {
+                    if (!lhs.CellDensityMult.EqualsWithin(rhs.CellDensityMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Biome_FieldIndex.ScanWorldspaceMult] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.ScanWorldspaceMult) ?? true))
+                {
+                    if (!lhs.ScanWorldspaceMult.EqualsWithin(rhs.ScanWorldspaceMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Biome_FieldIndex.Child] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.Child) ?? true))
+                {
+                    if (!lhs.Child.Equals(rhs.Child)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Biome_FieldIndex.AmbienceSet] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.AmbienceSet) ?? true))
+                {
+                    if (!lhs.AmbienceSet.Equals(rhs.AmbienceSet)) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)Biome_FieldIndex.MusicType] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.MusicType) ?? true))
+                {
+                    if (!lhs.MusicType.Equals(rhs.MusicType)) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)Biome_FieldIndex.TimeOfDay] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.TimeOfDay) ?? true))
+                {
+                    if (!lhs.TimeOfDay.Equals(rhs.TimeOfDay)) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)Biome_FieldIndex.PatternStyle] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.PatternStyle) ?? true))
+                {
+                    if (!lhs.PatternStyle.Equals(rhs.PatternStyle)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)Biome_FieldIndex.Color] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.Color) ?? true))
+                {
+                    if (!lhs.Color.ColorOnlyEquals(rhs.Color)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)Biome_FieldIndex.SurfaceColor1] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.SurfaceColor1) ?? true))
+                {
+                    if (!lhs.SurfaceColor1.ColorOnlyEquals(rhs.SurfaceColor1)) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)Biome_FieldIndex.SurfaceColor2] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.SurfaceColor2) ?? true))
+                {
+                    if (!lhs.SurfaceColor2.ColorOnlyEquals(rhs.SurfaceColor2)) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)Biome_FieldIndex.RockTint] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.RockTint) ?? true))
+                {
+                    if (!lhs.RockTint.ColorOnlyEquals(rhs.RockTint)) return false;
+                }
+                return true;
+            }
+            if (!Equal22()) differs[(int)Biome_FieldIndex.Type] = true;
+            bool Equal22()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.Type) ?? true))
+                {
+                    if (lhs.Type != rhs.Type) return false;
+                }
+                return true;
+            }
+            if (!Equal23()) differs[(int)Biome_FieldIndex.MarkerObjectKeywords] = true;
+            bool Equal23()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.MarkerObjectKeywords) ?? true))
+                {
+                    if (!lhs.MarkerObjectKeywords.SequenceEqual(rhs.MarkerObjectKeywords, (l, r) => ((BiomeMarkerTypeCommon)((IBiomeMarkerTypeGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Biome_FieldIndex.MarkerObjectKeywords)))) return false;
+                }
+                return true;
+            }
+            if (!Equal24()) differs[(int)Biome_FieldIndex.Terrain] = true;
+            bool Equal24()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.Terrain) ?? true))
+                {
+                    if (!lhs.Terrain.SequenceEqual(rhs.Terrain, (l, r) => ((BiomeTerrainCommon)((IBiomeTerrainGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Biome_FieldIndex.Terrain)))) return false;
+                }
+                return true;
+            }
+            if (!Equal25()) differs[(int)Biome_FieldIndex.GroundLayerNormal] = true;
+            bool Equal25()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.GroundLayerNormal) ?? true))
+                {
+                    if (!string.Equals(lhs.GroundLayerNormal, rhs.GroundLayerNormal)) return false;
+                }
+                return true;
+            }
+            if (!Equal26()) differs[(int)Biome_FieldIndex.BTPS] = true;
+            bool Equal26()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.BTPS) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.BTPS, rhs.BTPS)) return false;
+                }
+                return true;
+            }
+            if (!Equal27()) differs[(int)Biome_FieldIndex.DistantView] = true;
+            bool Equal27()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.DistantView) ?? true))
+                {
+                    if (!MemoryExtensions.SequenceEqual(lhs.DistantView.Span, rhs.DistantView.Span)) return false;
+                }
+                return true;
+            }
+            if (!Equal28()) differs[(int)Biome_FieldIndex.GlobalLayerMaterial] = true;
+            bool Equal28()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.GlobalLayerMaterial) ?? true))
+                {
+                    if (!string.Equals(lhs.GlobalLayerMaterial, rhs.GlobalLayerMaterial)) return false;
+                }
+                return true;
+            }
+            if (!Equal29()) differs[(int)Biome_FieldIndex.BlockDensityMultGlobal] = true;
+            bool Equal29()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.BlockDensityMultGlobal) ?? true))
+                {
+                    if (!lhs.BlockDensityMultGlobal.Equals(rhs.BlockDensityMultGlobal)) return false;
+                }
+                return true;
+            }
+            if (!Equal30()) differs[(int)Biome_FieldIndex.CellDensityMultGlobal] = true;
+            bool Equal30()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.CellDensityMultGlobal) ?? true))
+                {
+                    if (!lhs.CellDensityMultGlobal.Equals(rhs.CellDensityMultGlobal)) return false;
+                }
+                return true;
+            }
+            if (!Equal31()) differs[(int)Biome_FieldIndex.ScanWorldspaceMultGlobal] = true;
+            bool Equal31()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Biome_FieldIndex.ScanWorldspaceMultGlobal) ?? true))
+                {
+                    if (!lhs.ScanWorldspaceMultGlobal.Equals(rhs.ScanWorldspaceMultGlobal)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IBiomeGetter)lhs, (IBiomeGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IBiomeGetter)lhs, (IBiomeGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

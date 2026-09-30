@@ -882,6 +882,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ILandscapeTextureGetter item,
+            ILandscapeTextureGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((LandscapeTextureCommon)((ILandscapeTextureGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static LandscapeTexture Duplicate(
             this ILandscapeTextureGetter item,
             FormKey formKey,
@@ -1397,6 +1415,86 @@ namespace Mutagen.Bethesda.Fallout3
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ILandscapeTextureGetter lhs,
+            ILandscapeTextureGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)LandscapeTexture_FieldIndex.Icons] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LandscapeTexture_FieldIndex.Icons) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Icons, rhs.Icons, out var lhsIcons, out var rhsIcons, out var isIconsEqual))
+                    {
+                        if (!((IconsCommon)((IIconsGetter)lhsIcons).CommonInstance()!).Equals(lhsIcons, rhsIcons, equalsMask?.GetSubCrystal((int)LandscapeTexture_FieldIndex.Icons))) return false;
+                    }
+                    else if (!isIconsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)LandscapeTexture_FieldIndex.TextureSet] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LandscapeTexture_FieldIndex.TextureSet) ?? true))
+                {
+                    if (!lhs.TextureSet.Equals(rhs.TextureSet)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)LandscapeTexture_FieldIndex.Havok] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LandscapeTexture_FieldIndex.Havok) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Havok, rhs.Havok, out var lhsHavok, out var rhsHavok, out var isHavokEqual))
+                    {
+                        if (!((HavokDataCommon)((IHavokDataGetter)lhsHavok).CommonInstance()!).Equals(lhsHavok, rhsHavok, equalsMask?.GetSubCrystal((int)LandscapeTexture_FieldIndex.Havok))) return false;
+                    }
+                    else if (!isHavokEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)LandscapeTexture_FieldIndex.TextureSpecularExponent] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LandscapeTexture_FieldIndex.TextureSpecularExponent) ?? true))
+                {
+                    if (lhs.TextureSpecularExponent != rhs.TextureSpecularExponent) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)LandscapeTexture_FieldIndex.Grasses] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LandscapeTexture_FieldIndex.Grasses) ?? true))
+                {
+                    if (!lhs.Grasses.SequenceEqualNullable(rhs.Grasses)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILandscapeTextureGetter)lhs, (ILandscapeTextureGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILandscapeTextureGetter)lhs, (ILandscapeTextureGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(ILandscapeTextureGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

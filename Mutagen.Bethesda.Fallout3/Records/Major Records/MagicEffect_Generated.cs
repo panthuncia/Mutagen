@@ -1505,6 +1505,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IMagicEffectGetter item,
+            IMagicEffectGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((MagicEffectCommon)((IMagicEffectGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static MagicEffect Duplicate(
             this IMagicEffectGetter item,
             FormKey formKey,
@@ -2224,6 +2242,230 @@ namespace Mutagen.Bethesda.Fallout3
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IMagicEffectGetter lhs,
+            IMagicEffectGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)MagicEffect_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MagicEffect_FieldIndex.Name) ?? true))
+                {
+                    if (!string.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)MagicEffect_FieldIndex.Description] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MagicEffect_FieldIndex.Description) ?? true))
+                {
+                    if (!string.Equals(lhs.Description, rhs.Description)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)MagicEffect_FieldIndex.Icon] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MagicEffect_FieldIndex.Icon) ?? true))
+                {
+                    if (!string.Equals(lhs.Icon, rhs.Icon)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)MagicEffect_FieldIndex.Model] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MagicEffect_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)MagicEffect_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)MagicEffect_FieldIndex.Flags] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MagicEffect_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)MagicEffect_FieldIndex.BaseCost] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MagicEffect_FieldIndex.BaseCost) ?? true))
+                {
+                    if (!lhs.BaseCost.EqualsWithin(rhs.BaseCost)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)MagicEffect_FieldIndex.Unused] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MagicEffect_FieldIndex.Unused) ?? true))
+                {
+                    if (lhs.Unused != rhs.Unused) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)MagicEffect_FieldIndex.Resistance] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MagicEffect_FieldIndex.Resistance) ?? true))
+                {
+                    if (lhs.Resistance != rhs.Resistance) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)MagicEffect_FieldIndex.CounterEffectCount] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MagicEffect_FieldIndex.CounterEffectCount) ?? true))
+                {
+                    if (lhs.CounterEffectCount != rhs.CounterEffectCount) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)MagicEffect_FieldIndex.Light] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MagicEffect_FieldIndex.Light) ?? true))
+                {
+                    if (!lhs.Light.Equals(rhs.Light)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)MagicEffect_FieldIndex.ProjectileSpeed] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MagicEffect_FieldIndex.ProjectileSpeed) ?? true))
+                {
+                    if (!lhs.ProjectileSpeed.EqualsWithin(rhs.ProjectileSpeed)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)MagicEffect_FieldIndex.EffectShader] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MagicEffect_FieldIndex.EffectShader) ?? true))
+                {
+                    if (!lhs.EffectShader.Equals(rhs.EffectShader)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)MagicEffect_FieldIndex.ObjectDisplayShader] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MagicEffect_FieldIndex.ObjectDisplayShader) ?? true))
+                {
+                    if (!lhs.ObjectDisplayShader.Equals(rhs.ObjectDisplayShader)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)MagicEffect_FieldIndex.EffectSound] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MagicEffect_FieldIndex.EffectSound) ?? true))
+                {
+                    if (!lhs.EffectSound.Equals(rhs.EffectSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)MagicEffect_FieldIndex.BoltSound] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MagicEffect_FieldIndex.BoltSound) ?? true))
+                {
+                    if (!lhs.BoltSound.Equals(rhs.BoltSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)MagicEffect_FieldIndex.HitSound] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MagicEffect_FieldIndex.HitSound) ?? true))
+                {
+                    if (!lhs.HitSound.Equals(rhs.HitSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)MagicEffect_FieldIndex.AreaSound] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MagicEffect_FieldIndex.AreaSound) ?? true))
+                {
+                    if (!lhs.AreaSound.Equals(rhs.AreaSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)MagicEffect_FieldIndex.ConstantEffectEnchantmentFactor] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MagicEffect_FieldIndex.ConstantEffectEnchantmentFactor) ?? true))
+                {
+                    if (!lhs.ConstantEffectEnchantmentFactor.EqualsWithin(rhs.ConstantEffectEnchantmentFactor)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)MagicEffect_FieldIndex.ConstantEffectBarterFactor] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MagicEffect_FieldIndex.ConstantEffectBarterFactor) ?? true))
+                {
+                    if (!lhs.ConstantEffectBarterFactor.EqualsWithin(rhs.ConstantEffectBarterFactor)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)MagicEffect_FieldIndex.Archetype] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MagicEffect_FieldIndex.Archetype) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Archetype, rhs.Archetype, out var lhsArchetype, out var rhsArchetype, out var isArchetypeEqual))
+                    {
+                        if (!((AMagicEffectArchetypeCommon)((IAMagicEffectArchetypeGetter)lhsArchetype).CommonInstance()!).Equals(lhsArchetype, rhsArchetype, equalsMask?.GetSubCrystal((int)MagicEffect_FieldIndex.Archetype))) return false;
+                    }
+                    else if (!isArchetypeEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)MagicEffect_FieldIndex.CounterEffects] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MagicEffect_FieldIndex.CounterEffects) ?? true))
+                {
+                    if (!lhs.CounterEffects.SequenceEqualNullable(rhs.CounterEffects)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMagicEffectGetter)lhs, (IMagicEffectGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMagicEffectGetter)lhs, (IMagicEffectGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

@@ -791,6 +791,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ISoundMarkerGetter item,
+            ISoundMarkerGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((SoundMarkerCommon)((ISoundMarkerGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static SoundMarker Duplicate(
             this ISoundMarkerGetter item,
             FormKey formKey,
@@ -1245,6 +1263,73 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return SoundDescriptorInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ISoundMarkerGetter lhs,
+            ISoundMarkerGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)SoundMarker_FieldIndex.ObjectBounds] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundMarker_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)SoundMarker_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)SoundMarker_FieldIndex.FNAM] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundMarker_FieldIndex.FNAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.FNAM, rhs.FNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)SoundMarker_FieldIndex.SNDD] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundMarker_FieldIndex.SNDD) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.SNDD, rhs.SNDD)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)SoundMarker_FieldIndex.SoundDescriptor] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundMarker_FieldIndex.SoundDescriptor) ?? true))
+                {
+                    if (!lhs.SoundDescriptor.Equals(rhs.SoundDescriptor)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISoundMarkerGetter)lhs, (ISoundMarkerGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISoundMarkerGetter)lhs, (ISoundMarkerGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

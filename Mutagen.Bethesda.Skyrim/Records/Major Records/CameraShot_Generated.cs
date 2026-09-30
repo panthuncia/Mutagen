@@ -1136,6 +1136,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ICameraShotGetter item,
+            ICameraShotGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((CameraShotCommon)((ICameraShotGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static CameraShot Duplicate(
             this ICameraShotGetter item,
             FormKey formKey,
@@ -1743,6 +1761,163 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return ImageSpaceModifierInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ICameraShotGetter lhs,
+            ICameraShotGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)CameraShot_FieldIndex.Model] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CameraShot_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)CameraShot_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)CameraShot_FieldIndex.Action] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CameraShot_FieldIndex.Action) ?? true))
+                {
+                    if (lhs.Action != rhs.Action) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)CameraShot_FieldIndex.Location] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CameraShot_FieldIndex.Location) ?? true))
+                {
+                    if (lhs.Location != rhs.Location) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)CameraShot_FieldIndex.Target] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CameraShot_FieldIndex.Target) ?? true))
+                {
+                    if (lhs.Target != rhs.Target) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)CameraShot_FieldIndex.Flags] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CameraShot_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)CameraShot_FieldIndex.TimeMultiplierPlayer] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CameraShot_FieldIndex.TimeMultiplierPlayer) ?? true))
+                {
+                    if (!lhs.TimeMultiplierPlayer.EqualsWithin(rhs.TimeMultiplierPlayer)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)CameraShot_FieldIndex.TimeMultiplierTarget] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CameraShot_FieldIndex.TimeMultiplierTarget) ?? true))
+                {
+                    if (!lhs.TimeMultiplierTarget.EqualsWithin(rhs.TimeMultiplierTarget)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)CameraShot_FieldIndex.TimeMultiplierGlobal] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CameraShot_FieldIndex.TimeMultiplierGlobal) ?? true))
+                {
+                    if (!lhs.TimeMultiplierGlobal.EqualsWithin(rhs.TimeMultiplierGlobal)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)CameraShot_FieldIndex.MaxTime] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CameraShot_FieldIndex.MaxTime) ?? true))
+                {
+                    if (!lhs.MaxTime.EqualsWithin(rhs.MaxTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)CameraShot_FieldIndex.MinTime] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CameraShot_FieldIndex.MinTime) ?? true))
+                {
+                    if (!lhs.MinTime.EqualsWithin(rhs.MinTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)CameraShot_FieldIndex.TargetPercentBetweenActors] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CameraShot_FieldIndex.TargetPercentBetweenActors) ?? true))
+                {
+                    if (!lhs.TargetPercentBetweenActors.EqualsWithin(rhs.TargetPercentBetweenActors)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)CameraShot_FieldIndex.NearTargetDistance] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CameraShot_FieldIndex.NearTargetDistance) ?? true))
+                {
+                    if (!lhs.NearTargetDistance.EqualsWithin(rhs.NearTargetDistance)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)CameraShot_FieldIndex.ImageSpaceModifier] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CameraShot_FieldIndex.ImageSpaceModifier) ?? true))
+                {
+                    if (!lhs.ImageSpaceModifier.Equals(rhs.ImageSpaceModifier)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)CameraShot_FieldIndex.DATADataTypeState] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CameraShot_FieldIndex.DATADataTypeState) ?? true))
+                {
+                    if (lhs.DATADataTypeState != rhs.DATADataTypeState) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ICameraShotGetter)lhs, (ICameraShotGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ICameraShotGetter)lhs, (ICameraShotGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(ICameraShotGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

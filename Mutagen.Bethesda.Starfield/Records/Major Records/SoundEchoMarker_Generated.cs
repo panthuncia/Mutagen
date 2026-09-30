@@ -992,6 +992,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ISoundEchoMarkerGetter item,
+            ISoundEchoMarkerGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((SoundEchoMarkerCommon)((ISoundEchoMarkerGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static SoundEchoMarker Duplicate(
             this ISoundEchoMarkerGetter item,
             FormKey formKey,
@@ -1547,6 +1565,108 @@ namespace Mutagen.Bethesda.Starfield
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ISoundEchoMarkerGetter lhs,
+            ISoundEchoMarkerGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)SoundEchoMarker_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundEchoMarker_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)SoundEchoMarker_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)SoundEchoMarker_FieldIndex.ObjectBounds] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundEchoMarker_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)SoundEchoMarker_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)SoundEchoMarker_FieldIndex.DirtinessScale] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundEchoMarker_FieldIndex.DirtinessScale) ?? true))
+                {
+                    if (!lhs.DirtinessScale.Equals(rhs.DirtinessScale)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)SoundEchoMarker_FieldIndex.XALG] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundEchoMarker_FieldIndex.XALG) ?? true))
+                {
+                    if (lhs.XALG != rhs.XALG) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)SoundEchoMarker_FieldIndex.Description] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundEchoMarker_FieldIndex.Description) ?? true))
+                {
+                    if (!string.Equals(lhs.Description, rhs.Description)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)SoundEchoMarker_FieldIndex.Markers] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundEchoMarker_FieldIndex.Markers) ?? true))
+                {
+                    if (!lhs.Markers.SequenceEqual(rhs.Markers, (l, r) => ((EchoMarkerCommon)((IEchoMarkerGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)SoundEchoMarker_FieldIndex.Markers)))) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)SoundEchoMarker_FieldIndex.DefaultStartMarker] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundEchoMarker_FieldIndex.DefaultStartMarker) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.DefaultStartMarker, rhs.DefaultStartMarker, out var lhsDefaultStartMarker, out var rhsDefaultStartMarker, out var isDefaultStartMarkerEqual))
+                    {
+                        if (!((EchoMarkerCommon)((IEchoMarkerGetter)lhsDefaultStartMarker).CommonInstance()!).Equals(lhsDefaultStartMarker, rhsDefaultStartMarker, equalsMask?.GetSubCrystal((int)SoundEchoMarker_FieldIndex.DefaultStartMarker))) return false;
+                    }
+                    else if (!isDefaultStartMarkerEqual) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISoundEchoMarkerGetter)lhs, (ISoundEchoMarkerGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISoundEchoMarkerGetter)lhs, (ISoundEchoMarkerGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

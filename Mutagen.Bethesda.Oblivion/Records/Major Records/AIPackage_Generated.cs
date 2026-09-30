@@ -873,6 +873,24 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IAIPackageGetter item,
+            IAIPackageGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((AIPackageCommon)((IAIPackageGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static AIPackage Duplicate(
             this IAIPackageGetter item,
             FormKey formKey,
@@ -1387,6 +1405,94 @@ namespace Mutagen.Bethesda.Oblivion
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IAIPackageGetter lhs,
+            IAIPackageGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IOblivionMajorRecordGetter)lhs, (IOblivionMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)AIPackage_FieldIndex.Data] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AIPackage_FieldIndex.Data) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Data, rhs.Data, out var lhsData, out var rhsData, out var isDataEqual))
+                    {
+                        if (!((AIPackageDataCommon)((IAIPackageDataGetter)lhsData).CommonInstance()!).Equals(lhsData, rhsData, equalsMask?.GetSubCrystal((int)AIPackage_FieldIndex.Data))) return false;
+                    }
+                    else if (!isDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)AIPackage_FieldIndex.Location] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AIPackage_FieldIndex.Location) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Location, rhs.Location, out var lhsLocation, out var rhsLocation, out var isLocationEqual))
+                    {
+                        if (!((AIPackageLocationCommon)((IAIPackageLocationGetter)lhsLocation).CommonInstance()!).Equals(lhsLocation, rhsLocation, equalsMask?.GetSubCrystal((int)AIPackage_FieldIndex.Location))) return false;
+                    }
+                    else if (!isLocationEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)AIPackage_FieldIndex.Schedule] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AIPackage_FieldIndex.Schedule) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Schedule, rhs.Schedule, out var lhsSchedule, out var rhsSchedule, out var isScheduleEqual))
+                    {
+                        if (!((AIPackageScheduleCommon)((IAIPackageScheduleGetter)lhsSchedule).CommonInstance()!).Equals(lhsSchedule, rhsSchedule, equalsMask?.GetSubCrystal((int)AIPackage_FieldIndex.Schedule))) return false;
+                    }
+                    else if (!isScheduleEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)AIPackage_FieldIndex.Target] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AIPackage_FieldIndex.Target) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Target, rhs.Target, out var lhsTarget, out var rhsTarget, out var isTargetEqual))
+                    {
+                        if (!((AIPackageTargetCommon)((IAIPackageTargetGetter)lhsTarget).CommonInstance()!).Equals(lhsTarget, rhsTarget, equalsMask?.GetSubCrystal((int)AIPackage_FieldIndex.Target))) return false;
+                    }
+                    else if (!isTargetEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)AIPackage_FieldIndex.Conditions] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AIPackage_FieldIndex.Conditions) ?? true))
+                {
+                    if (!lhs.Conditions.SequenceEqual(rhs.Conditions, (l, r) => ((ConditionCommon)((IConditionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)AIPackage_FieldIndex.Conditions)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IOblivionMajorRecordGetter lhs,
+            IOblivionMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IAIPackageGetter)lhs, (IAIPackageGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IAIPackageGetter)lhs, (IAIPackageGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

@@ -900,6 +900,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ILayerGetter item,
+            ILayerGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((LayerCommon)((ILayerGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Layer Duplicate(
             this ILayerGetter item,
             FormKey formKey,
@@ -1420,6 +1438,82 @@ namespace Mutagen.Bethesda.Starfield
                 yield return ParentInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ILayerGetter lhs,
+            ILayerGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Layer_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Layer_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)Layer_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Layer_FieldIndex.Components] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Layer_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Layer_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Layer_FieldIndex.Parent] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Layer_FieldIndex.Parent) ?? true))
+                {
+                    if (!lhs.Parent.Equals(rhs.Parent)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Layer_FieldIndex.SurfaceColor] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Layer_FieldIndex.SurfaceColor) ?? true))
+                {
+                    if (!lhs.SurfaceColor.ColorOnlyEquals(rhs.SurfaceColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Layer_FieldIndex.LodBehavior] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Layer_FieldIndex.LodBehavior) ?? true))
+                {
+                    if (lhs.LodBehavior != rhs.LodBehavior) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILayerGetter)lhs, (ILayerGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILayerGetter)lhs, (ILayerGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(ILayerGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

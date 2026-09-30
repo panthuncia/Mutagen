@@ -1535,6 +1535,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IRaceGetter item,
+            IRaceGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((RaceCommon)((IRaceGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Race Duplicate(
             this IRaceGetter item,
             FormKey formKey,
@@ -2332,6 +2350,190 @@ namespace Mutagen.Bethesda.Fallout3
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IRaceGetter lhs,
+            IRaceGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Race_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Race_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Race_FieldIndex.Description] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Race_FieldIndex.Description) ?? true))
+                {
+                    if (!object.Equals(lhs.Description, rhs.Description)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Race_FieldIndex.Relations] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Race_FieldIndex.Relations) ?? true))
+                {
+                    if (!lhs.Relations.SequenceEqual(rhs.Relations, (l, r) => ((RaceRelationCommon)((IRaceRelationGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Race_FieldIndex.Relations)))) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Race_FieldIndex.Data] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Race_FieldIndex.Data) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Data, rhs.Data, out var lhsData, out var rhsData, out var isDataEqual))
+                    {
+                        if (!((RaceDataCommon)((IRaceDataGetter)lhsData).CommonInstance()!).Equals(lhsData, rhsData, equalsMask?.GetSubCrystal((int)Race_FieldIndex.Data))) return false;
+                    }
+                    else if (!isDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Race_FieldIndex.Older] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Race_FieldIndex.Older) ?? true))
+                {
+                    if (!lhs.Older.Equals(rhs.Older)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Race_FieldIndex.Younger] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Race_FieldIndex.Younger) ?? true))
+                {
+                    if (!lhs.Younger.Equals(rhs.Younger)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Race_FieldIndex.Voices] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Race_FieldIndex.Voices) ?? true))
+                {
+                    if (!Equals(lhs.Voices, rhs.Voices)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Race_FieldIndex.DefaultHairStyles] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Race_FieldIndex.DefaultHairStyles) ?? true))
+                {
+                    if (!Equals(lhs.DefaultHairStyles, rhs.DefaultHairStyles)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Race_FieldIndex.DefaultHairColors] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Race_FieldIndex.DefaultHairColors) ?? true))
+                {
+                    if (!Equals(lhs.DefaultHairColors, rhs.DefaultHairColors)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Race_FieldIndex.FacegenMainClamp] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Race_FieldIndex.FacegenMainClamp) ?? true))
+                {
+                    if (!lhs.FacegenMainClamp.EqualsWithin(rhs.FacegenMainClamp)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Race_FieldIndex.FacegenFaceClamp] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Race_FieldIndex.FacegenFaceClamp) ?? true))
+                {
+                    if (!lhs.FacegenFaceClamp.EqualsWithin(rhs.FacegenFaceClamp)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Race_FieldIndex.UnusedATTR] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Race_FieldIndex.UnusedATTR) ?? true))
+                {
+                    if (lhs.UnusedATTR != rhs.UnusedATTR) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Race_FieldIndex.HeadData] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Race_FieldIndex.HeadData) ?? true))
+                {
+                    if (!Equals(lhs.HeadData, rhs.HeadData)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Race_FieldIndex.BodyData] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Race_FieldIndex.BodyData) ?? true))
+                {
+                    if (!Equals(lhs.BodyData, rhs.BodyData)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Race_FieldIndex.Hairs] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Race_FieldIndex.Hairs) ?? true))
+                {
+                    if (!lhs.Hairs.SequenceEqualNullable(rhs.Hairs)) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)Race_FieldIndex.Eyes] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Race_FieldIndex.Eyes) ?? true))
+                {
+                    if (!lhs.Eyes.SequenceEqualNullable(rhs.Eyes)) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)Race_FieldIndex.FaceGenData] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Race_FieldIndex.FaceGenData) ?? true))
+                {
+                    if (!Equals(lhs.FaceGenData, rhs.FaceGenData)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IRaceGetter)lhs, (IRaceGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IRaceGetter)lhs, (IRaceGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IRaceGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

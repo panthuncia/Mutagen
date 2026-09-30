@@ -939,6 +939,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IDialogViewGetter item,
+            IDialogViewGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((DialogViewCommon)((IDialogViewGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static DialogView Duplicate(
             this IDialogViewGetter item,
             FormKey formKey,
@@ -1430,6 +1448,78 @@ namespace Mutagen.Bethesda.Fallout4
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IDialogViewGetter lhs,
+            IDialogViewGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)DialogView_FieldIndex.Quest] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogView_FieldIndex.Quest) ?? true))
+                {
+                    if (!lhs.Quest.Equals(rhs.Quest)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)DialogView_FieldIndex.Branches] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogView_FieldIndex.Branches) ?? true))
+                {
+                    if (!lhs.Branches.SequenceEqualNullable(rhs.Branches)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)DialogView_FieldIndex.TNAMs] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogView_FieldIndex.TNAMs) ?? true))
+                {
+                    if (!lhs.TNAMs.SequenceEqualNullable(rhs.TNAMs)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)DialogView_FieldIndex.ENAM] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogView_FieldIndex.ENAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.ENAM, rhs.ENAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)DialogView_FieldIndex.DNAM] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogView_FieldIndex.DNAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.DNAM, rhs.DNAM)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IDialogViewGetter)lhs, (IDialogViewGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IDialogViewGetter)lhs, (IDialogViewGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

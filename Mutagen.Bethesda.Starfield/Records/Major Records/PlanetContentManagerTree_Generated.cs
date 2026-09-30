@@ -940,6 +940,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IPlanetContentManagerTreeGetter item,
+            IPlanetContentManagerTreeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((PlanetContentManagerTreeCommon)((IPlanetContentManagerTreeGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static PlanetContentManagerTree Duplicate(
             this IPlanetContentManagerTreeGetter item,
             FormKey formKey,
@@ -1433,6 +1451,78 @@ namespace Mutagen.Bethesda.Starfield
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IPlanetContentManagerTreeGetter lhs,
+            IPlanetContentManagerTreeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)PlanetContentManagerTree_FieldIndex.NAM1] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlanetContentManagerTree_FieldIndex.NAM1) ?? true))
+                {
+                    if (!MemoryExtensions.SequenceEqual(lhs.NAM1.Span, rhs.NAM1.Span)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)PlanetContentManagerTree_FieldIndex.NAM2] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlanetContentManagerTree_FieldIndex.NAM2) ?? true))
+                {
+                    if (!MemoryExtensions.SequenceEqual(lhs.NAM2.Span, rhs.NAM2.Span)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)PlanetContentManagerTree_FieldIndex.NAM5] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlanetContentManagerTree_FieldIndex.NAM5) ?? true))
+                {
+                    if (!MemoryExtensions.SequenceEqual(lhs.NAM5.Span, rhs.NAM5.Span)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)PlanetContentManagerTree_FieldIndex.Nodes] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlanetContentManagerTree_FieldIndex.Nodes) ?? true))
+                {
+                    if (!lhs.Nodes.SequenceEqualNullable(rhs.Nodes)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)PlanetContentManagerTree_FieldIndex.Conditions] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlanetContentManagerTree_FieldIndex.Conditions) ?? true))
+                {
+                    if (!lhs.Conditions.SequenceEqualNullable(rhs.Conditions, (l, r) => ((ConditionCommon)((IConditionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)PlanetContentManagerTree_FieldIndex.Conditions)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPlanetContentManagerTreeGetter)lhs, (IPlanetContentManagerTreeGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPlanetContentManagerTreeGetter)lhs, (IPlanetContentManagerTreeGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

@@ -924,6 +924,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IMaterialTypeGetter item,
+            IMaterialTypeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((MaterialTypeCommon)((IMaterialTypeGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static MaterialType Duplicate(
             this IMaterialTypeGetter item,
             FormKey formKey,
@@ -1447,6 +1465,105 @@ namespace Mutagen.Bethesda.Fallout4
                 yield return HavokImpactDataSetInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IMaterialTypeGetter lhs,
+            IMaterialTypeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)MaterialType_FieldIndex.Parent] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MaterialType_FieldIndex.Parent) ?? true))
+                {
+                    if (!lhs.Parent.Equals(rhs.Parent)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)MaterialType_FieldIndex.Name] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MaterialType_FieldIndex.Name) ?? true))
+                {
+                    if (!string.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)MaterialType_FieldIndex.HavokDisplayColor] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MaterialType_FieldIndex.HavokDisplayColor) ?? true))
+                {
+                    if (!lhs.HavokDisplayColor.ColorOnlyEquals(rhs.HavokDisplayColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)MaterialType_FieldIndex.Buoyancy] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MaterialType_FieldIndex.Buoyancy) ?? true))
+                {
+                    if (!lhs.Buoyancy.EqualsWithin(rhs.Buoyancy)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)MaterialType_FieldIndex.Flags] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MaterialType_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)MaterialType_FieldIndex.HavokImpactDataSet] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MaterialType_FieldIndex.HavokImpactDataSet) ?? true))
+                {
+                    if (!lhs.HavokImpactDataSet.Equals(rhs.HavokImpactDataSet)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)MaterialType_FieldIndex.BreakableFX] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MaterialType_FieldIndex.BreakableFX) ?? true))
+                {
+                    if (!string.Equals(lhs.BreakableFX, rhs.BreakableFX)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)MaterialType_FieldIndex.ModelData] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MaterialType_FieldIndex.ModelData) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.ModelData, rhs.ModelData)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMaterialTypeGetter)lhs, (IMaterialTypeGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMaterialTypeGetter)lhs, (IMaterialTypeGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

@@ -818,6 +818,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IMusicTypeGetter item,
+            IMusicTypeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((MusicTypeCommon)((IMusicTypeGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static MusicType Duplicate(
             this IMusicTypeGetter item,
             FormKey formKey,
@@ -1293,6 +1311,73 @@ namespace Mutagen.Bethesda.Fallout4
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IMusicTypeGetter lhs,
+            IMusicTypeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)MusicType_FieldIndex.Flags] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MusicType_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)MusicType_FieldIndex.Data] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MusicType_FieldIndex.Data) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Data, rhs.Data, out var lhsData, out var rhsData, out var isDataEqual))
+                    {
+                        if (!((MusicTypeDataCommon)((IMusicTypeDataGetter)lhsData).CommonInstance()!).Equals(lhsData, rhsData, equalsMask?.GetSubCrystal((int)MusicType_FieldIndex.Data))) return false;
+                    }
+                    else if (!isDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)MusicType_FieldIndex.FadeDuration] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MusicType_FieldIndex.FadeDuration) ?? true))
+                {
+                    if (!lhs.FadeDuration.EqualsWithin(rhs.FadeDuration)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)MusicType_FieldIndex.Tracks] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MusicType_FieldIndex.Tracks) ?? true))
+                {
+                    if (!lhs.Tracks.SequenceEqualNullable(rhs.Tracks)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMusicTypeGetter)lhs, (IMusicTypeGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMusicTypeGetter)lhs, (IMusicTypeGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

@@ -2469,6 +2469,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ICombatStyleGetter item,
+            ICombatStyleGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((CombatStyleCommon)((ICombatStyleGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static CombatStyle Duplicate(
             this ICombatStyleGetter item,
             FormKey formKey,
@@ -3503,6 +3521,501 @@ namespace Mutagen.Bethesda.Fallout4
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ICombatStyleGetter lhs,
+            ICombatStyleGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)CombatStyle_FieldIndex.OffensiveMult] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.OffensiveMult) ?? true))
+                {
+                    if (!lhs.OffensiveMult.EqualsWithin(rhs.OffensiveMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)CombatStyle_FieldIndex.DefensiveMult] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.DefensiveMult) ?? true))
+                {
+                    if (!lhs.DefensiveMult.EqualsWithin(rhs.DefensiveMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)CombatStyle_FieldIndex.GroupOffensiveMult] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.GroupOffensiveMult) ?? true))
+                {
+                    if (!lhs.GroupOffensiveMult.EqualsWithin(rhs.GroupOffensiveMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)CombatStyle_FieldIndex.EquipmentScoreMultMelee] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.EquipmentScoreMultMelee) ?? true))
+                {
+                    if (!lhs.EquipmentScoreMultMelee.EqualsWithin(rhs.EquipmentScoreMultMelee)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)CombatStyle_FieldIndex.EquipmentScoreMultMagic] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.EquipmentScoreMultMagic) ?? true))
+                {
+                    if (!lhs.EquipmentScoreMultMagic.EqualsWithin(rhs.EquipmentScoreMultMagic)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)CombatStyle_FieldIndex.EquipmentScoreMultRanged] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.EquipmentScoreMultRanged) ?? true))
+                {
+                    if (!lhs.EquipmentScoreMultRanged.EqualsWithin(rhs.EquipmentScoreMultRanged)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)CombatStyle_FieldIndex.EquipmentScoreMultShout] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.EquipmentScoreMultShout) ?? true))
+                {
+                    if (!lhs.EquipmentScoreMultShout.EqualsWithin(rhs.EquipmentScoreMultShout)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)CombatStyle_FieldIndex.EquipmentScoreMultUnarmed] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.EquipmentScoreMultUnarmed) ?? true))
+                {
+                    if (!lhs.EquipmentScoreMultUnarmed.EqualsWithin(rhs.EquipmentScoreMultUnarmed)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)CombatStyle_FieldIndex.EquipmentScoreMultStaff] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.EquipmentScoreMultStaff) ?? true))
+                {
+                    if (!lhs.EquipmentScoreMultStaff.EqualsWithin(rhs.EquipmentScoreMultStaff)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)CombatStyle_FieldIndex.AvoidThreatChance] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.AvoidThreatChance) ?? true))
+                {
+                    if (!lhs.AvoidThreatChance.EqualsWithin(rhs.AvoidThreatChance)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)CombatStyle_FieldIndex.DodgeThreadChance] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.DodgeThreadChance) ?? true))
+                {
+                    if (!lhs.DodgeThreadChance.EqualsWithin(rhs.DodgeThreadChance)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)CombatStyle_FieldIndex.EvadeThreatChance] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.EvadeThreatChance) ?? true))
+                {
+                    if (!lhs.EvadeThreatChance.EqualsWithin(rhs.EvadeThreatChance)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)CombatStyle_FieldIndex.CSMD] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CSMD) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.CSMD, rhs.CSMD)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)CombatStyle_FieldIndex.MeleeAttackStaggeredMult] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.MeleeAttackStaggeredMult) ?? true))
+                {
+                    if (!lhs.MeleeAttackStaggeredMult.EqualsWithin(rhs.MeleeAttackStaggeredMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)CombatStyle_FieldIndex.MeleePowerAttackStaggeredMult] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.MeleePowerAttackStaggeredMult) ?? true))
+                {
+                    if (!lhs.MeleePowerAttackStaggeredMult.EqualsWithin(rhs.MeleePowerAttackStaggeredMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)CombatStyle_FieldIndex.MeleePowerAttackBlockingMult] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.MeleePowerAttackBlockingMult) ?? true))
+                {
+                    if (!lhs.MeleePowerAttackBlockingMult.EqualsWithin(rhs.MeleePowerAttackBlockingMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)CombatStyle_FieldIndex.MeleeBashMult] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.MeleeBashMult) ?? true))
+                {
+                    if (!lhs.MeleeBashMult.EqualsWithin(rhs.MeleeBashMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)CombatStyle_FieldIndex.MeleeBashRecoilMult] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.MeleeBashRecoilMult) ?? true))
+                {
+                    if (!lhs.MeleeBashRecoilMult.EqualsWithin(rhs.MeleeBashRecoilMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)CombatStyle_FieldIndex.MeleeBashAttackMult] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.MeleeBashAttackMult) ?? true))
+                {
+                    if (!lhs.MeleeBashAttackMult.EqualsWithin(rhs.MeleeBashAttackMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)CombatStyle_FieldIndex.MeleeBashPowerAttackMult] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.MeleeBashPowerAttackMult) ?? true))
+                {
+                    if (!lhs.MeleeBashPowerAttackMult.EqualsWithin(rhs.MeleeBashPowerAttackMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)CombatStyle_FieldIndex.MeleeSpecialAttackMult] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.MeleeSpecialAttackMult) ?? true))
+                {
+                    if (!lhs.MeleeSpecialAttackMult.EqualsWithin(rhs.MeleeSpecialAttackMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)CombatStyle_FieldIndex.MeleeBlockWhenStaggeredMult] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.MeleeBlockWhenStaggeredMult) ?? true))
+                {
+                    if (!lhs.MeleeBlockWhenStaggeredMult.EqualsWithin(rhs.MeleeBlockWhenStaggeredMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal22()) differs[(int)CombatStyle_FieldIndex.MeleeAttackWhenStaggeredMult] = true;
+            bool Equal22()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.MeleeAttackWhenStaggeredMult) ?? true))
+                {
+                    if (!lhs.MeleeAttackWhenStaggeredMult.EqualsWithin(rhs.MeleeAttackWhenStaggeredMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal23()) differs[(int)CombatStyle_FieldIndex.RangedAccuracyMult] = true;
+            bool Equal23()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.RangedAccuracyMult) ?? true))
+                {
+                    if (!lhs.RangedAccuracyMult.EqualsWithin(rhs.RangedAccuracyMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal24()) differs[(int)CombatStyle_FieldIndex.CloseRangeDuelingCircleMult] = true;
+            bool Equal24()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeDuelingCircleMult) ?? true))
+                {
+                    if (!lhs.CloseRangeDuelingCircleMult.EqualsWithin(rhs.CloseRangeDuelingCircleMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal25()) differs[(int)CombatStyle_FieldIndex.CloseRangeDuelingFallbackMult] = true;
+            bool Equal25()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeDuelingFallbackMult) ?? true))
+                {
+                    if (!lhs.CloseRangeDuelingFallbackMult.EqualsWithin(rhs.CloseRangeDuelingFallbackMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal26()) differs[(int)CombatStyle_FieldIndex.CloseRangeFlankDistance] = true;
+            bool Equal26()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeFlankDistance) ?? true))
+                {
+                    if (!lhs.CloseRangeFlankDistance.EqualsWithin(rhs.CloseRangeFlankDistance)) return false;
+                }
+                return true;
+            }
+            if (!Equal27()) differs[(int)CombatStyle_FieldIndex.CloseRangeFlankingStalkTime] = true;
+            bool Equal27()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeFlankingStalkTime) ?? true))
+                {
+                    if (!lhs.CloseRangeFlankingStalkTime.EqualsWithin(rhs.CloseRangeFlankingStalkTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal28()) differs[(int)CombatStyle_FieldIndex.CloseRangeChargeDistance] = true;
+            bool Equal28()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeChargeDistance) ?? true))
+                {
+                    if (!lhs.CloseRangeChargeDistance.EqualsWithin(rhs.CloseRangeChargeDistance)) return false;
+                }
+                return true;
+            }
+            if (!Equal29()) differs[(int)CombatStyle_FieldIndex.CloseRangeChargingThrowProbability] = true;
+            bool Equal29()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeChargingThrowProbability) ?? true))
+                {
+                    if (!lhs.CloseRangeChargingThrowProbability.EqualsWithin(rhs.CloseRangeChargingThrowProbability)) return false;
+                }
+                return true;
+            }
+            if (!Equal30()) differs[(int)CombatStyle_FieldIndex.CloseRangeChargingSprintFastProbability] = true;
+            bool Equal30()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeChargingSprintFastProbability) ?? true))
+                {
+                    if (!lhs.CloseRangeChargingSprintFastProbability.EqualsWithin(rhs.CloseRangeChargingSprintFastProbability)) return false;
+                }
+                return true;
+            }
+            if (!Equal31()) differs[(int)CombatStyle_FieldIndex.CloseRangeChargingSideswipeProbability] = true;
+            bool Equal31()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeChargingSideswipeProbability) ?? true))
+                {
+                    if (!lhs.CloseRangeChargingSideswipeProbability.EqualsWithin(rhs.CloseRangeChargingSideswipeProbability)) return false;
+                }
+                return true;
+            }
+            if (!Equal32()) differs[(int)CombatStyle_FieldIndex.CloseRangeChargingDisengageProbability] = true;
+            bool Equal32()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeChargingDisengageProbability) ?? true))
+                {
+                    if (!lhs.CloseRangeChargingDisengageProbability.EqualsWithin(rhs.CloseRangeChargingDisengageProbability)) return false;
+                }
+                return true;
+            }
+            if (!Equal33()) differs[(int)CombatStyle_FieldIndex.CloseRangeChargingThrowMaxTargets] = true;
+            bool Equal33()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeChargingThrowMaxTargets) ?? true))
+                {
+                    if (lhs.CloseRangeChargingThrowMaxTargets != rhs.CloseRangeChargingThrowMaxTargets) return false;
+                }
+                return true;
+            }
+            if (!Equal34()) differs[(int)CombatStyle_FieldIndex.CloseRangeFlankingVariance] = true;
+            bool Equal34()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeFlankingVariance) ?? true))
+                {
+                    if (!lhs.CloseRangeFlankingVariance.EqualsWithin(rhs.CloseRangeFlankingVariance)) return false;
+                }
+                return true;
+            }
+            if (!Equal35()) differs[(int)CombatStyle_FieldIndex.LongRangeStrafeMult] = true;
+            bool Equal35()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.LongRangeStrafeMult) ?? true))
+                {
+                    if (!lhs.LongRangeStrafeMult.EqualsWithin(rhs.LongRangeStrafeMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal36()) differs[(int)CombatStyle_FieldIndex.LongRangeAdjustRangeMult] = true;
+            bool Equal36()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.LongRangeAdjustRangeMult) ?? true))
+                {
+                    if (!lhs.LongRangeAdjustRangeMult.EqualsWithin(rhs.LongRangeAdjustRangeMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal37()) differs[(int)CombatStyle_FieldIndex.LongRangeCrouchMult] = true;
+            bool Equal37()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.LongRangeCrouchMult) ?? true))
+                {
+                    if (!lhs.LongRangeCrouchMult.EqualsWithin(rhs.LongRangeCrouchMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal38()) differs[(int)CombatStyle_FieldIndex.LongRangeWaitMult] = true;
+            bool Equal38()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.LongRangeWaitMult) ?? true))
+                {
+                    if (!lhs.LongRangeWaitMult.EqualsWithin(rhs.LongRangeWaitMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal39()) differs[(int)CombatStyle_FieldIndex.LongRangeRangeMult] = true;
+            bool Equal39()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.LongRangeRangeMult) ?? true))
+                {
+                    if (!lhs.LongRangeRangeMult.EqualsWithin(rhs.LongRangeRangeMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal40()) differs[(int)CombatStyle_FieldIndex.CoverSearchDistanceMult] = true;
+            bool Equal40()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CoverSearchDistanceMult) ?? true))
+                {
+                    if (!lhs.CoverSearchDistanceMult.EqualsWithin(rhs.CoverSearchDistanceMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal41()) differs[(int)CombatStyle_FieldIndex.HoverChance] = true;
+            bool Equal41()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.HoverChance) ?? true))
+                {
+                    if (!lhs.HoverChance.EqualsWithin(rhs.HoverChance)) return false;
+                }
+                return true;
+            }
+            if (!Equal42()) differs[(int)CombatStyle_FieldIndex.DiveBombChance] = true;
+            bool Equal42()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.DiveBombChance) ?? true))
+                {
+                    if (!lhs.DiveBombChance.EqualsWithin(rhs.DiveBombChance)) return false;
+                }
+                return true;
+            }
+            if (!Equal43()) differs[(int)CombatStyle_FieldIndex.GroundAttackChance] = true;
+            bool Equal43()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.GroundAttackChance) ?? true))
+                {
+                    if (!lhs.GroundAttackChance.EqualsWithin(rhs.GroundAttackChance)) return false;
+                }
+                return true;
+            }
+            if (!Equal44()) differs[(int)CombatStyle_FieldIndex.HoverTime] = true;
+            bool Equal44()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.HoverTime) ?? true))
+                {
+                    if (!lhs.HoverTime.EqualsWithin(rhs.HoverTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal45()) differs[(int)CombatStyle_FieldIndex.GroundAttackTime] = true;
+            bool Equal45()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.GroundAttackTime) ?? true))
+                {
+                    if (!lhs.GroundAttackTime.EqualsWithin(rhs.GroundAttackTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal46()) differs[(int)CombatStyle_FieldIndex.PerchAttackChance] = true;
+            bool Equal46()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.PerchAttackChance) ?? true))
+                {
+                    if (!lhs.PerchAttackChance.EqualsWithin(rhs.PerchAttackChance)) return false;
+                }
+                return true;
+            }
+            if (!Equal47()) differs[(int)CombatStyle_FieldIndex.PerchAttackTime] = true;
+            bool Equal47()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.PerchAttackTime) ?? true))
+                {
+                    if (!lhs.PerchAttackTime.EqualsWithin(rhs.PerchAttackTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal48()) differs[(int)CombatStyle_FieldIndex.FlyingAttackChance] = true;
+            bool Equal48()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.FlyingAttackChance) ?? true))
+                {
+                    if (!lhs.FlyingAttackChance.EqualsWithin(rhs.FlyingAttackChance)) return false;
+                }
+                return true;
+            }
+            if (!Equal49()) differs[(int)CombatStyle_FieldIndex.Flags] = true;
+            bool Equal49()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal50()) differs[(int)CombatStyle_FieldIndex.CSMEDataTypeState] = true;
+            bool Equal50()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CSMEDataTypeState) ?? true))
+                {
+                    if (lhs.CSMEDataTypeState != rhs.CSMEDataTypeState) return false;
+                }
+                return true;
+            }
+            if (!Equal51()) differs[(int)CombatStyle_FieldIndex.CSLRDataTypeState] = true;
+            bool Equal51()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CSLRDataTypeState) ?? true))
+                {
+                    if (lhs.CSLRDataTypeState != rhs.CSLRDataTypeState) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ICombatStyleGetter)lhs, (ICombatStyleGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ICombatStyleGetter)lhs, (ICombatStyleGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

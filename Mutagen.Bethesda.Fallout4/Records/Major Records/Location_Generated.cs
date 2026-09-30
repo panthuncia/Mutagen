@@ -2880,6 +2880,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ILocationGetter item,
+            ILocationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((LocationCommon)((ILocationGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Location Duplicate(
             this ILocationGetter item,
             FormKey formKey,
@@ -3991,6 +4009,258 @@ namespace Mutagen.Bethesda.Fallout4
                 yield return WorldLocationMarkerRefInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ILocationGetter lhs,
+            ILocationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Location_FieldIndex.PersistentActorReferencesAdded] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.PersistentActorReferencesAdded) ?? true))
+                {
+                    if (!lhs.PersistentActorReferencesAdded.SequenceEqualNullable(rhs.PersistentActorReferencesAdded, (l, r) => ((PersistentActorReferenceCommon)((IPersistentActorReferenceGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Location_FieldIndex.PersistentActorReferencesAdded)))) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Location_FieldIndex.PersistentActorReferencesStatic] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.PersistentActorReferencesStatic) ?? true))
+                {
+                    if (!lhs.PersistentActorReferencesStatic.SequenceEqualNullable(rhs.PersistentActorReferencesStatic, (l, r) => ((PersistentActorReferenceCommon)((IPersistentActorReferenceGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Location_FieldIndex.PersistentActorReferencesStatic)))) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Location_FieldIndex.PersistentActorReferencesRemoved] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.PersistentActorReferencesRemoved) ?? true))
+                {
+                    if (!lhs.PersistentActorReferencesRemoved.SequenceEqualNullable(rhs.PersistentActorReferencesRemoved)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Location_FieldIndex.UniqueActorReferencesAdded] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.UniqueActorReferencesAdded) ?? true))
+                {
+                    if (!lhs.UniqueActorReferencesAdded.SequenceEqualNullable(rhs.UniqueActorReferencesAdded, (l, r) => ((UniqueActorReferenceCommon)((IUniqueActorReferenceGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Location_FieldIndex.UniqueActorReferencesAdded)))) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Location_FieldIndex.UniqueActorReferencesStatic] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.UniqueActorReferencesStatic) ?? true))
+                {
+                    if (!lhs.UniqueActorReferencesStatic.SequenceEqualNullable(rhs.UniqueActorReferencesStatic, (l, r) => ((UniqueActorReferenceCommon)((IUniqueActorReferenceGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Location_FieldIndex.UniqueActorReferencesStatic)))) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Location_FieldIndex.UniqueActorReferencesRemoved] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.UniqueActorReferencesRemoved) ?? true))
+                {
+                    if (!lhs.UniqueActorReferencesRemoved.SequenceEqualNullable(rhs.UniqueActorReferencesRemoved)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Location_FieldIndex.LocationRefTypeReferencesAdded] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.LocationRefTypeReferencesAdded) ?? true))
+                {
+                    if (!lhs.LocationRefTypeReferencesAdded.SequenceEqualNullable(rhs.LocationRefTypeReferencesAdded, (l, r) => ((LocationRefTypeReferenceCommon)((ILocationRefTypeReferenceGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Location_FieldIndex.LocationRefTypeReferencesAdded)))) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Location_FieldIndex.LocationRefTypeReferencesStatic] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.LocationRefTypeReferencesStatic) ?? true))
+                {
+                    if (!lhs.LocationRefTypeReferencesStatic.SequenceEqualNullable(rhs.LocationRefTypeReferencesStatic, (l, r) => ((LocationRefTypeReferenceCommon)((ILocationRefTypeReferenceGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Location_FieldIndex.LocationRefTypeReferencesStatic)))) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Location_FieldIndex.LocationRefTypeReferencesRemoved] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.LocationRefTypeReferencesRemoved) ?? true))
+                {
+                    if (!lhs.LocationRefTypeReferencesRemoved.SequenceEqualNullable(rhs.LocationRefTypeReferencesRemoved)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Location_FieldIndex.WorldspaceCellsAdded] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.WorldspaceCellsAdded) ?? true))
+                {
+                    if (!lhs.WorldspaceCellsAdded.SequenceEqual(rhs.WorldspaceCellsAdded, (l, r) => ((LocationCoordinateCommon)((ILocationCoordinateGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Location_FieldIndex.WorldspaceCellsAdded)))) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Location_FieldIndex.WorldspaceCellsStatic] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.WorldspaceCellsStatic) ?? true))
+                {
+                    if (!lhs.WorldspaceCellsStatic.SequenceEqual(rhs.WorldspaceCellsStatic, (l, r) => ((LocationCoordinateCommon)((ILocationCoordinateGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Location_FieldIndex.WorldspaceCellsStatic)))) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Location_FieldIndex.WorldspaceCellsRemoved] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.WorldspaceCellsRemoved) ?? true))
+                {
+                    if (!lhs.WorldspaceCellsRemoved.SequenceEqual(rhs.WorldspaceCellsRemoved, (l, r) => ((LocationCoordinateCommon)((ILocationCoordinateGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Location_FieldIndex.WorldspaceCellsRemoved)))) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Location_FieldIndex.InitiallyDisabledReferencesAdded] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.InitiallyDisabledReferencesAdded) ?? true))
+                {
+                    if (!lhs.InitiallyDisabledReferencesAdded.SequenceEqualNullable(rhs.InitiallyDisabledReferencesAdded)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Location_FieldIndex.InitiallyDisabledReferencesStatic] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.InitiallyDisabledReferencesStatic) ?? true))
+                {
+                    if (!lhs.InitiallyDisabledReferencesStatic.SequenceEqualNullable(rhs.InitiallyDisabledReferencesStatic)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Location_FieldIndex.EnableParentReferencesAdded] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.EnableParentReferencesAdded) ?? true))
+                {
+                    if (!lhs.EnableParentReferencesAdded.SequenceEqualNullable(rhs.EnableParentReferencesAdded, (l, r) => ((EnableParentReferenceCommon)((IEnableParentReferenceGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Location_FieldIndex.EnableParentReferencesAdded)))) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)Location_FieldIndex.EnableParentReferencesStatic] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.EnableParentReferencesStatic) ?? true))
+                {
+                    if (!lhs.EnableParentReferencesStatic.SequenceEqualNullable(rhs.EnableParentReferencesStatic, (l, r) => ((EnableParentReferenceCommon)((IEnableParentReferenceGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Location_FieldIndex.EnableParentReferencesStatic)))) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)Location_FieldIndex.Name] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)Location_FieldIndex.Keywords] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.Keywords) ?? true))
+                {
+                    if (!lhs.Keywords.SequenceEqualNullable(rhs.Keywords)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)Location_FieldIndex.ParentLocation] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.ParentLocation) ?? true))
+                {
+                    if (!lhs.ParentLocation.Equals(rhs.ParentLocation)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)Location_FieldIndex.Music] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.Music) ?? true))
+                {
+                    if (!lhs.Music.Equals(rhs.Music)) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)Location_FieldIndex.UnreportedCrimeFaction] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.UnreportedCrimeFaction) ?? true))
+                {
+                    if (!lhs.UnreportedCrimeFaction.Equals(rhs.UnreportedCrimeFaction)) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)Location_FieldIndex.WorldLocationMarkerRef] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.WorldLocationMarkerRef) ?? true))
+                {
+                    if (!lhs.WorldLocationMarkerRef.Equals(rhs.WorldLocationMarkerRef)) return false;
+                }
+                return true;
+            }
+            if (!Equal22()) differs[(int)Location_FieldIndex.WorldLocationRadius] = true;
+            bool Equal22()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.WorldLocationRadius) ?? true))
+                {
+                    if (!lhs.WorldLocationRadius.EqualsWithin(rhs.WorldLocationRadius)) return false;
+                }
+                return true;
+            }
+            if (!Equal23()) differs[(int)Location_FieldIndex.ActorFadeMult] = true;
+            bool Equal23()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.ActorFadeMult) ?? true))
+                {
+                    if (!lhs.ActorFadeMult.EqualsWithin(rhs.ActorFadeMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal24()) differs[(int)Location_FieldIndex.Color] = true;
+            bool Equal24()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Location_FieldIndex.Color) ?? true))
+                {
+                    if (!lhs.Color.ColorOnlyEquals(rhs.Color)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILocationGetter)lhs, (ILocationGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILocationGetter)lhs, (ILocationGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

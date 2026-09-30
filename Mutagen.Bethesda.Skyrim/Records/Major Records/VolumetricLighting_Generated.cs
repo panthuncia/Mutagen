@@ -1028,6 +1028,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IVolumetricLightingGetter item,
+            IVolumetricLightingGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((VolumetricLightingCommon)((IVolumetricLightingGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static VolumetricLighting Duplicate(
             this IVolumetricLightingGetter item,
             FormKey formKey,
@@ -1617,6 +1635,141 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IVolumetricLightingGetter lhs,
+            IVolumetricLightingGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)VolumetricLighting_FieldIndex.Intensity] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)VolumetricLighting_FieldIndex.Intensity) ?? true))
+                {
+                    if (!lhs.Intensity.EqualsWithin(rhs.Intensity)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)VolumetricLighting_FieldIndex.CustomColorContribution] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)VolumetricLighting_FieldIndex.CustomColorContribution) ?? true))
+                {
+                    if (!lhs.CustomColorContribution.EqualsWithin(rhs.CustomColorContribution)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)VolumetricLighting_FieldIndex.ColorR] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)VolumetricLighting_FieldIndex.ColorR) ?? true))
+                {
+                    if (!lhs.ColorR.EqualsWithin(rhs.ColorR)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)VolumetricLighting_FieldIndex.ColorG] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)VolumetricLighting_FieldIndex.ColorG) ?? true))
+                {
+                    if (!lhs.ColorG.EqualsWithin(rhs.ColorG)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)VolumetricLighting_FieldIndex.ColorB] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)VolumetricLighting_FieldIndex.ColorB) ?? true))
+                {
+                    if (!lhs.ColorB.EqualsWithin(rhs.ColorB)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)VolumetricLighting_FieldIndex.DensityContribution] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)VolumetricLighting_FieldIndex.DensityContribution) ?? true))
+                {
+                    if (!lhs.DensityContribution.EqualsWithin(rhs.DensityContribution)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)VolumetricLighting_FieldIndex.DensitySize] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)VolumetricLighting_FieldIndex.DensitySize) ?? true))
+                {
+                    if (!lhs.DensitySize.EqualsWithin(rhs.DensitySize)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)VolumetricLighting_FieldIndex.DensityWindSpeed] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)VolumetricLighting_FieldIndex.DensityWindSpeed) ?? true))
+                {
+                    if (!lhs.DensityWindSpeed.EqualsWithin(rhs.DensityWindSpeed)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)VolumetricLighting_FieldIndex.DensityFallingSpeed] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)VolumetricLighting_FieldIndex.DensityFallingSpeed) ?? true))
+                {
+                    if (!lhs.DensityFallingSpeed.EqualsWithin(rhs.DensityFallingSpeed)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)VolumetricLighting_FieldIndex.PhaseFunctionContribution] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)VolumetricLighting_FieldIndex.PhaseFunctionContribution) ?? true))
+                {
+                    if (!lhs.PhaseFunctionContribution.EqualsWithin(rhs.PhaseFunctionContribution)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)VolumetricLighting_FieldIndex.PhaseFunctionScattering] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)VolumetricLighting_FieldIndex.PhaseFunctionScattering) ?? true))
+                {
+                    if (!lhs.PhaseFunctionScattering.EqualsWithin(rhs.PhaseFunctionScattering)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)VolumetricLighting_FieldIndex.SamplingRepartitionRangeFactor] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)VolumetricLighting_FieldIndex.SamplingRepartitionRangeFactor) ?? true))
+                {
+                    if (!lhs.SamplingRepartitionRangeFactor.EqualsWithin(rhs.SamplingRepartitionRangeFactor)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IVolumetricLightingGetter)lhs, (IVolumetricLightingGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IVolumetricLightingGetter)lhs, (IVolumetricLightingGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

@@ -1376,6 +1376,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IActivatorGetter item,
+            IActivatorGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ActivatorCommon)((IActivatorGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Activator Duplicate(
             this IActivatorGetter item,
             FormKey formKey,
@@ -2098,6 +2116,166 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return InteractionKeywordInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IActivatorGetter lhs,
+            IActivatorGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Activator_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Activator_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)Activator_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Activator_FieldIndex.ObjectBounds] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Activator_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)Activator_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Activator_FieldIndex.Name] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Activator_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Activator_FieldIndex.Model] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Activator_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)Activator_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Activator_FieldIndex.Destructible] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Activator_FieldIndex.Destructible) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Destructible, rhs.Destructible, out var lhsDestructible, out var rhsDestructible, out var isDestructibleEqual))
+                    {
+                        if (!((DestructibleCommon)((IDestructibleGetter)lhsDestructible).CommonInstance()!).Equals(lhsDestructible, rhsDestructible, equalsMask?.GetSubCrystal((int)Activator_FieldIndex.Destructible))) return false;
+                    }
+                    else if (!isDestructibleEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Activator_FieldIndex.Keywords] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Activator_FieldIndex.Keywords) ?? true))
+                {
+                    if (!lhs.Keywords.SequenceEqualNullable(rhs.Keywords)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Activator_FieldIndex.MarkerColor] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Activator_FieldIndex.MarkerColor) ?? true))
+                {
+                    if (!lhs.MarkerColor.ColorOnlyEquals(rhs.MarkerColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Activator_FieldIndex.LoopingSound] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Activator_FieldIndex.LoopingSound) ?? true))
+                {
+                    if (!lhs.LoopingSound.Equals(rhs.LoopingSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Activator_FieldIndex.ActivationSound] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Activator_FieldIndex.ActivationSound) ?? true))
+                {
+                    if (!lhs.ActivationSound.Equals(rhs.ActivationSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Activator_FieldIndex.WaterType] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Activator_FieldIndex.WaterType) ?? true))
+                {
+                    if (!lhs.WaterType.Equals(rhs.WaterType)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Activator_FieldIndex.ActivateTextOverride] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Activator_FieldIndex.ActivateTextOverride) ?? true))
+                {
+                    if (!object.Equals(lhs.ActivateTextOverride, rhs.ActivateTextOverride)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Activator_FieldIndex.Flags] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Activator_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Activator_FieldIndex.InteractionKeyword] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Activator_FieldIndex.InteractionKeyword) ?? true))
+                {
+                    if (!lhs.InteractionKeyword.Equals(rhs.InteractionKeyword)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IActivatorGetter)lhs, (IActivatorGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IActivatorGetter)lhs, (IActivatorGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IActivatorGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

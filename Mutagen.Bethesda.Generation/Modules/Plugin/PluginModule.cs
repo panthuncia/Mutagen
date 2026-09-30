@@ -26,6 +26,7 @@ public class PluginModule : GenerationModule
         SubModules.Add(new ContainedFormLinksModule());
         SubModules.Add(new MajorRecordModule());
         SubModules.Add(new MajorRecordEnumerationModule());
+        SubModules.Add(new DifferingFieldsModule());
         SubModules.Add(new ContainerParentModule());
         SubModules.Add(new MajorRecordFlagModule());
         SubModules.Add(new DataTypeModule());

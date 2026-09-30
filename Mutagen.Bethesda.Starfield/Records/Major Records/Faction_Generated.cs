@@ -1787,6 +1787,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IFactionGetter item,
+            IFactionGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((FactionCommon)((IFactionGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Faction Duplicate(
             this IFactionGetter item,
             FormKey formKey,
@@ -2643,6 +2661,215 @@ namespace Mutagen.Bethesda.Starfield
                 yield return VoiceTypeInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IFactionGetter lhs,
+            IFactionGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Faction_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)Faction_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Faction_FieldIndex.Components] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Faction_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Faction_FieldIndex.Name] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Faction_FieldIndex.Relations] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.Relations) ?? true))
+                {
+                    if (!lhs.Relations.SequenceEqual(rhs.Relations, (l, r) => ((RelationCommon)((IRelationGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Faction_FieldIndex.Relations)))) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Faction_FieldIndex.Keyword] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.Keyword) ?? true))
+                {
+                    if (!lhs.Keyword.Equals(rhs.Keyword)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Faction_FieldIndex.Flags] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Faction_FieldIndex.SharedCrimeFactionList] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.SharedCrimeFactionList) ?? true))
+                {
+                    if (!lhs.SharedCrimeFactionList.Equals(rhs.SharedCrimeFactionList)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Faction_FieldIndex.CrimeValues] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.CrimeValues) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.CrimeValues, rhs.CrimeValues, out var lhsCrimeValues, out var rhsCrimeValues, out var isCrimeValuesEqual))
+                    {
+                        if (!((CrimeValuesCommon)((ICrimeValuesGetter)lhsCrimeValues).CommonInstance()!).Equals(lhsCrimeValues, rhsCrimeValues, equalsMask?.GetSubCrystal((int)Faction_FieldIndex.CrimeValues))) return false;
+                    }
+                    else if (!isCrimeValuesEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Faction_FieldIndex.Prisons] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.Prisons) ?? true))
+                {
+                    if (!lhs.Prisons.SequenceEqualNullable(rhs.Prisons, (l, r) => ((FactionPrisonsCommon)((IFactionPrisonsGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Faction_FieldIndex.Prisons)))) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Faction_FieldIndex.Ranks] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.Ranks) ?? true))
+                {
+                    if (!lhs.Ranks.SequenceEqual(rhs.Ranks, (l, r) => ((RankCommon)((IRankGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Faction_FieldIndex.Ranks)))) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Faction_FieldIndex.VendorBuySellList] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.VendorBuySellList) ?? true))
+                {
+                    if (!lhs.VendorBuySellList.Equals(rhs.VendorBuySellList)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Faction_FieldIndex.MerchantContainer] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.MerchantContainer) ?? true))
+                {
+                    if (!lhs.MerchantContainer.Equals(rhs.MerchantContainer)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Faction_FieldIndex.VendorValues] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.VendorValues) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VendorValues, rhs.VendorValues, out var lhsVendorValues, out var rhsVendorValues, out var isVendorValuesEqual))
+                    {
+                        if (!((VendorValuesCommon)((IVendorValuesGetter)lhsVendorValues).CommonInstance()!).Equals(lhsVendorValues, rhsVendorValues, equalsMask?.GetSubCrystal((int)Faction_FieldIndex.VendorValues))) return false;
+                    }
+                    else if (!isVendorValuesEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Faction_FieldIndex.VendorLocation] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.VendorLocation) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VendorLocation, rhs.VendorLocation, out var lhsVendorLocation, out var rhsVendorLocation, out var isVendorLocationEqual))
+                    {
+                        if (!((LocationTargetRadiusCommon)((ILocationTargetRadiusGetter)lhsVendorLocation).CommonInstance()!).Equals(lhsVendorLocation, rhsVendorLocation, equalsMask?.GetSubCrystal((int)Faction_FieldIndex.VendorLocation))) return false;
+                    }
+                    else if (!isVendorLocationEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Faction_FieldIndex.Conditions] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.Conditions) ?? true))
+                {
+                    if (!lhs.Conditions.SequenceEqualNullable(rhs.Conditions, (l, r) => ((ConditionCommon)((IConditionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Faction_FieldIndex.Conditions)))) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)Faction_FieldIndex.VoiceType] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.VoiceType) ?? true))
+                {
+                    if (!lhs.VoiceType.Equals(rhs.VoiceType)) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)Faction_FieldIndex.Herd] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.Herd) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Herd, rhs.Herd, out var lhsHerd, out var rhsHerd, out var isHerdEqual))
+                    {
+                        if (!((FactionHerdCommon)((IFactionHerdGetter)lhsHerd).CommonInstance()!).Equals(lhsHerd, rhsHerd, equalsMask?.GetSubCrystal((int)Faction_FieldIndex.Herd))) return false;
+                    }
+                    else if (!isHerdEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)Faction_FieldIndex.FormationRadius] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.FormationRadius) ?? true))
+                {
+                    if (!lhs.FormationRadius.EqualsWithin(rhs.FormationRadius)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IFactionGetter)lhs, (IFactionGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IFactionGetter)lhs, (IFactionGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IFactionGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

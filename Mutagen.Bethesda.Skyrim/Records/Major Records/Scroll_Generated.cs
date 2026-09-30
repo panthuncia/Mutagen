@@ -1734,6 +1734,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IScrollGetter item,
+            IScrollGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ScrollCommon)((IScrollGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Scroll Duplicate(
             this IScrollGetter item,
             FormKey formKey,
@@ -2551,6 +2569,243 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IScrollGetter lhs,
+            IScrollGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Scroll_FieldIndex.ObjectBounds] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scroll_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)Scroll_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Scroll_FieldIndex.Name] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scroll_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Scroll_FieldIndex.Keywords] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scroll_FieldIndex.Keywords) ?? true))
+                {
+                    if (!lhs.Keywords.SequenceEqualNullable(rhs.Keywords)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Scroll_FieldIndex.MenuDisplayObject] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scroll_FieldIndex.MenuDisplayObject) ?? true))
+                {
+                    if (!lhs.MenuDisplayObject.Equals(rhs.MenuDisplayObject)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Scroll_FieldIndex.EquipmentType] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scroll_FieldIndex.EquipmentType) ?? true))
+                {
+                    if (!lhs.EquipmentType.Equals(rhs.EquipmentType)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Scroll_FieldIndex.Description] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scroll_FieldIndex.Description) ?? true))
+                {
+                    if (!object.Equals(lhs.Description, rhs.Description)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Scroll_FieldIndex.Model] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scroll_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)Scroll_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Scroll_FieldIndex.Destructible] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scroll_FieldIndex.Destructible) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Destructible, rhs.Destructible, out var lhsDestructible, out var rhsDestructible, out var isDestructibleEqual))
+                    {
+                        if (!((DestructibleCommon)((IDestructibleGetter)lhsDestructible).CommonInstance()!).Equals(lhsDestructible, rhsDestructible, equalsMask?.GetSubCrystal((int)Scroll_FieldIndex.Destructible))) return false;
+                    }
+                    else if (!isDestructibleEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Scroll_FieldIndex.PickUpSound] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scroll_FieldIndex.PickUpSound) ?? true))
+                {
+                    if (!lhs.PickUpSound.Equals(rhs.PickUpSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Scroll_FieldIndex.PutDownSound] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scroll_FieldIndex.PutDownSound) ?? true))
+                {
+                    if (!lhs.PutDownSound.Equals(rhs.PutDownSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Scroll_FieldIndex.Value] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scroll_FieldIndex.Value) ?? true))
+                {
+                    if (lhs.Value != rhs.Value) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Scroll_FieldIndex.Weight] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scroll_FieldIndex.Weight) ?? true))
+                {
+                    if (!lhs.Weight.EqualsWithin(rhs.Weight)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Scroll_FieldIndex.BaseCost] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scroll_FieldIndex.BaseCost) ?? true))
+                {
+                    if (lhs.BaseCost != rhs.BaseCost) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Scroll_FieldIndex.Flags] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scroll_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Scroll_FieldIndex.Type] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scroll_FieldIndex.Type) ?? true))
+                {
+                    if (lhs.Type != rhs.Type) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)Scroll_FieldIndex.ChargeTime] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scroll_FieldIndex.ChargeTime) ?? true))
+                {
+                    if (!lhs.ChargeTime.EqualsWithin(rhs.ChargeTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)Scroll_FieldIndex.CastType] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scroll_FieldIndex.CastType) ?? true))
+                {
+                    if (lhs.CastType != rhs.CastType) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)Scroll_FieldIndex.TargetType] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scroll_FieldIndex.TargetType) ?? true))
+                {
+                    if (lhs.TargetType != rhs.TargetType) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)Scroll_FieldIndex.CastDuration] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scroll_FieldIndex.CastDuration) ?? true))
+                {
+                    if (!lhs.CastDuration.EqualsWithin(rhs.CastDuration)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)Scroll_FieldIndex.Range] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scroll_FieldIndex.Range) ?? true))
+                {
+                    if (!lhs.Range.EqualsWithin(rhs.Range)) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)Scroll_FieldIndex.HalfCostPerk] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scroll_FieldIndex.HalfCostPerk) ?? true))
+                {
+                    if (!lhs.HalfCostPerk.Equals(rhs.HalfCostPerk)) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)Scroll_FieldIndex.Effects] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Scroll_FieldIndex.Effects) ?? true))
+                {
+                    if (!lhs.Effects.SequenceEqual(rhs.Effects, (l, r) => ((EffectCommon)((IEffectGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Scroll_FieldIndex.Effects)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IScrollGetter)lhs, (IScrollGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IScrollGetter)lhs, (IScrollGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IScrollGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

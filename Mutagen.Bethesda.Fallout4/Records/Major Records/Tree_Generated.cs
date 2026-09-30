@@ -1447,6 +1447,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ITreeGetter item,
+            ITreeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((TreeCommon)((ITreeGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Tree Duplicate(
             this ITreeGetter item,
             FormKey formKey,
@@ -2142,6 +2160,220 @@ namespace Mutagen.Bethesda.Fallout4
                 yield return HarvestSoundInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ITreeGetter lhs,
+            ITreeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Tree_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Tree_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)Tree_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Tree_FieldIndex.ObjectBounds] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Tree_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)Tree_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Tree_FieldIndex.Model] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Tree_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)Tree_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Tree_FieldIndex.Ingredient] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Tree_FieldIndex.Ingredient) ?? true))
+                {
+                    if (!lhs.Ingredient.Equals(rhs.Ingredient)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Tree_FieldIndex.HarvestSound] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Tree_FieldIndex.HarvestSound) ?? true))
+                {
+                    if (!lhs.HarvestSound.Equals(rhs.HarvestSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Tree_FieldIndex.Production] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Tree_FieldIndex.Production) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Production, rhs.Production, out var lhsProduction, out var rhsProduction, out var isProductionEqual))
+                    {
+                        if (!((SeasonalIngredientProductionCommon)((ISeasonalIngredientProductionGetter)lhsProduction).CommonInstance()!).Equals(lhsProduction, rhsProduction, equalsMask?.GetSubCrystal((int)Tree_FieldIndex.Production))) return false;
+                    }
+                    else if (!isProductionEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Tree_FieldIndex.Name] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Tree_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Tree_FieldIndex.TrunkFlexibility] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Tree_FieldIndex.TrunkFlexibility) ?? true))
+                {
+                    if (!lhs.TrunkFlexibility.EqualsWithin(rhs.TrunkFlexibility)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Tree_FieldIndex.BranchFlexibility] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Tree_FieldIndex.BranchFlexibility) ?? true))
+                {
+                    if (!lhs.BranchFlexibility.EqualsWithin(rhs.BranchFlexibility)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Tree_FieldIndex.TrunkAmplitude] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Tree_FieldIndex.TrunkAmplitude) ?? true))
+                {
+                    if (!lhs.TrunkAmplitude.EqualsWithin(rhs.TrunkAmplitude)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Tree_FieldIndex.FrontAmplitude] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Tree_FieldIndex.FrontAmplitude) ?? true))
+                {
+                    if (!lhs.FrontAmplitude.EqualsWithin(rhs.FrontAmplitude)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Tree_FieldIndex.BackAmplitude] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Tree_FieldIndex.BackAmplitude) ?? true))
+                {
+                    if (!lhs.BackAmplitude.EqualsWithin(rhs.BackAmplitude)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Tree_FieldIndex.SideAmplitude] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Tree_FieldIndex.SideAmplitude) ?? true))
+                {
+                    if (!lhs.SideAmplitude.EqualsWithin(rhs.SideAmplitude)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Tree_FieldIndex.FrontFrequency] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Tree_FieldIndex.FrontFrequency) ?? true))
+                {
+                    if (!lhs.FrontFrequency.EqualsWithin(rhs.FrontFrequency)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Tree_FieldIndex.BackFrequency] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Tree_FieldIndex.BackFrequency) ?? true))
+                {
+                    if (!lhs.BackFrequency.EqualsWithin(rhs.BackFrequency)) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)Tree_FieldIndex.SideFrequency] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Tree_FieldIndex.SideFrequency) ?? true))
+                {
+                    if (!lhs.SideFrequency.EqualsWithin(rhs.SideFrequency)) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)Tree_FieldIndex.LeafFlexibility] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Tree_FieldIndex.LeafFlexibility) ?? true))
+                {
+                    if (!lhs.LeafFlexibility.EqualsWithin(rhs.LeafFlexibility)) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)Tree_FieldIndex.LeafAmplitude] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Tree_FieldIndex.LeafAmplitude) ?? true))
+                {
+                    if (!lhs.LeafAmplitude.EqualsWithin(rhs.LeafAmplitude)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)Tree_FieldIndex.LeafFrequency] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Tree_FieldIndex.LeafFrequency) ?? true))
+                {
+                    if (!lhs.LeafFrequency.EqualsWithin(rhs.LeafFrequency)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ITreeGetter)lhs, (ITreeGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ITreeGetter)lhs, (ITreeGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

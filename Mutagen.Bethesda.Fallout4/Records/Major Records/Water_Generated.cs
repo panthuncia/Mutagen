@@ -2582,6 +2582,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IWaterGetter item,
+            IWaterGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((WaterCommon)((IWaterGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Water Duplicate(
             this IWaterGetter item,
             FormKey formKey,
@@ -3664,6 +3682,513 @@ namespace Mutagen.Bethesda.Fallout4
                 yield return ImageSpaceInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IWaterGetter lhs,
+            IWaterGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Water_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Water_FieldIndex.Opacity] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.Opacity) ?? true))
+                {
+                    if (lhs.Opacity != rhs.Opacity) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Water_FieldIndex.Flags] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Water_FieldIndex.Material] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.Material) ?? true))
+                {
+                    if (!lhs.Material.Equals(rhs.Material)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Water_FieldIndex.OpenSound] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.OpenSound) ?? true))
+                {
+                    if (!lhs.OpenSound.Equals(rhs.OpenSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Water_FieldIndex.ConsumeSpell] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.ConsumeSpell) ?? true))
+                {
+                    if (!lhs.ConsumeSpell.Equals(rhs.ConsumeSpell)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Water_FieldIndex.ContactSpell] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.ContactSpell) ?? true))
+                {
+                    if (!lhs.ContactSpell.Equals(rhs.ContactSpell)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Water_FieldIndex.ImageSpace] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.ImageSpace) ?? true))
+                {
+                    if (!lhs.ImageSpace.Equals(rhs.ImageSpace)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Water_FieldIndex.DATA] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.DATA) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.DATA, rhs.DATA)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Water_FieldIndex.FogDepthAmount] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.FogDepthAmount) ?? true))
+                {
+                    if (!lhs.FogDepthAmount.EqualsWithin(rhs.FogDepthAmount)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Water_FieldIndex.FogShallowColor] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.FogShallowColor) ?? true))
+                {
+                    if (!lhs.FogShallowColor.ColorOnlyEquals(rhs.FogShallowColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Water_FieldIndex.FogDeepColor] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.FogDeepColor) ?? true))
+                {
+                    if (!lhs.FogDeepColor.ColorOnlyEquals(rhs.FogDeepColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Water_FieldIndex.FogColorShallowRange] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.FogColorShallowRange) ?? true))
+                {
+                    if (!lhs.FogColorShallowRange.EqualsWithin(rhs.FogColorShallowRange)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Water_FieldIndex.FogColorDeepRange] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.FogColorDeepRange) ?? true))
+                {
+                    if (!lhs.FogColorDeepRange.EqualsWithin(rhs.FogColorDeepRange)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Water_FieldIndex.FogShallowAlpha] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.FogShallowAlpha) ?? true))
+                {
+                    if (!lhs.FogShallowAlpha.EqualsWithin(rhs.FogShallowAlpha)) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)Water_FieldIndex.FogDeepAlpha] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.FogDeepAlpha) ?? true))
+                {
+                    if (!lhs.FogDeepAlpha.EqualsWithin(rhs.FogDeepAlpha)) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)Water_FieldIndex.FogAlphaShallowRange] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.FogAlphaShallowRange) ?? true))
+                {
+                    if (!lhs.FogAlphaShallowRange.EqualsWithin(rhs.FogAlphaShallowRange)) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)Water_FieldIndex.FogAlphaDeepRange] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.FogAlphaDeepRange) ?? true))
+                {
+                    if (!lhs.FogAlphaDeepRange.EqualsWithin(rhs.FogAlphaDeepRange)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)Water_FieldIndex.FogUnderwaterColor] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.FogUnderwaterColor) ?? true))
+                {
+                    if (!lhs.FogUnderwaterColor.ColorOnlyEquals(rhs.FogUnderwaterColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)Water_FieldIndex.FogUnderwaterAmount] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.FogUnderwaterAmount) ?? true))
+                {
+                    if (!lhs.FogUnderwaterAmount.EqualsWithin(rhs.FogUnderwaterAmount)) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)Water_FieldIndex.FogUnderwaterNear] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.FogUnderwaterNear) ?? true))
+                {
+                    if (!lhs.FogUnderwaterNear.EqualsWithin(rhs.FogUnderwaterNear)) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)Water_FieldIndex.FogUnderwaterFar] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.FogUnderwaterFar) ?? true))
+                {
+                    if (!lhs.FogUnderwaterFar.EqualsWithin(rhs.FogUnderwaterFar)) return false;
+                }
+                return true;
+            }
+            if (!Equal22()) differs[(int)Water_FieldIndex.PhysicalNormalMagnitude] = true;
+            bool Equal22()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.PhysicalNormalMagnitude) ?? true))
+                {
+                    if (!lhs.PhysicalNormalMagnitude.EqualsWithin(rhs.PhysicalNormalMagnitude)) return false;
+                }
+                return true;
+            }
+            if (!Equal23()) differs[(int)Water_FieldIndex.PhysicalShallowNormalFalloff] = true;
+            bool Equal23()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.PhysicalShallowNormalFalloff) ?? true))
+                {
+                    if (!lhs.PhysicalShallowNormalFalloff.EqualsWithin(rhs.PhysicalShallowNormalFalloff)) return false;
+                }
+                return true;
+            }
+            if (!Equal24()) differs[(int)Water_FieldIndex.PhysicalDeepNormalFalloff] = true;
+            bool Equal24()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.PhysicalDeepNormalFalloff) ?? true))
+                {
+                    if (!lhs.PhysicalDeepNormalFalloff.EqualsWithin(rhs.PhysicalDeepNormalFalloff)) return false;
+                }
+                return true;
+            }
+            if (!Equal25()) differs[(int)Water_FieldIndex.PhysicalReflectivityAmount] = true;
+            bool Equal25()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.PhysicalReflectivityAmount) ?? true))
+                {
+                    if (!lhs.PhysicalReflectivityAmount.EqualsWithin(rhs.PhysicalReflectivityAmount)) return false;
+                }
+                return true;
+            }
+            if (!Equal26()) differs[(int)Water_FieldIndex.PhysicalFresnelAmount] = true;
+            bool Equal26()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.PhysicalFresnelAmount) ?? true))
+                {
+                    if (!lhs.PhysicalFresnelAmount.EqualsWithin(rhs.PhysicalFresnelAmount)) return false;
+                }
+                return true;
+            }
+            if (!Equal27()) differs[(int)Water_FieldIndex.PhysicalSurfaceEffectFalloff] = true;
+            bool Equal27()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.PhysicalSurfaceEffectFalloff) ?? true))
+                {
+                    if (!lhs.PhysicalSurfaceEffectFalloff.EqualsWithin(rhs.PhysicalSurfaceEffectFalloff)) return false;
+                }
+                return true;
+            }
+            if (!Equal28()) differs[(int)Water_FieldIndex.PhysicalDisplacementSimulatorForce] = true;
+            bool Equal28()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.PhysicalDisplacementSimulatorForce) ?? true))
+                {
+                    if (!lhs.PhysicalDisplacementSimulatorForce.EqualsWithin(rhs.PhysicalDisplacementSimulatorForce)) return false;
+                }
+                return true;
+            }
+            if (!Equal29()) differs[(int)Water_FieldIndex.PhysicalDisplacementSimulatorVelocity] = true;
+            bool Equal29()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.PhysicalDisplacementSimulatorVelocity) ?? true))
+                {
+                    if (!lhs.PhysicalDisplacementSimulatorVelocity.EqualsWithin(rhs.PhysicalDisplacementSimulatorVelocity)) return false;
+                }
+                return true;
+            }
+            if (!Equal30()) differs[(int)Water_FieldIndex.PhysicalDisplacementSimulatorFalloff] = true;
+            bool Equal30()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.PhysicalDisplacementSimulatorFalloff) ?? true))
+                {
+                    if (!lhs.PhysicalDisplacementSimulatorFalloff.EqualsWithin(rhs.PhysicalDisplacementSimulatorFalloff)) return false;
+                }
+                return true;
+            }
+            if (!Equal31()) differs[(int)Water_FieldIndex.PhysicalDisplacementSimulatorDampener] = true;
+            bool Equal31()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.PhysicalDisplacementSimulatorDampener) ?? true))
+                {
+                    if (!lhs.PhysicalDisplacementSimulatorDampener.EqualsWithin(rhs.PhysicalDisplacementSimulatorDampener)) return false;
+                }
+                return true;
+            }
+            if (!Equal32()) differs[(int)Water_FieldIndex.PhysicalDisplacementSimulatorStartingSize] = true;
+            bool Equal32()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.PhysicalDisplacementSimulatorStartingSize) ?? true))
+                {
+                    if (!lhs.PhysicalDisplacementSimulatorStartingSize.EqualsWithin(rhs.PhysicalDisplacementSimulatorStartingSize)) return false;
+                }
+                return true;
+            }
+            if (!Equal33()) differs[(int)Water_FieldIndex.PhysicalReflectionColor] = true;
+            bool Equal33()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.PhysicalReflectionColor) ?? true))
+                {
+                    if (!lhs.PhysicalReflectionColor.ColorOnlyEquals(rhs.PhysicalReflectionColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal34()) differs[(int)Water_FieldIndex.SpecularSunSpecularPower] = true;
+            bool Equal34()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.SpecularSunSpecularPower) ?? true))
+                {
+                    if (!lhs.SpecularSunSpecularPower.EqualsWithin(rhs.SpecularSunSpecularPower)) return false;
+                }
+                return true;
+            }
+            if (!Equal35()) differs[(int)Water_FieldIndex.SpecularSunSpecularMagnitude] = true;
+            bool Equal35()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.SpecularSunSpecularMagnitude) ?? true))
+                {
+                    if (!lhs.SpecularSunSpecularMagnitude.EqualsWithin(rhs.SpecularSunSpecularMagnitude)) return false;
+                }
+                return true;
+            }
+            if (!Equal36()) differs[(int)Water_FieldIndex.SpecularSunSparklePower] = true;
+            bool Equal36()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.SpecularSunSparklePower) ?? true))
+                {
+                    if (!lhs.SpecularSunSparklePower.EqualsWithin(rhs.SpecularSunSparklePower)) return false;
+                }
+                return true;
+            }
+            if (!Equal37()) differs[(int)Water_FieldIndex.SpecularSunSparkleMagnitude] = true;
+            bool Equal37()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.SpecularSunSparkleMagnitude) ?? true))
+                {
+                    if (!lhs.SpecularSunSparkleMagnitude.EqualsWithin(rhs.SpecularSunSparkleMagnitude)) return false;
+                }
+                return true;
+            }
+            if (!Equal38()) differs[(int)Water_FieldIndex.SpecularInteriorSpecularRadius] = true;
+            bool Equal38()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.SpecularInteriorSpecularRadius) ?? true))
+                {
+                    if (!lhs.SpecularInteriorSpecularRadius.EqualsWithin(rhs.SpecularInteriorSpecularRadius)) return false;
+                }
+                return true;
+            }
+            if (!Equal39()) differs[(int)Water_FieldIndex.SpecularInteriorSpecularBrightness] = true;
+            bool Equal39()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.SpecularInteriorSpecularBrightness) ?? true))
+                {
+                    if (!lhs.SpecularInteriorSpecularBrightness.EqualsWithin(rhs.SpecularInteriorSpecularBrightness)) return false;
+                }
+                return true;
+            }
+            if (!Equal40()) differs[(int)Water_FieldIndex.SpecularInteriorSpecularPower] = true;
+            bool Equal40()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.SpecularInteriorSpecularPower) ?? true))
+                {
+                    if (!lhs.SpecularInteriorSpecularPower.EqualsWithin(rhs.SpecularInteriorSpecularPower)) return false;
+                }
+                return true;
+            }
+            if (!Equal41()) differs[(int)Water_FieldIndex.SiltAmount] = true;
+            bool Equal41()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.SiltAmount) ?? true))
+                {
+                    if (!lhs.SiltAmount.EqualsWithin(rhs.SiltAmount)) return false;
+                }
+                return true;
+            }
+            if (!Equal42()) differs[(int)Water_FieldIndex.SiltLightColor] = true;
+            bool Equal42()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.SiltLightColor) ?? true))
+                {
+                    if (!lhs.SiltLightColor.ColorOnlyEquals(rhs.SiltLightColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal43()) differs[(int)Water_FieldIndex.SiltDarkColor] = true;
+            bool Equal43()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.SiltDarkColor) ?? true))
+                {
+                    if (!lhs.SiltDarkColor.ColorOnlyEquals(rhs.SiltDarkColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal44()) differs[(int)Water_FieldIndex.ScreenSpaceReflections] = true;
+            bool Equal44()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.ScreenSpaceReflections) ?? true))
+                {
+                    if (lhs.ScreenSpaceReflections != rhs.ScreenSpaceReflections) return false;
+                }
+                return true;
+            }
+            if (!Equal45()) differs[(int)Water_FieldIndex.NoiseLayerOne] = true;
+            bool Equal45()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.NoiseLayerOne) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.NoiseLayerOne, rhs.NoiseLayerOne, out var lhsNoiseLayerOne, out var rhsNoiseLayerOne, out var isNoiseLayerOneEqual))
+                    {
+                        if (!((WaterNoisePropertiesCommon)((IWaterNoisePropertiesGetter)lhsNoiseLayerOne).CommonInstance()!).Equals(lhsNoiseLayerOne, rhsNoiseLayerOne, equalsMask?.GetSubCrystal((int)Water_FieldIndex.NoiseLayerOne))) return false;
+                    }
+                    else if (!isNoiseLayerOneEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal46()) differs[(int)Water_FieldIndex.NoiseLayerTwo] = true;
+            bool Equal46()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.NoiseLayerTwo) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.NoiseLayerTwo, rhs.NoiseLayerTwo, out var lhsNoiseLayerTwo, out var rhsNoiseLayerTwo, out var isNoiseLayerTwoEqual))
+                    {
+                        if (!((WaterNoisePropertiesCommon)((IWaterNoisePropertiesGetter)lhsNoiseLayerTwo).CommonInstance()!).Equals(lhsNoiseLayerTwo, rhsNoiseLayerTwo, equalsMask?.GetSubCrystal((int)Water_FieldIndex.NoiseLayerTwo))) return false;
+                    }
+                    else if (!isNoiseLayerTwoEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal47()) differs[(int)Water_FieldIndex.NoiseLayerThree] = true;
+            bool Equal47()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.NoiseLayerThree) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.NoiseLayerThree, rhs.NoiseLayerThree, out var lhsNoiseLayerThree, out var rhsNoiseLayerThree, out var isNoiseLayerThreeEqual))
+                    {
+                        if (!((WaterNoisePropertiesCommon)((IWaterNoisePropertiesGetter)lhsNoiseLayerThree).CommonInstance()!).Equals(lhsNoiseLayerThree, rhsNoiseLayerThree, equalsMask?.GetSubCrystal((int)Water_FieldIndex.NoiseLayerThree))) return false;
+                    }
+                    else if (!isNoiseLayerThreeEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal48()) differs[(int)Water_FieldIndex.GNAM] = true;
+            bool Equal48()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.GNAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.GNAM, rhs.GNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal49()) differs[(int)Water_FieldIndex.LinearVelocity] = true;
+            bool Equal49()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.LinearVelocity) ?? true))
+                {
+                    if (!lhs.LinearVelocity.Equals(rhs.LinearVelocity)) return false;
+                }
+                return true;
+            }
+            if (!Equal50()) differs[(int)Water_FieldIndex.AngularVelocity] = true;
+            bool Equal50()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.AngularVelocity) ?? true))
+                {
+                    if (!lhs.AngularVelocity.Equals(rhs.AngularVelocity)) return false;
+                }
+                return true;
+            }
+            if (!Equal51()) differs[(int)Water_FieldIndex.DNAMDataTypeState] = true;
+            bool Equal51()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.DNAMDataTypeState) ?? true))
+                {
+                    if (lhs.DNAMDataTypeState != rhs.DNAMDataTypeState) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IWaterGetter)lhs, (IWaterGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IWaterGetter)lhs, (IWaterGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

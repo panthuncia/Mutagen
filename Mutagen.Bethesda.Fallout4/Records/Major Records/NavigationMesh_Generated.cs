@@ -842,6 +842,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this INavigationMeshGetter item,
+            INavigationMeshGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((NavigationMeshCommon)((INavigationMeshGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static NavigationMesh Duplicate(
             this INavigationMeshGetter item,
             FormKey formKey,
@@ -1331,6 +1349,73 @@ namespace Mutagen.Bethesda.Fallout4
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            INavigationMeshGetter lhs,
+            INavigationMeshGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)NavigationMesh_FieldIndex.NavmeshGeometry] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)NavigationMesh_FieldIndex.NavmeshGeometry) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.NavmeshGeometry, rhs.NavmeshGeometry, out var lhsNavmeshGeometry, out var rhsNavmeshGeometry, out var isNavmeshGeometryEqual))
+                    {
+                        if (!((NavmeshGeometryCommon)((INavmeshGeometryGetter)lhsNavmeshGeometry).CommonInstance()!).Equals(lhsNavmeshGeometry, rhsNavmeshGeometry, equalsMask?.GetSubCrystal((int)NavigationMesh_FieldIndex.NavmeshGeometry))) return false;
+                    }
+                    else if (!isNavmeshGeometryEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)NavigationMesh_FieldIndex.ONAM] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)NavigationMesh_FieldIndex.ONAM) ?? true))
+                {
+                    if (!lhs.ONAM.Equals(rhs.ONAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)NavigationMesh_FieldIndex.NNAM] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)NavigationMesh_FieldIndex.NNAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.NNAM, rhs.NNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)NavigationMesh_FieldIndex.PreCutMapEntries] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)NavigationMesh_FieldIndex.PreCutMapEntries) ?? true))
+                {
+                    if (!lhs.PreCutMapEntries.SequenceEqualNullable(rhs.PreCutMapEntries, (l, r) => ((PreCutMapEntryCommon)((IPreCutMapEntryGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)NavigationMesh_FieldIndex.PreCutMapEntries)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((INavigationMeshGetter)lhs, (INavigationMeshGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((INavigationMeshGetter)lhs, (INavigationMeshGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

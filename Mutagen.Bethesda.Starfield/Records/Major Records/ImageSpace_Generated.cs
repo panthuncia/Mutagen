@@ -713,6 +713,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IImageSpaceGetter item,
+            IImageSpaceGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ImageSpaceCommon)((IImageSpaceGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ImageSpace Duplicate(
             this IImageSpaceGetter item,
             FormKey formKey,
@@ -1150,6 +1168,60 @@ namespace Mutagen.Bethesda.Starfield
                 yield return ReflectionParentInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IImageSpaceGetter lhs,
+            IImageSpaceGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ImageSpace_FieldIndex.Reflection] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.Reflection) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.Reflection, rhs.Reflection)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)ImageSpace_FieldIndex.ReflectionParent] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.ReflectionParent) ?? true))
+                {
+                    if (!lhs.ReflectionParent.Equals(rhs.ReflectionParent)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)ImageSpace_FieldIndex.ReflectionDiff] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.ReflectionDiff) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.ReflectionDiff, rhs.ReflectionDiff)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IImageSpaceGetter)lhs, (IImageSpaceGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IImageSpaceGetter)lhs, (IImageSpaceGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

@@ -1449,6 +1449,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IImageSpaceGetter item,
+            IImageSpaceGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ImageSpaceCommon)((IImageSpaceGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ImageSpace Duplicate(
             this IImageSpaceGetter item,
             FormKey formKey,
@@ -2132,6 +2150,249 @@ namespace Mutagen.Bethesda.Fallout4
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IImageSpaceGetter lhs,
+            IImageSpaceGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ImageSpace_FieldIndex.HdrEyeAdaptSpeed] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.HdrEyeAdaptSpeed) ?? true))
+                {
+                    if (!lhs.HdrEyeAdaptSpeed.EqualsWithin(rhs.HdrEyeAdaptSpeed)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)ImageSpace_FieldIndex.HdrTonemapE] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.HdrTonemapE) ?? true))
+                {
+                    if (!lhs.HdrTonemapE.EqualsWithin(rhs.HdrTonemapE)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)ImageSpace_FieldIndex.HdrBloomThreshold] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.HdrBloomThreshold) ?? true))
+                {
+                    if (!lhs.HdrBloomThreshold.EqualsWithin(rhs.HdrBloomThreshold)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)ImageSpace_FieldIndex.HdrBloomScale] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.HdrBloomScale) ?? true))
+                {
+                    if (!lhs.HdrBloomScale.EqualsWithin(rhs.HdrBloomScale)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)ImageSpace_FieldIndex.HdrAutoExposureMax] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.HdrAutoExposureMax) ?? true))
+                {
+                    if (!lhs.HdrAutoExposureMax.EqualsWithin(rhs.HdrAutoExposureMax)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)ImageSpace_FieldIndex.HdrAutoExposureMin] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.HdrAutoExposureMin) ?? true))
+                {
+                    if (!lhs.HdrAutoExposureMin.EqualsWithin(rhs.HdrAutoExposureMin)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)ImageSpace_FieldIndex.HdrSunlightScale] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.HdrSunlightScale) ?? true))
+                {
+                    if (!lhs.HdrSunlightScale.EqualsWithin(rhs.HdrSunlightScale)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)ImageSpace_FieldIndex.HdrSkyScale] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.HdrSkyScale) ?? true))
+                {
+                    if (!lhs.HdrSkyScale.EqualsWithin(rhs.HdrSkyScale)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)ImageSpace_FieldIndex.HdrMiddleGray] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.HdrMiddleGray) ?? true))
+                {
+                    if (!lhs.HdrMiddleGray.EqualsWithin(rhs.HdrMiddleGray)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)ImageSpace_FieldIndex.CinematicSaturation] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.CinematicSaturation) ?? true))
+                {
+                    if (!lhs.CinematicSaturation.EqualsWithin(rhs.CinematicSaturation)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)ImageSpace_FieldIndex.CinematicBrightness] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.CinematicBrightness) ?? true))
+                {
+                    if (!lhs.CinematicBrightness.EqualsWithin(rhs.CinematicBrightness)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)ImageSpace_FieldIndex.CinematicContrast] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.CinematicContrast) ?? true))
+                {
+                    if (!lhs.CinematicContrast.EqualsWithin(rhs.CinematicContrast)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)ImageSpace_FieldIndex.TintAmount] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.TintAmount) ?? true))
+                {
+                    if (!lhs.TintAmount.EqualsWithin(rhs.TintAmount)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)ImageSpace_FieldIndex.TintColor] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.TintColor) ?? true))
+                {
+                    if (!lhs.TintColor.ColorOnlyEquals(rhs.TintColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)ImageSpace_FieldIndex.DepthOfFieldStrength] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.DepthOfFieldStrength) ?? true))
+                {
+                    if (!lhs.DepthOfFieldStrength.EqualsWithin(rhs.DepthOfFieldStrength)) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)ImageSpace_FieldIndex.DepthOfFieldDistance] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.DepthOfFieldDistance) ?? true))
+                {
+                    if (!lhs.DepthOfFieldDistance.EqualsWithin(rhs.DepthOfFieldDistance)) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)ImageSpace_FieldIndex.DepthOfFieldRange] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.DepthOfFieldRange) ?? true))
+                {
+                    if (!lhs.DepthOfFieldRange.EqualsWithin(rhs.DepthOfFieldRange)) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)ImageSpace_FieldIndex.DepthOfFieldUnused] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.DepthOfFieldUnused) ?? true))
+                {
+                    if (lhs.DepthOfFieldUnused != rhs.DepthOfFieldUnused) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)ImageSpace_FieldIndex.DepthOfFieldBlurRadius] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.DepthOfFieldBlurRadius) ?? true))
+                {
+                    if (lhs.DepthOfFieldBlurRadius != rhs.DepthOfFieldBlurRadius) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)ImageSpace_FieldIndex.DepthOfFieldSky] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.DepthOfFieldSky) ?? true))
+                {
+                    if (lhs.DepthOfFieldSky != rhs.DepthOfFieldSky) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)ImageSpace_FieldIndex.DepthOfFieldVignetteRadius] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.DepthOfFieldVignetteRadius) ?? true))
+                {
+                    if (!lhs.DepthOfFieldVignetteRadius.EqualsWithin(rhs.DepthOfFieldVignetteRadius)) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)ImageSpace_FieldIndex.DepthOfFieldVignetteStrength] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.DepthOfFieldVignetteStrength) ?? true))
+                {
+                    if (!lhs.DepthOfFieldVignetteStrength.EqualsWithin(rhs.DepthOfFieldVignetteStrength)) return false;
+                }
+                return true;
+            }
+            if (!Equal22()) differs[(int)ImageSpace_FieldIndex.Lut] = true;
+            bool Equal22()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.Lut) ?? true))
+                {
+                    if (!string.Equals(lhs.Lut, rhs.Lut)) return false;
+                }
+                return true;
+            }
+            if (!Equal23()) differs[(int)ImageSpace_FieldIndex.DNAMDataTypeState] = true;
+            bool Equal23()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.DNAMDataTypeState) ?? true))
+                {
+                    if (lhs.DNAMDataTypeState != rhs.DNAMDataTypeState) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IImageSpaceGetter)lhs, (IImageSpaceGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IImageSpaceGetter)lhs, (IImageSpaceGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

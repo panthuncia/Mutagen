@@ -733,6 +733,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IPERSGetter item,
+            IPERSGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((PERSCommon)((IPERSGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static PERS Duplicate(
             this IPERSGetter item,
             FormKey formKey,
@@ -1167,6 +1185,51 @@ namespace Mutagen.Bethesda.Starfield
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IPERSGetter lhs,
+            IPERSGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)PERS_FieldIndex.DATA] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PERS_FieldIndex.DATA) ?? true))
+                {
+                    if (lhs.DATA != rhs.DATA) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)PERS_FieldIndex.Items] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PERS_FieldIndex.Items) ?? true))
+                {
+                    if (!lhs.Items.SequenceEqual(rhs.Items, (l, r) => ((PERSItemsCommon)((IPERSItemsGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)PERS_FieldIndex.Items)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPERSGetter)lhs, (IPERSGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPERSGetter)lhs, (IPERSGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

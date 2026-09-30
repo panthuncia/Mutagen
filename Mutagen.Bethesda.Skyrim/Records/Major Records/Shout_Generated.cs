@@ -878,6 +878,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IShoutGetter item,
+            IShoutGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ShoutCommon)((IShoutGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Shout Duplicate(
             this IShoutGetter item,
             FormKey formKey,
@@ -1346,6 +1364,69 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IShoutGetter lhs,
+            IShoutGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Shout_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Shout_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Shout_FieldIndex.MenuDisplayObject] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Shout_FieldIndex.MenuDisplayObject) ?? true))
+                {
+                    if (!lhs.MenuDisplayObject.Equals(rhs.MenuDisplayObject)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Shout_FieldIndex.Description] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Shout_FieldIndex.Description) ?? true))
+                {
+                    if (!object.Equals(lhs.Description, rhs.Description)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Shout_FieldIndex.WordsOfPower] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Shout_FieldIndex.WordsOfPower) ?? true))
+                {
+                    if (!lhs.WordsOfPower.SequenceEqual(rhs.WordsOfPower, (l, r) => ((ShoutWordCommon)((IShoutWordGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Shout_FieldIndex.WordsOfPower)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IShoutGetter)lhs, (IShoutGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IShoutGetter)lhs, (IShoutGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

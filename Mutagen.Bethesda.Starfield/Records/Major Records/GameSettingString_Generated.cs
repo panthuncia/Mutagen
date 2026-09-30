@@ -620,6 +620,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IGameSettingStringGetter item,
+            IGameSettingStringGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((GameSettingStringCommon)((IGameSettingStringGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static GameSettingString Duplicate(
             this IGameSettingStringGetter item,
             FormKey formKey,
@@ -1080,6 +1098,51 @@ namespace Mutagen.Bethesda.Starfield
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IGameSettingStringGetter lhs,
+            IGameSettingStringGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IGameSettingGetter)lhs, (IGameSettingGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)GameSettingString_FieldIndex.Data] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)GameSettingString_FieldIndex.Data) ?? true))
+                {
+                    if (!object.Equals(lhs.Data, rhs.Data)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IGameSettingGetter lhs,
+            IGameSettingGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IGameSettingStringGetter)lhs, (IGameSettingStringGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IGameSettingStringGetter)lhs, (IGameSettingStringGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IGameSettingStringGetter)lhs, (IGameSettingStringGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

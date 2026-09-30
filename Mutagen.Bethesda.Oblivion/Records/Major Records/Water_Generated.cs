@@ -856,6 +856,24 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IWaterGetter item,
+            IWaterGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((WaterCommon)((IWaterGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Water Duplicate(
             this IWaterGetter item,
             FormKey formKey,
@@ -1379,6 +1397,104 @@ namespace Mutagen.Bethesda.Oblivion
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IWaterGetter lhs,
+            IWaterGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IOblivionMajorRecordGetter)lhs, (IOblivionMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Water_FieldIndex.Texture] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.Texture) ?? true))
+                {
+                    if (!string.Equals(lhs.Texture, rhs.Texture)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Water_FieldIndex.Opacity] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.Opacity) ?? true))
+                {
+                    if (lhs.Opacity != rhs.Opacity) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Water_FieldIndex.Flags] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Water_FieldIndex.MaterialID] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.MaterialID) ?? true))
+                {
+                    if (!string.Equals(lhs.MaterialID, rhs.MaterialID)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Water_FieldIndex.Sound] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.Sound) ?? true))
+                {
+                    if (!lhs.Sound.Equals(rhs.Sound)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Water_FieldIndex.Data] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.Data) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Data, rhs.Data, out var lhsData, out var rhsData, out var isDataEqual))
+                    {
+                        if (!((WaterDataCommon)((IWaterDataGetter)lhsData).CommonInstance()!).Equals(lhsData, rhsData, equalsMask?.GetSubCrystal((int)Water_FieldIndex.Data))) return false;
+                    }
+                    else if (!isDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Water_FieldIndex.RelatedWaters] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Water_FieldIndex.RelatedWaters) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.RelatedWaters, rhs.RelatedWaters, out var lhsRelatedWaters, out var rhsRelatedWaters, out var isRelatedWatersEqual))
+                    {
+                        if (!((RelatedWatersCommon)((IRelatedWatersGetter)lhsRelatedWaters).CommonInstance()!).Equals(lhsRelatedWaters, rhsRelatedWaters, equalsMask?.GetSubCrystal((int)Water_FieldIndex.RelatedWaters))) return false;
+                    }
+                    else if (!isRelatedWatersEqual) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IOblivionMajorRecordGetter lhs,
+            IOblivionMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IWaterGetter)lhs, (IWaterGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IWaterGetter)lhs, (IWaterGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

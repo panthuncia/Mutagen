@@ -851,6 +851,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IActorValueInformationGetter item,
+            IActorValueInformationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ActorValueInformationCommon)((IActorValueInformationGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ActorValueInformation Duplicate(
             this IActorValueInformationGetter item,
             FormKey formKey,
@@ -1338,6 +1356,87 @@ namespace Mutagen.Bethesda.Fallout4
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IActorValueInformationGetter lhs,
+            IActorValueInformationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ActorValueInformation_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActorValueInformation_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)ActorValueInformation_FieldIndex.Description] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActorValueInformation_FieldIndex.Description) ?? true))
+                {
+                    if (!object.Equals(lhs.Description, rhs.Description)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)ActorValueInformation_FieldIndex.Abbreviation] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActorValueInformation_FieldIndex.Abbreviation) ?? true))
+                {
+                    if (!object.Equals(lhs.Abbreviation, rhs.Abbreviation)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)ActorValueInformation_FieldIndex.DefaultValue] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActorValueInformation_FieldIndex.DefaultValue) ?? true))
+                {
+                    if (!lhs.DefaultValue.EqualsWithin(rhs.DefaultValue)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)ActorValueInformation_FieldIndex.Flags] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActorValueInformation_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)ActorValueInformation_FieldIndex.Type] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActorValueInformation_FieldIndex.Type) ?? true))
+                {
+                    if (lhs.Type != rhs.Type) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IActorValueInformationGetter)lhs, (IActorValueInformationGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IActorValueInformationGetter)lhs, (IActorValueInformationGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

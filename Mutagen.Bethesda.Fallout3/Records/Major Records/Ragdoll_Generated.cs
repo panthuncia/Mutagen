@@ -1207,6 +1207,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IRagdollGetter item,
+            IRagdollGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((RagdollCommon)((IRagdollGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Ragdoll Duplicate(
             this IRagdollGetter item,
             FormKey formKey,
@@ -1813,6 +1831,176 @@ namespace Mutagen.Bethesda.Fallout3
             }
             yield return FormLinkInformation.Factory(obj.BodyPartData);
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IRagdollGetter lhs,
+            IRagdollGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Ragdoll_FieldIndex.Version] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ragdoll_FieldIndex.Version) ?? true))
+                {
+                    if (lhs.Version != rhs.Version) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Ragdoll_FieldIndex.DynamicBoneCount] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ragdoll_FieldIndex.DynamicBoneCount) ?? true))
+                {
+                    if (lhs.DynamicBoneCount != rhs.DynamicBoneCount) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Ragdoll_FieldIndex.Unused] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ragdoll_FieldIndex.Unused) ?? true))
+                {
+                    if (lhs.Unused != rhs.Unused) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Ragdoll_FieldIndex.FeedbackEnabled] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ragdoll_FieldIndex.FeedbackEnabled) ?? true))
+                {
+                    if (lhs.FeedbackEnabled != rhs.FeedbackEnabled) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Ragdoll_FieldIndex.FootIkEnabled] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ragdoll_FieldIndex.FootIkEnabled) ?? true))
+                {
+                    if (lhs.FootIkEnabled != rhs.FootIkEnabled) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Ragdoll_FieldIndex.LookIkEnabled] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ragdoll_FieldIndex.LookIkEnabled) ?? true))
+                {
+                    if (lhs.LookIkEnabled != rhs.LookIkEnabled) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Ragdoll_FieldIndex.GrabIkEnabled] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ragdoll_FieldIndex.GrabIkEnabled) ?? true))
+                {
+                    if (lhs.GrabIkEnabled != rhs.GrabIkEnabled) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Ragdoll_FieldIndex.PoseMatchingEnabled] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ragdoll_FieldIndex.PoseMatchingEnabled) ?? true))
+                {
+                    if (lhs.PoseMatchingEnabled != rhs.PoseMatchingEnabled) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Ragdoll_FieldIndex.Unused2] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ragdoll_FieldIndex.Unused2) ?? true))
+                {
+                    if (lhs.Unused2 != rhs.Unused2) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Ragdoll_FieldIndex.ActorBase] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ragdoll_FieldIndex.ActorBase) ?? true))
+                {
+                    if (!lhs.ActorBase.Equals(rhs.ActorBase)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Ragdoll_FieldIndex.BodyPartData] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ragdoll_FieldIndex.BodyPartData) ?? true))
+                {
+                    if (!lhs.BodyPartData.Equals(rhs.BodyPartData)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Ragdoll_FieldIndex.FeedbackData] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ragdoll_FieldIndex.FeedbackData) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.FeedbackData, rhs.FeedbackData, out var lhsFeedbackData, out var rhsFeedbackData, out var isFeedbackDataEqual))
+                    {
+                        if (!((RagdollFeedbackDataCommon)((IRagdollFeedbackDataGetter)lhsFeedbackData).CommonInstance()!).Equals(lhsFeedbackData, rhsFeedbackData, equalsMask?.GetSubCrystal((int)Ragdoll_FieldIndex.FeedbackData))) return false;
+                    }
+                    else if (!isFeedbackDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Ragdoll_FieldIndex.FeedbackDynamicBones] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ragdoll_FieldIndex.FeedbackDynamicBones) ?? true))
+                {
+                    if (!lhs.FeedbackDynamicBones.SequenceEqualNullable(rhs.FeedbackDynamicBones)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Ragdoll_FieldIndex.PoseMatchingData] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ragdoll_FieldIndex.PoseMatchingData) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.PoseMatchingData, rhs.PoseMatchingData, out var lhsPoseMatchingData, out var rhsPoseMatchingData, out var isPoseMatchingDataEqual))
+                    {
+                        if (!((RagdollPoseMatchingDataCommon)((IRagdollPoseMatchingDataGetter)lhsPoseMatchingData).CommonInstance()!).Equals(lhsPoseMatchingData, rhsPoseMatchingData, equalsMask?.GetSubCrystal((int)Ragdoll_FieldIndex.PoseMatchingData))) return false;
+                    }
+                    else if (!isPoseMatchingDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Ragdoll_FieldIndex.DeathPose] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Ragdoll_FieldIndex.DeathPose) ?? true))
+                {
+                    if (!string.Equals(lhs.DeathPose, rhs.DeathPose)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IRagdollGetter)lhs, (IRagdollGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IRagdollGetter)lhs, (IRagdollGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

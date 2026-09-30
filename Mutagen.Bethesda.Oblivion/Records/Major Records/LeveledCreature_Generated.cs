@@ -841,6 +841,24 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ILeveledCreatureGetter item,
+            ILeveledCreatureGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((LeveledCreatureCommon)((ILeveledCreatureGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static LeveledCreature Duplicate(
             this ILeveledCreatureGetter item,
             FormKey formKey,
@@ -1321,6 +1339,78 @@ namespace Mutagen.Bethesda.Oblivion
                 yield return TemplateInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ILeveledCreatureGetter lhs,
+            ILeveledCreatureGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IOblivionMajorRecordGetter)lhs, (IOblivionMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)LeveledCreature_FieldIndex.ChanceNone] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LeveledCreature_FieldIndex.ChanceNone) ?? true))
+                {
+                    if (!lhs.ChanceNone.Equals(rhs.ChanceNone)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)LeveledCreature_FieldIndex.Flags] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LeveledCreature_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)LeveledCreature_FieldIndex.Entries] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LeveledCreature_FieldIndex.Entries) ?? true))
+                {
+                    if (!lhs.Entries.SequenceEqual(rhs.Entries, (l, r) => ((LeveledCreatureEntryCommon)((ILeveledCreatureEntryGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)LeveledCreature_FieldIndex.Entries)))) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)LeveledCreature_FieldIndex.Script] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LeveledCreature_FieldIndex.Script) ?? true))
+                {
+                    if (!lhs.Script.Equals(rhs.Script)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)LeveledCreature_FieldIndex.Template] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LeveledCreature_FieldIndex.Template) ?? true))
+                {
+                    if (!lhs.Template.Equals(rhs.Template)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IOblivionMajorRecordGetter lhs,
+            IOblivionMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILeveledCreatureGetter)lhs, (ILeveledCreatureGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILeveledCreatureGetter)lhs, (ILeveledCreatureGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

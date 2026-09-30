@@ -1110,6 +1110,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IMessageGetter item,
+            IMessageGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((MessageCommon)((IMessageGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Message Duplicate(
             this IMessageGetter item,
             FormKey formKey,
@@ -1691,6 +1709,127 @@ namespace Mutagen.Bethesda.Starfield
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IMessageGetter lhs,
+            IMessageGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Message_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)Message_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Message_FieldIndex.Description] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.Description) ?? true))
+                {
+                    if (!object.Equals(lhs.Description, rhs.Description)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Message_FieldIndex.Name] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Message_FieldIndex.INAM] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.INAM) ?? true))
+                {
+                    if (lhs.INAM != rhs.INAM) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Message_FieldIndex.OwnerQuest] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.OwnerQuest) ?? true))
+                {
+                    if (!lhs.OwnerQuest.Equals(rhs.OwnerQuest)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Message_FieldIndex.Flags] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Message_FieldIndex.DisplayTime] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.DisplayTime) ?? true))
+                {
+                    if (lhs.DisplayTime != rhs.DisplayTime) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Message_FieldIndex.BNAM] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.BNAM) ?? true))
+                {
+                    if (lhs.BNAM != rhs.BNAM) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Message_FieldIndex.ShortTitle] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.ShortTitle) ?? true))
+                {
+                    if (!object.Equals(lhs.ShortTitle, rhs.ShortTitle)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Message_FieldIndex.MenuButtons] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Message_FieldIndex.MenuButtons) ?? true))
+                {
+                    if (!lhs.MenuButtons.SequenceEqual(rhs.MenuButtons, (l, r) => ((MessageButtonCommon)((IMessageButtonGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Message_FieldIndex.MenuButtons)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMessageGetter)lhs, (IMessageGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMessageGetter)lhs, (IMessageGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

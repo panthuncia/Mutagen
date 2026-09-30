@@ -1215,6 +1215,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IAimOpticalSightMarkerGetter item,
+            IAimOpticalSightMarkerGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((AimOpticalSightMarkerCommon)((IAimOpticalSightMarkerGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static AimOpticalSightMarker Duplicate(
             this IAimOpticalSightMarkerGetter item,
             FormKey formKey,
@@ -1832,6 +1850,168 @@ namespace Mutagen.Bethesda.Starfield
             yield return FormLinkInformation.Factory(obj.LaserArtObject);
             yield return FormLinkInformation.Factory(obj.LaserDotArtObject);
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IAimOpticalSightMarkerGetter lhs,
+            IAimOpticalSightMarkerGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)AimOpticalSightMarker_FieldIndex.Components] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimOpticalSightMarker_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)AimOpticalSightMarker_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)AimOpticalSightMarker_FieldIndex.ActivateSightOnSightedMode] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimOpticalSightMarker_FieldIndex.ActivateSightOnSightedMode) ?? true))
+                {
+                    if (lhs.ActivateSightOnSightedMode != rhs.ActivateSightOnSightedMode) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)AimOpticalSightMarker_FieldIndex.OpticalSightAttachNode] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimOpticalSightMarker_FieldIndex.OpticalSightAttachNode) ?? true))
+                {
+                    if (!string.Equals(lhs.OpticalSightAttachNode, rhs.OpticalSightAttachNode)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)AimOpticalSightMarker_FieldIndex.DelayBeforeSightActivation] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimOpticalSightMarker_FieldIndex.DelayBeforeSightActivation) ?? true))
+                {
+                    if (!lhs.DelayBeforeSightActivation.EqualsWithin(rhs.DelayBeforeSightActivation)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)AimOpticalSightMarker_FieldIndex.DelayBeforeSightDeactivation] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimOpticalSightMarker_FieldIndex.DelayBeforeSightDeactivation) ?? true))
+                {
+                    if (!lhs.DelayBeforeSightDeactivation.EqualsWithin(rhs.DelayBeforeSightDeactivation)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)AimOpticalSightMarker_FieldIndex.OpticalSightLight] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimOpticalSightMarker_FieldIndex.OpticalSightLight) ?? true))
+                {
+                    if (!lhs.OpticalSightLight.Equals(rhs.OpticalSightLight)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)AimOpticalSightMarker_FieldIndex.FocalPointDistance] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimOpticalSightMarker_FieldIndex.FocalPointDistance) ?? true))
+                {
+                    if (!lhs.FocalPointDistance.EqualsWithin(rhs.FocalPointDistance)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)AimOpticalSightMarker_FieldIndex.FocalPointDistanceDuringAiming] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimOpticalSightMarker_FieldIndex.FocalPointDistanceDuringAiming) ?? true))
+                {
+                    if (!lhs.FocalPointDistanceDuringAiming.EqualsWithin(rhs.FocalPointDistanceDuringAiming)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)AimOpticalSightMarker_FieldIndex.DelayBetweenShots] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimOpticalSightMarker_FieldIndex.DelayBetweenShots) ?? true))
+                {
+                    if (!lhs.DelayBetweenShots.EqualsWithin(rhs.DelayBetweenShots)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)AimOpticalSightMarker_FieldIndex.LaserArtObject] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimOpticalSightMarker_FieldIndex.LaserArtObject) ?? true))
+                {
+                    if (!lhs.LaserArtObject.Equals(rhs.LaserArtObject)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)AimOpticalSightMarker_FieldIndex.LaserDotArtObject] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimOpticalSightMarker_FieldIndex.LaserDotArtObject) ?? true))
+                {
+                    if (!lhs.LaserDotArtObject.Equals(rhs.LaserDotArtObject)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)AimOpticalSightMarker_FieldIndex.MaxLaserPointerDistance] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimOpticalSightMarker_FieldIndex.MaxLaserPointerDistance) ?? true))
+                {
+                    if (!lhs.MaxLaserPointerDistance.EqualsWithin(rhs.MaxLaserPointerDistance)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)AimOpticalSightMarker_FieldIndex.SightControlsFiringDirection] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimOpticalSightMarker_FieldIndex.SightControlsFiringDirection) ?? true))
+                {
+                    if (lhs.SightControlsFiringDirection != rhs.SightControlsFiringDirection) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)AimOpticalSightMarker_FieldIndex.ActivateSightOnNonSightedMode] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimOpticalSightMarker_FieldIndex.ActivateSightOnNonSightedMode) ?? true))
+                {
+                    if (lhs.ActivateSightOnNonSightedMode != rhs.ActivateSightOnNonSightedMode) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)AimOpticalSightMarker_FieldIndex.ActivateSightOnScopedMode] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimOpticalSightMarker_FieldIndex.ActivateSightOnScopedMode) ?? true))
+                {
+                    if (lhs.ActivateSightOnScopedMode != rhs.ActivateSightOnScopedMode) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IAimOpticalSightMarkerGetter)lhs, (IAimOpticalSightMarkerGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IAimOpticalSightMarkerGetter)lhs, (IAimOpticalSightMarkerGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IAimOpticalSightMarkerGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

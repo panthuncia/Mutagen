@@ -1150,6 +1150,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IFootstepSetGetter item,
+            IFootstepSetGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((FootstepSetCommon)((IFootstepSetGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static FootstepSet Duplicate(
             this IFootstepSetGetter item,
             FormKey formKey,
@@ -1686,6 +1704,78 @@ namespace Mutagen.Bethesda.Fallout4
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IFootstepSetGetter lhs,
+            IFootstepSetGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)FootstepSet_FieldIndex.WalkFootsteps] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)FootstepSet_FieldIndex.WalkFootsteps) ?? true))
+                {
+                    if (!lhs.WalkFootsteps.SequenceEqualNullable(rhs.WalkFootsteps)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)FootstepSet_FieldIndex.RunFootsteps] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)FootstepSet_FieldIndex.RunFootsteps) ?? true))
+                {
+                    if (!lhs.RunFootsteps.SequenceEqualNullable(rhs.RunFootsteps)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)FootstepSet_FieldIndex.SprintFootsteps] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)FootstepSet_FieldIndex.SprintFootsteps) ?? true))
+                {
+                    if (!lhs.SprintFootsteps.SequenceEqualNullable(rhs.SprintFootsteps)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)FootstepSet_FieldIndex.SneakFootsteps] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)FootstepSet_FieldIndex.SneakFootsteps) ?? true))
+                {
+                    if (!lhs.SneakFootsteps.SequenceEqualNullable(rhs.SneakFootsteps)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)FootstepSet_FieldIndex.SwimFootsteps] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)FootstepSet_FieldIndex.SwimFootsteps) ?? true))
+                {
+                    if (!lhs.SwimFootsteps.SequenceEqualNullable(rhs.SwimFootsteps)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IFootstepSetGetter)lhs, (IFootstepSetGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IFootstepSetGetter)lhs, (IFootstepSetGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

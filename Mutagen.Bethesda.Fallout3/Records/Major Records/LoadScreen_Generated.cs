@@ -847,6 +847,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ILoadScreenGetter item,
+            ILoadScreenGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((LoadScreenCommon)((ILoadScreenGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static LoadScreen Duplicate(
             this ILoadScreenGetter item,
             FormKey formKey,
@@ -1324,6 +1342,78 @@ namespace Mutagen.Bethesda.Fallout3
                 yield return LoadScreenTypeInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ILoadScreenGetter lhs,
+            ILoadScreenGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)LoadScreen_FieldIndex.LargeIconFilename] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.LargeIconFilename) ?? true))
+                {
+                    if (!string.Equals(lhs.LargeIconFilename, rhs.LargeIconFilename)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)LoadScreen_FieldIndex.SmallIconFilename] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.SmallIconFilename) ?? true))
+                {
+                    if (!string.Equals(lhs.SmallIconFilename, rhs.SmallIconFilename)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)LoadScreen_FieldIndex.Description] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.Description) ?? true))
+                {
+                    if (!string.Equals(lhs.Description, rhs.Description)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)LoadScreen_FieldIndex.Locations] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.Locations) ?? true))
+                {
+                    if (!lhs.Locations.SequenceEqual(rhs.Locations, (l, r) => ((LoadScreenLocationCommon)((ILoadScreenLocationGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)LoadScreen_FieldIndex.Locations)))) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)LoadScreen_FieldIndex.LoadScreenType] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.LoadScreenType) ?? true))
+                {
+                    if (!lhs.LoadScreenType.Equals(rhs.LoadScreenType)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILoadScreenGetter)lhs, (ILoadScreenGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILoadScreenGetter)lhs, (ILoadScreenGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

@@ -1166,6 +1166,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IKeyGetter item,
+            IKeyGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((KeyCommon)((IKeyGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Key Duplicate(
             this IKeyGetter item,
             FormKey formKey,
@@ -1814,6 +1832,153 @@ namespace Mutagen.Bethesda.Fallout3
                 yield return SoundRandomLoopingInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IKeyGetter lhs,
+            IKeyGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Key_FieldIndex.ObjectBounds] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Key_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)Key_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Key_FieldIndex.Name] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Key_FieldIndex.Name) ?? true))
+                {
+                    if (!string.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Key_FieldIndex.Model] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Key_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)Key_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Key_FieldIndex.LargeIconFilename] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Key_FieldIndex.LargeIconFilename) ?? true))
+                {
+                    if (!object.Equals(lhs.LargeIconFilename, rhs.LargeIconFilename)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Key_FieldIndex.SmallIconFilename] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Key_FieldIndex.SmallIconFilename) ?? true))
+                {
+                    if (!object.Equals(lhs.SmallIconFilename, rhs.SmallIconFilename)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Key_FieldIndex.Script] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Key_FieldIndex.Script) ?? true))
+                {
+                    if (!lhs.Script.Equals(rhs.Script)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Key_FieldIndex.Destructible] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Key_FieldIndex.Destructible) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Destructible, rhs.Destructible, out var lhsDestructible, out var rhsDestructible, out var isDestructibleEqual))
+                    {
+                        if (!((DestructibleCommon)((IDestructibleGetter)lhsDestructible).CommonInstance()!).Equals(lhsDestructible, rhsDestructible, equalsMask?.GetSubCrystal((int)Key_FieldIndex.Destructible))) return false;
+                    }
+                    else if (!isDestructibleEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Key_FieldIndex.PickUpSound] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Key_FieldIndex.PickUpSound) ?? true))
+                {
+                    if (!lhs.PickUpSound.Equals(rhs.PickUpSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Key_FieldIndex.DropSound] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Key_FieldIndex.DropSound) ?? true))
+                {
+                    if (!lhs.DropSound.Equals(rhs.DropSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Key_FieldIndex.Value] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Key_FieldIndex.Value) ?? true))
+                {
+                    if (lhs.Value != rhs.Value) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Key_FieldIndex.Weight] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Key_FieldIndex.Weight) ?? true))
+                {
+                    if (!lhs.Weight.EqualsWithin(rhs.Weight)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Key_FieldIndex.SoundRandomLooping] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Key_FieldIndex.SoundRandomLooping) ?? true))
+                {
+                    if (!lhs.SoundRandomLooping.Equals(rhs.SoundRandomLooping)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IKeyGetter)lhs, (IKeyGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IKeyGetter)lhs, (IKeyGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IKeyGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

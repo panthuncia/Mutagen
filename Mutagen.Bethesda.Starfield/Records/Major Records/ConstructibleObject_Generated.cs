@@ -2082,6 +2082,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IConstructibleObjectGetter item,
+            IConstructibleObjectGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ConstructibleObjectCommon)((IConstructibleObjectGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ConstructibleObject Duplicate(
             this IConstructibleObjectGetter item,
             FormKey formKey,
@@ -3078,6 +3096,274 @@ namespace Mutagen.Bethesda.Starfield
                 yield return InstantiationFilterKeywordInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IConstructibleObjectGetter lhs,
+            IConstructibleObjectGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ConstructibleObject_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)ConstructibleObject_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)ConstructibleObject_FieldIndex.Components] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ConstructibleObject_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)ConstructibleObject_FieldIndex.Description] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.Description) ?? true))
+                {
+                    if (!object.Equals(lhs.Description, rhs.Description)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)ConstructibleObject_FieldIndex.WorkbenchKeyword] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.WorkbenchKeyword) ?? true))
+                {
+                    if (!lhs.WorkbenchKeyword.Equals(rhs.WorkbenchKeyword)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)ConstructibleObject_FieldIndex.Conditions] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.Conditions) ?? true))
+                {
+                    if (!lhs.Conditions.SequenceEqual(rhs.Conditions, (l, r) => ((ConditionCommon)((IConditionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ConstructibleObject_FieldIndex.Conditions)))) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)ConstructibleObject_FieldIndex.ConstructableComponents] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.ConstructableComponents) ?? true))
+                {
+                    if (!lhs.ConstructableComponents.SequenceEqualNullable(rhs.ConstructableComponents, (l, r) => ((ConstructibleObjectComponentCommon)((IConstructibleObjectComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ConstructibleObject_FieldIndex.ConstructableComponents)))) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)ConstructibleObject_FieldIndex.RequiredPerks] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.RequiredPerks) ?? true))
+                {
+                    if (!lhs.RequiredPerks.SequenceEqualNullable(rhs.RequiredPerks, (l, r) => ((ConstructibleRequiredPerkCommon)((IConstructibleRequiredPerkGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ConstructibleObject_FieldIndex.RequiredPerks)))) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)ConstructibleObject_FieldIndex.CreatedObject] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.CreatedObject) ?? true))
+                {
+                    if (!lhs.CreatedObject.Equals(rhs.CreatedObject)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)ConstructibleObject_FieldIndex.AmountProduced] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.AmountProduced) ?? true))
+                {
+                    if (lhs.AmountProduced != rhs.AmountProduced) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)ConstructibleObject_FieldIndex.MenuSortOrder] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.MenuSortOrder) ?? true))
+                {
+                    if (!lhs.MenuSortOrder.EqualsWithin(rhs.MenuSortOrder)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)ConstructibleObject_FieldIndex.Tier] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.Tier) ?? true))
+                {
+                    if (lhs.Tier != rhs.Tier) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)ConstructibleObject_FieldIndex.CraftingSound] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.CraftingSound) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.CraftingSound, rhs.CraftingSound, out var lhsCraftingSound, out var rhsCraftingSound, out var isCraftingSoundEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsCraftingSound).CommonInstance()!).Equals(lhsCraftingSound, rhsCraftingSound, equalsMask?.GetSubCrystal((int)ConstructibleObject_FieldIndex.CraftingSound))) return false;
+                    }
+                    else if (!isCraftingSoundEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)ConstructibleObject_FieldIndex.PickupSound] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.PickupSound) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.PickupSound, rhs.PickupSound, out var lhsPickupSound, out var rhsPickupSound, out var isPickupSoundEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsPickupSound).CommonInstance()!).Equals(lhsPickupSound, rhsPickupSound, equalsMask?.GetSubCrystal((int)ConstructibleObject_FieldIndex.PickupSound))) return false;
+                    }
+                    else if (!isPickupSoundEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)ConstructibleObject_FieldIndex.DropdownSound] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.DropdownSound) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.DropdownSound, rhs.DropdownSound, out var lhsDropdownSound, out var rhsDropdownSound, out var isDropdownSoundEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsDropdownSound).CommonInstance()!).Equals(lhsDropdownSound, rhsDropdownSound, equalsMask?.GetSubCrystal((int)ConstructibleObject_FieldIndex.DropdownSound))) return false;
+                    }
+                    else if (!isDropdownSoundEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)ConstructibleObject_FieldIndex.RepairComponents] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.RepairComponents) ?? true))
+                {
+                    if (!lhs.RepairComponents.SequenceEqualNullable(rhs.RepairComponents, (l, r) => ((ConstructibleObjectComponentCommon)((IConstructibleObjectComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ConstructibleObject_FieldIndex.RepairComponents)))) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)ConstructibleObject_FieldIndex.LearnMethod] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.LearnMethod) ?? true))
+                {
+                    if (lhs.LearnMethod != rhs.LearnMethod) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)ConstructibleObject_FieldIndex.Value] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.Value) ?? true))
+                {
+                    if (lhs.Value != rhs.Value) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)ConstructibleObject_FieldIndex.MenuArtObject] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.MenuArtObject) ?? true))
+                {
+                    if (!lhs.MenuArtObject.Equals(rhs.MenuArtObject)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)ConstructibleObject_FieldIndex.LearnedFrom] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.LearnedFrom) ?? true))
+                {
+                    if (!lhs.LearnedFrom.Equals(rhs.LearnedFrom)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)ConstructibleObject_FieldIndex.BaseReturnScaleTable] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.BaseReturnScaleTable) ?? true))
+                {
+                    if (!lhs.BaseReturnScaleTable.Equals(rhs.BaseReturnScaleTable)) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)ConstructibleObject_FieldIndex.LearnChance] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.LearnChance) ?? true))
+                {
+                    if (!lhs.LearnChance.Equals(rhs.LearnChance)) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)ConstructibleObject_FieldIndex.MaxBuildCountGlobal] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.MaxBuildCountGlobal) ?? true))
+                {
+                    if (!lhs.MaxBuildCountGlobal.Equals(rhs.MaxBuildCountGlobal)) return false;
+                }
+                return true;
+            }
+            if (!Equal22()) differs[(int)ConstructibleObject_FieldIndex.RecipeFilters] = true;
+            bool Equal22()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.RecipeFilters) ?? true))
+                {
+                    if (!lhs.RecipeFilters.SequenceEqualNullable(rhs.RecipeFilters)) return false;
+                }
+                return true;
+            }
+            if (!Equal23()) differs[(int)ConstructibleObject_FieldIndex.InstantiationFilterKeyword] = true;
+            bool Equal23()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.InstantiationFilterKeyword) ?? true))
+                {
+                    if (!lhs.InstantiationFilterKeyword.Equals(rhs.InstantiationFilterKeyword)) return false;
+                }
+                return true;
+            }
+            if (!Equal24()) differs[(int)ConstructibleObject_FieldIndex.Flags] = true;
+            bool Equal24()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ConstructibleObject_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IConstructibleObjectGetter)lhs, (IConstructibleObjectGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IConstructibleObjectGetter)lhs, (IConstructibleObjectGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IConstructibleObjectGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

@@ -1107,6 +1107,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IShaderParticleGeometryGetter item,
+            IShaderParticleGeometryGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ShaderParticleGeometryCommon)((IShaderParticleGeometryGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ShaderParticleGeometry Duplicate(
             this IShaderParticleGeometryGetter item,
             FormKey formKey,
@@ -1692,6 +1710,159 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IShaderParticleGeometryGetter lhs,
+            IShaderParticleGeometryGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ShaderParticleGeometry_FieldIndex.GravityVelocity] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.GravityVelocity) ?? true))
+                {
+                    if (!lhs.GravityVelocity.EqualsWithin(rhs.GravityVelocity)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)ShaderParticleGeometry_FieldIndex.RotationVelocity] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.RotationVelocity) ?? true))
+                {
+                    if (!lhs.RotationVelocity.EqualsWithin(rhs.RotationVelocity)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)ShaderParticleGeometry_FieldIndex.ParticleSizeX] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.ParticleSizeX) ?? true))
+                {
+                    if (!lhs.ParticleSizeX.EqualsWithin(rhs.ParticleSizeX)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)ShaderParticleGeometry_FieldIndex.ParticleSizeY] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.ParticleSizeY) ?? true))
+                {
+                    if (!lhs.ParticleSizeY.EqualsWithin(rhs.ParticleSizeY)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)ShaderParticleGeometry_FieldIndex.CenterOffsetMin] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.CenterOffsetMin) ?? true))
+                {
+                    if (!lhs.CenterOffsetMin.EqualsWithin(rhs.CenterOffsetMin)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)ShaderParticleGeometry_FieldIndex.CenterOffsetMax] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.CenterOffsetMax) ?? true))
+                {
+                    if (!lhs.CenterOffsetMax.EqualsWithin(rhs.CenterOffsetMax)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)ShaderParticleGeometry_FieldIndex.InitialRotationRange] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.InitialRotationRange) ?? true))
+                {
+                    if (!lhs.InitialRotationRange.EqualsWithin(rhs.InitialRotationRange)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)ShaderParticleGeometry_FieldIndex.NumSubtexturesX] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.NumSubtexturesX) ?? true))
+                {
+                    if (lhs.NumSubtexturesX != rhs.NumSubtexturesX) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)ShaderParticleGeometry_FieldIndex.NumSubtexturesY] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.NumSubtexturesY) ?? true))
+                {
+                    if (lhs.NumSubtexturesY != rhs.NumSubtexturesY) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)ShaderParticleGeometry_FieldIndex.Type] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.Type) ?? true))
+                {
+                    if (lhs.Type != rhs.Type) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)ShaderParticleGeometry_FieldIndex.BoxSize] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.BoxSize) ?? true))
+                {
+                    if (lhs.BoxSize != rhs.BoxSize) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)ShaderParticleGeometry_FieldIndex.ParticleDensity] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.ParticleDensity) ?? true))
+                {
+                    if (!lhs.ParticleDensity.EqualsWithin(rhs.ParticleDensity)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)ShaderParticleGeometry_FieldIndex.ParticleTexture] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.ParticleTexture) ?? true))
+                {
+                    if (!object.Equals(lhs.ParticleTexture, rhs.ParticleTexture)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)ShaderParticleGeometry_FieldIndex.DATADataTypeState] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.DATADataTypeState) ?? true))
+                {
+                    if (lhs.DATADataTypeState != rhs.DATADataTypeState) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IShaderParticleGeometryGetter)lhs, (IShaderParticleGeometryGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IShaderParticleGeometryGetter)lhs, (IShaderParticleGeometryGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IShaderParticleGeometryGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

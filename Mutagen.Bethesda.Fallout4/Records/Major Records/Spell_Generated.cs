@@ -1395,6 +1395,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ISpellGetter item,
+            ISpellGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((SpellCommon)((ISpellGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Spell Duplicate(
             this ISpellGetter item,
             FormKey formKey,
@@ -2027,6 +2045,172 @@ namespace Mutagen.Bethesda.Fallout4
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ISpellGetter lhs,
+            ISpellGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Spell_FieldIndex.ObjectBounds] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Spell_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)Spell_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Spell_FieldIndex.Name] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Spell_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Spell_FieldIndex.Keywords] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Spell_FieldIndex.Keywords) ?? true))
+                {
+                    if (!lhs.Keywords.SequenceEqualNullable(rhs.Keywords)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Spell_FieldIndex.EquipmentType] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Spell_FieldIndex.EquipmentType) ?? true))
+                {
+                    if (!lhs.EquipmentType.Equals(rhs.EquipmentType)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Spell_FieldIndex.Description] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Spell_FieldIndex.Description) ?? true))
+                {
+                    if (!object.Equals(lhs.Description, rhs.Description)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Spell_FieldIndex.BaseCost] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Spell_FieldIndex.BaseCost) ?? true))
+                {
+                    if (lhs.BaseCost != rhs.BaseCost) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Spell_FieldIndex.Flags] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Spell_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Spell_FieldIndex.Type] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Spell_FieldIndex.Type) ?? true))
+                {
+                    if (lhs.Type != rhs.Type) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Spell_FieldIndex.ChargeTime] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Spell_FieldIndex.ChargeTime) ?? true))
+                {
+                    if (!lhs.ChargeTime.EqualsWithin(rhs.ChargeTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Spell_FieldIndex.CastType] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Spell_FieldIndex.CastType) ?? true))
+                {
+                    if (lhs.CastType != rhs.CastType) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Spell_FieldIndex.TargetType] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Spell_FieldIndex.TargetType) ?? true))
+                {
+                    if (lhs.TargetType != rhs.TargetType) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Spell_FieldIndex.CastDuration] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Spell_FieldIndex.CastDuration) ?? true))
+                {
+                    if (!lhs.CastDuration.EqualsWithin(rhs.CastDuration)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Spell_FieldIndex.Range] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Spell_FieldIndex.Range) ?? true))
+                {
+                    if (!lhs.Range.EqualsWithin(rhs.Range)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Spell_FieldIndex.CastingPerk] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Spell_FieldIndex.CastingPerk) ?? true))
+                {
+                    if (!lhs.CastingPerk.Equals(rhs.CastingPerk)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Spell_FieldIndex.Effects] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Spell_FieldIndex.Effects) ?? true))
+                {
+                    if (!lhs.Effects.SequenceEqual(rhs.Effects, (l, r) => ((EffectCommon)((IEffectGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Spell_FieldIndex.Effects)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISpellGetter)lhs, (ISpellGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISpellGetter)lhs, (ISpellGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

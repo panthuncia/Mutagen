@@ -793,6 +793,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IBodyPartDataGetter item,
+            IBodyPartDataGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((BodyPartDataCommon)((IBodyPartDataGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static BodyPartData Duplicate(
             this IBodyPartDataGetter item,
             FormKey formKey,
@@ -1271,6 +1289,64 @@ namespace Mutagen.Bethesda.Fallout3
                 yield return RagdollInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IBodyPartDataGetter lhs,
+            IBodyPartDataGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)BodyPartData_FieldIndex.Model] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)BodyPartData_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)BodyPartData_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)BodyPartData_FieldIndex.Parts] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)BodyPartData_FieldIndex.Parts) ?? true))
+                {
+                    if (!lhs.Parts.SequenceEqual(rhs.Parts, (l, r) => ((BodyPartCommon)((IBodyPartGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)BodyPartData_FieldIndex.Parts)))) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)BodyPartData_FieldIndex.Ragdoll] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)BodyPartData_FieldIndex.Ragdoll) ?? true))
+                {
+                    if (!lhs.Ragdoll.Equals(rhs.Ragdoll)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IBodyPartDataGetter)lhs, (IBodyPartDataGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IBodyPartDataGetter)lhs, (IBodyPartDataGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

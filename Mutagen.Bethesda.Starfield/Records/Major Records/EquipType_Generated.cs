@@ -847,6 +847,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IEquipTypeGetter item,
+            IEquipTypeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((EquipTypeCommon)((IEquipTypeGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static EquipType Duplicate(
             this IEquipTypeGetter item,
             FormKey formKey,
@@ -1336,6 +1354,73 @@ namespace Mutagen.Bethesda.Starfield
                 yield return ConditionActorValueInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IEquipTypeGetter lhs,
+            IEquipTypeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)EquipType_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EquipType_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)EquipType_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)EquipType_FieldIndex.SlotParents] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EquipType_FieldIndex.SlotParents) ?? true))
+                {
+                    if (!lhs.SlotParents.SequenceEqualNullable(rhs.SlotParents)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)EquipType_FieldIndex.Flag] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EquipType_FieldIndex.Flag) ?? true))
+                {
+                    if (lhs.Flag != rhs.Flag) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)EquipType_FieldIndex.ConditionActorValue] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EquipType_FieldIndex.ConditionActorValue) ?? true))
+                {
+                    if (!lhs.ConditionActorValue.Equals(rhs.ConditionActorValue)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IEquipTypeGetter)lhs, (IEquipTypeGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IEquipTypeGetter)lhs, (IEquipTypeGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

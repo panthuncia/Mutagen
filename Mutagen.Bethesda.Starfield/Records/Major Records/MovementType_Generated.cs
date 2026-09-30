@@ -832,6 +832,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IMovementTypeGetter item,
+            IMovementTypeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((MovementTypeCommon)((IMovementTypeGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static MovementType Duplicate(
             this IMovementTypeGetter item,
             FormKey formKey,
@@ -1315,6 +1333,87 @@ namespace Mutagen.Bethesda.Starfield
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IMovementTypeGetter lhs,
+            IMovementTypeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)MovementType_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MovementType_FieldIndex.Name) ?? true))
+                {
+                    if (!string.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)MovementType_FieldIndex.SPED] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MovementType_FieldIndex.SPED) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.SPED, rhs.SPED)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)MovementType_FieldIndex.FlightAngleGain] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MovementType_FieldIndex.FlightAngleGain) ?? true))
+                {
+                    if (!lhs.FlightAngleGain.EqualsWithin(rhs.FlightAngleGain)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)MovementType_FieldIndex.KNAM] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MovementType_FieldIndex.KNAM) ?? true))
+                {
+                    if (!lhs.KNAM.EqualsWithin(rhs.KNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)MovementType_FieldIndex.INTV] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MovementType_FieldIndex.INTV) ?? true))
+                {
+                    if (lhs.INTV != rhs.INTV) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)MovementType_FieldIndex.BOLV] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MovementType_FieldIndex.BOLV) ?? true))
+                {
+                    if (lhs.BOLV != rhs.BOLV) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMovementTypeGetter)lhs, (IMovementTypeGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMovementTypeGetter)lhs, (IMovementTypeGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

@@ -1008,6 +1008,24 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IPlacedNpcGetter item,
+            IPlacedNpcGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((PlacedNpcCommon)((IPlacedNpcGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static PlacedNpc Duplicate(
             this IPlacedNpcGetter item,
             FormKey formKey,
@@ -1592,6 +1610,135 @@ namespace Mutagen.Bethesda.Oblivion
                 yield return HorseInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IPlacedNpcGetter lhs,
+            IPlacedNpcGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IOblivionMajorRecordGetter)lhs, (IOblivionMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)PlacedNpc_FieldIndex.Base] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedNpc_FieldIndex.Base) ?? true))
+                {
+                    if (!lhs.Base.Equals(rhs.Base)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)PlacedNpc_FieldIndex.XPCIFluff] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedNpc_FieldIndex.XPCIFluff) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.XPCIFluff, rhs.XPCIFluff)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)PlacedNpc_FieldIndex.FULLFluff] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedNpc_FieldIndex.FULLFluff) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.FULLFluff, rhs.FULLFluff)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)PlacedNpc_FieldIndex.DistantLODData] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedNpc_FieldIndex.DistantLODData) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.DistantLODData, rhs.DistantLODData, out var lhsDistantLODData, out var rhsDistantLODData, out var isDistantLODDataEqual))
+                    {
+                        if (!((DistantLODDataCommon)((IDistantLODDataGetter)lhsDistantLODData).CommonInstance()!).Equals(lhsDistantLODData, rhsDistantLODData, equalsMask?.GetSubCrystal((int)PlacedNpc_FieldIndex.DistantLODData))) return false;
+                    }
+                    else if (!isDistantLODDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)PlacedNpc_FieldIndex.EnableParent] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedNpc_FieldIndex.EnableParent) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.EnableParent, rhs.EnableParent, out var lhsEnableParent, out var rhsEnableParent, out var isEnableParentEqual))
+                    {
+                        if (!((EnableParentCommon)((IEnableParentGetter)lhsEnableParent).CommonInstance()!).Equals(lhsEnableParent, rhsEnableParent, equalsMask?.GetSubCrystal((int)PlacedNpc_FieldIndex.EnableParent))) return false;
+                    }
+                    else if (!isEnableParentEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)PlacedNpc_FieldIndex.MerchantContainer] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedNpc_FieldIndex.MerchantContainer) ?? true))
+                {
+                    if (!lhs.MerchantContainer.Equals(rhs.MerchantContainer)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)PlacedNpc_FieldIndex.Horse] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedNpc_FieldIndex.Horse) ?? true))
+                {
+                    if (!lhs.Horse.Equals(rhs.Horse)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)PlacedNpc_FieldIndex.RagdollData] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedNpc_FieldIndex.RagdollData) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.RagdollData, rhs.RagdollData)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)PlacedNpc_FieldIndex.Scale] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedNpc_FieldIndex.Scale) ?? true))
+                {
+                    if (!lhs.Scale.EqualsWithin(rhs.Scale)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)PlacedNpc_FieldIndex.Location] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedNpc_FieldIndex.Location) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Location, rhs.Location, out var lhsLocation, out var rhsLocation, out var isLocationEqual))
+                    {
+                        if (!((LocationCommon)((ILocationGetter)lhsLocation).CommonInstance()!).Equals(lhsLocation, rhsLocation, equalsMask?.GetSubCrystal((int)PlacedNpc_FieldIndex.Location))) return false;
+                    }
+                    else if (!isLocationEqual) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IOblivionMajorRecordGetter lhs,
+            IOblivionMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPlacedNpcGetter)lhs, (IPlacedNpcGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPlacedNpcGetter)lhs, (IPlacedNpcGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

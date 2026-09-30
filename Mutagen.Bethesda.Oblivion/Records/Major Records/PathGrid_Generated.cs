@@ -946,6 +946,24 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IPathGridGetter item,
+            IPathGridGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((PathGridCommon)((IPathGridGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static PathGrid Duplicate(
             this IPathGridGetter item,
             FormKey formKey,
@@ -1428,6 +1446,69 @@ namespace Mutagen.Bethesda.Oblivion
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IPathGridGetter lhs,
+            IPathGridGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IOblivionMajorRecordGetter)lhs, (IOblivionMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)PathGrid_FieldIndex.PointToPointConnections] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PathGrid_FieldIndex.PointToPointConnections) ?? true))
+                {
+                    if (!lhs.PointToPointConnections.SequenceEqualNullable(rhs.PointToPointConnections, (l, r) => ((PathGridPointCommon)((IPathGridPointGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)PathGrid_FieldIndex.PointToPointConnections)))) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)PathGrid_FieldIndex.PGAG] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PathGrid_FieldIndex.PGAG) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.PGAG, rhs.PGAG)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)PathGrid_FieldIndex.InterCellConnections] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PathGrid_FieldIndex.InterCellConnections) ?? true))
+                {
+                    if (!lhs.InterCellConnections.SequenceEqualNullable(rhs.InterCellConnections, (l, r) => ((InterCellPointCommon)((IInterCellPointGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)PathGrid_FieldIndex.InterCellConnections)))) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)PathGrid_FieldIndex.PointToReferenceMappings] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PathGrid_FieldIndex.PointToReferenceMappings) ?? true))
+                {
+                    if (!lhs.PointToReferenceMappings.SequenceEqual(rhs.PointToReferenceMappings, (l, r) => ((PointToReferenceMappingCommon)((IPointToReferenceMappingGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)PathGrid_FieldIndex.PointToReferenceMappings)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IOblivionMajorRecordGetter lhs,
+            IOblivionMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPathGridGetter)lhs, (IPathGridGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPathGridGetter)lhs, (IPathGridGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

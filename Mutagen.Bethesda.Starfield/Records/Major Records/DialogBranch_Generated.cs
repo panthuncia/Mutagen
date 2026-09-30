@@ -743,6 +743,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IDialogBranchGetter item,
+            IDialogBranchGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((DialogBranchCommon)((IDialogBranchGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static DialogBranch Duplicate(
             this IDialogBranchGetter item,
             FormKey formKey,
@@ -1195,6 +1213,69 @@ namespace Mutagen.Bethesda.Starfield
                 yield return StartingTopicInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IDialogBranchGetter lhs,
+            IDialogBranchGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)DialogBranch_FieldIndex.Quest] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogBranch_FieldIndex.Quest) ?? true))
+                {
+                    if (!lhs.Quest.Equals(rhs.Quest)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)DialogBranch_FieldIndex.Category] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogBranch_FieldIndex.Category) ?? true))
+                {
+                    if (lhs.Category != rhs.Category) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)DialogBranch_FieldIndex.Flags] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogBranch_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)DialogBranch_FieldIndex.StartingTopic] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)DialogBranch_FieldIndex.StartingTopic) ?? true))
+                {
+                    if (!lhs.StartingTopic.Equals(rhs.StartingTopic)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IDialogBranchGetter)lhs, (IDialogBranchGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IDialogBranchGetter)lhs, (IDialogBranchGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

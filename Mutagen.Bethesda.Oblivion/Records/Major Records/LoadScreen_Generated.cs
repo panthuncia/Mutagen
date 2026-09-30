@@ -755,6 +755,24 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ILoadScreenGetter item,
+            ILoadScreenGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((LoadScreenCommon)((ILoadScreenGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static LoadScreen Duplicate(
             this ILoadScreenGetter item,
             FormKey formKey,
@@ -1199,6 +1217,60 @@ namespace Mutagen.Bethesda.Oblivion
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ILoadScreenGetter lhs,
+            ILoadScreenGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IOblivionMajorRecordGetter)lhs, (IOblivionMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)LoadScreen_FieldIndex.Icon] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.Icon) ?? true))
+                {
+                    if (!string.Equals(lhs.Icon, rhs.Icon)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)LoadScreen_FieldIndex.Description] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.Description) ?? true))
+                {
+                    if (!string.Equals(lhs.Description, rhs.Description)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)LoadScreen_FieldIndex.Locations] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.Locations) ?? true))
+                {
+                    if (!lhs.Locations.SequenceEqual(rhs.Locations, (l, r) => ((LoadScreenLocationCommon)((ILoadScreenLocationGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)LoadScreen_FieldIndex.Locations)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IOblivionMajorRecordGetter lhs,
+            IOblivionMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILoadScreenGetter)lhs, (ILoadScreenGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILoadScreenGetter)lhs, (ILoadScreenGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

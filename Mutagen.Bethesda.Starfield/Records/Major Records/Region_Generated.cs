@@ -830,6 +830,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IRegionGetter item,
+            IRegionGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((RegionCommon)((IRegionGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Region Duplicate(
             this IRegionGetter item,
             FormKey formKey,
@@ -1312,6 +1330,77 @@ namespace Mutagen.Bethesda.Starfield
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IRegionGetter lhs,
+            IRegionGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Region_FieldIndex.MapColor] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Region_FieldIndex.MapColor) ?? true))
+                {
+                    if (!lhs.MapColor.ColorOnlyEquals(rhs.MapColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Region_FieldIndex.RegionAreas] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Region_FieldIndex.RegionAreas) ?? true))
+                {
+                    if (!lhs.RegionAreas.SequenceEqual(rhs.RegionAreas, (l, r) => ((RegionAreaCommon)((IRegionAreaGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Region_FieldIndex.RegionAreas)))) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Region_FieldIndex.Weather] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Region_FieldIndex.Weather) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Weather, rhs.Weather, out var lhsWeather, out var rhsWeather, out var isWeatherEqual))
+                    {
+                        if (!((RegionWeatherCommon)((IRegionWeatherGetter)lhsWeather).CommonInstance()!).Equals(lhsWeather, rhsWeather, equalsMask?.GetSubCrystal((int)Region_FieldIndex.Weather))) return false;
+                    }
+                    else if (!isWeatherEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Region_FieldIndex.Sounds] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Region_FieldIndex.Sounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Sounds, rhs.Sounds, out var lhsSounds, out var rhsSounds, out var isSoundsEqual))
+                    {
+                        if (!((RegionSoundsCommon)((IRegionSoundsGetter)lhsSounds).CommonInstance()!).Equals(lhsSounds, rhsSounds, equalsMask?.GetSubCrystal((int)Region_FieldIndex.Sounds))) return false;
+                    }
+                    else if (!isSoundsEqual) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IRegionGetter)lhs, (IRegionGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IRegionGetter)lhs, (IRegionGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

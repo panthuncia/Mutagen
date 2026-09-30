@@ -815,6 +815,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IImageSpaceGetter item,
+            IImageSpaceGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ImageSpaceCommon)((IImageSpaceGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ImageSpace Duplicate(
             this IImageSpaceGetter item,
             FormKey formKey,
@@ -1317,6 +1335,94 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IImageSpaceGetter lhs,
+            IImageSpaceGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ImageSpace_FieldIndex.ENAM] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.ENAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.ENAM, rhs.ENAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)ImageSpace_FieldIndex.Hdr] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.Hdr) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Hdr, rhs.Hdr, out var lhsHdr, out var rhsHdr, out var isHdrEqual))
+                    {
+                        if (!((ImageSpaceHdrCommon)((IImageSpaceHdrGetter)lhsHdr).CommonInstance()!).Equals(lhsHdr, rhsHdr, equalsMask?.GetSubCrystal((int)ImageSpace_FieldIndex.Hdr))) return false;
+                    }
+                    else if (!isHdrEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)ImageSpace_FieldIndex.Cinematic] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.Cinematic) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Cinematic, rhs.Cinematic, out var lhsCinematic, out var rhsCinematic, out var isCinematicEqual))
+                    {
+                        if (!((ImageSpaceCinematicCommon)((IImageSpaceCinematicGetter)lhsCinematic).CommonInstance()!).Equals(lhsCinematic, rhsCinematic, equalsMask?.GetSubCrystal((int)ImageSpace_FieldIndex.Cinematic))) return false;
+                    }
+                    else if (!isCinematicEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)ImageSpace_FieldIndex.Tint] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.Tint) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Tint, rhs.Tint, out var lhsTint, out var rhsTint, out var isTintEqual))
+                    {
+                        if (!((ImageSpaceTintCommon)((IImageSpaceTintGetter)lhsTint).CommonInstance()!).Equals(lhsTint, rhsTint, equalsMask?.GetSubCrystal((int)ImageSpace_FieldIndex.Tint))) return false;
+                    }
+                    else if (!isTintEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)ImageSpace_FieldIndex.DepthOfField] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImageSpace_FieldIndex.DepthOfField) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.DepthOfField, rhs.DepthOfField, out var lhsDepthOfField, out var rhsDepthOfField, out var isDepthOfFieldEqual))
+                    {
+                        if (!((ImageSpaceDepthOfFieldCommon)((IImageSpaceDepthOfFieldGetter)lhsDepthOfField).CommonInstance()!).Equals(lhsDepthOfField, rhsDepthOfField, equalsMask?.GetSubCrystal((int)ImageSpace_FieldIndex.DepthOfField))) return false;
+                    }
+                    else if (!isDepthOfFieldEqual) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IImageSpaceGetter)lhs, (IImageSpaceGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IImageSpaceGetter)lhs, (IImageSpaceGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

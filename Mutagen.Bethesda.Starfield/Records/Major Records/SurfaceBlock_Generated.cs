@@ -1329,6 +1329,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ISurfaceBlockGetter item,
+            ISurfaceBlockGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((SurfaceBlockCommon)((ISurfaceBlockGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static SurfaceBlock Duplicate(
             this ISurfaceBlockGetter item,
             FormKey formKey,
@@ -2040,6 +2058,202 @@ namespace Mutagen.Bethesda.Starfield
                 yield return NAM5Info;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ISurfaceBlockGetter lhs,
+            ISurfaceBlockGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)SurfaceBlock_FieldIndex.Components] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceBlock_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)SurfaceBlock_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)SurfaceBlock_FieldIndex.ANAM] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceBlock_FieldIndex.ANAM) ?? true))
+                {
+                    if (!string.Equals(lhs.ANAM, rhs.ANAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)SurfaceBlock_FieldIndex.DNAM] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceBlock_FieldIndex.DNAM) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.DNAM, rhs.DNAM, out var lhsDNAM, out var rhsDNAM, out var isDNAMEqual))
+                    {
+                        if (!((SurfaceBlockIntItemCommon)((ISurfaceBlockIntItemGetter)lhsDNAM).CommonInstance()!).Equals(lhsDNAM, rhsDNAM, equalsMask?.GetSubCrystal((int)SurfaceBlock_FieldIndex.DNAM))) return false;
+                    }
+                    else if (!isDNAMEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)SurfaceBlock_FieldIndex.ENAM] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceBlock_FieldIndex.ENAM) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ENAM, rhs.ENAM, out var lhsENAM, out var rhsENAM, out var isENAMEqual))
+                    {
+                        if (!((SurfaceBlockFloatItemCommon)((ISurfaceBlockFloatItemGetter)lhsENAM).CommonInstance()!).Equals(lhsENAM, rhsENAM, equalsMask?.GetSubCrystal((int)SurfaceBlock_FieldIndex.ENAM))) return false;
+                    }
+                    else if (!isENAMEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)SurfaceBlock_FieldIndex.FNAM] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceBlock_FieldIndex.FNAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.FNAM, rhs.FNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)SurfaceBlock_FieldIndex.GNAM] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceBlock_FieldIndex.GNAM) ?? true))
+                {
+                    if (lhs.GNAM != rhs.GNAM) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)SurfaceBlock_FieldIndex.HNAM] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceBlock_FieldIndex.HNAM) ?? true))
+                {
+                    if (lhs.HNAM != rhs.HNAM) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)SurfaceBlock_FieldIndex.INAM] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceBlock_FieldIndex.INAM) ?? true))
+                {
+                    if (lhs.INAM != rhs.INAM) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)SurfaceBlock_FieldIndex.JNAM] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceBlock_FieldIndex.JNAM) ?? true))
+                {
+                    if (lhs.JNAM != rhs.JNAM) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)SurfaceBlock_FieldIndex.KNAM] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceBlock_FieldIndex.KNAM) ?? true))
+                {
+                    if (lhs.KNAM != rhs.KNAM) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)SurfaceBlock_FieldIndex.WHGT] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceBlock_FieldIndex.WHGT) ?? true))
+                {
+                    if (!lhs.WHGT.EqualsWithin(rhs.WHGT)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)SurfaceBlock_FieldIndex.NAM0] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceBlock_FieldIndex.NAM0) ?? true))
+                {
+                    if (!string.Equals(lhs.NAM0, rhs.NAM0)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)SurfaceBlock_FieldIndex.NAM1] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceBlock_FieldIndex.NAM1) ?? true))
+                {
+                    if (!string.Equals(lhs.NAM1, rhs.NAM1)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)SurfaceBlock_FieldIndex.NAM2] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceBlock_FieldIndex.NAM2) ?? true))
+                {
+                    if (lhs.NAM2 != rhs.NAM2) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)SurfaceBlock_FieldIndex.NAM3] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceBlock_FieldIndex.NAM3) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.NAM3, rhs.NAM3, out var lhsNAM3, out var rhsNAM3, out var isNAM3Equal))
+                    {
+                        if (!((SurfaceBlockIntItemCommon)((ISurfaceBlockIntItemGetter)lhsNAM3).CommonInstance()!).Equals(lhsNAM3, rhsNAM3, equalsMask?.GetSubCrystal((int)SurfaceBlock_FieldIndex.NAM3))) return false;
+                    }
+                    else if (!isNAM3Equal) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)SurfaceBlock_FieldIndex.NAM4] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceBlock_FieldIndex.NAM4) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.NAM4, rhs.NAM4, out var lhsNAM4, out var rhsNAM4, out var isNAM4Equal))
+                    {
+                        if (!((SurfaceBlockFloatItemCommon)((ISurfaceBlockFloatItemGetter)lhsNAM4).CommonInstance()!).Equals(lhsNAM4, rhsNAM4, equalsMask?.GetSubCrystal((int)SurfaceBlock_FieldIndex.NAM4))) return false;
+                    }
+                    else if (!isNAM4Equal) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)SurfaceBlock_FieldIndex.NAM5] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfaceBlock_FieldIndex.NAM5) ?? true))
+                {
+                    if (!lhs.NAM5.Equals(rhs.NAM5)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISurfaceBlockGetter)lhs, (ISurfaceBlockGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISurfaceBlockGetter)lhs, (ISurfaceBlockGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(ISurfaceBlockGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

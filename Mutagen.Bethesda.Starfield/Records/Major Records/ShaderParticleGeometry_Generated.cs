@@ -1532,6 +1532,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IShaderParticleGeometryGetter item,
+            IShaderParticleGeometryGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ShaderParticleGeometryCommon)((IShaderParticleGeometryGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ShaderParticleGeometry Duplicate(
             this IShaderParticleGeometryGetter item,
             FormKey formKey,
@@ -2257,6 +2275,271 @@ namespace Mutagen.Bethesda.Starfield
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IShaderParticleGeometryGetter lhs,
+            IShaderParticleGeometryGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ShaderParticleGeometry_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)ShaderParticleGeometry_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)ShaderParticleGeometry_FieldIndex.GravityVelocity] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.GravityVelocity) ?? true))
+                {
+                    if (!lhs.GravityVelocity.EqualsWithin(rhs.GravityVelocity)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)ShaderParticleGeometry_FieldIndex.Unknown1] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.Unknown1) ?? true))
+                {
+                    if (!lhs.Unknown1.EqualsWithin(rhs.Unknown1)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)ShaderParticleGeometry_FieldIndex.RotationVelocity] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.RotationVelocity) ?? true))
+                {
+                    if (!lhs.RotationVelocity.EqualsWithin(rhs.RotationVelocity)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)ShaderParticleGeometry_FieldIndex.Unknown2] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.Unknown2) ?? true))
+                {
+                    if (!lhs.Unknown2.EqualsWithin(rhs.Unknown2)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)ShaderParticleGeometry_FieldIndex.ParticleSizeX] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.ParticleSizeX) ?? true))
+                {
+                    if (!lhs.ParticleSizeX.EqualsWithin(rhs.ParticleSizeX)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)ShaderParticleGeometry_FieldIndex.Unknown3] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.Unknown3) ?? true))
+                {
+                    if (!lhs.Unknown3.EqualsWithin(rhs.Unknown3)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)ShaderParticleGeometry_FieldIndex.ParticleSizeY] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.ParticleSizeY) ?? true))
+                {
+                    if (!lhs.ParticleSizeY.EqualsWithin(rhs.ParticleSizeY)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)ShaderParticleGeometry_FieldIndex.Unknown4] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.Unknown4) ?? true))
+                {
+                    if (!lhs.Unknown4.EqualsWithin(rhs.Unknown4)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)ShaderParticleGeometry_FieldIndex.CenterOffsetMin] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.CenterOffsetMin) ?? true))
+                {
+                    if (!lhs.CenterOffsetMin.EqualsWithin(rhs.CenterOffsetMin)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)ShaderParticleGeometry_FieldIndex.Unknown5] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.Unknown5) ?? true))
+                {
+                    if (!lhs.Unknown5.EqualsWithin(rhs.Unknown5)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)ShaderParticleGeometry_FieldIndex.CenterOffsetMax] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.CenterOffsetMax) ?? true))
+                {
+                    if (!lhs.CenterOffsetMax.EqualsWithin(rhs.CenterOffsetMax)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)ShaderParticleGeometry_FieldIndex.Unknown6] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.Unknown6) ?? true))
+                {
+                    if (!lhs.Unknown6.EqualsWithin(rhs.Unknown6)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)ShaderParticleGeometry_FieldIndex.InitialRotation] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.InitialRotation) ?? true))
+                {
+                    if (!lhs.InitialRotation.EqualsWithin(rhs.InitialRotation)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)ShaderParticleGeometry_FieldIndex.Unknown7] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.Unknown7) ?? true))
+                {
+                    if (!lhs.Unknown7.EqualsWithin(rhs.Unknown7)) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)ShaderParticleGeometry_FieldIndex.NumSubtexturesX] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.NumSubtexturesX) ?? true))
+                {
+                    if (!lhs.NumSubtexturesX.EqualsWithin(rhs.NumSubtexturesX)) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)ShaderParticleGeometry_FieldIndex.Unknown8] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.Unknown8) ?? true))
+                {
+                    if (!lhs.Unknown8.EqualsWithin(rhs.Unknown8)) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)ShaderParticleGeometry_FieldIndex.NumSubtexturesY] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.NumSubtexturesY) ?? true))
+                {
+                    if (!lhs.NumSubtexturesY.EqualsWithin(rhs.NumSubtexturesY)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)ShaderParticleGeometry_FieldIndex.Unknown9] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.Unknown9) ?? true))
+                {
+                    if (!lhs.Unknown9.EqualsWithin(rhs.Unknown9)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)ShaderParticleGeometry_FieldIndex.Type] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.Type) ?? true))
+                {
+                    if (lhs.Type != rhs.Type) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)ShaderParticleGeometry_FieldIndex.Unknown10] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.Unknown10) ?? true))
+                {
+                    if (!lhs.Unknown10.EqualsWithin(rhs.Unknown10)) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)ShaderParticleGeometry_FieldIndex.BoxSize] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.BoxSize) ?? true))
+                {
+                    if (lhs.BoxSize != rhs.BoxSize) return false;
+                }
+                return true;
+            }
+            if (!Equal22()) differs[(int)ShaderParticleGeometry_FieldIndex.Unknown11] = true;
+            bool Equal22()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.Unknown11) ?? true))
+                {
+                    if (!lhs.Unknown11.EqualsWithin(rhs.Unknown11)) return false;
+                }
+                return true;
+            }
+            if (!Equal23()) differs[(int)ShaderParticleGeometry_FieldIndex.ParticleDensity] = true;
+            bool Equal23()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.ParticleDensity) ?? true))
+                {
+                    if (!lhs.ParticleDensity.EqualsWithin(rhs.ParticleDensity)) return false;
+                }
+                return true;
+            }
+            if (!Equal24()) differs[(int)ShaderParticleGeometry_FieldIndex.Unknown12] = true;
+            bool Equal24()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.Unknown12) ?? true))
+                {
+                    if (!lhs.Unknown12.EqualsWithin(rhs.Unknown12)) return false;
+                }
+                return true;
+            }
+            if (!Equal25()) differs[(int)ShaderParticleGeometry_FieldIndex.ParticleTexture] = true;
+            bool Equal25()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ShaderParticleGeometry_FieldIndex.ParticleTexture) ?? true))
+                {
+                    if (!string.Equals(lhs.ParticleTexture, rhs.ParticleTexture)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IShaderParticleGeometryGetter)lhs, (IShaderParticleGeometryGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IShaderParticleGeometryGetter)lhs, (IShaderParticleGeometryGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

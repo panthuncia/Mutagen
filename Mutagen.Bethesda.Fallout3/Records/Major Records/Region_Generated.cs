@@ -1190,6 +1190,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IRegionGetter item,
+            IRegionGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((RegionCommon)((IRegionGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Region Duplicate(
             this IRegionGetter item,
             FormKey formKey,
@@ -1897,6 +1915,164 @@ namespace Mutagen.Bethesda.Fallout3
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IRegionGetter lhs,
+            IRegionGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Region_FieldIndex.Icons] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Region_FieldIndex.Icons) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Icons, rhs.Icons, out var lhsIcons, out var rhsIcons, out var isIconsEqual))
+                    {
+                        if (!((IconsCommon)((IIconsGetter)lhsIcons).CommonInstance()!).Equals(lhsIcons, rhsIcons, equalsMask?.GetSubCrystal((int)Region_FieldIndex.Icons))) return false;
+                    }
+                    else if (!isIconsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Region_FieldIndex.MapColor] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Region_FieldIndex.MapColor) ?? true))
+                {
+                    if (!lhs.MapColor.ColorOnlyEquals(rhs.MapColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Region_FieldIndex.Worldspace] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Region_FieldIndex.Worldspace) ?? true))
+                {
+                    if (!lhs.Worldspace.Equals(rhs.Worldspace)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Region_FieldIndex.Areas] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Region_FieldIndex.Areas) ?? true))
+                {
+                    if (!lhs.Areas.SequenceEqual(rhs.Areas, (l, r) => ((RegionAreaCommon)((IRegionAreaGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Region_FieldIndex.Areas)))) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Region_FieldIndex.Objects] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Region_FieldIndex.Objects) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Objects, rhs.Objects, out var lhsObjects, out var rhsObjects, out var isObjectsEqual))
+                    {
+                        if (!((RegionObjectsCommon)((IRegionObjectsGetter)lhsObjects).CommonInstance()!).Equals(lhsObjects, rhsObjects, equalsMask?.GetSubCrystal((int)Region_FieldIndex.Objects))) return false;
+                    }
+                    else if (!isObjectsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Region_FieldIndex.Weather] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Region_FieldIndex.Weather) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Weather, rhs.Weather, out var lhsWeather, out var rhsWeather, out var isWeatherEqual))
+                    {
+                        if (!((RegionWeatherCommon)((IRegionWeatherGetter)lhsWeather).CommonInstance()!).Equals(lhsWeather, rhsWeather, equalsMask?.GetSubCrystal((int)Region_FieldIndex.Weather))) return false;
+                    }
+                    else if (!isWeatherEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Region_FieldIndex.MapName] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Region_FieldIndex.MapName) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.MapName, rhs.MapName, out var lhsMapName, out var rhsMapName, out var isMapNameEqual))
+                    {
+                        if (!((RegionMapCommon)((IRegionMapGetter)lhsMapName).CommonInstance()!).Equals(lhsMapName, rhsMapName, equalsMask?.GetSubCrystal((int)Region_FieldIndex.MapName))) return false;
+                    }
+                    else if (!isMapNameEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Region_FieldIndex.Grasses] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Region_FieldIndex.Grasses) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Grasses, rhs.Grasses, out var lhsGrasses, out var rhsGrasses, out var isGrassesEqual))
+                    {
+                        if (!((RegionGrassesCommon)((IRegionGrassesGetter)lhsGrasses).CommonInstance()!).Equals(lhsGrasses, rhsGrasses, equalsMask?.GetSubCrystal((int)Region_FieldIndex.Grasses))) return false;
+                    }
+                    else if (!isGrassesEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Region_FieldIndex.Sounds] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Region_FieldIndex.Sounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Sounds, rhs.Sounds, out var lhsSounds, out var rhsSounds, out var isSoundsEqual))
+                    {
+                        if (!((RegionSoundsCommon)((IRegionSoundsGetter)lhsSounds).CommonInstance()!).Equals(lhsSounds, rhsSounds, equalsMask?.GetSubCrystal((int)Region_FieldIndex.Sounds))) return false;
+                    }
+                    else if (!isSoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Region_FieldIndex.Land] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Region_FieldIndex.Land) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Land, rhs.Land, out var lhsLand, out var rhsLand, out var isLandEqual))
+                    {
+                        if (!((RegionLandCommon)((IRegionLandGetter)lhsLand).CommonInstance()!).Equals(lhsLand, rhsLand, equalsMask?.GetSubCrystal((int)Region_FieldIndex.Land))) return false;
+                    }
+                    else if (!isLandEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Region_FieldIndex.Imposters] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Region_FieldIndex.Imposters) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Imposters, rhs.Imposters, out var lhsImposters, out var rhsImposters, out var isImpostersEqual))
+                    {
+                        if (!((RegionImpostersCommon)((IRegionImpostersGetter)lhsImposters).CommonInstance()!).Equals(lhsImposters, rhsImposters, equalsMask?.GetSubCrystal((int)Region_FieldIndex.Imposters))) return false;
+                    }
+                    else if (!isImpostersEqual) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IRegionGetter)lhs, (IRegionGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IRegionGetter)lhs, (IRegionGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IRegionGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

@@ -1350,6 +1350,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IAimAssistModelGetter item,
+            IAimAssistModelGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((AimAssistModelCommon)((IAimAssistModelGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static AimAssistModel Duplicate(
             this IAimAssistModelGetter item,
             FormKey formKey,
@@ -2000,6 +2018,231 @@ namespace Mutagen.Bethesda.Starfield
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IAimAssistModelGetter lhs,
+            IAimAssistModelGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)AimAssistModel_FieldIndex.InnerConeAngleDegrees] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistModel_FieldIndex.InnerConeAngleDegrees) ?? true))
+                {
+                    if (!lhs.InnerConeAngleDegrees.EqualsWithin(rhs.InnerConeAngleDegrees)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)AimAssistModel_FieldIndex.OuterConeAngleDegrees] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistModel_FieldIndex.OuterConeAngleDegrees) ?? true))
+                {
+                    if (!lhs.OuterConeAngleDegrees.EqualsWithin(rhs.OuterConeAngleDegrees)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)AimAssistModel_FieldIndex.SteeringDegreesPerSec] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistModel_FieldIndex.SteeringDegreesPerSec) ?? true))
+                {
+                    if (!lhs.SteeringDegreesPerSec.EqualsWithin(rhs.SteeringDegreesPerSec)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)AimAssistModel_FieldIndex.PitchScale] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistModel_FieldIndex.PitchScale) ?? true))
+                {
+                    if (!lhs.PitchScale.EqualsWithin(rhs.PitchScale)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)AimAssistModel_FieldIndex.InnerSteeringRing] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistModel_FieldIndex.InnerSteeringRing) ?? true))
+                {
+                    if (!lhs.InnerSteeringRing.EqualsWithin(rhs.InnerSteeringRing)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)AimAssistModel_FieldIndex.OuterSteeringRing] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistModel_FieldIndex.OuterSteeringRing) ?? true))
+                {
+                    if (!lhs.OuterSteeringRing.EqualsWithin(rhs.OuterSteeringRing)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)AimAssistModel_FieldIndex.Friction] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistModel_FieldIndex.Friction) ?? true))
+                {
+                    if (!lhs.Friction.EqualsWithin(rhs.Friction)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)AimAssistModel_FieldIndex.MoveFollowDegreesPerSec] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistModel_FieldIndex.MoveFollowDegreesPerSec) ?? true))
+                {
+                    if (!lhs.MoveFollowDegreesPerSec.EqualsWithin(rhs.MoveFollowDegreesPerSec)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)AimAssistModel_FieldIndex.AdsSnapSteeringMult] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistModel_FieldIndex.AdsSnapSteeringMult) ?? true))
+                {
+                    if (!lhs.AdsSnapSteeringMult.EqualsWithin(rhs.AdsSnapSteeringMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)AimAssistModel_FieldIndex.AdsSnapSeconds] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistModel_FieldIndex.AdsSnapSeconds) ?? true))
+                {
+                    if (!lhs.AdsSnapSeconds.EqualsWithin(rhs.AdsSnapSeconds)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)AimAssistModel_FieldIndex.AdsSnapConeAngleDegrees] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistModel_FieldIndex.AdsSnapConeAngleDegrees) ?? true))
+                {
+                    if (!lhs.AdsSnapConeAngleDegrees.EqualsWithin(rhs.AdsSnapConeAngleDegrees)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)AimAssistModel_FieldIndex.NoSteering] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistModel_FieldIndex.NoSteering) ?? true))
+                {
+                    if (!lhs.NoSteering.EqualsWithin(rhs.NoSteering)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)AimAssistModel_FieldIndex.BulletBendingConeAngleDegrees] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistModel_FieldIndex.BulletBendingConeAngleDegrees) ?? true))
+                {
+                    if (!lhs.BulletBendingConeAngleDegrees.EqualsWithin(rhs.BulletBendingConeAngleDegrees)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)AimAssistModel_FieldIndex.AdsSnapSteeringMultiplierInnerRing] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistModel_FieldIndex.AdsSnapSteeringMultiplierInnerRing) ?? true))
+                {
+                    if (!lhs.AdsSnapSteeringMultiplierInnerRing.EqualsWithin(rhs.AdsSnapSteeringMultiplierInnerRing)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)AimAssistModel_FieldIndex.AdsSnapSteeringMultiplierOuterRing] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistModel_FieldIndex.AdsSnapSteeringMultiplierOuterRing) ?? true))
+                {
+                    if (!lhs.AdsSnapSteeringMultiplierOuterRing.EqualsWithin(rhs.AdsSnapSteeringMultiplierOuterRing)) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)AimAssistModel_FieldIndex.AdsMultiplierInnerConeAngleDegrees] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistModel_FieldIndex.AdsMultiplierInnerConeAngleDegrees) ?? true))
+                {
+                    if (!lhs.AdsMultiplierInnerConeAngleDegrees.EqualsWithin(rhs.AdsMultiplierInnerConeAngleDegrees)) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)AimAssistModel_FieldIndex.AdsMultiplierOuterConeAngleDegrees] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistModel_FieldIndex.AdsMultiplierOuterConeAngleDegrees) ?? true))
+                {
+                    if (!lhs.AdsMultiplierOuterConeAngleDegrees.EqualsWithin(rhs.AdsMultiplierOuterConeAngleDegrees)) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)AimAssistModel_FieldIndex.AdsMultiplierInnerSteeringRing] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistModel_FieldIndex.AdsMultiplierInnerSteeringRing) ?? true))
+                {
+                    if (!lhs.AdsMultiplierInnerSteeringRing.EqualsWithin(rhs.AdsMultiplierInnerSteeringRing)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)AimAssistModel_FieldIndex.AdsMultiplierOuterSteeringRing] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistModel_FieldIndex.AdsMultiplierOuterSteeringRing) ?? true))
+                {
+                    if (!lhs.AdsMultiplierOuterSteeringRing.EqualsWithin(rhs.AdsMultiplierOuterSteeringRing)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)AimAssistModel_FieldIndex.AdsMultiplierFriction] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistModel_FieldIndex.AdsMultiplierFriction) ?? true))
+                {
+                    if (!lhs.AdsMultiplierFriction.EqualsWithin(rhs.AdsMultiplierFriction)) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)AimAssistModel_FieldIndex.AdsMultiplierSteeringDegreesPerSec] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistModel_FieldIndex.AdsMultiplierSteeringDegreesPerSec) ?? true))
+                {
+                    if (!lhs.AdsMultiplierSteeringDegreesPerSec.EqualsWithin(rhs.AdsMultiplierSteeringDegreesPerSec)) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)AimAssistModel_FieldIndex.AimAssistEnabled] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AimAssistModel_FieldIndex.AimAssistEnabled) ?? true))
+                {
+                    if (lhs.AimAssistEnabled != rhs.AimAssistEnabled) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IAimAssistModelGetter)lhs, (IAimAssistModelGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IAimAssistModelGetter)lhs, (IAimAssistModelGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

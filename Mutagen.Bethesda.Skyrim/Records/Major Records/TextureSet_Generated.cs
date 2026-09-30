@@ -1047,6 +1047,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ITextureSetGetter item,
+            ITextureSetGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((TextureSetCommon)((ITextureSetGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static TextureSet Duplicate(
             this ITextureSetGetter item,
             FormKey formKey,
@@ -1688,6 +1706,140 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ITextureSetGetter lhs,
+            ITextureSetGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)TextureSet_FieldIndex.ObjectBounds] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)TextureSet_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)TextureSet_FieldIndex.Diffuse] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.Diffuse) ?? true))
+                {
+                    if (!object.Equals(lhs.Diffuse, rhs.Diffuse)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)TextureSet_FieldIndex.NormalOrGloss] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.NormalOrGloss) ?? true))
+                {
+                    if (!object.Equals(lhs.NormalOrGloss, rhs.NormalOrGloss)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)TextureSet_FieldIndex.EnvironmentMaskOrSubsurfaceTint] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.EnvironmentMaskOrSubsurfaceTint) ?? true))
+                {
+                    if (!object.Equals(lhs.EnvironmentMaskOrSubsurfaceTint, rhs.EnvironmentMaskOrSubsurfaceTint)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)TextureSet_FieldIndex.GlowOrDetailMap] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.GlowOrDetailMap) ?? true))
+                {
+                    if (!object.Equals(lhs.GlowOrDetailMap, rhs.GlowOrDetailMap)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)TextureSet_FieldIndex.Height] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.Height) ?? true))
+                {
+                    if (!object.Equals(lhs.Height, rhs.Height)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)TextureSet_FieldIndex.Environment] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.Environment) ?? true))
+                {
+                    if (!object.Equals(lhs.Environment, rhs.Environment)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)TextureSet_FieldIndex.Multilayer] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.Multilayer) ?? true))
+                {
+                    if (!object.Equals(lhs.Multilayer, rhs.Multilayer)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)TextureSet_FieldIndex.BacklightMaskOrSpecular] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.BacklightMaskOrSpecular) ?? true))
+                {
+                    if (!object.Equals(lhs.BacklightMaskOrSpecular, rhs.BacklightMaskOrSpecular)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)TextureSet_FieldIndex.Decal] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.Decal) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Decal, rhs.Decal, out var lhsDecal, out var rhsDecal, out var isDecalEqual))
+                    {
+                        if (!((DecalCommon)((IDecalGetter)lhsDecal).CommonInstance()!).Equals(lhsDecal, rhsDecal, equalsMask?.GetSubCrystal((int)TextureSet_FieldIndex.Decal))) return false;
+                    }
+                    else if (!isDecalEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)TextureSet_FieldIndex.Flags] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)TextureSet_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ITextureSetGetter)lhs, (ITextureSetGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ITextureSetGetter)lhs, (ITextureSetGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(ITextureSetGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

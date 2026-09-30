@@ -2962,6 +2962,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this INpcGetter item,
+            INpcGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((NpcCommon)((INpcGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Npc Duplicate(
             this INpcGetter item,
             FormKey formKey,
@@ -4173,6 +4191,471 @@ namespace Mutagen.Bethesda.Fallout3
                 yield return CombatStyleInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            INpcGetter lhs,
+            INpcGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Npc_FieldIndex.ObjectBounds] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.ObjectBounds) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ObjectBounds, rhs.ObjectBounds, out var lhsObjectBounds, out var rhsObjectBounds, out var isObjectBoundsEqual))
+                    {
+                        if (!((ObjectBoundsCommon)((IObjectBoundsGetter)lhsObjectBounds).CommonInstance()!).Equals(lhsObjectBounds, rhsObjectBounds, equalsMask?.GetSubCrystal((int)Npc_FieldIndex.ObjectBounds))) return false;
+                    }
+                    else if (!isObjectBoundsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Npc_FieldIndex.Name] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Name) ?? true))
+                {
+                    if (!string.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Npc_FieldIndex.Model] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)Npc_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Npc_FieldIndex.Configuration] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Configuration) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Configuration, rhs.Configuration, out var lhsConfiguration, out var rhsConfiguration, out var isConfigurationEqual))
+                    {
+                        if (!((NpcConfigurationCommon)((INpcConfigurationGetter)lhsConfiguration).CommonInstance()!).Equals(lhsConfiguration, rhsConfiguration, equalsMask?.GetSubCrystal((int)Npc_FieldIndex.Configuration))) return false;
+                    }
+                    else if (!isConfigurationEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Npc_FieldIndex.Factions] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Factions) ?? true))
+                {
+                    if (!lhs.Factions.SequenceEqual(rhs.Factions, (l, r) => ((RankPlacementCommon)((IRankPlacementGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Npc_FieldIndex.Factions)))) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Npc_FieldIndex.DeathItem] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.DeathItem) ?? true))
+                {
+                    if (!lhs.DeathItem.Equals(rhs.DeathItem)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Npc_FieldIndex.Voice] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Voice) ?? true))
+                {
+                    if (!lhs.Voice.Equals(rhs.Voice)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Npc_FieldIndex.Template] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Template) ?? true))
+                {
+                    if (!lhs.Template.Equals(rhs.Template)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Npc_FieldIndex.Race] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Race) ?? true))
+                {
+                    if (!lhs.Race.Equals(rhs.Race)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Npc_FieldIndex.ActorEffects] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.ActorEffects) ?? true))
+                {
+                    if (!lhs.ActorEffects.SequenceEqualNullable(rhs.ActorEffects)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Npc_FieldIndex.UnarmedAttackEffect] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.UnarmedAttackEffect) ?? true))
+                {
+                    if (!lhs.UnarmedAttackEffect.Equals(rhs.UnarmedAttackEffect)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Npc_FieldIndex.UnarmedAttackAnimation] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.UnarmedAttackAnimation) ?? true))
+                {
+                    if (lhs.UnarmedAttackAnimation != rhs.UnarmedAttackAnimation) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Npc_FieldIndex.Destructible] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Destructible) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Destructible, rhs.Destructible, out var lhsDestructible, out var rhsDestructible, out var isDestructibleEqual))
+                    {
+                        if (!((DestructibleCommon)((IDestructibleGetter)lhsDestructible).CommonInstance()!).Equals(lhsDestructible, rhsDestructible, equalsMask?.GetSubCrystal((int)Npc_FieldIndex.Destructible))) return false;
+                    }
+                    else if (!isDestructibleEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Npc_FieldIndex.Script] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Script) ?? true))
+                {
+                    if (!lhs.Script.Equals(rhs.Script)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Npc_FieldIndex.Items] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Items) ?? true))
+                {
+                    if (!lhs.Items.SequenceEqual(rhs.Items, (l, r) => ((ContainerEntryCommon)((IContainerEntryGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Npc_FieldIndex.Items)))) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)Npc_FieldIndex.AIData] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.AIData) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.AIData, rhs.AIData, out var lhsAIData, out var rhsAIData, out var isAIDataEqual))
+                    {
+                        if (!((NpcAIDataCommon)((INpcAIDataGetter)lhsAIData).CommonInstance()!).Equals(lhsAIData, rhsAIData, equalsMask?.GetSubCrystal((int)Npc_FieldIndex.AIData))) return false;
+                    }
+                    else if (!isAIDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)Npc_FieldIndex.Packages] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Packages) ?? true))
+                {
+                    if (!lhs.Packages.SequenceEqualNullable(rhs.Packages)) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)Npc_FieldIndex.Animations] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Animations) ?? true))
+                {
+                    if (!lhs.Animations.SequenceEqualNullable(rhs.Animations)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)Npc_FieldIndex.Class] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Class) ?? true))
+                {
+                    if (!lhs.Class.Equals(rhs.Class)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)Npc_FieldIndex.BaseHealth] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.BaseHealth) ?? true))
+                {
+                    if (lhs.BaseHealth != rhs.BaseHealth) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)Npc_FieldIndex.Strength] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Strength) ?? true))
+                {
+                    if (lhs.Strength != rhs.Strength) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)Npc_FieldIndex.Perception] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Perception) ?? true))
+                {
+                    if (lhs.Perception != rhs.Perception) return false;
+                }
+                return true;
+            }
+            if (!Equal22()) differs[(int)Npc_FieldIndex.Endurance] = true;
+            bool Equal22()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Endurance) ?? true))
+                {
+                    if (lhs.Endurance != rhs.Endurance) return false;
+                }
+                return true;
+            }
+            if (!Equal23()) differs[(int)Npc_FieldIndex.Charisma] = true;
+            bool Equal23()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Charisma) ?? true))
+                {
+                    if (lhs.Charisma != rhs.Charisma) return false;
+                }
+                return true;
+            }
+            if (!Equal24()) differs[(int)Npc_FieldIndex.Intelligence] = true;
+            bool Equal24()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Intelligence) ?? true))
+                {
+                    if (lhs.Intelligence != rhs.Intelligence) return false;
+                }
+                return true;
+            }
+            if (!Equal25()) differs[(int)Npc_FieldIndex.Agility] = true;
+            bool Equal25()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Agility) ?? true))
+                {
+                    if (lhs.Agility != rhs.Agility) return false;
+                }
+                return true;
+            }
+            if (!Equal26()) differs[(int)Npc_FieldIndex.Luck] = true;
+            bool Equal26()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Luck) ?? true))
+                {
+                    if (lhs.Luck != rhs.Luck) return false;
+                }
+                return true;
+            }
+            if (!Equal27()) differs[(int)Npc_FieldIndex.Unused1] = true;
+            bool Equal27()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Unused1) ?? true))
+                {
+                    if (lhs.Unused1 != rhs.Unused1) return false;
+                }
+                return true;
+            }
+            if (!Equal28()) differs[(int)Npc_FieldIndex.Unused2] = true;
+            bool Equal28()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Unused2) ?? true))
+                {
+                    if (lhs.Unused2 != rhs.Unused2) return false;
+                }
+                return true;
+            }
+            if (!Equal29()) differs[(int)Npc_FieldIndex.Unused3] = true;
+            bool Equal29()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Unused3) ?? true))
+                {
+                    if (lhs.Unused3 != rhs.Unused3) return false;
+                }
+                return true;
+            }
+            if (!Equal30()) differs[(int)Npc_FieldIndex.Unused4] = true;
+            bool Equal30()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Unused4) ?? true))
+                {
+                    if (lhs.Unused4 != rhs.Unused4) return false;
+                }
+                return true;
+            }
+            if (!Equal31()) differs[(int)Npc_FieldIndex.PlayerSkills] = true;
+            bool Equal31()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.PlayerSkills) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.PlayerSkills, rhs.PlayerSkills, out var lhsPlayerSkills, out var rhsPlayerSkills, out var isPlayerSkillsEqual))
+                    {
+                        if (!((PlayerSkillsCommon)((IPlayerSkillsGetter)lhsPlayerSkills).CommonInstance()!).Equals(lhsPlayerSkills, rhsPlayerSkills, equalsMask?.GetSubCrystal((int)Npc_FieldIndex.PlayerSkills))) return false;
+                    }
+                    else if (!isPlayerSkillsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal32()) differs[(int)Npc_FieldIndex.HeadParts] = true;
+            bool Equal32()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.HeadParts) ?? true))
+                {
+                    if (!lhs.HeadParts.SequenceEqualNullable(rhs.HeadParts)) return false;
+                }
+                return true;
+            }
+            if (!Equal33()) differs[(int)Npc_FieldIndex.Hair] = true;
+            bool Equal33()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Hair) ?? true))
+                {
+                    if (!lhs.Hair.Equals(rhs.Hair)) return false;
+                }
+                return true;
+            }
+            if (!Equal34()) differs[(int)Npc_FieldIndex.HairLength] = true;
+            bool Equal34()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.HairLength) ?? true))
+                {
+                    if (!lhs.HairLength.EqualsWithin(rhs.HairLength)) return false;
+                }
+                return true;
+            }
+            if (!Equal35()) differs[(int)Npc_FieldIndex.Eyes] = true;
+            bool Equal35()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Eyes) ?? true))
+                {
+                    if (!lhs.Eyes.Equals(rhs.Eyes)) return false;
+                }
+                return true;
+            }
+            if (!Equal36()) differs[(int)Npc_FieldIndex.HairColor] = true;
+            bool Equal36()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.HairColor) ?? true))
+                {
+                    if (!lhs.HairColor.ColorOnlyEquals(rhs.HairColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal37()) differs[(int)Npc_FieldIndex.CombatStyle] = true;
+            bool Equal37()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.CombatStyle) ?? true))
+                {
+                    if (!lhs.CombatStyle.Equals(rhs.CombatStyle)) return false;
+                }
+                return true;
+            }
+            if (!Equal38()) differs[(int)Npc_FieldIndex.ImpactMaterialType] = true;
+            bool Equal38()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.ImpactMaterialType) ?? true))
+                {
+                    if (lhs.ImpactMaterialType != rhs.ImpactMaterialType) return false;
+                }
+                return true;
+            }
+            if (!Equal39()) differs[(int)Npc_FieldIndex.FaceGenGeometrySymmetric] = true;
+            bool Equal39()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.FaceGenGeometrySymmetric) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.FaceGenGeometrySymmetric, rhs.FaceGenGeometrySymmetric)) return false;
+                }
+                return true;
+            }
+            if (!Equal40()) differs[(int)Npc_FieldIndex.FaceGenGeometryAsymmetric] = true;
+            bool Equal40()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.FaceGenGeometryAsymmetric) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.FaceGenGeometryAsymmetric, rhs.FaceGenGeometryAsymmetric)) return false;
+                }
+                return true;
+            }
+            if (!Equal41()) differs[(int)Npc_FieldIndex.FaceGenTextureSymmetric] = true;
+            bool Equal41()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.FaceGenTextureSymmetric) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.FaceGenTextureSymmetric, rhs.FaceGenTextureSymmetric)) return false;
+                }
+                return true;
+            }
+            if (!Equal42()) differs[(int)Npc_FieldIndex.NAM5] = true;
+            bool Equal42()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.NAM5) ?? true))
+                {
+                    if (lhs.NAM5 != rhs.NAM5) return false;
+                }
+                return true;
+            }
+            if (!Equal43()) differs[(int)Npc_FieldIndex.Height] = true;
+            bool Equal43()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Height) ?? true))
+                {
+                    if (!lhs.Height.EqualsWithin(rhs.Height)) return false;
+                }
+                return true;
+            }
+            if (!Equal44()) differs[(int)Npc_FieldIndex.Weight] = true;
+            bool Equal44()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.Weight) ?? true))
+                {
+                    if (!lhs.Weight.EqualsWithin(rhs.Weight)) return false;
+                }
+                return true;
+            }
+            if (!Equal45()) differs[(int)Npc_FieldIndex.DATADataTypeState] = true;
+            bool Equal45()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Npc_FieldIndex.DATADataTypeState) ?? true))
+                {
+                    if (lhs.DATADataTypeState != rhs.DATADataTypeState) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((INpcGetter)lhs, (INpcGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((INpcGetter)lhs, (INpcGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

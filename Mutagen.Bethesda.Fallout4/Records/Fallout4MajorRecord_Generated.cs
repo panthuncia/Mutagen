@@ -768,6 +768,24 @@ namespace Mutagen.Bethesda.Fallout4
                 .Select(m => (IMajorRecord)m);
         }
 
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IFallout4MajorRecordGetter item,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((Fallout4MajorRecordCommon)((IFallout4MajorRecordGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         [DebuggerStepThrough]
         public static void Remove(
             this IFallout4MajorRecordInternal obj,
@@ -1457,6 +1475,51 @@ namespace Mutagen.Bethesda.Fallout4
                         yield break;
                     }
             }
+        }
+        
+        public virtual void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IMajorRecordGetter)lhs, (IMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Fallout4MajorRecord_FieldIndex.FormVersion] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Fallout4MajorRecord_FieldIndex.FormVersion) ?? true))
+                {
+                    if (lhs.FormVersion != rhs.FormVersion) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Fallout4MajorRecord_FieldIndex.Version2] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Fallout4MajorRecord_FieldIndex.Version2) ?? true))
+                {
+                    if (lhs.Version2 != rhs.Version2) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Fallout4MajorRecord_FieldIndex.Fallout4MajorRecordFlags] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Fallout4MajorRecord_FieldIndex.Fallout4MajorRecordFlags) ?? true))
+                {
+                    if (lhs.Fallout4MajorRecordFlags != rhs.Fallout4MajorRecordFlags) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IFallout4MajorRecordGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

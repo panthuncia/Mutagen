@@ -1527,6 +1527,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IFactionGetter item,
+            IFactionGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((FactionCommon)((IFactionGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Faction Duplicate(
             this IFactionGetter item,
             FormKey formKey,
@@ -2268,6 +2286,189 @@ namespace Mutagen.Bethesda.Fallout4
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IFactionGetter lhs,
+            IFactionGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Faction_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Faction_FieldIndex.Relations] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.Relations) ?? true))
+                {
+                    if (!lhs.Relations.SequenceEqual(rhs.Relations, (l, r) => ((RelationCommon)((IRelationGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Faction_FieldIndex.Relations)))) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Faction_FieldIndex.Flags] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Faction_FieldIndex.ExteriorJailMarker] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.ExteriorJailMarker) ?? true))
+                {
+                    if (!lhs.ExteriorJailMarker.Equals(rhs.ExteriorJailMarker)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Faction_FieldIndex.FollowerWaitMarker] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.FollowerWaitMarker) ?? true))
+                {
+                    if (!lhs.FollowerWaitMarker.Equals(rhs.FollowerWaitMarker)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Faction_FieldIndex.StolenGoodsContainer] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.StolenGoodsContainer) ?? true))
+                {
+                    if (!lhs.StolenGoodsContainer.Equals(rhs.StolenGoodsContainer)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Faction_FieldIndex.PlayerInventoryContainer] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.PlayerInventoryContainer) ?? true))
+                {
+                    if (!lhs.PlayerInventoryContainer.Equals(rhs.PlayerInventoryContainer)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Faction_FieldIndex.SharedCrimeFactionList] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.SharedCrimeFactionList) ?? true))
+                {
+                    if (!lhs.SharedCrimeFactionList.Equals(rhs.SharedCrimeFactionList)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Faction_FieldIndex.JailOutfit] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.JailOutfit) ?? true))
+                {
+                    if (!lhs.JailOutfit.Equals(rhs.JailOutfit)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Faction_FieldIndex.CrimeValues] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.CrimeValues) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.CrimeValues, rhs.CrimeValues, out var lhsCrimeValues, out var rhsCrimeValues, out var isCrimeValuesEqual))
+                    {
+                        if (!((CrimeValuesCommon)((ICrimeValuesGetter)lhsCrimeValues).CommonInstance()!).Equals(lhsCrimeValues, rhsCrimeValues, equalsMask?.GetSubCrystal((int)Faction_FieldIndex.CrimeValues))) return false;
+                    }
+                    else if (!isCrimeValuesEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Faction_FieldIndex.Ranks] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.Ranks) ?? true))
+                {
+                    if (!lhs.Ranks.SequenceEqual(rhs.Ranks, (l, r) => ((RankCommon)((IRankGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Faction_FieldIndex.Ranks)))) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Faction_FieldIndex.VendorBuySellList] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.VendorBuySellList) ?? true))
+                {
+                    if (!lhs.VendorBuySellList.Equals(rhs.VendorBuySellList)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Faction_FieldIndex.MerchantContainer] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.MerchantContainer) ?? true))
+                {
+                    if (!lhs.MerchantContainer.Equals(rhs.MerchantContainer)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Faction_FieldIndex.VendorValues] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.VendorValues) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VendorValues, rhs.VendorValues, out var lhsVendorValues, out var rhsVendorValues, out var isVendorValuesEqual))
+                    {
+                        if (!((VendorValuesCommon)((IVendorValuesGetter)lhsVendorValues).CommonInstance()!).Equals(lhsVendorValues, rhsVendorValues, equalsMask?.GetSubCrystal((int)Faction_FieldIndex.VendorValues))) return false;
+                    }
+                    else if (!isVendorValuesEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Faction_FieldIndex.VendorLocation] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.VendorLocation) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VendorLocation, rhs.VendorLocation, out var lhsVendorLocation, out var rhsVendorLocation, out var isVendorLocationEqual))
+                    {
+                        if (!((LocationTargetRadiusCommon)((ILocationTargetRadiusGetter)lhsVendorLocation).CommonInstance()!).Equals(lhsVendorLocation, rhsVendorLocation, equalsMask?.GetSubCrystal((int)Faction_FieldIndex.VendorLocation))) return false;
+                    }
+                    else if (!isVendorLocationEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)Faction_FieldIndex.Conditions] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Faction_FieldIndex.Conditions) ?? true))
+                {
+                    if (!lhs.Conditions.SequenceEqualNullable(rhs.Conditions, (l, r) => ((ConditionCommon)((IConditionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Faction_FieldIndex.Conditions)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IFactionGetter)lhs, (IFactionGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IFactionGetter)lhs, (IFactionGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

@@ -757,6 +757,24 @@ namespace Mutagen.Bethesda.Fallout3
                 .Select(m => (IMajorRecord)m);
         }
 
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IFallout3MajorRecordGetter item,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((Fallout3MajorRecordCommon)((IFallout3MajorRecordGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         [DebuggerStepThrough]
         public static void Remove(
             this IFallout3MajorRecordInternal obj,
@@ -1446,6 +1464,51 @@ namespace Mutagen.Bethesda.Fallout3
                         yield break;
                     }
             }
+        }
+        
+        public virtual void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IMajorRecordGetter)lhs, (IMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Fallout3MajorRecord_FieldIndex.FormVersion] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Fallout3MajorRecord_FieldIndex.FormVersion) ?? true))
+                {
+                    if (lhs.FormVersion != rhs.FormVersion) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Fallout3MajorRecord_FieldIndex.Version2] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Fallout3MajorRecord_FieldIndex.Version2) ?? true))
+                {
+                    if (lhs.Version2 != rhs.Version2) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Fallout3MajorRecord_FieldIndex.Fallout3MajorRecordFlags] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Fallout3MajorRecord_FieldIndex.Fallout3MajorRecordFlags) ?? true))
+                {
+                    if (lhs.Fallout3MajorRecordFlags != rhs.Fallout3MajorRecordFlags) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IFallout3MajorRecordGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

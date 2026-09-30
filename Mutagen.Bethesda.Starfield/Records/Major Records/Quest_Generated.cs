@@ -2959,6 +2959,24 @@ namespace Mutagen.Bethesda.Starfield
                 .Select(m => (IMajorRecord)m);
         }
 
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IQuestGetter item,
+            IQuestGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((QuestCommon)((IQuestGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         [DebuggerStepThrough]
         public static void Remove(
             this IQuestInternal obj,
@@ -5090,6 +5108,320 @@ namespace Mutagen.Bethesda.Starfield
                         yield break;
                     }
             }
+        }
+        
+        public virtual void FillDifferingFields(
+            IQuestGetter lhs,
+            IQuestGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Quest_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((QuestAdapterCommon)((IQuestAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)Quest_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Quest_FieldIndex.Name] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Quest_FieldIndex.Components] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Quest_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Quest_FieldIndex.Data] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.Data) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Data, rhs.Data, out var lhsData, out var rhsData, out var isDataEqual))
+                    {
+                        if (!((QuestDataCommon)((IQuestDataGetter)lhsData).CommonInstance()!).Equals(lhsData, rhsData, equalsMask?.GetSubCrystal((int)Quest_FieldIndex.Data))) return false;
+                    }
+                    else if (!isDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Quest_FieldIndex.QuestType] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.QuestType) ?? true))
+                {
+                    if (!lhs.QuestType.Equals(rhs.QuestType)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Quest_FieldIndex.QuestFaction] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.QuestFaction) ?? true))
+                {
+                    if (!lhs.QuestFaction.Equals(rhs.QuestFaction)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Quest_FieldIndex.Event] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.Event) ?? true))
+                {
+                    if (lhs.Event != rhs.Event) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Quest_FieldIndex.Location] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.Location) ?? true))
+                {
+                    if (!lhs.Location.Equals(rhs.Location)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Quest_FieldIndex.QuestTimeLimit] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.QuestTimeLimit) ?? true))
+                {
+                    if (!lhs.QuestTimeLimit.Equals(rhs.QuestTimeLimit)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Quest_FieldIndex.SourceQuest] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.SourceQuest) ?? true))
+                {
+                    if (!lhs.SourceQuest.Equals(rhs.SourceQuest)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Quest_FieldIndex.QDUPs] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.QDUPs) ?? true))
+                {
+                    if (!lhs.QDUPs.SequenceEqualNullable(rhs.QDUPs)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Quest_FieldIndex.TextDisplayGlobals] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.TextDisplayGlobals) ?? true))
+                {
+                    if (!lhs.TextDisplayGlobals.SequenceEqualNullable(rhs.TextDisplayGlobals)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Quest_FieldIndex.Filter] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.Filter) ?? true))
+                {
+                    if (!string.Equals(lhs.Filter, rhs.Filter)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)Quest_FieldIndex.Summary] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.Summary) ?? true))
+                {
+                    if (!string.Equals(lhs.Summary, rhs.Summary)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)Quest_FieldIndex.DialogConditions] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.DialogConditions) ?? true))
+                {
+                    if (!lhs.DialogConditions.SequenceEqual(rhs.DialogConditions, (l, r) => ((ConditionCommon)((IConditionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Quest_FieldIndex.DialogConditions)))) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)Quest_FieldIndex.UnusedConditions] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.UnusedConditions) ?? true))
+                {
+                    if (!lhs.UnusedConditions.SequenceEqualNullable(rhs.UnusedConditions, (l, r) => ((ConditionCommon)((IConditionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Quest_FieldIndex.UnusedConditions)))) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)Quest_FieldIndex.Stages] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.Stages) ?? true))
+                {
+                    if (!lhs.Stages.SequenceEqual(rhs.Stages, (l, r) => ((QuestStageCommon)((IQuestStageGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Quest_FieldIndex.Stages)))) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)Quest_FieldIndex.Objectives] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.Objectives) ?? true))
+                {
+                    if (!lhs.Objectives.SequenceEqual(rhs.Objectives, (l, r) => ((QuestObjectiveCommon)((IQuestObjectiveGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Quest_FieldIndex.Objectives)))) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)Quest_FieldIndex.Aliases] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.Aliases) ?? true))
+                {
+                    if (!lhs.Aliases.SequenceEqualNullable(rhs.Aliases, (l, r) => ((AQuestAliasCommon)((IAQuestAliasGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Quest_FieldIndex.Aliases)))) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)Quest_FieldIndex.QuestGroup] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.QuestGroup) ?? true))
+                {
+                    if (!lhs.QuestGroup.Equals(rhs.QuestGroup)) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)Quest_FieldIndex.SwfFile] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.SwfFile) ?? true))
+                {
+                    if (!string.Equals(lhs.SwfFile, rhs.SwfFile)) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)Quest_FieldIndex.MissionTypeKeyword] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.MissionTypeKeyword) ?? true))
+                {
+                    if (!lhs.MissionTypeKeyword.Equals(rhs.MissionTypeKeyword)) return false;
+                }
+                return true;
+            }
+            if (!Equal22()) differs[(int)Quest_FieldIndex.MissionBoardDescription] = true;
+            bool Equal22()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.MissionBoardDescription) ?? true))
+                {
+                    if (!object.Equals(lhs.MissionBoardDescription, rhs.MissionBoardDescription)) return false;
+                }
+                return true;
+            }
+            if (!Equal23()) differs[(int)Quest_FieldIndex.MissionBoardInfoPanels] = true;
+            bool Equal23()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.MissionBoardInfoPanels) ?? true))
+                {
+                    if (!lhs.MissionBoardInfoPanels.SequenceEqual(rhs.MissionBoardInfoPanels, (l, r) => ((QuestMissionBoardPanelCommon)((IQuestMissionBoardPanelGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Quest_FieldIndex.MissionBoardInfoPanels)))) return false;
+                }
+                return true;
+            }
+            if (!Equal24()) differs[(int)Quest_FieldIndex.Keywords] = true;
+            bool Equal24()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.Keywords) ?? true))
+                {
+                    if (!lhs.Keywords.SequenceEqualNullable(rhs.Keywords)) return false;
+                }
+                return true;
+            }
+            if (!Equal25()) differs[(int)Quest_FieldIndex.ScriptComment] = true;
+            bool Equal25()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.ScriptComment) ?? true))
+                {
+                    if (!string.Equals(lhs.ScriptComment, rhs.ScriptComment)) return false;
+                }
+                return true;
+            }
+            if (!Equal26()) differs[(int)Quest_FieldIndex.Timestamp] = true;
+            bool Equal26()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.Timestamp) ?? true))
+                {
+                    if (lhs.Timestamp != rhs.Timestamp) return false;
+                }
+                return true;
+            }
+            if (!Equal27()) differs[(int)Quest_FieldIndex.Unknown] = true;
+            bool Equal27()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.Unknown) ?? true))
+                {
+                    if (lhs.Unknown != rhs.Unknown) return false;
+                }
+                return true;
+            }
+            if (!Equal28()) differs[(int)Quest_FieldIndex.DialogBranches] = true;
+            bool Equal28()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.DialogBranches) ?? true))
+                {
+                    if (!lhs.DialogBranches.SequenceEqual(rhs.DialogBranches, (l, r) => ((DialogBranchCommon)((IDialogBranchGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Quest_FieldIndex.DialogBranches)))) return false;
+                }
+                return true;
+            }
+            if (!Equal29()) differs[(int)Quest_FieldIndex.DialogTopics] = true;
+            bool Equal29()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.DialogTopics) ?? true))
+                {
+                    if (!lhs.DialogTopics.SequenceEqual(rhs.DialogTopics, (l, r) => ((DialogTopicCommon)((IDialogTopicGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Quest_FieldIndex.DialogTopics)))) return false;
+                }
+                return true;
+            }
+            if (!Equal30()) differs[(int)Quest_FieldIndex.Scenes] = true;
+            bool Equal30()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Quest_FieldIndex.Scenes) ?? true))
+                {
+                    if (!lhs.Scenes.SequenceEqual(rhs.Scenes, (l, r) => ((SceneCommon)((ISceneGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Quest_FieldIndex.Scenes)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IQuestGetter)lhs, (IQuestGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IQuestGetter)lhs, (IQuestGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IModContext<IStarfieldMod, IStarfieldModGetter, IMajorRecord, IMajorRecordGetter>> EnumerateMajorRecordContexts(

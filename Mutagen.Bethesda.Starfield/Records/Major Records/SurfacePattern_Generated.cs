@@ -1429,6 +1429,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ISurfacePatternGetter item,
+            ISurfacePatternGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((SurfacePatternCommon)((ISurfacePatternGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static SurfacePattern Duplicate(
             this ISurfacePatternGetter item,
             FormKey formKey,
@@ -2085,6 +2103,105 @@ namespace Mutagen.Bethesda.Starfield
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ISurfacePatternGetter lhs,
+            ISurfacePatternGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)SurfacePattern_FieldIndex.Components] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfacePattern_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)SurfacePattern_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)SurfacePattern_FieldIndex.SurfacePatternStyle] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfacePattern_FieldIndex.SurfacePatternStyle) ?? true))
+                {
+                    if (!lhs.SurfacePatternStyle.Equals(rhs.SurfacePatternStyle)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)SurfacePattern_FieldIndex.Blocks] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfacePattern_FieldIndex.Blocks) ?? true))
+                {
+                    if (!lhs.Blocks.SequenceEqualNullable(rhs.Blocks)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)SurfacePattern_FieldIndex.MasterBlocks] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfacePattern_FieldIndex.MasterBlocks) ?? true))
+                {
+                    if (!lhs.MasterBlocks.SequenceEqualNullable(rhs.MasterBlocks)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)SurfacePattern_FieldIndex.MasterBlockRotations] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfacePattern_FieldIndex.MasterBlockRotations) ?? true))
+                {
+                    if (!lhs.MasterBlockRotations.SequenceEqualNullable(rhs.MasterBlockRotations)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)SurfacePattern_FieldIndex.OverrideBlocks] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfacePattern_FieldIndex.OverrideBlocks) ?? true))
+                {
+                    if (!lhs.OverrideBlocks.SequenceEqualNullable(rhs.OverrideBlocks)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)SurfacePattern_FieldIndex.OverrideBlockRotations] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfacePattern_FieldIndex.OverrideBlockRotations) ?? true))
+                {
+                    if (!lhs.OverrideBlockRotations.SequenceEqualNullable(rhs.OverrideBlockRotations)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)SurfacePattern_FieldIndex.Worldspaces] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SurfacePattern_FieldIndex.Worldspaces) ?? true))
+                {
+                    if (!lhs.Worldspaces.SequenceEqualNullable(rhs.Worldspaces)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISurfacePatternGetter)lhs, (ISurfacePatternGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISurfacePatternGetter)lhs, (ISurfacePatternGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(ISurfacePatternGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

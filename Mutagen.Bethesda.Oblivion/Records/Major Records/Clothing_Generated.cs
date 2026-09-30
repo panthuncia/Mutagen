@@ -1118,6 +1118,24 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IClothingGetter item,
+            IClothingGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ClothingCommon)((IClothingGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Clothing Duplicate(
             this IClothingGetter item,
             FormKey formKey,
@@ -1787,6 +1805,165 @@ namespace Mutagen.Bethesda.Oblivion
                 yield return EnchantmentInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IClothingGetter lhs,
+            IClothingGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IOblivionMajorRecordGetter)lhs, (IOblivionMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Clothing_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Clothing_FieldIndex.Name) ?? true))
+                {
+                    if (!string.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Clothing_FieldIndex.Script] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Clothing_FieldIndex.Script) ?? true))
+                {
+                    if (!lhs.Script.Equals(rhs.Script)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Clothing_FieldIndex.Enchantment] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Clothing_FieldIndex.Enchantment) ?? true))
+                {
+                    if (!lhs.Enchantment.Equals(rhs.Enchantment)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Clothing_FieldIndex.EnchantmentPoints] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Clothing_FieldIndex.EnchantmentPoints) ?? true))
+                {
+                    if (lhs.EnchantmentPoints != rhs.EnchantmentPoints) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Clothing_FieldIndex.ClothingFlags] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Clothing_FieldIndex.ClothingFlags) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ClothingFlags, rhs.ClothingFlags, out var lhsClothingFlags, out var rhsClothingFlags, out var isClothingFlagsEqual))
+                    {
+                        if (!((ClothingFlagsCommon)((IClothingFlagsGetter)lhsClothingFlags).CommonInstance()!).Equals(lhsClothingFlags, rhsClothingFlags, equalsMask?.GetSubCrystal((int)Clothing_FieldIndex.ClothingFlags))) return false;
+                    }
+                    else if (!isClothingFlagsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Clothing_FieldIndex.MaleBipedModel] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Clothing_FieldIndex.MaleBipedModel) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.MaleBipedModel, rhs.MaleBipedModel, out var lhsMaleBipedModel, out var rhsMaleBipedModel, out var isMaleBipedModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsMaleBipedModel).CommonInstance()!).Equals(lhsMaleBipedModel, rhsMaleBipedModel, equalsMask?.GetSubCrystal((int)Clothing_FieldIndex.MaleBipedModel))) return false;
+                    }
+                    else if (!isMaleBipedModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Clothing_FieldIndex.MaleWorldModel] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Clothing_FieldIndex.MaleWorldModel) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.MaleWorldModel, rhs.MaleWorldModel, out var lhsMaleWorldModel, out var rhsMaleWorldModel, out var isMaleWorldModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsMaleWorldModel).CommonInstance()!).Equals(lhsMaleWorldModel, rhsMaleWorldModel, equalsMask?.GetSubCrystal((int)Clothing_FieldIndex.MaleWorldModel))) return false;
+                    }
+                    else if (!isMaleWorldModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Clothing_FieldIndex.MaleIcon] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Clothing_FieldIndex.MaleIcon) ?? true))
+                {
+                    if (!string.Equals(lhs.MaleIcon, rhs.MaleIcon)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Clothing_FieldIndex.FemaleBipedModel] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Clothing_FieldIndex.FemaleBipedModel) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.FemaleBipedModel, rhs.FemaleBipedModel, out var lhsFemaleBipedModel, out var rhsFemaleBipedModel, out var isFemaleBipedModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsFemaleBipedModel).CommonInstance()!).Equals(lhsFemaleBipedModel, rhsFemaleBipedModel, equalsMask?.GetSubCrystal((int)Clothing_FieldIndex.FemaleBipedModel))) return false;
+                    }
+                    else if (!isFemaleBipedModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Clothing_FieldIndex.FemaleWorldModel] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Clothing_FieldIndex.FemaleWorldModel) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.FemaleWorldModel, rhs.FemaleWorldModel, out var lhsFemaleWorldModel, out var rhsFemaleWorldModel, out var isFemaleWorldModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsFemaleWorldModel).CommonInstance()!).Equals(lhsFemaleWorldModel, rhsFemaleWorldModel, equalsMask?.GetSubCrystal((int)Clothing_FieldIndex.FemaleWorldModel))) return false;
+                    }
+                    else if (!isFemaleWorldModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Clothing_FieldIndex.FemaleIcon] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Clothing_FieldIndex.FemaleIcon) ?? true))
+                {
+                    if (!string.Equals(lhs.FemaleIcon, rhs.FemaleIcon)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Clothing_FieldIndex.Data] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Clothing_FieldIndex.Data) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Data, rhs.Data, out var lhsData, out var rhsData, out var isDataEqual))
+                    {
+                        if (!((ClothingDataCommon)((IClothingDataGetter)lhsData).CommonInstance()!).Equals(lhsData, rhsData, equalsMask?.GetSubCrystal((int)Clothing_FieldIndex.Data))) return false;
+                    }
+                    else if (!isDataEqual) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IOblivionMajorRecordGetter lhs,
+            IOblivionMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IClothingGetter)lhs, (IClothingGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IClothingGetter)lhs, (IClothingGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

@@ -907,6 +907,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IZoomGetter item,
+            IZoomGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ZoomCommon)((IZoomGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Zoom Duplicate(
             this IZoomGetter item,
             FormKey formKey,
@@ -1403,6 +1421,114 @@ namespace Mutagen.Bethesda.Starfield
             }
             yield return FormLinkInformation.Factory(obj.ImagespaceModifier);
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IZoomGetter lhs,
+            IZoomGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Zoom_FieldIndex.ImagespaceModifier] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Zoom_FieldIndex.ImagespaceModifier) ?? true))
+                {
+                    if (!lhs.ImagespaceModifier.Equals(rhs.ImagespaceModifier)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Zoom_FieldIndex.CameraOffset] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Zoom_FieldIndex.CameraOffset) ?? true))
+                {
+                    if (!lhs.CameraOffset.Equals(rhs.CameraOffset)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Zoom_FieldIndex.FovMult] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Zoom_FieldIndex.FovMult) ?? true))
+                {
+                    if (!lhs.FovMult.EqualsWithin(rhs.FovMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Zoom_FieldIndex.Overlay] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Zoom_FieldIndex.Overlay) ?? true))
+                {
+                    if (lhs.Overlay != rhs.Overlay) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Zoom_FieldIndex.AdsDistanceFromCameraOffset] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Zoom_FieldIndex.AdsDistanceFromCameraOffset) ?? true))
+                {
+                    if (!lhs.AdsDistanceFromCameraOffset.EqualsWithin(rhs.AdsDistanceFromCameraOffset)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Zoom_FieldIndex.AdsHeightDelayEnabled] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Zoom_FieldIndex.AdsHeightDelayEnabled) ?? true))
+                {
+                    if (lhs.AdsHeightDelayEnabled != rhs.AdsHeightDelayEnabled) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Zoom_FieldIndex.AdsHeightDelaySeconds] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Zoom_FieldIndex.AdsHeightDelaySeconds) ?? true))
+                {
+                    if (!lhs.AdsHeightDelaySeconds.EqualsWithin(rhs.AdsHeightDelaySeconds)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Zoom_FieldIndex.AdsDepthEnabled] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Zoom_FieldIndex.AdsDepthEnabled) ?? true))
+                {
+                    if (lhs.AdsDepthEnabled != rhs.AdsDepthEnabled) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Zoom_FieldIndex.AdsDepthDelaySeconds] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Zoom_FieldIndex.AdsDepthDelaySeconds) ?? true))
+                {
+                    if (!lhs.AdsDepthDelaySeconds.EqualsWithin(rhs.AdsDepthDelaySeconds)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IZoomGetter)lhs, (IZoomGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IZoomGetter)lhs, (IZoomGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

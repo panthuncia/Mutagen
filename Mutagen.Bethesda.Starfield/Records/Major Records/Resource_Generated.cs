@@ -1352,6 +1352,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IResourceGetter item,
+            IResourceGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ResourceCommon)((IResourceGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Resource Duplicate(
             this IResourceGetter item,
             FormKey formKey,
@@ -2028,6 +2046,158 @@ namespace Mutagen.Bethesda.Starfield
                 yield return IntervalInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IResourceGetter lhs,
+            IResourceGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Resource_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Resource_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)Resource_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Resource_FieldIndex.Name] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Resource_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Resource_FieldIndex.Keywords] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Resource_FieldIndex.Keywords) ?? true))
+                {
+                    if (!lhs.Keywords.SequenceEqualNullable(rhs.Keywords)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Resource_FieldIndex.CraftingSound] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Resource_FieldIndex.CraftingSound) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.CraftingSound, rhs.CraftingSound, out var lhsCraftingSound, out var rhsCraftingSound, out var isCraftingSoundEqual))
+                    {
+                        if (!((SoundReferenceCommon)((ISoundReferenceGetter)lhsCraftingSound).CommonInstance()!).Equals(lhsCraftingSound, rhsCraftingSound, equalsMask?.GetSubCrystal((int)Resource_FieldIndex.CraftingSound))) return false;
+                    }
+                    else if (!isCraftingSoundEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Resource_FieldIndex.List] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Resource_FieldIndex.List) ?? true))
+                {
+                    if (!lhs.List.Equals(rhs.List)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Resource_FieldIndex.Rarity] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Resource_FieldIndex.Rarity) ?? true))
+                {
+                    if (lhs.Rarity != rhs.Rarity) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Resource_FieldIndex.NextRarities] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Resource_FieldIndex.NextRarities) ?? true))
+                {
+                    if (!lhs.NextRarities.SequenceEqualNullable(rhs.NextRarities)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)Resource_FieldIndex.SurfaceColor] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Resource_FieldIndex.SurfaceColor) ?? true))
+                {
+                    if (!lhs.SurfaceColor.ColorOnlyEquals(rhs.SurfaceColor)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)Resource_FieldIndex.ShortName] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Resource_FieldIndex.ShortName) ?? true))
+                {
+                    if (!object.Equals(lhs.ShortName, rhs.ShortName)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)Resource_FieldIndex.ResourceType] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Resource_FieldIndex.ResourceType) ?? true))
+                {
+                    if (!string.Equals(lhs.ResourceType, rhs.ResourceType)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)Resource_FieldIndex.ActorValue] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Resource_FieldIndex.ActorValue) ?? true))
+                {
+                    if (!lhs.ActorValue.Equals(rhs.ActorValue)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)Resource_FieldIndex.Produce] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Resource_FieldIndex.Produce) ?? true))
+                {
+                    if (!lhs.Produce.Equals(rhs.Produce)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)Resource_FieldIndex.Interval] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Resource_FieldIndex.Interval) ?? true))
+                {
+                    if (!lhs.Interval.Equals(rhs.Interval)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IResourceGetter)lhs, (IResourceGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IResourceGetter)lhs, (IResourceGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

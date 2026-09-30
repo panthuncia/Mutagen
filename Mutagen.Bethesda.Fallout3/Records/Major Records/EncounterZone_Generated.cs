@@ -721,6 +721,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IEncounterZoneGetter item,
+            IEncounterZoneGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((EncounterZoneCommon)((IEncounterZoneGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static EncounterZone Duplicate(
             this IEncounterZoneGetter item,
             FormKey formKey,
@@ -1157,6 +1175,69 @@ namespace Mutagen.Bethesda.Fallout3
             }
             yield return FormLinkInformation.Factory(obj.Owner);
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IEncounterZoneGetter lhs,
+            IEncounterZoneGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)EncounterZone_FieldIndex.Owner] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EncounterZone_FieldIndex.Owner) ?? true))
+                {
+                    if (!lhs.Owner.Equals(rhs.Owner)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)EncounterZone_FieldIndex.Rank] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EncounterZone_FieldIndex.Rank) ?? true))
+                {
+                    if (lhs.Rank != rhs.Rank) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)EncounterZone_FieldIndex.MinLevel] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EncounterZone_FieldIndex.MinLevel) ?? true))
+                {
+                    if (lhs.MinLevel != rhs.MinLevel) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)EncounterZone_FieldIndex.Flags] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)EncounterZone_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IEncounterZoneGetter)lhs, (IEncounterZoneGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IEncounterZoneGetter)lhs, (IEncounterZoneGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

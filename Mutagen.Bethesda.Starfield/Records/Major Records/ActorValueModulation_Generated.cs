@@ -999,6 +999,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IActorValueModulationGetter item,
+            IActorValueModulationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ActorValueModulationCommon)((IActorValueModulationGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ActorValueModulation Duplicate(
             this IActorValueModulationGetter item,
             FormKey formKey,
@@ -1545,6 +1563,96 @@ namespace Mutagen.Bethesda.Starfield
                 yield return ParentInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IActorValueModulationGetter lhs,
+            IActorValueModulationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ActorValueModulation_FieldIndex.Components] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActorValueModulation_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ActorValueModulation_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)ActorValueModulation_FieldIndex.Type] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActorValueModulation_FieldIndex.Type) ?? true))
+                {
+                    if (lhs.Type != rhs.Type) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)ActorValueModulation_FieldIndex.YNAM] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActorValueModulation_FieldIndex.YNAM) ?? true))
+                {
+                    if (!string.Equals(lhs.YNAM, rhs.YNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)ActorValueModulation_FieldIndex.TNAM] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActorValueModulation_FieldIndex.TNAM) ?? true))
+                {
+                    if (!string.Equals(lhs.TNAM, rhs.TNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)ActorValueModulation_FieldIndex.Entries] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActorValueModulation_FieldIndex.Entries) ?? true))
+                {
+                    if (!lhs.Entries.SequenceEqualNullable(rhs.Entries, (l, r) => ((ActorValueModulationEntryCommon)((IActorValueModulationEntryGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ActorValueModulation_FieldIndex.Entries)))) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)ActorValueModulation_FieldIndex.TextureType] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActorValueModulation_FieldIndex.TextureType) ?? true))
+                {
+                    if (lhs.TextureType != rhs.TextureType) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)ActorValueModulation_FieldIndex.Parent] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActorValueModulation_FieldIndex.Parent) ?? true))
+                {
+                    if (!lhs.Parent.Equals(rhs.Parent)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IActorValueModulationGetter)lhs, (IActorValueModulationGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IActorValueModulationGetter)lhs, (IActorValueModulationGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IActorValueModulationGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

@@ -1720,6 +1720,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IPlacedBeamGetter item,
+            IPlacedBeamGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((PlacedBeamCommon)((IPlacedBeamGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static PlacedBeam Duplicate(
             this IPlacedBeamGetter item,
             FormKey formKey,
@@ -2587,6 +2605,256 @@ namespace Mutagen.Bethesda.Fallout3
                 yield return MultiboundReferenceInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IPlacedBeamGetter lhs,
+            IPlacedBeamGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)PlacedBeam_FieldIndex.Base] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedBeam_FieldIndex.Base) ?? true))
+                {
+                    if (!lhs.Base.Equals(rhs.Base)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)PlacedBeam_FieldIndex.EncounterZone] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedBeam_FieldIndex.EncounterZone) ?? true))
+                {
+                    if (!lhs.EncounterZone.Equals(rhs.EncounterZone)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)PlacedBeam_FieldIndex.RagdollData] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedBeam_FieldIndex.RagdollData) ?? true))
+                {
+                    if (!lhs.RagdollData.SequenceEqualNullable(rhs.RagdollData, (l, r) => ((RagdollDataCommon)((IRagdollDataGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)PlacedBeam_FieldIndex.RagdollData)))) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)PlacedBeam_FieldIndex.RagdollBipedRotation] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedBeam_FieldIndex.RagdollBipedRotation) ?? true))
+                {
+                    if (!lhs.RagdollBipedRotation.Equals(rhs.RagdollBipedRotation)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)PlacedBeam_FieldIndex.Patrol] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedBeam_FieldIndex.Patrol) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Patrol, rhs.Patrol, out var lhsPatrol, out var rhsPatrol, out var isPatrolEqual))
+                    {
+                        if (!((PatrolDataCommon)((IPatrolDataGetter)lhsPatrol).CommonInstance()!).Equals(lhsPatrol, rhsPatrol, equalsMask?.GetSubCrystal((int)PlacedBeam_FieldIndex.Patrol))) return false;
+                    }
+                    else if (!isPatrolEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)PlacedBeam_FieldIndex.Owner] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedBeam_FieldIndex.Owner) ?? true))
+                {
+                    if (!lhs.Owner.Equals(rhs.Owner)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)PlacedBeam_FieldIndex.FactionRank] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedBeam_FieldIndex.FactionRank) ?? true))
+                {
+                    if (lhs.FactionRank != rhs.FactionRank) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)PlacedBeam_FieldIndex.Count] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedBeam_FieldIndex.Count) ?? true))
+                {
+                    if (lhs.Count != rhs.Count) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)PlacedBeam_FieldIndex.Radius] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedBeam_FieldIndex.Radius) ?? true))
+                {
+                    if (!lhs.Radius.EqualsWithin(rhs.Radius)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)PlacedBeam_FieldIndex.Health] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedBeam_FieldIndex.Health) ?? true))
+                {
+                    if (!lhs.Health.EqualsWithin(rhs.Health)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)PlacedBeam_FieldIndex.Reflections] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedBeam_FieldIndex.Reflections) ?? true))
+                {
+                    if (!lhs.Reflections.SequenceEqual(rhs.Reflections, (l, r) => ((WaterReflectionCommon)((IWaterReflectionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)PlacedBeam_FieldIndex.Reflections)))) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)PlacedBeam_FieldIndex.LinkedDecals] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedBeam_FieldIndex.LinkedDecals) ?? true))
+                {
+                    if (!lhs.LinkedDecals.SequenceEqual(rhs.LinkedDecals, (l, r) => ((LinkedDecalCommon)((ILinkedDecalGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)PlacedBeam_FieldIndex.LinkedDecals)))) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)PlacedBeam_FieldIndex.LinkedReference] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedBeam_FieldIndex.LinkedReference) ?? true))
+                {
+                    if (!lhs.LinkedReference.Equals(rhs.LinkedReference)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)PlacedBeam_FieldIndex.LinkedReferenceColor] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedBeam_FieldIndex.LinkedReferenceColor) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.LinkedReferenceColor, rhs.LinkedReferenceColor, out var lhsLinkedReferenceColor, out var rhsLinkedReferenceColor, out var isLinkedReferenceColorEqual))
+                    {
+                        if (!((LinkedReferenceColorCommon)((ILinkedReferenceColorGetter)lhsLinkedReferenceColor).CommonInstance()!).Equals(lhsLinkedReferenceColor, rhsLinkedReferenceColor, equalsMask?.GetSubCrystal((int)PlacedBeam_FieldIndex.LinkedReferenceColor))) return false;
+                    }
+                    else if (!isLinkedReferenceColorEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)PlacedBeam_FieldIndex.ActivateParents] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedBeam_FieldIndex.ActivateParents) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.ActivateParents, rhs.ActivateParents, out var lhsActivateParents, out var rhsActivateParents, out var isActivateParentsEqual))
+                    {
+                        if (!((ActivateParentsCommon)((IActivateParentsGetter)lhsActivateParents).CommonInstance()!).Equals(lhsActivateParents, rhsActivateParents, equalsMask?.GetSubCrystal((int)PlacedBeam_FieldIndex.ActivateParents))) return false;
+                    }
+                    else if (!isActivateParentsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)PlacedBeam_FieldIndex.ActivationPrompt] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedBeam_FieldIndex.ActivationPrompt) ?? true))
+                {
+                    if (!string.Equals(lhs.ActivationPrompt, rhs.ActivationPrompt)) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)PlacedBeam_FieldIndex.EnableParent] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedBeam_FieldIndex.EnableParent) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.EnableParent, rhs.EnableParent, out var lhsEnableParent, out var rhsEnableParent, out var isEnableParentEqual))
+                    {
+                        if (!((EnableParentCommon)((IEnableParentGetter)lhsEnableParent).CommonInstance()!).Equals(lhsEnableParent, rhsEnableParent, equalsMask?.GetSubCrystal((int)PlacedBeam_FieldIndex.EnableParent))) return false;
+                    }
+                    else if (!isEnableParentEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)PlacedBeam_FieldIndex.EmittanceLight] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedBeam_FieldIndex.EmittanceLight) ?? true))
+                {
+                    if (!lhs.EmittanceLight.Equals(rhs.EmittanceLight)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)PlacedBeam_FieldIndex.MultiboundReference] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedBeam_FieldIndex.MultiboundReference) ?? true))
+                {
+                    if (!lhs.MultiboundReference.Equals(rhs.MultiboundReference)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)PlacedBeam_FieldIndex.IsIgnoredBySandbox] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedBeam_FieldIndex.IsIgnoredBySandbox) ?? true))
+                {
+                    if (lhs.IsIgnoredBySandbox != rhs.IsIgnoredBySandbox) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)PlacedBeam_FieldIndex.Scale] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedBeam_FieldIndex.Scale) ?? true))
+                {
+                    if (!lhs.Scale.EqualsWithin(rhs.Scale)) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)PlacedBeam_FieldIndex.Position] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedBeam_FieldIndex.Position) ?? true))
+                {
+                    if (!lhs.Position.Equals(rhs.Position)) return false;
+                }
+                return true;
+            }
+            if (!Equal22()) differs[(int)PlacedBeam_FieldIndex.Rotation] = true;
+            bool Equal22()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)PlacedBeam_FieldIndex.Rotation) ?? true))
+                {
+                    if (!lhs.Rotation.Equals(rhs.Rotation)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPlacedBeamGetter)lhs, (IPlacedBeamGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IPlacedBeamGetter)lhs, (IPlacedBeamGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

@@ -845,6 +845,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ISoundOutputModelGetter item,
+            ISoundOutputModelGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((SoundOutputModelCommon)((ISoundOutputModelGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static SoundOutputModel Duplicate(
             this ISoundOutputModelGetter item,
             FormKey formKey,
@@ -1357,6 +1375,99 @@ namespace Mutagen.Bethesda.Fallout4
                 yield return EffectChainInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ISoundOutputModelGetter lhs,
+            ISoundOutputModelGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)SoundOutputModel_FieldIndex.Data] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundOutputModel_FieldIndex.Data) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Data, rhs.Data, out var lhsData, out var rhsData, out var isDataEqual))
+                    {
+                        if (!((SoundOutputDataCommon)((ISoundOutputDataGetter)lhsData).CommonInstance()!).Equals(lhsData, rhsData, equalsMask?.GetSubCrystal((int)SoundOutputModel_FieldIndex.Data))) return false;
+                    }
+                    else if (!isDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)SoundOutputModel_FieldIndex.Type] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundOutputModel_FieldIndex.Type) ?? true))
+                {
+                    if (lhs.Type != rhs.Type) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)SoundOutputModel_FieldIndex.StaticAttenuation] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundOutputModel_FieldIndex.StaticAttenuation) ?? true))
+                {
+                    if (!lhs.StaticAttenuation.EqualsWithin(rhs.StaticAttenuation)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)SoundOutputModel_FieldIndex.OutputChannels] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundOutputModel_FieldIndex.OutputChannels) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.OutputChannels, rhs.OutputChannels, out var lhsOutputChannels, out var rhsOutputChannels, out var isOutputChannelsEqual))
+                    {
+                        if (!((SoundOutputChannelsCommon)((ISoundOutputChannelsGetter)lhsOutputChannels).CommonInstance()!).Equals(lhsOutputChannels, rhsOutputChannels, equalsMask?.GetSubCrystal((int)SoundOutputModel_FieldIndex.OutputChannels))) return false;
+                    }
+                    else if (!isOutputChannelsEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)SoundOutputModel_FieldIndex.DynamicAttentuation] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundOutputModel_FieldIndex.DynamicAttentuation) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.DynamicAttentuation, rhs.DynamicAttentuation, out var lhsDynamicAttentuation, out var rhsDynamicAttentuation, out var isDynamicAttentuationEqual))
+                    {
+                        if (!((DynamicAttentuationValuesCommon)((IDynamicAttentuationValuesGetter)lhsDynamicAttentuation).CommonInstance()!).Equals(lhsDynamicAttentuation, rhsDynamicAttentuation, equalsMask?.GetSubCrystal((int)SoundOutputModel_FieldIndex.DynamicAttentuation))) return false;
+                    }
+                    else if (!isDynamicAttentuationEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)SoundOutputModel_FieldIndex.EffectChain] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SoundOutputModel_FieldIndex.EffectChain) ?? true))
+                {
+                    if (!lhs.EffectChain.Equals(rhs.EffectChain)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISoundOutputModelGetter)lhs, (ISoundOutputModelGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISoundOutputModelGetter)lhs, (ISoundOutputModelGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

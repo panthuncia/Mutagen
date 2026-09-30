@@ -738,6 +738,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IImpactDataSetGetter item,
+            IImpactDataSetGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ImpactDataSetCommon)((IImpactDataSetGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ImpactDataSet Duplicate(
             this IImpactDataSetGetter item,
             FormKey formKey,
@@ -1172,6 +1190,51 @@ namespace Mutagen.Bethesda.Starfield
                 yield return ParentInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IImpactDataSetGetter lhs,
+            IImpactDataSetGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ImpactDataSet_FieldIndex.Impacts] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImpactDataSet_FieldIndex.Impacts) ?? true))
+                {
+                    if (!lhs.Impacts.SequenceEqual(rhs.Impacts, (l, r) => ((ImpactDataCommon)((IImpactDataGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ImpactDataSet_FieldIndex.Impacts)))) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)ImpactDataSet_FieldIndex.Parent] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ImpactDataSet_FieldIndex.Parent) ?? true))
+                {
+                    if (!lhs.Parent.Equals(rhs.Parent)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IImpactDataSetGetter)lhs, (IImpactDataSetGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IImpactDataSetGetter)lhs, (IImpactDataSetGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

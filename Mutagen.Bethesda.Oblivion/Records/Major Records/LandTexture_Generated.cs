@@ -805,6 +805,24 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ILandTextureGetter item,
+            ILandTextureGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((LandTextureCommon)((ILandTextureGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static LandTexture Duplicate(
             this ILandTextureGetter item,
             FormKey formKey,
@@ -1274,6 +1292,73 @@ namespace Mutagen.Bethesda.Oblivion
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ILandTextureGetter lhs,
+            ILandTextureGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IOblivionMajorRecordGetter)lhs, (IOblivionMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)LandTexture_FieldIndex.Icon] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LandTexture_FieldIndex.Icon) ?? true))
+                {
+                    if (!string.Equals(lhs.Icon, rhs.Icon)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)LandTexture_FieldIndex.Havok] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LandTexture_FieldIndex.Havok) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Havok, rhs.Havok, out var lhsHavok, out var rhsHavok, out var isHavokEqual))
+                    {
+                        if (!((HavokDataCommon)((IHavokDataGetter)lhsHavok).CommonInstance()!).Equals(lhsHavok, rhsHavok, equalsMask?.GetSubCrystal((int)LandTexture_FieldIndex.Havok))) return false;
+                    }
+                    else if (!isHavokEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)LandTexture_FieldIndex.TextureSpecularExponent] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LandTexture_FieldIndex.TextureSpecularExponent) ?? true))
+                {
+                    if (lhs.TextureSpecularExponent != rhs.TextureSpecularExponent) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)LandTexture_FieldIndex.PotentialGrass] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LandTexture_FieldIndex.PotentialGrass) ?? true))
+                {
+                    if (!lhs.PotentialGrass.SequenceEqualNullable(rhs.PotentialGrass)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IOblivionMajorRecordGetter lhs,
+            IOblivionMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILandTextureGetter)lhs, (ILandTextureGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILandTextureGetter)lhs, (ILandTextureGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

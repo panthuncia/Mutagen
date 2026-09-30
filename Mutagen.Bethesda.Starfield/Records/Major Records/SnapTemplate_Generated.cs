@@ -1303,6 +1303,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ISnapTemplateGetter item,
+            ISnapTemplateGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((SnapTemplateCommon)((ISnapTemplateGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static SnapTemplate Duplicate(
             this ISnapTemplateGetter item,
             FormKey formKey,
@@ -1933,6 +1951,115 @@ namespace Mutagen.Bethesda.Starfield
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ISnapTemplateGetter lhs,
+            ISnapTemplateGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)SnapTemplate_FieldIndex.Components] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SnapTemplate_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)SnapTemplate_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)SnapTemplate_FieldIndex.Parent] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SnapTemplate_FieldIndex.Parent) ?? true))
+                {
+                    if (!lhs.Parent.Equals(rhs.Parent)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)SnapTemplate_FieldIndex.Nodes] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SnapTemplate_FieldIndex.Nodes) ?? true))
+                {
+                    if (!lhs.Nodes.SequenceEqual(rhs.Nodes, (l, r) => ((SnapNodeEntryCommon)((ISnapNodeEntryGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)SnapTemplate_FieldIndex.Nodes)))) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)SnapTemplate_FieldIndex.ParentNodes] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SnapTemplate_FieldIndex.ParentNodes) ?? true))
+                {
+                    if (!lhs.ParentNodes.SequenceEqual(rhs.ParentNodes, (l, r) => ((SnapParentNodeEntryCommon)((ISnapParentNodeEntryGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)SnapTemplate_FieldIndex.ParentNodes)))) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)SnapTemplate_FieldIndex.BNAM] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SnapTemplate_FieldIndex.BNAM) ?? true))
+                {
+                    if (!ObjectExt.NullSame(lhs.BNAM, rhs.BNAM)) return false;
+                    if (!MemoryExtensions.SequenceEqual<Single>(lhs.BNAM!.Value.Span!, rhs.BNAM!.Value.Span!)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)SnapTemplate_FieldIndex.NextNodeID] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SnapTemplate_FieldIndex.NextNodeID) ?? true))
+                {
+                    if (lhs.NextNodeID != rhs.NextNodeID) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)SnapTemplate_FieldIndex.STPT] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SnapTemplate_FieldIndex.STPT) ?? true))
+                {
+                    if (lhs.STPT != rhs.STPT) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)SnapTemplate_FieldIndex.CNAM] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SnapTemplate_FieldIndex.CNAM) ?? true))
+                {
+                    if (!string.Equals(lhs.CNAM, rhs.CNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)SnapTemplate_FieldIndex.SnapTemplateRnamTraversal] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SnapTemplate_FieldIndex.SnapTemplateRnamTraversal) ?? true))
+                {
+                    if (!lhs.SnapTemplateRnamTraversal.SequenceEqual(rhs.SnapTemplateRnamTraversal, (l, r) => ((SnapTemplateRnamTraversalCommon)((ISnapTemplateRnamTraversalGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)SnapTemplate_FieldIndex.SnapTemplateRnamTraversal)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISnapTemplateGetter)lhs, (ISnapTemplateGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISnapTemplateGetter)lhs, (ISnapTemplateGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(ISnapTemplateGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

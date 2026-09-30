@@ -4584,6 +4584,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ICombatStyleGetter item,
+            ICombatStyleGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((CombatStyleCommon)((ICombatStyleGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static CombatStyle Duplicate(
             this ICombatStyleGetter item,
             FormKey formKey,
@@ -6375,6 +6393,1060 @@ namespace Mutagen.Bethesda.Starfield
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ICombatStyleGetter lhs,
+            ICombatStyleGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)CombatStyle_FieldIndex.OffensiveMult] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.OffensiveMult) ?? true))
+                {
+                    if (!lhs.OffensiveMult.Equals(rhs.OffensiveMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)CombatStyle_FieldIndex.DefensiveMult] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.DefensiveMult) ?? true))
+                {
+                    if (!lhs.DefensiveMult.Equals(rhs.DefensiveMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)CombatStyle_FieldIndex.GroupOffensiveMult] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.GroupOffensiveMult) ?? true))
+                {
+                    if (!lhs.GroupOffensiveMult.Equals(rhs.GroupOffensiveMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)CombatStyle_FieldIndex.EquipmentScoreMultMelee] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.EquipmentScoreMultMelee) ?? true))
+                {
+                    if (!lhs.EquipmentScoreMultMelee.EqualsWithin(rhs.EquipmentScoreMultMelee)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)CombatStyle_FieldIndex.EquipmentScoreMultMagic] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.EquipmentScoreMultMagic) ?? true))
+                {
+                    if (!lhs.EquipmentScoreMultMagic.EqualsWithin(rhs.EquipmentScoreMultMagic)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)CombatStyle_FieldIndex.EquipmentScoreMultRanged] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.EquipmentScoreMultRanged) ?? true))
+                {
+                    if (!lhs.EquipmentScoreMultRanged.EqualsWithin(rhs.EquipmentScoreMultRanged)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)CombatStyle_FieldIndex.EquipmentScoreMultShout] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.EquipmentScoreMultShout) ?? true))
+                {
+                    if (!lhs.EquipmentScoreMultShout.EqualsWithin(rhs.EquipmentScoreMultShout)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)CombatStyle_FieldIndex.EquipmentScoreMultUnarmed] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.EquipmentScoreMultUnarmed) ?? true))
+                {
+                    if (!lhs.EquipmentScoreMultUnarmed.EqualsWithin(rhs.EquipmentScoreMultUnarmed)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)CombatStyle_FieldIndex.EquipmentScoreMultStaff] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.EquipmentScoreMultStaff) ?? true))
+                {
+                    if (!lhs.EquipmentScoreMultStaff.EqualsWithin(rhs.EquipmentScoreMultStaff)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)CombatStyle_FieldIndex.AvoidThreatChance] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.AvoidThreatChance) ?? true))
+                {
+                    if (!lhs.AvoidThreatChance.Equals(rhs.AvoidThreatChance)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)CombatStyle_FieldIndex.DodgeThreadChance] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.DodgeThreadChance) ?? true))
+                {
+                    if (!lhs.DodgeThreadChance.Equals(rhs.DodgeThreadChance)) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)CombatStyle_FieldIndex.EvadeThreatChance] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.EvadeThreatChance) ?? true))
+                {
+                    if (!lhs.EvadeThreatChance.Equals(rhs.EvadeThreatChance)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)CombatStyle_FieldIndex.HealAllyDistance] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.HealAllyDistance) ?? true))
+                {
+                    if (!lhs.HealAllyDistance.EqualsWithin(rhs.HealAllyDistance)) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)CombatStyle_FieldIndex.JumpCostMult] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.JumpCostMult) ?? true))
+                {
+                    if (!lhs.JumpCostMult.EqualsWithin(rhs.JumpCostMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)CombatStyle_FieldIndex.TauntDelayMult] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.TauntDelayMult) ?? true))
+                {
+                    if (!lhs.TauntDelayMult.EqualsWithin(rhs.TauntDelayMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)CombatStyle_FieldIndex.MeleeAttackStaggeredMult] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.MeleeAttackStaggeredMult) ?? true))
+                {
+                    if (!lhs.MeleeAttackStaggeredMult.EqualsWithin(rhs.MeleeAttackStaggeredMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)CombatStyle_FieldIndex.MeleePowerAttackStaggeredMult] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.MeleePowerAttackStaggeredMult) ?? true))
+                {
+                    if (!lhs.MeleePowerAttackStaggeredMult.EqualsWithin(rhs.MeleePowerAttackStaggeredMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)CombatStyle_FieldIndex.MeleePowerAttackBlockingMult] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.MeleePowerAttackBlockingMult) ?? true))
+                {
+                    if (!lhs.MeleePowerAttackBlockingMult.EqualsWithin(rhs.MeleePowerAttackBlockingMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal18()) differs[(int)CombatStyle_FieldIndex.MeleeBashMult] = true;
+            bool Equal18()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.MeleeBashMult) ?? true))
+                {
+                    if (!lhs.MeleeBashMult.EqualsWithin(rhs.MeleeBashMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal19()) differs[(int)CombatStyle_FieldIndex.MeleeBashRecoilMult] = true;
+            bool Equal19()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.MeleeBashRecoilMult) ?? true))
+                {
+                    if (!lhs.MeleeBashRecoilMult.EqualsWithin(rhs.MeleeBashRecoilMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal20()) differs[(int)CombatStyle_FieldIndex.MeleeBashAttackMult] = true;
+            bool Equal20()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.MeleeBashAttackMult) ?? true))
+                {
+                    if (!lhs.MeleeBashAttackMult.EqualsWithin(rhs.MeleeBashAttackMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal21()) differs[(int)CombatStyle_FieldIndex.MeleeBashPowerAttackMult] = true;
+            bool Equal21()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.MeleeBashPowerAttackMult) ?? true))
+                {
+                    if (!lhs.MeleeBashPowerAttackMult.EqualsWithin(rhs.MeleeBashPowerAttackMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal22()) differs[(int)CombatStyle_FieldIndex.MeleeSpecialAttackMult] = true;
+            bool Equal22()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.MeleeSpecialAttackMult) ?? true))
+                {
+                    if (!lhs.MeleeSpecialAttackMult.EqualsWithin(rhs.MeleeSpecialAttackMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal23()) differs[(int)CombatStyle_FieldIndex.MeleeBlockWhenStaggeredMult] = true;
+            bool Equal23()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.MeleeBlockWhenStaggeredMult) ?? true))
+                {
+                    if (!lhs.MeleeBlockWhenStaggeredMult.EqualsWithin(rhs.MeleeBlockWhenStaggeredMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal24()) differs[(int)CombatStyle_FieldIndex.MeleeAttackWhenStaggeredMult] = true;
+            bool Equal24()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.MeleeAttackWhenStaggeredMult) ?? true))
+                {
+                    if (!lhs.MeleeAttackWhenStaggeredMult.EqualsWithin(rhs.MeleeAttackWhenStaggeredMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal25()) differs[(int)CombatStyle_FieldIndex.RangedAccuracyMult] = true;
+            bool Equal25()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.RangedAccuracyMult) ?? true))
+                {
+                    if (!lhs.RangedAccuracyMult.Equals(rhs.RangedAccuracyMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal26()) differs[(int)CombatStyle_FieldIndex.RangedThrowMult] = true;
+            bool Equal26()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.RangedThrowMult) ?? true))
+                {
+                    if (!lhs.RangedThrowMult.Equals(rhs.RangedThrowMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal27()) differs[(int)CombatStyle_FieldIndex.RangedGrenadeAdvancedThrowingMult] = true;
+            bool Equal27()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.RangedGrenadeAdvancedThrowingMult) ?? true))
+                {
+                    if (!lhs.RangedGrenadeAdvancedThrowingMult.Equals(rhs.RangedGrenadeAdvancedThrowingMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal28()) differs[(int)CombatStyle_FieldIndex.RangedGrenadeFlashTargetMult] = true;
+            bool Equal28()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.RangedGrenadeFlashTargetMult) ?? true))
+                {
+                    if (!lhs.RangedGrenadeFlashTargetMult.Equals(rhs.RangedGrenadeFlashTargetMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal29()) differs[(int)CombatStyle_FieldIndex.RangedGrenadeThrowAtGroupMult] = true;
+            bool Equal29()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.RangedGrenadeThrowAtGroupMult) ?? true))
+                {
+                    if (!lhs.RangedGrenadeThrowAtGroupMult.Equals(rhs.RangedGrenadeThrowAtGroupMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal30()) differs[(int)CombatStyle_FieldIndex.RangedGrenadeCloseRangeAttackChanceMult] = true;
+            bool Equal30()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.RangedGrenadeCloseRangeAttackChanceMult) ?? true))
+                {
+                    if (!lhs.RangedGrenadeCloseRangeAttackChanceMult.Equals(rhs.RangedGrenadeCloseRangeAttackChanceMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal31()) differs[(int)CombatStyle_FieldIndex.CloseRangeDuelingCircleMult] = true;
+            bool Equal31()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeDuelingCircleMult) ?? true))
+                {
+                    if (!lhs.CloseRangeDuelingCircleMult.Equals(rhs.CloseRangeDuelingCircleMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal32()) differs[(int)CombatStyle_FieldIndex.CloseRangeDuelingFallbackMult] = true;
+            bool Equal32()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeDuelingFallbackMult) ?? true))
+                {
+                    if (!lhs.CloseRangeDuelingFallbackMult.Equals(rhs.CloseRangeDuelingFallbackMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal33()) differs[(int)CombatStyle_FieldIndex.CloseRangeFlankDistance] = true;
+            bool Equal33()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeFlankDistance) ?? true))
+                {
+                    if (!lhs.CloseRangeFlankDistance.Equals(rhs.CloseRangeFlankDistance)) return false;
+                }
+                return true;
+            }
+            if (!Equal34()) differs[(int)CombatStyle_FieldIndex.CloseRangeFlankingStalkTime] = true;
+            bool Equal34()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeFlankingStalkTime) ?? true))
+                {
+                    if (!lhs.CloseRangeFlankingStalkTime.Equals(rhs.CloseRangeFlankingStalkTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal35()) differs[(int)CombatStyle_FieldIndex.CloseRangeChargeDistance] = true;
+            bool Equal35()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeChargeDistance) ?? true))
+                {
+                    if (!lhs.CloseRangeChargeDistance.Equals(rhs.CloseRangeChargeDistance)) return false;
+                }
+                return true;
+            }
+            if (!Equal36()) differs[(int)CombatStyle_FieldIndex.CloseRangeChargingThrowProbability] = true;
+            bool Equal36()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeChargingThrowProbability) ?? true))
+                {
+                    if (!lhs.CloseRangeChargingThrowProbability.Equals(rhs.CloseRangeChargingThrowProbability)) return false;
+                }
+                return true;
+            }
+            if (!Equal37()) differs[(int)CombatStyle_FieldIndex.CloseRangeChargingSprintFastProbability] = true;
+            bool Equal37()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeChargingSprintFastProbability) ?? true))
+                {
+                    if (!lhs.CloseRangeChargingSprintFastProbability.Equals(rhs.CloseRangeChargingSprintFastProbability)) return false;
+                }
+                return true;
+            }
+            if (!Equal38()) differs[(int)CombatStyle_FieldIndex.CloseRangeChargingSideswipeProbability] = true;
+            bool Equal38()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeChargingSideswipeProbability) ?? true))
+                {
+                    if (!lhs.CloseRangeChargingSideswipeProbability.Equals(rhs.CloseRangeChargingSideswipeProbability)) return false;
+                }
+                return true;
+            }
+            if (!Equal39()) differs[(int)CombatStyle_FieldIndex.CloseRangeChargingDisengageProbability] = true;
+            bool Equal39()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeChargingDisengageProbability) ?? true))
+                {
+                    if (!lhs.CloseRangeChargingDisengageProbability.Equals(rhs.CloseRangeChargingDisengageProbability)) return false;
+                }
+                return true;
+            }
+            if (!Equal40()) differs[(int)CombatStyle_FieldIndex.CloseRangeChargingThrowMaxTargets] = true;
+            bool Equal40()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeChargingThrowMaxTargets) ?? true))
+                {
+                    if (lhs.CloseRangeChargingThrowMaxTargets != rhs.CloseRangeChargingThrowMaxTargets) return false;
+                }
+                return true;
+            }
+            if (!Equal41()) differs[(int)CombatStyle_FieldIndex.CloseRangeFlankingVariance] = true;
+            bool Equal41()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeFlankingVariance) ?? true))
+                {
+                    if (!lhs.CloseRangeFlankingVariance.Equals(rhs.CloseRangeFlankingVariance)) return false;
+                }
+                return true;
+            }
+            if (!Equal42()) differs[(int)CombatStyle_FieldIndex.CloseRangeRetreatChance] = true;
+            bool Equal42()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeRetreatChance) ?? true))
+                {
+                    if (!lhs.CloseRangeRetreatChance.Equals(rhs.CloseRangeRetreatChance)) return false;
+                }
+                return true;
+            }
+            if (!Equal43()) differs[(int)CombatStyle_FieldIndex.CloseRangeRetreatDistanceMult] = true;
+            bool Equal43()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CloseRangeRetreatDistanceMult) ?? true))
+                {
+                    if (!lhs.CloseRangeRetreatDistanceMult.Equals(rhs.CloseRangeRetreatDistanceMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal44()) differs[(int)CombatStyle_FieldIndex.LongRangeStrafeMult] = true;
+            bool Equal44()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.LongRangeStrafeMult) ?? true))
+                {
+                    if (!lhs.LongRangeStrafeMult.Equals(rhs.LongRangeStrafeMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal45()) differs[(int)CombatStyle_FieldIndex.LongRangeAdjustRangeMult] = true;
+            bool Equal45()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.LongRangeAdjustRangeMult) ?? true))
+                {
+                    if (!lhs.LongRangeAdjustRangeMult.Equals(rhs.LongRangeAdjustRangeMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal46()) differs[(int)CombatStyle_FieldIndex.LongRangeCrouchMult] = true;
+            bool Equal46()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.LongRangeCrouchMult) ?? true))
+                {
+                    if (!lhs.LongRangeCrouchMult.Equals(rhs.LongRangeCrouchMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal47()) differs[(int)CombatStyle_FieldIndex.LongRangeWaitMult] = true;
+            bool Equal47()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.LongRangeWaitMult) ?? true))
+                {
+                    if (!lhs.LongRangeWaitMult.Equals(rhs.LongRangeWaitMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal48()) differs[(int)CombatStyle_FieldIndex.LongRangeRangeMult] = true;
+            bool Equal48()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.LongRangeRangeMult) ?? true))
+                {
+                    if (!lhs.LongRangeRangeMult.Equals(rhs.LongRangeRangeMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal49()) differs[(int)CombatStyle_FieldIndex.LongRangeProvideSuppressiveFireMult] = true;
+            bool Equal49()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.LongRangeProvideSuppressiveFireMult) ?? true))
+                {
+                    if (!lhs.LongRangeProvideSuppressiveFireMult.Equals(rhs.LongRangeProvideSuppressiveFireMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal50()) differs[(int)CombatStyle_FieldIndex.LongRangeRetreatChance] = true;
+            bool Equal50()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.LongRangeRetreatChance) ?? true))
+                {
+                    if (!lhs.LongRangeRetreatChance.Equals(rhs.LongRangeRetreatChance)) return false;
+                }
+                return true;
+            }
+            if (!Equal51()) differs[(int)CombatStyle_FieldIndex.LongRangeRetreatHideTimeMult] = true;
+            bool Equal51()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.LongRangeRetreatHideTimeMult) ?? true))
+                {
+                    if (!lhs.LongRangeRetreatHideTimeMult.Equals(rhs.LongRangeRetreatHideTimeMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal52()) differs[(int)CombatStyle_FieldIndex.LongRangeRetreatDistanceMult] = true;
+            bool Equal52()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.LongRangeRetreatDistanceMult) ?? true))
+                {
+                    if (!lhs.LongRangeRetreatDistanceMult.Equals(rhs.LongRangeRetreatDistanceMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal53()) differs[(int)CombatStyle_FieldIndex.CoverSearchDistanceMult] = true;
+            bool Equal53()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CoverSearchDistanceMult) ?? true))
+                {
+                    if (!lhs.CoverSearchDistanceMult.Equals(rhs.CoverSearchDistanceMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal54()) differs[(int)CombatStyle_FieldIndex.CoverSearchSuppressionSensitivity] = true;
+            bool Equal54()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.CoverSearchSuppressionSensitivity) ?? true))
+                {
+                    if (!lhs.CoverSearchSuppressionSensitivity.Equals(rhs.CoverSearchSuppressionSensitivity)) return false;
+                }
+                return true;
+            }
+            if (!Equal55()) differs[(int)CombatStyle_FieldIndex.FlightHoverChance] = true;
+            bool Equal55()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.FlightHoverChance) ?? true))
+                {
+                    if (!lhs.FlightHoverChance.Equals(rhs.FlightHoverChance)) return false;
+                }
+                return true;
+            }
+            if (!Equal56()) differs[(int)CombatStyle_FieldIndex.FlightDiveBombChance] = true;
+            bool Equal56()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.FlightDiveBombChance) ?? true))
+                {
+                    if (!lhs.FlightDiveBombChance.Equals(rhs.FlightDiveBombChance)) return false;
+                }
+                return true;
+            }
+            if (!Equal57()) differs[(int)CombatStyle_FieldIndex.FlightGroundAttackChance] = true;
+            bool Equal57()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.FlightGroundAttackChance) ?? true))
+                {
+                    if (!lhs.FlightGroundAttackChance.Equals(rhs.FlightGroundAttackChance)) return false;
+                }
+                return true;
+            }
+            if (!Equal58()) differs[(int)CombatStyle_FieldIndex.FlightHoverTime] = true;
+            bool Equal58()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.FlightHoverTime) ?? true))
+                {
+                    if (!lhs.FlightHoverTime.Equals(rhs.FlightHoverTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal59()) differs[(int)CombatStyle_FieldIndex.FlightGroundAttackTime] = true;
+            bool Equal59()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.FlightGroundAttackTime) ?? true))
+                {
+                    if (!lhs.FlightGroundAttackTime.Equals(rhs.FlightGroundAttackTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal60()) differs[(int)CombatStyle_FieldIndex.FlightPerchAttackChance] = true;
+            bool Equal60()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.FlightPerchAttackChance) ?? true))
+                {
+                    if (!lhs.FlightPerchAttackChance.Equals(rhs.FlightPerchAttackChance)) return false;
+                }
+                return true;
+            }
+            if (!Equal61()) differs[(int)CombatStyle_FieldIndex.FlightPerchAttackTime] = true;
+            bool Equal61()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.FlightPerchAttackTime) ?? true))
+                {
+                    if (!lhs.FlightPerchAttackTime.Equals(rhs.FlightPerchAttackTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal62()) differs[(int)CombatStyle_FieldIndex.FlightFlyingAttackChance] = true;
+            bool Equal62()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.FlightFlyingAttackChance) ?? true))
+                {
+                    if (!lhs.FlightFlyingAttackChance.Equals(rhs.FlightFlyingAttackChance)) return false;
+                }
+                return true;
+            }
+            if (!Equal63()) differs[(int)CombatStyle_FieldIndex.TunnelCostMult] = true;
+            bool Equal63()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.TunnelCostMult) ?? true))
+                {
+                    if (!lhs.TunnelCostMult.EqualsWithin(rhs.TunnelCostMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal64()) differs[(int)CombatStyle_FieldIndex.TunnelChance] = true;
+            bool Equal64()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.TunnelChance) ?? true))
+                {
+                    if (!lhs.TunnelChance.Equals(rhs.TunnelChance)) return false;
+                }
+                return true;
+            }
+            if (!Equal65()) differs[(int)CombatStyle_FieldIndex.TunnelMaxDistance] = true;
+            bool Equal65()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.TunnelMaxDistance) ?? true))
+                {
+                    if (!lhs.TunnelMaxDistance.EqualsWithin(rhs.TunnelMaxDistance)) return false;
+                }
+                return true;
+            }
+            if (!Equal66()) differs[(int)CombatStyle_FieldIndex.TunnelSpeedMult] = true;
+            bool Equal66()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.TunnelSpeedMult) ?? true))
+                {
+                    if (!lhs.TunnelSpeedMult.EqualsWithin(rhs.TunnelSpeedMult)) return false;
+                }
+                return true;
+            }
+            if (!Equal67()) differs[(int)CombatStyle_FieldIndex.TunnelMinTime] = true;
+            bool Equal67()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.TunnelMinTime) ?? true))
+                {
+                    if (!lhs.TunnelMinTime.EqualsWithin(rhs.TunnelMinTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal68()) differs[(int)CombatStyle_FieldIndex.TunnelMaxTime] = true;
+            bool Equal68()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.TunnelMaxTime) ?? true))
+                {
+                    if (!lhs.TunnelMaxTime.EqualsWithin(rhs.TunnelMaxTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal69()) differs[(int)CombatStyle_FieldIndex.TunnelMaximumTime] = true;
+            bool Equal69()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.TunnelMaximumTime) ?? true))
+                {
+                    if (!lhs.TunnelMaximumTime.EqualsWithin(rhs.TunnelMaximumTime)) return false;
+                }
+                return true;
+            }
+            if (!Equal70()) differs[(int)CombatStyle_FieldIndex.TunnelCooldown] = true;
+            bool Equal70()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.TunnelCooldown) ?? true))
+                {
+                    if (!lhs.TunnelCooldown.EqualsWithin(rhs.TunnelCooldown)) return false;
+                }
+                return true;
+            }
+            if (!Equal71()) differs[(int)CombatStyle_FieldIndex.SpaceGeneralPilotSkill] = true;
+            bool Equal71()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceGeneralPilotSkill) ?? true))
+                {
+                    if (!lhs.SpaceGeneralPilotSkill.Equals(rhs.SpaceGeneralPilotSkill)) return false;
+                }
+                return true;
+            }
+            if (!Equal72()) differs[(int)CombatStyle_FieldIndex.SpaceGeneralAccuracy] = true;
+            bool Equal72()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceGeneralAccuracy) ?? true))
+                {
+                    if (!lhs.SpaceGeneralAccuracy.Equals(rhs.SpaceGeneralAccuracy)) return false;
+                }
+                return true;
+            }
+            if (!Equal73()) differs[(int)CombatStyle_FieldIndex.SpaceGeneralTargetShield] = true;
+            bool Equal73()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceGeneralTargetShield) ?? true))
+                {
+                    if (!lhs.SpaceGeneralTargetShield.Equals(rhs.SpaceGeneralTargetShield)) return false;
+                }
+                return true;
+            }
+            if (!Equal74()) differs[(int)CombatStyle_FieldIndex.SpaceGeneralAdjustment] = true;
+            bool Equal74()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceGeneralAdjustment) ?? true))
+                {
+                    if (!lhs.SpaceGeneralAdjustment.EqualsWithin(rhs.SpaceGeneralAdjustment)) return false;
+                }
+                return true;
+            }
+            if (!Equal75()) differs[(int)CombatStyle_FieldIndex.SpaceGeneralEngageManeuverChanceDirectAttack] = true;
+            bool Equal75()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceGeneralEngageManeuverChanceDirectAttack) ?? true))
+                {
+                    if (!lhs.SpaceGeneralEngageManeuverChanceDirectAttack.Equals(rhs.SpaceGeneralEngageManeuverChanceDirectAttack)) return false;
+                }
+                return true;
+            }
+            if (!Equal76()) differs[(int)CombatStyle_FieldIndex.SpaceGeneralEngageManeuverChancePass] = true;
+            bool Equal76()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceGeneralEngageManeuverChancePass) ?? true))
+                {
+                    if (!lhs.SpaceGeneralEngageManeuverChancePass.Equals(rhs.SpaceGeneralEngageManeuverChancePass)) return false;
+                }
+                return true;
+            }
+            if (!Equal77()) differs[(int)CombatStyle_FieldIndex.SpaceGeneralEngageManeuverChanceLeadTurn] = true;
+            bool Equal77()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceGeneralEngageManeuverChanceLeadTurn) ?? true))
+                {
+                    if (!lhs.SpaceGeneralEngageManeuverChanceLeadTurn.Equals(rhs.SpaceGeneralEngageManeuverChanceLeadTurn)) return false;
+                }
+                return true;
+            }
+            if (!Equal78()) differs[(int)CombatStyle_FieldIndex.SpaceGeneralEngageManeuverChanceSlideTurn] = true;
+            bool Equal78()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceGeneralEngageManeuverChanceSlideTurn) ?? true))
+                {
+                    if (!lhs.SpaceGeneralEngageManeuverChanceSlideTurn.Equals(rhs.SpaceGeneralEngageManeuverChanceSlideTurn)) return false;
+                }
+                return true;
+            }
+            if (!Equal79()) differs[(int)CombatStyle_FieldIndex.SpaceGeneralEngageManeuverChanceBarrelRoll] = true;
+            bool Equal79()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceGeneralEngageManeuverChanceBarrelRoll) ?? true))
+                {
+                    if (!lhs.SpaceGeneralEngageManeuverChanceBarrelRoll.Equals(rhs.SpaceGeneralEngageManeuverChanceBarrelRoll)) return false;
+                }
+                return true;
+            }
+            if (!Equal80()) differs[(int)CombatStyle_FieldIndex.SpaceGeneralEvadeManeuverChanceBreak] = true;
+            bool Equal80()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceGeneralEvadeManeuverChanceBreak) ?? true))
+                {
+                    if (!lhs.SpaceGeneralEvadeManeuverChanceBreak.Equals(rhs.SpaceGeneralEvadeManeuverChanceBreak)) return false;
+                }
+                return true;
+            }
+            if (!Equal81()) differs[(int)CombatStyle_FieldIndex.SpaceGeneralEvadeManeuverChanceScissors] = true;
+            bool Equal81()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceGeneralEvadeManeuverChanceScissors) ?? true))
+                {
+                    if (!lhs.SpaceGeneralEvadeManeuverChanceScissors.Equals(rhs.SpaceGeneralEvadeManeuverChanceScissors)) return false;
+                }
+                return true;
+            }
+            if (!Equal82()) differs[(int)CombatStyle_FieldIndex.SpaceGeneralEvadeManeuverChanceCut] = true;
+            bool Equal82()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceGeneralEvadeManeuverChanceCut) ?? true))
+                {
+                    if (!lhs.SpaceGeneralEvadeManeuverChanceCut.Equals(rhs.SpaceGeneralEvadeManeuverChanceCut)) return false;
+                }
+                return true;
+            }
+            if (!Equal83()) differs[(int)CombatStyle_FieldIndex.SpaceGeneralEvadeManeuverChanceBoost] = true;
+            bool Equal83()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceGeneralEvadeManeuverChanceBoost) ?? true))
+                {
+                    if (!lhs.SpaceGeneralEvadeManeuverChanceBoost.Equals(rhs.SpaceGeneralEvadeManeuverChanceBoost)) return false;
+                }
+                return true;
+            }
+            if (!Equal84()) differs[(int)CombatStyle_FieldIndex.SpaceGeneralAcquireManeuverChanceSliceback] = true;
+            bool Equal84()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceGeneralAcquireManeuverChanceSliceback) ?? true))
+                {
+                    if (!lhs.SpaceGeneralAcquireManeuverChanceSliceback.Equals(rhs.SpaceGeneralAcquireManeuverChanceSliceback)) return false;
+                }
+                return true;
+            }
+            if (!Equal85()) differs[(int)CombatStyle_FieldIndex.SpaceGeneralAcquireManeuverChanceStrafeTurn] = true;
+            bool Equal85()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceGeneralAcquireManeuverChanceStrafeTurn) ?? true))
+                {
+                    if (!lhs.SpaceGeneralAcquireManeuverChanceStrafeTurn.Equals(rhs.SpaceGeneralAcquireManeuverChanceStrafeTurn)) return false;
+                }
+                return true;
+            }
+            if (!Equal86()) differs[(int)CombatStyle_FieldIndex.SpaceGeneralAcquireManeuverChanceAcquire] = true;
+            bool Equal86()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceGeneralAcquireManeuverChanceAcquire) ?? true))
+                {
+                    if (!lhs.SpaceGeneralAcquireManeuverChanceAcquire.Equals(rhs.SpaceGeneralAcquireManeuverChanceAcquire)) return false;
+                }
+                return true;
+            }
+            if (!Equal87()) differs[(int)CombatStyle_FieldIndex.SpaceGeneralAcquireManeuverChanceTurn] = true;
+            bool Equal87()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceGeneralAcquireManeuverChanceTurn) ?? true))
+                {
+                    if (!lhs.SpaceGeneralAcquireManeuverChanceTurn.Equals(rhs.SpaceGeneralAcquireManeuverChanceTurn)) return false;
+                }
+                return true;
+            }
+            if (!Equal88()) differs[(int)CombatStyle_FieldIndex.SpaceGeneralDisengageManeuverChance] = true;
+            bool Equal88()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceGeneralDisengageManeuverChance) ?? true))
+                {
+                    if (!lhs.SpaceGeneralDisengageManeuverChance.Equals(rhs.SpaceGeneralDisengageManeuverChance)) return false;
+                }
+                return true;
+            }
+            if (!Equal89()) differs[(int)CombatStyle_FieldIndex.SpaceGeneralMissileSeekingStrength] = true;
+            bool Equal89()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceGeneralMissileSeekingStrength) ?? true))
+                {
+                    if (!lhs.SpaceGeneralMissileSeekingStrength.EqualsWithin(rhs.SpaceGeneralMissileSeekingStrength)) return false;
+                }
+                return true;
+            }
+            if (!Equal90()) differs[(int)CombatStyle_FieldIndex.SpaceGeneralMinTimeBetweenBoosts] = true;
+            bool Equal90()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceGeneralMinTimeBetweenBoosts) ?? true))
+                {
+                    if (!lhs.SpaceGeneralMinTimeBetweenBoosts.EqualsWithin(rhs.SpaceGeneralMinTimeBetweenBoosts)) return false;
+                }
+                return true;
+            }
+            if (!Equal91()) differs[(int)CombatStyle_FieldIndex.SpaceGeneralCombatStrafing] = true;
+            bool Equal91()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceGeneralCombatStrafing) ?? true))
+                {
+                    if (lhs.SpaceGeneralCombatStrafing != rhs.SpaceGeneralCombatStrafing) return false;
+                }
+                return true;
+            }
+            if (!Equal92()) differs[(int)CombatStyle_FieldIndex.SpaceGeneralRollsDuringBoost] = true;
+            bool Equal92()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceGeneralRollsDuringBoost) ?? true))
+                {
+                    if (lhs.SpaceGeneralRollsDuringBoost != rhs.SpaceGeneralRollsDuringBoost) return false;
+                }
+                return true;
+            }
+            if (!Equal93()) differs[(int)CombatStyle_FieldIndex.UnknownCSSG] = true;
+            bool Equal93()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.UnknownCSSG) ?? true))
+                {
+                    if (lhs.UnknownCSSG != rhs.UnknownCSSG) return false;
+                }
+                return true;
+            }
+            if (!Equal94()) differs[(int)CombatStyle_FieldIndex.SpaceGeneralPowerWeighting] = true;
+            bool Equal94()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceGeneralPowerWeighting) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.SpaceGeneralPowerWeighting, rhs.SpaceGeneralPowerWeighting, out var lhsSpaceGeneralPowerWeighting, out var rhsSpaceGeneralPowerWeighting, out var isSpaceGeneralPowerWeightingEqual))
+                    {
+                        if (!((CombatStylePowerWeightingCommon)((ICombatStylePowerWeightingGetter)lhsSpaceGeneralPowerWeighting).CommonInstance()!).Equals(lhsSpaceGeneralPowerWeighting, rhsSpaceGeneralPowerWeighting, equalsMask?.GetSubCrystal((int)CombatStyle_FieldIndex.SpaceGeneralPowerWeighting))) return false;
+                    }
+                    else if (!isSpaceGeneralPowerWeightingEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal95()) differs[(int)CombatStyle_FieldIndex.SpaceManeuverTypesMaxTime] = true;
+            bool Equal95()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceManeuverTypesMaxTime) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.SpaceManeuverTypesMaxTime, rhs.SpaceManeuverTypesMaxTime, out var lhsSpaceManeuverTypesMaxTime, out var rhsSpaceManeuverTypesMaxTime, out var isSpaceManeuverTypesMaxTimeEqual))
+                    {
+                        if (!((CombatStyleManeuverTimingCommon)((ICombatStyleManeuverTimingGetter)lhsSpaceManeuverTypesMaxTime).CommonInstance()!).Equals(lhsSpaceManeuverTypesMaxTime, rhsSpaceManeuverTypesMaxTime, equalsMask?.GetSubCrystal((int)CombatStyle_FieldIndex.SpaceManeuverTypesMaxTime))) return false;
+                    }
+                    else if (!isSpaceManeuverTypesMaxTimeEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal96()) differs[(int)CombatStyle_FieldIndex.SpaceManeuverTypesReentryDelays] = true;
+            bool Equal96()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceManeuverTypesReentryDelays) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.SpaceManeuverTypesReentryDelays, rhs.SpaceManeuverTypesReentryDelays, out var lhsSpaceManeuverTypesReentryDelays, out var rhsSpaceManeuverTypesReentryDelays, out var isSpaceManeuverTypesReentryDelaysEqual))
+                    {
+                        if (!((CombatStyleManeuverTimingCommon)((ICombatStyleManeuverTimingGetter)lhsSpaceManeuverTypesReentryDelays).CommonInstance()!).Equals(lhsSpaceManeuverTypesReentryDelays, rhsSpaceManeuverTypesReentryDelays, equalsMask?.GetSubCrystal((int)CombatStyle_FieldIndex.SpaceManeuverTypesReentryDelays))) return false;
+                    }
+                    else if (!isSpaceManeuverTypesReentryDelaysEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal97()) differs[(int)CombatStyle_FieldIndex.SpaceRepairDamageThreshold] = true;
+            bool Equal97()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceRepairDamageThreshold) ?? true))
+                {
+                    if (!lhs.SpaceRepairDamageThreshold.Equals(rhs.SpaceRepairDamageThreshold)) return false;
+                }
+                return true;
+            }
+            if (!Equal98()) differs[(int)CombatStyle_FieldIndex.SpaceRepairFarawayDistance] = true;
+            bool Equal98()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceRepairFarawayDistance) ?? true))
+                {
+                    if (!lhs.SpaceRepairFarawayDistance.Equals(rhs.SpaceRepairFarawayDistance)) return false;
+                }
+                return true;
+            }
+            if (!Equal99()) differs[(int)CombatStyle_FieldIndex.SpaceRepairPowerToUse] = true;
+            bool Equal99()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceRepairPowerToUse) ?? true))
+                {
+                    if (!lhs.SpaceRepairPowerToUse.Equals(rhs.SpaceRepairPowerToUse)) return false;
+                }
+                return true;
+            }
+            if (!Equal100()) differs[(int)CombatStyle_FieldIndex.SpaceRepairInClosePowerWeightingTables] = true;
+            bool Equal100()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceRepairInClosePowerWeightingTables) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.SpaceRepairInClosePowerWeightingTables, rhs.SpaceRepairInClosePowerWeightingTables, out var lhsSpaceRepairInClosePowerWeightingTables, out var rhsSpaceRepairInClosePowerWeightingTables, out var isSpaceRepairInClosePowerWeightingTablesEqual))
+                    {
+                        if (!((CombatStylePowerWeightingCommon)((ICombatStylePowerWeightingGetter)lhsSpaceRepairInClosePowerWeightingTables).CommonInstance()!).Equals(lhsSpaceRepairInClosePowerWeightingTables, rhsSpaceRepairInClosePowerWeightingTables, equalsMask?.GetSubCrystal((int)CombatStyle_FieldIndex.SpaceRepairInClosePowerWeightingTables))) return false;
+                    }
+                    else if (!isSpaceRepairInClosePowerWeightingTablesEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal101()) differs[(int)CombatStyle_FieldIndex.SpaceRepairFarawayPowerWeightingTables] = true;
+            bool Equal101()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceRepairFarawayPowerWeightingTables) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.SpaceRepairFarawayPowerWeightingTables, rhs.SpaceRepairFarawayPowerWeightingTables, out var lhsSpaceRepairFarawayPowerWeightingTables, out var rhsSpaceRepairFarawayPowerWeightingTables, out var isSpaceRepairFarawayPowerWeightingTablesEqual))
+                    {
+                        if (!((CombatStylePowerWeightingCommon)((ICombatStylePowerWeightingGetter)lhsSpaceRepairFarawayPowerWeightingTables).CommonInstance()!).Equals(lhsSpaceRepairFarawayPowerWeightingTables, rhsSpaceRepairFarawayPowerWeightingTables, equalsMask?.GetSubCrystal((int)CombatStyle_FieldIndex.SpaceRepairFarawayPowerWeightingTables))) return false;
+                    }
+                    else if (!isSpaceRepairFarawayPowerWeightingTablesEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal102()) differs[(int)CombatStyle_FieldIndex.SpaceApproachingMinDistance] = true;
+            bool Equal102()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceApproachingMinDistance) ?? true))
+                {
+                    if (!lhs.SpaceApproachingMinDistance.Equals(rhs.SpaceApproachingMinDistance)) return false;
+                }
+                return true;
+            }
+            if (!Equal103()) differs[(int)CombatStyle_FieldIndex.SpaceApproachingWeighting] = true;
+            bool Equal103()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceApproachingWeighting) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.SpaceApproachingWeighting, rhs.SpaceApproachingWeighting, out var lhsSpaceApproachingWeighting, out var rhsSpaceApproachingWeighting, out var isSpaceApproachingWeightingEqual))
+                    {
+                        if (!((CombatStylePowerWeightingCommon)((ICombatStylePowerWeightingGetter)lhsSpaceApproachingWeighting).CommonInstance()!).Equals(lhsSpaceApproachingWeighting, rhsSpaceApproachingWeighting, equalsMask?.GetSubCrystal((int)CombatStyle_FieldIndex.SpaceApproachingWeighting))) return false;
+                    }
+                    else if (!isSpaceApproachingWeightingEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal104()) differs[(int)CombatStyle_FieldIndex.SpaceDetectionRating1] = true;
+            bool Equal104()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceDetectionRating1) ?? true))
+                {
+                    if (!lhs.SpaceDetectionRating1.EqualsWithin(rhs.SpaceDetectionRating1)) return false;
+                }
+                return true;
+            }
+            if (!Equal105()) differs[(int)CombatStyle_FieldIndex.SpaceDetectionRating2] = true;
+            bool Equal105()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceDetectionRating2) ?? true))
+                {
+                    if (!lhs.SpaceDetectionRating2.EqualsWithin(rhs.SpaceDetectionRating2)) return false;
+                }
+                return true;
+            }
+            if (!Equal106()) differs[(int)CombatStyle_FieldIndex.SpaceDetectionRating3] = true;
+            bool Equal106()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.SpaceDetectionRating3) ?? true))
+                {
+                    if (!lhs.SpaceDetectionRating3.EqualsWithin(rhs.SpaceDetectionRating3)) return false;
+                }
+                return true;
+            }
+            if (!Equal107()) differs[(int)CombatStyle_FieldIndex.Flags] = true;
+            bool Equal107()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal108()) differs[(int)CombatStyle_FieldIndex.FNAM] = true;
+            bool Equal108()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.FNAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.FNAM, rhs.FNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal109()) differs[(int)CombatStyle_FieldIndex.TemplateDefaultCombatStyle] = true;
+            bool Equal109()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.TemplateDefaultCombatStyle) ?? true))
+                {
+                    if (!lhs.TemplateDefaultCombatStyle.Equals(rhs.TemplateDefaultCombatStyle)) return false;
+                }
+                return true;
+            }
+            if (!Equal110()) differs[(int)CombatStyle_FieldIndex.Templates] = true;
+            bool Equal110()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)CombatStyle_FieldIndex.Templates) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Templates, rhs.Templates, out var lhsTemplates, out var rhsTemplates, out var isTemplatesEqual))
+                    {
+                        if (!((CombatStyleTemplatesCommon)((ICombatStyleTemplatesGetter)lhsTemplates).CommonInstance()!).Equals(lhsTemplates, rhsTemplates, equalsMask?.GetSubCrystal((int)CombatStyle_FieldIndex.Templates))) return false;
+                    }
+                    else if (!isTemplatesEqual) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ICombatStyleGetter)lhs, (ICombatStyleGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ICombatStyleGetter)lhs, (ICombatStyleGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

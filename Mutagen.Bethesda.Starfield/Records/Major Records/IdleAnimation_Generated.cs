@@ -1014,6 +1014,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IIdleAnimationGetter item,
+            IIdleAnimationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((IdleAnimationCommon)((IIdleAnimationGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static IdleAnimation Duplicate(
             this IIdleAnimationGetter item,
             FormKey formKey,
@@ -1547,6 +1565,105 @@ namespace Mutagen.Bethesda.Starfield
             yield return FormLinkInformation.Factory(obj.ParentAnimation);
             yield return FormLinkInformation.Factory(obj.PreviousAnimation);
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IIdleAnimationGetter lhs,
+            IIdleAnimationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)IdleAnimation_FieldIndex.Conditions] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleAnimation_FieldIndex.Conditions) ?? true))
+                {
+                    if (!lhs.Conditions.SequenceEqual(rhs.Conditions, (l, r) => ((ConditionCommon)((IConditionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)IdleAnimation_FieldIndex.Conditions)))) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)IdleAnimation_FieldIndex.BehaviorGraph] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleAnimation_FieldIndex.BehaviorGraph) ?? true))
+                {
+                    if (!string.Equals(lhs.BehaviorGraph, rhs.BehaviorGraph)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)IdleAnimation_FieldIndex.AnimationEvent] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleAnimation_FieldIndex.AnimationEvent) ?? true))
+                {
+                    if (!string.Equals(lhs.AnimationEvent, rhs.AnimationEvent)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)IdleAnimation_FieldIndex.ParentAnimation] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleAnimation_FieldIndex.ParentAnimation) ?? true))
+                {
+                    if (!lhs.ParentAnimation.Equals(rhs.ParentAnimation)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)IdleAnimation_FieldIndex.PreviousAnimation] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleAnimation_FieldIndex.PreviousAnimation) ?? true))
+                {
+                    if (!lhs.PreviousAnimation.Equals(rhs.PreviousAnimation)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)IdleAnimation_FieldIndex.Flags] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleAnimation_FieldIndex.Flags) ?? true))
+                {
+                    if (lhs.Flags != rhs.Flags) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)IdleAnimation_FieldIndex.AnimationFile] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleAnimation_FieldIndex.AnimationFile) ?? true))
+                {
+                    if (!string.Equals(lhs.AnimationFile, rhs.AnimationFile)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)IdleAnimation_FieldIndex.Name] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)IdleAnimation_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IIdleAnimationGetter)lhs, (IIdleAnimationGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IIdleAnimationGetter)lhs, (IIdleAnimationGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

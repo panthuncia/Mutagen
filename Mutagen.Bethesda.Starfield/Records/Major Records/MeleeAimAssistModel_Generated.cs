@@ -860,6 +860,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IMeleeAimAssistModelGetter item,
+            IMeleeAimAssistModelGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((MeleeAimAssistModelCommon)((IMeleeAimAssistModelGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static MeleeAimAssistModel Duplicate(
             this IMeleeAimAssistModelGetter item,
             FormKey formKey,
@@ -1342,6 +1360,105 @@ namespace Mutagen.Bethesda.Starfield
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IMeleeAimAssistModelGetter lhs,
+            IMeleeAimAssistModelGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)MeleeAimAssistModel_FieldIndex.OuterConeAngleDegrees] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MeleeAimAssistModel_FieldIndex.OuterConeAngleDegrees) ?? true))
+                {
+                    if (!lhs.OuterConeAngleDegrees.EqualsWithin(rhs.OuterConeAngleDegrees)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)MeleeAimAssistModel_FieldIndex.InnerConeAngleDegrees] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MeleeAimAssistModel_FieldIndex.InnerConeAngleDegrees) ?? true))
+                {
+                    if (!lhs.InnerConeAngleDegrees.EqualsWithin(rhs.InnerConeAngleDegrees)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)MeleeAimAssistModel_FieldIndex.SteeringDegreesPerSec] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MeleeAimAssistModel_FieldIndex.SteeringDegreesPerSec) ?? true))
+                {
+                    if (!lhs.SteeringDegreesPerSec.EqualsWithin(rhs.SteeringDegreesPerSec)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)MeleeAimAssistModel_FieldIndex.SnapSteeringMultiplierOuterRing] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MeleeAimAssistModel_FieldIndex.SnapSteeringMultiplierOuterRing) ?? true))
+                {
+                    if (!lhs.SnapSteeringMultiplierOuterRing.EqualsWithin(rhs.SnapSteeringMultiplierOuterRing)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)MeleeAimAssistModel_FieldIndex.SnapSteeringMultiplierInnerRing] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MeleeAimAssistModel_FieldIndex.SnapSteeringMultiplierInnerRing) ?? true))
+                {
+                    if (!lhs.SnapSteeringMultiplierInnerRing.EqualsWithin(rhs.SnapSteeringMultiplierInnerRing)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)MeleeAimAssistModel_FieldIndex.MaxAimAssistDistance] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MeleeAimAssistModel_FieldIndex.MaxAimAssistDistance) ?? true))
+                {
+                    if (!lhs.MaxAimAssistDistance.EqualsWithin(rhs.MaxAimAssistDistance)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)MeleeAimAssistModel_FieldIndex.MeleeAimAssistEnabled] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MeleeAimAssistModel_FieldIndex.MeleeAimAssistEnabled) ?? true))
+                {
+                    if (lhs.MeleeAimAssistEnabled != rhs.MeleeAimAssistEnabled) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)MeleeAimAssistModel_FieldIndex.Unknown] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)MeleeAimAssistModel_FieldIndex.Unknown) ?? true))
+                {
+                    if (!lhs.Unknown.EqualsWithin(rhs.Unknown)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMeleeAimAssistModelGetter)lhs, (IMeleeAimAssistModelGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IMeleeAimAssistModelGetter)lhs, (IMeleeAimAssistModelGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

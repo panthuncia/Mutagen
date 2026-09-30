@@ -963,6 +963,24 @@ namespace Mutagen.Bethesda.Fallout4
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ILoadScreenGetter item,
+            ILoadScreenGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((LoadScreenCommon)((ILoadScreenGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static LoadScreen Duplicate(
             this ILoadScreenGetter item,
             FormKey formKey,
@@ -1495,6 +1513,104 @@ namespace Mutagen.Bethesda.Fallout4
                 yield return TransformInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ILoadScreenGetter lhs,
+            ILoadScreenGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout4MajorRecordGetter)lhs, (IFallout4MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)LoadScreen_FieldIndex.Description] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.Description) ?? true))
+                {
+                    if (!object.Equals(lhs.Description, rhs.Description)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)LoadScreen_FieldIndex.Conditions] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.Conditions) ?? true))
+                {
+                    if (!lhs.Conditions.SequenceEqual(rhs.Conditions, (l, r) => ((ConditionCommon)((IConditionGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)LoadScreen_FieldIndex.Conditions)))) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)LoadScreen_FieldIndex.LoadingScreenNif] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.LoadingScreenNif) ?? true))
+                {
+                    if (!lhs.LoadingScreenNif.Equals(rhs.LoadingScreenNif)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)LoadScreen_FieldIndex.Transform] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.Transform) ?? true))
+                {
+                    if (!lhs.Transform.Equals(rhs.Transform)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)LoadScreen_FieldIndex.Rotation] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.Rotation) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Rotation, rhs.Rotation, out var lhsRotation, out var rhsRotation, out var isRotationEqual))
+                    {
+                        if (!((LoadScreenRotationCommon)((ILoadScreenRotationGetter)lhsRotation).CommonInstance()!).Equals(lhsRotation, rhsRotation, equalsMask?.GetSubCrystal((int)LoadScreen_FieldIndex.Rotation))) return false;
+                    }
+                    else if (!isRotationEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)LoadScreen_FieldIndex.Zoom] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.Zoom) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Zoom, rhs.Zoom, out var lhsZoom, out var rhsZoom, out var isZoomEqual))
+                    {
+                        if (!((LoadScreenZoomCommon)((ILoadScreenZoomGetter)lhsZoom).CommonInstance()!).Equals(lhsZoom, rhsZoom, equalsMask?.GetSubCrystal((int)LoadScreen_FieldIndex.Zoom))) return false;
+                    }
+                    else if (!isZoomEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)LoadScreen_FieldIndex.CameraPath] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreen_FieldIndex.CameraPath) ?? true))
+                {
+                    if (!string.Equals(lhs.CameraPath, rhs.CameraPath)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout4MajorRecordGetter lhs,
+            IFallout4MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILoadScreenGetter)lhs, (ILoadScreenGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILoadScreenGetter)lhs, (ILoadScreenGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

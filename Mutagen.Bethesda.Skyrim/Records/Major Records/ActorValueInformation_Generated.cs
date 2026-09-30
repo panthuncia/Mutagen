@@ -947,6 +947,24 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IActorValueInformationGetter item,
+            IActorValueInformationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ActorValueInformationCommon)((IActorValueInformationGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ActorValueInformation Duplicate(
             this IActorValueInformationGetter item,
             FormKey formKey,
@@ -1463,6 +1481,91 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return FormLinkInformation.Factory(item);
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IActorValueInformationGetter lhs,
+            IActorValueInformationGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((ISkyrimMajorRecordGetter)lhs, (ISkyrimMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ActorValueInformation_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActorValueInformation_FieldIndex.Name) ?? true))
+                {
+                    if (!object.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)ActorValueInformation_FieldIndex.Description] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActorValueInformation_FieldIndex.Description) ?? true))
+                {
+                    if (!object.Equals(lhs.Description, rhs.Description)) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)ActorValueInformation_FieldIndex.Abbreviation] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActorValueInformation_FieldIndex.Abbreviation) ?? true))
+                {
+                    if (!string.Equals(lhs.Abbreviation, rhs.Abbreviation)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)ActorValueInformation_FieldIndex.CNAM] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActorValueInformation_FieldIndex.CNAM) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.CNAM, rhs.CNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)ActorValueInformation_FieldIndex.Skill] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActorValueInformation_FieldIndex.Skill) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Skill, rhs.Skill, out var lhsSkill, out var rhsSkill, out var isSkillEqual))
+                    {
+                        if (!((ActorValueSkillCommon)((IActorValueSkillGetter)lhsSkill).CommonInstance()!).Equals(lhsSkill, rhsSkill, equalsMask?.GetSubCrystal((int)ActorValueInformation_FieldIndex.Skill))) return false;
+                    }
+                    else if (!isSkillEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)ActorValueInformation_FieldIndex.PerkTree] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ActorValueInformation_FieldIndex.PerkTree) ?? true))
+                {
+                    if (!lhs.PerkTree.SequenceEqual(rhs.PerkTree, (l, r) => ((ActorValuePerkNodeCommon)((IActorValuePerkNodeGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ActorValueInformation_FieldIndex.PerkTree)))) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            ISkyrimMajorRecordGetter lhs,
+            ISkyrimMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IActorValueInformationGetter)lhs, (IActorValueInformationGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IActorValueInformationGetter)lhs, (IActorValueInformationGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

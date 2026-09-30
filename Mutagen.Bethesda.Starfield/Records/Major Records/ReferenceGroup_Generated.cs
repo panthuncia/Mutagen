@@ -1075,6 +1075,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IReferenceGroupGetter item,
+            IReferenceGroupGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ReferenceGroupCommon)((IReferenceGroupGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static ReferenceGroup Duplicate(
             this IReferenceGroupGetter item,
             FormKey formKey,
@@ -1649,6 +1667,100 @@ namespace Mutagen.Bethesda.Starfield
                 yield return LNAMInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IReferenceGroupGetter lhs,
+            IReferenceGroupGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)ReferenceGroup_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ReferenceGroup_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)ReferenceGroup_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)ReferenceGroup_FieldIndex.Components] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ReferenceGroup_FieldIndex.Components) ?? true))
+                {
+                    if (!lhs.Components.SequenceEqual(rhs.Components, (l, r) => ((AComponentCommon)((IAComponentGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)ReferenceGroup_FieldIndex.Components)))) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)ReferenceGroup_FieldIndex.Name] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ReferenceGroup_FieldIndex.Name) ?? true))
+                {
+                    if (!string.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)ReferenceGroup_FieldIndex.Reference] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ReferenceGroup_FieldIndex.Reference) ?? true))
+                {
+                    if (!lhs.Reference.Equals(rhs.Reference)) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)ReferenceGroup_FieldIndex.PackIn] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ReferenceGroup_FieldIndex.PackIn) ?? true))
+                {
+                    if (!lhs.PackIn.Equals(rhs.PackIn)) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)ReferenceGroup_FieldIndex.LNAM] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ReferenceGroup_FieldIndex.LNAM) ?? true))
+                {
+                    if (!lhs.LNAM.Equals(rhs.LNAM)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)ReferenceGroup_FieldIndex.MNAM] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)ReferenceGroup_FieldIndex.MNAM) ?? true))
+                {
+                    if (!lhs.MNAM.SequenceEqualNullable(rhs.MNAM)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IReferenceGroupGetter)lhs, (IReferenceGroupGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IReferenceGroupGetter)lhs, (IReferenceGroupGetter)rhs, differs, equalsMask);
         }
         
         public IEnumerable<IAssetLinkGetter> EnumerateAssetLinks(IReferenceGroupGetter obj, AssetLinkQuery queryCategories, IAssetLinkCache? linkCache, Type? assetType)

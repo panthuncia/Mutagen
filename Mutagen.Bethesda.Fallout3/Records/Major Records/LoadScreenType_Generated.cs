@@ -1207,6 +1207,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ILoadScreenTypeGetter item,
+            ILoadScreenTypeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((LoadScreenTypeCommon)((ILoadScreenTypeGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static LoadScreenType Duplicate(
             this ILoadScreenTypeGetter item,
             FormKey formKey,
@@ -1809,6 +1827,195 @@ namespace Mutagen.Bethesda.Fallout3
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ILoadScreenTypeGetter lhs,
+            ILoadScreenTypeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IFallout3MajorRecordGetter)lhs, (IFallout3MajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)LoadScreenType_FieldIndex.Type] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreenType_FieldIndex.Type) ?? true))
+                {
+                    if (lhs.Type != rhs.Type) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)LoadScreenType_FieldIndex.X] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreenType_FieldIndex.X) ?? true))
+                {
+                    if (lhs.X != rhs.X) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)LoadScreenType_FieldIndex.Y] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreenType_FieldIndex.Y) ?? true))
+                {
+                    if (lhs.Y != rhs.Y) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)LoadScreenType_FieldIndex.Width] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreenType_FieldIndex.Width) ?? true))
+                {
+                    if (lhs.Width != rhs.Width) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)LoadScreenType_FieldIndex.Height] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreenType_FieldIndex.Height) ?? true))
+                {
+                    if (lhs.Height != rhs.Height) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)LoadScreenType_FieldIndex.Orientation] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreenType_FieldIndex.Orientation) ?? true))
+                {
+                    if (!lhs.Orientation.EqualsWithin(rhs.Orientation)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)LoadScreenType_FieldIndex.Font] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreenType_FieldIndex.Font) ?? true))
+                {
+                    if (lhs.Font != rhs.Font) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)LoadScreenType_FieldIndex.FontColorR] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreenType_FieldIndex.FontColorR) ?? true))
+                {
+                    if (!lhs.FontColorR.EqualsWithin(rhs.FontColorR)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)LoadScreenType_FieldIndex.FontColorG] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreenType_FieldIndex.FontColorG) ?? true))
+                {
+                    if (!lhs.FontColorG.EqualsWithin(rhs.FontColorG)) return false;
+                }
+                return true;
+            }
+            if (!Equal9()) differs[(int)LoadScreenType_FieldIndex.FontColorB] = true;
+            bool Equal9()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreenType_FieldIndex.FontColorB) ?? true))
+                {
+                    if (!lhs.FontColorB.EqualsWithin(rhs.FontColorB)) return false;
+                }
+                return true;
+            }
+            if (!Equal10()) differs[(int)LoadScreenType_FieldIndex.Alignment] = true;
+            bool Equal10()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreenType_FieldIndex.Alignment) ?? true))
+                {
+                    if (lhs.Alignment != rhs.Alignment) return false;
+                }
+                return true;
+            }
+            if (!Equal11()) differs[(int)LoadScreenType_FieldIndex.Unknown1] = true;
+            bool Equal11()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreenType_FieldIndex.Unknown1) ?? true))
+                {
+                    if (!MemoryExtensions.SequenceEqual(lhs.Unknown1.Span, rhs.Unknown1.Span)) return false;
+                }
+                return true;
+            }
+            if (!Equal12()) differs[(int)LoadScreenType_FieldIndex.Font2] = true;
+            bool Equal12()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreenType_FieldIndex.Font2) ?? true))
+                {
+                    if (lhs.Font2 != rhs.Font2) return false;
+                }
+                return true;
+            }
+            if (!Equal13()) differs[(int)LoadScreenType_FieldIndex.Font2ColorR] = true;
+            bool Equal13()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreenType_FieldIndex.Font2ColorR) ?? true))
+                {
+                    if (!lhs.Font2ColorR.EqualsWithin(rhs.Font2ColorR)) return false;
+                }
+                return true;
+            }
+            if (!Equal14()) differs[(int)LoadScreenType_FieldIndex.Font2ColorG] = true;
+            bool Equal14()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreenType_FieldIndex.Font2ColorG) ?? true))
+                {
+                    if (!lhs.Font2ColorG.EqualsWithin(rhs.Font2ColorG)) return false;
+                }
+                return true;
+            }
+            if (!Equal15()) differs[(int)LoadScreenType_FieldIndex.Font2ColorB] = true;
+            bool Equal15()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreenType_FieldIndex.Font2ColorB) ?? true))
+                {
+                    if (!lhs.Font2ColorB.EqualsWithin(rhs.Font2ColorB)) return false;
+                }
+                return true;
+            }
+            if (!Equal16()) differs[(int)LoadScreenType_FieldIndex.Unknown2] = true;
+            bool Equal16()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreenType_FieldIndex.Unknown2) ?? true))
+                {
+                    if (lhs.Unknown2 != rhs.Unknown2) return false;
+                }
+                return true;
+            }
+            if (!Equal17()) differs[(int)LoadScreenType_FieldIndex.Stats] = true;
+            bool Equal17()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)LoadScreenType_FieldIndex.Stats) ?? true))
+                {
+                    if (lhs.Stats != rhs.Stats) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILoadScreenTypeGetter)lhs, (ILoadScreenTypeGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ILoadScreenTypeGetter)lhs, (ILoadScreenTypeGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

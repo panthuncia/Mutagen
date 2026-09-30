@@ -606,6 +606,24 @@ namespace Mutagen.Bethesda.Fallout3
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IGameSettingIntGetter item,
+            IGameSettingIntGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((GameSettingIntCommon)((IGameSettingIntGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static GameSettingInt Duplicate(
             this IGameSettingIntGetter item,
             FormKey formKey,
@@ -1063,6 +1081,51 @@ namespace Mutagen.Bethesda.Fallout3
                 yield return item;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IGameSettingIntGetter lhs,
+            IGameSettingIntGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IGameSettingGetter)lhs, (IGameSettingGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)GameSettingInt_FieldIndex.Data] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)GameSettingInt_FieldIndex.Data) ?? true))
+                {
+                    if (lhs.Data != rhs.Data) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IGameSettingGetter lhs,
+            IGameSettingGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IGameSettingIntGetter)lhs, (IGameSettingIntGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IFallout3MajorRecordGetter lhs,
+            IFallout3MajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IGameSettingIntGetter)lhs, (IGameSettingIntGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IGameSettingIntGetter)lhs, (IGameSettingIntGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

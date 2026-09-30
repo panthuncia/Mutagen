@@ -1127,6 +1127,24 @@ namespace Mutagen.Bethesda.Starfield
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this ISpeechChallengeGetter item,
+            ISpeechChallengeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((SpeechChallengeCommon)((ISpeechChallengeGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static SpeechChallenge Duplicate(
             this ISpeechChallengeGetter item,
             FormKey formKey,
@@ -1712,6 +1730,118 @@ namespace Mutagen.Bethesda.Starfield
                 }
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            ISpeechChallengeGetter lhs,
+            ISpeechChallengeGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IStarfieldMajorRecordGetter)lhs, (IStarfieldMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)SpeechChallenge_FieldIndex.VirtualMachineAdapter] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SpeechChallenge_FieldIndex.VirtualMachineAdapter) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.VirtualMachineAdapter, rhs.VirtualMachineAdapter, out var lhsVirtualMachineAdapter, out var rhsVirtualMachineAdapter, out var isVirtualMachineAdapterEqual))
+                    {
+                        if (!((VirtualMachineAdapterCommon)((IVirtualMachineAdapterGetter)lhsVirtualMachineAdapter).CommonInstance()!).Equals(lhsVirtualMachineAdapter, rhsVirtualMachineAdapter, equalsMask?.GetSubCrystal((int)SpeechChallenge_FieldIndex.VirtualMachineAdapter))) return false;
+                    }
+                    else if (!isVirtualMachineAdapterEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)SpeechChallenge_FieldIndex.QuestStageOnWin] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SpeechChallenge_FieldIndex.QuestStageOnWin) ?? true))
+                {
+                    if (lhs.QuestStageOnWin != rhs.QuestStageOnWin) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)SpeechChallenge_FieldIndex.QuestStageOnLoss] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SpeechChallenge_FieldIndex.QuestStageOnLoss) ?? true))
+                {
+                    if (lhs.QuestStageOnLoss != rhs.QuestStageOnLoss) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)SpeechChallenge_FieldIndex.SRAN] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SpeechChallenge_FieldIndex.SRAN) ?? true))
+                {
+                    if (lhs.SRAN != rhs.SRAN) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)SpeechChallenge_FieldIndex.SGEN] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SpeechChallenge_FieldIndex.SGEN) ?? true))
+                {
+                    if (lhs.SGEN != rhs.SGEN) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)SpeechChallenge_FieldIndex.Quest] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SpeechChallenge_FieldIndex.Quest) ?? true))
+                {
+                    if (!lhs.Quest.Equals(rhs.Quest)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)SpeechChallenge_FieldIndex.Keywords] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SpeechChallenge_FieldIndex.Keywords) ?? true))
+                {
+                    if (!lhs.Keywords.SequenceEqualNullable(rhs.Keywords)) return false;
+                }
+                return true;
+            }
+            if (!Equal7()) differs[(int)SpeechChallenge_FieldIndex.Scenes] = true;
+            bool Equal7()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SpeechChallenge_FieldIndex.Scenes) ?? true))
+                {
+                    if (!lhs.Scenes.SequenceEqualNullable(rhs.Scenes)) return false;
+                }
+                return true;
+            }
+            if (!Equal8()) differs[(int)SpeechChallenge_FieldIndex.DIFF] = true;
+            bool Equal8()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)SpeechChallenge_FieldIndex.DIFF) ?? true))
+                {
+                    if (!MemorySliceExt.SequenceEqual(lhs.DIFF, rhs.DIFF)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IStarfieldMajorRecordGetter lhs,
+            IStarfieldMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISpeechChallengeGetter)lhs, (ISpeechChallengeGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((ISpeechChallengeGetter)lhs, (ISpeechChallengeGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate

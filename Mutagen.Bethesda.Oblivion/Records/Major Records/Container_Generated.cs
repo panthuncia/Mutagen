@@ -983,6 +983,24 @@ namespace Mutagen.Bethesda.Oblivion
         }
 
         #region Mutagen
+        /// <summary>
+        /// Marks, by field index, the fields in which the two records differ, each compared as Equals compares it.
+        /// Marks are only ever set: <paramref name="differs"/> needs a flag for every field of the records' type (its
+        /// registration's FieldCount), cleared. Both records must be of the same type.
+        /// </summary>
+        public static void FillDifferingFields(
+            this IContainerGetter item,
+            IContainerGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask = null)
+        {
+            ((ContainerCommon)((IContainerGetter)item).CommonInstance()!).FillDifferingFields(
+                lhs: item,
+                rhs: rhs,
+                differs: differs,
+                equalsMask: equalsMask);
+        }
+
         public static Container Duplicate(
             this IContainerGetter item,
             FormKey formKey,
@@ -1514,6 +1532,104 @@ namespace Mutagen.Bethesda.Oblivion
                 yield return CloseSoundInfo;
             }
             yield break;
+        }
+        
+        public virtual void FillDifferingFields(
+            IContainerGetter lhs,
+            IContainerGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            base.FillDifferingFields((IOblivionMajorRecordGetter)lhs, (IOblivionMajorRecordGetter)rhs, differs, equalsMask);
+            if (!Equal0()) differs[(int)Container_FieldIndex.Name] = true;
+            bool Equal0()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Container_FieldIndex.Name) ?? true))
+                {
+                    if (!string.Equals(lhs.Name, rhs.Name)) return false;
+                }
+                return true;
+            }
+            if (!Equal1()) differs[(int)Container_FieldIndex.Model] = true;
+            bool Equal1()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Container_FieldIndex.Model) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Model, rhs.Model, out var lhsModel, out var rhsModel, out var isModelEqual))
+                    {
+                        if (!((ModelCommon)((IModelGetter)lhsModel).CommonInstance()!).Equals(lhsModel, rhsModel, equalsMask?.GetSubCrystal((int)Container_FieldIndex.Model))) return false;
+                    }
+                    else if (!isModelEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal2()) differs[(int)Container_FieldIndex.Script] = true;
+            bool Equal2()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Container_FieldIndex.Script) ?? true))
+                {
+                    if (!lhs.Script.Equals(rhs.Script)) return false;
+                }
+                return true;
+            }
+            if (!Equal3()) differs[(int)Container_FieldIndex.Items] = true;
+            bool Equal3()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Container_FieldIndex.Items) ?? true))
+                {
+                    if (!lhs.Items.SequenceEqual(rhs.Items, (l, r) => ((ContainerItemCommon)((IContainerItemGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)Container_FieldIndex.Items)))) return false;
+                }
+                return true;
+            }
+            if (!Equal4()) differs[(int)Container_FieldIndex.Data] = true;
+            bool Equal4()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Container_FieldIndex.Data) ?? true))
+                {
+                    if (EqualsMaskHelper.RefEquality(lhs.Data, rhs.Data, out var lhsData, out var rhsData, out var isDataEqual))
+                    {
+                        if (!((ContainerDataCommon)((IContainerDataGetter)lhsData).CommonInstance()!).Equals(lhsData, rhsData, equalsMask?.GetSubCrystal((int)Container_FieldIndex.Data))) return false;
+                    }
+                    else if (!isDataEqual) return false;
+                }
+                return true;
+            }
+            if (!Equal5()) differs[(int)Container_FieldIndex.OpenSound] = true;
+            bool Equal5()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Container_FieldIndex.OpenSound) ?? true))
+                {
+                    if (!lhs.OpenSound.Equals(rhs.OpenSound)) return false;
+                }
+                return true;
+            }
+            if (!Equal6()) differs[(int)Container_FieldIndex.CloseSound] = true;
+            bool Equal6()
+            {
+                if ((equalsMask?.GetShouldTranslate((int)Container_FieldIndex.CloseSound) ?? true))
+                {
+                    if (!lhs.CloseSound.Equals(rhs.CloseSound)) return false;
+                }
+                return true;
+            }
+        }
+        
+        public override void FillDifferingFields(
+            IOblivionMajorRecordGetter lhs,
+            IOblivionMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IContainerGetter)lhs, (IContainerGetter)rhs, differs, equalsMask);
+        }
+        
+        public override void FillDifferingFields(
+            IMajorRecordGetter lhs,
+            IMajorRecordGetter rhs,
+            Span<bool> differs,
+            TranslationCrystal? equalsMask)
+        {
+            FillDifferingFields((IContainerGetter)lhs, (IContainerGetter)rhs, differs, equalsMask);
         }
         
         #region Duplicate
