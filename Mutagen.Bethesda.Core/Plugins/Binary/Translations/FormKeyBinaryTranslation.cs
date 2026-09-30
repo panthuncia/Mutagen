@@ -83,7 +83,11 @@ public sealed class FormKeyBinaryTranslation
             item = FormLinkInformation.Null;
         }
 
-        var formID = writer.MetaData.SeparatedMasterPackage!.GetFormID(item.FormKey);
+        var masters = writer.MetaData.SeparatedMasterPackage
+            ?? throw new InvalidOperationException(
+                "Writing a FormKey needs the mod's master list. Write the whole mod, or write single records with a " +
+                $"{nameof(WritingBundle)} from {nameof(WritingBundle)}.{nameof(WritingBundle.ForRecordsOf)}.");
+        var formID = masters.GetFormID(item.FormKey);
 
         UInt32BinaryTranslation<MutagenFrame, MutagenWriter>.Instance.Write(
             writer: writer,

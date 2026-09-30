@@ -3,6 +3,7 @@ using Mutagen.Bethesda.Plugins.Meta;
 using Mutagen.Bethesda.Plugins.Records;
 using Mutagen.Bethesda.Plugins.Utility;
 using Mutagen.Bethesda.Strings;
+using Noggog;
 
 namespace Mutagen.Bethesda.Plugins.Binary.Streams;
 
@@ -53,4 +54,31 @@ public sealed record WritingBundle(GameConstants Constants)
     public EncodingBundle Encodings { get; set; } = Constants.Encodings;
     
     public IModFlagsGetter? Header { get; set; }
+
+    /// <summary>
+    /// A bundle for writing a mod's records one at a time, outside a write of the whole mod. FormKeys are mapped to
+    /// FormIDs against the mod's master list, as writing the whole mod maps them.
+    /// </summary>
+    /// <param name="mod">The mod the records belong to. Its master list must include every mod the records link to.</param>
+    /// <param name="masterFlagLookup">
+    /// Required for games with separated master load orders (e.g. Starfield).
+    /// Can be null for legacy games (e.g. Skyrim, Oblivion, Fallout 4).
+    /// </param>
+    public static WritingBundle ForRecordsOf(
+        IModGetter mod,
+        IReadOnlyCache<IModMasterStyledGetter, ModKey>? masterFlagLookup = null)
+    {
+        var masters = new MasterReferenceCollection(mod.ModKey, mod.MasterReferences);
+        return new WritingBundle(GameConstants.Get(mod.GameRelease))
+        {
+            MasterReferences = masters,
+            SeparatedMasterPackage = Masters.SeparatedMasterPackage.Factory(
+                mod.GameRelease,
+                mod.ModKey,
+                mod.GetMasterStyle(),
+                masters,
+                masterFlagLookup),
+            Header = mod,
+        };
+    }
 }
