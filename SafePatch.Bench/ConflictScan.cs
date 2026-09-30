@@ -183,7 +183,7 @@ internal static class ConflictScan
     private static Func<IMajorRecordGetter, IMajorRecordGetter, bool> CommonEquals(Type classType, TranslationCrystal crystal)
     {
         var registration = LoquiRegistration.GetRegister(classType);
-        var common = registration.CommonType;
+        var common = classType.Assembly.GetType(classType.FullName + "Common")!;
         var instance = common.GetField("Instance", BindingFlags.Public | BindingFlags.Static)!.GetValue(null)!;
         var method = common.GetMethods(BindingFlags.Public | BindingFlags.Instance)
             .First(m => m.Name == "Equals" && m.GetParameters() is [var p, var q, var r]
