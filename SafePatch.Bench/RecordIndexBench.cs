@@ -15,7 +15,7 @@ internal static class RecordIndexBench
 {
     public static int Run(string data, string pluginsTxt, int runs, string label, string? cache)
     {
-        var paths = Conflicts.Paths(data, pluginsTxt).Select(p => p.Path).ToArray();
+        var paths = Conflicts.Paths(data, pluginsTxt).ToArray();
         for (var run = 0; run < runs; run++)
         {
             GC.Collect();
