@@ -13,6 +13,7 @@ using SafePatch.Authoring.Index;
 //   SafePatch.Bench check-threads <Data folder> <plugin>
 //   SafePatch.Bench index-check <Data folder> <plugins.txt or .paths> [cache folder]
 //   SafePatch.Bench index-proto <Data folder> <plugins.txt or .paths> [runs=3] [label] [cache folder]
+//   SafePatch.Bench record-index <Data folder> <plugins.txt or .paths> [runs=3] [label] [cache folder]
 //   SafePatch.Bench check-first <Data folder> <plugin,...> <record type,...>
 //   SafePatch.Bench conflict-scan <Data folder> <plugins.txt or .paths> [runs=3] [label] [mask|fields|equals]
 //   SafePatch.Bench linkcache <Data folder> <plugins.txt or .paths> [label]
@@ -36,6 +37,15 @@ if (args is ["index-check", var checkIndexData, var checkIndexPlugins, .. var ch
 {
     System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
     return IndexCheck.Run(checkIndexData, checkIndexPlugins, checkIndexRest is [var checkIndexCache] ? checkIndexCache : null);
+}
+if (args is ["record-index", var recData, var recPlugins, .. var recRest])
+{
+#if SAFEPATCH_RECORD_INDEX
+    return RecordIndexBench.Run(recData, recPlugins, recRest is [var rr, ..] ? int.Parse(rr) : 3, recRest is [_, var rl, ..] ? rl : "", recRest is [_, _, var rc] ? rc : null);
+#else
+    Console.Error.WriteLine("record-index needs the record index: build with -p:SafePatchRecordIndex=true.");
+    return 2;
+#endif
 }
 if (args is ["index-proto", var protoData, var protoPlugins, .. var protoRest])
 {
