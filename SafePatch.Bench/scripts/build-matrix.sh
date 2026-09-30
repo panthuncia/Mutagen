@@ -18,6 +18,8 @@ fix-nullable-fallback fix/nullable-enum-fallback-parse
 fix-overlay-defaults fix/overlay-declared-defaults
 fix-cumulative-breaks fix/cumulative-break-flags
 fix-gendered-equality fix/gendered-item-equality
+fix-condition-pack-data fix/condition-pack-data-flag
+fix-byte-list-equality fix/byte-list-equality
 perf-group-cache perf/cache-overlay-groups
 perf-deferred-fill a0f418c
 perf-deferred-fill-peek 3958614
