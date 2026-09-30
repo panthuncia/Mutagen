@@ -1416,7 +1416,7 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(IdleTimeritem);
             }
-            hash.Add(item.Animations);
+            hash.AddContents(item.Animations);
             if (item.Model is {} Modelitem)
             {
                 hash.Add(Modelitem);

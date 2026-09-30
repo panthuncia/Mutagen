@@ -1799,7 +1799,7 @@ namespace Mutagen.Bethesda.Fallout3
                 hash.Add(MapColoritem);
             }
             hash.Add(item.Worldspace);
-            hash.Add(item.Areas);
+            hash.AddContents(item.Areas);
             if (item.Objects is {} Objectsitem)
             {
                 hash.Add(Objectsitem);

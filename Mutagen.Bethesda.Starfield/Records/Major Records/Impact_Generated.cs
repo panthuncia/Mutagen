@@ -2240,7 +2240,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IImpactGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Model is {} Modelitem)
             {
                 hash.Add(Modelitem);
@@ -2253,8 +2253,8 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.NoDecalData);
             hash.Add(item.Result);
             hash.Add(item.Unknown);
-            hash.Add(item.ProjectedDecals);
-            hash.Add(item.ScatterProjectedDecals);
+            hash.AddContents(item.ProjectedDecals);
+            hash.AddContents(item.ScatterProjectedDecals);
             if (item.Decal is {} Decalitem)
             {
                 hash.Add(Decalitem);

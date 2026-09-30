@@ -3678,7 +3678,7 @@ namespace Mutagen.Bethesda.Fallout4
                 hash.Add(Nameitem);
             }
             hash.Add(item.MenuDisplayObject);
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             hash.Add(item.Flags);
             hash.Add(item.BaseCost);
             hash.Add(item.MagicSkill);
@@ -3716,13 +3716,13 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.CastingSoundLevel);
             hash.Add(item.ScriptEffectAIScore);
             hash.Add(item.ScriptEffectAIDelayTime);
-            hash.Add(item.CounterEffects);
-            hash.Add(item.Sounds);
+            hash.AddContents(item.CounterEffects);
+            hash.AddContents(item.Sounds);
             if (item.Description is {} Descriptionitem)
             {
                 hash.Add(Descriptionitem);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

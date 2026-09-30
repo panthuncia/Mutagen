@@ -1546,7 +1546,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(XALGitem);
             }
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             if (item.SMLS is {} SMLSitem)
             {
                 hash.Add(SMLSitem);

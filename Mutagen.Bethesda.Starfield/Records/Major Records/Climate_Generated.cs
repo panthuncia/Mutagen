@@ -1544,8 +1544,8 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(VirtualMachineAdapteritem);
             }
-            hash.Add(item.Weathers);
-            hash.Add(item.WeatherSettings);
+            hash.AddContents(item.Weathers);
+            hash.AddContents(item.WeatherSettings);
             hash.Add(item.SunriseBegin);
             hash.Add(item.SunriseEnd);
             hash.Add(item.SunsetBegin);

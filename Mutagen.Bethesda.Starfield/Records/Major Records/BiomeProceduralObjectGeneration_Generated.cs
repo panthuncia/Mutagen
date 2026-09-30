@@ -1068,7 +1068,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(BNAMitem);
             }
-            hash.Add(item.Objects);
+            hash.AddContents(item.Objects);
             hash.Add(item.Footprints);
             return hash.ToHashCode();
         }

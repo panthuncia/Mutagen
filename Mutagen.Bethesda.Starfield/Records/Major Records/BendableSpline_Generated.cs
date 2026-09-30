@@ -1741,7 +1741,7 @@ namespace Mutagen.Bethesda.Starfield
                 hash.Add(ObjectBoundsitem);
             }
             hash.Add(item.DirtinessScale);
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             hash.Add(item.DefaultNumberOfTiles);
             hash.Add(item.DefaultNumberOfSlices);
             hash.Add(item.DefaultNumberOfTilesIsRelativeToLength);

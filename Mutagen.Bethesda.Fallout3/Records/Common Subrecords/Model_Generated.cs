@@ -1117,11 +1117,8 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 hash.Add(MODBitem);
             }
-            if (item.Hashes is {} HashesItem)
-            {
-                hash.Add(HashesItem);
-            }
-            hash.Add(item.AlternateTextures);
+            hash.AddContents(item.Hashes);
+            hash.AddContents(item.AlternateTextures);
             if (item.FaceGenFlags is {} FaceGenFlagsitem)
             {
                 hash.Add(FaceGenFlagsitem);

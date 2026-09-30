@@ -3762,19 +3762,13 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(Lightingitem);
             }
-            if (item.OcclusionData is {} OcclusionDataItem)
-            {
-                hash.Add(OcclusionDataItem);
-            }
+            hash.AddContents(item.OcclusionData);
             if (item.MaxHeightData is {} MaxHeightDataitem)
             {
                 hash.Add(MaxHeightDataitem);
             }
             hash.Add(item.LightingTemplate);
-            if (item.LNAM is {} LNAMItem)
-            {
-                hash.Add(LNAMItem);
-            }
+            hash.AddContents(item.LNAM);
             if (item.WaterHeight is {} WaterHeightitem)
             {
                 hash.Add(WaterHeightitem);
@@ -3783,16 +3777,10 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(WaterNoiseTextureitem);
             }
-            hash.Add(item.Regions);
+            hash.AddContents(item.Regions);
             hash.Add(item.Location);
-            if (item.XWCN is {} XWCNItem)
-            {
-                hash.Add(XWCNItem);
-            }
-            if (item.XWCS is {} XWCSItem)
-            {
-                hash.Add(XWCSItem);
-            }
+            hash.AddContents(item.XWCN);
+            hash.AddContents(item.XWCS);
             if (item.WaterVelocity is {} WaterVelocityitem)
             {
                 hash.Add(WaterVelocityitem);
@@ -3817,15 +3805,15 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(Landscapeitem);
             }
-            hash.Add(item.NavigationMeshes);
+            hash.AddContents(item.NavigationMeshes);
             hash.Add(item.Timestamp);
             hash.Add(item.UnknownGroupData);
             hash.Add(item.PersistentTimestamp);
             hash.Add(item.PersistentUnknownGroupData);
-            hash.Add(item.Persistent);
+            hash.AddContents(item.Persistent);
             hash.Add(item.TemporaryTimestamp);
             hash.Add(item.TemporaryUnknownGroupData);
-            hash.Add(item.Temporary);
+            hash.AddContents(item.Temporary);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

@@ -984,7 +984,7 @@ namespace Mutagen.Bethesda.Skyrim
         {
             var hash = new HashCode();
             hash.Add(item.Music);
-            hash.Add(item.Sounds);
+            hash.AddContents(item.Sounds);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

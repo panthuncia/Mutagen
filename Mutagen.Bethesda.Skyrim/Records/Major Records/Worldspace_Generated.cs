@@ -3634,7 +3634,7 @@ namespace Mutagen.Bethesda.Skyrim
         public virtual int GetHashCode(IWorldspaceGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.LargeReferences);
+            hash.AddContents(item.LargeReferences);
             if (item.MaxHeight is {} MaxHeightitem)
             {
                 hash.Add(MaxHeightitem);
@@ -3707,17 +3707,14 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(WaterEnvironmentMapitem);
             }
-            if (item.OffsetData is {} OffsetDataItem)
-            {
-                hash.Add(OffsetDataItem);
-            }
+            hash.AddContents(item.OffsetData);
             if (item.TopCell is {} TopCellitem)
             {
                 hash.Add(TopCellitem);
             }
             hash.Add(item.SubCellsTimestamp);
             hash.Add(item.SubCellsUnknown);
-            hash.Add(item.SubCells);
+            hash.AddContents(item.SubCells);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

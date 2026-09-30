@@ -2291,7 +2291,7 @@ namespace Mutagen.Bethesda.Starfield
                 hash.Add(DropdownSounditem);
             }
             hash.Add(item.Description);
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             hash.Add(item.Value);
             hash.Add(item.Weight);
             hash.Add(item.Projectile);

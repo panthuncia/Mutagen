@@ -2538,7 +2538,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(VirtualMachineAdapteritem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);
@@ -2554,11 +2554,11 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.Unknown);
             hash.Add(item.Unknown2);
             hash.Add(item.AttachPoint);
-            hash.Add(item.AttachParentSlots);
+            hash.AddContents(item.AttachParentSlots);
             hash.Add(item.Unknown3);
-            hash.Add(item.Includes);
-            hash.Add(item.TargetOmodKeywords);
-            hash.Add(item.FilterKeywords);
+            hash.AddContents(item.Includes);
+            hash.AddContents(item.TargetOmodKeywords);
+            hash.AddContents(item.FilterKeywords);
             hash.Add(item.LooseMod);
             if (item.Priority is {} Priorityitem)
             {

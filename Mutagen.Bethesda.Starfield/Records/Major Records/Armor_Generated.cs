@@ -3503,7 +3503,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Transformsitem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);
@@ -3533,23 +3533,23 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.BlockBashImpactDataSet);
             hash.Add(item.AlternateBlockMaterial);
             hash.Add(item.Race);
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             if (item.Description is {} Descriptionitem)
             {
                 hash.Add(Descriptionitem);
             }
             hash.Add(item.InstanceNaming);
-            hash.Add(item.Armatures);
+            hash.AddContents(item.Armatures);
             hash.Add(item.Value);
             hash.Add(item.Weight);
             hash.Add(item.Health);
             hash.Add(item.ArmorRating);
             hash.Add(item.BaseAddonIndex);
             hash.Add(item.StaggerRating);
-            hash.Add(item.Unused);
-            hash.Add(item.Resistances);
-            hash.Add(item.AttachParentSlots);
-            hash.Add(item.ObjectTemplates);
+            hash.AddContents(item.Unused);
+            hash.AddContents(item.Resistances);
+            hash.AddContents(item.AttachParentSlots);
+            hash.AddContents(item.ObjectTemplates);
             if (item.Voice is {} Voiceitem)
             {
                 hash.Add(Voiceitem);

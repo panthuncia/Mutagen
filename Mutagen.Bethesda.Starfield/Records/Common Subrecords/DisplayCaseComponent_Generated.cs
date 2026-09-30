@@ -1048,8 +1048,8 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IDisplayCaseComponentGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Items);
-            hash.Add(item.DCED);
+            hash.AddContents(item.Items);
+            hash.AddContents(item.DCED);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

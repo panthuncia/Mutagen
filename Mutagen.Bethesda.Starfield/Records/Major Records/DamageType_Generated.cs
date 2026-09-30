@@ -1276,7 +1276,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Nameitem);
             }
-            hash.Add(item.DamageTypes);
+            hash.AddContents(item.DamageTypes);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

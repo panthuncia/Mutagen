@@ -939,7 +939,7 @@ namespace Mutagen.Bethesda.Fallout3
             var hash = new HashCode();
             hash.Add(item.Quest);
             hash.Add(item.Stage);
-            hash.Add(item.Unused);
+            hash.AddContents(item.Unused);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

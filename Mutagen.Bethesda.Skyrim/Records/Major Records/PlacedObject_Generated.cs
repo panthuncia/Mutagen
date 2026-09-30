@@ -4901,15 +4901,12 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(Primitiveitem);
             }
-            if (item.XORD is {} XORDItem)
-            {
-                hash.Add(XORDItem);
-            }
+            hash.AddContents(item.XORD);
             if (item.OcclusionPlane is {} OcclusionPlaneitem)
             {
                 hash.Add(OcclusionPlaneitem);
             }
-            hash.Add(item.Portals);
+            hash.AddContents(item.Portals);
             if (item.RoomPortal is {} RoomPortalitem)
             {
                 hash.Add(RoomPortalitem);
@@ -4917,22 +4914,16 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.Unknown);
             hash.Add(item.LightingTemplate);
             hash.Add(item.ImageSpace);
-            hash.Add(item.LinkedRooms);
+            hash.AddContents(item.LinkedRooms);
             hash.Add(item.IsMultiBoundPrimitive);
-            if (item.RagdollData is {} RagdollDataItem)
-            {
-                hash.Add(RagdollDataItem);
-            }
-            if (item.RagdollBipedData is {} RagdollBipedDataItem)
-            {
-                hash.Add(RagdollBipedDataItem);
-            }
+            hash.AddContents(item.RagdollData);
+            hash.AddContents(item.RagdollBipedData);
             if (item.Radius is {} Radiusitem)
             {
                 hash.Add(Radiusitem);
             }
-            hash.Add(item.Reflections);
-            hash.Add(item.LitWater);
+            hash.AddContents(item.Reflections);
+            hash.AddContents(item.LitWater);
             hash.Add(item.Emittance);
             if (item.LightData is {} LightDataitem)
             {
@@ -4948,27 +4939,15 @@ namespace Mutagen.Bethesda.Skyrim
             }
             hash.Add(item.TeleportMessageBox);
             hash.Add(item.MultiBoundReference);
-            if (item.XWCN is {} XWCNItem)
-            {
-                hash.Add(XWCNItem);
-            }
-            if (item.XWCS is {} XWCSItem)
-            {
-                hash.Add(XWCSItem);
-            }
+            hash.AddContents(item.XWCN);
+            hash.AddContents(item.XWCS);
             if (item.WaterVelocity is {} WaterVelocityitem)
             {
                 hash.Add(WaterVelocityitem);
             }
-            if (item.XCVL is {} XCVLItem)
-            {
-                hash.Add(XCVLItem);
-            }
+            hash.AddContents(item.XCVL);
             hash.Add(item.XCZR);
-            if (item.XCZA is {} XCZAItem)
-            {
-                hash.Add(XCZAItem);
-            }
+            hash.AddContents(item.XCZA);
             hash.Add(item.XCZC);
             if (item.Scale is {} Scaleitem)
             {
@@ -4998,7 +4977,7 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(NavigationDoorLinkitem);
             }
-            hash.Add(item.LocationRefTypes);
+            hash.AddContents(item.LocationRefTypes);
             hash.Add(item.IsIgnoredBySandbox);
             hash.Add(item.Owner);
             if (item.FactionRank is {} FactionRankitem)
@@ -5018,7 +4997,7 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(EnableParentitem);
             }
-            hash.Add(item.LinkedReferences);
+            hash.AddContents(item.LinkedReferences);
             if (item.Patrol is {} Patrolitem)
             {
                 hash.Add(Patrolitem);
@@ -5041,10 +5020,7 @@ namespace Mutagen.Bethesda.Skyrim
                 hash.Add(MapMarkeritem);
             }
             hash.Add(item.AttachRef);
-            if (item.DistantLodData is {} DistantLodDataItem)
-            {
-                hash.Add(DistantLodDataItem);
-            }
+            hash.AddContents(item.DistantLodData);
             if (item.Placement is {} Placementitem)
             {
                 hash.Add(Placementitem);

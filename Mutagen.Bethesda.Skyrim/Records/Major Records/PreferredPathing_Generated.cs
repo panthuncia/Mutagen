@@ -1042,8 +1042,8 @@ namespace Mutagen.Bethesda.Skyrim
         public virtual int GetHashCode(IPreferredPathingGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.NavmeshSets);
-            hash.Add(item.NavmeshTree);
+            hash.AddContents(item.NavmeshSets);
+            hash.AddContents(item.NavmeshTree);
             return hash.ToHashCode();
         }
         

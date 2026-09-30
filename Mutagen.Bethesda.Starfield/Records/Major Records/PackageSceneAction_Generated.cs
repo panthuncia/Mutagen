@@ -948,7 +948,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IPackageSceneActionGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Packages);
+            hash.AddContents(item.Packages);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

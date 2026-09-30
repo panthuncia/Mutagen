@@ -985,10 +985,7 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 hash.Add(Insigniaitem);
             }
-            if (item.XNAM is {} XNAMItem)
-            {
-                hash.Add(XNAMItem);
-            }
+            hash.AddContents(item.XNAM);
             return hash.ToHashCode();
         }
         

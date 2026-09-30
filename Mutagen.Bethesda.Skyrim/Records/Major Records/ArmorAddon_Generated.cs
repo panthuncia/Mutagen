@@ -1978,7 +1978,7 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(HashCode.Combine(TextureSwapListitem.Male, TextureSwapListitem.Female));
             }
-            hash.Add(item.AdditionalRaces);
+            hash.AddContents(item.AdditionalRaces);
             hash.Add(item.FootstepSound);
             hash.Add(item.ArtObject);
             hash.Add(base.GetHashCode());

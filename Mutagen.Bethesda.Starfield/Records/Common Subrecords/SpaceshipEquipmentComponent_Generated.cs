@@ -812,10 +812,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(ISpaceshipEquipmentComponentGetter item)
         {
             var hash = new HashCode();
-            if (item.ESSF is {} ESSFItem)
-            {
-                hash.Add(ESSFItem);
-            }
+            hash.AddContents(item.ESSF);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

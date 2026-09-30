@@ -6914,7 +6914,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(XALGitem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             hash.Add(item.Base);
             hash.Add(item.XMSP);
             hash.Add(item.XPWR);
@@ -6943,7 +6943,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Primitiveitem);
             }
-            hash.Add(item.PlacedObjectXCZRXCZA);
+            hash.AddContents(item.PlacedObjectXCZRXCZA);
             if (item.VolumeReflectionProbeOffsetIntensity is {} VolumeReflectionProbeOffsetIntensityitem)
             {
                 hash.Add(VolumeReflectionProbeOffsetIntensityitem);
@@ -6977,15 +6977,15 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Patrolitem);
             }
-            hash.Add(item.RagdollData);
+            hash.AddContents(item.RagdollData);
             if (item.TeleportDestination is {} TeleportDestinationitem)
             {
                 hash.Add(TeleportDestinationitem);
             }
             hash.Add(item.TeleportName);
             hash.Add(item.ReferenceGroup);
-            hash.Add(item.LocationRefTypes);
-            hash.Add(item.LayeredMaterialSwaps);
+            hash.AddContents(item.LocationRefTypes);
+            hash.AddContents(item.LayeredMaterialSwaps);
             hash.Add(item.XPCK);
             hash.Add(item.SourcePackIn);
             hash.Add(item.PersistentLocation);
@@ -6993,7 +6993,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(ProjectedDecalitem);
             }
-            hash.Add(item.ProjectedDecalReferences);
+            hash.AddContents(item.ProjectedDecalReferences);
             if (item.ConstrainedDecal is {} ConstrainedDecalitem)
             {
                 hash.Add(ConstrainedDecalitem);
@@ -7011,15 +7011,12 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Collisionitem);
             }
-            hash.Add(item.PowerLinks);
+            hash.AddContents(item.PowerLinks);
             if (item.Count is {} Countitem)
             {
                 hash.Add(Countitem);
             }
-            if (item.XFLG is {} XFLGItem)
-            {
-                hash.Add(XFLGItem);
-            }
+            hash.AddContents(item.XFLG);
             if (item.LightFlicker is {} LightFlickeritem)
             {
                 hash.Add(LightFlickeritem);
@@ -7048,7 +7045,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Ownershipitem);
             }
-            hash.Add(item.LightColors);
+            hash.AddContents(item.LightColors);
             if (item.GroupedPackIn is {} GroupedPackInitem)
             {
                 hash.Add(GroupedPackInitem);
@@ -7063,10 +7060,7 @@ namespace Mutagen.Bethesda.Starfield
                 hash.Add(BOLVitem);
             }
             hash.Add(item.XWCN);
-            if (item.XWCU is {} XWCUItem)
-            {
-                hash.Add(XWCUItem);
-            }
+            hash.AddContents(item.XWCU);
             hash.Add(item.Location);
             if (item.XTRI is {} XTRIitem)
             {
@@ -7076,10 +7070,10 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(LightRoundednessitem);
             }
-            hash.Add(item.LinkedReferences);
+            hash.AddContents(item.LinkedReferences);
             hash.Add(item.IsLinkedRefTransient);
             hash.Add(item.XLIB);
-            hash.Add(item.SnapLinks);
+            hash.AddContents(item.SnapLinks);
             hash.Add(item.EncounterZone);
             if (item.GeometryDirtinessScale is {} GeometryDirtinessScaleitem)
             {
@@ -7089,7 +7083,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Lockitem);
             }
-            hash.Add(item.Properties);
+            hash.AddContents(item.Properties);
             if (item.ExternalEmittance is {} ExternalEmittanceitem)
             {
                 hash.Add(ExternalEmittanceitem);
@@ -7102,10 +7096,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Splineitem);
             }
-            if (item.XNSE is {} XNSEItem)
-            {
-                hash.Add(XNSEItem);
-            }
+            hash.AddContents(item.XNSE);
             hash.Add(item.AttachRef);
             if (item.RagdollBipedRotation is {} RagdollBipedRotationitem)
             {
@@ -7120,7 +7111,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(EnableParentitem);
             }
-            hash.Add(item.Traversals);
+            hash.AddContents(item.Traversals);
             hash.Add(item.NumTraversalFluffBytes);
             if (item.NavigationDoorLink is {} NavigationDoorLinkitem)
             {

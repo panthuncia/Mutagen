@@ -1199,16 +1199,13 @@ namespace Mutagen.Bethesda.Fallout3
         {
             var hash = new HashCode();
             hash.Add(item.MetadataSummary);
-            if (item.CompiledScript is {} CompiledScriptItem)
-            {
-                hash.Add(CompiledScriptItem);
-            }
+            hash.AddContents(item.CompiledScript);
             if (item.SourceCode is {} SourceCodeitem)
             {
                 hash.Add(SourceCodeitem);
             }
-            hash.Add(item.LocalVariables);
-            hash.Add(item.References);
+            hash.AddContents(item.LocalVariables);
+            hash.AddContents(item.References);
             return hash.ToHashCode();
         }
         

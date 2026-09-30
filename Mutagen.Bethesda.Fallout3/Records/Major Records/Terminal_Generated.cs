@@ -1912,7 +1912,7 @@ namespace Mutagen.Bethesda.Fallout3
             hash.Add(item.Flags);
             hash.Add(item.ServerType);
             hash.Add(item.Unused);
-            hash.Add(item.MenuItems);
+            hash.AddContents(item.MenuItems);
             hash.Add(item.DNAMDataTypeState);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();

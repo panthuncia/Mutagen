@@ -1779,7 +1779,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IAimOpticalSightMarkerGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             hash.Add(item.ActivateSightOnSightedMode);
             hash.Add(item.OpticalSightAttachNode);
             hash.Add(item.DelayBeforeSightActivation);

@@ -938,14 +938,8 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IWorldSpaceOverlayComponentGetter item)
         {
             var hash = new HashCode();
-            if (item.SNAM is {} SNAMItem)
-            {
-                hash.Add(SNAMItem);
-            }
-            if (item.PNAM is {} PNAMItem)
-            {
-                hash.Add(PNAMItem);
-            }
+            hash.AddContents(item.SNAM);
+            hash.AddContents(item.PNAM);
             hash.Add(item.SurfaceBlock);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();

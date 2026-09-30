@@ -2262,7 +2262,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(XALGitem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             hash.Add(item.ChanceNone);
             if (item.MaxCount is {} MaxCountitem)
             {
@@ -2270,9 +2270,9 @@ namespace Mutagen.Bethesda.Starfield
             }
             hash.Add(item.Flags);
             hash.Add(item.UseGlobal);
-            hash.Add(item.Conditions);
-            hash.Add(item.Entries);
-            hash.Add(item.FilterKeywordChances);
+            hash.AddContents(item.Conditions);
+            hash.AddContents(item.Entries);
+            hash.AddContents(item.FilterKeywordChances);
             if (item.Model is {} Modelitem)
             {
                 hash.Add(Modelitem);

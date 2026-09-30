@@ -1349,7 +1349,7 @@ namespace Mutagen.Bethesda.Oblivion
             {
                 hash.Add(Targetitem);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

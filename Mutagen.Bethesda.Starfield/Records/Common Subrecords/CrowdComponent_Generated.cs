@@ -1024,11 +1024,8 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(CDNDitem);
             }
-            if (item.CDNS is {} CDNSItem)
-            {
-                hash.Add(CDNSItem);
-            }
-            hash.Add(item.Items);
+            hash.AddContents(item.CDNS);
+            hash.AddContents(item.Items);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

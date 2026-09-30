@@ -812,10 +812,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(ICityMapsUsageComponentGetter item)
         {
             var hash = new HashCode();
-            if (item.MOD2 is {} MOD2Item)
-            {
-                hash.Add(MOD2Item);
-            }
+            hash.AddContents(item.MOD2);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

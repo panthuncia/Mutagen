@@ -2154,7 +2154,7 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(Descriptionitem);
             }
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             hash.Add(item.Projectile);
             hash.Add(item.Flags);
             hash.Add(item.Damage);

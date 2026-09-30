@@ -1304,9 +1304,9 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IPerkRankGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Effects);
-            hash.Add(item.Conditions);
-            hash.Add(item.Activities);
+            hash.AddContents(item.Effects);
+            hash.AddContents(item.Conditions);
+            hash.AddContents(item.Activities);
             hash.Add(item.Description);
             hash.Add(item.UnknownStatic);
             return hash.ToHashCode();

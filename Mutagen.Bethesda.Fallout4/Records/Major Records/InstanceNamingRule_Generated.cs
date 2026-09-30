@@ -1145,7 +1145,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(Nameitem);
             }
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             if (item.Properties is {} Propertiesitem)
             {
                 hash.Add(Propertiesitem);

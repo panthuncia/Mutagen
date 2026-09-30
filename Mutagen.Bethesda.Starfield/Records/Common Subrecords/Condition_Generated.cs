@@ -1007,7 +1007,7 @@ namespace Mutagen.Bethesda.Starfield
             var hash = new HashCode();
             hash.Add(item.CompareOperator);
             hash.Add(item.Flags);
-            hash.Add(item.Unknown1);
+            hash.AddContents(item.Unknown1);
             hash.Add(item.Unknown2);
             hash.Add(item.Data);
             return hash.ToHashCode();

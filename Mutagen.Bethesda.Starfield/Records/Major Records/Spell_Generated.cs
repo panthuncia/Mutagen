@@ -2349,7 +2349,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Nameitem);
             }
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             hash.Add(item.EquipmentType);
             if (item.PickupSound is {} PickupSounditem)
             {
@@ -2377,7 +2377,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(MUIDitem);
             }
-            hash.Add(item.Effects);
+            hash.AddContents(item.Effects);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

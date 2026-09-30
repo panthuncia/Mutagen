@@ -988,8 +988,8 @@ namespace Mutagen.Bethesda.Oblivion
         {
             var hash = new HashCode();
             hash.Add(item.Point);
-            hash.Add(item.NumConnectionsFluffBytes);
-            hash.Add(item.Connections);
+            hash.AddContents(item.NumConnectionsFluffBytes);
+            hash.AddContents(item.Connections);
             return hash.ToHashCode();
         }
         

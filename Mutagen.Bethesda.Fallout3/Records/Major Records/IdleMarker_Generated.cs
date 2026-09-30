@@ -1288,7 +1288,7 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 hash.Add(IdleTimeritem);
             }
-            hash.Add(item.Animations);
+            hash.AddContents(item.Animations);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

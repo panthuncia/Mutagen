@@ -2025,7 +2025,7 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(Nameitem);
             }
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             hash.Add(item.MenuDisplayObject);
             hash.Add(item.EquipmentType);
             hash.Add(item.Description);
@@ -2038,7 +2038,7 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.CastDuration);
             hash.Add(item.Range);
             hash.Add(item.HalfCostPerk);
-            hash.Add(item.Effects);
+            hash.AddContents(item.Effects);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

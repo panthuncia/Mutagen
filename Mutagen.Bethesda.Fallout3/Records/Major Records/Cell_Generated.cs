@@ -3671,12 +3671,9 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 hash.Add(WaterNoiseTextureitem);
             }
-            hash.Add(item.Regions);
+            hash.AddContents(item.Regions);
             hash.Add(item.ImageSpace);
-            if (item.XCET is {} XCETItem)
-            {
-                hash.Add(XCETItem);
-            }
+            hash.AddContents(item.XCET);
             hash.Add(item.EncounterZone);
             hash.Add(item.Climate);
             hash.Add(item.Water);
@@ -3686,27 +3683,24 @@ namespace Mutagen.Bethesda.Fallout3
                 hash.Add(FactionRankitem);
             }
             hash.Add(item.AcousticSpace);
-            if (item.XCMT is {} XCMTItem)
-            {
-                hash.Add(XCMTItem);
-            }
+            hash.AddContents(item.XCMT);
             hash.Add(item.MusicType);
             if (item.Landscape is {} Landscapeitem)
             {
                 hash.Add(Landscapeitem);
             }
-            hash.Add(item.NavigationMeshes);
+            hash.AddContents(item.NavigationMeshes);
             hash.Add(item.Timestamp);
             hash.Add(item.UnknownGroupData);
             hash.Add(item.PersistentTimestamp);
             hash.Add(item.PersistentUnknownGroupData);
-            hash.Add(item.Persistent);
+            hash.AddContents(item.Persistent);
             hash.Add(item.TemporaryTimestamp);
             hash.Add(item.TemporaryUnknownGroupData);
-            hash.Add(item.Temporary);
+            hash.AddContents(item.Temporary);
             hash.Add(item.VisibleWhenDistantTimestamp);
             hash.Add(item.VisibleWhenDistantUnknownGroupData);
-            hash.Add(item.VisibleWhenDistant);
+            hash.AddContents(item.VisibleWhenDistant);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

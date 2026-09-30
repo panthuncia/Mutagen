@@ -1792,7 +1792,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(FindMatchingRefFromEventitem);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             if (item.ALPS is {} ALPSitem)
             {
                 hash.Add(ALPSitem);

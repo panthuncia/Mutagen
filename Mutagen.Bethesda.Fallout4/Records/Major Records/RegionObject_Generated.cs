@@ -1572,7 +1572,7 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.SinkVariance);
             hash.Add(item.SizeVariance);
             hash.Add(item.AngleVariance);
-            hash.Add(item.Unknown2);
+            hash.AddContents(item.Unknown2);
             return hash.ToHashCode();
         }
         

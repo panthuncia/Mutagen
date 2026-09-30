@@ -1070,7 +1070,7 @@ namespace Mutagen.Bethesda.Fallout3
             hash.Add(item.Type);
             hash.Add(item.LastModified);
             hash.Add(item.Unknown);
-            hash.Add(item.RecordCache);
+            hash.AddContents(item.RecordCache);
             return hash.ToHashCode();
         }
         

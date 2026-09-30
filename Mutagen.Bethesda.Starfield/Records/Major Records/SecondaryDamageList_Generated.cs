@@ -1079,7 +1079,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(ISecondaryDamageListGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Damages);
+            hash.AddContents(item.Damages);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

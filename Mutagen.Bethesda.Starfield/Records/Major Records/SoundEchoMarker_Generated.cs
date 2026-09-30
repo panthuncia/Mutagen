@@ -1494,7 +1494,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Descriptionitem);
             }
-            hash.Add(item.Markers);
+            hash.AddContents(item.Markers);
             if (item.DefaultStartMarker is {} DefaultStartMarkeritem)
             {
                 hash.Add(DefaultStartMarkeritem);

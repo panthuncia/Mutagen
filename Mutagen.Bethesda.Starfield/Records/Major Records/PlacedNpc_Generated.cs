@@ -3164,7 +3164,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(VirtualMachineAdapteritem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.XALG is {} XALGitem)
             {
                 hash.Add(XALGitem);
@@ -3179,7 +3179,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Radiusitem);
             }
-            hash.Add(item.RagdollData);
+            hash.AddContents(item.RagdollData);
             hash.Add(item.ReferenceGroup);
             hash.Add(item.SourcePackIn);
             hash.Add(item.PersistentLocation);
@@ -3188,8 +3188,8 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(FactionRankitem);
             }
-            hash.Add(item.PowerLinks);
-            hash.Add(item.LinkedReferences);
+            hash.AddContents(item.PowerLinks);
+            hash.AddContents(item.LinkedReferences);
             hash.Add(item.IsLinkedRefTransient);
             if (item.ExternalEmittance is {} ExternalEmittanceitem)
             {
@@ -3210,7 +3210,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(HeadTrackingWeightitem);
             }
-            hash.Add(item.LocationRefTypes);
+            hash.AddContents(item.LocationRefTypes);
             if (item.RagdollBipedRotation is {} RagdollBipedRotationitem)
             {
                 hash.Add(RagdollBipedRotationitem);

@@ -2704,9 +2704,9 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.ScheduleDate);
             hash.Add(item.ScheduleHour);
             hash.Add(item.ScheduleMinute);
-            hash.Add(item.Unknown3);
+            hash.AddContents(item.Unknown3);
             hash.Add(item.ScheduleDurationInMinutes);
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             if (item.IdleAnimations is {} IdleAnimationsitem)
             {
                 hash.Add(IdleAnimationsitem);
@@ -2715,9 +2715,9 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.OwnerQuest);
             hash.Add(item.PackageTemplate);
             hash.Add(item.DataInputVersion);
-            hash.Add(item.Data);
-            hash.Add(item.XnamMarker);
-            hash.Add(item.ProcedureTree);
+            hash.AddContents(item.Data);
+            hash.AddContents(item.XnamMarker);
+            hash.AddContents(item.ProcedureTree);
             if (item.OnBegin is {} OnBeginitem)
             {
                 hash.Add(OnBeginitem);

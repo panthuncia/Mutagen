@@ -970,7 +970,7 @@ namespace Mutagen.Bethesda.Oblivion
         {
             var hash = new HashCode();
             hash.Add(item.LockLevel);
-            hash.Add(item.Unused);
+            hash.AddContents(item.Unused);
             hash.Add(item.Key);
             hash.Add(item.Flags);
             return hash.ToHashCode();

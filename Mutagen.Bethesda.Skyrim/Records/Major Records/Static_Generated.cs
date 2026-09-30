@@ -1517,7 +1517,7 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.MaxAngle);
             hash.Add(item.Material);
             hash.Add(item.Flags);
-            hash.Add(item.Unused);
+            hash.AddContents(item.Unused);
             if (item.Lod is {} Loditem)
             {
                 hash.Add(Loditem);

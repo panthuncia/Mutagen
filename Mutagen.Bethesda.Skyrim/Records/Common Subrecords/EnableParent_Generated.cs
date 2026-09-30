@@ -977,7 +977,7 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.Versioning);
             hash.Add(item.Reference);
             hash.Add(item.Flags);
-            hash.Add(item.Unknown);
+            hash.AddContents(item.Unknown);
             return hash.ToHashCode();
         }
         

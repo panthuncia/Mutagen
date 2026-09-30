@@ -964,7 +964,7 @@ namespace Mutagen.Bethesda.Starfield
         {
             var hash = new HashCode();
             hash.Add(item.Sound);
-            hash.Add(item.GuidPairs);
+            hash.AddContents(item.GuidPairs);
             return hash.ToHashCode();
         }
         

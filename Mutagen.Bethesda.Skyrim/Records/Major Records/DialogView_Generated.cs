@@ -1346,7 +1346,7 @@ namespace Mutagen.Bethesda.Skyrim
             }
             if ((equalsMask?.GetShouldTranslate((int)DialogView_FieldIndex.TNAMs) ?? true))
             {
-                if (!lhs.TNAMs.SequenceEqualNullable(rhs.TNAMs)) return false;
+                if (!lhs.TNAMs.SequenceEqualNullable(rhs.TNAMs, (l, r) => MemoryExtensions.SequenceEqual(l.Span, r.Span))) return false;
             }
             if ((equalsMask?.GetShouldTranslate((int)DialogView_FieldIndex.ENAM) ?? true))
             {
@@ -1385,16 +1385,10 @@ namespace Mutagen.Bethesda.Skyrim
         {
             var hash = new HashCode();
             hash.Add(item.Quest);
-            hash.Add(item.Branches);
-            hash.Add(item.TNAMs);
-            if (item.ENAM is {} ENAMItem)
-            {
-                hash.Add(ENAMItem);
-            }
-            if (item.DNAM is {} DNAMItem)
-            {
-                hash.Add(DNAMItem);
-            }
+            hash.AddContents(item.Branches);
+            hash.AddContents(item.TNAMs);
+            hash.AddContents(item.ENAM);
+            hash.AddContents(item.DNAM);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

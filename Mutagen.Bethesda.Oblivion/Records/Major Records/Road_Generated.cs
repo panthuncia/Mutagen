@@ -1051,7 +1051,7 @@ namespace Mutagen.Bethesda.Oblivion
         public virtual int GetHashCode(IRoadGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Points);
+            hash.AddContents(item.Points);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

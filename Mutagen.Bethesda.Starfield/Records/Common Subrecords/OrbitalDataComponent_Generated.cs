@@ -812,10 +812,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IOrbitalDataComponentGetter item)
         {
             var hash = new HashCode();
-            if (item.DATA is {} DATAItem)
-            {
-                hash.Add(DATAItem);
-            }
+            hash.AddContents(item.DATA);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

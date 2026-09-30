@@ -905,7 +905,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IFloraInstanceNamingRulesGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Rules);
+            hash.AddContents(item.Rules);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

@@ -1966,9 +1966,9 @@ namespace Mutagen.Bethesda.Starfield
                 hash.Add(Descriptionitem);
             }
             hash.Add(item.WorkbenchKeyword);
-            hash.Add(item.Conditions);
-            hash.Add(item.RequiredItems);
-            hash.Add(item.RequiredPerks);
+            hash.AddContents(item.Conditions);
+            hash.AddContents(item.RequiredItems);
+            hash.AddContents(item.RequiredPerks);
             hash.Add(item.CreatedItem);
             if (item.NumberCreated is {} NumberCreateditem)
             {
@@ -1980,7 +1980,7 @@ namespace Mutagen.Bethesda.Starfield
             }
             hash.Add(item.Tier);
             hash.Add(item.CategoryKeyword);
-            hash.Add(item.RequiredProjects);
+            hash.AddContents(item.RequiredProjects);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

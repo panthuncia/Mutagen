@@ -5344,18 +5344,12 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IWeatherGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Keywords);
-            if (item.LNAM is {} LNAMItem)
-            {
-                hash.Add(LNAMItem);
-            }
+            hash.AddContents(item.Keywords);
+            hash.AddContents(item.LNAM);
             hash.Add(item.Precipitation);
             hash.Add(item.CameraEffect);
-            if (item.CLDC is {} CLDCItem)
-            {
-                hash.Add(CLDCItem);
-            }
-            hash.Add(item.Clouds);
+            hash.AddContents(item.CLDC);
+            hash.AddContents(item.Clouds);
             hash.Add(item.SkyUpperColor);
             hash.Add(item.FogNearColor);
             hash.Add(item.UnknownColor);
@@ -5375,7 +5369,7 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.MoonGlareColor);
             hash.Add(item.FogNearHigh);
             hash.Add(item.FogFarHigh);
-            hash.Add(item.NAM4);
+            hash.AddContents(item.NAM4);
             hash.Add(item.FogDistanceDayNear);
             hash.Add(item.FogDistanceDayFar);
             hash.Add(item.FogDistanceNightNear);
@@ -5411,7 +5405,7 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.WindDirection);
             hash.Add(item.WindDirectionRange);
             hash.Add(item.WindTurbulance);
-            hash.Add(item.SkyStatics);
+            hash.AddContents(item.SkyStatics);
             hash.Add(item.ImageSpaceSunrise);
             hash.Add(item.ImageSpaceDay);
             hash.Add(item.ImageSpaceSunset);
@@ -5420,10 +5414,7 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.ImageSpaceLateSunrise);
             hash.Add(item.ImageSpaceEarlySunset);
             hash.Add(item.ImageSpaceLateSunset);
-            if (item.HNAM is {} HNAMItem)
-            {
-                hash.Add(HNAMItem);
-            }
+            hash.AddContents(item.HNAM);
             if (item.DirectionalAmbientLightingColors is {} DirectionalAmbientLightingColorsitem)
             {
                 hash.Add(DirectionalAmbientLightingColorsitem);

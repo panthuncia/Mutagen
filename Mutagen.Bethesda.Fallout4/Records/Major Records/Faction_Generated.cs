@@ -2163,7 +2163,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(Nameitem);
             }
-            hash.Add(item.Relations);
+            hash.AddContents(item.Relations);
             hash.Add(item.Flags);
             hash.Add(item.ExteriorJailMarker);
             hash.Add(item.FollowerWaitMarker);
@@ -2175,7 +2175,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(CrimeValuesitem);
             }
-            hash.Add(item.Ranks);
+            hash.AddContents(item.Ranks);
             hash.Add(item.VendorBuySellList);
             hash.Add(item.MerchantContainer);
             if (item.VendorValues is {} VendorValuesitem)
@@ -2186,7 +2186,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(VendorLocationitem);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

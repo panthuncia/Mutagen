@@ -2889,17 +2889,14 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(FavorCostitem);
             }
-            hash.Add(item.Reflections);
-            hash.Add(item.LinkedReferences);
+            hash.AddContents(item.Reflections);
+            hash.AddContents(item.LinkedReferences);
             if (item.ActivateParents is {} ActivateParentsitem)
             {
                 hash.Add(ActivateParentsitem);
             }
             hash.Add(item.UnknownReference);
-            if (item.XATP is {} XATPItem)
-            {
-                hash.Add(XATPItem);
-            }
+            hash.AddContents(item.XATP);
             if (item.AmmoCount is {} AmmoCountitem)
             {
                 hash.Add(AmmoCountitem);
@@ -2908,10 +2905,7 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.Layer);
             hash.Add(item.MaterialSwap);
             hash.Add(item.ReferenceGroup);
-            if (item.XCVR is {} XCVRItem)
-            {
-                hash.Add(XCVRItem);
-            }
+            hash.AddContents(item.XCVR);
             if (item.EnableParent is {} EnableParentitem)
             {
                 hash.Add(EnableParentitem);
@@ -2927,13 +2921,13 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.Emittance);
             hash.Add(item.MultiBoundReference);
             hash.Add(item.IsIgnoredBySandbox);
-            hash.Add(item.LocationRefTypes);
+            hash.AddContents(item.LocationRefTypes);
             hash.Add(item.LocationReference);
             if (item.Scale is {} Scaleitem)
             {
                 hash.Add(Scaleitem);
             }
-            hash.Add(item.DistantLodData);
+            hash.AddContents(item.DistantLodData);
             hash.Add(item.Position);
             hash.Add(item.Rotation);
             if (item.Comments is {} Commentsitem)

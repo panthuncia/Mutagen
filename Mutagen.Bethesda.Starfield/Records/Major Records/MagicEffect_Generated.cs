@@ -3861,13 +3861,13 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(VirtualMachineAdapteritem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);
             }
             hash.Add(item.MenuDisplayObject);
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             hash.Add(item.MagicSkill);
             hash.Add(item.CastingArt);
             hash.Add(item.MovementType);
@@ -3903,14 +3903,14 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.TaperCurve);
             hash.Add(item.TaperDuration);
             hash.Add(item.TaperWeight);
-            hash.Add(item.Unknown2);
-            hash.Add(item.CounterEffects);
-            hash.Add(item.Sounds);
+            hash.AddContents(item.Unknown2);
+            hash.AddContents(item.CounterEffects);
+            hash.AddContents(item.Sounds);
             if (item.Description is {} Descriptionitem)
             {
                 hash.Add(Descriptionitem);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(item.DATADataTypeState);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();

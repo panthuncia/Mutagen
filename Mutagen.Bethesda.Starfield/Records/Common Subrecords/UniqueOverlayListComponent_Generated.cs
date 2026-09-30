@@ -902,7 +902,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IUniqueOverlayListComponentGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Worldspaces);
+            hash.AddContents(item.Worldspaces);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

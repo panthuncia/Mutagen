@@ -898,7 +898,7 @@ namespace Mutagen.Bethesda.Skyrim
         public virtual int GetHashCode(INpcSoundTypesGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Types);
+            hash.AddContents(item.Types);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

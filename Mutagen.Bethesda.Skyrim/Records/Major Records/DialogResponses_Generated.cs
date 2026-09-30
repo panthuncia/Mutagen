@@ -2202,10 +2202,7 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(VirtualMachineAdapteritem);
             }
-            if (item.DATA is {} DATAItem)
-            {
-                hash.Add(DATAItem);
-            }
+            hash.AddContents(item.DATA);
             if (item.Flags is {} Flagsitem)
             {
                 hash.Add(Flagsitem);
@@ -2216,11 +2213,11 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(FavorLevelitem);
             }
-            hash.Add(item.LinkTo);
+            hash.AddContents(item.LinkTo);
             hash.Add(item.ResponseData);
-            hash.Add(item.Responses);
-            hash.Add(item.Conditions);
-            hash.Add(item.UnknownData);
+            hash.AddContents(item.Responses);
+            hash.AddContents(item.Conditions);
+            hash.AddContents(item.UnknownData);
             if (item.Prompt is {} Promptitem)
             {
                 hash.Add(Promptitem);

@@ -4431,10 +4431,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(PrecombinedObjectLevelZitem);
             }
-            if (item.TVDT is {} TVDTItem)
-            {
-                hash.Add(TVDTItem);
-            }
+            hash.AddContents(item.TVDT);
             if (item.MaxHeightData is {} MaxHeightDataitem)
             {
                 hash.Add(MaxHeightDataitem);
@@ -4444,12 +4441,9 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(WaterHeightitem);
             }
-            hash.Add(item.Regions);
+            hash.AddContents(item.Regions);
             hash.Add(item.Location);
-            if (item.XWCN is {} XWCNItem)
-            {
-                hash.Add(XWCNItem);
-            }
+            hash.AddContents(item.XWCN);
             if (item.WaterVelocity is {} WaterVelocityitem)
             {
                 hash.Add(WaterVelocityitem);
@@ -4478,22 +4472,22 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.Music);
             hash.Add(item.ImageSpace);
             hash.Add(item.GodRays);
-            hash.Add(item.PhysicsReferences);
-            hash.Add(item.CombinedMeshes);
-            hash.Add(item.CombinedMeshReferences);
+            hash.AddContents(item.PhysicsReferences);
+            hash.AddContents(item.CombinedMeshes);
+            hash.AddContents(item.CombinedMeshReferences);
             if (item.Landscape is {} Landscapeitem)
             {
                 hash.Add(Landscapeitem);
             }
-            hash.Add(item.NavigationMeshes);
+            hash.AddContents(item.NavigationMeshes);
             hash.Add(item.Timestamp);
             hash.Add(item.UnknownGroupData);
             hash.Add(item.PersistentTimestamp);
             hash.Add(item.PersistentUnknownGroupData);
-            hash.Add(item.Persistent);
+            hash.AddContents(item.Persistent);
             hash.Add(item.TemporaryTimestamp);
             hash.Add(item.TemporaryUnknownGroupData);
-            hash.Add(item.Temporary);
+            hash.AddContents(item.Temporary);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

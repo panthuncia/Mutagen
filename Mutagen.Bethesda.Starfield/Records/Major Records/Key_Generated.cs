@@ -2616,10 +2616,10 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(DropdownSounditem);
             }
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             hash.Add(item.FeaturedItemMessage);
-            hash.Add(item.Resources);
-            hash.Add(item.ComponentDisplayIndices);
+            hash.AddContents(item.Resources);
+            hash.AddContents(item.ComponentDisplayIndices);
             hash.Add(item.Value);
             hash.Add(item.Weight);
             if (item.Flags is {} Flagsitem)

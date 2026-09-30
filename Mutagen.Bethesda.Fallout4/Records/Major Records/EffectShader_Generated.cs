@@ -3465,10 +3465,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(ParticlePaletteTextureitem);
             }
-            if (item.DATA is {} DATAItem)
-            {
-                hash.Add(DATAItem);
-            }
+            hash.AddContents(item.DATA);
             hash.Add(item.Unknown);
             hash.Add(item.MembraneSourceBlendMode);
             hash.Add(item.MembraneBlendOperation);
@@ -3493,12 +3490,12 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.FillFullAlphaRatio);
             hash.Add(item.EdgeEffectFullAlphaRatio);
             hash.Add(item.MembraneDestBlendMode);
-            hash.Add(item.Unknown2);
+            hash.AddContents(item.Unknown2);
             hash.Add(item.HolesAnimationStartTime);
             hash.Add(item.HolesAnimationEndTime);
             hash.Add(item.HolesAnimationStartValue);
             hash.Add(item.HolesAnimationEndValue);
-            hash.Add(item.Unknown3);
+            hash.AddContents(item.Unknown3);
             hash.Add(item.AmbientSound);
             hash.Add(item.FillColorKey2);
             hash.Add(item.FillColorKey3);
@@ -3509,7 +3506,7 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.FillColorKey1Time);
             hash.Add(item.FillColorKey2Time);
             hash.Add(item.FillColorKey3Time);
-            hash.Add(item.Unknown5);
+            hash.AddContents(item.Unknown5);
             hash.Add(item.Flags);
             hash.Add(item.FillTextureScaleU);
             hash.Add(item.FillTextureScaleV);

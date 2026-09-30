@@ -1464,15 +1464,9 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(FadeDurationitem);
             }
-            if (item.VNAM is {} VNAMItem)
-            {
-                hash.Add(VNAMItem);
-            }
-            if (item.UNAM is {} UNAMItem)
-            {
-                hash.Add(UNAMItem);
-            }
-            hash.Add(item.Tracks);
+            hash.AddContents(item.VNAM);
+            hash.AddContents(item.UNAM);
+            hash.AddContents(item.Tracks);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

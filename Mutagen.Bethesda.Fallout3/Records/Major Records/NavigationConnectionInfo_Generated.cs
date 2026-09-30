@@ -1238,9 +1238,9 @@ namespace Mutagen.Bethesda.Fallout3
         {
             var hash = new HashCode();
             hash.Add(item.NavigationMesh);
-            hash.Add(item.StandardLinks);
-            hash.Add(item.PreferredLinks);
-            hash.Add(item.DoorLinks);
+            hash.AddContents(item.StandardLinks);
+            hash.AddContents(item.PreferredLinks);
+            hash.AddContents(item.DoorLinks);
             return hash.ToHashCode();
         }
         

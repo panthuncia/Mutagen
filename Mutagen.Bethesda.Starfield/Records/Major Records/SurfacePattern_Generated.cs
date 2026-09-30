@@ -2013,14 +2013,14 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(ISurfacePatternGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             hash.Add(item.SurfacePatternStyle);
-            hash.Add(item.Blocks);
-            hash.Add(item.MasterBlocks);
-            hash.Add(item.MasterBlockRotations);
-            hash.Add(item.OverrideBlocks);
-            hash.Add(item.OverrideBlockRotations);
-            hash.Add(item.Worldspaces);
+            hash.AddContents(item.Blocks);
+            hash.AddContents(item.MasterBlocks);
+            hash.AddContents(item.MasterBlockRotations);
+            hash.AddContents(item.OverrideBlocks);
+            hash.AddContents(item.OverrideBlockRotations);
+            hash.AddContents(item.Worldspaces);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

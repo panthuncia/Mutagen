@@ -1410,7 +1410,7 @@ namespace Mutagen.Bethesda.Oblivion
             {
                 hash.Add(Dataitem);
             }
-            hash.Add(item.CounterEffects);
+            hash.AddContents(item.CounterEffects);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

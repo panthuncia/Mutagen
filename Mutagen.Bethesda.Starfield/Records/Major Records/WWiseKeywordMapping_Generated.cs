@@ -1340,12 +1340,12 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(WMTIitem);
             }
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             if (item.WMSS is {} WMSSitem)
             {
                 hash.Add(WMSSitem);
             }
-            hash.Add(item.Items);
+            hash.AddContents(item.Items);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

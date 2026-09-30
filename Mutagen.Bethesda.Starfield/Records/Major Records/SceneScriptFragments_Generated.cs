@@ -907,7 +907,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(ISceneScriptFragmentsGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.PhaseFragments);
+            hash.AddContents(item.PhaseFragments);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

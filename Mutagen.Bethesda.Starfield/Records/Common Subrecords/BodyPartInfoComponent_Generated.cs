@@ -812,10 +812,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IBodyPartInfoComponentGetter item)
         {
             var hash = new HashCode();
-            if (item.GNAM is {} GNAMItem)
-            {
-                hash.Add(GNAMItem);
-            }
+            hash.AddContents(item.GNAM);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

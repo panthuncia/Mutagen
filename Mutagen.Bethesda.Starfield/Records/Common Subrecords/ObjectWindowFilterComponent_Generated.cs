@@ -869,10 +869,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IObjectWindowFilterComponentGetter item)
         {
             var hash = new HashCode();
-            if (item.INTV is {} INTVItem)
-            {
-                hash.Add(INTVItem);
-            }
+            hash.AddContents(item.INTV);
             if (item.FLTR is {} FLTRitem)
             {
                 hash.Add(FLTRitem);

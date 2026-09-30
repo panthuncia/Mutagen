@@ -1332,10 +1332,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(TCMPitem);
             }
-            if (item.MOBC is {} MOBCItem)
-            {
-                hash.Add(MOBCItem);
-            }
+            hash.AddContents(item.MOBC);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

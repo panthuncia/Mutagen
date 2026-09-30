@@ -1638,7 +1638,7 @@ namespace Mutagen.Bethesda.Skyrim
         public virtual int GetHashCode(IClimateGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.WeatherTypes);
+            hash.AddContents(item.WeatherTypes);
             if (item.SunTexture is {} SunTextureitem)
             {
                 hash.Add(SunTextureitem);

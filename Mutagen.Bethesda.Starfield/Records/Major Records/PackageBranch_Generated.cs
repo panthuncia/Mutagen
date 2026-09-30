@@ -1455,7 +1455,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Noteitem);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             if (item.Root is {} Rootitem)
             {
                 hash.Add(Rootitem);
@@ -1468,7 +1468,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Flagsitem);
             }
-            hash.Add(item.DataInputIndices);
+            hash.AddContents(item.DataInputIndices);
             if (item.FlagsOverride is {} FlagsOverrideitem)
             {
                 hash.Add(FlagsOverrideitem);

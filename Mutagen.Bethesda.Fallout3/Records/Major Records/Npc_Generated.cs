@@ -4014,12 +4014,12 @@ namespace Mutagen.Bethesda.Fallout3
                 hash.Add(Modelitem);
             }
             hash.Add(item.Configuration);
-            hash.Add(item.Factions);
+            hash.AddContents(item.Factions);
             hash.Add(item.DeathItem);
             hash.Add(item.Voice);
             hash.Add(item.Template);
             hash.Add(item.Race);
-            hash.Add(item.ActorEffects);
+            hash.AddContents(item.ActorEffects);
             hash.Add(item.UnarmedAttackEffect);
             if (item.UnarmedAttackAnimation is {} UnarmedAttackAnimationitem)
             {
@@ -4030,10 +4030,10 @@ namespace Mutagen.Bethesda.Fallout3
                 hash.Add(Destructibleitem);
             }
             hash.Add(item.Script);
-            hash.Add(item.Items);
+            hash.AddContents(item.Items);
             hash.Add(item.AIData);
-            hash.Add(item.Packages);
-            hash.Add(item.Animations);
+            hash.AddContents(item.Packages);
+            hash.AddContents(item.Animations);
             hash.Add(item.Class);
             hash.Add(item.BaseHealth);
             hash.Add(item.Strength);
@@ -4051,7 +4051,7 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 hash.Add(PlayerSkillsitem);
             }
-            hash.Add(item.HeadParts);
+            hash.AddContents(item.HeadParts);
             hash.Add(item.Hair);
             if (item.HairLength is {} HairLengthitem)
             {
@@ -4061,18 +4061,9 @@ namespace Mutagen.Bethesda.Fallout3
             hash.Add(item.HairColor);
             hash.Add(item.CombatStyle);
             hash.Add(item.ImpactMaterialType);
-            if (item.FaceGenGeometrySymmetric is {} FaceGenGeometrySymmetricItem)
-            {
-                hash.Add(FaceGenGeometrySymmetricItem);
-            }
-            if (item.FaceGenGeometryAsymmetric is {} FaceGenGeometryAsymmetricItem)
-            {
-                hash.Add(FaceGenGeometryAsymmetricItem);
-            }
-            if (item.FaceGenTextureSymmetric is {} FaceGenTextureSymmetricItem)
-            {
-                hash.Add(FaceGenTextureSymmetricItem);
-            }
+            hash.AddContents(item.FaceGenGeometrySymmetric);
+            hash.AddContents(item.FaceGenGeometryAsymmetric);
+            hash.AddContents(item.FaceGenTextureSymmetric);
             hash.Add(item.NAM5);
             hash.Add(item.Height);
             hash.Add(item.Weight);

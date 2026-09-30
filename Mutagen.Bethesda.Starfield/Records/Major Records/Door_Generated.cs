@@ -2830,7 +2830,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(XALGitem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);
@@ -2839,10 +2839,10 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Modelitem);
             }
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             hash.Add(item.NativeTerminal);
-            hash.Add(item.ForcedLocations);
-            hash.Add(item.Properties);
+            hash.AddContents(item.ForcedLocations);
+            hash.AddContents(item.Properties);
             if (item.OpenSound is {} OpenSounditem)
             {
                 hash.Add(OpenSounditem);

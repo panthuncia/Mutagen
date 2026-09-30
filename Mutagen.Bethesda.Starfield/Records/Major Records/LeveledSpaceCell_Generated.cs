@@ -1518,9 +1518,9 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.ChanceNone);
             hash.Add(item.MaxCount);
             hash.Add(item.Flags);
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(item.UseGlobal);
-            hash.Add(item.Entries);
+            hash.AddContents(item.Entries);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

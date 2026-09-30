@@ -1379,8 +1379,8 @@ namespace Mutagen.Bethesda.Skyrim
         public virtual int GetHashCode(IConstructibleObjectGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Items);
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Items);
+            hash.AddContents(item.Conditions);
             hash.Add(item.CreatedObject);
             hash.Add(item.WorkbenchKeyword);
             if (item.CreatedObjectCount is {} CreatedObjectCountitem)

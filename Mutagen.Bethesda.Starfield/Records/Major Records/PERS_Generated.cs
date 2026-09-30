@@ -1132,7 +1132,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(DATAitem);
             }
-            hash.Add(item.Items);
+            hash.AddContents(item.Items);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

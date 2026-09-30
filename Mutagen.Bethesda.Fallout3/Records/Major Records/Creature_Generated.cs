@@ -3378,16 +3378,13 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 hash.Add(Modelitem);
             }
-            hash.Add(item.ActorEffects);
+            hash.AddContents(item.ActorEffects);
             hash.Add(item.UnarmedAttackEffect);
             hash.Add(item.UnarmedAttackAnimation);
-            hash.Add(item.Models);
-            if (item.ModelListTextures is {} ModelListTexturesItem)
-            {
-                hash.Add(ModelListTexturesItem);
-            }
+            hash.AddContents(item.Models);
+            hash.AddContents(item.ModelListTextures);
             hash.Add(item.Configuration);
-            hash.Add(item.Factions);
+            hash.AddContents(item.Factions);
             hash.Add(item.DeathItem);
             hash.Add(item.Voice);
             hash.Add(item.Template);
@@ -3396,10 +3393,10 @@ namespace Mutagen.Bethesda.Fallout3
                 hash.Add(Destructibleitem);
             }
             hash.Add(item.Script);
-            hash.Add(item.Items);
+            hash.AddContents(item.Items);
             hash.Add(item.AIData);
-            hash.Add(item.Packages);
-            hash.Add(item.Animations);
+            hash.AddContents(item.Packages);
+            hash.AddContents(item.Animations);
             hash.Add(item.Data);
             hash.Add(item.AttackReach);
             hash.Add(item.CombatStyle);
@@ -3410,7 +3407,7 @@ namespace Mutagen.Bethesda.Fallout3
             hash.Add(item.ImpactMaterialType);
             hash.Add(item.SoundLevel);
             hash.Add(item.InheritsSoundFrom);
-            hash.Add(item.SoundTypes);
+            hash.AddContents(item.SoundTypes);
             hash.Add(item.ImpactDataset);
             hash.Add(item.MeleeWeaponList);
             hash.Add(base.GetHashCode());

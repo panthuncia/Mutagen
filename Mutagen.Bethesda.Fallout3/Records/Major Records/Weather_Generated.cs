@@ -2179,15 +2179,12 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 hash.Add(FogDistanceitem);
             }
-            if (item.INAM is {} INAMItem)
-            {
-                hash.Add(INAMItem);
-            }
+            hash.AddContents(item.INAM);
             if (item.Data is {} Dataitem)
             {
                 hash.Add(Dataitem);
             }
-            hash.Add(item.Sounds);
+            hash.AddContents(item.Sounds);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

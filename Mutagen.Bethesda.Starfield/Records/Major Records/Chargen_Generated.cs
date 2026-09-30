@@ -1380,14 +1380,11 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IChargenGetter item)
         {
             var hash = new HashCode();
-            if (item.NNAM is {} NNAMItem)
-            {
-                hash.Add(NNAMItem);
-            }
-            hash.Add(item.RacePresets);
-            hash.Add(item.MorphGroups);
-            hash.Add(item.FaceMorphs);
-            hash.Add(item.FaceDials);
+            hash.AddContents(item.NNAM);
+            hash.AddContents(item.RacePresets);
+            hash.AddContents(item.MorphGroups);
+            hash.AddContents(item.FaceMorphs);
+            hash.AddContents(item.FaceDials);
             return hash.ToHashCode();
         }
         

@@ -1904,7 +1904,7 @@ namespace Mutagen.Bethesda.Starfield
             }
             hash.Add(item.ObjectBounds);
             hash.Add(item.DirtinessScale);
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Transforms is {} Transformsitem)
             {
                 hash.Add(Transformsitem);

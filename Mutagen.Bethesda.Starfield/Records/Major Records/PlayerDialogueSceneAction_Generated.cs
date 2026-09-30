@@ -1289,11 +1289,8 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(DialogueTargetActoritem);
             }
-            hash.Add(item.DialogueList);
-            if (item.ATTR is {} ATTRItem)
-            {
-                hash.Add(ATTRItem);
-            }
+            hash.AddContents(item.DialogueList);
+            hash.AddContents(item.ATTR);
             hash.Add(item.ACBS);
             hash.Add(item.JAIL);
             hash.Add(base.GetHashCode());

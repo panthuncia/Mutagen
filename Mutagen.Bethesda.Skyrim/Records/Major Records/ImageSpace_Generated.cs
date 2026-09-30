@@ -1267,10 +1267,7 @@ namespace Mutagen.Bethesda.Skyrim
         public virtual int GetHashCode(IImageSpaceGetter item)
         {
             var hash = new HashCode();
-            if (item.ENAM is {} ENAMItem)
-            {
-                hash.Add(ENAMItem);
-            }
+            hash.AddContents(item.ENAM);
             if (item.Hdr is {} Hdritem)
             {
                 hash.Add(Hdritem);

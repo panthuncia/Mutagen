@@ -2457,29 +2457,23 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(VirtualMachineAdapteritem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Flags is {} Flagsitem)
             {
                 hash.Add(Flagsitem);
             }
-            if (item.TPIC is {} TPICItem)
-            {
-                hash.Add(TPICItem);
-            }
+            hash.AddContents(item.TPIC);
             hash.Add(item.SharedDialog);
             hash.Add(item.DialogGroup);
-            hash.Add(item.Responses);
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Responses);
+            hash.AddContents(item.Conditions);
             if (item.Prompt is {} Promptitem)
             {
                 hash.Add(Promptitem);
             }
             hash.Add(item.Speaker);
             hash.Add(item.StartScene);
-            if (item.INTV is {} INTVItem)
-            {
-                hash.Add(INTVItem);
-            }
+            hash.AddContents(item.INTV);
             if (item.WED0 is {} WED0item)
             {
                 hash.Add(WED0item);

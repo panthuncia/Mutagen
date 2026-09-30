@@ -2783,17 +2783,17 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(FindMatchingRefFromEventitem);
             }
-            hash.Add(item.Conditions);
-            hash.Add(item.Keywords);
-            hash.Add(item.Items);
+            hash.AddContents(item.Conditions);
+            hash.AddContents(item.Keywords);
+            hash.AddContents(item.Items);
             hash.Add(item.SpectatorOverridePackageList);
             hash.Add(item.ObserveDeadBodyOverridePackageList);
             hash.Add(item.GuardWarnOverridePackageList);
             hash.Add(item.CombatOverridePackageList);
             hash.Add(item.DisplayName);
-            hash.Add(item.Spells);
-            hash.Add(item.Factions);
-            hash.Add(item.PackageData);
+            hash.AddContents(item.Spells);
+            hash.AddContents(item.Factions);
+            hash.AddContents(item.PackageData);
             hash.Add(item.VoiceTypes);
             return hash.ToHashCode();
         }

@@ -1266,7 +1266,7 @@ namespace Mutagen.Bethesda.Starfield
         {
             var hash = new HashCode();
             hash.Add(item.MapColor);
-            hash.Add(item.RegionAreas);
+            hash.AddContents(item.RegionAreas);
             if (item.Weather is {} Weatheritem)
             {
                 hash.Add(Weatheritem);

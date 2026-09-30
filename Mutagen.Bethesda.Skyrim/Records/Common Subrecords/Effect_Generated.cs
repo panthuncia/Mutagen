@@ -1039,7 +1039,7 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(Dataitem);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             return hash.ToHashCode();
         }
         

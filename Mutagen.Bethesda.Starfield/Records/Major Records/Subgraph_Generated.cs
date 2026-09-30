@@ -1380,13 +1380,13 @@ namespace Mutagen.Bethesda.Starfield
         {
             var hash = new HashCode();
             hash.Add(item.Race);
-            hash.Add(item.ActorKeywords);
+            hash.AddContents(item.ActorKeywords);
             if (item.BehaviorGraph is {} BehaviorGraphitem)
             {
                 hash.Add(BehaviorGraphitem);
             }
-            hash.Add(item.AnimationPaths);
-            hash.Add(item.TargetKeywords);
+            hash.AddContents(item.AnimationPaths);
+            hash.AddContents(item.TargetKeywords);
             hash.Add(item.Role);
             hash.Add(item.Perspective);
             return hash.ToHashCode();

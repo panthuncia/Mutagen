@@ -1080,7 +1080,7 @@ namespace Mutagen.Bethesda.Fallout4
         public virtual int GetHashCode(IOutfitGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Items);
+            hash.AddContents(item.Items);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

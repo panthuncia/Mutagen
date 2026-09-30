@@ -1264,7 +1264,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Flagsitem);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             if (item.Note is {} Noteitem)
             {
                 hash.Add(Noteitem);
@@ -1277,7 +1277,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Entryitem);
             }
-            hash.Add(item.StageCompleteDatas);
+            hash.AddContents(item.StageCompleteDatas);
             return hash.ToHashCode();
         }
         

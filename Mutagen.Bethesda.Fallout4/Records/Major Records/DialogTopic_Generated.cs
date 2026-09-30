@@ -2071,7 +2071,7 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.SubtypeName);
             hash.Add(item.Timestamp);
             hash.Add(item.Unknown);
-            hash.Add(item.Responses);
+            hash.AddContents(item.Responses);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

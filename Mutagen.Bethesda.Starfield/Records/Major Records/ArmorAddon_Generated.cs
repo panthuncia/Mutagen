@@ -2728,7 +2728,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(VirtualMachineAdapteritem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.FirstPersonFlags is {} FirstPersonFlagsitem)
             {
                 hash.Add(FirstPersonFlagsitem);
@@ -2752,7 +2752,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(HashCode.Combine(AltSkeletonitem.Male, AltSkeletonitem.Female));
             }
-            hash.Add(item.ExtraLightLayers);
+            hash.AddContents(item.ExtraLightLayers);
             if (item.SkinTexture is {} SkinTextureitem)
             {
                 hash.Add(HashCode.Combine(SkinTextureitem.Male, SkinTextureitem.Female));
@@ -2761,7 +2761,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(HashCode.Combine(Morphsitem.Male, Morphsitem.Female));
             }
-            hash.Add(item.AdditionalRaces);
+            hash.AddContents(item.AdditionalRaces);
             hash.Add(item.FootstepSound);
             hash.Add(item.ArtObject);
             hash.Add(item.BodyPartData);

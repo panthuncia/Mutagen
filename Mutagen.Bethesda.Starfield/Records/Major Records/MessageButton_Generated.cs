@@ -1076,7 +1076,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(ButtonTextitem);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(item.Reference);
             return hash.ToHashCode();
         }

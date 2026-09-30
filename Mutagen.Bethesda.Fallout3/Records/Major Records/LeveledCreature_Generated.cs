@@ -1347,7 +1347,7 @@ namespace Mutagen.Bethesda.Fallout3
             hash.Add(item.ObjectBounds);
             hash.Add(item.ChanceNone);
             hash.Add(item.Flags);
-            hash.Add(item.Entries);
+            hash.AddContents(item.Entries);
             if (item.Model is {} Modelitem)
             {
                 hash.Add(Modelitem);

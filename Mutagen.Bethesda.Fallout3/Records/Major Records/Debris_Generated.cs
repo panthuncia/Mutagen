@@ -1061,7 +1061,7 @@ namespace Mutagen.Bethesda.Fallout3
         public virtual int GetHashCode(IDebrisGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Models);
+            hash.AddContents(item.Models);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

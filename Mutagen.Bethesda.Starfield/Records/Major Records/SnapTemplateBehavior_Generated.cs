@@ -1254,8 +1254,8 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(ISnapTemplateBehaviorGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Components);
-            hash.Add(item.Items);
+            hash.AddContents(item.Components);
+            hash.AddContents(item.Items);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

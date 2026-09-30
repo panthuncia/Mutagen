@@ -982,7 +982,7 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.Versioning);
             hash.Add(item.Type);
             hash.Add(item.Sound);
-            hash.Add(item.Unknown);
+            hash.AddContents(item.Unknown);
             return hash.ToHashCode();
         }
         

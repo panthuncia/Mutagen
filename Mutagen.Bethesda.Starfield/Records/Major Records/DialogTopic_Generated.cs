@@ -2826,7 +2826,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IDialogTopicGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);
@@ -2840,10 +2840,10 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.Category);
             hash.Add(item.Subtype);
             hash.Add(item.SubtypeName);
-            hash.Add(item.TopicInfoList);
+            hash.AddContents(item.TopicInfoList);
             hash.Add(item.Timestamp);
             hash.Add(item.Unknown);
-            hash.Add(item.Responses);
+            hash.AddContents(item.Responses);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

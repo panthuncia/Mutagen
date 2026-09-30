@@ -2385,14 +2385,8 @@ namespace Mutagen.Bethesda.Oblivion
         {
             var hash = new HashCode();
             hash.Add(item.Base);
-            if (item.XPCIFluff is {} XPCIFluffItem)
-            {
-                hash.Add(XPCIFluffItem);
-            }
-            if (item.FULLFluff is {} FULLFluffItem)
-            {
-                hash.Add(FULLFluffItem);
-            }
+            hash.AddContents(item.XPCIFluff);
+            hash.AddContents(item.FULLFluff);
             if (item.TeleportDestination is {} TeleportDestinationitem)
             {
                 hash.Add(TeleportDestinationitem);
@@ -2446,10 +2440,7 @@ namespace Mutagen.Bethesda.Oblivion
                 hash.Add(MapMarkeritem);
             }
             hash.Add(item.OpenByDefault);
-            if (item.RagdollData is {} RagdollDataItem)
-            {
-                hash.Add(RagdollDataItem);
-            }
+            hash.AddContents(item.RagdollData);
             if (item.Scale is {} Scaleitem)
             {
                 hash.Add(Scaleitem);
@@ -2462,10 +2453,7 @@ namespace Mutagen.Bethesda.Oblivion
             {
                 hash.Add(Locationitem);
             }
-            if (item.XAAG is {} XAAGItem)
-            {
-                hash.Add(XAAGItem);
-            }
+            hash.AddContents(item.XAAG);
             if (item.XACN is {} XACNitem)
             {
                 hash.Add(XACNitem);

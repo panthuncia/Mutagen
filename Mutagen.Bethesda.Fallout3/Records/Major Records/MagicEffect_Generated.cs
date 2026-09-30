@@ -2172,7 +2172,7 @@ namespace Mutagen.Bethesda.Fallout3
             hash.Add(item.ConstantEffectEnchantmentFactor);
             hash.Add(item.ConstantEffectBarterFactor);
             hash.Add(item.Archetype);
-            hash.Add(item.CounterEffects);
+            hash.AddContents(item.CounterEffects);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

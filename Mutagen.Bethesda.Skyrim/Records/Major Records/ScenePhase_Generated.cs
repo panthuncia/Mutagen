@@ -1317,8 +1317,8 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(Nameitem);
             }
-            hash.Add(item.StartConditions);
-            hash.Add(item.CompletionConditions);
+            hash.AddContents(item.StartConditions);
+            hash.AddContents(item.CompletionConditions);
             if (item.Unused is {} Unuseditem)
             {
                 hash.Add(Unuseditem);

@@ -4397,16 +4397,13 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(Nameitem);
             }
-            hash.Add(item.UnusedNoisemaps);
+            hash.AddContents(item.UnusedNoisemaps);
             hash.Add(item.Opacity);
             if (item.Flags is {} Flagsitem)
             {
                 hash.Add(Flagsitem);
             }
-            if (item.MNAM is {} MNAMItem)
-            {
-                hash.Add(MNAMItem);
-            }
+            hash.AddContents(item.MNAM);
             hash.Add(item.Material);
             hash.Add(item.OpenSound);
             hash.Add(item.Spell);
@@ -4415,7 +4412,7 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(DamagePerSeconditem);
             }
-            hash.Add(item.Unknown);
+            hash.AddContents(item.Unknown);
             hash.Add(item.SpecularSunPower);
             hash.Add(item.WaterReflectivity);
             hash.Add(item.WaterFresnel);
@@ -4425,7 +4422,7 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.ShallowColor);
             hash.Add(item.DeepColor);
             hash.Add(item.ReflectionColor);
-            hash.Add(item.Unknown3);
+            hash.AddContents(item.Unknown3);
             hash.Add(item.DisplacementStartingSize);
             hash.Add(item.DisplacementFoce);
             hash.Add(item.DisplacementVelocity);
@@ -4439,7 +4436,7 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.NoiseLayerOneWindSpeed);
             hash.Add(item.NoiseLayerTwoWindSpeed);
             hash.Add(item.NoiseLayerThreeWindSpeed);
-            hash.Add(item.Unknown5);
+            hash.AddContents(item.Unknown5);
             hash.Add(item.FogAboveWaterAmount);
             hash.Add(item.Unknown6);
             hash.Add(item.FogUnderWaterAmount);
@@ -4465,10 +4462,7 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.DepthSpecularLighting);
             hash.Add(item.SpecularSunSparklePower);
             hash.Add(item.NoiseFlowmapScale);
-            if (item.GNAM is {} GNAMItem)
-            {
-                hash.Add(GNAMItem);
-            }
+            hash.AddContents(item.GNAM);
             if (item.LinearVelocity is {} LinearVelocityitem)
             {
                 hash.Add(LinearVelocityitem);

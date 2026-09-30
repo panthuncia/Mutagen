@@ -3167,7 +3167,7 @@ namespace Mutagen.Bethesda.Fallout4
             }
             hash.Add(item.Base);
             hash.Add(item.EncounterZone);
-            hash.Add(item.RagdollData);
+            hash.AddContents(item.RagdollData);
             if (item.RagdollBipedRotation is {} RagdollBipedRotationitem)
             {
                 hash.Add(RagdollBipedRotationitem);
@@ -3192,7 +3192,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(Healthitem);
             }
-            hash.Add(item.LinkedReferences);
+            hash.AddContents(item.LinkedReferences);
             if (item.ActivateParents is {} ActivateParentsitem)
             {
                 hash.Add(ActivateParentsitem);
@@ -3204,9 +3204,9 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.MaterialSwap);
             hash.Add(item.PersistentLocation);
             hash.Add(item.LocationReference);
-            hash.Add(item.LocationRefTypes);
+            hash.AddContents(item.LocationRefTypes);
             hash.Add(item.IsIgnoredBySandbox);
-            hash.Add(item.SplineConnections);
+            hash.AddContents(item.SplineConnections);
             if (item.HeadTrackingWeight is {} HeadTrackingWeightitem)
             {
                 hash.Add(HeadTrackingWeightitem);

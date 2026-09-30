@@ -1078,7 +1078,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(StartPhaseForSceneitem);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             return hash.ToHashCode();
         }
         

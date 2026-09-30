@@ -1998,29 +1998,20 @@ namespace Mutagen.Bethesda.Fallout4
             var hash = new HashCode();
             hash.Add(item.PickUpSound);
             hash.Add(item.PutDownSound);
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Description is {} Descriptionitem)
             {
                 hash.Add(Descriptionitem);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(item.CreatedObject);
             hash.Add(item.WorkbenchKeyword);
-            if (item.NAM1 is {} NAM1Item)
-            {
-                hash.Add(NAM1Item);
-            }
-            if (item.NAM2 is {} NAM2Item)
-            {
-                hash.Add(NAM2Item);
-            }
-            if (item.NAM3 is {} NAM3Item)
-            {
-                hash.Add(NAM3Item);
-            }
+            hash.AddContents(item.NAM1);
+            hash.AddContents(item.NAM2);
+            hash.AddContents(item.NAM3);
             hash.Add(item.MenuArtObject);
-            hash.Add(item.Categories);
-            hash.Add(item.CreatedObjectCounts);
+            hash.AddContents(item.Categories);
+            hash.AddContents(item.CreatedObjectCounts);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

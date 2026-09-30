@@ -2450,7 +2450,7 @@ namespace Mutagen.Bethesda.Fallout3
             var hash = new HashCode();
             hash.Add(item.Base);
             hash.Add(item.EncounterZone);
-            hash.Add(item.RagdollData);
+            hash.AddContents(item.RagdollData);
             if (item.RagdollBipedRotation is {} RagdollBipedRotationitem)
             {
                 hash.Add(RagdollBipedRotationitem);
@@ -2476,8 +2476,8 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 hash.Add(Healthitem);
             }
-            hash.Add(item.Reflections);
-            hash.Add(item.LinkedDecals);
+            hash.AddContents(item.Reflections);
+            hash.AddContents(item.LinkedDecals);
             hash.Add(item.LinkedReference);
             if (item.LinkedReferenceColor is {} LinkedReferenceColoritem)
             {

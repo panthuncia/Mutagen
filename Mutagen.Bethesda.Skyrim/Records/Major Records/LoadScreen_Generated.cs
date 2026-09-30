@@ -1600,7 +1600,7 @@ namespace Mutagen.Bethesda.Skyrim
                 hash.Add(Iconsitem);
             }
             hash.Add(item.Description);
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(item.LoadingScreenNif);
             if (item.InitialScale is {} InitialScaleitem)
             {

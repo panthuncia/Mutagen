@@ -3382,16 +3382,16 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Nameitem);
             }
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             if (item.FilterString is {} FilterStringitem)
             {
                 hash.Add(FilterStringitem);
             }
-            hash.Add(item.Flora);
-            hash.Add(item.ResourceGeneration);
-            hash.Add(item.ProceduralObjectGeneration);
-            hash.Add(item.ObjectSwaps);
-            hash.Add(item.MaterialSwaps);
+            hash.AddContents(item.Flora);
+            hash.AddContents(item.ResourceGeneration);
+            hash.AddContents(item.ProceduralObjectGeneration);
+            hash.AddContents(item.ObjectSwaps);
+            hash.AddContents(item.MaterialSwaps);
             hash.Add(item.Climate);
             hash.Add(item.Water);
             if (item.BlockDensityMult is {} BlockDensityMultitem)
@@ -3416,17 +3416,14 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.SurfaceColor2);
             hash.Add(item.RockTint);
             hash.Add(item.Type);
-            hash.Add(item.MarkerObjectKeywords);
-            hash.Add(item.Terrain);
+            hash.AddContents(item.MarkerObjectKeywords);
+            hash.AddContents(item.Terrain);
             if (item.GroundLayerNormal is {} GroundLayerNormalitem)
             {
                 hash.Add(GroundLayerNormalitem);
             }
-            if (item.BTPS is {} BTPSItem)
-            {
-                hash.Add(BTPSItem);
-            }
-            hash.Add(item.DistantView);
+            hash.AddContents(item.BTPS);
+            hash.AddContents(item.DistantView);
             if (item.GlobalLayerMaterial is {} GlobalLayerMaterialitem)
             {
                 hash.Add(GlobalLayerMaterialitem);

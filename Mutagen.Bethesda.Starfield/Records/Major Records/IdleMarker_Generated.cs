@@ -1875,7 +1875,7 @@ namespace Mutagen.Bethesda.Starfield
             }
             hash.Add(item.ObjectBounds);
             hash.Add(item.DirtinessScale);
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             if (item.Flags is {} Flagsitem)
             {
                 hash.Add(Flagsitem);
@@ -1884,7 +1884,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(IdleTimeritem);
             }
-            hash.Add(item.Animations);
+            hash.AddContents(item.Animations);
             if (item.Model is {} Modelitem)
             {
                 hash.Add(Modelitem);

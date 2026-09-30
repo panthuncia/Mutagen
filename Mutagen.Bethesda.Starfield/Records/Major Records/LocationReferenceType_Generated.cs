@@ -1372,19 +1372,13 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(VirtualMachineAdapteritem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Color is {} Coloritem)
             {
                 hash.Add(Coloritem);
             }
-            if (item.TNAM is {} TNAMItem)
-            {
-                hash.Add(TNAMItem);
-            }
-            if (item.FNAM is {} FNAMItem)
-            {
-                hash.Add(FNAMItem);
-            }
+            hash.AddContents(item.TNAM);
+            hash.AddContents(item.FNAM);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

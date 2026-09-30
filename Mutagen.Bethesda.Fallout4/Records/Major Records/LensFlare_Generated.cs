@@ -1182,7 +1182,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(FadeDistanceRadiusScaleitem);
             }
-            hash.Add(item.Sprites);
+            hash.AddContents(item.Sprites);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

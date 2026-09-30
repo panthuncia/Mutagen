@@ -1583,7 +1583,7 @@ namespace Mutagen.Bethesda.Fallout3
         public virtual int GetHashCode(IClimateGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.WeatherTypes);
+            hash.AddContents(item.WeatherTypes);
             if (item.SunTexture is {} SunTextureitem)
             {
                 hash.Add(SunTextureitem);

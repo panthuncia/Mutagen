@@ -5757,18 +5757,12 @@ namespace Mutagen.Bethesda.Fallout4
         public virtual int GetHashCode(IWeatherGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.CloudTextures);
-            if (item.LNAM is {} LNAMItem)
-            {
-                hash.Add(LNAMItem);
-            }
+            hash.AddContents(item.CloudTextures);
+            hash.AddContents(item.LNAM);
             hash.Add(item.Precipitation);
             hash.Add(item.VisualEffect);
-            if (item.ONAM is {} ONAMItem)
-            {
-                hash.Add(ONAMItem);
-            }
-            hash.Add(item.Clouds);
+            hash.AddContents(item.ONAM);
+            hash.AddContents(item.Clouds);
             hash.Add(item.SkyUpperColor);
             hash.Add(item.FogNearColor);
             hash.Add(item.UnknownColor);
@@ -5788,7 +5782,7 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.MoonGlareColor);
             hash.Add(item.FogNearHigh);
             hash.Add(item.FogFarHigh);
-            hash.Add(item.NAM4);
+            hash.AddContents(item.NAM4);
             hash.Add(item.FogDistanceDayNear);
             hash.Add(item.FogDistanceDayFar);
             hash.Add(item.FogDistanceNightNear);
@@ -5824,8 +5818,8 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.WindDirection);
             hash.Add(item.WindDirectionRange);
             hash.Add(item.WindTurbulance);
-            hash.Add(item.Sounds);
-            hash.Add(item.SkyStatics);
+            hash.AddContents(item.Sounds);
+            hash.AddContents(item.SkyStatics);
             hash.Add(item.ImageSpaceSunrise);
             hash.Add(item.ImageSpaceDay);
             hash.Add(item.ImageSpaceSunset);

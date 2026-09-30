@@ -1257,15 +1257,12 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(NavMeshVersionitem);
             }
-            hash.Add(item.MapInfos);
+            hash.AddContents(item.MapInfos);
             if (item.PreferredPathing is {} PreferredPathingitem)
             {
                 hash.Add(PreferredPathingitem);
             }
-            if (item.NVSI is {} NVSIItem)
-            {
-                hash.Add(NVSIItem);
-            }
+            hash.AddContents(item.NVSI);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

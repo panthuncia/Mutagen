@@ -876,10 +876,7 @@ namespace Mutagen.Bethesda.Starfield
         {
             var hash = new HashCode();
             hash.Add(item.MovementType);
-            if (item.SPED is {} SPEDItem)
-            {
-                hash.Add(SPEDItem);
-            }
+            hash.AddContents(item.SPED);
             return hash.ToHashCode();
         }
         

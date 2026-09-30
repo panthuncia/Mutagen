@@ -2030,7 +2030,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(HashCode.Combine(TextureSwapListitem.Male, TextureSwapListitem.Female));
             }
-            hash.Add(item.AdditionalRaces);
+            hash.AddContents(item.AdditionalRaces);
             hash.Add(item.FootstepSound);
             hash.Add(item.ArtObject);
             hash.Add(HashCode.Combine(item.BoneData.Male, item.BoneData.Female));

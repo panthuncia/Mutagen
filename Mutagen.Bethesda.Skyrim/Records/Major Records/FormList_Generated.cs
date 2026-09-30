@@ -1097,7 +1097,7 @@ namespace Mutagen.Bethesda.Skyrim
         public virtual int GetHashCode(IFormListGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Items);
+            hash.AddContents(item.Items);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

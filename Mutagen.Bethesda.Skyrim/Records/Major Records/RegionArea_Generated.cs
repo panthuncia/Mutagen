@@ -949,7 +949,7 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(EdgeFallOffitem);
             }
-            hash.Add(item.RegionPointListData);
+            hash.AddContents(item.RegionPointListData);
             return hash.ToHashCode();
         }
         

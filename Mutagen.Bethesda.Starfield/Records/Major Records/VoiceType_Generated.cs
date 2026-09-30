@@ -1199,10 +1199,7 @@ namespace Mutagen.Bethesda.Starfield
             }
             hash.Add(item.Flags);
             hash.Add(item.AnimationFaceArchetype);
-            if (item.PNAM is {} PNAMItem)
-            {
-                hash.Add(PNAMItem);
-            }
+            hash.AddContents(item.PNAM);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

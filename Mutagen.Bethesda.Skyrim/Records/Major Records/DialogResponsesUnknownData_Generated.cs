@@ -922,10 +922,7 @@ namespace Mutagen.Bethesda.Skyrim
         public virtual int GetHashCode(IDialogResponsesUnknownDataGetter item)
         {
             var hash = new HashCode();
-            if (item.SCHR is {} SCHRItem)
-            {
-                hash.Add(SCHRItem);
-            }
+            hash.AddContents(item.SCHR);
             hash.Add(item.QNAM);
             hash.Add(item.NEXT);
             return hash.ToHashCode();

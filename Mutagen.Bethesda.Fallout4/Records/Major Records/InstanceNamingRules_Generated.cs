@@ -1136,7 +1136,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(Targetitem);
             }
-            hash.Add(item.RuleSets);
+            hash.AddContents(item.RuleSets);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

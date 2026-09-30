@@ -1799,7 +1799,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(Destructibleitem);
             }
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             if (item.PNAM is {} PNAMitem)
             {
                 hash.Add(PNAMitem);

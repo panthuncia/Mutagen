@@ -923,7 +923,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IKeywordFormComponentGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

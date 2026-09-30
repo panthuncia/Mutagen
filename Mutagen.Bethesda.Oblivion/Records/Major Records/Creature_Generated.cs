@@ -2845,26 +2845,23 @@ namespace Mutagen.Bethesda.Oblivion
             {
                 hash.Add(Modelitem);
             }
-            hash.Add(item.Items);
-            hash.Add(item.Spells);
-            hash.Add(item.Models);
-            if (item.NIFT is {} NIFTItem)
-            {
-                hash.Add(NIFTItem);
-            }
+            hash.AddContents(item.Items);
+            hash.AddContents(item.Spells);
+            hash.AddContents(item.Models);
+            hash.AddContents(item.NIFT);
             if (item.Configuration is {} Configurationitem)
             {
                 hash.Add(Configurationitem);
             }
-            hash.Add(item.Factions);
+            hash.AddContents(item.Factions);
             hash.Add(item.DeathItem);
             hash.Add(item.Script);
             if (item.AIData is {} AIDataitem)
             {
                 hash.Add(AIDataitem);
             }
-            hash.Add(item.AIPackages);
-            hash.Add(item.Animations);
+            hash.AddContents(item.AIPackages);
+            hash.AddContents(item.Animations);
             if (item.Data is {} Dataitem)
             {
                 hash.Add(Dataitem);
@@ -2895,7 +2892,7 @@ namespace Mutagen.Bethesda.Oblivion
                 hash.Add(BloodDecalitem);
             }
             hash.Add(item.InheritsSoundFrom);
-            hash.Add(item.Sounds);
+            hash.AddContents(item.Sounds);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

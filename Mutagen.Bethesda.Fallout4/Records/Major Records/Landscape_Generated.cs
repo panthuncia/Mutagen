@@ -1763,19 +1763,16 @@ namespace Mutagen.Bethesda.Fallout4
         public virtual int GetHashCode(ILandscapeGetter item)
         {
             var hash = new HashCode();
-            if (item.DATA is {} DATAItem)
-            {
-                hash.Add(DATAItem);
-            }
-            hash.Add(item.VertexNormals);
+            hash.AddContents(item.DATA);
+            hash.AddContents(item.VertexNormals);
             if (item.VertexHeightMap is {} VertexHeightMapitem)
             {
                 hash.Add(VertexHeightMapitem);
             }
-            hash.Add(item.VertexColors);
-            hash.Add(item.Layers);
-            hash.Add(item.Textures);
-            hash.Add(item.MPCDs);
+            hash.AddContents(item.VertexColors);
+            hash.AddContents(item.Layers);
+            hash.AddContents(item.Textures);
+            hash.AddContents(item.MPCDs);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

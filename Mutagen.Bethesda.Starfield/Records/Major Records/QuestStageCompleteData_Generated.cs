@@ -1028,12 +1028,9 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IQuestStageCompleteDataGetter item)
         {
             var hash = new HashCode();
-            if (item.QSRD is {} QSRDItem)
-            {
-                hash.Add(QSRDItem);
-            }
+            hash.AddContents(item.QSRD);
             hash.Add(item.AffinityChange);
-            hash.Add(item.RewardDatas);
+            hash.AddContents(item.RewardDatas);
             return hash.ToHashCode();
         }
         

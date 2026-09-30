@@ -1030,7 +1030,7 @@ namespace Mutagen.Bethesda.Skyrim
             var hash = new HashCode();
             hash.Add(item.Name);
             hash.Add(item.Flags);
-            hash.Add(item.Properties);
+            hash.AddContents(item.Properties);
             return hash.ToHashCode();
         }
         

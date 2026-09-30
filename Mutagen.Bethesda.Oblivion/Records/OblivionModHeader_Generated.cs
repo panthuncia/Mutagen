@@ -1319,14 +1319,8 @@ namespace Mutagen.Bethesda.Oblivion
             hash.Add(item.FormID);
             hash.Add(item.Version);
             hash.Add(item.Stats);
-            if (item.TypeOffsets is {} TypeOffsetsItem)
-            {
-                hash.Add(TypeOffsetsItem);
-            }
-            if (item.Deleted is {} DeletedItem)
-            {
-                hash.Add(DeletedItem);
-            }
+            hash.AddContents(item.TypeOffsets);
+            hash.AddContents(item.Deleted);
             if (item.Author is {} Authoritem)
             {
                 hash.Add(Authoritem);
@@ -1335,7 +1329,7 @@ namespace Mutagen.Bethesda.Oblivion
             {
                 hash.Add(Descriptionitem);
             }
-            hash.Add(item.MasterReferences);
+            hash.AddContents(item.MasterReferences);
             return hash.ToHashCode();
         }
         

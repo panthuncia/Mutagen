@@ -1645,13 +1645,13 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 hash.Add(Nameitem);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(item.Skill);
             hash.Add(item.Level);
             hash.Add(item.Category);
             hash.Add(item.SubCategory);
-            hash.Add(item.Ingredients);
-            hash.Add(item.Outputs);
+            hash.AddContents(item.Ingredients);
+            hash.AddContents(item.Outputs);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

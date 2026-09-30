@@ -1028,7 +1028,7 @@ namespace Mutagen.Bethesda.Fallout4
         public virtual int GetHashCode(IRegionWeatherGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Weathers);
+            hash.AddContents(item.Weathers);
             if (item.LodDisplayDistanceMultiplier is {} LodDisplayDistanceMultiplieritem)
             {
                 hash.Add(LodDisplayDistanceMultiplieritem);

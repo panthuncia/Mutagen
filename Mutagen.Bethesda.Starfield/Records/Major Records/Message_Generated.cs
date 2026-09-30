@@ -1645,7 +1645,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(ShortTitleitem);
             }
-            hash.Add(item.MenuButtons);
+            hash.AddContents(item.MenuButtons);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

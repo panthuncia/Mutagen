@@ -4446,12 +4446,12 @@ namespace Mutagen.Bethesda.Skyrim
             }
             hash.Add(item.ObjectBounds);
             hash.Add(item.Configuration);
-            hash.Add(item.Factions);
+            hash.AddContents(item.Factions);
             hash.Add(item.DeathItem);
             hash.Add(item.Voice);
             hash.Add(item.Template);
             hash.Add(item.Race);
-            hash.Add(item.ActorEffect);
+            hash.AddContents(item.ActorEffect);
             if (item.Destructible is {} Destructibleitem)
             {
                 hash.Add(Destructibleitem);
@@ -4459,16 +4459,16 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.WornArmor);
             hash.Add(item.FarAwayModel);
             hash.Add(item.AttackRace);
-            hash.Add(item.Attacks);
+            hash.AddContents(item.Attacks);
             hash.Add(item.SpectatorOverridePackageList);
             hash.Add(item.ObserveDeadBodyOverridePackageList);
             hash.Add(item.GuardWarnOverridePackageList);
             hash.Add(item.CombatOverridePackageList);
-            hash.Add(item.Perks);
-            hash.Add(item.Items);
+            hash.AddContents(item.Perks);
+            hash.AddContents(item.Items);
             hash.Add(item.AIData);
-            hash.Add(item.Packages);
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Packages);
+            hash.AddContents(item.Keywords);
             hash.Add(item.Class);
             if (item.Name is {} Nameitem)
             {
@@ -4482,7 +4482,7 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(PlayerSkillsitem);
             }
-            hash.Add(item.HeadParts);
+            hash.AddContents(item.HeadParts);
             hash.Add(item.HairColor);
             hash.Add(item.CombatStyle);
             hash.Add(item.GiftFilter);
@@ -4511,7 +4511,7 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(FacePartsitem);
             }
-            hash.Add(item.TintLayers);
+            hash.AddContents(item.TintLayers);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

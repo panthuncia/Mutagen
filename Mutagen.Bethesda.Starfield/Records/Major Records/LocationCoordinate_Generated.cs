@@ -950,7 +950,7 @@ namespace Mutagen.Bethesda.Starfield
         {
             var hash = new HashCode();
             hash.Add(item.Location);
-            hash.Add(item.Coordinates);
+            hash.AddContents(item.Coordinates);
             return hash.ToHashCode();
         }
         

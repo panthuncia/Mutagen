@@ -2521,12 +2521,12 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(VirtualMachineAdapteritem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);
             }
-            hash.Add(item.Relations);
+            hash.AddContents(item.Relations);
             hash.Add(item.Keyword);
             hash.Add(item.Flags);
             hash.Add(item.SharedCrimeFactionList);
@@ -2534,8 +2534,8 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(CrimeValuesitem);
             }
-            hash.Add(item.Prisons);
-            hash.Add(item.Ranks);
+            hash.AddContents(item.Prisons);
+            hash.AddContents(item.Ranks);
             hash.Add(item.VendorBuySellList);
             hash.Add(item.MerchantContainer);
             if (item.VendorValues is {} VendorValuesitem)
@@ -2546,7 +2546,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(VendorLocationitem);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(item.VoiceType);
             if (item.Herd is {} Herditem)
             {

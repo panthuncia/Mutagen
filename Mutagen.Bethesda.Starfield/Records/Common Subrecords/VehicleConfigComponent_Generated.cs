@@ -1244,7 +1244,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IVehicleConfigComponentGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.SuspensionBoneModifiers);
+            hash.AddContents(item.SuspensionBoneModifiers);
             if (item.Config is {} Configitem)
             {
                 hash.Add(Configitem);

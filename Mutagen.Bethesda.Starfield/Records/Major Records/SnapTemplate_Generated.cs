@@ -1868,11 +1868,11 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(ISnapTemplateGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             hash.Add(item.Parent);
-            hash.Add(item.Nodes);
-            hash.Add(item.ParentNodes);
-            hash.Add(item.BNAM);
+            hash.AddContents(item.Nodes);
+            hash.AddContents(item.ParentNodes);
+            hash.AddContents(item.BNAM);
             if (item.NextNodeID is {} NextNodeIDitem)
             {
                 hash.Add(NextNodeIDitem);
@@ -1885,7 +1885,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(CNAMitem);
             }
-            hash.Add(item.SnapTemplateRnamTraversal);
+            hash.AddContents(item.SnapTemplateRnamTraversal);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

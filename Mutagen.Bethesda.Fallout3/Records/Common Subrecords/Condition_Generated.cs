@@ -1254,7 +1254,7 @@ namespace Mutagen.Bethesda.Fallout3
             hash.Add(item.Versioning);
             hash.Add(item.CompareOperator);
             hash.Add(item.Flags);
-            hash.Add(item.Fluff);
+            hash.AddContents(item.Fluff);
             hash.Add(item.ComparisonValue);
             hash.Add(item.Function);
             hash.Add(item.FirstParameter);

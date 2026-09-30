@@ -1672,7 +1672,7 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 hash.Add(Iconitem);
             }
-            hash.Add(item.TagSkills);
+            hash.AddContents(item.TagSkills);
             hash.Add(item.Flags);
             hash.Add(item.Services);
             if (item.Teaches is {} Teachesitem)
@@ -1681,7 +1681,7 @@ namespace Mutagen.Bethesda.Fallout3
             }
             hash.Add(item.MaxTrainingLevel);
             hash.Add(item.Unknown);
-            hash.Add(item.Attributes);
+            hash.AddContents(item.Attributes);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

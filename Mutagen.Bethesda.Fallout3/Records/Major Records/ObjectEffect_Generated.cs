@@ -1341,7 +1341,7 @@ namespace Mutagen.Bethesda.Fallout3
             hash.Add(item.Unused1);
             hash.Add(item.Unused2);
             hash.Add(item.Flags);
-            hash.Add(item.Effects);
+            hash.AddContents(item.Effects);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

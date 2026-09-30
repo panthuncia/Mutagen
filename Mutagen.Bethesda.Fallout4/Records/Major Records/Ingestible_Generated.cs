@@ -2397,7 +2397,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(Nameitem);
             }
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             if (item.Model is {} Modelitem)
             {
                 hash.Add(Modelitem);
@@ -2428,7 +2428,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(AddictionNameitem);
             }
-            hash.Add(item.Effects);
+            hash.AddContents(item.Effects);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

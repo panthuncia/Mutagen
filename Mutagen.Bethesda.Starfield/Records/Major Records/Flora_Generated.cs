@@ -3204,7 +3204,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Transformsitem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);
@@ -3217,8 +3217,8 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Destructibleitem);
             }
-            hash.Add(item.Keywords);
-            hash.Add(item.Properties);
+            hash.AddContents(item.Keywords);
+            hash.AddContents(item.Properties);
             if (item.MarkerColor is {} MarkerColoritem)
             {
                 hash.Add(MarkerColoritem);
@@ -3227,14 +3227,8 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(ActivateTextOverrideitem);
             }
-            if (item.FNAM is {} FNAMItem)
-            {
-                hash.Add(FNAMItem);
-            }
-            if (item.JNAM is {} JNAMItem)
-            {
-                hash.Add(JNAMItem);
-            }
+            hash.AddContents(item.FNAM);
+            hash.AddContents(item.JNAM);
             hash.Add(item.Ingredient);
             if (item.HarvestSound is {} HarvestSounditem)
             {
@@ -3244,8 +3238,8 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Productionitem);
             }
-            hash.Add(item.AttachParentSlots);
-            hash.Add(item.ObjectTemplates);
+            hash.AddContents(item.AttachParentSlots);
+            hash.AddContents(item.ObjectTemplates);
             hash.Add(item.ActionKeyword);
             hash.Add(item.DamageRequiredToHarvest);
             hash.Add(item.MaxHarvestCount);

@@ -904,7 +904,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IFormLinkDataComponentGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Links);
+            hash.AddContents(item.Links);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

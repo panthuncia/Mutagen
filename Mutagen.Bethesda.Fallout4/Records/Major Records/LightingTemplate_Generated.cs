@@ -2490,7 +2490,7 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.DirectionalFade);
             hash.Add(item.FogClipDistance);
             hash.Add(item.FogPower);
-            hash.Add(item.Unused);
+            hash.AddContents(item.Unused);
             hash.Add(item.FogFarColor);
             hash.Add(item.FogMax);
             hash.Add(item.LightFadeStartDistance);

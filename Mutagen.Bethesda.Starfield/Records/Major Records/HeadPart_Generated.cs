@@ -2060,7 +2060,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(VirtualMachineAdapteritem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);
@@ -2074,7 +2074,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Typeitem);
             }
-            hash.Add(item.ExtraParts);
+            hash.AddContents(item.ExtraParts);
             if (item.ColorMapping is {} ColorMappingitem)
             {
                 hash.Add(ColorMappingitem);
@@ -2086,7 +2086,7 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.TextureSet);
             hash.Add(item.ValidRaces);
             hash.Add(item.Morph);
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

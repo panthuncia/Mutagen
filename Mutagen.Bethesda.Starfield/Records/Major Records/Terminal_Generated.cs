@@ -2856,7 +2856,7 @@ namespace Mutagen.Bethesda.Starfield
                 hash.Add(Transformsitem);
             }
             hash.Add(item.SnapTemplate);
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             hash.Add(item.Menu);
             if (item.Background is {} Backgrounditem)
             {
@@ -2870,43 +2870,25 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Modelitem);
             }
-            hash.Add(item.Keywords);
-            hash.Add(item.Properties);
-            hash.Add(item.ForcedLocations);
-            if (item.PNAM is {} PNAMItem)
-            {
-                hash.Add(PNAMItem);
-            }
-            if (item.FNAM is {} FNAMItem)
-            {
-                hash.Add(FNAMItem);
-            }
-            if (item.JNAM is {} JNAMItem)
-            {
-                hash.Add(JNAMItem);
-            }
+            hash.AddContents(item.Keywords);
+            hash.AddContents(item.Properties);
+            hash.AddContents(item.ForcedLocations);
+            hash.AddContents(item.PNAM);
+            hash.AddContents(item.FNAM);
+            hash.AddContents(item.JNAM);
             if (item.MarkerFlags is {} MarkerFlagsitem)
             {
                 hash.Add(MarkerFlagsitem);
             }
-            if (item.GNAM is {} GNAMItem)
-            {
-                hash.Add(GNAMItem);
-            }
-            if (item.WorkbenchData is {} WorkbenchDataItem)
-            {
-                hash.Add(WorkbenchDataItem);
-            }
+            hash.AddContents(item.GNAM);
+            hash.AddContents(item.WorkbenchData);
             hash.Add(item.FurnitureTemplate);
-            if (item.FNPR is {} FNPRItem)
-            {
-                hash.Add(FNPRItem);
-            }
+            hash.AddContents(item.FNPR);
             if (item.MarkerModel is {} MarkerModelitem)
             {
                 hash.Add(MarkerModelitem);
             }
-            hash.Add(item.MarkerParameters);
+            hash.AddContents(item.MarkerParameters);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

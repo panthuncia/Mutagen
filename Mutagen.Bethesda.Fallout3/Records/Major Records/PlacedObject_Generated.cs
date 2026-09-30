@@ -4459,13 +4459,10 @@ namespace Mutagen.Bethesda.Fallout3
         public virtual int GetHashCode(IPlacedObjectGetter item)
         {
             var hash = new HashCode();
-            if (item.RCLR is {} RCLRItem)
-            {
-                hash.Add(RCLRItem);
-            }
+            hash.AddContents(item.RCLR);
             hash.Add(item.Base);
             hash.Add(item.EncounterZone);
-            hash.Add(item.RagdollData);
+            hash.AddContents(item.RagdollData);
             if (item.RagdollBipedRotation is {} RagdollBipedRotationitem)
             {
                 hash.Add(RagdollBipedRotationitem);
@@ -4549,9 +4546,9 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 hash.Add(AmmoCountitem);
             }
-            hash.Add(item.Reflections);
-            hash.Add(item.LitWater);
-            hash.Add(item.LinkedDecals);
+            hash.AddContents(item.Reflections);
+            hash.AddContents(item.LitWater);
+            hash.AddContents(item.LinkedDecals);
             hash.Add(item.LinkedReference);
             if (item.LinkedReferenceColor is {} LinkedReferenceColoritem)
             {
@@ -4581,7 +4578,7 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 hash.Add(NavigationDoorLinkitem);
             }
-            hash.Add(item.Portals);
+            hash.AddContents(item.Portals);
             if (item.PortalRoom is {} PortalRoomitem)
             {
                 hash.Add(PortalRoomitem);
@@ -4591,7 +4588,7 @@ namespace Mutagen.Bethesda.Fallout3
                 hash.Add(SpeedTreeSeeditem);
             }
             hash.Add(item.Unknown);
-            hash.Add(item.LinkedRooms);
+            hash.AddContents(item.LinkedRooms);
             if (item.OcclusionPlane is {} OcclusionPlaneitem)
             {
                 hash.Add(OcclusionPlaneitem);
@@ -4600,7 +4597,7 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 hash.Add(LinkedOcclusionPlanesitem);
             }
-            hash.Add(item.DistantLodData);
+            hash.AddContents(item.DistantLodData);
             if (item.Scale is {} Scaleitem)
             {
                 hash.Add(Scaleitem);

@@ -2508,10 +2508,10 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IPlanetGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Components);
-            hash.Add(item.MasterWorldspaces);
-            hash.Add(item.AddedWorldspaces);
-            hash.Add(item.Biomes);
+            hash.AddContents(item.Components);
+            hash.AddContents(item.MasterWorldspaces);
+            hash.AddContents(item.AddedWorldspaces);
+            hash.AddContents(item.Biomes);
             hash.Add(item.SurfaceTree);
             if (item.ScanWorldspaceMultiplier is {} ScanWorldspaceMultiplieritem)
             {

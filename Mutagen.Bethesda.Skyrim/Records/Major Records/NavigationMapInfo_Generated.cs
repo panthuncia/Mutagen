@@ -1550,9 +1550,9 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.Unknown);
             hash.Add(item.Point);
             hash.Add(item.PreferredMergesFlag);
-            hash.Add(item.MergedTo);
-            hash.Add(item.PreferredMerges);
-            hash.Add(item.LinkedDoors);
+            hash.AddContents(item.MergedTo);
+            hash.AddContents(item.PreferredMerges);
+            hash.AddContents(item.LinkedDoors);
             if (item.Island is {} Islanditem)
             {
                 hash.Add(Islanditem);

@@ -1046,10 +1046,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(Coloritem);
             }
-            if (item.TNAM is {} TNAMItem)
-            {
-                hash.Add(TNAMItem);
-            }
+            hash.AddContents(item.TNAM);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

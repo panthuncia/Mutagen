@@ -2266,12 +2266,12 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Modelitem);
             }
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             if (item.ContextNotes is {} ContextNotesitem)
             {
                 hash.Add(ContextNotesitem);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             hash.Add(item.Action);
             hash.Add(item.Location);
             hash.Add(item.Target);

@@ -2329,18 +2329,15 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(OverrideFileNameitem);
             }
-            hash.Add(item.Responses);
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Responses);
+            hash.AddContents(item.Conditions);
             if (item.Prompt is {} Promptitem)
             {
                 hash.Add(Promptitem);
             }
             hash.Add(item.Speaker);
             hash.Add(item.StartScene);
-            if (item.INTV is {} INTVItem)
-            {
-                hash.Add(INTVItem);
-            }
+            hash.AddContents(item.INTV);
             if (item.ForcedAlias is {} ForcedAliasitem)
             {
                 hash.Add(ForcedAliasitem);

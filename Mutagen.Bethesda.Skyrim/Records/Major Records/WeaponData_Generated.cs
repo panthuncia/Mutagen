@@ -1979,7 +1979,7 @@ namespace Mutagen.Bethesda.Skyrim
         {
             var hash = new HashCode();
             hash.Add(item.AnimationType);
-            hash.Add(item.Unused);
+            hash.AddContents(item.Unused);
             hash.Add(item.Speed);
             hash.Add(item.Reach);
             hash.Add(item.Flags);
@@ -1998,7 +1998,7 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.RumbleLeftMotorStrength);
             hash.Add(item.RumbleRightMotorStrength);
             hash.Add(item.RumbleDuration);
-            hash.Add(item.Unknown3);
+            hash.AddContents(item.Unknown3);
             if (item.Skill is {} Skillitem)
             {
                 hash.Add(Skillitem);

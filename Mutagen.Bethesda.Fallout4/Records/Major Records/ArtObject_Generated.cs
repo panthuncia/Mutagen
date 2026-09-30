@@ -1385,7 +1385,7 @@ namespace Mutagen.Bethesda.Fallout4
             var hash = new HashCode();
             hash.Add(item.ObjectBounds);
             hash.Add(item.PreviewTransform);
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             if (item.Model is {} Modelitem)
             {
                 hash.Add(Modelitem);

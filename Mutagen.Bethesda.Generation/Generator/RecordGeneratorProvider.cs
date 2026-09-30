@@ -63,6 +63,12 @@ public class RecordGeneratorProvider : IGenerationConstructor
         gen.ReplaceTypeAssociation<Loqui.Generation.FloatType, FloatType>();
         gen.ReplaceTypeAssociation<Loqui.Generation.PercentType, PercentType>();
         gen.ReplaceTypeAssociation<Loqui.Generation.DictType, DictType>();
+        gen.ReplaceTypeAssociation<Loqui.Generation.ListType, MutagenListType>();
+        gen.ReplaceTypeAssociation<Loqui.Generation.ArrayType, MutagenArrayType>();
+        gen.ReplaceTypeAssociation<Loqui.Generation.Array2dType, MutagenArray2dType>();
+        // The mask module finds field generators by exact type, and would fall back to the list's.
+        gen.MaskModule.AddTypeAssociation<MutagenArray2dType>(gen.MaskModule.GetMaskModule(typeof(Loqui.Generation.Array2dType)));
+        gen.ReplaceTypeAssociation<Loqui.Generation.ByteArrayType, MutagenByteArrayType>();
         gen.ReplaceTypeAssociation<Loqui.Generation.BoolType, BoolType>();
 
         var bethesdaProto = gen.AddProtocol(

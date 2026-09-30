@@ -4318,8 +4318,8 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IWorldspaceGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Components);
-            hash.Add(item.LargeReferences);
+            hash.AddContents(item.Components);
+            hash.AddContents(item.LargeReferences);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);
@@ -4362,10 +4362,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Flagsitem);
             }
-            if (item.FNAM is {} FNAMItem)
-            {
-                hash.Add(FNAMItem);
-            }
+            hash.AddContents(item.FNAM);
             hash.Add(item.ObjectBoundsMin);
             hash.Add(item.ObjectBoundsMax);
             hash.Add(item.Music);
@@ -4382,28 +4379,19 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(GNAMitem);
             }
-            hash.Add(item.LandscapeTextures);
-            hash.Add(item.CellWaterHeightLocations);
-            hash.Add(item.WaterHeights);
-            if (item.HNAM is {} HNAMItem)
-            {
-                hash.Add(HNAMItem);
-            }
-            if (item.OffsetData is {} OffsetDataItem)
-            {
-                hash.Add(OffsetDataItem);
-            }
-            if (item.CellSizeData is {} CellSizeDataItem)
-            {
-                hash.Add(CellSizeDataItem);
-            }
+            hash.AddContents(item.LandscapeTextures);
+            hash.AddContents(item.CellWaterHeightLocations);
+            hash.AddContents(item.WaterHeights);
+            hash.AddContents(item.HNAM);
+            hash.AddContents(item.OffsetData);
+            hash.AddContents(item.CellSizeData);
             if (item.TopCell is {} TopCellitem)
             {
                 hash.Add(TopCellitem);
             }
             hash.Add(item.SubCellsTimestamp);
             hash.Add(item.SubCellsUnknown);
-            hash.Add(item.SubCells);
+            hash.AddContents(item.SubCells);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

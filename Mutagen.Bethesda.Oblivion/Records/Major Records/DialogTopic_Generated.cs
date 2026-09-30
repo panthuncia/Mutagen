@@ -1736,7 +1736,7 @@ namespace Mutagen.Bethesda.Oblivion
         public virtual int GetHashCode(IDialogTopicGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Quests);
+            hash.AddContents(item.Quests);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);
@@ -1746,7 +1746,7 @@ namespace Mutagen.Bethesda.Oblivion
                 hash.Add(DialogTypeitem);
             }
             hash.Add(item.Timestamp);
-            hash.Add(item.Items);
+            hash.AddContents(item.Items);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

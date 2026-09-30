@@ -1087,10 +1087,7 @@ namespace Mutagen.Bethesda.Fallout4
                 hash.Add(UnknownMPPMitem);
             }
             hash.Add(item.Texture);
-            if (item.UnknownMPPF is {} UnknownMPPFItem)
-            {
-                hash.Add(UnknownMPPFItem);
-            }
+            hash.AddContents(item.UnknownMPPF);
             return hash.ToHashCode();
         }
         

@@ -974,7 +974,7 @@ namespace Mutagen.Bethesda.Oblivion
             {
                 hash.Add(MusicTypeitem);
             }
-            hash.Add(item.Sounds);
+            hash.AddContents(item.Sounds);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

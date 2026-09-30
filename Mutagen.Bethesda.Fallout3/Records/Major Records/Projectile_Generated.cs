@@ -2524,10 +2524,7 @@ namespace Mutagen.Bethesda.Fallout3
             hash.Add(item.Rotation);
             hash.Add(item.BouncyMult);
             hash.Add(item.MuzzleFlashModel);
-            if (item.MuzzleFlashModelTextureHashes is {} MuzzleFlashModelTextureHashesItem)
-            {
-                hash.Add(MuzzleFlashModelTextureHashesItem);
-            }
+            hash.AddContents(item.MuzzleFlashModelTextureHashes);
             hash.Add(item.SoundLevel);
             hash.Add(item.DATADataTypeState);
             hash.Add(base.GetHashCode());

@@ -4719,7 +4719,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Nameitem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Data is {} Dataitem)
             {
                 hash.Add(Dataitem);
@@ -4733,8 +4733,8 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.Location);
             hash.Add(item.QuestTimeLimit);
             hash.Add(item.SourceQuest);
-            hash.Add(item.QDUPs);
-            hash.Add(item.TextDisplayGlobals);
+            hash.AddContents(item.QDUPs);
+            hash.AddContents(item.TextDisplayGlobals);
             if (item.Filter is {} Filteritem)
             {
                 hash.Add(Filteritem);
@@ -4743,11 +4743,11 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(Summaryitem);
             }
-            hash.Add(item.DialogConditions);
-            hash.Add(item.UnusedConditions);
-            hash.Add(item.Stages);
-            hash.Add(item.Objectives);
-            hash.Add(item.Aliases);
+            hash.AddContents(item.DialogConditions);
+            hash.AddContents(item.UnusedConditions);
+            hash.AddContents(item.Stages);
+            hash.AddContents(item.Objectives);
+            hash.AddContents(item.Aliases);
             hash.Add(item.QuestGroup);
             if (item.SwfFile is {} SwfFileitem)
             {
@@ -4758,17 +4758,17 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(MissionBoardDescriptionitem);
             }
-            hash.Add(item.MissionBoardInfoPanels);
-            hash.Add(item.Keywords);
+            hash.AddContents(item.MissionBoardInfoPanels);
+            hash.AddContents(item.Keywords);
             if (item.ScriptComment is {} ScriptCommentitem)
             {
                 hash.Add(ScriptCommentitem);
             }
             hash.Add(item.Timestamp);
             hash.Add(item.Unknown);
-            hash.Add(item.DialogBranches);
-            hash.Add(item.DialogTopics);
-            hash.Add(item.Scenes);
+            hash.AddContents(item.DialogBranches);
+            hash.AddContents(item.DialogTopics);
+            hash.AddContents(item.Scenes);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

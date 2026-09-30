@@ -1254,7 +1254,7 @@ namespace Mutagen.Bethesda.Fallout4
         public virtual int GetHashCode(IUnknownObjectModificationGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Properties);
+            hash.AddContents(item.Properties);
             hash.Add(item.ModificationType);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();

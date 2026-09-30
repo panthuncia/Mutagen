@@ -985,14 +985,8 @@ namespace Mutagen.Bethesda.Fallout3
             var hash = new HashCode();
             hash.Add(item.IdleTime);
             hash.Add(item.Idle);
-            if (item.SCHR is {} SCHRItem)
-            {
-                hash.Add(SCHRItem);
-            }
-            if (item.SCTX is {} SCTXItem)
-            {
-                hash.Add(SCTXItem);
-            }
+            hash.AddContents(item.SCHR);
+            hash.AddContents(item.SCTX);
             return hash.ToHashCode();
         }
         

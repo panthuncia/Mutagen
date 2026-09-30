@@ -1364,22 +1364,13 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(Dataitem);
             }
-            if (item.FNAM is {} FNAMItem)
-            {
-                hash.Add(FNAMItem);
-            }
+            hash.AddContents(item.FNAM);
             if (item.Type is {} Typeitem)
             {
                 hash.Add(Typeitem);
             }
-            if (item.CNAM is {} CNAMItem)
-            {
-                hash.Add(CNAMItem);
-            }
-            if (item.SNAM is {} SNAMItem)
-            {
-                hash.Add(SNAMItem);
-            }
+            hash.AddContents(item.CNAM);
+            hash.AddContents(item.SNAM);
             if (item.OutputChannels is {} OutputChannelsitem)
             {
                 hash.Add(OutputChannelsitem);

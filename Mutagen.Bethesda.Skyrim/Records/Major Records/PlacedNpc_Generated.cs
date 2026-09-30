@@ -2818,14 +2818,8 @@ namespace Mutagen.Bethesda.Skyrim
             }
             hash.Add(item.Base);
             hash.Add(item.EncounterZone);
-            if (item.RagdollData is {} RagdollDataItem)
-            {
-                hash.Add(RagdollDataItem);
-            }
-            if (item.RagdollBipedData is {} RagdollBipedDataItem)
-            {
-                hash.Add(RagdollBipedDataItem);
-            }
+            hash.AddContents(item.RagdollData);
+            hash.AddContents(item.RagdollBipedData);
             if (item.Patrol is {} Patrolitem)
             {
                 hash.Add(Patrolitem);
@@ -2847,7 +2841,7 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(Healthitem);
             }
-            hash.Add(item.LinkedReferences);
+            hash.AddContents(item.LinkedReferences);
             if (item.ActivateParents is {} ActivateParentsitem)
             {
                 hash.Add(ActivateParentsitem);
@@ -2859,7 +2853,7 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.PersistentLocation);
             hash.Add(item.LocationReference);
             hash.Add(item.IsIgnoredBySandbox);
-            hash.Add(item.LocationRefTypes);
+            hash.AddContents(item.LocationRefTypes);
             if (item.HeadTrackingWeight is {} HeadTrackingWeightitem)
             {
                 hash.Add(HeadTrackingWeightitem);

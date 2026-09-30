@@ -1024,10 +1024,10 @@ namespace Mutagen.Bethesda.Skyrim
         {
             var hash = new HashCode();
             hash.Add(item.Level);
-            hash.Add(item.Unused);
+            hash.AddContents(item.Unused);
             hash.Add(item.Key);
             hash.Add(item.Flags);
-            hash.Add(item.Unused2);
+            hash.AddContents(item.Unused2);
             return hash.ToHashCode();
         }
         

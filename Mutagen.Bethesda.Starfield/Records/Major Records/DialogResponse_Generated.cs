@@ -1511,15 +1511,12 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.Emotion);
             hash.Add(item.WEMFile);
             hash.Add(item.EmotionOut);
-            hash.Add(item.TROTs);
+            hash.AddContents(item.TROTs);
             hash.Add(item.ResponseText);
             hash.Add(item.ScriptNotes);
             hash.Add(item.Edits);
             hash.Add(item.AlternateLipText);
-            if (item.TextHash is {} TextHashItem)
-            {
-                hash.Add(TextHashItem);
-            }
+            hash.AddContents(item.TextHash);
             if (item.Animation is {} Animationitem)
             {
                 hash.Add(Animationitem);

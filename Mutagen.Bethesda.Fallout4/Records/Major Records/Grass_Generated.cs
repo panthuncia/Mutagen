@@ -1740,7 +1740,7 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.ColorRange);
             hash.Add(item.WavePeriod);
             hash.Add(item.Flags);
-            hash.Add(item.Unknown3);
+            hash.AddContents(item.Unknown3);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

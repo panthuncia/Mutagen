@@ -1697,9 +1697,9 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(LoopDataitem);
             }
-            hash.Add(item.CuePoints);
-            hash.Add(item.Conditions);
-            hash.Add(item.Tracks);
+            hash.AddContents(item.CuePoints);
+            hash.AddContents(item.Conditions);
+            hash.AddContents(item.Tracks);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

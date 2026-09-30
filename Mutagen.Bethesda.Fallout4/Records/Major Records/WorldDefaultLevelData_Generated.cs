@@ -911,10 +911,7 @@ namespace Mutagen.Bethesda.Fallout4
             var hash = new HashCode();
             hash.Add(item.NorthwestCellCoords);
             hash.Add(item.NorthwestCellSize);
-            if (item.Data is {} DataItem)
-            {
-                hash.Add(DataItem);
-            }
+            hash.AddContents(item.Data);
             return hash.ToHashCode();
         }
         

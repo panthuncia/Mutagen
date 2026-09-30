@@ -2909,15 +2909,15 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(VirtualMachineAdapteritem);
             }
-            hash.Add(item.Components);
+            hash.AddContents(item.Components);
             if (item.Description is {} Descriptionitem)
             {
                 hash.Add(Descriptionitem);
             }
             hash.Add(item.WorkbenchKeyword);
-            hash.Add(item.Conditions);
-            hash.Add(item.ConstructableComponents);
-            hash.Add(item.RequiredPerks);
+            hash.AddContents(item.Conditions);
+            hash.AddContents(item.ConstructableComponents);
+            hash.AddContents(item.RequiredPerks);
             hash.Add(item.CreatedObject);
             hash.Add(item.AmountProduced);
             hash.Add(item.MenuSortOrder);
@@ -2934,7 +2934,7 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(DropdownSounditem);
             }
-            hash.Add(item.RepairComponents);
+            hash.AddContents(item.RepairComponents);
             if (item.LearnMethod is {} LearnMethoditem)
             {
                 hash.Add(LearnMethoditem);
@@ -2945,7 +2945,7 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.BaseReturnScaleTable);
             hash.Add(item.LearnChance);
             hash.Add(item.MaxBuildCountGlobal);
-            hash.Add(item.RecipeFilters);
+            hash.AddContents(item.RecipeFilters);
             hash.Add(item.InstantiationFilterKeyword);
             if (item.Flags is {} Flagsitem)
             {

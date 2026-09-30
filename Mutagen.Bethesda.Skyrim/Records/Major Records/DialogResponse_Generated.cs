@@ -1418,10 +1418,10 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.EmotionValue);
             hash.Add(item.Unknown);
             hash.Add(item.ResponseNumber);
-            hash.Add(item.Unknown2);
+            hash.AddContents(item.Unknown2);
             hash.Add(item.Sound);
             hash.Add(item.Flags);
-            hash.Add(item.Unknown3);
+            hash.AddContents(item.Unknown3);
             hash.Add(item.Text);
             hash.Add(item.ScriptNotes);
             hash.Add(item.Edits);

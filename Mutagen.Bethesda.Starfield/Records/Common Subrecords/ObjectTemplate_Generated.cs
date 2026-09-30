@@ -903,11 +903,11 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.LevelMin);
             hash.Add(item.LevelMax);
             hash.Add(item.Default);
-            hash.Add(item.Keywords);
+            hash.AddContents(item.Keywords);
             hash.Add(item.MinLevelForRanks);
             hash.Add(item.AltLevelsPerTier);
-            hash.Add(item.Includes);
-            hash.Add(item.Properties);
+            hash.AddContents(item.Includes);
+            hash.AddContents(item.Properties);
             return hash.ToHashCode();
         }
         

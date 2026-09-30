@@ -1235,8 +1235,8 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.Versioning);
             hash.Add(item.ExtraBindDataVersion);
             hash.Add(item.FileName);
-            hash.Add(item.Fragments);
-            hash.Add(item.Aliases);
+            hash.AddContents(item.Fragments);
+            hash.AddContents(item.Aliases);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

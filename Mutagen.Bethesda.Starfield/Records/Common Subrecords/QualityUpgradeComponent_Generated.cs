@@ -904,7 +904,7 @@ namespace Mutagen.Bethesda.Starfield
         public virtual int GetHashCode(IQualityUpgradeComponentGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.QualityMods);
+            hash.AddContents(item.QualityMods);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

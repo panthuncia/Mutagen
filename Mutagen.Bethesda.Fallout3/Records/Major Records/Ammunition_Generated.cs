@@ -2078,7 +2078,7 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 hash.Add(Abbreviationitem);
             }
-            hash.Add(item.AmmoEffects);
+            hash.AddContents(item.AmmoEffects);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

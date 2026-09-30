@@ -1439,14 +1439,14 @@ namespace Mutagen.Bethesda.Skyrim
             {
                 hash.Add(Nameitem);
             }
-            hash.Add(item.INAM);
+            hash.AddContents(item.INAM);
             hash.Add(item.Quest);
             hash.Add(item.Flags);
             if (item.DisplayTime is {} DisplayTimeitem)
             {
                 hash.Add(DisplayTimeitem);
             }
-            hash.Add(item.MenuButtons);
+            hash.AddContents(item.MenuButtons);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

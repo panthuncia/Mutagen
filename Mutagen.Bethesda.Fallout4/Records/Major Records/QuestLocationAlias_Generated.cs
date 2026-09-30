@@ -1477,7 +1477,7 @@ namespace Mutagen.Bethesda.Fallout4
             {
                 hash.Add(FindMatchingRefFromEventitem);
             }
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             if (item.ClosestToAlias is {} ClosestToAliasitem)
             {
                 hash.Add(ClosestToAliasitem);

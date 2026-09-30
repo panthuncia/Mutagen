@@ -990,10 +990,7 @@ namespace Mutagen.Bethesda.Starfield
             hash.Add(item.Percentage);
             hash.Add(item.ModelFilename);
             hash.Add(item.HasCollision);
-            if (item.TextureFileHashes is {} TextureFileHashesItem)
-            {
-                hash.Add(TextureFileHashesItem);
-            }
+            hash.AddContents(item.TextureFileHashes);
             return hash.ToHashCode();
         }
         

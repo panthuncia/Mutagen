@@ -1077,7 +1077,7 @@ namespace Mutagen.Bethesda.Fallout4
         public virtual int GetHashCode(IAnimationSoundTagSetGetter item)
         {
             var hash = new HashCode();
-            hash.Add(item.Tags);
+            hash.AddContents(item.Tags);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

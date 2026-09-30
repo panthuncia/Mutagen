@@ -1336,7 +1336,7 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.HavokFriction);
             hash.Add(item.HavokRestitution);
             hash.Add(item.TextureSpecularExponent);
-            hash.Add(item.Grasses);
+            hash.AddContents(item.Grasses);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();
         }

@@ -1550,9 +1550,9 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.Unknown);
             hash.Add(item.Point);
             hash.Add(item.UnknownFloat);
-            hash.Add(item.MergedTo);
-            hash.Add(item.PreferredMerges);
-            hash.Add(item.LinkedDoors);
+            hash.AddContents(item.MergedTo);
+            hash.AddContents(item.PreferredMerges);
+            hash.AddContents(item.LinkedDoors);
             if (item.Island is {} Islanditem)
             {
                 hash.Add(Islanditem);

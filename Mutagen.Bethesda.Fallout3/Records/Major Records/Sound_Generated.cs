@@ -1442,7 +1442,7 @@ namespace Mutagen.Bethesda.Fallout3
             {
                 hash.Add(Dataitem);
             }
-            hash.Add(item.AttenuationCurve);
+            hash.AddContents(item.AttenuationCurve);
             if (item.ReverbAttenuationControl is {} ReverbAttenuationControlitem)
             {
                 hash.Add(ReverbAttenuationControlitem);

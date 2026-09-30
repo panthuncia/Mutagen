@@ -946,7 +946,7 @@ namespace Mutagen.Bethesda.Fallout4
         {
             var hash = new HashCode();
             hash.Add(item.BoneId);
-            hash.Add(item.Unused);
+            hash.AddContents(item.Unused);
             hash.Add(item.Position);
             hash.Add(item.Rotation);
             return hash.ToHashCode();

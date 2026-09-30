@@ -1769,7 +1769,7 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.ChargeTime);
             hash.Add(item.BaseEnchantment);
             hash.Add(item.WornRestrictions);
-            hash.Add(item.Effects);
+            hash.AddContents(item.Effects);
             hash.Add(item.ENITDataTypeState);
             hash.Add(base.GetHashCode());
             return hash.ToHashCode();

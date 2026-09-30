@@ -1656,7 +1656,7 @@ namespace Mutagen.Bethesda.Fallout4
             hash.Add(item.GroupType);
             hash.Add(item.LastModified);
             hash.Add(item.Unknown);
-            hash.Add(item.Items);
+            hash.AddContents(item.Items);
             return hash.ToHashCode();
         }
         

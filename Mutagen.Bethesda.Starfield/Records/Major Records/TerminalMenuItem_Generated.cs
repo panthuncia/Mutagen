@@ -1340,14 +1340,14 @@ namespace Mutagen.Bethesda.Starfield
             }
             hash.Add(item.UnusedISET);
             hash.Add(item.Flags);
-            hash.Add(item.UnusedISET2);
+            hash.AddContents(item.UnusedISET2);
             hash.Add(item.ID);
             if (item.Lock is {} Lockitem)
             {
                 hash.Add(Lockitem);
             }
             hash.Add(item.Target);
-            hash.Add(item.Conditions);
+            hash.AddContents(item.Conditions);
             return hash.ToHashCode();
         }
         

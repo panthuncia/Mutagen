@@ -4528,30 +4528,30 @@ namespace Mutagen.Bethesda.Starfield
             {
                 hash.Add(VirtualMachineAdapteritem);
             }
-            hash.Add(item.Properties);
-            hash.Add(item.AddedPersistLocationReferences);
-            hash.Add(item.MasterPersistLocationReferences);
-            hash.Add(item.RemovedPersistLocationReferences);
-            hash.Add(item.AddedUniqueBaseForms);
-            hash.Add(item.LocationCellUniqueReferences);
-            hash.Add(item.RemovedUniqueBaseForms);
-            hash.Add(item.AddedUniqueNpcs);
-            hash.Add(item.MasterUniqueNpcs);
-            hash.Add(item.RemovedUniqueNpcs);
-            hash.Add(item.AddedSpecialReferences);
-            hash.Add(item.MasterSpecialReferences);
-            hash.Add(item.RemovedSpecialReferences);
-            hash.Add(item.MasterWorldspaceCells);
-            hash.Add(item.AddedInitiallyDisabledReferences);
-            hash.Add(item.MasterInitiallyDisabledReferences);
-            hash.Add(item.AddedEnablePointReferences);
-            hash.Add(item.MasterEnablePointReferences);
+            hash.AddContents(item.Properties);
+            hash.AddContents(item.AddedPersistLocationReferences);
+            hash.AddContents(item.MasterPersistLocationReferences);
+            hash.AddContents(item.RemovedPersistLocationReferences);
+            hash.AddContents(item.AddedUniqueBaseForms);
+            hash.AddContents(item.LocationCellUniqueReferences);
+            hash.AddContents(item.RemovedUniqueBaseForms);
+            hash.AddContents(item.AddedUniqueNpcs);
+            hash.AddContents(item.MasterUniqueNpcs);
+            hash.AddContents(item.RemovedUniqueNpcs);
+            hash.AddContents(item.AddedSpecialReferences);
+            hash.AddContents(item.MasterSpecialReferences);
+            hash.AddContents(item.RemovedSpecialReferences);
+            hash.AddContents(item.MasterWorldspaceCells);
+            hash.AddContents(item.AddedInitiallyDisabledReferences);
+            hash.AddContents(item.MasterInitiallyDisabledReferences);
+            hash.AddContents(item.AddedEnablePointReferences);
+            hash.AddContents(item.MasterEnablePointReferences);
             if (item.Name is {} Nameitem)
             {
                 hash.Add(Nameitem);
             }
-            hash.Add(item.Keywords);
-            hash.Add(item.Properties2);
+            hash.AddContents(item.Keywords);
+            hash.AddContents(item.Properties2);
             if (item.Owner is {} Owneritem)
             {
                 hash.Add(Owneritem);

@@ -925,7 +925,7 @@ namespace Mutagen.Bethesda.Skyrim
             var hash = new HashCode();
             hash.Add(item.Faction);
             hash.Add(item.Rank);
-            hash.Add(item.Fluff);
+            hash.AddContents(item.Fluff);
             return hash.ToHashCode();
         }
         
