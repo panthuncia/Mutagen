@@ -69,9 +69,8 @@ partial class RegionBinaryCreateTranslation
             var recType = subMeta.RecordType;
             if (recType == RecordTypes.ICON)
             {
-                len += subMeta.TotalLength;
                 // Skip icon subrecord for now
-                subMeta = frame.Reader.GetSubrecordHeader(offset: rdatFrame.TotalLength + subMeta.TotalLength);
+                len += subMeta.TotalLength;
             }
             if (IsExpected(dataType, recType))
             {
@@ -186,7 +185,6 @@ partial class RegionBinaryOverlay
                 var totalLen = contentMeta.TotalLength;
                 len += totalLen;
                 // Skip icon subrecord for now
-                contentMeta = stream.GetSubrecordHeader(offset: rdatFrame.TotalLength + totalLen);
                 stream.ReadSubrecord();
             }
             else if (RegionBinaryCreateTranslation.IsExpected(dataType, contentMeta.RecordType))
