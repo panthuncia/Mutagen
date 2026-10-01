@@ -14,6 +14,7 @@ using SafePatch.Authoring.Index;
 //   SafePatch.Bench index-check <Data folder> <plugins.txt or .paths> [cache folder]
 //   SafePatch.Bench index-proto <Data folder> <plugins.txt or .paths> [runs=3] [label] [cache folder]
 //   SafePatch.Bench record-index <Data folder> <plugins.txt or .paths> [runs=3] [label] [cache folder]
+//   SafePatch.Bench reader-check <Data folder> <plugin,...>
 //   SafePatch.Bench check-first <Data folder> <plugin,...> <record type,...>
 //   SafePatch.Bench conflict-scan <Data folder> <plugins.txt or .paths> [runs=3] [label] [mask|fields|equals]
 //   SafePatch.Bench linkcache <Data folder> <plugins.txt or .paths> [label]
@@ -37,6 +38,15 @@ if (args is ["index-check", var checkIndexData, var checkIndexPlugins, .. var ch
 {
     System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
     return IndexCheck.Run(checkIndexData, checkIndexPlugins, checkIndexRest is [var checkIndexCache] ? checkIndexCache : null);
+}
+if (args is ["reader-check", var readerData, var readerPlugins])
+{
+#if SAFEPATCH_RECORD_INDEX && SAFEPATCH_RECORD_READER
+    return ReaderCheck.Run(readerData, readerPlugins.Split(','));
+#else
+    Console.Error.WriteLine("reader-check needs the record index and reader: build with -p:SafePatchRecordIndex=true -p:SafePatchRecordReader=true.");
+    return 2;
+#endif
 }
 if (args is ["record-index", var recData, var recPlugins, .. var recRest])
 {
