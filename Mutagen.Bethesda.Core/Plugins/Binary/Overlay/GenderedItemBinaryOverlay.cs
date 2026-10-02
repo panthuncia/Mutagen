@@ -8,8 +8,16 @@ using Noggog.StructuredStrings;
 
 namespace Mutagen.Bethesda.Plugins.Binary.Overlay;
 
-internal sealed class GenderedItemBinaryOverlay<T> : PluginBinaryOverlay, IGenderedItemGetter<T>
+/// <summary>
+/// A male and female pair read from a plugin's bytes. Like <see cref="GenderedItem{T}"/>, it isn't a generated (Loqui)
+/// class, so it doesn't derive from <see cref="PluginBinaryOverlay"/>: that would make it an <c>ILoquiObject</c> whose
+/// <c>Registration</c> throws, which consumers taking parts apart by their registration (and the overlay's own error
+/// enrichment) trip over. It needs only the bytes and the parsing package.
+/// </summary>
+internal sealed class GenderedItemBinaryOverlay<T> : IGenderedItemGetter<T>
 {
+    private readonly ReadOnlyMemorySlice<byte> _recordData;
+    private readonly BinaryOverlayFactoryPackage _package;
     private readonly int? _male;
     private readonly int? _female;
     private readonly T _fallback;
@@ -27,8 +35,9 @@ internal sealed class GenderedItemBinaryOverlay<T> : PluginBinaryOverlay, IGende
         int? female,
         Func<ReadOnlyMemorySlice<byte>, BinaryOverlayFactoryPackage, T> creator,
         T fallback)
-        : base(new MemoryPair(bytes, bytes), package)
     {
+        _recordData = bytes;
+        _package = package;
         _male = male;
         _female = female;
         _creator = creator;
