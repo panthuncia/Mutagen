@@ -21,22 +21,33 @@ namespace Mutagen.Bethesda.Plugins.Analysis;
 /// cell's worldspace, a placed object's cell, a dialog response's topic) and EditorID. Only record headers are read,
 /// plus each record's first subrecord when it is an EditorID, decompressing only that far when the record is
 /// compressed. <see cref="LoadOrderRecordIndex"/> turns the plugins of a load order into FormKeys and their versions.
+/// About 22 bytes per record, and its EditorID: a record's type is a number into the plugin's own few types, its position
+/// an int (a plugin is mapped as one span, which limits it to 2 GiB), and an EditorID's length the distance to the next
+/// record's, as they're pooled in record order.
 /// </summary>
 public sealed class PluginRecordIndex
 {
     /// <summary>Plugins at least this large are scanned in parallel pieces (top-level groups, exterior cell blocks).</summary>
     internal const int SplitThreshold = 16 << 20;
 
-    private const int FormatVersion = 1;
+    private const int FormatVersion = 2;
     private static readonly byte[] FormatMagic = "MRIX"u8.ToArray();
 
     private uint[] _formIds;
-    private int[] _recordTypes;
+    /// <summary>Each record's type, as its number in <see cref="_types"/>.</summary>
+    private ushort[] _recordTypes;
+    /// <summary>The plugin's record types, in the order first met.</summary>
+    private int[] _types = [];
+    private int _typeCount;
+    /// <summary>While scanning: each type's number in <see cref="_types"/>.</summary>
+    private Dictionary<int, ushort>? _typeNumbers = new();
     private int[] _flags;
-    private long[] _positions;
+    private int[] _positions;
     private int[] _parents;
+    /// <summary>Where each record's EditorID starts in the pool; it ends where the next record's starts.</summary>
     private int[] _editorIdStarts;
-    private ushort[] _editorIdLengths;
+    /// <summary>A bit per record: whether it has an EditorID (which may be empty).</summary>
+    private ulong[] _hasEditorId;
     private byte[] _editorIdPool;
 
     /// <summary>The plugin.</summary>
@@ -64,17 +75,17 @@ public sealed class PluginRecordIndex
         MasterStyle = masterStyle;
         Masters = masters;
         _formIds = new uint[capacity];
-        _recordTypes = new int[capacity];
+        _recordTypes = new ushort[capacity];
         _flags = new int[capacity];
-        _positions = new long[capacity];
+        _positions = new int[capacity];
         _parents = new int[capacity];
         _editorIdStarts = new int[capacity];
-        _editorIdLengths = new ushort[capacity];
+        _hasEditorId = new ulong[Words(capacity)];
         _editorIdPool = new byte[editorIdCapacity];
     }
 
     /// <summary>A record's type.</summary>
-    public RecordType GetRecordType(int record) => new(Checked(record, _recordTypes));
+    public RecordType GetRecordType(int record) => new(_types[Checked(record, _recordTypes)]);
 
     /// <summary>A record's header flags.</summary>
     public int MajorRecordFlags(int record) => Checked(record, _flags);
@@ -89,15 +100,21 @@ public sealed class PluginRecordIndex
     public ReadOnlySpan<byte> EditorIDBytes(int record)
     {
         var start = Checked(record, _editorIdStarts);
-        return start < 0 ? ReadOnlySpan<byte>.Empty : _editorIdPool.AsSpan(start, _editorIdLengths[record]);
+        var end = record + 1 < Count ? _editorIdStarts[record + 1] : _editorIdPoolLength;
+        return _editorIdPool.AsSpan(start, end - start);
     }
 
     /// <summary>A record's EditorID, or null when it has none.</summary>
     public string? EditorID(int record)
     {
-        if (Checked(record, _editorIdStarts) < 0) return null;
+        Checked(record, _editorIdStarts);
+        if (!HasEditorID(record)) return null;
         return GameConstants.Get(Release).Encodings.NonTranslated.GetString(EditorIDBytes(record));
     }
+
+    private bool HasEditorID(int record) => (_hasEditorId[record >> 6] & (1UL << record)) != 0;
+
+    private static int Words(int records) => (records + 63) >> 6;
 
     private T Checked<T>(int record, T[] values)
     {
@@ -256,25 +273,32 @@ public sealed class PluginRecordIndex
                 Count = bases[^1],
                 _editorIdPoolLength = poolBases[^1],
             };
+            // Each part numbered its types as it met them: the joined index numbers them again.
+            var renumber = new ushort[parts.Length][];
+            for (var i = 0; i < parts.Length; i++)
+            {
+                renumber[i] = new ushort[parts[i]._typeCount];
+                for (var t = 0; t < parts[i]._typeCount; t++) renumber[i][t] = joined.TypeNumber(parts[i]._types[t]);
+            }
             Parallel.For(0, parts.Length, parallel, i =>
             {
                 var part = parts[i];
                 var at = bases[i];
                 var count = part.Count;
                 part._formIds.AsSpan(0, count).CopyTo(joined._formIds.AsSpan(at));
-                part._recordTypes.AsSpan(0, count).CopyTo(joined._recordTypes.AsSpan(at));
                 part._flags.AsSpan(0, count).CopyTo(joined._flags.AsSpan(at));
                 part._positions.AsSpan(0, count).CopyTo(joined._positions.AsSpan(at));
-                part._editorIdLengths.AsSpan(0, count).CopyTo(joined._editorIdLengths.AsSpan(at));
                 part._editorIdPool.AsSpan(0, part._editorIdPoolLength).CopyTo(joined._editorIdPool.AsSpan(poolBases[i]));
                 // The head comes first, so a piece's worldspace keeps its index in the head.
                 var outside = i == 0 ? -1 : pieces[i - 1].Parent;
                 for (var r = 0; r < count; r++)
                 {
+                    joined._recordTypes[at + r] = renumber[i][part._recordTypes[r]];
                     var parent = part._parents[r];
                     joined._parents[at + r] = parent == OutsideParent ? outside : parent < 0 ? -1 : parent + at;
-                    var editorId = part._editorIdStarts[r];
-                    joined._editorIdStarts[at + r] = editorId < 0 ? -1 : editorId + poolBases[i];
+                    joined._editorIdStarts[at + r] = part._editorIdStarts[r] + poolBases[i];
+                    // Parts meet inside a word of bits: set them atomically.
+                    if (part.HasEditorID(r)) Interlocked.Or(ref joined._hasEditorId[(at + r) >> 6], 1UL << (at + r));
                 }
             });
             return joined;
@@ -407,28 +431,41 @@ public sealed class PluginRecordIndex
 
     private int _editorIdPoolLength;
 
-    private int Append(uint formId, int recordType, int flags, long position, int parent)
+    private int Append(uint formId, int recordType, int flags, int position, int parent)
     {
         if (Count == _formIds.Length) Grow();
         var i = Count++;
         _formIds[i] = formId;
-        _recordTypes[i] = recordType;
+        _recordTypes[i] = i > 0 && _types[_recordTypes[i - 1]] == recordType ? _recordTypes[i - 1] : TypeNumber(recordType);
         _flags[i] = flags;
         _positions[i] = position;
         _parents[i] = parent;
-        _editorIdStarts[i] = -1;
+        _editorIdStarts[i] = _editorIdPoolLength;
         return i;
     }
 
+    /// <summary>A record type's number in this index's types, numbering it if it's new.</summary>
+    private ushort TypeNumber(int recordType)
+    {
+        if (_typeNumbers!.TryGetValue(recordType, out var number)) return number;
+        if (_typeCount > ushort.MaxValue) throw new InvalidDataException($"{ModKey} has more than {ushort.MaxValue + 1} record types.");
+        if (_typeCount == _types.Length) Array.Resize(ref _types, Math.Max(8, _types.Length * 2));
+        number = (ushort)_typeCount++;
+        _types[number] = recordType;
+        _typeNumbers[recordType] = number;
+        return number;
+    }
+
+    /// <summary>The EditorID of the record just appended: the pool grows in record order.</summary>
     private void SetEditorID(int record, ReadOnlySpan<byte> text)
     {
+        if (record != Count - 1) throw new InvalidOperationException("EditorIDs are set in record order.");
         if (_editorIdPoolLength + text.Length > _editorIdPool.Length)
         {
             Array.Resize(ref _editorIdPool, Math.Max(_editorIdPool.Length * 2, _editorIdPoolLength + text.Length));
         }
         text.CopyTo(_editorIdPool.AsSpan(_editorIdPoolLength));
-        _editorIdStarts[record] = _editorIdPoolLength;
-        _editorIdLengths[record] = (ushort)text.Length;
+        _hasEditorId[record >> 6] |= 1UL << record;
         _editorIdPoolLength += text.Length;
     }
 
@@ -451,7 +488,7 @@ public sealed class PluginRecordIndex
         Array.Resize(ref _positions, size);
         Array.Resize(ref _parents, size);
         Array.Resize(ref _editorIdStarts, size);
-        Array.Resize(ref _editorIdLengths, size);
+        Array.Resize(ref _hasEditorId, Words(size));
     }
 
     private void Trim()
@@ -464,9 +501,11 @@ public sealed class PluginRecordIndex
             Array.Resize(ref _positions, Count);
             Array.Resize(ref _parents, Count);
             Array.Resize(ref _editorIdStarts, Count);
-            Array.Resize(ref _editorIdLengths, Count);
+            Array.Resize(ref _hasEditorId, Words(Count));
         }
+        if (_types.Length != _typeCount) Array.Resize(ref _types, _typeCount);
         if (_editorIdPool.Length != _editorIdPoolLength) Array.Resize(ref _editorIdPool, _editorIdPoolLength);
+        _typeNumbers = null;
     }
 
     #endregion
@@ -489,13 +528,15 @@ public sealed class PluginRecordIndex
         foreach (var master in Masters) writer.Write(master.FileName.String);
         writer.Write(Count);
         writer.Write(_editorIdPoolLength);
+        writer.Write(_typeCount);
+        WriteArray(writer, _types.AsSpan(0, _typeCount));
         WriteArray(writer, _formIds.AsSpan(0, Count));
         WriteArray(writer, _recordTypes.AsSpan(0, Count));
         WriteArray(writer, _flags.AsSpan(0, Count));
         WriteArray(writer, _positions.AsSpan(0, Count));
         WriteArray(writer, _parents.AsSpan(0, Count));
         WriteArray(writer, _editorIdStarts.AsSpan(0, Count));
-        WriteArray(writer, _editorIdLengths.AsSpan(0, Count));
+        WriteArray(writer, _hasEditorId.AsSpan(0, Words(Count)));
         WriteArray(writer, _editorIdPool.AsSpan(0, _editorIdPoolLength));
     }
 
@@ -520,23 +561,28 @@ public sealed class PluginRecordIndex
             }
             var count = reader.ReadInt32();
             var pool = reader.ReadInt32();
-            if (count < 0 || pool < 0) return false;
+            var types = reader.ReadInt32();
+            if (count < 0 || pool < 0 || types < 0 || types > ushort.MaxValue + 1) return false;
             var read = new PluginRecordIndex(modKey, release, style, masters, count, pool)
             {
                 Count = count,
                 _editorIdPoolLength = pool,
+                _types = new int[types],
+                _typeCount = types,
+                _typeNumbers = null,
             };
-            if (!ReadArray(stream, read._formIds) || !ReadArray(stream, read._recordTypes) || !ReadArray(stream, read._flags)
-                || !ReadArray(stream, read._positions) || !ReadArray(stream, read._parents) || !ReadArray(stream, read._editorIdStarts)
-                || !ReadArray(stream, read._editorIdLengths) || !ReadArray(stream, read._editorIdPool))
+            if (!ReadArray(stream, read._types) || !ReadArray(stream, read._formIds) || !ReadArray(stream, read._recordTypes)
+                || !ReadArray(stream, read._flags) || !ReadArray(stream, read._positions) || !ReadArray(stream, read._parents)
+                || !ReadArray(stream, read._editorIdStarts) || !ReadArray(stream, read._hasEditorId) || !ReadArray(stream, read._editorIdPool))
             {
                 return false;
             }
+            // EditorIDs start in record order, within the pool.
             for (var r = 0; r < count; r++)
             {
                 var start = read._editorIdStarts[r];
-                if (read._parents[r] < -1 || read._parents[r] >= count
-                    || start < -1 || start >= 0 && start + read._editorIdLengths[r] > pool)
+                if (read._parents[r] < -1 || read._parents[r] >= count || read._recordTypes[r] >= types
+                    || start < (r == 0 ? 0 : read._editorIdStarts[r - 1]) || start > pool)
                 {
                     return false;
                 }

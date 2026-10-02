@@ -279,18 +279,35 @@ public sealed class LoadOrderRecordIndex
         public EditorIdLookup(LoadOrderRecordIndex index)
         {
             _index = index;
-            var entries = new ConcurrentBag<ulong[]>();
-            Parallel.ForEach(Partitioner.Create(0, index.Count, Math.Max(4096, index.Count / 64)), range =>
+            // Each block's entries, then one array of them all, sized from the blocks' counts. (LINQ's ToArray over the
+            // blocks would build it from segments rented from the shared ArrayPool, which keeps them afterwards: some
+            // 76 MB for a 2-million-record load order, for a 2.5 MB lookup.)
+            var block = Math.Max(4096, index.Count / 64);
+            var blocks = new ulong[(index.Count + block - 1) / block][];
+            Parallel.For(0, blocks.Length, b =>
             {
-                var local = new List<ulong>(range.Item2 - range.Item1);
-                for (var record = range.Item1; record < range.Item2; record++)
+                var end = Math.Min(index.Count, (b + 1) * block);
+                var count = 0;
+                for (var record = b * block; record < end; record++)
+                {
+                    if (!index.EditorIDBytes(record).IsEmpty) count++;
+                }
+                var local = new ulong[count];
+                var at = 0;
+                for (var record = b * block; record < end; record++)
                 {
                     var bytes = index.EditorIDBytes(record);
-                    if (!bytes.IsEmpty) local.Add((Hash(bytes) << 32) | (uint)record);
+                    if (!bytes.IsEmpty) local[at++] = (Hash(bytes) << 32) | (uint)record;
                 }
-                entries.Add(local.ToArray());
+                blocks[b] = local;
             });
-            _entries = entries.SelectMany(e => e).ToArray();
+            _entries = new ulong[blocks.Sum(b => b.Length)];
+            var next = 0;
+            foreach (var local in blocks)
+            {
+                local.CopyTo(_entries, next);
+                next += local.Length;
+            }
             _entries.AsSpan().Sort();
         }
 

@@ -126,6 +126,27 @@ public class RecordIndexTests
         mapped.Position(0).ShouldBeGreaterThan(0);
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void SplitScanGivesTheSameIndexAsWholeScan(bool compressed)
+    {
+        // Each part of a split scan numbers the record types it meets; the joined index numbers them again.
+        using var folder = TempFolder.Factory();
+        var written = WriteMaster(folder.Dir, compressed);
+        var bytes = File.ReadAllBytes(written.Path);
+        var whole = PluginRecordIndex.FromBytes(bytes, written.Mod.ModKey, GameRelease.SkyrimSE, parallel: null, splitThreshold: int.MaxValue);
+        var split = PluginRecordIndex.FromBytes(bytes, written.Mod.ModKey, GameRelease.SkyrimSE, parallel: null, splitThreshold: 0);
+        // A split scan lists its head (worldspaces) first: the same records, in another order.
+        InFileOrder(split).ShouldBe(InFileOrder(whole));
+    }
+
+    private static string[] InFileOrder(PluginRecordIndex plugin) => Enumerable.Range(0, plugin.Count)
+        .OrderBy(plugin.Position)
+        .Select(r => $"{plugin.RawFormIDs[r]:X8} {plugin.GetRecordType(r)} {plugin.MajorRecordFlags(r):X} {plugin.Position(r)} " +
+            $"{(plugin.Parent(r) is var p and >= 0 ? plugin.RawFormIDs[p].ToString("X8") : "-")} {plugin.EditorID(r) ?? "(none)"}")
+        .ToArray();
+
     private static string[] Describe(PluginRecordIndex plugin) => Enumerable.Range(0, plugin.Count)
         .Select(r => $"{plugin.RawFormIDs[r]:X8} {plugin.GetRecordType(r)} {plugin.MajorRecordFlags(r):X} {plugin.Position(r)} {plugin.Parent(r)} {plugin.EditorID(r)}")
         .Prepend($"{plugin.ModKey} {plugin.Release} {plugin.MasterStyle} {string.Join(",", plugin.Masters)}")
