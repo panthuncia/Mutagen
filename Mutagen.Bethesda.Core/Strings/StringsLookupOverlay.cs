@@ -12,12 +12,16 @@ namespace Mutagen.Bethesda.Strings;
 /// </summary>
 public sealed class StringsLookupOverlay : IStringsLookup
 {
-    private readonly Dictionary<uint, int> _locations = new();
+    // The strings' keys, sorted, and their locations: 8 bytes a string, where a dictionary took about 20. A game's
+    // localized plugins hold hundreds of thousands of strings, for as long as their plugins are open.
+    private uint[] _keys = [];
+    private int[] _locations = [];
+    private ReadOnlyMemorySlice<byte> _directory;
     private ReadOnlyMemorySlice<byte> _stringData;
     private IMutagenEncoding _encoding = null!;
         
     public StringsFileFormat Type { get; private set; }
-    public int Count => _locations.Count;
+    public int Count => _keys.Length;
     public string? AssociatedPath { get; }
 
     /// <summary>
@@ -77,14 +81,23 @@ public sealed class StringsLookupOverlay : IStringsLookup
             var count = BinaryPrimitives.ReadUInt32LittleEndian(data);
             var dataSize = checked((int)BinaryPrimitives.ReadUInt32LittleEndian(data.Slice(4)));
             var indexData = data.Slice(8, checked((int)(count * 2 * 4)));
+            var keys = new uint[count];
+            var locations = new int[count];
             int loc = 0;
             for (int i = 0; i < count; i++)
             {
-                _locations.Add(
-                    BinaryPrimitives.ReadUInt32LittleEndian(indexData.Slice(loc)),
-                    checked((int)BinaryPrimitives.ReadUInt32LittleEndian(indexData.Slice(loc + 4))));
+                keys[i] = BinaryPrimitives.ReadUInt32LittleEndian(indexData.Slice(loc));
+                locations[i] = checked((int)BinaryPrimitives.ReadUInt32LittleEndian(indexData.Slice(loc + 4)));
                 loc += 8;
             }
+            Array.Sort(keys, locations);
+            for (int i = 1; i < keys.Length; i++)
+            {
+                if (keys[i] == keys[i - 1]) throw new ArgumentException("Strings file had duplicate entries.");
+            }
+            _keys = keys;
+            _locations = locations;
+            _directory = indexData;
             _stringData = data.Slice(8 + indexData.Length, dataSize);
         }
         catch (ArgumentException)
@@ -112,7 +125,9 @@ public sealed class StringsLookupOverlay : IStringsLookup
 
     public bool TryGetLocation(uint stringsKey, out int loc)
     {
-        return _locations.TryGetValue(stringsKey, out loc);
+        var i = Array.BinarySearch(_keys, stringsKey);
+        loc = i >= 0 ? _locations[i] : default;
+        return i >= 0;
     }
 
     public string GetStringAtLocation(int loc)
@@ -142,11 +157,14 @@ public sealed class StringsLookupOverlay : IStringsLookup
         }
     }
 
+    /// <summary>The strings in the file's order.</summary>
     public IEnumerator<KeyValuePair<uint, string>> GetEnumerator()
     {
-        foreach (var loc in _locations)
+        for (int at = 0; at < _directory.Length; at += 8)
         {
-            yield return new KeyValuePair<uint, string>(loc.Key, GetStringAtLocation(loc.Value));
+            var key = BinaryPrimitives.ReadUInt32LittleEndian(_directory.Slice(at));
+            var loc = checked((int)BinaryPrimitives.ReadUInt32LittleEndian(_directory.Slice(at + 4)));
+            yield return new KeyValuePair<uint, string>(key, GetStringAtLocation(loc));
         }
     }
 
