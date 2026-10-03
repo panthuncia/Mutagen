@@ -13,6 +13,14 @@ public class BsaTests
     public static string SomeFolder = Path.Combine("derp", "some_FoldeR");
 
     [Fact]
+    public void FilePaths_are_the_files_paths()
+    {
+        var archive = Archive.CreateReader(GameRelease.SkyrimSE, TestBsa);
+        archive.FilePaths.ShouldBe(archive.Files.Select(f => f.Path));
+        archive.FilePaths.ShouldContain(Path.Combine(SomeFolder, "someotherfile.txt").ToLower());
+    }
+
+    [Fact]
     public void TryGetFolder_CaseInsensitive()
     {
         var archive = Archive.CreateReader(GameRelease.SkyrimSE, TestBsa);

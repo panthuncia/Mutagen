@@ -15,4 +15,10 @@ public interface IArchiveReader
     /// <returns>True if folder with the given path was located in the archive</returns>
     bool TryGetFolder(string path, [MaybeNullWhen(false)] out IArchiveFolder folder);
     IEnumerable<IArchiveFile> Files { get; }
+
+    /// <summary>
+    /// Every file's path, as <see cref="IArchiveFile.Path"/> gives it, in the order of <see cref="Files"/>: for listing an
+    /// archive, which a reader may do without making an object for each file.
+    /// </summary>
+    IEnumerable<string> FilePaths => Files.Select(f => f.Path);
 }
