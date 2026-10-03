@@ -425,7 +425,7 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
         // each quest and plugin.
         var key = (quest.FormKey, topic.FormKey.ModKey);
         if (_questCache.TryGetValue(key, out var questVoices)) return questVoices;
-        return _questCache.GetOrAdd(key, GetVoices(quest, topic.FormKey.ModKey));
+        return _questCache.GetOrAdd(key, GetVoices(quest, topic.FormKey.ModKey).Freeze());
     }
 
     private static (string questString, string topicString) GetQuestAndTopicStrings(IDialogTopicGetter topic, IQuestGetter quest)
@@ -465,13 +465,13 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
         //Check scene
         if (topic.Category == DialogTopic.CategoryEnum.Scene && _dialogueSceneAliasIndex.TryGetValue(topic.FormKey, out var aliasIndex))
         {
-            voices.IntersectWith(GetVoices(quest, aliasIndex, topic.FormKey.ModKey));
+            voices.IntersectWith(GetVoices(quest, aliasIndex, topic.FormKey.ModKey).Freeze());
         }
 
         //Search conditions
         if (response.Conditions.Any())
         {
-            voices.IntersectWith(GetVoices(response.Conditions, quest, topic.FormKey.ModKey));
+            voices.IntersectWith(GetVoices(response.Conditions, quest, topic.FormKey.ModKey).Freeze());
         }
 
         return voices;
@@ -517,13 +517,66 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
             .MergeInsert(true);
     }
 
+    /// <summary>What a condition's voices depend on, besides the load order: a condition's voices are made once for each.</summary>
+    private readonly record struct ConditionKey(Condition.Function Function, FormKey Link, int Number, bool Valid, FormKey Quest, ModKey Mod);
+
+    private readonly ConcurrentDictionary<ConditionKey, VoiceContainer> _conditionCache = new();
+
+    /// <summary>A condition's voices, frozen: made once for all the conditions alike, and shared.</summary>
     private VoiceContainer GetVoices(IConditionGetter condition, IQuestGetter quest, ModKey currentMod)
+    {
+        var data = condition.Data;
+
+        if (data.RunOnType != Condition.RunOnType.Subject) return new VoiceContainer(true);
+
+        var valid = IsConditionValid(condition);
+        ConditionKey key;
+        switch (data)
+        {
+            case IGetIsIDConditionDataGetter getIsId:
+                key = new(data.Function, getIsId.Object.UsesLink() ? getIsId.Object.Link.FormKey : FormKey.Null, 0, valid, FormKey.Null, ModKey.Null);
+                break;
+            case IGetIsVoiceTypeConditionDataGetter isVoiceType:
+                // Inverted, its voices are the default voices of the plugin asked about, less these.
+                key = new(data.Function, isVoiceType.VoiceTypeOrList.UsesLink() ? isVoiceType.VoiceTypeOrList.Link.FormKey : FormKey.Null, 0, valid, FormKey.Null, valid ? ModKey.Null : currentMod);
+                break;
+            case IGetIsAliasRefConditionDataGetter aliasRef:
+                key = new(data.Function, FormKey.Null, aliasRef.ReferenceAliasIndex, valid, quest.FormKey, currentMod);
+                break;
+            case IGetInFactionConditionDataGetter getInFaction:
+                key = new(data.Function, getInFaction.Faction.UsesLink() ? getInFaction.Faction.Link.FormKey : FormKey.Null, 0, valid, FormKey.Null, ModKey.Null);
+                break;
+            case IGetFactionRankConditionDataGetter getFactionRank:
+                key = new(data.Function, getFactionRank.Faction.UsesLink() ? getFactionRank.Faction.Link.FormKey : FormKey.Null, 0, valid, FormKey.Null, ModKey.Null);
+                break;
+            case IGetIsClassConditionDataGetter getIsClass:
+                key = new(data.Function, getIsClass.Class.UsesLink() ? getIsClass.Class.Link.FormKey : FormKey.Null, 0, valid, FormKey.Null, ModKey.Null);
+                break;
+            case IGetIsRaceConditionDataGetter getIsRace:
+                key = new(data.Function, getIsRace.Race.UsesLink() ? getIsRace.Race.Link.FormKey : FormKey.Null, 0, valid, FormKey.Null, ModKey.Null);
+                break;
+            case IGetIsSexConditionDataGetter sex:
+                key = new(data.Function, FormKey.Null, (int)sex.MaleFemaleGender, valid, FormKey.Null, ModKey.Null);
+                break;
+            case IIsInListConditionDataGetter isInList:
+                key = new(data.Function, isInList.FormList.UsesLink() ? isInList.FormList.Link.FormKey : FormKey.Null, 0, valid, FormKey.Null, ModKey.Null);
+                break;
+            case IIsChildConditionDataGetter:
+                key = new(data.Function, FormKey.Null, 0, valid, FormKey.Null, ModKey.Null);
+                break;
+            default:
+                return new VoiceContainer(true);
+        }
+
+        if (_conditionCache.TryGetValue(key, out var made)) return made;
+        return _conditionCache.GetOrAdd(key, MakeVoices(condition, quest, currentMod, valid).Freeze());
+    }
+
+    private VoiceContainer MakeVoices(IConditionGetter condition, IQuestGetter quest, ModKey currentMod, bool valid)
     {
         var voices = new VoiceContainer();
 
         var data = condition.Data;
-
-        if (data.RunOnType != Condition.RunOnType.Subject) return new VoiceContainer(true);
 
         switch (data)
         {
@@ -615,7 +668,7 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
                 break;
         }
 
-        if (!voices.IsDefault && !IsConditionValid(condition))
+        if (!voices.IsDefault && !valid)
         {
             //Can't invert alias according to CK calculation
             if (data.Function == Condition.Function.GetIsAliasRef)
@@ -824,7 +877,7 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
     private VoiceContainer GetAllDefaultVoices()
     {
         if (Volatile.Read(ref _allDefaultVoices) is { } made) return made;
-        var allDefaultVoices = MakeAllDefaultVoices();
+        var allDefaultVoices = MakeAllDefaultVoices().Freeze();
         return Interlocked.CompareExchange(ref _allDefaultVoices, allDefaultVoices, null) ?? allDefaultVoices;
     }
 
@@ -846,7 +899,7 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
         // Each default voice type standing for all its speakers, rather than listing them (they're the same).
         var keep = _defaultVoiceTypes[mod];
         var vc = new VoiceContainer(_speakersByVoiceType.Keys.Where(keep.Contains));
-        return _defaultSpeakerVoices.GetOrAdd(mod, vc);
+        return _defaultSpeakerVoices.GetOrAdd(mod, vc.Freeze());
     }
 
     private VoiceContainer Invert(VoiceContainer voiceContainer, bool invertDefaultVoices, ModKey currentMod)

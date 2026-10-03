@@ -1,41 +1,26 @@
 ﻿using System.Text;
 using Mutagen.Bethesda.Plugins;
 using Noggog;
-namespace Mutagen.Bethesda.Skyrim.Records.Assets.VoiceType;
+namespace Mutagen.Bethesda.UnitTests.Plugins.Records.Skyrim.Assets;
 
-public class VoiceContainer : ICloneable, IEquatable<VoiceContainer>
+/// <summary>ReferenceVoiceContainer as it was before it shared sets (5a3de79), to test it against.</summary>
+
+public class ReferenceVoiceContainer : ICloneable, IEquatable<ReferenceVoiceContainer>
 {
     /// <summary>
-    /// Voice type names mapped to form keys of npcs or talking activators using that voice type
+    /// Voice type names mapped to form keys of npcs or talking activators using that voice type 
     /// </summary>
     private readonly Dictionary<string, HashSet<FormKey>> _voices = new();
-
-    /// <summary>
-    /// The sets of <see cref="_voices"/> taken from a frozen container rather than copied (by reference): never changed,
-    /// so copied first where this container changes them.
-    /// </summary>
-    private HashSet<HashSet<FormKey>>? _shared;
-
-    /// <summary>
-    /// Voice type names mapped to form keys of npcs or talking activators using that voice type. The sets may be shared
-    /// with other containers, and mustn't be changed.
-    /// </summary>
     public IReadOnlyDictionary<string, HashSet<FormKey>> Voices => _voices;
     public bool IsDefault { get; private set; }
 
-    /// <summary>
-    /// Whether the container can no longer change (<see cref="Freeze"/>): another container then takes its sets rather
-    /// than copying them, and it can be read from several threads.
-    /// </summary>
-    public bool IsFrozen { get; private set; }
-
     #region Constructors
-    public VoiceContainer(bool isDefault = false)
+    public ReferenceVoiceContainer(bool isDefault = false)
     {
         IsDefault = isDefault;
     }
 
-    public VoiceContainer(FormKey npc, IEnumerable<string> voiceTypes)
+    public ReferenceVoiceContainer(FormKey npc, IEnumerable<string> voiceTypes)
     {
         foreach (var voiceType in voiceTypes)
         {
@@ -43,7 +28,7 @@ public class VoiceContainer : ICloneable, IEquatable<VoiceContainer>
         }
     }
 
-    public VoiceContainer(Dictionary<FormKey, IEnumerable<string>> npcVoices)
+    public ReferenceVoiceContainer(Dictionary<FormKey, IEnumerable<string>> npcVoices)
     {
         foreach (var (npc, voiceTypes) in npcVoices)
         {
@@ -56,13 +41,13 @@ public class VoiceContainer : ICloneable, IEquatable<VoiceContainer>
         }
     }
 
-    public VoiceContainer(Dictionary<FormKey, HashSet<string>> npcVoices)
+    public ReferenceVoiceContainer(Dictionary<FormKey, HashSet<string>> npcVoices)
     {
         foreach (var (npc, voiceTypes) in npcVoices)
         {
             foreach (var voiceType in voiceTypes)
             {
-
+                
                 _voices
                     .GetOrAdd(voiceType)
                     .Add(npc);
@@ -70,12 +55,12 @@ public class VoiceContainer : ICloneable, IEquatable<VoiceContainer>
         }
     }
 
-    public VoiceContainer(string voiceType)
+    public ReferenceVoiceContainer(string voiceType)
     {
         _voices.Add(voiceType, []);
     }
 
-    public VoiceContainer(IEnumerable<string> voiceTypes)
+    public ReferenceVoiceContainer(IEnumerable<string> voiceTypes)
     {
         foreach (var voiceType in voiceTypes)
         {
@@ -84,35 +69,9 @@ public class VoiceContainer : ICloneable, IEquatable<VoiceContainer>
     }
     #endregion
 
-    /// <summary>Makes the container unchangeable, for its sets to be shared rather than copied; returns it.</summary>
-    public VoiceContainer Freeze()
-    {
-        IsFrozen = true;
-        return this;
-    }
-
-    private void AssertChangeable()
-    {
-        if (IsFrozen) throw new InvalidOperationException("A frozen voice container can't be changed.");
-    }
-
-    /// <summary>
-    /// A set of <paramref name="from"/>'s for this container: the same set where that never changes (that's frozen, or
-    /// shares it from a frozen container), else a copy.
-    /// </summary>
-    private HashSet<FormKey> Take(VoiceContainer from, HashSet<FormKey> npcs)
-    {
-        if (!from.IsFrozen && !from.IsShared(npcs)) return [..npcs];
-        (_shared ??= new HashSet<HashSet<FormKey>>(ReferenceEqualityComparer.Instance)).Add(npcs);
-        return npcs;
-    }
-
-    private bool IsShared(HashSet<FormKey> npcs) => _shared is not null && _shared.Contains(npcs);
-
     #region ExplicitOperators
     public void InvertVoiceTypes(HashSet<string> voiceTypesToKeep)
     {
-        AssertChangeable();
         var voiceTypes = new List<string>(_voices.Keys);
 
         foreach (var voiceType in voiceTypes.Where(voiceType => !voiceTypesToKeep.Contains(voiceType)))
@@ -123,10 +82,8 @@ public class VoiceContainer : ICloneable, IEquatable<VoiceContainer>
     #endregion
 
     #region BinaryOperators
-    public void IntersectWith(VoiceContainer other)
+    public void IntersectWith(ReferenceVoiceContainer other)
     {
-        AssertChangeable();
-
         // If the other is default, we can stay as we are
         if (other.IsDefault) return;
 
@@ -137,14 +94,13 @@ public class VoiceContainer : ICloneable, IEquatable<VoiceContainer>
             IsDefault = false;
             foreach (var (voiceType, npcs) in other.Voices)
             {
-                _voices.Add(voiceType, Take(other, npcs));
+                _voices.Add(voiceType, [..npcs]);
             }
             return;
         }
 
         // If both are non-default, we need to intersect the voice types and their NPCs
         var removeVoiceTypes = new HashSet<string>();
-        List<(string VoiceType, HashSet<FormKey> Npcs)>? replaced = null;
 
         foreach (var (voiceType, npcs) in _voices)
         {
@@ -156,24 +112,18 @@ public class VoiceContainer : ICloneable, IEquatable<VoiceContainer>
                     if (otherNpcs.Count > 0)
                     {
                         //Only intersect if other doesn't have all NPCs, otherwise it stays the same
-                        if (IsShared(npcs)) (replaced ??= []).Add((voiceType, Intersection(npcs, otherNpcs)));
-                        else npcs.IntersectWith(otherNpcs);
+                        npcs.IntersectWith(otherNpcs);
                     }
-                } else if (otherNpcs.Count > 0)
+                } else
                 {
                     //We have all NPCs of this voice type => limit with other voice type
-                    (replaced ??= []).Add((voiceType, Take(other, otherNpcs)));
+                    foreach (var otherNpc in otherNpcs) npcs.Add(otherNpc);
                 }
             } else
             {
                 //They don't have this voice type => remove ours
                 removeVoiceTypes.Add(voiceType);
             }
-        }
-
-        foreach (var (voiceType, npcs) in replaced ?? [])
-        {
-            _voices[voiceType] = npcs;
         }
 
         foreach (var removeVoiceType in removeVoiceTypes)
@@ -184,26 +134,12 @@ public class VoiceContainer : ICloneable, IEquatable<VoiceContainer>
         IsDefault = false;
     }
 
-    private static HashSet<FormKey> Intersection(HashSet<FormKey> a, HashSet<FormKey> b)
+    public void Insert(ReferenceVoiceContainer other)
     {
-        var (small, large) = a.Count <= b.Count ? (a, b) : (b, a);
-        var both = new HashSet<FormKey>();
-        foreach (var npc in small)
-        {
-            if (large.Contains(npc)) both.Add(npc);
-        }
-        return both;
-    }
-
-    public void Insert(VoiceContainer other)
-    {
-        AssertChangeable();
-
         if (IsDefault || other.IsDefault)
         {
             IsDefault = true;
             _voices.Clear();
-            _shared = null;
             return;
         }
 
@@ -217,26 +153,18 @@ public class VoiceContainer : ICloneable, IEquatable<VoiceContainer>
                 if (npcs.Count > 0)
                 {
                     //Insert as usual
-                    if (IsShared(otherNpcs))
+                    foreach (var npc in npcs)
                     {
-                        _voices[voiceType] = [..otherNpcs, ..npcs];
-                    }
-                    else
-                    {
-                        foreach (var npc in npcs)
-                        {
-                            otherNpcs.Add(npc);
-                        }
+                        otherNpcs.Add(npc);
                     }
                 } else
                 {
                     //We have all NPCs of this voice type
-                    if (IsShared(otherNpcs)) _voices[voiceType] = [];
-                    else otherNpcs.Clear();
+                    otherNpcs.Clear();
                 }
             } else
             {
-                _voices.Add(voiceType, Take(other, npcs));
+                _voices.Add(voiceType, [..npcs]);
             }
         }
 
@@ -247,13 +175,11 @@ public class VoiceContainer : ICloneable, IEquatable<VoiceContainer>
     /// Only possible for non-default voice containers sets
     /// </summary>
     /// <param name="other"></param>
-    public void Remove(VoiceContainer other)
+    public void Remove(ReferenceVoiceContainer other)
     {
-        AssertChangeable();
         if (other.IsEmpty()) return;
 
         var removeVoiceTypes = new HashSet<string>();
-        List<(string VoiceType, HashSet<FormKey> Npcs)>? replaced = null;
 
         foreach (var (voiceType, npcs) in _voices)
         {
@@ -266,28 +192,18 @@ public class VoiceContainer : ICloneable, IEquatable<VoiceContainer>
                 } else
                 {
                     //Remove all npcs
-                    var kept = IsShared(npcs) ? [..npcs] : npcs;
                     foreach (var otherNpc in otherNpcs)
                     {
-                        kept.Remove(otherNpc);
+                        npcs.Remove(otherNpc);
                     }
 
                     //If all npcs are gone, remove the voice type
-                    if (kept.Count == 0)
+                    if (npcs.Count == 0)
                     {
                         removeVoiceTypes.Add(voiceType);
                     }
-                    else if (!ReferenceEquals(kept, npcs))
-                    {
-                        (replaced ??= []).Add((voiceType, kept));
-                    }
                 }
             }
-        }
-
-        foreach (var (voiceType, npcs) in replaced ?? [])
-        {
-            _voices[voiceType] = npcs;
         }
 
         foreach (var removeVoiceType in removeVoiceTypes)
@@ -299,12 +215,11 @@ public class VoiceContainer : ICloneable, IEquatable<VoiceContainer>
     }
 
     /// <summary>
-    /// As <see cref="Remove(VoiceContainer)"/>, for a container whose voice types may stand for all their speakers (an
+    /// As <see cref="Remove(ReferenceVoiceContainer)"/>, for a container whose voice types may stand for all their speakers (an
     /// empty set): one of those losing some of its speakers is first made the speakers it stands for.
     /// </summary>
-    public void Remove(VoiceContainer other, Func<string, IEnumerable<FormKey>> speakersOfVoiceType)
+    public void Remove(ReferenceVoiceContainer other, Func<string, IEnumerable<FormKey>> speakersOfVoiceType)
     {
-        AssertChangeable();
         if (other.IsEmpty()) return;
 
         var removeVoiceTypes = new HashSet<string>();
@@ -320,9 +235,7 @@ public class VoiceContainer : ICloneable, IEquatable<VoiceContainer>
                 continue;
             }
 
-            var kept = npcs.Count == 0 ? new HashSet<FormKey>(speakersOfVoiceType(voiceType))
-                : IsShared(npcs) ? [..npcs]
-                : npcs;
+            var kept = npcs.Count == 0 ? new HashSet<FormKey>(speakersOfVoiceType(voiceType)) : npcs;
             foreach (var otherNpc in otherNpcs)
             {
                 kept.Remove(otherNpc);
@@ -357,23 +270,22 @@ public class VoiceContainer : ICloneable, IEquatable<VoiceContainer>
         return _voices.Count == 0;
     }
 
-    /// <summary>A changeable copy, sharing the sets of a frozen container rather than copying them.</summary>
     public object Clone()
     {
-        var clone = new VoiceContainer
+        var clone = new ReferenceVoiceContainer
         {
             IsDefault = IsDefault
         };
 
         foreach (var (voice, npcs) in _voices)
         {
-            clone._voices.Add(voice, clone.Take(this, npcs));
+            clone._voices.Add(voice, [..npcs]);
         }
 
         return clone;
     }
 
-    public bool Equals(VoiceContainer? other) => other != null && IsDefault == other.IsDefault && _voices.Count == other._voices.Count && _voices.Keys.All(voiceType => other._voices.ContainsKey(voiceType));
+    public bool Equals(ReferenceVoiceContainer? other) => other != null && IsDefault == other.IsDefault && _voices.Count == other._voices.Count && _voices.Keys.All(voiceType => other._voices.ContainsKey(voiceType));
 
     public override string ToString()
     {
@@ -393,7 +305,7 @@ public class VoiceContainer : ICloneable, IEquatable<VoiceContainer>
 
     public override bool Equals(object? obj)
     {
-        return Equals(obj as VoiceContainer);
+        return Equals(obj as ReferenceVoiceContainer);
     }
 
     public override int GetHashCode()
