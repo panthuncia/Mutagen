@@ -28,6 +28,32 @@ class BsaReader : IArchiveReader
 
     public IEnumerable<IArchiveFile> Files => _folders.Value.SelectMany(f => f.Files);
 
+    /// <summary>The files' paths read from the folders' paths and the file name block, without a record for each file.</summary>
+    public IEnumerable<string> FilePaths
+    {
+        get
+        {
+            var folders = _folders.Value;
+            var names = folders.Length > 0 ? folders[0].FileNameBlock?.Names.Value : null;
+            var overall = 0;
+            foreach (var folder in folders)
+            {
+                var count = folder.FileCount;
+                for (var i = 0; i < count; i++, overall++)
+                {
+                    // As BsaFileRecord.Path: none without a name, else in its folder.
+                    if (names is null)
+                    {
+                        yield return string.Empty;
+                        continue;
+                    }
+                    FileName name = names[overall].ReadStringTerm(HeaderType);
+                    yield return folder.Path.IsNullOrWhitespace() ? name.String : Path.Combine(folder.Path, name.String);
+                }
+            }
+        }
+    }
+
     public IEnumerable<IArchiveFolder> Folders => _folders.Value;
 
     public bool HasFolderNames => ArchiveFlags.HasFlag(BsaArchiveFlags.HasFolderNames);
