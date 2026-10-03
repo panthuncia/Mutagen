@@ -30,21 +30,39 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
     private readonly ConcurrentDictionary<ModKey, VoiceContainer> _defaultSpeakerVoices = new();
     private readonly ConcurrentDictionary<(FormKey Quest, ModKey Mod), VoiceContainer> _questCache = new();
 
-    // While Prep runs (one thread): what each template or leveled NPC, by FormKey, gives its NPCs, worked out from the
-    // winning versions once rather than again for every NPC version reaching it. Null while being worked out: a template
-    // reaching itself gives nothing more. Unused after Prep, when the lookup is read from several threads.
-    private Dictionary<FormKey, HashSet<string>?>? _spawnVoiceTypes;
-    private Dictionary<FormKey, HashSet<FormKey>?>? _spawnFactions;
-    private Dictionary<FormKey, HashSet<FormKey>?>? _spawnClasses;
+    // While Prep runs: what each template or leveled NPC, by FormKey, gives its NPCs, worked out from the winning versions
+    // once rather than again for every NPC version reaching it. Unused after Prep.
+    private Memo<string>? _spawnVoiceTypes;
+    private Memo<FormKey>? _spawnFactions;
+    private Memo<FormKey>? _spawnClasses;
 
-    private static HashSet<T> Remembered<T>(Dictionary<FormKey, HashSet<T>?>? memo, FormKey key, Func<HashSet<T>> make)
+    private static HashSet<T> Remembered<T>(Memo<T>? memo, FormKey key, Func<HashSet<T>> make) => memo is null ? make() : memo.Get(key, make);
+
+    /// <summary>
+    /// What templates give, worked out by several threads at once: one asked while a thread works it out gives nothing
+    /// more on that thread (a template reaching itself), and two threads working one out at once both do, and one is kept.
+    /// </summary>
+    private sealed class Memo<T> : IDisposable
     {
-        if (memo is null) return make();
-        if (memo.TryGetValue(key, out var known)) return known ?? [];
-        memo[key] = null;
-        var made = make();
-        memo[key] = made;
-        return made;
+        private readonly ConcurrentDictionary<FormKey, HashSet<T>> _made = new();
+        private readonly ThreadLocal<HashSet<FormKey>> _making = new(static () => []);
+
+        public HashSet<T> Get(FormKey key, Func<HashSet<T>> make)
+        {
+            if (_made.TryGetValue(key, out var known)) return known;
+            var making = _making.Value!;
+            if (!making.Add(key)) return [];
+            try
+            {
+                return _made.GetOrAdd(key, make());
+            }
+            finally
+            {
+                making.Remove(key);
+            }
+        }
+
+        public void Dispose() => _making.Dispose();
     }
 
     public void Prep(IAssetLinkCache linkCache)
@@ -55,23 +73,25 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
     }
 
     /// <summary>
-    /// <see cref="Prep"/> in parts: each plugin's records are listed, and what they hold that needs nothing else read
-    /// (<see cref="Preparation.Read"/>, on any threads), then put together in the load order's order as Prep does
-    /// (<see cref="Preparation.Finish"/>, on one).
+    /// <see cref="Prep"/> in parts: each plugin's records are listed, with what they give their speakers, read through the
+    /// load order's winners (<see cref="Preparation.Read"/>, on any threads), then put together in the load order's order
+    /// as Prep does (<see cref="Preparation.Finish"/>, on one).
     /// </summary>
     public Preparation Prepare(IAssetLinkCache linkCache) => new(this, linkCache);
 
     public sealed class Preparation
     {
         private readonly VoiceTypeAssetLookup _lookup;
-        private readonly IAssetLinkCache _linkCache;
         private readonly IModGetter[] _mods;
         private readonly ModRecords[] _read;
 
         internal Preparation(VoiceTypeAssetLookup lookup, IAssetLinkCache linkCache)
         {
             _lookup = lookup;
-            _linkCache = linkCache;
+            _lookup._formLinkCache = linkCache.FormLinkCache;
+            _lookup._spawnVoiceTypes = new();
+            _lookup._spawnFactions = new();
+            _lookup._spawnClasses = new();
             _mods = [.. linkCache.FormLinkCache.PriorityOrder];
             _read = new ModRecords[_mods.Length];
         }
@@ -84,22 +104,22 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
         {
             for (var i = start; i < end; i++)
             {
-                _read[i] = ModRecords.Of(_mods[i]);
+                _read[i] = ModRecords.Of(_lookup, _mods[i]);
             }
         }
 
         /// <summary>Puts the plugins' records together, once all are read.</summary>
         public void Finish()
         {
-            _lookup._spawnVoiceTypes = new();
-            _lookup._spawnFactions = new();
-            _lookup._spawnClasses = new();
             try
             {
-                _lookup.PrepLoadOrder(_linkCache, _mods, _read);
+                _lookup.PrepLoadOrder(_mods, _read);
             }
             finally
             {
+                _lookup._spawnVoiceTypes?.Dispose();
+                _lookup._spawnFactions?.Dispose();
+                _lookup._spawnClasses?.Dispose();
                 _lookup._spawnVoiceTypes = null;
                 _lookup._spawnFactions = null;
                 _lookup._spawnClasses = null;
@@ -107,18 +127,30 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
         }
     }
 
-    /// <summary>A plugin's records Prep reads, in the order it enumerates them, and what they hold that needs nothing else read.</summary>
+    /// <summary>
+    /// What an NPC version gives the lookup: its voice types (used when it's the winner), the factions and classes it has
+    /// or its template gives, its gender and race unless its template gives them.
+    /// </summary>
+    private readonly record struct NpcRecord(
+        FormKey FormKey,
+        HashSet<string> VoiceTypes,
+        HashSet<FormKey> Factions,
+        HashSet<FormKey> Classes,
+        MaleFemaleGender? Gender,
+        FormKey? Race);
+
+    /// <summary>A plugin's records Prep reads, in the order it enumerates them, and what they give speakers.</summary>
     private sealed record ModRecords(
         (FormKey UniqueActor, FormKey Faction)[] AliasFactions,
-        (FormKey LeveledNpc, IFormLinkGetter<INpcSpawnGetter>[] Entries)[] LeveledNpcs,
-        INpcGetter[] Npcs,
+        (FormKey LeveledNpc, HashSet<string> VoiceTypes)[] LeveledNpcs,
+        NpcRecord[] Npcs,
         (FormKey Responses, FormKey SharedInfo)[] SharedInfos,
-        ITalkingActivatorGetter[] TalkingActivators,
+        (FormKey TalkingActivator, HashSet<string> VoiceTypes)[] TalkingActivators,
         FormKey[] ChildRaces,
         (FormKey Topic, int Actor)[] SceneTopics,
         string[] DefaultVoiceTypes)
     {
-        public static ModRecords Of(IModGetter mod)
+        public static ModRecords Of(VoiceTypeAssetLookup lookup, IModGetter mod)
         {
             var aliasFactions = new List<(FormKey, FormKey)>();
             foreach (var quest in mod.EnumerateMajorRecords<IQuestGetter>())
@@ -135,11 +167,25 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
                 }
             }
 
-            var leveledNpcs = new List<(FormKey, IFormLinkGetter<INpcSpawnGetter>[])>();
+            var leveledNpcs = new List<(FormKey, HashSet<string>)>();
             foreach (var leveledNpc in mod.EnumerateMajorRecords<ILeveledNpcGetter>())
             {
                 if (leveledNpc.Entries is null) continue;
-                leveledNpcs.Add((leveledNpc.FormKey, [.. leveledNpc.Entries.Select(x => x.Data?.Reference).WhereNotNull()]));
+                leveledNpcs.Add((leveledNpc.FormKey, leveledNpc.Entries.Select(x => x.Data?.Reference).WhereNotNull().SelectMany(lookup.GetVoiceTypes).ToHashSet()));
+            }
+
+            var npcs = new List<NpcRecord>();
+            foreach (var npc in mod.EnumerateMajorRecords<INpcGetter>())
+            {
+                var genders = lookup.GetGenders(npc);
+                var races = lookup.GetRaces(npc);
+                npcs.Add(new NpcRecord(
+                    npc.FormKey,
+                    lookup.GetVoiceTypes(npc),
+                    lookup.GetFactions(npc),
+                    lookup.GetClasses(npc),
+                    genders.Count == 0 ? null : genders.Single(),
+                    races.Count == 0 ? null : races.Single()));
             }
 
             var sharedInfos = new List<(FormKey, FormKey)>();
@@ -163,9 +209,9 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
             return new ModRecords(
                 [.. aliasFactions],
                 [.. leveledNpcs],
-                [.. mod.EnumerateMajorRecords<INpcGetter>()],
+                [.. npcs],
                 [.. sharedInfos],
-                [.. mod.EnumerateMajorRecords<ITalkingActivatorGetter>()],
+                [.. mod.EnumerateMajorRecords<ITalkingActivatorGetter>().Select(t => (t.FormKey, lookup.GetVoiceTypes(t)))],
                 [.. mod.EnumerateMajorRecords<IRaceGetter>().Where(race => (race.Flags & Race.Flag.Child) != 0).Select(race => race.FormKey)],
                 [.. sceneTopics],
                 [.. mod.EnumerateMajorRecords<IVoiceTypeGetter>()
@@ -174,10 +220,8 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
         }
     }
 
-    private void PrepLoadOrder(IAssetLinkCache linkCache, IModGetter[] mods, ModRecords[] read)
+    private void PrepLoadOrder(IModGetter[] mods, ModRecords[] read)
     {
-        _formLinkCache = linkCache.FormLinkCache;
-
         var childRaces = new HashSet<FormKey>();
         for (var m = 0; m < mods.Length; m++)
         {
@@ -190,12 +234,8 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
                     .Add(uniqueActor);
             }
 
-            foreach (var (leveledNpc, entries) in records.LeveledNpcs)
+            foreach (var (leveledNpc, voiceTypes) in records.LeveledNpcs)
             {
-                var voiceTypes = entries
-                    .SelectMany(GetVoiceTypes)
-                    .ToHashSet();
-
                 _speakerVoices
                     .GetOrAdd(leveledNpc)
                     .Add(voiceTypes);
@@ -203,30 +243,30 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
 
             foreach (var npc in records.Npcs)
             {
-                _speakerVoices.GetOrAdd(npc.FormKey, () => GetVoiceTypes(npc));
+                _speakerVoices.TryAdd(npc.FormKey, npc.VoiceTypes);
 
-                foreach (var factionKey in GetFactions(npc))
+                foreach (var factionKey in npc.Factions)
                 {
                     _factionNPCs
                         .GetOrAdd(factionKey)
                         .Add(npc.FormKey);
                 }
 
-                foreach (var classKey in GetClasses(npc))
+                foreach (var classKey in npc.Classes)
                 {
                     _classNPCs
                         .GetOrAdd(classKey)
                         .Add(npc.FormKey);
                 }
 
-                foreach (var gender in GetGenders(npc))
+                if (npc.Gender is { } gender)
                 {
                     _genderNPCs
                         .GetOrAdd(gender)
                         .Add(npc.FormKey);
                 }
 
-                foreach (var raceKey in GetRaces(npc))
+                if (npc.Race is { } raceKey)
                 {
                     _raceNPCs
                         .GetOrAdd(raceKey)
@@ -241,12 +281,9 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
                     .Add(responses);
             }
 
-            foreach (var talkingActivator in records.TalkingActivators)
+            foreach (var (talkingActivator, voiceTypes) in records.TalkingActivators)
             {
-                if (!_speakerVoices.ContainsKey(talkingActivator.FormKey))
-                {
-                    _speakerVoices.Add(talkingActivator.FormKey, GetVoiceTypes(talkingActivator));
-                }
+                _speakerVoices.TryAdd(talkingActivator, voiceTypes);
             }
 
             childRaces.UnionWith(records.ChildRaces);
