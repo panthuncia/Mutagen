@@ -294,11 +294,34 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
     /// <returns>List of NPC speakers, including npcs or talking activators</returns>
     public IEnumerable<IFormLinkGetter<IHasVoiceTypeGetter>> GetSpeakers(IDialogResponsesGetter responses)
     {
+        if (GetSpeakerVoices(responses) is not { } voiceContainer) yield break;
+
+        foreach (var formKey in voiceContainer.Voices.SelectMany(x =>
+                 {
+                     if (x.Value.Count > 0) return x.Value;
+
+                     // Get speakers with voice type when the whole voice type is used (there are no speakers)
+                     return GetSpeakersOfVoiceType(x.Key);
+                 }))
+        {
+            yield return new FormLink<IHasVoiceTypeGetter>(formKey);
+        }
+    }
+
+    /// <summary>
+    /// Who can speak dialog responses, as <see cref="GetSpeakers"/> lists them, before they're listed: each voice type
+    /// with the speakers of it who can, or with none for all of them (<see cref="GetSpeakersOfVoiceType"/>). Cheaper
+    /// than listing them where most are a whole voice type, as a response without conditions is (every speaker).
+    /// </summary>
+    /// <param name="responses">Dialog responses to get speakers for</param>
+    /// <returns>The voices, which may be shared and mustn't be changed; null where the responses have no topic or quest</returns>
+    public VoiceContainer? GetSpeakerVoices(IDialogResponsesGetter responses)
+    {
         var responsesContext = _formLinkCache.ResolveSimpleContext<IDialogResponsesGetter>(responses.FormKey);
-        if (!responsesContext.TryGetParent<IDialogTopicGetter>(out var topic)) yield break;
+        if (!responsesContext.TryGetParent<IDialogTopicGetter>(out var topic)) return null;
 
         var quest = topic.Quest.TryResolve(_formLinkCache);
-        if (quest == null) yield break;
+        if (quest == null) return null;
 
         //Get quest voices
         var questVoices = GetQuestVoices(topic, quest);
@@ -307,22 +330,19 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
         var voiceContainer = GetVoices(topic, responses, quest);
         voiceContainer.IntersectWith(questVoices);
 
-        if (voiceContainer.IsDefault)
-        {
-            voiceContainer = GetAllDefaultVoices();
-        }
-
-        foreach (var formKey in voiceContainer.Voices.SelectMany(x =>
-                 {
-                     if (x.Value.Count > 0) return x.Value;
-
-                     // Get speakers with voice type when the whole voice type is used (there are no speakers)
-                     return _speakersByVoiceType.TryGetValue(x.Key, out var speakers) ? speakers : Enumerable.Empty<FormKey>();
-                 }))
-        {
-            yield return new FormLink<IHasVoiceTypeGetter>(formKey);
-        }
+        return voiceContainer.IsDefault ? GetAllDefaultVoices() : voiceContainer;
     }
+
+    /// <summary>Every voice type a speaker has.</summary>
+    public IEnumerable<string> VoiceTypes => _speakersByVoiceType.Keys;
+
+    /// <summary>The speakers (NPCs and talking activators) with a voice type.</summary>
+    public IReadOnlyCollection<FormKey> GetSpeakersOfVoiceType(string voiceType) =>
+        _speakersByVoiceType.TryGetValue(voiceType, out var speakers) ? speakers : Array.Empty<FormKey>();
+
+    /// <summary>A speaker's voice types: none for a FormKey that isn't a speaker.</summary>
+    public IReadOnlyCollection<string> GetVoiceTypesOfSpeaker(FormKey speaker) =>
+        _speakerVoices.TryGetValue(speaker, out var voiceTypes) ? voiceTypes : Array.Empty<string>();
 
     private IEnumerable<DataRelativePath> GetVoiceLineFilePaths(
         IDialogTopicGetter topic,
