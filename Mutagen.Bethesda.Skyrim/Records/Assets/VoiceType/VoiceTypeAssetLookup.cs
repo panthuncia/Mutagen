@@ -49,28 +49,78 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
 
     public void Prep(IAssetLinkCache linkCache)
     {
-        _spawnVoiceTypes = new();
-        _spawnFactions = new();
-        _spawnClasses = new();
-        try
+        var preparation = Prepare(linkCache);
+        preparation.Read(0, preparation.Count);
+        preparation.Finish();
+    }
+
+    /// <summary>
+    /// <see cref="Prep"/> in parts: each plugin's records are listed, and what they hold that needs nothing else read
+    /// (<see cref="Preparation.Read"/>, on any threads), then put together in the load order's order as Prep does
+    /// (<see cref="Preparation.Finish"/>, on one).
+    /// </summary>
+    public Preparation Prepare(IAssetLinkCache linkCache) => new(this, linkCache);
+
+    public sealed class Preparation
+    {
+        private readonly VoiceTypeAssetLookup _lookup;
+        private readonly IAssetLinkCache _linkCache;
+        private readonly IModGetter[] _mods;
+        private readonly ModRecords[] _read;
+
+        internal Preparation(VoiceTypeAssetLookup lookup, IAssetLinkCache linkCache)
         {
-            PrepLoadOrder(linkCache);
+            _lookup = lookup;
+            _linkCache = linkCache;
+            _mods = [.. linkCache.FormLinkCache.PriorityOrder];
+            _read = new ModRecords[_mods.Length];
         }
-        finally
+
+        /// <summary>The parts: the load order's plugins.</summary>
+        public int Count => _mods.Length;
+
+        /// <summary>Reads the plugins from <paramref name="start"/> up to <paramref name="end"/>.</summary>
+        public void Read(int start, int end)
         {
-            _spawnVoiceTypes = null;
-            _spawnFactions = null;
-            _spawnClasses = null;
+            for (var i = start; i < end; i++)
+            {
+                _read[i] = ModRecords.Of(_mods[i]);
+            }
+        }
+
+        /// <summary>Puts the plugins' records together, once all are read.</summary>
+        public void Finish()
+        {
+            _lookup._spawnVoiceTypes = new();
+            _lookup._spawnFactions = new();
+            _lookup._spawnClasses = new();
+            try
+            {
+                _lookup.PrepLoadOrder(_linkCache, _mods, _read);
+            }
+            finally
+            {
+                _lookup._spawnVoiceTypes = null;
+                _lookup._spawnFactions = null;
+                _lookup._spawnClasses = null;
+            }
         }
     }
 
-    private void PrepLoadOrder(IAssetLinkCache linkCache)
+    /// <summary>A plugin's records Prep reads, in the order it enumerates them, and what they hold that needs nothing else read.</summary>
+    private sealed record ModRecords(
+        (FormKey UniqueActor, FormKey Faction)[] AliasFactions,
+        (FormKey LeveledNpc, IFormLinkGetter<INpcSpawnGetter>[] Entries)[] LeveledNpcs,
+        INpcGetter[] Npcs,
+        (FormKey Responses, FormKey SharedInfo)[] SharedInfos,
+        ITalkingActivatorGetter[] TalkingActivators,
+        FormKey[] ChildRaces,
+        (FormKey Topic, int Actor)[] SceneTopics,
+        string[] DefaultVoiceTypes)
     {
-        _formLinkCache = linkCache.FormLinkCache;
-
-        var childRaces = new HashSet<FormKey>();
-        foreach (var mod in _formLinkCache.PriorityOrder)
+        public static ModRecords Of(IModGetter mod)
         {
+            var aliasFactions = new List<(FormKey, FormKey)>();
             foreach (var quest in mod.EnumerateMajorRecords<IQuestGetter>())
             {
                 foreach (var alias in quest.Aliases)
@@ -80,32 +130,78 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
 
                     foreach (var faction in alias.Factions)
                     {
-                        if (!faction.IsNull)
-                        {
-                            _factionNPCs
-                                .GetOrAdd(faction.FormKey)
-                                .Add(uniqueActor);
-                        }
+                        if (!faction.IsNull) aliasFactions.Add((uniqueActor, faction.FormKey));
                     }
                 }
             }
 
+            var leveledNpcs = new List<(FormKey, IFormLinkGetter<INpcSpawnGetter>[])>();
             foreach (var leveledNpc in mod.EnumerateMajorRecords<ILeveledNpcGetter>())
             {
                 if (leveledNpc.Entries is null) continue;
+                leveledNpcs.Add((leveledNpc.FormKey, [.. leveledNpc.Entries.Select(x => x.Data?.Reference).WhereNotNull()]));
+            }
 
-                var voiceTypes = leveledNpc.Entries
-                    .Select(x => x.Data?.Reference)
-                    .WhereNotNull()
+            var sharedInfos = new List<(FormKey, FormKey)>();
+            foreach (var response in mod.EnumerateMajorRecords<IDialogResponsesGetter>())
+            {
+                if (!response.ResponseData.IsNull) sharedInfos.Add((response.FormKey, response.ResponseData.FormKey));
+            }
+
+            var sceneTopics = new List<(FormKey, int)>();
+            foreach (var scene in mod.EnumerateMajorRecords<ISceneGetter>())
+            {
+                foreach (var action in scene.Actions)
+                {
+                    if (action.Type == SceneAction.TypeEnum.Dialog && !action.Topic.IsNull && action.ActorID != null)
+                    {
+                        sceneTopics.Add((action.Topic.FormKey, action.ActorID.Value));
+                    }
+                }
+            }
+
+            return new ModRecords(
+                [.. aliasFactions],
+                [.. leveledNpcs],
+                [.. mod.EnumerateMajorRecords<INpcGetter>()],
+                [.. sharedInfos],
+                [.. mod.EnumerateMajorRecords<ITalkingActivatorGetter>()],
+                [.. mod.EnumerateMajorRecords<IRaceGetter>().Where(race => (race.Flags & Race.Flag.Child) != 0).Select(race => race.FormKey)],
+                [.. sceneTopics],
+                [.. mod.EnumerateMajorRecords<IVoiceTypeGetter>()
+                    .Where(voiceType => voiceType.EditorID != null && (voiceType.Flags & Skyrim.VoiceType.Flag.AllowDefaultDialog) != 0)
+                    .Select(voiceType => voiceType.EditorID!)]);
+        }
+    }
+
+    private void PrepLoadOrder(IAssetLinkCache linkCache, IModGetter[] mods, ModRecords[] read)
+    {
+        _formLinkCache = linkCache.FormLinkCache;
+
+        var childRaces = new HashSet<FormKey>();
+        for (var m = 0; m < mods.Length; m++)
+        {
+            var mod = mods[m];
+            var records = read[m];
+            foreach (var (uniqueActor, faction) in records.AliasFactions)
+            {
+                _factionNPCs
+                    .GetOrAdd(faction)
+                    .Add(uniqueActor);
+            }
+
+            foreach (var (leveledNpc, entries) in records.LeveledNpcs)
+            {
+                var voiceTypes = entries
                     .SelectMany(GetVoiceTypes)
                     .ToHashSet();
 
                 _speakerVoices
-                    .GetOrAdd(leveledNpc.FormKey)
+                    .GetOrAdd(leveledNpc)
                     .Add(voiceTypes);
             }
 
-            foreach (var npc in mod.EnumerateMajorRecords<INpcGetter>())
+            foreach (var npc in records.Npcs)
             {
                 _speakerVoices.GetOrAdd(npc.FormKey, () => GetVoiceTypes(npc));
 
@@ -138,17 +234,14 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
                 }
             }
 
-            foreach (var response in mod.EnumerateMajorRecords<IDialogResponsesGetter>())
+            foreach (var (responses, sharedInfo) in records.SharedInfos)
             {
-                if (!response.ResponseData.IsNull)
-                {
-                    _sharedInfoUsages
-                        .GetOrAdd(response.ResponseData.FormKey)
-                        .Add(response.FormKey);
-                }
+                _sharedInfoUsages
+                    .GetOrAdd(sharedInfo)
+                    .Add(responses);
             }
 
-            foreach (var talkingActivator in mod.EnumerateMajorRecords<ITalkingActivatorGetter>())
+            foreach (var talkingActivator in records.TalkingActivators)
             {
                 if (!_speakerVoices.ContainsKey(talkingActivator.FormKey))
                 {
@@ -156,37 +249,14 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
                 }
             }
 
-            foreach (var race in mod.EnumerateMajorRecords<IRaceGetter>())
+            childRaces.UnionWith(records.ChildRaces);
+
+            foreach (var (topic, actor) in records.SceneTopics)
             {
-                if ((race.Flags & Race.Flag.Child) != 0)
-                {
-                    childRaces.Add(race.FormKey);
-                }
+                _dialogueSceneAliasIndex.TryAdd(topic, actor);
             }
 
-            foreach (var scene in mod.EnumerateMajorRecords<ISceneGetter>())
-            {
-                foreach (var action in scene.Actions)
-                {
-                    if (action.Type == SceneAction.TypeEnum.Dialog && !action.Topic.IsNull && action.ActorID != null && !_dialogueSceneAliasIndex.ContainsKey(action.Topic.FormKey))
-                    {
-                        _dialogueSceneAliasIndex.Add(action.Topic.FormKey, action.ActorID.Value);
-                    }
-                }
-            }
-
-            var defaultVoiceTypes = new HashSet<string>();
-            _defaultVoiceTypes.Add(mod.ModKey, defaultVoiceTypes);
-            foreach (var voiceType in mod.EnumerateMajorRecords<IVoiceTypeGetter>())
-            {
-                if (voiceType.EditorID != null)
-                {
-                    if ((voiceType.Flags & Skyrim.VoiceType.Flag.AllowDefaultDialog) != 0)
-                    {
-                        defaultVoiceTypes.Add(voiceType.EditorID);
-                    }
-                }
-            }
+            _defaultVoiceTypes.Add(mod.ModKey, [.. records.DefaultVoiceTypes]);
         }
 
         //Build child cache
@@ -205,7 +275,7 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
 
         //Add master voice types
         var defaultVoicesCopy = new Dictionary<ModKey, HashSet<string>>(_defaultVoiceTypes);
-        foreach (var mod in _formLinkCache.PriorityOrder)
+        foreach (var mod in mods)
         {
             foreach (var master in mod.MasterReferences)
             {
