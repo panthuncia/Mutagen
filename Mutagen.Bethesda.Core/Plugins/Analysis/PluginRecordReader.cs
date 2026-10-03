@@ -1,6 +1,7 @@
 using System.Buffers.Binary;
 using System.Collections.Concurrent;
 using System.IO.Abstractions;
+using System.IO.MemoryMappedFiles;
 using Loqui;
 using Microsoft.Win32.SafeHandles;
 using Mutagen.Bethesda.Plugins.Binary.Headers;
@@ -21,9 +22,11 @@ namespace Mutagen.Bethesda.Plugins.Analysis;
 /// Reads single major records of a plugin from where they start in the file (a record header's position, as
 /// <see cref="RecordLocator"/> finds it), without reading the rest of the plugin. Each record is read as an overlay
 /// over its own bytes, so it holds nothing open. A record that holds others (a cell, worldspace or dialog topic) is
-/// read without them: only its own fields. Safe to use from several threads.
+/// read without them: only its own fields. Safe to use from several threads: a plugin on disk is read through a view of
+/// it mapped into memory, so threads reading at once never wait for each other (reads of one file handle are one at a
+/// time, in the system).
 /// </summary>
-public sealed class PluginRecordReader : IDisposable
+public sealed unsafe class PluginRecordReader : IDisposable
 {
     /// <summary>The header flag of a plugin whose strings are in strings files, in every game that has them.</summary>
     private const int LocalizedFlag = 0x80;
@@ -34,6 +37,10 @@ public sealed class PluginRecordReader : IDisposable
     private readonly GameConstants _constants;
     private readonly SafeFileHandle? _handle;
     private readonly Stream? _stream;
+    private readonly MemoryMappedFile? _map;
+    private readonly MemoryMappedViewAccessor? _view;
+    private readonly byte* _mapped;
+    private readonly long _length;
 
     private PluginRecordReader(BinaryOverlayFactoryPackage package, SafeFileHandle? handle, Stream? stream)
     {
@@ -41,6 +48,17 @@ public sealed class PluginRecordReader : IDisposable
         _constants = package.MetaData.Constants;
         _handle = handle;
         _stream = stream;
+        if (handle is null) return;
+        _length = RandomAccess.GetLength(handle);
+        // An empty file can't be mapped; there's nothing to read in it anyway.
+        if (_length == 0) return;
+        // The view holds the file only as its handle does (shared for delete): the file can be renamed, replaced and
+        // deleted while it's mapped, and the view keeps reading what was there.
+        _map = MemoryMappedFile.CreateFromFile(handle, null, 0, MemoryMappedFileAccess.Read, HandleInheritability.None, leaveOpen: true);
+        _view = _map.CreateViewAccessor(0, 0, MemoryMappedFileAccess.Read);
+        byte* pointer = null;
+        _view.SafeMemoryMappedViewHandle.AcquirePointer(ref pointer);
+        _mapped = pointer + _view.PointerOffset;
     }
 
     /// <summary>The plugin's FormIDs are read against its masters, and its strings from its strings files, as an overlay of the whole plugin would read them.</summary>
@@ -100,6 +118,12 @@ public sealed class PluginRecordReader : IDisposable
     private void ReadAt(Span<byte> buffer, long position)
     {
         int read;
+        if (_mapped is not null)
+        {
+            if (position < 0 || position > _length - buffer.Length) throw new EndOfStreamException($"The record at {position} runs past the end of the file.");
+            new ReadOnlySpan<byte>(_mapped + position, buffer.Length).CopyTo(buffer);
+            return;
+        }
         if (_handle is not null)
         {
             read = RandomAccess.Read(_handle, buffer, position);
@@ -117,6 +141,9 @@ public sealed class PluginRecordReader : IDisposable
 
     public void Dispose()
     {
+        if (_mapped is not null) _view!.SafeMemoryMappedViewHandle.ReleasePointer();
+        _view?.Dispose();
+        _map?.Dispose();
         _handle?.Dispose();
         _stream?.Dispose();
     }

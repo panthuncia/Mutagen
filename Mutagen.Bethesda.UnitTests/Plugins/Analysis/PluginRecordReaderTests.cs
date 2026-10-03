@@ -120,6 +120,27 @@ public class PluginRecordReaderTests
     }
 
     [Fact]
+    public void ReadsWhatWasThereWhileThePluginIsReplaced()
+    {
+        // As an editor saves: the plugin moved aside, a new one put in its place, and the old one deleted.
+        using var folder = TempFolder.Factory();
+        var path = Write(folder.Dir, compressed: false, localized: false);
+        var locations = RecordLocator.GetLocations(new ModPath(path), GameRelease.SkyrimSE, loadOrder: null);
+        FormKey guard;
+        using (var overlay = SkyrimMod.CreateFromBinaryOverlay(path, SkyrimRelease.SkyrimSE))
+        {
+            guard = overlay.Npcs.First(n => n.EditorID == "Guard").FormKey;
+        }
+        using var reader = PluginRecordReader.FromPath(new ModPath(path), GameRelease.SkyrimSE);
+
+        File.Move(path, path + ".bak");
+        File.WriteAllBytes(path, [1, 2, 3]);
+        File.Delete(path + ".bak");
+
+        reader.Read<INpcGetter>(locations[guard].Min).Name!.String.ShouldBe("Town Guard");
+    }
+
+    [Fact]
     public void RefusesAGroup()
     {
         using var folder = TempFolder.Factory();
