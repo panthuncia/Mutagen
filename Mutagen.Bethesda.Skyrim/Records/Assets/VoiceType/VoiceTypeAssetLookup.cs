@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using Mutagen.Bethesda.Assets;
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Plugins.Assets;
@@ -13,6 +14,8 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
     //Databases
     private readonly Dictionary<ModKey, HashSet<string>> _defaultVoiceTypes = new();
     private readonly Dictionary<FormKey, HashSet<string>> _speakerVoices = new();
+    // Each voice type's speakers, in the order of _speakerVoices: made at the end of Prep, and only read after.
+    private readonly Dictionary<string, List<FormKey>> _speakersByVoiceType = new();
     private readonly Dictionary<FormKey, HashSet<FormKey>> _factionNPCs = new();
     private readonly Dictionary<FormKey, HashSet<FormKey>> _classNPCs = new();
     private readonly Dictionary<FormKey, HashSet<FormKey>> _raceNPCs = new();
@@ -22,10 +25,10 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
     private readonly Dictionary<FormKey, HashSet<FormKey>> _sharedInfoUsages = new();
 
     //Caches
-    private readonly object _defaultSpeakerVoicesLock = new();
-    private readonly Dictionary<ModKey, VoiceContainer> _defaultSpeakerVoices = new();
-    private readonly object _questCacheLock = new();
-    private readonly Dictionary<FormKey, VoiceContainer> _questCache = new();
+    // Filled as asked, from several threads at once: a container is worked out without a lock (two threads asking at once
+    // both work it out, and one is kept), and only read once it's in.
+    private readonly ConcurrentDictionary<ModKey, VoiceContainer> _defaultSpeakerVoices = new();
+    private readonly ConcurrentDictionary<(FormKey Quest, ModKey Mod), VoiceContainer> _questCache = new();
 
     public void Prep(IAssetLinkCache linkCache)
     {
@@ -158,6 +161,14 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
             .SelectMany(x => x)
             .ToHashSet();
 
+        foreach (var (speaker, voiceTypes) in _speakerVoices)
+        {
+            foreach (var voiceType in voiceTypes)
+            {
+                _speakersByVoiceType.GetOrAdd(voiceType).Add(speaker);
+            }
+        }
+
         //Add master voice types
         var defaultVoicesCopy = new Dictionary<ModKey, HashSet<string>>(_defaultVoiceTypes);
         foreach (var mod in _formLinkCache.PriorityOrder)
@@ -272,9 +283,7 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
                      if (x.Value.Count > 0) return x.Value;
 
                      // Get speakers with voice type when the whole voice type is used (there are no speakers)
-                     return _speakerVoices
-                         .Where(y => y.Value.Contains(x.Key))
-                         .Select(y => y.Key);
+                     return _speakersByVoiceType.TryGetValue(x.Key, out var speakers) ? speakers : Enumerable.Empty<FormKey>();
                  }))
         {
             yield return new FormLink<IHasVoiceTypeGetter>(formKey);
@@ -358,16 +367,11 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
 
     private VoiceContainer GetQuestVoices(IDialogTopicGetter topic, IQuestGetter quest)
     {
-        lock (_questCacheLock)
-        {
-            if (!_questCache.TryGetValue(quest.FormKey, out var questVoices))
-            {
-                questVoices = GetVoices(quest, topic.FormKey.ModKey);
-                _questCache.TryAdd(quest.FormKey, questVoices);
-            }
-
-            return questVoices;
-        }
+        // A quest's voices depend on the plugin of the topic asked about (its default voice types), so they're kept for
+        // each quest and plugin.
+        var key = (quest.FormKey, topic.FormKey.ModKey);
+        if (_questCache.TryGetValue(key, out var questVoices)) return questVoices;
+        return _questCache.GetOrAdd(key, GetVoices(quest, topic.FormKey.ModKey));
     }
 
     private static (string questString, string topicString) GetQuestAndTopicStrings(IDialogTopicGetter topic, IQuestGetter quest)
@@ -760,7 +764,17 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
 
     private VoiceContainer GetVoices(IQuestGetter quest, ModKey currentMod) => GetVoices(quest.DialogConditions, quest, currentMod);
 
+    // Only read once made: made by the first to ask (two at once both make it, and one is kept).
+    private VoiceContainer? _allDefaultVoices;
+
     private VoiceContainer GetAllDefaultVoices()
+    {
+        if (Volatile.Read(ref _allDefaultVoices) is { } made) return made;
+        var allDefaultVoices = MakeAllDefaultVoices();
+        return Interlocked.CompareExchange(ref _allDefaultVoices, allDefaultVoices, null) ?? allDefaultVoices;
+    }
+
+    private VoiceContainer MakeAllDefaultVoices()
     {
         var allDefaultVoices = new VoiceContainer();
 
@@ -774,15 +788,10 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
 
     private VoiceContainer GetDefaultVoices(ModKey mod)
     {
-        lock (_defaultSpeakerVoicesLock)
-        {
-            if (_defaultSpeakerVoices.TryGetValue(mod, out var defaultVoiceTypes)) return defaultVoiceTypes;
-
-            var vc = new VoiceContainer(_speakerVoices);
-            vc.InvertVoiceTypes(_defaultVoiceTypes[mod]);
-            _defaultSpeakerVoices.TryAdd(mod, vc);
-            return vc;
-        }
+        if (_defaultSpeakerVoices.TryGetValue(mod, out var defaultVoiceTypes)) return defaultVoiceTypes;
+        var vc = new VoiceContainer(_speakerVoices);
+        vc.InvertVoiceTypes(_defaultVoiceTypes[mod]);
+        return _defaultSpeakerVoices.GetOrAdd(mod, vc);
     }
 
     private VoiceContainer Invert(VoiceContainer voiceContainer, bool invertDefaultVoices, ModKey currentMod)
