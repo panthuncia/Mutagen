@@ -789,6 +789,11 @@ internal abstract class BinaryOverlayList
             }
         }
 
+        /// <summary>The items' bytes, one after another, for reading them without an overlay for each.</summary>
+        internal ReadOnlyMemorySlice<byte> Memory => _mem;
+
+        internal int ItemLength => _itemLength;
+
         public T this[int index]
         {
             get

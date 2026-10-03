@@ -2614,6 +2614,9 @@
     <Compile Include="Records\Major Records\BaseLayer_Generated.cs">
       <DependentUpon>Landscape.xml</DependentUpon>
     </Compile>
+    <Compile Include="Records\Major Records\AlphaLayer.cs">
+      <DependentUpon>Landscape.xml</DependentUpon>
+    </Compile>
     <Compile Include="Records\Major Records\AlphaLayer_Generated.cs">
       <DependentUpon>Landscape.xml</DependentUpon>
     </Compile>
