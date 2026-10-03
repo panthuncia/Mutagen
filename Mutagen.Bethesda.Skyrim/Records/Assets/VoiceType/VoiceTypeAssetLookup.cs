@@ -30,7 +30,41 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
     private readonly ConcurrentDictionary<ModKey, VoiceContainer> _defaultSpeakerVoices = new();
     private readonly ConcurrentDictionary<(FormKey Quest, ModKey Mod), VoiceContainer> _questCache = new();
 
+    // While Prep runs (one thread): what each template or leveled NPC, by FormKey, gives its NPCs, worked out from the
+    // winning versions once rather than again for every NPC version reaching it. Null while being worked out: a template
+    // reaching itself gives nothing more. Unused after Prep, when the lookup is read from several threads.
+    private Dictionary<FormKey, HashSet<string>?>? _spawnVoiceTypes;
+    private Dictionary<FormKey, HashSet<FormKey>?>? _spawnFactions;
+    private Dictionary<FormKey, HashSet<FormKey>?>? _spawnClasses;
+
+    private static HashSet<T> Remembered<T>(Dictionary<FormKey, HashSet<T>?>? memo, FormKey key, Func<HashSet<T>> make)
+    {
+        if (memo is null) return make();
+        if (memo.TryGetValue(key, out var known)) return known ?? [];
+        memo[key] = null;
+        var made = make();
+        memo[key] = made;
+        return made;
+    }
+
     public void Prep(IAssetLinkCache linkCache)
+    {
+        _spawnVoiceTypes = new();
+        _spawnFactions = new();
+        _spawnClasses = new();
+        try
+        {
+            PrepLoadOrder(linkCache);
+        }
+        finally
+        {
+            _spawnVoiceTypes = null;
+            _spawnFactions = null;
+            _spawnClasses = null;
+        }
+    }
+
+    private void PrepLoadOrder(IAssetLinkCache linkCache)
     {
         _formLinkCache = linkCache.FormLinkCache;
 
@@ -789,13 +823,16 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
     private VoiceContainer GetDefaultVoices(ModKey mod)
     {
         if (_defaultSpeakerVoices.TryGetValue(mod, out var defaultVoiceTypes)) return defaultVoiceTypes;
-        var vc = new VoiceContainer(_speakerVoices);
-        vc.InvertVoiceTypes(_defaultVoiceTypes[mod]);
+        // Each default voice type standing for all its speakers, rather than listing them (they're the same).
+        var keep = _defaultVoiceTypes[mod];
+        var vc = new VoiceContainer(_speakersByVoiceType.Keys.Where(keep.Contains));
         return _defaultSpeakerVoices.GetOrAdd(mod, vc);
     }
 
     private VoiceContainer Invert(VoiceContainer voiceContainer, bool invertDefaultVoices, ModKey currentMod)
     {
+        // Every voice type standing for all its speakers (rather than a copy of every speaker), made the speakers it
+        // stands for only where some are taken out.
         VoiceContainer baseVoices;
         if (invertDefaultVoices)
         {
@@ -803,10 +840,10 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
         }
         else
         {
-            baseVoices = new VoiceContainer(_speakerVoices);
+            baseVoices = new VoiceContainer(_speakersByVoiceType.Keys);
         }
 
-        baseVoices.Remove(voiceContainer);
+        baseVoices.Remove(voiceContainer, voiceType => _speakersByVoiceType.TryGetValue(voiceType, out var speakers) ? speakers : []);
         return baseVoices;
     }
 
@@ -839,9 +876,11 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
         return new HashSet<string>();
     }
 
-    private HashSet<string> GetVoiceTypes(IFormLinkGetter<INpcSpawnGetter> npcSpawn)
+    private HashSet<string> GetVoiceTypes(IFormLinkGetter<INpcSpawnGetter> npcSpawn) =>
+        npcSpawn.IsNull ? new HashSet<string>() : Remembered(_spawnVoiceTypes, npcSpawn.FormKey, () => SpawnVoiceTypes(npcSpawn));
+
+    private HashSet<string> SpawnVoiceTypes(IFormLinkGetter<INpcSpawnGetter> npcSpawn)
     {
-        if (npcSpawn.IsNull) return new HashSet<string>();
 
         //NPC
         var npc = npcSpawn.TryResolve<INpcGetter>(_formLinkCache);
@@ -891,9 +930,11 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
 
     }
 
-    private HashSet<FormKey> GetFactions(IFormLinkGetter<INpcSpawnGetter> npcTemplate)
+    private HashSet<FormKey> GetFactions(IFormLinkGetter<INpcSpawnGetter> npcTemplate) =>
+        npcTemplate.IsNull ? new HashSet<FormKey>() : Remembered(_spawnFactions, npcTemplate.FormKey, () => SpawnFactions(npcTemplate));
+
+    private HashSet<FormKey> SpawnFactions(IFormLinkGetter<INpcSpawnGetter> npcTemplate)
     {
-        if (npcTemplate.IsNull) return new HashSet<FormKey>();
 
         //NPC
         var npc = npcTemplate.TryResolve<INpcGetter>(_formLinkCache);
@@ -924,9 +965,11 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
 
     }
 
-    private HashSet<FormKey> GetClasses(IFormLinkGetter<INpcSpawnGetter> npcTemplate)
+    private HashSet<FormKey> GetClasses(IFormLinkGetter<INpcSpawnGetter> npcTemplate) =>
+        npcTemplate.IsNull ? new HashSet<FormKey>() : Remembered(_spawnClasses, npcTemplate.FormKey, () => SpawnClasses(npcTemplate));
+
+    private HashSet<FormKey> SpawnClasses(IFormLinkGetter<INpcSpawnGetter> npcTemplate)
     {
-        if (npcTemplate.IsNull) return new HashSet<FormKey>();
 
         //NPC
         var npc = npcTemplate.TryResolve<INpcGetter>(_formLinkCache);
