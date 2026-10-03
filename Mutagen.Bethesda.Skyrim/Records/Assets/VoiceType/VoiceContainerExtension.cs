@@ -4,15 +4,14 @@ public static class VoiceContainerExtension
 {
     public static VoiceContainer MergeInsert(this IEnumerable<VoiceContainer> voiceContainers, bool isDefaultIfEmpty)
     {
-        if (!voiceContainers.Any()) return new VoiceContainer(isDefaultIfEmpty);
-
-        var output = new VoiceContainer();
+        // Enumerated once: the containers are often worked out as they're enumerated.
+        VoiceContainer? output = null;
         foreach (var voiceContainer in voiceContainers)
         {
-            output.Insert(voiceContainer);
+            (output ??= new VoiceContainer()).Insert(voiceContainer);
         }
 
-        return output;
+        return output ?? new VoiceContainer(isDefaultIfEmpty);
     }
 
     public static VoiceContainer MergeIntersect(this IEnumerable<VoiceContainer> voiceContainers)

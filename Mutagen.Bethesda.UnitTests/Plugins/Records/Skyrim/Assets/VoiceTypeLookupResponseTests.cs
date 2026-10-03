@@ -9,7 +9,7 @@ namespace Mutagen.Bethesda.UnitTests.Plugins.Records.Skyrim.Assets;
 /// <summary>
 /// Responses alike (the same speaker, or the same conditions in the same quest and scene) share their voices, worked out
 /// once: each response's are what a lookup asked about it alone works out; on random load orders whose responses take
-/// their conditions from a few sets, some with speakers, in a topic and a scene's topic.
+/// their conditions from a few sets, some with speakers, in a topic and a scene's topic, asked about from several threads.
 /// </summary>
 public class VoiceTypeLookupResponseTests
 {
@@ -24,7 +24,13 @@ public class VoiceTypeLookupResponseTests
         var shared = new VoiceTypeAssetLookup();
         shared.Prep(assets);
 
-        var voices = responses.Select(shared.GetSpeakerVoices).ToList();
+        // Asked from several threads at once, each response twice: alike ones are made once, by one of them.
+        var voices = new VoiceContainer?[responses.Count];
+        Parallel.For(0, 2 * responses.Count, new ParallelOptions { MaxDegreeOfParallelism = 8 }, i =>
+        {
+            var found = shared.GetSpeakerVoices(responses[i % responses.Count]);
+            if (i >= responses.Count) voices[i - responses.Count] = found;
+        });
 
         for (var i = 0; i < responses.Count; i++)
         {
