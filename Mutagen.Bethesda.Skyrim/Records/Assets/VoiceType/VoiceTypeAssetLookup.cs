@@ -421,7 +421,7 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
     /// than listing them where most are a whole voice type, as a response without conditions is (every speaker).
     /// </summary>
     /// <param name="responses">Dialog responses to get speakers for</param>
-    /// <returns>The voices, which may be shared and mustn't be changed; null where the responses have no topic or quest</returns>
+    /// <returns>The voices, frozen and shared by the responses alike; null where the responses have no topic or quest</returns>
     public VoiceContainer? GetSpeakerVoices(IDialogResponsesGetter responses)
     {
         var responsesContext = _formLinkCache.ResolveSimpleContext<IDialogResponsesGetter>(responses.FormKey);
@@ -430,6 +430,10 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
         var quest = topic.Quest.TryResolve(_formLinkCache);
         if (quest == null) return null;
 
+        // Many responses have the same speaker, scene and conditions, in the same quest: their voices are worked out once.
+        var key = ResponseKeyOf(topic, responses, quest);
+        if (_responseCache.TryGetValue(key, out var known)) return known;
+
         //Get quest voices
         var questVoices = GetQuestVoices(topic, quest);
 
@@ -437,7 +441,65 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
         var voiceContainer = GetVoices(topic, responses, quest);
         voiceContainer.IntersectWith(questVoices);
 
-        return voiceContainer.IsDefault ? GetAllDefaultVoices() : voiceContainer;
+        return _responseCache.GetOrAdd(key, voiceContainer.IsDefault ? GetAllDefaultVoices() : voiceContainer.Freeze());
+    }
+
+    /// <summary>
+    /// What a response's voices (<see cref="GetSpeakerVoices"/>) depend on, besides the load order: the plugin of its
+    /// topic, its quest, and its speaker; or, without one, its scene's alias and its conditions (each by what its voices
+    /// depend on, <see cref="ConditionKey"/>, or none for one that doesn't limit them, and whether it's OR'd with the next).
+    /// </summary>
+    private sealed class ResponseKey(ModKey mod, FormKey quest, FormKey speaker, int? sceneAlias, (ConditionKey? Key, bool Or)[] conditions)
+        : IEquatable<ResponseKey>
+    {
+        private readonly int _hash = Hash(mod, quest, speaker, sceneAlias, conditions);
+
+        public bool Equals(ResponseKey? other) =>
+            other is not null && _hash == other._hash && mod == other.Mod && quest == other.Quest && speaker == other.Speaker
+            && sceneAlias == other.SceneAlias && conditions.AsSpan().SequenceEqual(other.Conditions);
+
+        public override bool Equals(object? obj) => Equals(obj as ResponseKey);
+
+        public override int GetHashCode() => _hash;
+
+        private ModKey Mod => mod;
+
+        private FormKey Quest => quest;
+
+        private FormKey Speaker => speaker;
+
+        private int? SceneAlias => sceneAlias;
+
+        private (ConditionKey? Key, bool Or)[] Conditions => conditions;
+
+        private static int Hash(ModKey mod, FormKey quest, FormKey speaker, int? sceneAlias, (ConditionKey? Key, bool Or)[] conditions)
+        {
+            var hash = new HashCode();
+            hash.Add(mod);
+            hash.Add(quest);
+            hash.Add(speaker);
+            hash.Add(sceneAlias);
+            foreach (var condition in conditions) hash.Add(condition);
+            return hash.ToHashCode();
+        }
+    }
+
+    private readonly ConcurrentDictionary<ResponseKey, VoiceContainer> _responseCache = new();
+
+    private ResponseKey ResponseKeyOf(IDialogTopicGetter topic, IDialogResponsesGetter response, IQuestGetter quest)
+    {
+        var mod = topic.FormKey.ModKey;
+        // As GetVoices(topic, response, quest) works them out.
+        if (!response.Speaker.IsNull) return new ResponseKey(mod, quest.FormKey, response.Speaker.FormKey, null, []);
+        int? sceneAlias = topic.Category == DialogTopic.CategoryEnum.Scene && _dialogueSceneAliasIndex.TryGetValue(topic.FormKey, out var aliasIndex) ? aliasIndex : null;
+        var conditions = response.Conditions;
+        var keys = new (ConditionKey?, bool)[conditions.Count];
+        for (var i = 0; i < keys.Length; i++)
+        {
+            var condition = conditions[i];
+            keys[i] = (TryKey(condition, quest, mod, out var key, out _) ? key : null, (condition.Flags & Condition.Flag.OR) != 0);
+        }
+        return new ResponseKey(mod, quest.FormKey, FormKey.Null, sceneAlias, keys);
     }
 
     /// <summary>Every voice type a speaker has.</summary>
@@ -632,12 +694,21 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
     /// <summary>A condition's voices, frozen: made once for all the conditions alike, and shared.</summary>
     private VoiceContainer GetVoices(IConditionGetter condition, IQuestGetter quest, ModKey currentMod)
     {
+        if (!TryKey(condition, quest, currentMod, out var key, out var valid)) return new VoiceContainer(true);
+        if (_conditionCache.TryGetValue(key, out var made)) return made;
+        return _conditionCache.GetOrAdd(key, MakeVoices(condition, quest, currentMod, valid).Freeze());
+    }
+
+    /// <summary>What a condition's voices depend on; false for a condition that doesn't limit them (its voices are the default).</summary>
+    private bool TryKey(IConditionGetter condition, IQuestGetter quest, ModKey currentMod, out ConditionKey key, out bool valid)
+    {
         var data = condition.Data;
+        key = default;
+        valid = false;
 
-        if (data.RunOnType != Condition.RunOnType.Subject) return new VoiceContainer(true);
+        if (data.RunOnType != Condition.RunOnType.Subject) return false;
 
-        var valid = IsConditionValid(condition);
-        ConditionKey key;
+        valid = IsConditionValid(condition);
         switch (data)
         {
             case IGetIsIDConditionDataGetter getIsId:
@@ -672,11 +743,9 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
                 key = new(data.Function, FormKey.Null, 0, valid, FormKey.Null, ModKey.Null);
                 break;
             default:
-                return new VoiceContainer(true);
+                return false;
         }
-
-        if (_conditionCache.TryGetValue(key, out var made)) return made;
-        return _conditionCache.GetOrAdd(key, MakeVoices(condition, quest, currentMod, valid).Freeze());
+        return true;
     }
 
     private VoiceContainer MakeVoices(IConditionGetter condition, IQuestGetter quest, ModKey currentMod, bool valid)

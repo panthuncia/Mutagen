@@ -68,7 +68,8 @@ public class VoiceTypeLookupPreparationTests
         return text.ToString();
     }
 
-    internal static (ILinkCache LinkCache, IReadOnlyList<IDialogResponsesGetter> Responses, IReadOnlyList<FormKey> Speakers) LoadOrder(Random random)
+    internal static (ILinkCache LinkCache, IReadOnlyList<IDialogResponsesGetter> Responses, IReadOnlyList<FormKey> Speakers) LoadOrder(Random random,
+        int conditionPool = 0, int responseCount = 24)
     {
         var mods = Enumerable.Range(0, 4).Select(i => new SkyrimMod(ModKey.FromFileName($"Mod{i}.esp"), SkyrimRelease.SkyrimSE)).ToArray();
         var voiceTypes = new List<VoiceType>();
@@ -169,20 +170,38 @@ public class VoiceTypeLookupPreparationTests
             new GetIsIDConditionData { RunOnType = Condition.RunOnType.Subject }.Also(d => d.Object.Link.SetTo(Pick(npcs))),
             new GetIsVoiceTypeConditionData { RunOnType = Condition.RunOnType.Subject }.Also(d => d.VoiceTypeOrList.Link.SetTo(Pick(voiceTypes))),
         ];
-        for (var i = 0; i < 24; i++)
+        List<ConditionFloat> SomeConditions() =>
+        [
+            .. Conditions().Where(_ => random.Next(3) == 0).Select(data => new ConditionFloat
+            {
+                Data = data,
+                CompareOperator = random.Next(4) == 0 ? CompareOperator.NotEqualTo : CompareOperator.EqualTo,
+                ComparisonValue = 1,
+                Flags = random.Next(4) == 0 ? Condition.Flag.OR : 0,
+            }),
+        ];
+        // With a pool, responses take their conditions from it (copies of them), and some have a speaker: many are alike.
+        var pool = Enumerable.Range(0, conditionPool).Select(_ => SomeConditions()).ToList();
+        // Each with a twin whose conditions are OR'd where its aren't, and not where they are: alike but for that.
+        pool.AddRange([.. pool.Select(conditions => conditions.Select(c => (ConditionFloat)c.DeepCopy()).Select(c =>
+        {
+            c.Flags ^= Condition.Flag.OR;
+            return c;
+        }).ToList())]);
+        var topics = new[] { topic, last.DialogTopics.AddNew("SceneTopic") };
+        topics[1].Quest.SetTo(quest);
+        topics[1].Category = DialogTopic.CategoryEnum.Scene;
+        quest.Aliases.Add(new QuestAlias { ID = 3, UniqueActor = Pick(npcs).ToNullableLink() });
+        var scene = last.Scenes.AddNew("Scene");
+        scene.Actions.Add(new SceneAction { Type = SceneAction.TypeEnum.Dialog, Topic = topics[1].ToNullableLink<IDialogTopicGetter>(), ActorID = 3 });
+        for (var i = 0; i < responseCount; i++)
         {
             var response = new DialogResponses(last) { EditorID = $"Response{i}" };
             response.Responses.Add(new DialogResponse());
-            foreach (var data in Conditions().Where(_ => random.Next(3) == 0))
-            {
-                response.Conditions.Add(new ConditionFloat
-                {
-                    Data = data,
-                    CompareOperator = random.Next(4) == 0 ? CompareOperator.NotEqualTo : CompareOperator.EqualTo,
-                    ComparisonValue = 1,
-                });
-            }
-            topic.Responses.Add(response);
+            var conditions = pool.Count > 0 ? pool[random.Next(pool.Count)].Select(c => (ConditionFloat)c.DeepCopy()) : SomeConditions();
+            response.Conditions.AddRange(conditions);
+            if (pool.Count > 0 && random.Next(6) == 0) response.Speaker.SetTo(Pick(npcs));
+            topics[pool.Count > 0 ? random.Next(2) : 0].Responses.Add(response);
             responses.Add(response);
         }
 
