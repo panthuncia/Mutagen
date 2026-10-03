@@ -28,7 +28,26 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
     // Filled as asked, from several threads at once: a container is worked out without a lock (two threads asking at once
     // both work it out, and one is kept), and only read once it's in.
     private readonly ConcurrentDictionary<ModKey, VoiceContainer> _defaultSpeakerVoices = new();
-    private readonly ConcurrentDictionary<(FormKey Quest, ModKey Mod), VoiceContainer> _questCache = new();
+    private readonly Made<(FormKey Quest, ModKey Mod)> _questCache = new();
+
+    /// <summary>
+    /// Voices made once for each key, and shared: a thread asking for one another is making waits for it rather than
+    /// making it too, as every thread asks for the same few at first (the conditions most responses have).
+    /// </summary>
+    private sealed class Made<TKey>
+        where TKey : notnull
+    {
+        private readonly ConcurrentDictionary<TKey, Lazy<VoiceContainer>> _made = new();
+
+        public bool TryGet(TKey key, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out VoiceContainer voices)
+        {
+            voices = _made.TryGetValue(key, out var made) && made.IsValueCreated ? made.Value : null;
+            return voices is not null;
+        }
+
+        public VoiceContainer Get(TKey key, Func<VoiceContainer> make) =>
+            (_made.TryGetValue(key, out var made) ? made : _made.GetOrAdd(key, new Lazy<VoiceContainer>(make, LazyThreadSafetyMode.ExecutionAndPublication))).Value;
+    }
 
     // While Prep runs: what each template or leveled NPC, by FormKey, gives its NPCs, worked out from the winning versions
     // once rather than again for every NPC version reaching it. Unused after Prep.
@@ -432,16 +451,18 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
 
         // Many responses have the same speaker, scene and conditions, in the same quest: their voices are worked out once.
         var key = ResponseKeyOf(topic, responses, quest);
-        if (_responseCache.TryGetValue(key, out var known)) return known;
+        if (_responseCache.TryGet(key, out var known)) return known;
+        return _responseCache.Get(key, () =>
+        {
+            //Get quest voices
+            var questVoices = GetQuestVoices(topic, quest);
 
-        //Get quest voices
-        var questVoices = GetQuestVoices(topic, quest);
+            //If we have selected default voices, make sure the quest voices are being checked first - they might not be part of default voices
+            var voiceContainer = GetVoices(topic, responses, quest);
+            voiceContainer.IntersectWith(questVoices);
 
-        //If we have selected default voices, make sure the quest voices are being checked first - they might not be part of default voices
-        var voiceContainer = GetVoices(topic, responses, quest);
-        voiceContainer.IntersectWith(questVoices);
-
-        return _responseCache.GetOrAdd(key, voiceContainer.IsDefault ? GetAllDefaultVoices() : voiceContainer.Freeze());
+            return voiceContainer.IsDefault ? GetAllDefaultVoices() : voiceContainer.Freeze();
+        });
     }
 
     /// <summary>
@@ -484,7 +505,7 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
         }
     }
 
-    private readonly ConcurrentDictionary<ResponseKey, VoiceContainer> _responseCache = new();
+    private readonly Made<ResponseKey> _responseCache = new();
 
     private ResponseKey ResponseKeyOf(IDialogTopicGetter topic, IDialogResponsesGetter response, IQuestGetter quest)
     {
@@ -593,8 +614,8 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
         // A quest's voices depend on the plugin of the topic asked about (its default voice types), so they're kept for
         // each quest and plugin.
         var key = (quest.FormKey, topic.FormKey.ModKey);
-        if (_questCache.TryGetValue(key, out var questVoices)) return questVoices;
-        return _questCache.GetOrAdd(key, GetVoices(quest, topic.FormKey.ModKey).Freeze());
+        if (_questCache.TryGet(key, out var questVoices)) return questVoices;
+        return _questCache.Get(key, () => GetVoices(quest, topic.FormKey.ModKey).Freeze());
     }
 
     private static (string questString, string topicString) GetQuestAndTopicStrings(IDialogTopicGetter topic, IQuestGetter quest)
@@ -689,14 +710,14 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
     /// <summary>What a condition's voices depend on, besides the load order: a condition's voices are made once for each.</summary>
     private readonly record struct ConditionKey(Condition.Function Function, FormKey Link, int Number, bool Valid, FormKey Quest, ModKey Mod);
 
-    private readonly ConcurrentDictionary<ConditionKey, VoiceContainer> _conditionCache = new();
+    private readonly Made<ConditionKey> _conditionCache = new();
 
     /// <summary>A condition's voices, frozen: made once for all the conditions alike, and shared.</summary>
     private VoiceContainer GetVoices(IConditionGetter condition, IQuestGetter quest, ModKey currentMod)
     {
         if (!TryKey(condition, quest, currentMod, out var key, out var valid)) return new VoiceContainer(true);
-        if (_conditionCache.TryGetValue(key, out var made)) return made;
-        return _conditionCache.GetOrAdd(key, MakeVoices(condition, quest, currentMod, valid).Freeze());
+        if (_conditionCache.TryGet(key, out var made)) return made;
+        return _conditionCache.Get(key, () => MakeVoices(condition, quest, currentMod, valid).Freeze());
     }
 
     /// <summary>What a condition's voices depend on; false for a condition that doesn't limit them (its voices are the default).</summary>
@@ -1047,15 +1068,11 @@ public class VoiceTypeAssetLookup : IAssetCacheComponent
 
     private VoiceContainer GetVoices(IQuestGetter quest, ModKey currentMod) => GetVoices(quest.DialogConditions, quest, currentMod);
 
-    // Only read once made: made by the first to ask (two at once both make it, and one is kept).
-    private VoiceContainer? _allDefaultVoices;
+    // Made by the first to ask, once Prep is done; others asking meanwhile wait for it.
+    private readonly Made<bool> _allDefaultVoices = new();
 
-    private VoiceContainer GetAllDefaultVoices()
-    {
-        if (Volatile.Read(ref _allDefaultVoices) is { } made) return made;
-        var allDefaultVoices = MakeAllDefaultVoices().Freeze();
-        return Interlocked.CompareExchange(ref _allDefaultVoices, allDefaultVoices, null) ?? allDefaultVoices;
-    }
+    private VoiceContainer GetAllDefaultVoices() =>
+        _allDefaultVoices.TryGet(true, out var made) ? made : _allDefaultVoices.Get(true, () => MakeAllDefaultVoices().Freeze());
 
     private VoiceContainer MakeAllDefaultVoices()
     {
