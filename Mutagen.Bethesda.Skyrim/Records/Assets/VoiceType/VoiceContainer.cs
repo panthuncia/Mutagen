@@ -211,6 +211,51 @@ public class VoiceContainer : ICloneable, IEquatable<VoiceContainer>
 
         IsDefault = false;
     }
+
+    /// <summary>
+    /// As <see cref="Remove(VoiceContainer)"/>, for a container whose voice types may stand for all their speakers (an
+    /// empty set): one of those losing some of its speakers is first made the speakers it stands for.
+    /// </summary>
+    public void Remove(VoiceContainer other, Func<string, IEnumerable<FormKey>> speakersOfVoiceType)
+    {
+        if (other.IsEmpty()) return;
+
+        var removeVoiceTypes = new HashSet<string>();
+        List<(string VoiceType, HashSet<FormKey> Npcs)>? made = null;
+
+        foreach (var (voiceType, npcs) in _voices)
+        {
+            if (!other._voices.TryGetValue(voiceType, out var otherNpcs)) continue;
+            if (otherNpcs.Count == 0)
+            {
+                //Other covers whole voice type => remove it
+                removeVoiceTypes.Add(voiceType);
+                continue;
+            }
+
+            var kept = npcs.Count == 0 ? new HashSet<FormKey>(speakersOfVoiceType(voiceType)) : npcs;
+            foreach (var otherNpc in otherNpcs)
+            {
+                kept.Remove(otherNpc);
+            }
+
+            //If all npcs are gone, remove the voice type
+            if (kept.Count == 0) removeVoiceTypes.Add(voiceType);
+            else if (!ReferenceEquals(kept, npcs)) (made ??= []).Add((voiceType, kept));
+        }
+
+        foreach (var (voiceType, npcs) in made ?? [])
+        {
+            _voices[voiceType] = npcs;
+        }
+
+        foreach (var removeVoiceType in removeVoiceTypes)
+        {
+            _voices.Remove(removeVoiceType);
+        }
+
+        IsDefault = false;
+    }
     #endregion
 
     public HashSet<string> GetVoiceTypes(HashSet<string> defaultVoiceTypes)
