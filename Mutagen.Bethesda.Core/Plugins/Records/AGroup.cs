@@ -19,6 +19,9 @@ namespace Mutagen.Bethesda.Plugins.Records;
 public abstract class AGroup<TMajor> : IEnumerable<TMajor>, IGroup<TMajor>
     where TMajor : class, IMajorRecordInternal
 {
+    private ModKey? _observationPlugin;
+    private T Observed<T>(T value, string kind = "scope") { if (_observationPlugin is { } plugin) ReadObservation.Report(kind, plugin, _registration.GetterType.Name); return value; }
+    private void ObservedKey(FormKey key) { if (_observationPlugin is { } plugin) ReadObservation.Report("record", plugin, key.ToString()); }
     private static readonly ILoquiRegistration _registration = LoquiRegistration.GetRegister(typeof(TMajor));
         
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -30,7 +33,7 @@ public abstract class AGroup<TMajor> : IEnumerable<TMajor>, IGroup<TMajor>
     /// <summary>
     /// An enumerable of all the records contained by the group.
     /// </summary>
-    public IEnumerable<TMajor> Records => ProtectedCache.Items;
+    public IEnumerable<TMajor> Records => Observed(ProtectedCache.Items);
 
     IEnumerable<IMajorRecordGetter> IGroupGetter.Records => Records;
     IEnumerable<ILoquiObject> IGroupCommonGetter.Records => Records;
@@ -40,7 +43,7 @@ public abstract class AGroup<TMajor> : IEnumerable<TMajor>, IGroup<TMajor>
     /// <summary>
     /// Number of records contained in the group.
     /// </summary>
-    public int Count => ProtectedCache.Count;
+    public int Count => Observed(ProtectedCache.Count);
 
     /// <summary>
     /// The parent Mod object associated with the group.
@@ -48,18 +51,18 @@ public abstract class AGroup<TMajor> : IEnumerable<TMajor>, IGroup<TMajor>
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     public IMod SourceMod { get; private set; }
 
-    IReadOnlyCache<TMajor, FormKey> IGroupGetter<TMajor>.RecordCache => InternalCache;
+    IReadOnlyCache<TMajor, FormKey> IGroupGetter<TMajor>.RecordCache => Observed(InternalCache, "plugin");
 
     /// <inheritdoc />
-    public ICache<TMajor, FormKey> RecordCache => InternalCache;
+    public ICache<TMajor, FormKey> RecordCache => Observed(InternalCache, "plugin");
 
     IReadOnlyCache<IMajorRecordGetter, FormKey> IGroupGetter.RecordCache => RecordCache;
 
     /// <inheritdoc />
-    public IEnumerable<FormKey> FormKeys => InternalCache.Keys;
+    public IEnumerable<FormKey> FormKeys => Observed(InternalCache.Keys);
 
     /// <inheritdoc />
-    public TMajor this[FormKey key] => InternalCache[key];
+    public TMajor this[FormKey key] { get { ObservedKey(key); return InternalCache[key]; } }
 
     IMajorRecordGetter IGroupGetter.this[FormKey key] => this[key];
 
@@ -72,6 +75,7 @@ public abstract class AGroup<TMajor> : IEnumerable<TMajor>, IGroup<TMajor>
 
     protected AGroup(IModGetter getter)
     {
+        _observationPlugin = getter.ModKey;
         SourceMod = null!;
     }
 
@@ -95,12 +99,13 @@ public abstract class AGroup<TMajor> : IEnumerable<TMajor>, IGroup<TMajor>
     /// <inheritdoc />
     public IEnumerator<TMajor> GetEnumerator()
     {
-        return InternalCache.Items.GetEnumerator();
+        return Records.GetEnumerator();
     }
 
     /// <inheritdoc />
     IEnumerator IEnumerable.GetEnumerator()
     {
+        Observed(InternalCache.Count);
         return InternalCache.GetEnumerator();
     }
 
@@ -154,7 +159,7 @@ public abstract class AGroup<TMajor> : IEnumerable<TMajor>, IGroup<TMajor>
     public void Clear() => InternalCache.Clear();
 
     /// <inheritdoc />
-    public bool ContainsKey(FormKey key) => InternalCache.ContainsKey(key);
+    public bool ContainsKey(FormKey key) { ObservedKey(key); return InternalCache.ContainsKey(key); }
 
     public ILoquiRegistration ContainedRecordRegistration => _registration;
 
