@@ -49,6 +49,8 @@ internal sealed class InternalImmutableModLinkCache
     [Obsolete("This call is not as optimized as its generic typed counterpart.  Use as a last resort.")]
     public bool TryResolve(FormKey formKey, [MaybeNullWhen(false)] out IMajorRecordGetter majorRec, ResolveTarget target = ResolveTarget.Winner)
     {
+        ReadObservation.Report("record", _sourceMod.ModKey, formKey.ToString());
+        using var observationScope = ReadObservation.Suspend();
         if (formKey.IsNull)
         {
             majorRec = default;
@@ -74,6 +76,8 @@ internal sealed class InternalImmutableModLinkCache
     [Obsolete("This call is not as optimized as its generic typed counterpart.  Use as a last resort.")]
     public bool TryResolve(string editorId, [MaybeNullWhen(false)] out IMajorRecordGetter majorRec)
     {
+        ReadObservation.Report("plugin", _sourceMod.ModKey, "");
+        using var observationScope = ReadObservation.Suspend();
         if (string.IsNullOrWhiteSpace(editorId))
         {
             majorRec = default;
@@ -91,6 +95,8 @@ internal sealed class InternalImmutableModLinkCache
     public bool TryResolve<TMajor>(FormKey formKey, [MaybeNullWhen(false)] out TMajor majorRec, ResolveTarget target = ResolveTarget.Winner)
         where TMajor : class, IMajorRecordQueryableGetter
     {
+        ReadObservation.Report("record", _sourceMod.ModKey, formKey.ToString());
+        using var observationScope = ReadObservation.Suspend();
         if (target == ResolveTarget.Origin
             && formKey.ModKey != _sourceMod.ModKey)
         {
@@ -110,6 +116,8 @@ internal sealed class InternalImmutableModLinkCache
     public bool TryResolve<TMajor>(string editorId, [MaybeNullWhen(false)] out TMajor majorRec)
         where TMajor : class, IMajorRecordQueryableGetter
     {
+        ReadObservation.Report("plugin", _sourceMod.ModKey, "");
+        using var observationScope = ReadObservation.Suspend();
         if (_editorIdCache.TryResolve(editorId, typeof(TMajor), out var item))
         {
             majorRec = item.Record as TMajor;
@@ -121,6 +129,8 @@ internal sealed class InternalImmutableModLinkCache
 
     public bool TryResolve(FormKey formKey, Type type, [MaybeNullWhen(false)] out IMajorRecordGetter majorRec, ResolveTarget target = ResolveTarget.Winner)
     {
+        ReadObservation.Report("record", _sourceMod.ModKey, formKey.ToString());
+        using var observationScope = ReadObservation.Suspend();
         if (target == ResolveTarget.Origin
             && formKey.ModKey != _sourceMod.ModKey)
         {
@@ -139,6 +149,8 @@ internal sealed class InternalImmutableModLinkCache
 
     public bool TryResolve(string editorId, Type type, [MaybeNullWhen(false)] out IMajorRecordGetter majorRec)
     {
+        ReadObservation.Report("plugin", _sourceMod.ModKey, "");
+        using var observationScope = ReadObservation.Suspend();
         if (_editorIdCache.TryResolve(editorId, type, out var item))
         {
             majorRec = item.Record;
@@ -151,6 +163,8 @@ internal sealed class InternalImmutableModLinkCache
     [Obsolete("This call is not as optimized as its generic typed counterpart.  Use as a last resort.")]
     public IMajorRecordGetter Resolve(FormKey formKey, ResolveTarget target = ResolveTarget.Winner)
     {
+        ReadObservation.Report("record", _sourceMod.ModKey, formKey.ToString());
+        using var observationScope = ReadObservation.Suspend();
         if (TryResolve<IMajorRecordGetter>(formKey, out var majorRec, target)) return majorRec;
         throw new MissingRecordException(formKey, typeof(IMajorRecordGetter));
     }
@@ -158,18 +172,24 @@ internal sealed class InternalImmutableModLinkCache
     [Obsolete("This call is not as optimized as its generic typed counterpart.  Use as a last resort.")]
     public IMajorRecordGetter Resolve(string editorId)
     {
+        ReadObservation.Report("plugin", _sourceMod.ModKey, "");
+        using var observationScope = ReadObservation.Suspend();
         if (TryResolve<IMajorRecordGetter>(editorId, out var majorRec)) return majorRec;
         throw new MissingRecordException(editorId, typeof(IMajorRecordGetter));
     }
 
     public IMajorRecordGetter Resolve(FormKey formKey, Type type, ResolveTarget target = ResolveTarget.Winner)
     {
+        ReadObservation.Report("record", _sourceMod.ModKey, formKey.ToString());
+        using var observationScope = ReadObservation.Suspend();
         if (TryResolve(formKey, type, out var commonRec, target)) return commonRec;
         throw new MissingRecordException(formKey, type);
     }
 
     public IMajorRecordGetter Resolve(string editorId, Type type)
     {
+        ReadObservation.Report("plugin", _sourceMod.ModKey, "");
+        using var observationScope = ReadObservation.Suspend();
         if (TryResolve(editorId, type, out var commonRec)) return commonRec;
         throw new MissingRecordException(editorId, type);
     }
@@ -177,6 +197,8 @@ internal sealed class InternalImmutableModLinkCache
     public TMajor Resolve<TMajor>(FormKey formKey, ResolveTarget target = ResolveTarget.Winner)
         where TMajor : class, IMajorRecordQueryableGetter
     {
+        ReadObservation.Report("record", _sourceMod.ModKey, formKey.ToString());
+        using var observationScope = ReadObservation.Suspend();
         if (TryResolve<TMajor>(formKey, out var commonRec, target)) return commonRec;
         throw new MissingRecordException(formKey, typeof(TMajor));
     }
@@ -184,6 +206,8 @@ internal sealed class InternalImmutableModLinkCache
     public TMajor Resolve<TMajor>(string editorId)
         where TMajor : class, IMajorRecordQueryableGetter
     {
+        ReadObservation.Report("plugin", _sourceMod.ModKey, "");
+        using var observationScope = ReadObservation.Suspend();
         if (TryResolve<TMajor>(editorId, out var commonRec)) return commonRec;
         throw new MissingRecordException(editorId, typeof(TMajor));
     }
@@ -191,6 +215,8 @@ internal sealed class InternalImmutableModLinkCache
     public IEnumerable<TMajor> ResolveAll<TMajor>(FormKey formKey, ResolveTarget target = ResolveTarget.Winner)
         where TMajor : class, IMajorRecordQueryableGetter
     {
+        ReadObservation.Report("record", _sourceMod.ModKey, formKey.ToString());
+        using var observationScope = ReadObservation.Suspend();
         if (TryResolve<TMajor>(formKey, out var rec, target))
         {
             yield return rec;
@@ -199,6 +225,8 @@ internal sealed class InternalImmutableModLinkCache
 
     public IEnumerable<IMajorRecordGetter> ResolveAll(FormKey formKey, Type type, ResolveTarget target = ResolveTarget.Winner)
     {
+        ReadObservation.Report("record", _sourceMod.ModKey, formKey.ToString());
+        using var observationScope = ReadObservation.Suspend();
         if (TryResolve(formKey, type, out var rec, target))
         {
             yield return rec;
@@ -208,6 +236,8 @@ internal sealed class InternalImmutableModLinkCache
     [Obsolete("This call is not as optimized as its generic typed counterpart.  Use as a last resort.")]
     public IEnumerable<IMajorRecordGetter> ResolveAll(FormKey formKey, ResolveTarget target = ResolveTarget.Winner)
     {
+        ReadObservation.Report("record", _sourceMod.ModKey, formKey.ToString());
+        using var observationScope = ReadObservation.Suspend();
         if (TryResolve(formKey, out var rec, target))
         {
             yield return rec;
@@ -221,11 +251,15 @@ internal sealed class InternalImmutableModLinkCache
 
     public bool TryResolve(string editorId, [MaybeNullWhen(false)] out IMajorRecordGetter majorRec, [MaybeNullWhen(false)] out Type matchedType, params Type[] types)
     {
+        ReadObservation.Report("plugin", _sourceMod.ModKey, "");
+        using var observationScope = ReadObservation.Suspend();
         return TryResolve(editorId, (IEnumerable<Type>)types, out majorRec, out matchedType);
     }
 
     public bool TryResolve(FormKey formKey, IEnumerable<Type> types, [MaybeNullWhen(false)] out IMajorRecordGetter majorRec, [MaybeNullWhen(false)] out Type matchedType, ResolveTarget target = ResolveTarget.Winner)
     {
+        ReadObservation.Report("record", _sourceMod.ModKey, formKey.ToString());
+        using var observationScope = ReadObservation.Suspend();
         if (target == ResolveTarget.Origin
             && formKey.ModKey != _sourceMod.ModKey)
         {
@@ -250,6 +284,8 @@ internal sealed class InternalImmutableModLinkCache
 
     public bool TryResolve(string editorId, IEnumerable<Type> types, [MaybeNullWhen(false)] out IMajorRecordGetter majorRec, [MaybeNullWhen(false)] out Type matchedType)
     {
+        ReadObservation.Report("plugin", _sourceMod.ModKey, "");
+        using var observationScope = ReadObservation.Suspend();
         foreach (var type in types)
         {
             if (TryResolve(editorId, type, out majorRec))
@@ -271,11 +307,15 @@ internal sealed class InternalImmutableModLinkCache
 
     public IMajorRecordGetter Resolve(string editorId, [MaybeNullWhen(false)] out Type matchedType, params Type[] types)
     {
+        ReadObservation.Report("plugin", _sourceMod.ModKey, "");
+        using var observationScope = ReadObservation.Suspend();
         return Resolve(editorId, (IEnumerable<Type>)types, out matchedType);
     }
 
     public IMajorRecordGetter Resolve(FormKey formKey, IEnumerable<Type> types, [MaybeNullWhen(false)] out Type matchedType, ResolveTarget target = ResolveTarget.Winner)
     {
+        ReadObservation.Report("record", _sourceMod.ModKey, formKey.ToString());
+        using var observationScope = ReadObservation.Suspend();
         var typesArr = types.ToArray();
         if (TryResolve(formKey, typesArr, out var commonRec, out matchedType!, target)) return commonRec!;
         throw new MissingRecordException(formKey, typesArr);
@@ -283,6 +323,8 @@ internal sealed class InternalImmutableModLinkCache
 
     public IMajorRecordGetter Resolve(string editorId, IEnumerable<Type> types, [MaybeNullWhen(false)] out Type matchedType)
     {
+        ReadObservation.Report("plugin", _sourceMod.ModKey, "");
+        using var observationScope = ReadObservation.Suspend();
         var typesArr = types.ToArray();
         if (TryResolve(editorId, typesArr, out var commonRec, out matchedType!)) return commonRec!;
         throw new MissingRecordException(editorId, typesArr);
@@ -290,6 +332,8 @@ internal sealed class InternalImmutableModLinkCache
 
     public bool TryResolveIdentifier(FormKey formKey, [MaybeNullWhen(false)] out string? editorId, ResolveTarget target = ResolveTarget.Winner)
     {
+        ReadObservation.Report("record", _sourceMod.ModKey, formKey.ToString());
+        using var observationScope = ReadObservation.Suspend();
         if (formKey.IsNull)
         {
             editorId = default;
@@ -314,6 +358,8 @@ internal sealed class InternalImmutableModLinkCache
 
     public bool TryResolveIdentifier(string editorId, [MaybeNullWhen(false)] out FormKey formKey)
     {
+        ReadObservation.Report("plugin", _sourceMod.ModKey, "");
+        using var observationScope = ReadObservation.Suspend();
         if (string.IsNullOrWhiteSpace(editorId))
         {
             formKey = default;
@@ -330,6 +376,8 @@ internal sealed class InternalImmutableModLinkCache
 
     public bool TryResolveIdentifier(FormKey formKey, Type type, [MaybeNullWhen(false)] out string? editorId, ResolveTarget target = ResolveTarget.Winner)
     {
+        ReadObservation.Report("record", _sourceMod.ModKey, formKey.ToString());
+        using var observationScope = ReadObservation.Suspend();
         if (target == ResolveTarget.Origin
             && formKey.ModKey != _sourceMod.ModKey)
         {
@@ -348,6 +396,8 @@ internal sealed class InternalImmutableModLinkCache
 
     public bool TryResolveIdentifier(string editorId, Type type, [MaybeNullWhen(false)] out FormKey formKey)
     {
+        ReadObservation.Report("plugin", _sourceMod.ModKey, "");
+        using var observationScope = ReadObservation.Suspend();
         if (_editorIdCache.TryResolve(editorId, type, out var item))
         {
             formKey = item.FormKey;
@@ -360,6 +410,8 @@ internal sealed class InternalImmutableModLinkCache
     public bool TryResolveIdentifier<TMajor>(FormKey formKey, out string? editorId, ResolveTarget target = ResolveTarget.Winner)
         where TMajor : class, IMajorRecordQueryableGetter
     {
+        ReadObservation.Report("record", _sourceMod.ModKey, formKey.ToString());
+        using var observationScope = ReadObservation.Suspend();
         if (target == ResolveTarget.Origin
             && formKey.ModKey != _sourceMod.ModKey)
         {
@@ -379,6 +431,8 @@ internal sealed class InternalImmutableModLinkCache
     public bool TryResolveIdentifier<TMajor>(string editorId, out FormKey formKey)
         where TMajor : class, IMajorRecordQueryableGetter
     {
+        ReadObservation.Report("plugin", _sourceMod.ModKey, "");
+        using var observationScope = ReadObservation.Suspend();
         if (_editorIdCache.TryResolve(editorId, typeof(TMajor), out var item))
         {
             formKey = item.FormKey;
@@ -395,11 +449,15 @@ internal sealed class InternalImmutableModLinkCache
 
     public bool TryResolveIdentifier(string editorId, [MaybeNullWhen(false)] out FormKey formKey, [MaybeNullWhen(false)] out Type matchedType, params Type[] types)
     {
+        ReadObservation.Report("plugin", _sourceMod.ModKey, "");
+        using var observationScope = ReadObservation.Suspend();
         return TryResolveIdentifier(editorId, (IEnumerable<Type>)types, out formKey, out matchedType);
     }
 
     public bool TryResolveIdentifier(FormKey formKey, IEnumerable<Type> types, [MaybeNullWhen(false)] out string? editorId, [MaybeNullWhen(false)] out Type matchedType, ResolveTarget target = ResolveTarget.Winner)
     {
+        ReadObservation.Report("record", _sourceMod.ModKey, formKey.ToString());
+        using var observationScope = ReadObservation.Suspend();
         if (target == ResolveTarget.Origin
             && formKey.ModKey != _sourceMod.ModKey)
         {
@@ -424,6 +482,8 @@ internal sealed class InternalImmutableModLinkCache
 
     public bool TryResolveIdentifier(string editorId, IEnumerable<Type> types, [MaybeNullWhen(false)] out FormKey formKey, [MaybeNullWhen(false)] out Type matchedType)
     {
+        ReadObservation.Report("plugin", _sourceMod.ModKey, "");
+        using var observationScope = ReadObservation.Suspend();
         foreach (var type in types)
         {
             if (TryResolveIdentifier(editorId, type, out formKey))

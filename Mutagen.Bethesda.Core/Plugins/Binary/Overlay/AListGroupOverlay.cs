@@ -18,9 +18,9 @@ internal sealed class GroupListOverlay<T> : IReadOnlyList<T>
     private readonly ReadOnlyMemorySlice<byte> _data;
     private readonly BinaryOverlayFactoryPackage _package;
 
-    public int Count => _locs.Count;
+    public int Count { get { ReadObservation.Report("scope", _package.MetaData.ModKey, typeof(T).Name); return _locs.Count; } }
 
-    public T this[int index] => ConstructWrapper(_locs[index]);
+    public T this[int index] { get { ReadObservation.Report("scope", _package.MetaData.ModKey, typeof(T).Name); return ConstructWrapper(_locs[index]); } }
 
     public GroupListOverlay(
         IReadOnlyList<int> locs,
@@ -86,6 +86,7 @@ internal sealed class GroupListOverlay<T> : IReadOnlyList<T>
 
     public IEnumerator<T> GetEnumerator()
     {
+        ReadObservation.Report("scope", _package.MetaData.ModKey, typeof(T).Name);
         foreach (var loc in _locs)
         {
             yield return ConstructWrapper(loc);

@@ -115,6 +115,7 @@ internal abstract class PluginBinaryOverlay : ILoquiObject
     /// </summary>
     protected internal void EnsureFilled()
     {
+        ReadObservation.Record(_package.MetaData.ModKey, this);
         var deferred = Volatile.Read(ref _deferred);
         if (deferred is null) return;
         deferred.Failure?.Throw();

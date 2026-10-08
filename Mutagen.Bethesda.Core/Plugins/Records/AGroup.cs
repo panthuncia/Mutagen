@@ -360,15 +360,16 @@ internal abstract class AGroupBinaryOverlay<TMajor> : PluginBinaryOverlay, IGrou
     protected IReadOnlyCache<TMajor, FormKey> _recordCache = null!;
     private static readonly ILoquiRegistration _registration = LoquiRegistration.GetRegister(typeof(TMajor));
 
-    public TMajor this[FormKey key] => _recordCache[key];
-    IMajorRecordGetter IGroupGetter.this[FormKey key] => _recordCache[key];
-    public IReadOnlyCache<TMajor, FormKey> RecordCache => _recordCache;
+    public TMajor this[FormKey key] { get { ReadObservation.Report("record", _package.MetaData.ModKey, key.ToString()); return _recordCache[key]; } }
+    IMajorRecordGetter IGroupGetter.this[FormKey key] => this[key];
+    private T Observed<T>(T value, string kind = "scope") { ReadObservation.Report(kind, _package.MetaData.ModKey, typeof(TMajor).Name); return value; }
+    public IReadOnlyCache<TMajor, FormKey> RecordCache => Observed(_recordCache, "plugin");
     public IMod SourceMod => throw new NotImplementedException();
-    public IEnumerable<TMajor> Records => RecordCache.Items;
-    public int Count => RecordCache.Count;
-    public IEnumerable<FormKey> FormKeys => _recordCache.Keys;
-    public IEnumerable<TMajor> Items => _recordCache.Items;
-    IReadOnlyCache<IMajorRecordGetter, FormKey> IGroupGetter.RecordCache => _recordCache;
+    public IEnumerable<TMajor> Records => Observed(_recordCache.Items);
+    public int Count => Observed(_recordCache.Count);
+    public IEnumerable<FormKey> FormKeys => Observed(_recordCache.Keys);
+    public IEnumerable<TMajor> Items => Observed(_recordCache.Items);
+    IReadOnlyCache<IMajorRecordGetter, FormKey> IGroupGetter.RecordCache => Observed(_recordCache, "plugin");
     IEnumerable<IMajorRecordGetter> IGroupGetter.Records => Records;
     IEnumerable<ILoquiObject> IGroupCommonGetter.Records => Records;
     public ILoquiRegistration ContainedRecordRegistration => _registration;
@@ -383,16 +384,18 @@ internal abstract class AGroupBinaryOverlay<TMajor> : PluginBinaryOverlay, IGrou
 
     public bool ContainsKey(FormKey key)
     {
+        ReadObservation.Report("record", _package.MetaData.ModKey, key.ToString());
         return _recordCache.ContainsKey(key);
     }
 
     public IEnumerator<TMajor> GetEnumerator()
     {
-        return _recordCache.Items.GetEnumerator();
+        return Records.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
+        Observed(_recordCache.Count);
         return _recordCache.GetEnumerator();
     }
 
