@@ -22,6 +22,7 @@ public static class ReadObservation
     }
     public static void Report(string kind, ModKey plugin, string key)
     {
+        if (kind is "record" or "resolve" or "versions" && key == "Null") return;
         var observer = Observer.Value;
         if (observer is null || _reporting) return;
         try { _reporting = true; observer(kind, plugin, key); }

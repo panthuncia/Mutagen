@@ -19,12 +19,14 @@ public class DataDirectoryAssetProvider : IAssetProvider
 
     public bool Exists(DataRelativePath assetPath)
     {
+        Mutagen.Bethesda.Plugins.ReadObservation.Report("unsupported", Mutagen.Bethesda.Plugins.ModKey.Null, "assets");
         var fullPath = _fileSystem.Path.Combine(_dataDirectoryProvider.Path, assetPath.Path);
         return _fileSystem.File.Exists(fullPath);
     }
 
     public bool TryGetSize(DataRelativePath assetPath, out uint size)
     {
+        Mutagen.Bethesda.Plugins.ReadObservation.Report("unsupported", Mutagen.Bethesda.Plugins.ModKey.Null, "assets");
         var fullPath = _fileSystem.Path.Combine(_dataDirectoryProvider.Path, assetPath.Path);
         if (!_fileSystem.File.Exists(fullPath))
         {
@@ -38,6 +40,7 @@ public class DataDirectoryAssetProvider : IAssetProvider
 
     public bool TryGetStream(DataRelativePath assetPath, [MaybeNullWhen(false)] out Stream stream)
     {
+        Mutagen.Bethesda.Plugins.ReadObservation.Report("unsupported", Mutagen.Bethesda.Plugins.ModKey.Null, "assets");
         var fullPath = _fileSystem.Path.Combine(_dataDirectoryProvider.Path, assetPath.Path);
         if (_fileSystem.File.Exists(fullPath))
         {

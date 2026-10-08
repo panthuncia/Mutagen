@@ -249,14 +249,14 @@ internal sealed class InternalImmutableLoadOrderLinkCache
     public IEnumerable<TMajor> ResolveAll<TMajor>(FormKey formKey, ResolveTarget target = ResolveTarget.Winner)
         where TMajor : class, IMajorRecordQueryableGetter
     {
-        ReadObservation.Report(target == ResolveTarget.Origin ? "record" : "resolve", target == ResolveTarget.Origin ? formKey.ModKey : ModKey.Null, formKey.ToString());
+        ReadObservation.Report("versions", target == ResolveTarget.Origin ? formKey.ModKey : ModKey.Null, formKey.ToString());
         using var observationScope = ReadObservation.Suspend();
         return ResolveAll(formKey, typeof(TMajor), target).Cast<TMajor>();
     }
 
     public IEnumerable<IMajorRecordGetter> ResolveAll(FormKey formKey, Type type, ResolveTarget target = ResolveTarget.Winner)
     {
-        ReadObservation.Report(target == ResolveTarget.Origin ? "record" : "resolve", target == ResolveTarget.Origin ? formKey.ModKey : ModKey.Null, formKey.ToString());
+        ReadObservation.Report("versions", target == ResolveTarget.Origin ? formKey.ModKey : ModKey.Null, formKey.ToString());
         using var observationScope = ReadObservation.Suspend();
         switch (target)
         {
@@ -272,7 +272,7 @@ internal sealed class InternalImmutableLoadOrderLinkCache
     [Obsolete("This call is not as optimized as its generic typed counterpart.  Use as a last resort.")]
     public IEnumerable<IMajorRecordGetter> ResolveAll(FormKey formKey, ResolveTarget target = ResolveTarget.Winner)
     {
-        ReadObservation.Report(target == ResolveTarget.Origin ? "record" : "resolve", target == ResolveTarget.Origin ? formKey.ModKey : ModKey.Null, formKey.ToString());
+        ReadObservation.Report("versions", target == ResolveTarget.Origin ? formKey.ModKey : ModKey.Null, formKey.ToString());
         using var observationScope = ReadObservation.Suspend();
         return ResolveAll(formKey, typeof(IMajorRecordGetter), target);
     }

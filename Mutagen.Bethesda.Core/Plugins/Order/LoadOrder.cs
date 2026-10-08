@@ -898,28 +898,29 @@ public sealed class LoadOrder<TListing> : ILoadOrder<TListing>
     private readonly Dictionary<ModKey, ItemContainer> _byModKey = new();
 
     /// <inheritdoc />
-    public int Count => _byLoadOrder.Count;
+    private static T Observed<T>(T value) { ReadObservation.Report("order", ModKey.Null, ""); return value; }
+    public int Count => Observed(_byLoadOrder.Count);
 
     public bool DisposingItems { get; }
 
     /// <inheritdoc />
-    public TListing this[int index] => _byLoadOrder[index].Item;
+    public TListing this[int index] => Observed(_byLoadOrder[index].Item);
 
     IEnumerable<TListing> IReadOnlyCache<TListing, ModKey>.Items => ListedOrder;
 
     /// <inheritdoc />
-    public IEnumerable<ModKey> Keys => _byModKey.Keys;
+    public IEnumerable<ModKey> Keys => Observed(_byModKey.Keys);
 
     /// <inheritdoc />
-    public IEnumerable<TListing> ListedOrder => _byLoadOrder.Select(i => i.Item);
+    public IEnumerable<TListing> ListedOrder => Observed(_byLoadOrder.Select(i => i.Item));
 
     /// <inheritdoc />
     public IEnumerable<TListing> PriorityOrder =>
-        ((IEnumerable<ItemContainer>)_byLoadOrder).Reverse().Select(i => i.Item);
+        Observed(((IEnumerable<ItemContainer>)_byLoadOrder).Reverse().Select(i => i.Item));
 
-    IEnumerable<ModKey> ILoadOrderGetter.ListedOrder => _byLoadOrder.Select(x => x.Item.ModKey);
+    IEnumerable<ModKey> ILoadOrderGetter.ListedOrder => Observed(_byLoadOrder.Select(x => x.Item.ModKey));
 
-    IEnumerable<ModKey> ILoadOrderGetter.PriorityOrder => _byLoadOrder.Select(x => x.Item.ModKey).Reverse();
+    IEnumerable<ModKey> ILoadOrderGetter.PriorityOrder => Observed(_byLoadOrder.Select(x => x.Item.ModKey).Reverse());
 
     Noggog.IKeyValue<ModKey, TListing> IReadOnlyList<Noggog.IKeyValue<ModKey, TListing>>.this[int index]
     {
