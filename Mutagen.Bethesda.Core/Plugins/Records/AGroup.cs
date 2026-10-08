@@ -370,10 +370,14 @@ internal abstract class AGroupBinaryOverlay<TMajor> : PluginBinaryOverlay, IGrou
     private T Observed<T>(T value, string kind = "scope") { ReadObservation.Report(kind, _package.MetaData.ModKey, typeof(TMajor).Name); return value; }
     public IReadOnlyCache<TMajor, FormKey> RecordCache => Observed(_recordCache, "plugin");
     public IMod SourceMod => throw new NotImplementedException();
-    public IEnumerable<TMajor> Records => Observed(_recordCache.Items);
+    public IEnumerable<TMajor> Records => Enumerated(Observed(_recordCache.Items));
+    private IEnumerable<TMajor> Enumerated(IEnumerable<TMajor> items)
+    {
+        foreach (var item in items) { ReadObservation.Record(_package.MetaData.ModKey, item); yield return item; }
+    }
     public int Count => Observed(_recordCache.Count);
     public IEnumerable<FormKey> FormKeys => Observed(_recordCache.Keys);
-    public IEnumerable<TMajor> Items => Observed(_recordCache.Items);
+    public IEnumerable<TMajor> Items => Records;
     IReadOnlyCache<IMajorRecordGetter, FormKey> IGroupGetter.RecordCache => Observed(_recordCache, "plugin");
     IEnumerable<IMajorRecordGetter> IGroupGetter.Records => Records;
     IEnumerable<ILoquiObject> IGroupCommonGetter.Records => Records;
@@ -400,7 +404,7 @@ internal abstract class AGroupBinaryOverlay<TMajor> : PluginBinaryOverlay, IGrou
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-        Observed(_recordCache.Count);
+        Observed(_recordCache.Count, "plugin");
         return _recordCache.GetEnumerator();
     }
 

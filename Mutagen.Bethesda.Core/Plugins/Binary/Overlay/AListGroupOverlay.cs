@@ -51,10 +51,12 @@ internal sealed class GroupListOverlay<T> : IReadOnlyList<T>
             }
             slice = new MemorySlice<byte>(buf);
         }
-        return LoquiBinaryOverlayTranslation<T>.Create(
+        var record = LoquiBinaryOverlayTranslation<T>.Create(
             stream: new OverlayStream(slice, _package),
             package: _package,
             recordTypeConverter: null);
+        ReadObservation.Record(_package.MetaData.ModKey, record!);
+        return record;
     }
 
     public static GroupListOverlay<T> Factory(
