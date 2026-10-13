@@ -95,9 +95,15 @@ public sealed unsafe class PluginRecordReader : IDisposable
         var bytes = new byte[checked(headerLength + (int)BinaryPrimitives.ReadUInt32LittleEndian(header[4..]))];
         ReadAt(bytes, position);
         var factory = Factories.GetOrAdd(getterType, static type =>
-            typeof(PluginRecordReader).GetMethod(nameof(Create), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)!
+        {
+            // Registration is per type, not per record or reading. Failed lookups are not cached, so a type
+            // registered later can still be read; successful factories keep each call's parsing package.
+            if (LoquiRegistration.GetRegister(type) is null)
+                throw new ArgumentException($"{type} is not a record getter type.");
+            return typeof(PluginRecordReader).GetMethod(nameof(Create), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)!
                 .MakeGenericMethod(type)
-                .CreateDelegate<Func<OverlayStream, BinaryOverlayFactoryPackage, IMajorRecordGetter>>());
+                .CreateDelegate<Func<OverlayStream, BinaryOverlayFactoryPackage, IMajorRecordGetter>>();
+        });
         return factory(new OverlayStream(new MemorySlice<byte>(bytes), _package), _package);
     }
 
@@ -108,10 +114,6 @@ public sealed unsafe class PluginRecordReader : IDisposable
     private static IMajorRecordGetter Create<TGetter>(OverlayStream stream, BinaryOverlayFactoryPackage package)
         where TGetter : IMajorRecordGetter
     {
-        if (LoquiRegistration.GetRegister(typeof(TGetter)) is null)
-        {
-            throw new ArgumentException($"{typeof(TGetter)} is not a record getter type.");
-        }
         return LoquiBinaryOverlayTranslation<TGetter>.Create(stream, package, null);
     }
 
