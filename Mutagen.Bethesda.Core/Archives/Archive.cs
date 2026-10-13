@@ -94,6 +94,14 @@ public static class Archive
             .Create(path);
     }
 
+    /// <summary>Creates an archive reader over independently positioned streams of retained bytes.</summary>
+    public static IArchiveReader CreateReader(GameRelease release, Func<Stream> streams) => release.ToCategory() switch
+    {
+        GameCategory.Oblivion or GameCategory.Skyrim or GameCategory.Fallout3 => new Bsa.BsaReader(streams),
+        GameCategory.Fallout4 or GameCategory.Starfield => new Ba2.Ba2Reader(streams),
+        _ => throw new NotSupportedException($"{release} has no supported archive reader."),
+    };
+
     /// <summary>
     /// Enumerates all Archives for a given release that are within a given dataFolderPath.
     /// </summary>
