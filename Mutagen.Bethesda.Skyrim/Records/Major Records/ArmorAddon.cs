@@ -193,9 +193,9 @@ partial class ArmorAddonBinaryOverlay
 {
     public IGenderedItemGetter<Boolean> WeightSliderEnabled => GetWeightSliderEnabledCustom();
     
-    public IGenderedItemGetter<Boolean> GetWeightSliderEnabledCustom() => new GenderedItem<bool>(
-        ArmorAddonBinaryCreateTranslation.IsEnabled(_recordData.Slice(_DNAMLocation!.Value.Min + 2)[0]),
-        ArmorAddonBinaryCreateTranslation.IsEnabled(_recordData.Slice(_DNAMLocation!.Value.Min + 3)[0]));
+    public IGenderedItemGetter<Boolean> GetWeightSliderEnabledCustom() => new ArmorAddonWeightSliderContainer(
+        _recordData.Slice(_DNAMLocation!.Value.Min + 2)[0],
+        _recordData.Slice(_DNAMLocation!.Value.Min + 3)[0]);
 
     // Set by the fill, which may be deferred: reading it completes the fill.
     private int? _BodyTemplateLocationStore;
