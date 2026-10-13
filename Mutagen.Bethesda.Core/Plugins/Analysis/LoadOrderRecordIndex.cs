@@ -117,6 +117,16 @@ public sealed class LoadOrderRecordIndex
         return record >= 0;
     }
 
+    /// <summary>
+    /// Finds every record with the EditorID, using the same ASCII case rules as <see cref="TryFindByEditorID"/>.
+    /// Results are in ascending record-number order and reuse the existing sorted lookup.
+    /// </summary>
+    public int[] FindAllByEditorID(string editorId)
+    {
+        var lookup = LazyInitializer.EnsureInitialized(ref _editorIds, () => new EditorIdLookup(this));
+        return lookup.FindAll(editorId);
+    }
+
     private FormKey ToFormKey(ulong key) => new(_mods[(int)(key >> 24)], (uint)(key & 0xFFFFFF));
 
     #region Building
@@ -331,6 +341,29 @@ public sealed class LoadOrderRecordIndex
                 if (Ascii.EqualsIgnoreCase(_index.EditorIDBytes(record), query)) return record;
             }
             return -1;
+        }
+
+        public int[] FindAll(string editorId)
+        {
+            if (editorId.Length == 0) return [];
+            var query = new byte[_index._encoding.GetByteCount(editorId)];
+            _index._encoding.GetBytes(editorId, query);
+            var hash = Hash(query);
+            var low = 0;
+            var high = _entries.Length;
+            while (low < high)
+            {
+                var middle = (low + high) >>> 1;
+                if (_entries[middle] >> 32 < hash) low = middle + 1;
+                else high = middle;
+            }
+            List<int>? matches = null;
+            for (var i = low; i < _entries.Length && _entries[i] >> 32 == hash; i++)
+            {
+                var record = (int)(uint)_entries[i];
+                if (Ascii.EqualsIgnoreCase(_index.EditorIDBytes(record), query)) (matches ??= []).Add(record);
+            }
+            return matches?.ToArray() ?? [];
         }
 
         /// <summary>FNV-1a over the bytes with ASCII letters lowercased, folded to 32 bits.</summary>
