@@ -71,7 +71,7 @@ public sealed unsafe class PluginRecordReader : IDisposable
         var header = ModHeaderFrame.FromPath(path, release, fileSystem: param.FileSystem);
         if (meta.Constants.UsesStrings && (header.Flags & LocalizedFlag) != 0)
         {
-            meta.StringsLookup = StringsFolderLookupOverlay.TypicalFactory(release, path.ModKey, Path.GetDirectoryName(path.Path)!, param.StringsParam, fileSystem: param.FileSystem);
+            meta.StringsLookup = param.StringsParam?.Lookup ?? StringsFolderLookupOverlay.TypicalFactory(release, path.ModKey, Path.GetDirectoryName(path.Path)!, param.StringsParam, fileSystem: param.FileSystem);
         }
         var package = new BinaryOverlayFactoryPackage(meta);
         if (param.FileSystem is null or FileSystem)

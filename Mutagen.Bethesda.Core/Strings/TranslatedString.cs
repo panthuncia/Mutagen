@@ -262,11 +262,33 @@ public sealed class TranslatedString : ITranslatedString, IEquatable<TranslatedS
         }
     }
 
+    /// <summary>Creates a lazy localized string, retaining its key even when the text is unavailable.</summary>
+    public static TranslatedString FromLookup(IStringsFolderLookup lookup, StringsSource source, uint key, Language targetLanguage) =>
+        new(targetLanguage) { StringsLookup = lookup, StringsSource = source, StringsKey = key };
+
+    private IReadOnlyList<MissingString> _missingStrings = Array.Empty<MissingString>();
+
+    /// <summary>Nonzero localized keys unavailable in the target or supplied translation languages.</summary>
+    public IReadOnlyList<MissingString> MissingStrings
+    {
+        get
+        {
+            lock (_lock)
+            {
+                if (StringsLookup == null || StringsKey is null or 0) return _missingStrings;
+                return StringsLookup.AvailableLanguages(StringsSource).Append(TargetLanguage).Distinct()
+                    .Where(language => !TryLookup(language, out _))
+                    .Select(language => new MissingString(StringsSource, StringsKey.Value, language)).ToArray();
+            }
+        }
+    }
+
     internal void ResolveAllStringSources()
     {
         lock (_lock)
         {
             if (StringsLookup == null) return;
+            _missingStrings = MissingStrings;
             if (_localization == null)
             {
                 _localization = new Dictionary<Language, string?>();
@@ -381,3 +403,6 @@ internal sealed class TranslatedStringComparer : IEqualityComparer<ITranslatedSt
         return code.ToHashCode();
     }
 }
+
+/// <summary>A localized key that could not be resolved.</summary>
+public sealed record MissingString(StringsSource Source, uint Key, Language Language);

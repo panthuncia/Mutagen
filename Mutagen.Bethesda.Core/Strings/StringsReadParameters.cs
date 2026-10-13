@@ -11,6 +11,9 @@ public sealed record StringsReadParameters
     /// <summary>
     /// If specified, normal string folder path locations will be ignored in favor of the path provided.
     /// </summary>
+    /// <summary>Optional caller-owned lookup used instead of filesystem discovery.</summary>
+    public IStringsFolderLookup? Lookup { get; init; }
+
     public DirectoryPath? StringsFolderOverride { get; init; }
     
     /// <summary>

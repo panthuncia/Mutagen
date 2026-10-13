@@ -6570,7 +6570,7 @@ namespace Mutagen.Bethesda.Fallout4
                     var flags = reader.GetInt32(offset: 8);
                     if (Enums.HasFlag(flags, (int)Fallout4ModHeader.HeaderFlag.Localized))
                     {
-                        frame.MetaData.StringsLookup = StringsFolderLookupOverlay.TypicalFactory(gameRelease, path.ModKey, Path.GetDirectoryName(path.Path)!, param.StringsParam);
+                        frame.MetaData.StringsLookup = param.StringsParam?.Lookup ?? StringsFolderLookupOverlay.TypicalFactory(gameRelease, path.ModKey, Path.GetDirectoryName(path.Path)!, param.StringsParam);
                     }
                     return CreateFromBinary(
                         release: release,
@@ -6609,7 +6609,7 @@ namespace Mutagen.Bethesda.Fallout4
                     var flags = reader.GetInt32(offset: 8);
                     if (Enums.HasFlag(flags, (int)Fallout4ModHeader.HeaderFlag.Localized))
                     {
-                        frame.MetaData.StringsLookup = StringsFolderLookupOverlay.TypicalFactory(gameRelease, path.ModKey, Path.GetDirectoryName(path.Path)!, param.StringsParam);
+                        frame.MetaData.StringsLookup = param.StringsParam?.Lookup ?? StringsFolderLookupOverlay.TypicalFactory(gameRelease, path.ModKey, Path.GetDirectoryName(path.Path)!, param.StringsParam);
                     }
                     return CreateFromBinary(
                         release: release,
@@ -7799,7 +7799,7 @@ namespace Mutagen.Bethesda.Fallout4
                     var flags = reader.GetInt32(offset: 8);
                     if (Enums.HasFlag(flags, (int)Fallout4ModHeader.HeaderFlag.Localized))
                     {
-                        frame.MetaData.StringsLookup = StringsFolderLookupOverlay.TypicalFactory(gameRelease, path.ModKey, Path.GetDirectoryName(path.Path)!, param.StringsParam);
+                        frame.MetaData.StringsLookup = param.StringsParam?.Lookup ?? StringsFolderLookupOverlay.TypicalFactory(gameRelease, path.ModKey, Path.GetDirectoryName(path.Path)!, param.StringsParam);
                     }
                     CopyInFromBinary(
                         item: item,
@@ -25815,7 +25815,7 @@ namespace Mutagen.Bethesda.Fallout4
                 var flags = stream.GetInt32(offset: 8);
                 if (Enums.HasFlag(flags, (int)Fallout4ModHeader.HeaderFlag.Localized))
                 {
-                    meta.StringsLookup = StringsFolderLookupOverlay.TypicalFactory(release.ToGameRelease(), path.ModKey, Path.GetDirectoryName(path.Path)!, param.StringsParam, fileSystem: param.FileSystem);
+                    meta.StringsLookup = param.StringsParam?.Lookup ?? StringsFolderLookupOverlay.TypicalFactory(release.ToGameRelease(), path.ModKey, Path.GetDirectoryName(path.Path)!, param.StringsParam, fileSystem: param.FileSystem);
                 }
                 return Fallout4ModFactory(
                     stream: stream,

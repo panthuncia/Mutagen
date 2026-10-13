@@ -474,7 +474,7 @@ public class PluginTranslationModule : BinaryTranslationModule
                     sb.AppendLine($"if (Enums.HasFlag(flags, (int){obj.GetObjectData().GameCategory}ModHeader.HeaderFlag.Localized))");
                     using (sb.CurlyBrace())
                     {
-                        sb.AppendLine($"frame.{nameof(BinaryOverlayFactoryPackage.MetaData)}.{nameof(ParsingMeta.StringsLookup)} = StringsFolderLookupOverlay.TypicalFactory({gameReleaseStr}, path.{nameof(ModPath.ModKey)}, Path.GetDirectoryName(path.{nameof(ModPath.Path)})!, param.StringsParam);");
+                        sb.AppendLine($"frame.{nameof(BinaryOverlayFactoryPackage.MetaData)}.{nameof(ParsingMeta.StringsLookup)} = param.StringsParam?.Lookup ?? StringsFolderLookupOverlay.TypicalFactory({gameReleaseStr}, path.{nameof(ModPath.ModKey)}, Path.GetDirectoryName(path.{nameof(ModPath.Path)})!, param.StringsParam);");
                     }
                 }
                 internalToDo(MainAPI.PublicMembers(obj, TranslationDirection.Reader).ToArray());
@@ -2080,7 +2080,7 @@ public class PluginTranslationModule : BinaryTranslationModule
     {
         // Top-level list groups (e.g. Fallout3ListGroup for Cells) may have CopyInFromBinary
         // called multiple times when a file contains multiple top-level GRUPs of the same record
-        // type â€” the additive list field is intentionally accumulating across those calls, so we
+        // type — the additive list field is intentionally accumulating across those calls, so we
         // must NOT clear on entry.
         if (obj.IsTopLevelListGroup()) return false;
         foreach (var item in obj.IterateFields(includeBaseClass: true))
@@ -2689,7 +2689,7 @@ public class PluginTranslationModule : BinaryTranslationModule
                                 sb.AppendLine($"if (Enums.HasFlag(flags, (int){obj.GetObjectData().GameCategory}ModHeader.HeaderFlag.Localized))");
                                 using (sb.CurlyBrace())
                                 {
-                                    sb.AppendLine($"meta.StringsLookup = StringsFolderLookupOverlay.TypicalFactory({gameReleaseStr}, path.{nameof(ModPath.ModKey)}, Path.GetDirectoryName(path.{nameof(ModPath.Path)})!, param.StringsParam, fileSystem: param.FileSystem);");
+                                    sb.AppendLine($"meta.StringsLookup = param.StringsParam?.Lookup ?? StringsFolderLookupOverlay.TypicalFactory({gameReleaseStr}, path.{nameof(ModPath.ModKey)}, Path.GetDirectoryName(path.{nameof(ModPath.Path)})!, param.StringsParam, fileSystem: param.FileSystem);");
                                 }
                             }
 
