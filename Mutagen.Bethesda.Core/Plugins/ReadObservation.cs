@@ -30,6 +30,7 @@ public static class ReadObservation
     }
     public static FormKey Form(ModKey plugin, FormKey key)
     {
+        if (Observer.Value is null || _reporting) return key;
         Report("record", plugin, key.ToString());
         return key;
     }
