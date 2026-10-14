@@ -60,7 +60,7 @@ public sealed class ScalarOverlayEqualityTests
     }
 
     private static BinaryOverlayList.BinaryOverlayListByStartIndex<int> List(byte[] bytes, int size) =>
-        new(bytes, null!, (_, _) => throw new InvalidOperationException("Scalar comparison materialized an element."), size);
+        new(bytes, default, (_, _) => throw new InvalidOperationException("Scalar comparison materialized an element."), size);
 
     private static IAlphaLayerGetter Layer(ISkyrimModGetter mod) =>
         (IAlphaLayerGetter)mod.EnumerateMajorRecords<ILandscapeGetter>().Single().Layers!.Single();
@@ -70,7 +70,7 @@ public sealed class ScalarOverlayEqualityTests
         var mod = new SkyrimMod(ModKey.FromNameAndExtension("Scalar.esp"), SkyrimRelease.SkyrimSE);
         var landscape = new Landscape(mod)
         {
-            Layers = [new AlphaLayer { AlphaLayerData = [new AlphaLayerData { Position = position, Unused = unused, Opacity = opacity }] }],
+            Layers = [new AlphaLayer { Header = new LayerHeader(), AlphaLayerData = [new AlphaLayerData { Position = position, Unused = unused, Opacity = opacity }] }],
         };
         mod.Cells.Records.Add(new CellBlock
         {
