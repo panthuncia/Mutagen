@@ -887,9 +887,17 @@ namespace Mutagen.Bethesda.Skyrim
         {
             if (!EqualsMaskHelper.RefEquality(lhs, rhs, out var isEqual)) return isEqual;
             if (!base.Equals((IBaseLayerGetter)lhs, (IBaseLayerGetter)rhs, equalsMask)) return false;
-            if ((equalsMask?.GetShouldTranslate((int)AlphaLayer_FieldIndex.AlphaLayerData) ?? true))
+            if ((equalsMask?.GetShouldTranslate((int)AlphaLayer_FieldIndex.AlphaLayerData) ?? true) && ScalarOverlayEquality.TryEquals(lhs.AlphaLayerData, rhs.AlphaLayerData, 8,
+                static (l, r, mask) => (!(mask?.GetShouldTranslate((int)AlphaLayerData_FieldIndex.Position) ?? true) || System.Buffers.Binary.BinaryPrimitives.ReadUInt16LittleEndian(l.Slice(0, 2)) == System.Buffers.Binary.BinaryPrimitives.ReadUInt16LittleEndian(r.Slice(0, 2))) && (!(mask?.GetShouldTranslate((int)AlphaLayerData_FieldIndex.Unused) ?? true) || System.Buffers.Binary.BinaryPrimitives.ReadUInt16LittleEndian(l.Slice(2, 2)) == System.Buffers.Binary.BinaryPrimitives.ReadUInt16LittleEndian(r.Slice(2, 2))) && (!(mask?.GetShouldTranslate((int)AlphaLayerData_FieldIndex.Opacity) ?? true) || FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(l.Slice(4, 4)).EqualsWithin(FloatBinaryTranslation<MutagenFrame, MutagenWriter>.Instance.GetFloat(r.Slice(4, 4)))), equalsMask?.GetSubCrystal((int)AlphaLayer_FieldIndex.AlphaLayerData), out var scalarAlphaLayerDataEqual))
             {
-                if (!lhs.AlphaLayerData.SequenceEqualNullable(rhs.AlphaLayerData, (l, r) => ((AlphaLayerDataCommon)((IAlphaLayerDataGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)AlphaLayer_FieldIndex.AlphaLayerData)))) return false;
+                if (!scalarAlphaLayerDataEqual) return false;
+            }
+            else
+            {
+                if ((equalsMask?.GetShouldTranslate((int)AlphaLayer_FieldIndex.AlphaLayerData) ?? true))
+                {
+                    if (!lhs.AlphaLayerData.SequenceEqualNullable(rhs.AlphaLayerData, (l, r) => ((AlphaLayerDataCommon)((IAlphaLayerDataGetter)l).CommonInstance()!).Equals(l, r, equalsMask?.GetSubCrystal((int)AlphaLayer_FieldIndex.AlphaLayerData)))) return false;
+                }
             }
             return true;
         }

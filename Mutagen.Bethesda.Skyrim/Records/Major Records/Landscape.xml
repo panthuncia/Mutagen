@@ -23,7 +23,7 @@
   </Object>
   <Object name="AlphaLayer" objType="Subrecord" baseClass="BaseLayer">
     <Fields>
-      <RefList name="AlphaLayerData" refName="AlphaLayerData" recordType="VTXT" />
+        <RefList name="AlphaLayerData" refName="AlphaLayerData" recordType="VTXT" scalarOverlayEquals="true" />
     </Fields>
     <BaseRecordTypeOverrides>
       <Mapping From="BTXT" To="ATXT" />

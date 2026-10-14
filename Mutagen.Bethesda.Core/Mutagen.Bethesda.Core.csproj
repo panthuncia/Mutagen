@@ -32,6 +32,7 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Plugins\ReadObservation.cs" />
+        <Compile Include="Plugins\Records\ScalarOverlayEquality.cs" />
         <Compile Include="Archives\Archive.cs" />
         <Compile Include="Archives\Ba2\Ba2EntryType.cs" />
         <Compile Include="Archives\Ba2\Ba2FolderWrapper.cs" />
