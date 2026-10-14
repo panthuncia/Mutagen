@@ -19,8 +19,10 @@ internal static class InflatePrefix
     private static readonly short[] DistanceExtra = [0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13];
     private static readonly byte[] CodeLengthOrder = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15];
 
-    private static readonly Huffman FixedLiterals;
-    private static readonly Huffman FixedDistances;
+    private static readonly short[] FixedLiteralCounts = new short[MaxBits + 1];
+    private static readonly short[] FixedLiteralSymbols = new short[FixedLiteralCodes];
+    private static readonly short[] FixedDistanceCounts = new short[MaxBits + 1];
+    private static readonly short[] FixedDistanceSymbols = new short[MaxDistanceCodes];
 
     static InflatePrefix()
     {
@@ -29,10 +31,10 @@ internal static class InflatePrefix
         for (var i = 144; i < 256; i++) lengths[i] = 9;
         for (var i = 256; i < 280; i++) lengths[i] = 7;
         for (var i = 280; i < FixedLiteralCodes; i++) lengths[i] = 8;
-        FixedLiterals = Huffman.Build(lengths);
+        Huffman.Build(lengths, FixedLiteralCounts, FixedLiteralSymbols);
         lengths = lengths[..MaxDistanceCodes];
         lengths.Fill(5);
-        FixedDistances = Huffman.Build(lengths);
+        Huffman.Build(lengths, FixedDistanceCounts, FixedDistanceSymbols);
     }
 
     /// <summary>Fills <paramref name="output"/> from the start of a zlib stream.</summary>
@@ -52,7 +54,7 @@ internal static class InflatePrefix
                 var done = state.Bits(2) switch
                 {
                     0 => state.Stored(),
-                    1 => state.Codes(FixedLiterals, FixedDistances),
+                    1 => state.Codes(new Huffman(FixedLiteralCounts, FixedLiteralSymbols), new Huffman(FixedDistanceCounts, FixedDistanceSymbols)),
                     2 => state.Dynamic(),
                     _ => throw new InvalidDataException("Invalid deflate block type."),
                 };
@@ -68,16 +70,20 @@ internal static class InflatePrefix
     }
 
     /// <summary>A canonical Huffman code as puff keeps it: how many codes of each length, and the symbols in code order.</summary>
-    private sealed class Huffman
+    private readonly ref struct Huffman
     {
-        public readonly short[] Counts = new short[MaxBits + 1];
-        public readonly short[] Symbols;
+        public readonly Span<short> Counts;
+        public readonly Span<short> Symbols;
 
-        private Huffman(int symbols) => Symbols = new short[symbols];
-
-        public static Huffman Build(ReadOnlySpan<short> lengths)
+        public Huffman(Span<short> counts, Span<short> symbols)
         {
-            var huffman = new Huffman(lengths.Length);
+            Counts = counts;
+            Symbols = symbols;
+        }
+
+        public static Huffman Build(ReadOnlySpan<short> lengths, Span<short> counts, Span<short> symbols)
+        {
+            var huffman = new Huffman(counts, symbols);
             huffman.Fill(lengths);
             return huffman;
         }
@@ -85,7 +91,7 @@ internal static class InflatePrefix
         /// <summary>Returns false if the lengths over-subscribe the code (an invalid stream).</summary>
         public bool Fill(ReadOnlySpan<short> lengths)
         {
-            Array.Clear(Counts);
+            Counts.Clear();
             foreach (var length in lengths) Counts[length]++;
             if (Counts[0] == lengths.Length) return true;
             var left = 1;
@@ -156,7 +162,7 @@ internal static class InflatePrefix
             Span<short> lengths = stackalloc short[MaxLiteralCodes + MaxDistanceCodes];
             lengths.Clear();
             for (var i = 0; i < codeLengthCount; i++) lengths[CodeLengthOrder[i]] = (short)Bits(3);
-            var codeLengths = Huffman.Build(lengths[..19]);
+            var codeLengths = Huffman.Build(lengths[..19], stackalloc short[MaxBits + 1], stackalloc short[19]);
             if (codeLengths.Counts[0] == 19) throw new InvalidDataException("Empty code length code.");
 
             lengths.Clear();
@@ -185,13 +191,13 @@ internal static class InflatePrefix
             }
             if (lengths[256] == 0) throw new InvalidDataException("No end-of-block code.");
 
-            var literals = Huffman.Build(lengths[..literalCount]);
-            var distances = Huffman.Build(lengths.Slice(literalCount, distanceCount));
+            var literals = Huffman.Build(lengths[..literalCount], stackalloc short[MaxBits + 1], stackalloc short[MaxLiteralCodes]);
+            var distances = Huffman.Build(lengths.Slice(literalCount, distanceCount), stackalloc short[MaxBits + 1], stackalloc short[MaxDistanceCodes]);
             return Codes(literals, distances);
         }
 
         /// <summary>Literals and back-references until the end of the block, or until the output is full.</summary>
-        public bool Codes(Huffman literals, Huffman distances)
+        public bool Codes(scoped Huffman literals, scoped Huffman distances)
         {
             while (true)
             {
@@ -221,7 +227,7 @@ internal static class InflatePrefix
         }
 
         /// <summary>One symbol, reading its code a bit at a time (codes are stored most significant bit first).</summary>
-        private int Decode(Huffman huffman)
+        private int Decode(scoped Huffman huffman)
         {
             int code = 0, first = 0, index = 0;
             for (var length = 1; length <= MaxBits; length++)

@@ -50,4 +50,41 @@ public class InflatePrefixTests
     {
         InflatePrefix.Inflate(new byte[] { 0x12, 0x34, 0x56 }, new byte[10]).ShouldBe(-1);
     }
+
+    [Fact]
+    public void DynamicPrefixesAllocateNoScratchOnTheHeap()
+    {
+        var data = Encoding.ASCII.GetBytes(string.Concat(Enumerable.Range(0, 400).Select(i => $"EDID{i % 37}Sword{i}\0")));
+        var compressed = Compress(data, CompressionLevel.Optimal);
+        ((compressed[2] >> 1) & 3).ShouldBe(2);
+        var output = new byte[100];
+        for (var i = 0; i < 100; i++) InflatePrefix.Inflate(compressed, output);
+        var before = GC.GetAllocatedBytesForCurrentThread();
+        for (var i = 0; i < 100; i++) InflatePrefix.Inflate(compressed, output);
+        (GC.GetAllocatedBytesForCurrentThread() - before).ShouldBe(0);
+        output.ShouldBe(data.AsSpan(0, output.Length).ToArray());
+    }
+
+    [Fact]
+    public void ConcurrentMultiBlockInflatesKeepTheirOwnScratch()
+    {
+        var data = Encoding.ASCII.GetBytes(string.Concat(Enumerable.Range(0, 10000).Select(i => $"EDID{i % 37}Sword{i}\0")));
+        using var bytes = new MemoryStream();
+        using (var zlib = new ZLibStream(bytes, CompressionLevel.Optimal, leaveOpen: true))
+        {
+            for (var at = 0; at < data.Length; at += 4000)
+            {
+                zlib.Write(data.AsSpan(at, Math.Min(4000, data.Length - at)));
+                zlib.Flush();
+            }
+        }
+        var compressed = bytes.ToArray();
+        Parallel.For(0, 32, i =>
+        {
+            var length = i % 2 == 0 ? data.Length : 4001;
+            var output = new byte[length];
+            InflatePrefix.Inflate(compressed, output).ShouldBe(length);
+            output.ShouldBe(data.AsSpan(0, length).ToArray());
+        });
+    }
 }
