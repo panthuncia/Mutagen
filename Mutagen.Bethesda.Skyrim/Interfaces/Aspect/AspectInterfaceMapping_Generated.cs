@@ -249,6 +249,7 @@ namespace Mutagen.Bethesda.Skyrim
                     Scroll_Registration.Instance,
                     SoulGem_Registration.Instance,
                     Static_Registration.Instance,
+                    StaticCollection_Registration.Instance,
                     TalkingActivator_Registration.Instance,
                     Tree_Registration.Instance,
                     Weapon_Registration.Instance,
@@ -553,6 +554,7 @@ namespace Mutagen.Bethesda.Skyrim
                     SoundMarker_Registration.Instance,
                     Spell_Registration.Instance,
                     Static_Registration.Instance,
+                    StaticCollection_Registration.Instance,
                     TalkingActivator_Registration.Instance,
                     TextureSet_Registration.Instance,
                     Tree_Registration.Instance,
@@ -577,6 +579,7 @@ namespace Mutagen.Bethesda.Skyrim
                 new ILoquiRegistration[]
                 {
                     Placement_Registration.Instance,
+                    StaticCollectionPlacement_Registration.Instance,
                     TeleportDestination_Registration.Instance,
                 },
                 new InterfaceMappingTypes(

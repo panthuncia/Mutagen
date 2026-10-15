@@ -444,6 +444,7 @@ public partial class RecordTypeInts
     public const int SCDA = 0x41444353;
     public const int SCEN = 0x4E454353;
     public const int SCHR = 0x52484353;
+    public const int SCOL = 0x4C4F4353;
     public const int SCPT = 0x54504353;
     public const int SCRL = 0x4C524353;
     public const int SCRO = 0x4F524353;

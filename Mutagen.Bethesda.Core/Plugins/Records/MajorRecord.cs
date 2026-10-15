@@ -182,6 +182,7 @@ internal abstract partial class MajorRecordBinaryOverlay : IMajorRecordGetter
             if (got >= 0)
             {
                 if (got < headerLength) return false;
+                if (BinaryPrimitives.ReadInt32LittleEndian(head) == RecordTypes.XXXX.TypeInt) return false;
                 if (BinaryPrimitives.ReadInt32LittleEndian(head) != RecordTypes.EDID.TypeInt) return true;
                 var prefix = new byte[Math.Min(headerLength + BinaryPrimitives.ReadUInt16LittleEndian(head[4..]), uncompressed)];
                 got = InflatePrefix.Inflate(raw.Slice(4).Span, prefix);
@@ -208,10 +209,24 @@ internal abstract partial class MajorRecordBinaryOverlay : IMajorRecordGetter
         if (data.Length < headerLength) return false;
         var header = constants.SubrecordHeader(data);
         // An EDID, when a record has one, is its first subrecord: a record starting with anything else has none.
+        if (header.RecordType == RecordTypes.XXXX) return false;
         if (header.RecordType != RecordTypes.EDID) return true;
         if (data.Length < headerLength + header.ContentLength) return false;
         editorId = BinaryStringUtility.ProcessWholeToZString(data.Slice(headerLength, header.ContentLength), _package.MetaData.Encodings.NonTranslated);
         return true;
+    }
+
+    // An XXXX prefix overrides the following EDID header's 16-bit size, including when the fill already ran.
+    private ReadOnlyMemorySlice<byte> ExtractEditorIDMemory(int location)
+    {
+        var bytes = _recordData.Span;
+        if (location >= 10 && BinaryPrimitives.ReadInt32LittleEndian(bytes.Slice(location - 10, 4)) == RecordTypes.XXXX.TypeInt &&
+            BinaryPrimitives.ReadUInt16LittleEndian(bytes.Slice(location - 6, 2)) == 4)
+        {
+            var length = checked((int)BinaryPrimitives.ReadUInt32LittleEndian(bytes.Slice(location - 4, 4)));
+            return _recordData.Slice(location + _package.MetaData.Constants.SubConstants.HeaderLength, length);
+        }
+        return HeaderTranslation.ExtractSubrecordMemory(_recordData, location, _package.MetaData.Constants);
     }
 
     protected abstract ushort? FormVersionAbstract { get; }

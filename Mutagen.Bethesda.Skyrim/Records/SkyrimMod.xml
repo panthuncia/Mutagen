@@ -33,6 +33,7 @@
       <Group name="MiscItems" refName="MiscItem" />
       <Group name="AlchemicalApparatuses" refName="AlchemicalApparatus" />
       <Group name="Statics" refName="Static" />
+      <Group name="StaticCollections" refName="StaticCollection" />
       <Group name="MoveableStatics" refName="MoveableStatic" />
       <Group name="Grasses" refName="Grass" />
       <Group name="Trees" refName="Tree" />

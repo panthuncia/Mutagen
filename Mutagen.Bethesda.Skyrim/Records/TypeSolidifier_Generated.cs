@@ -2601,6 +2601,30 @@ namespace Mutagen.Bethesda.Skyrim
         }
 
         /// <summary>
+        /// Scope a load order query to StaticCollection
+        /// </summary>
+        /// <param name="listings">ModListings to query</param>
+        /// <returns>A typed object to do further queries on StaticCollection</returns>
+        public static TopLevelTypedLoadOrderAccess<ISkyrimMod, ISkyrimModGetter, IStaticCollection, IStaticCollectionGetter> StaticCollection(this IEnumerable<IModListingGetter<ISkyrimModGetter>> listings)
+        {
+            return new TopLevelTypedLoadOrderAccess<ISkyrimMod, ISkyrimModGetter, IStaticCollection, IStaticCollectionGetter>(
+                (bool includeDeletedRecords) => listings.WinningOverrides<IStaticCollectionGetter>(includeDeletedRecords: includeDeletedRecords),
+                (ILinkCache linkCache, bool includeDeletedRecords) => listings.WinningContextOverrides<ISkyrimMod, ISkyrimModGetter, IStaticCollection, IStaticCollectionGetter>(linkCache, includeDeletedRecords: includeDeletedRecords));
+        }
+
+        /// <summary>
+        /// Scope a load order query to StaticCollection
+        /// </summary>
+        /// <param name="mods">Mods to query</param>
+        /// <returns>A typed object to do further queries on StaticCollection</returns>
+        public static TopLevelTypedLoadOrderAccess<ISkyrimMod, ISkyrimModGetter, IStaticCollection, IStaticCollectionGetter> StaticCollection(this IEnumerable<ISkyrimModGetter> mods)
+        {
+            return new TopLevelTypedLoadOrderAccess<ISkyrimMod, ISkyrimModGetter, IStaticCollection, IStaticCollectionGetter>(
+                (bool includeDeletedRecords) => mods.WinningOverrides<IStaticCollectionGetter>(includeDeletedRecords: includeDeletedRecords),
+                (ILinkCache linkCache, bool includeDeletedRecords) => mods.WinningContextOverrides<ISkyrimMod, ISkyrimModGetter, IStaticCollection, IStaticCollectionGetter>(linkCache, includeDeletedRecords: includeDeletedRecords));
+        }
+
+        /// <summary>
         /// Scope a load order query to TalkingActivator
         /// </summary>
         /// <param name="listings">ModListings to query</param>

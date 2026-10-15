@@ -10,7 +10,7 @@ using Mutagen.Bethesda;
 namespace Mutagen.Bethesda.Skyrim
 {
     /// <summary>
-    /// Implemented by: [AcousticSpace, Activator, AddonNode, AlchemicalApparatus, Ammunition, Armor, ArtObject, Book, Container, Door, Flora, Furniture, IdleMarker, Ingestible, Ingredient, Key, Light, MiscItem, MoveableStatic, Scroll, SoulGem, SoundMarker, Spell, Static, TalkingActivator, TextureSet, Tree, Weapon]
+    /// Implemented by: [AcousticSpace, Activator, AddonNode, AlchemicalApparatus, Ammunition, Armor, ArtObject, Book, Container, Door, Flora, Furniture, IdleMarker, Ingestible, Ingredient, Key, Light, MiscItem, MoveableStatic, Scroll, SoulGem, SoundMarker, Spell, Static, StaticCollection, TalkingActivator, TextureSet, Tree, Weapon]
     /// </summary>
     public partial interface IPlaceableObject :
         IPlaceableObjectGetter,
@@ -19,7 +19,7 @@ namespace Mutagen.Bethesda.Skyrim
     }
 
     /// <summary>
-    /// Implemented by: [AcousticSpace, Activator, AddonNode, AlchemicalApparatus, Ammunition, Armor, ArtObject, Book, Container, Door, Flora, Furniture, IdleMarker, Ingestible, Ingredient, Key, Light, MiscItem, MoveableStatic, Scroll, SoulGem, SoundMarker, Spell, Static, TalkingActivator, TextureSet, Tree, Weapon]
+    /// Implemented by: [AcousticSpace, Activator, AddonNode, AlchemicalApparatus, Ammunition, Armor, ArtObject, Book, Container, Door, Flora, Furniture, IdleMarker, Ingestible, Ingredient, Key, Light, MiscItem, MoveableStatic, Scroll, SoulGem, SoundMarker, Spell, Static, StaticCollection, TalkingActivator, TextureSet, Tree, Weapon]
     /// </summary>
     public partial interface IPlaceableObjectGetter : ISkyrimMajorRecordGetter
     {

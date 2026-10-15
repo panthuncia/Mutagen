@@ -92,6 +92,7 @@ namespace Mutagen.Bethesda.Skyrim
             _MiscItems_Object = new SkyrimGroup<MiscItem>(this);
             _AlchemicalApparatuses_Object = new SkyrimGroup<AlchemicalApparatus>(this);
             _Statics_Object = new SkyrimGroup<Static>(this);
+            _StaticCollections_Object = new SkyrimGroup<StaticCollection>(this);
             _MoveableStatics_Object = new SkyrimGroup<MoveableStatic>(this);
             _Grasses_Object = new SkyrimGroup<Grass>(this);
             _Trees_Object = new SkyrimGroup<Tree>(this);
@@ -396,6 +397,13 @@ namespace Mutagen.Bethesda.Skyrim
         public SkyrimGroup<Static> Statics => _Statics_Object;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         ISkyrimGroupGetter<IStaticGetter> ISkyrimModGetter.Statics => _Statics_Object;
+        #endregion
+        #region StaticCollections
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private SkyrimGroup<StaticCollection> _StaticCollections_Object;
+        public SkyrimGroup<StaticCollection> StaticCollections => _StaticCollections_Object;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        ISkyrimGroupGetter<IStaticCollectionGetter> ISkyrimModGetter.StaticCollections => _StaticCollections_Object;
         #endregion
         #region MoveableStatics
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -1055,6 +1063,7 @@ namespace Mutagen.Bethesda.Skyrim
                 this.MiscItems = new MaskItem<TItem, SkyrimGroup.Mask<TItem>?>(initialValue, new SkyrimGroup.Mask<TItem>(initialValue));
                 this.AlchemicalApparatuses = new MaskItem<TItem, SkyrimGroup.Mask<TItem>?>(initialValue, new SkyrimGroup.Mask<TItem>(initialValue));
                 this.Statics = new MaskItem<TItem, SkyrimGroup.Mask<TItem>?>(initialValue, new SkyrimGroup.Mask<TItem>(initialValue));
+                this.StaticCollections = new MaskItem<TItem, SkyrimGroup.Mask<TItem>?>(initialValue, new SkyrimGroup.Mask<TItem>(initialValue));
                 this.MoveableStatics = new MaskItem<TItem, SkyrimGroup.Mask<TItem>?>(initialValue, new SkyrimGroup.Mask<TItem>(initialValue));
                 this.Grasses = new MaskItem<TItem, SkyrimGroup.Mask<TItem>?>(initialValue, new SkyrimGroup.Mask<TItem>(initialValue));
                 this.Trees = new MaskItem<TItem, SkyrimGroup.Mask<TItem>?>(initialValue, new SkyrimGroup.Mask<TItem>(initialValue));
@@ -1173,6 +1182,7 @@ namespace Mutagen.Bethesda.Skyrim
                 TItem MiscItems,
                 TItem AlchemicalApparatuses,
                 TItem Statics,
+                TItem StaticCollections,
                 TItem MoveableStatics,
                 TItem Grasses,
                 TItem Trees,
@@ -1289,6 +1299,7 @@ namespace Mutagen.Bethesda.Skyrim
                 this.MiscItems = new MaskItem<TItem, SkyrimGroup.Mask<TItem>?>(MiscItems, new SkyrimGroup.Mask<TItem>(MiscItems));
                 this.AlchemicalApparatuses = new MaskItem<TItem, SkyrimGroup.Mask<TItem>?>(AlchemicalApparatuses, new SkyrimGroup.Mask<TItem>(AlchemicalApparatuses));
                 this.Statics = new MaskItem<TItem, SkyrimGroup.Mask<TItem>?>(Statics, new SkyrimGroup.Mask<TItem>(Statics));
+                this.StaticCollections = new MaskItem<TItem, SkyrimGroup.Mask<TItem>?>(StaticCollections, new SkyrimGroup.Mask<TItem>(StaticCollections));
                 this.MoveableStatics = new MaskItem<TItem, SkyrimGroup.Mask<TItem>?>(MoveableStatics, new SkyrimGroup.Mask<TItem>(MoveableStatics));
                 this.Grasses = new MaskItem<TItem, SkyrimGroup.Mask<TItem>?>(Grasses, new SkyrimGroup.Mask<TItem>(Grasses));
                 this.Trees = new MaskItem<TItem, SkyrimGroup.Mask<TItem>?>(Trees, new SkyrimGroup.Mask<TItem>(Trees));
@@ -1415,6 +1426,7 @@ namespace Mutagen.Bethesda.Skyrim
             public MaskItem<TItem, SkyrimGroup.Mask<TItem>?>? MiscItems { get; set; }
             public MaskItem<TItem, SkyrimGroup.Mask<TItem>?>? AlchemicalApparatuses { get; set; }
             public MaskItem<TItem, SkyrimGroup.Mask<TItem>?>? Statics { get; set; }
+            public MaskItem<TItem, SkyrimGroup.Mask<TItem>?>? StaticCollections { get; set; }
             public MaskItem<TItem, SkyrimGroup.Mask<TItem>?>? MoveableStatics { get; set; }
             public MaskItem<TItem, SkyrimGroup.Mask<TItem>?>? Grasses { get; set; }
             public MaskItem<TItem, SkyrimGroup.Mask<TItem>?>? Trees { get; set; }
@@ -1542,6 +1554,7 @@ namespace Mutagen.Bethesda.Skyrim
                 if (!object.Equals(this.MiscItems, rhs.MiscItems)) return false;
                 if (!object.Equals(this.AlchemicalApparatuses, rhs.AlchemicalApparatuses)) return false;
                 if (!object.Equals(this.Statics, rhs.Statics)) return false;
+                if (!object.Equals(this.StaticCollections, rhs.StaticCollections)) return false;
                 if (!object.Equals(this.MoveableStatics, rhs.MoveableStatics)) return false;
                 if (!object.Equals(this.Grasses, rhs.Grasses)) return false;
                 if (!object.Equals(this.Trees, rhs.Trees)) return false;
@@ -1662,6 +1675,7 @@ namespace Mutagen.Bethesda.Skyrim
                 hash.Add(this.MiscItems);
                 hash.Add(this.AlchemicalApparatuses);
                 hash.Add(this.Statics);
+                hash.Add(this.StaticCollections);
                 hash.Add(this.MoveableStatics);
                 hash.Add(this.Grasses);
                 hash.Add(this.Trees);
@@ -1908,6 +1922,11 @@ namespace Mutagen.Bethesda.Skyrim
                 {
                     if (!eval(this.Statics.Overall)) return false;
                     if (this.Statics.Specific != null && !this.Statics.Specific.All(eval)) return false;
+                }
+                if (StaticCollections != null)
+                {
+                    if (!eval(this.StaticCollections.Overall)) return false;
+                    if (this.StaticCollections.Specific != null && !this.StaticCollections.Specific.All(eval)) return false;
                 }
                 if (MoveableStatics != null)
                 {
@@ -2491,6 +2510,11 @@ namespace Mutagen.Bethesda.Skyrim
                     if (eval(this.Statics.Overall)) return true;
                     if (this.Statics.Specific != null && this.Statics.Specific.Any(eval)) return true;
                 }
+                if (StaticCollections != null)
+                {
+                    if (eval(this.StaticCollections.Overall)) return true;
+                    if (this.StaticCollections.Specific != null && this.StaticCollections.Specific.Any(eval)) return true;
+                }
                 if (MoveableStatics != null)
                 {
                     if (eval(this.MoveableStatics.Overall)) return true;
@@ -2956,6 +2980,7 @@ namespace Mutagen.Bethesda.Skyrim
                 obj.MiscItems = this.MiscItems == null ? null : new MaskItem<R, SkyrimGroup.Mask<R>?>(eval(this.MiscItems.Overall), this.MiscItems.Specific?.Translate(eval));
                 obj.AlchemicalApparatuses = this.AlchemicalApparatuses == null ? null : new MaskItem<R, SkyrimGroup.Mask<R>?>(eval(this.AlchemicalApparatuses.Overall), this.AlchemicalApparatuses.Specific?.Translate(eval));
                 obj.Statics = this.Statics == null ? null : new MaskItem<R, SkyrimGroup.Mask<R>?>(eval(this.Statics.Overall), this.Statics.Specific?.Translate(eval));
+                obj.StaticCollections = this.StaticCollections == null ? null : new MaskItem<R, SkyrimGroup.Mask<R>?>(eval(this.StaticCollections.Overall), this.StaticCollections.Specific?.Translate(eval));
                 obj.MoveableStatics = this.MoveableStatics == null ? null : new MaskItem<R, SkyrimGroup.Mask<R>?>(eval(this.MoveableStatics.Overall), this.MoveableStatics.Specific?.Translate(eval));
                 obj.Grasses = this.Grasses == null ? null : new MaskItem<R, SkyrimGroup.Mask<R>?>(eval(this.Grasses.Overall), this.Grasses.Specific?.Translate(eval));
                 obj.Trees = this.Trees == null ? null : new MaskItem<R, SkyrimGroup.Mask<R>?>(eval(this.Trees.Overall), this.Trees.Specific?.Translate(eval));
@@ -3181,6 +3206,10 @@ namespace Mutagen.Bethesda.Skyrim
                     if (printMask?.Statics?.Overall ?? true)
                     {
                         Statics?.Print(sb);
+                    }
+                    if (printMask?.StaticCollections?.Overall ?? true)
+                    {
+                        StaticCollections?.Print(sb);
                     }
                     if (printMask?.MoveableStatics?.Overall ?? true)
                     {
@@ -3573,6 +3602,7 @@ namespace Mutagen.Bethesda.Skyrim
             public MaskItem<Exception?, SkyrimGroup.ErrorMask<MiscItem.ErrorMask>?>? MiscItems;
             public MaskItem<Exception?, SkyrimGroup.ErrorMask<AlchemicalApparatus.ErrorMask>?>? AlchemicalApparatuses;
             public MaskItem<Exception?, SkyrimGroup.ErrorMask<Static.ErrorMask>?>? Statics;
+            public MaskItem<Exception?, SkyrimGroup.ErrorMask<StaticCollection.ErrorMask>?>? StaticCollections;
             public MaskItem<Exception?, SkyrimGroup.ErrorMask<MoveableStatic.ErrorMask>?>? MoveableStatics;
             public MaskItem<Exception?, SkyrimGroup.ErrorMask<Grass.ErrorMask>?>? Grasses;
             public MaskItem<Exception?, SkyrimGroup.ErrorMask<Tree.ErrorMask>?>? Trees;
@@ -3727,6 +3757,8 @@ namespace Mutagen.Bethesda.Skyrim
                         return AlchemicalApparatuses;
                     case SkyrimMod_FieldIndex.Statics:
                         return Statics;
+                    case SkyrimMod_FieldIndex.StaticCollections:
+                        return StaticCollections;
                     case SkyrimMod_FieldIndex.MoveableStatics:
                         return MoveableStatics;
                     case SkyrimMod_FieldIndex.Grasses:
@@ -3997,6 +4029,9 @@ namespace Mutagen.Bethesda.Skyrim
                         break;
                     case SkyrimMod_FieldIndex.Statics:
                         this.Statics = new MaskItem<Exception?, SkyrimGroup.ErrorMask<Static.ErrorMask>?>(ex, null);
+                        break;
+                    case SkyrimMod_FieldIndex.StaticCollections:
+                        this.StaticCollections = new MaskItem<Exception?, SkyrimGroup.ErrorMask<StaticCollection.ErrorMask>?>(ex, null);
                         break;
                     case SkyrimMod_FieldIndex.MoveableStatics:
                         this.MoveableStatics = new MaskItem<Exception?, SkyrimGroup.ErrorMask<MoveableStatic.ErrorMask>?>(ex, null);
@@ -4353,6 +4388,9 @@ namespace Mutagen.Bethesda.Skyrim
                     case SkyrimMod_FieldIndex.Statics:
                         this.Statics = (MaskItem<Exception?, SkyrimGroup.ErrorMask<Static.ErrorMask>?>?)obj;
                         break;
+                    case SkyrimMod_FieldIndex.StaticCollections:
+                        this.StaticCollections = (MaskItem<Exception?, SkyrimGroup.ErrorMask<StaticCollection.ErrorMask>?>?)obj;
+                        break;
                     case SkyrimMod_FieldIndex.MoveableStatics:
                         this.MoveableStatics = (MaskItem<Exception?, SkyrimGroup.ErrorMask<MoveableStatic.ErrorMask>?>?)obj;
                         break;
@@ -4644,6 +4682,7 @@ namespace Mutagen.Bethesda.Skyrim
                 if (MiscItems != null) return true;
                 if (AlchemicalApparatuses != null) return true;
                 if (Statics != null) return true;
+                if (StaticCollections != null) return true;
                 if (MoveableStatics != null) return true;
                 if (Grasses != null) return true;
                 if (Trees != null) return true;
@@ -4784,6 +4823,7 @@ namespace Mutagen.Bethesda.Skyrim
                 MiscItems?.Print(sb);
                 AlchemicalApparatuses?.Print(sb);
                 Statics?.Print(sb);
+                StaticCollections?.Print(sb);
                 MoveableStatics?.Print(sb);
                 Grasses?.Print(sb);
                 Trees?.Print(sb);
@@ -4907,6 +4947,7 @@ namespace Mutagen.Bethesda.Skyrim
                 ret.MiscItems = this.MiscItems.Combine(rhs.MiscItems, (l, r) => l.Combine(r));
                 ret.AlchemicalApparatuses = this.AlchemicalApparatuses.Combine(rhs.AlchemicalApparatuses, (l, r) => l.Combine(r));
                 ret.Statics = this.Statics.Combine(rhs.Statics, (l, r) => l.Combine(r));
+                ret.StaticCollections = this.StaticCollections.Combine(rhs.StaticCollections, (l, r) => l.Combine(r));
                 ret.MoveableStatics = this.MoveableStatics.Combine(rhs.MoveableStatics, (l, r) => l.Combine(r));
                 ret.Grasses = this.Grasses.Combine(rhs.Grasses, (l, r) => l.Combine(r));
                 ret.Trees = this.Trees.Combine(rhs.Trees, (l, r) => l.Combine(r));
@@ -5045,6 +5086,7 @@ namespace Mutagen.Bethesda.Skyrim
             public SkyrimGroup.TranslationMask<MiscItem.TranslationMask>? MiscItems;
             public SkyrimGroup.TranslationMask<AlchemicalApparatus.TranslationMask>? AlchemicalApparatuses;
             public SkyrimGroup.TranslationMask<Static.TranslationMask>? Statics;
+            public SkyrimGroup.TranslationMask<StaticCollection.TranslationMask>? StaticCollections;
             public SkyrimGroup.TranslationMask<MoveableStatic.TranslationMask>? MoveableStatics;
             public SkyrimGroup.TranslationMask<Grass.TranslationMask>? Grasses;
             public SkyrimGroup.TranslationMask<Tree.TranslationMask>? Trees;
@@ -5184,6 +5226,7 @@ namespace Mutagen.Bethesda.Skyrim
                 ret.Add((MiscItems != null ? MiscItems.OnOverall : DefaultOn, MiscItems?.GetCrystal()));
                 ret.Add((AlchemicalApparatuses != null ? AlchemicalApparatuses.OnOverall : DefaultOn, AlchemicalApparatuses?.GetCrystal()));
                 ret.Add((Statics != null ? Statics.OnOverall : DefaultOn, Statics?.GetCrystal()));
+                ret.Add((StaticCollections != null ? StaticCollections.OnOverall : DefaultOn, StaticCollections?.GetCrystal()));
                 ret.Add((MoveableStatics != null ? MoveableStatics.OnOverall : DefaultOn, MoveableStatics?.GetCrystal()));
                 ret.Add((Grasses != null ? Grasses.OnOverall : DefaultOn, Grasses?.GetCrystal()));
                 ret.Add((Trees != null ? Trees.OnOverall : DefaultOn, Trees?.GetCrystal()));
@@ -5358,6 +5401,7 @@ namespace Mutagen.Bethesda.Skyrim
             _MiscItems_Object = new SkyrimGroup<MiscItem>(this);
             _AlchemicalApparatuses_Object = new SkyrimGroup<AlchemicalApparatus>(this);
             _Statics_Object = new SkyrimGroup<Static>(this);
+            _StaticCollections_Object = new SkyrimGroup<StaticCollection>(this);
             _MoveableStatics_Object = new SkyrimGroup<MoveableStatic>(this);
             _Grasses_Object = new SkyrimGroup<Grass>(this);
             _Trees_Object = new SkyrimGroup<Tree>(this);
@@ -5566,6 +5610,10 @@ namespace Mutagen.Bethesda.Skyrim
             if (mask?.Statics ?? true)
             {
                 this.Statics.RecordCache.Set(rhsMod.Statics.RecordCache.Items);
+            }
+            if (mask?.StaticCollections ?? true)
+            {
+                this.StaticCollections.RecordCache.Set(rhsMod.StaticCollections.RecordCache.Items);
             }
             if (mask?.MoveableStatics ?? true)
             {
@@ -6217,6 +6265,7 @@ namespace Mutagen.Bethesda.Skyrim
         new SkyrimGroup<MiscItem> MiscItems { get; }
         new SkyrimGroup<AlchemicalApparatus> AlchemicalApparatuses { get; }
         new SkyrimGroup<Static> Statics { get; }
+        new SkyrimGroup<StaticCollection> StaticCollections { get; }
         new SkyrimGroup<MoveableStatic> MoveableStatics { get; }
         new SkyrimGroup<Grass> Grasses { get; }
         new SkyrimGroup<Tree> Trees { get; }
@@ -6351,6 +6400,7 @@ namespace Mutagen.Bethesda.Skyrim
         ISkyrimGroupGetter<IMiscItemGetter> MiscItems { get; }
         ISkyrimGroupGetter<IAlchemicalApparatusGetter> AlchemicalApparatuses { get; }
         ISkyrimGroupGetter<IStaticGetter> Statics { get; }
+        ISkyrimGroupGetter<IStaticCollectionGetter> StaticCollections { get; }
         ISkyrimGroupGetter<IMoveableStaticGetter> MoveableStatics { get; }
         ISkyrimGroupGetter<IGrassGetter> Grasses { get; }
         ISkyrimGroupGetter<ITreeGetter> Trees { get; }
@@ -6729,6 +6779,7 @@ namespace Mutagen.Bethesda.Skyrim
             yield return MajorRecordWithParent.All(obj.MiscItems.Records, null);
             yield return MajorRecordWithParent.All(obj.AlchemicalApparatuses.Records, null);
             yield return MajorRecordWithParent.All(obj.Statics.Records, null);
+            yield return MajorRecordWithParent.All(obj.StaticCollections.Records, null);
             yield return MajorRecordWithParent.All(obj.MoveableStatics.Records, null);
             yield return MajorRecordWithParent.All(obj.Grasses.Records, null);
             yield return MajorRecordWithParent.All(obj.Trees.Records, null);
@@ -7255,90 +7306,91 @@ namespace Mutagen.Bethesda.Skyrim
         MiscItems = 28,
         AlchemicalApparatuses = 29,
         Statics = 30,
-        MoveableStatics = 31,
-        Grasses = 32,
-        Trees = 33,
-        Florae = 34,
-        Furniture = 35,
-        Weapons = 36,
-        Ammunitions = 37,
-        Npcs = 38,
-        LeveledNpcs = 39,
-        Keys = 40,
-        Ingestibles = 41,
-        IdleMarkers = 42,
-        ConstructibleObjects = 43,
-        Projectiles = 44,
-        Hazards = 45,
-        SoulGems = 46,
-        LeveledItems = 47,
-        Weathers = 48,
-        Climates = 49,
-        ShaderParticleGeometries = 50,
-        VisualEffects = 51,
-        Regions = 52,
-        NavigationMeshInfoMaps = 53,
-        Cells = 54,
-        Worldspaces = 55,
-        DialogTopics = 56,
-        Quests = 57,
-        IdleAnimations = 58,
-        Packages = 59,
-        CombatStyles = 60,
-        LoadScreens = 61,
-        LeveledSpells = 62,
-        AnimatedObjects = 63,
-        Waters = 64,
-        EffectShaders = 65,
-        Explosions = 66,
-        Debris = 67,
-        ImageSpaces = 68,
-        ImageSpaceAdapters = 69,
-        FormLists = 70,
-        Perks = 71,
-        BodyParts = 72,
-        AddonNodes = 73,
-        ActorValueInformation = 74,
-        CameraShots = 75,
-        CameraPaths = 76,
-        VoiceTypes = 77,
-        MaterialTypes = 78,
-        Impacts = 79,
-        ImpactDataSets = 80,
-        ArmorAddons = 81,
-        EncounterZones = 82,
-        Locations = 83,
-        Messages = 84,
-        DefaultObjectManagers = 85,
-        LightingTemplates = 86,
-        MusicTypes = 87,
-        Footsteps = 88,
-        FootstepSets = 89,
-        StoryManagerBranchNodes = 90,
-        StoryManagerQuestNodes = 91,
-        StoryManagerEventNodes = 92,
-        DialogBranches = 93,
-        MusicTracks = 94,
-        DialogViews = 95,
-        WordsOfPower = 96,
-        Shouts = 97,
-        EquipTypes = 98,
-        Relationships = 99,
-        Scenes = 100,
-        AssociationTypes = 101,
-        Outfits = 102,
-        ArtObjects = 103,
-        MaterialObjects = 104,
-        MovementTypes = 105,
-        SoundDescriptors = 106,
-        DualCastData = 107,
-        SoundCategories = 108,
-        SoundOutputModels = 109,
-        CollisionLayers = 110,
-        Colors = 111,
-        ReverbParameters = 112,
-        VolumetricLightings = 113,
-        LensFlares = 114,
+        StaticCollections = 31,
+        MoveableStatics = 32,
+        Grasses = 33,
+        Trees = 34,
+        Florae = 35,
+        Furniture = 36,
+        Weapons = 37,
+        Ammunitions = 38,
+        Npcs = 39,
+        LeveledNpcs = 40,
+        Keys = 41,
+        Ingestibles = 42,
+        IdleMarkers = 43,
+        ConstructibleObjects = 44,
+        Projectiles = 45,
+        Hazards = 46,
+        SoulGems = 47,
+        LeveledItems = 48,
+        Weathers = 49,
+        Climates = 50,
+        ShaderParticleGeometries = 51,
+        VisualEffects = 52,
+        Regions = 53,
+        NavigationMeshInfoMaps = 54,
+        Cells = 55,
+        Worldspaces = 56,
+        DialogTopics = 57,
+        Quests = 58,
+        IdleAnimations = 59,
+        Packages = 60,
+        CombatStyles = 61,
+        LoadScreens = 62,
+        LeveledSpells = 63,
+        AnimatedObjects = 64,
+        Waters = 65,
+        EffectShaders = 66,
+        Explosions = 67,
+        Debris = 68,
+        ImageSpaces = 69,
+        ImageSpaceAdapters = 70,
+        FormLists = 71,
+        Perks = 72,
+        BodyParts = 73,
+        AddonNodes = 74,
+        ActorValueInformation = 75,
+        CameraShots = 76,
+        CameraPaths = 77,
+        VoiceTypes = 78,
+        MaterialTypes = 79,
+        Impacts = 80,
+        ImpactDataSets = 81,
+        ArmorAddons = 82,
+        EncounterZones = 83,
+        Locations = 84,
+        Messages = 85,
+        DefaultObjectManagers = 86,
+        LightingTemplates = 87,
+        MusicTypes = 88,
+        Footsteps = 89,
+        FootstepSets = 90,
+        StoryManagerBranchNodes = 91,
+        StoryManagerQuestNodes = 92,
+        StoryManagerEventNodes = 93,
+        DialogBranches = 94,
+        MusicTracks = 95,
+        DialogViews = 96,
+        WordsOfPower = 97,
+        Shouts = 98,
+        EquipTypes = 99,
+        Relationships = 100,
+        Scenes = 101,
+        AssociationTypes = 102,
+        Outfits = 103,
+        ArtObjects = 104,
+        MaterialObjects = 105,
+        MovementTypes = 106,
+        SoundDescriptors = 107,
+        DualCastData = 108,
+        SoundCategories = 109,
+        SoundOutputModels = 110,
+        CollisionLayers = 111,
+        Colors = 112,
+        ReverbParameters = 113,
+        VolumetricLightings = 114,
+        LensFlares = 115,
     }
     #endregion
 
@@ -7349,9 +7401,9 @@ namespace Mutagen.Bethesda.Skyrim
 
         public static ProtocolKey ProtocolKey => ProtocolDefinition_Skyrim.ProtocolKey;
 
-        public const ushort AdditionalFieldCount = 115;
+        public const ushort AdditionalFieldCount = 116;
 
-        public const ushort FieldCount = 115;
+        public const ushort FieldCount = 116;
 
         public static readonly Type MaskType = typeof(SkyrimMod.Mask<>);
 
@@ -7448,6 +7500,7 @@ namespace Mutagen.Bethesda.Skyrim
             item.MiscItems.Clear();
             item.AlchemicalApparatuses.Clear();
             item.Statics.Clear();
+            item.StaticCollections.Clear();
             item.MoveableStatics.Clear();
             item.Grasses.Clear();
             item.Trees.Clear();
@@ -7558,6 +7611,7 @@ namespace Mutagen.Bethesda.Skyrim
             obj.MiscItems.RemapLinks(mapping);
             obj.AlchemicalApparatuses.RemapLinks(mapping);
             obj.Statics.RemapLinks(mapping);
+            obj.StaticCollections.RemapLinks(mapping);
             obj.MoveableStatics.RemapLinks(mapping);
             obj.Grasses.RemapLinks(mapping);
             obj.Trees.RemapLinks(mapping);
@@ -7718,6 +7772,7 @@ namespace Mutagen.Bethesda.Skyrim
             obj.MiscItems.Remove(keys);
             obj.AlchemicalApparatuses.Remove(keys);
             obj.Statics.Remove(keys);
+            obj.StaticCollections.Remove(keys);
             obj.MoveableStatics.Remove(keys);
             obj.Grasses.Remove(keys);
             obj.Trees.Remove(keys);
@@ -8585,6 +8640,7 @@ namespace Mutagen.Bethesda.Skyrim
                     Remove(obj, keys, typeof(ISoundMarkerGetter), throwIfUnknown: throwIfUnknown);
                     Remove(obj, keys, typeof(ISpellGetter), throwIfUnknown: throwIfUnknown);
                     Remove(obj, keys, typeof(IStaticGetter), throwIfUnknown: throwIfUnknown);
+                    Remove(obj, keys, typeof(IStaticCollectionGetter), throwIfUnknown: throwIfUnknown);
                     Remove(obj, keys, typeof(ITalkingActivatorGetter), throwIfUnknown: throwIfUnknown);
                     Remove(obj, keys, typeof(ITextureSetGetter), throwIfUnknown: throwIfUnknown);
                     Remove(obj, keys, typeof(ITreeGetter), throwIfUnknown: throwIfUnknown);
@@ -8648,6 +8704,7 @@ namespace Mutagen.Bethesda.Skyrim
                     Remove(obj, keys, typeof(ISoundMarkerGetter), throwIfUnknown: throwIfUnknown);
                     Remove(obj, keys, typeof(ISpellGetter), throwIfUnknown: throwIfUnknown);
                     Remove(obj, keys, typeof(IStaticGetter), throwIfUnknown: throwIfUnknown);
+                    Remove(obj, keys, typeof(IStaticCollectionGetter), throwIfUnknown: throwIfUnknown);
                     Remove(obj, keys, typeof(ITalkingActivatorGetter), throwIfUnknown: throwIfUnknown);
                     Remove(obj, keys, typeof(ITextureSetGetter), throwIfUnknown: throwIfUnknown);
                     Remove(obj, keys, typeof(ITreeGetter), throwIfUnknown: throwIfUnknown);
@@ -9093,6 +9150,14 @@ namespace Mutagen.Bethesda.Skyrim
                         type: type,
                         keys: keys);
                     break;
+                case "StaticCollection":
+                case "IStaticCollectionGetter":
+                case "IStaticCollection":
+                case "IStaticCollectionInternal":
+                    obj.StaticCollections.Remove(
+                        type: type,
+                        keys: keys);
+                    break;
                 case "StoryManagerBranchNode":
                 case "IStoryManagerBranchNodeGetter":
                 case "IStoryManagerBranchNode":
@@ -9318,6 +9383,12 @@ namespace Mutagen.Bethesda.Skyrim
             }
             {
                 foreach (var item in obj.Statics.EnumerateListedAssetLinks())
+                {
+                    yield return item;
+                }
+            }
+            {
+                foreach (var item in obj.StaticCollections.EnumerateListedAssetLinks())
                 {
                     yield return item;
                 }
@@ -9612,6 +9683,7 @@ namespace Mutagen.Bethesda.Skyrim
             obj.MiscItems.RemapAssetLinks(mapping, queryCategories, linkCache);
             obj.AlchemicalApparatuses.RemapAssetLinks(mapping, queryCategories, linkCache);
             obj.Statics.RemapAssetLinks(mapping, queryCategories, linkCache);
+            obj.StaticCollections.RemapAssetLinks(mapping, queryCategories, linkCache);
             obj.MoveableStatics.RemapAssetLinks(mapping, queryCategories, linkCache);
             obj.Grasses.RemapAssetLinks(mapping, queryCategories, linkCache);
             obj.Trees.RemapAssetLinks(mapping, queryCategories, linkCache);
@@ -9731,6 +9803,7 @@ namespace Mutagen.Bethesda.Skyrim
             ret.MiscItems = MaskItemExt.Factory(item.MiscItems.GetEqualsMask(rhs.MiscItems, include), include);
             ret.AlchemicalApparatuses = MaskItemExt.Factory(item.AlchemicalApparatuses.GetEqualsMask(rhs.AlchemicalApparatuses, include), include);
             ret.Statics = MaskItemExt.Factory(item.Statics.GetEqualsMask(rhs.Statics, include), include);
+            ret.StaticCollections = MaskItemExt.Factory(item.StaticCollections.GetEqualsMask(rhs.StaticCollections, include), include);
             ret.MoveableStatics = MaskItemExt.Factory(item.MoveableStatics.GetEqualsMask(rhs.MoveableStatics, include), include);
             ret.Grasses = MaskItemExt.Factory(item.Grasses.GetEqualsMask(rhs.Grasses, include), include);
             ret.Trees = MaskItemExt.Factory(item.Trees.GetEqualsMask(rhs.Trees, include), include);
@@ -9982,6 +10055,10 @@ namespace Mutagen.Bethesda.Skyrim
             if (printMask?.Statics?.Overall ?? true)
             {
                 item.Statics?.Print(sb, "Statics");
+            }
+            if (printMask?.StaticCollections?.Overall ?? true)
+            {
+                item.StaticCollections?.Print(sb, "StaticCollections");
             }
             if (printMask?.MoveableStatics?.Overall ?? true)
             {
@@ -10575,6 +10652,14 @@ namespace Mutagen.Bethesda.Skyrim
                     if (!object.Equals(lhsStatics, rhsStatics)) return false;
                 }
                 else if (!isStaticsEqual) return false;
+            }
+            if ((equalsMask?.GetShouldTranslate((int)SkyrimMod_FieldIndex.StaticCollections) ?? true))
+            {
+                if (EqualsMaskHelper.RefEquality(lhs.StaticCollections, rhs.StaticCollections, out var lhsStaticCollections, out var rhsStaticCollections, out var isStaticCollectionsEqual))
+                {
+                    if (!object.Equals(lhsStaticCollections, rhsStaticCollections)) return false;
+                }
+                else if (!isStaticCollectionsEqual) return false;
             }
             if ((equalsMask?.GetShouldTranslate((int)SkyrimMod_FieldIndex.MoveableStatics) ?? true))
             {
@@ -11285,6 +11370,7 @@ namespace Mutagen.Bethesda.Skyrim
             hash.Add(item.MiscItems);
             hash.Add(item.AlchemicalApparatuses);
             hash.Add(item.Statics);
+            hash.Add(item.StaticCollections);
             hash.Add(item.MoveableStatics);
             hash.Add(item.Grasses);
             hash.Add(item.Trees);
@@ -11569,6 +11655,11 @@ namespace Mutagen.Bethesda.Skyrim
                 case "IStatic":
                 case "IStaticInternal":
                     return obj.Statics;
+                case "StaticCollection":
+                case "IStaticCollectionGetter":
+                case "IStaticCollection":
+                case "IStaticCollectionInternal":
+                    return obj.StaticCollections;
                 case "MoveableStatic":
                 case "IMoveableStaticGetter":
                 case "IMoveableStatic":
@@ -12005,7 +12096,7 @@ namespace Mutagen.Bethesda.Skyrim
                 mod: item,
                 modHeader: item.ModHeader.DeepCopy(),
                 modKey: modKey);
-            Stream[] outputStreams = new Stream[114];
+            Stream[] outputStreams = new Stream[115];
             List<Action> toDo = new List<Action>();
             toDo.Add(() => WriteGroupParallel(item.GameSettings, 0, outputStreams, writer.MetaData, param.Parallel));
             toDo.Add(() => WriteGroupParallel(item.Keywords, 1, outputStreams, writer.MetaData, param.Parallel));
@@ -12037,90 +12128,91 @@ namespace Mutagen.Bethesda.Skyrim
             toDo.Add(() => WriteGroupParallel(item.MiscItems, 27, outputStreams, writer.MetaData, param.Parallel));
             toDo.Add(() => WriteGroupParallel(item.AlchemicalApparatuses, 28, outputStreams, writer.MetaData, param.Parallel));
             toDo.Add(() => WriteGroupParallel(item.Statics, 29, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.MoveableStatics, 30, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Grasses, 31, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Trees, 32, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Florae, 33, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Furniture, 34, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Weapons, 35, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Ammunitions, 36, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Npcs, 37, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.LeveledNpcs, 38, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Keys, 39, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Ingestibles, 40, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.IdleMarkers, 41, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.ConstructibleObjects, 42, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Projectiles, 43, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Hazards, 44, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.SoulGems, 45, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.LeveledItems, 46, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Weathers, 47, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Climates, 48, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.ShaderParticleGeometries, 49, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.VisualEffects, 50, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Regions, 51, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.NavigationMeshInfoMaps, 52, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteCellsParallel(item.Cells, 53, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteWorldspacesParallel(item.Worldspaces, 54, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteDialogTopicsParallel(item.DialogTopics, 55, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Quests, 56, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.IdleAnimations, 57, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Packages, 58, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.CombatStyles, 59, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.LoadScreens, 60, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.LeveledSpells, 61, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.AnimatedObjects, 62, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Waters, 63, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.EffectShaders, 64, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Explosions, 65, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Debris, 66, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.ImageSpaces, 67, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.ImageSpaceAdapters, 68, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.FormLists, 69, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Perks, 70, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.BodyParts, 71, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.AddonNodes, 72, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.ActorValueInformation, 73, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.CameraShots, 74, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.CameraPaths, 75, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.VoiceTypes, 76, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.MaterialTypes, 77, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Impacts, 78, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.ImpactDataSets, 79, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.ArmorAddons, 80, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.EncounterZones, 81, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Locations, 82, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Messages, 83, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.DefaultObjectManagers, 84, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.LightingTemplates, 85, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.MusicTypes, 86, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Footsteps, 87, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.FootstepSets, 88, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.StoryManagerBranchNodes, 89, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.StoryManagerQuestNodes, 90, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.StoryManagerEventNodes, 91, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.DialogBranches, 92, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.MusicTracks, 93, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.DialogViews, 94, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.WordsOfPower, 95, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Shouts, 96, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.EquipTypes, 97, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Relationships, 98, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Scenes, 99, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.AssociationTypes, 100, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Outfits, 101, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.ArtObjects, 102, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.MaterialObjects, 103, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.MovementTypes, 104, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.SoundDescriptors, 105, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.DualCastData, 106, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.SoundCategories, 107, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.SoundOutputModels, 108, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.CollisionLayers, 109, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.Colors, 110, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.ReverbParameters, 111, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.VolumetricLightings, 112, outputStreams, writer.MetaData, param.Parallel));
-            toDo.Add(() => WriteGroupParallel(item.LensFlares, 113, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.StaticCollections, 30, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.MoveableStatics, 31, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Grasses, 32, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Trees, 33, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Florae, 34, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Furniture, 35, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Weapons, 36, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Ammunitions, 37, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Npcs, 38, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.LeveledNpcs, 39, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Keys, 40, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Ingestibles, 41, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.IdleMarkers, 42, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.ConstructibleObjects, 43, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Projectiles, 44, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Hazards, 45, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.SoulGems, 46, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.LeveledItems, 47, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Weathers, 48, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Climates, 49, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.ShaderParticleGeometries, 50, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.VisualEffects, 51, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Regions, 52, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.NavigationMeshInfoMaps, 53, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteCellsParallel(item.Cells, 54, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteWorldspacesParallel(item.Worldspaces, 55, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteDialogTopicsParallel(item.DialogTopics, 56, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Quests, 57, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.IdleAnimations, 58, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Packages, 59, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.CombatStyles, 60, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.LoadScreens, 61, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.LeveledSpells, 62, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.AnimatedObjects, 63, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Waters, 64, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.EffectShaders, 65, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Explosions, 66, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Debris, 67, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.ImageSpaces, 68, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.ImageSpaceAdapters, 69, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.FormLists, 70, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Perks, 71, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.BodyParts, 72, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.AddonNodes, 73, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.ActorValueInformation, 74, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.CameraShots, 75, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.CameraPaths, 76, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.VoiceTypes, 77, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.MaterialTypes, 78, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Impacts, 79, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.ImpactDataSets, 80, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.ArmorAddons, 81, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.EncounterZones, 82, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Locations, 83, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Messages, 84, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.DefaultObjectManagers, 85, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.LightingTemplates, 86, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.MusicTypes, 87, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Footsteps, 88, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.FootstepSets, 89, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.StoryManagerBranchNodes, 90, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.StoryManagerQuestNodes, 91, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.StoryManagerEventNodes, 92, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.DialogBranches, 93, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.MusicTracks, 94, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.DialogViews, 95, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.WordsOfPower, 96, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Shouts, 97, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.EquipTypes, 98, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Relationships, 99, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Scenes, 100, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.AssociationTypes, 101, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Outfits, 102, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.ArtObjects, 103, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.MaterialObjects, 104, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.MovementTypes, 105, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.SoundDescriptors, 106, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.DualCastData, 107, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.SoundCategories, 108, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.SoundOutputModels, 109, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.CollisionLayers, 110, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.Colors, 111, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.ReverbParameters, 112, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.VolumetricLightings, 113, outputStreams, writer.MetaData, param.Parallel));
+            toDo.Add(() => WriteGroupParallel(item.LensFlares, 114, outputStreams, writer.MetaData, param.Parallel));
             Parallel.Invoke(param.Parallel.ParallelOptions, toDo.ToArray());
             PluginUtilityTranslation.CompileStreamsInto(
                 outputStreams.WhereNotNull(),
@@ -12196,6 +12288,7 @@ namespace Mutagen.Bethesda.Skyrim
             count += item.MiscItems.RecordCache.Count > 0 ? 1 : default(uint);
             count += item.AlchemicalApparatuses.RecordCache.Count > 0 ? 1 : default(uint);
             count += item.Statics.RecordCache.Count > 0 ? 1 : default(uint);
+            count += item.StaticCollections.RecordCache.Count > 0 ? 1 : default(uint);
             count += item.MoveableStatics.RecordCache.Count > 0 ? 1 : default(uint);
             count += item.Grasses.RecordCache.Count > 0 ? 1 : default(uint);
             count += item.Trees.RecordCache.Count > 0 ? 1 : default(uint);
@@ -12373,6 +12466,10 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return item;
             }
             foreach (var item in obj.Statics.EnumerateFormLinks(iterateNestedRecords))
+            {
+                yield return item;
+            }
+            foreach (var item in obj.StaticCollections.EnumerateFormLinks(iterateNestedRecords))
             {
                 yield return item;
             }
@@ -12787,6 +12884,10 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return item;
             }
             foreach (var item in obj.Statics.EnumerateMajorRecords())
+            {
+                yield return item;
+            }
+            foreach (var item in obj.StaticCollections.EnumerateMajorRecords())
             {
                 yield return item;
             }
@@ -14155,6 +14256,15 @@ namespace Mutagen.Bethesda.Skyrim
                         yield return item;
                     }
                     yield break;
+                case "StaticCollection":
+                case "IStaticCollectionGetter":
+                case "IStaticCollection":
+                case "IStaticCollectionInternal":
+                    foreach (var item in obj.StaticCollections.EnumerateMajorRecords(type, throwIfUnknown: throwIfUnknown))
+                    {
+                        yield return item;
+                    }
+                    yield break;
                 case "StoryManagerBranchNode":
                 case "IStoryManagerBranchNodeGetter":
                 case "IStoryManagerBranchNode":
@@ -15213,6 +15323,15 @@ namespace Mutagen.Bethesda.Skyrim
                 modKey: obj.ModKey,
                 group: (m) => m.Statics,
                 groupGetter: (m) => m.Statics))
+            {
+                yield return item;
+            }
+            foreach (var item in InterfaceEnumerationHelper.EnumerateGroupContexts<ISkyrimMod, ISkyrimModGetter, StaticCollection, IStaticCollectionGetter>(
+                srcGroup: obj.StaticCollections,
+                type: typeof(IStaticCollectionGetter),
+                modKey: obj.ModKey,
+                group: (m) => m.StaticCollections,
+                groupGetter: (m) => m.StaticCollections))
             {
                 yield return item;
             }
@@ -16966,6 +17085,20 @@ namespace Mutagen.Bethesda.Skyrim
                         yield return item;
                     }
                     yield break;
+                case "StaticCollection":
+                case "IStaticCollectionGetter":
+                case "IStaticCollection":
+                case "IStaticCollectionInternal":
+                    foreach (var item in InterfaceEnumerationHelper.EnumerateGroupContexts<ISkyrimMod, ISkyrimModGetter, StaticCollection, IStaticCollectionGetter>(
+                        srcGroup: obj.StaticCollections,
+                        type: type,
+                        modKey: obj.ModKey,
+                        group: (m) => m.StaticCollections,
+                        groupGetter: (m) => m.StaticCollections))
+                    {
+                        yield return item;
+                    }
+                    yield break;
                 case "StoryManagerBranchNode":
                 case "IStoryManagerBranchNodeGetter":
                 case "IStoryManagerBranchNode":
@@ -17262,6 +17395,10 @@ namespace Mutagen.Bethesda.Skyrim
                 yield return item;
             }
             foreach (var item in obj.Statics.EnumerateAssetLinks(queryCategories: queryCategories, linkCache: linkCache, assetType: assetType))
+            {
+                yield return item;
+            }
+            foreach (var item in obj.StaticCollections.EnumerateAssetLinks(queryCategories: queryCategories, linkCache: linkCache, assetType: assetType))
             {
                 yield return item;
             }
@@ -18064,6 +18201,26 @@ namespace Mutagen.Bethesda.Skyrim
                         rhs: rhs.Statics,
                         errorMask: errorMask,
                         copyMask: copyMask?.GetSubCrystal((int)SkyrimMod_FieldIndex.Statics));
+                }
+                catch (Exception ex)
+                when (errorMask != null)
+                {
+                    errorMask.ReportException(ex);
+                }
+                finally
+                {
+                    errorMask?.PopIndex();
+                }
+            }
+            if ((copyMask?.GetShouldTranslate((int)SkyrimMod_FieldIndex.StaticCollections) ?? true))
+            {
+                errorMask?.PushIndex((int)SkyrimMod_FieldIndex.StaticCollections);
+                try
+                {
+                    item.StaticCollections.DeepCopyIn(
+                        rhs: rhs.StaticCollections,
+                        errorMask: errorMask,
+                        copyMask: copyMask?.GetSubCrystal((int)SkyrimMod_FieldIndex.StaticCollections));
                 }
                 catch (Exception ex)
                 when (errorMask != null)
@@ -19888,6 +20045,7 @@ namespace Mutagen.Bethesda.Skyrim
         public bool MiscItems;
         public bool AlchemicalApparatuses;
         public bool Statics;
+        public bool StaticCollections;
         public bool MoveableStatics;
         public bool Grasses;
         public bool Trees;
@@ -20007,6 +20165,7 @@ namespace Mutagen.Bethesda.Skyrim
             MiscItems = defaultValue;
             AlchemicalApparatuses = defaultValue;
             Statics = defaultValue;
+            StaticCollections = defaultValue;
             MoveableStatics = defaultValue;
             Grasses = defaultValue;
             Trees = defaultValue;
@@ -20494,6 +20653,17 @@ namespace Mutagen.Bethesda.Skyrim
                 {
                     ((SkyrimGroupBinaryWriteTranslation)((IBinaryItem)StaticsItem).BinaryWriteTranslator).Write<IStaticGetter>(
                         item: StaticsItem,
+                        writer: writer,
+                        translationParams: translationParams);
+                }
+            }
+            if (importMask?.StaticCollections ?? true)
+            {
+                var StaticCollectionsItem = item.StaticCollections;
+                if (StaticCollectionsItem.RecordCache.Count > 0)
+                {
+                    ((SkyrimGroupBinaryWriteTranslation)((IBinaryItem)StaticCollectionsItem).BinaryWriteTranslator).Write<IStaticCollectionGetter>(
+                        item: StaticCollectionsItem,
                         writer: writer,
                         translationParams: translationParams);
                 }
@@ -21911,6 +22081,20 @@ namespace Mutagen.Bethesda.Skyrim
                         frame.Position += contentLength;
                     }
                     return (int)SkyrimMod_FieldIndex.Statics;
+                }
+                case RecordTypeInts.SCOL:
+                {
+                    if (importMask?.StaticCollections ?? true)
+                    {
+                        item.StaticCollections.CopyInFromBinary(
+                            frame: frame,
+                            translationParams: null);
+                    }
+                    else
+                    {
+                        frame.Position += contentLength;
+                    }
+                    return (int)SkyrimMod_FieldIndex.StaticCollections;
                 }
                 case RecordTypeInts.MSTT:
                 {
@@ -23465,6 +23649,13 @@ namespace Mutagen.Bethesda.Skyrim
 
         public ISkyrimGroupGetter<IStaticGetter> Statics => _Statics ?? new SkyrimGroup<Static>(this);
         #endregion
+        #region StaticCollections
+        private List<RangeInt64>? _StaticCollectionsLocations;
+        private ISkyrimGroupGetter<IStaticCollectionGetter>? _StaticCollections => _StaticCollectionsLocations != null ? (_StaticCollectionsGroupCache ??= SkyrimGroupBinaryOverlay<IStaticCollectionGetter>.SkyrimGroupFactory(_stream, _StaticCollectionsLocations, _package)) : default;
+        private ISkyrimGroupGetter<IStaticCollectionGetter>? _StaticCollectionsGroupCache;
+
+        public ISkyrimGroupGetter<IStaticCollectionGetter> StaticCollections => _StaticCollections ?? new SkyrimGroup<StaticCollection>(this);
+        #endregion
         #region MoveableStatics
         private List<RangeInt64>? _MoveableStaticsLocations;
         private ISkyrimGroupGetter<IMoveableStaticGetter>? _MoveableStatics => _MoveableStaticsLocations != null ? (_MoveableStaticsGroupCache ??= SkyrimGroupBinaryOverlay<IMoveableStaticGetter>.SkyrimGroupFactory(_stream, _MoveableStaticsLocations, _package)) : default;
@@ -24315,6 +24506,12 @@ namespace Mutagen.Bethesda.Skyrim
                     _StaticsLocations ??= new();
                     _StaticsLocations.Add(new RangeInt64((stream.Position - offset), finalPos - offset));
                     return (int)SkyrimMod_FieldIndex.Statics;
+                }
+                case RecordTypeInts.SCOL:
+                {
+                    _StaticCollectionsLocations ??= new();
+                    _StaticCollectionsLocations.Add(new RangeInt64((stream.Position - offset), finalPos - offset));
+                    return (int)SkyrimMod_FieldIndex.StaticCollections;
                 }
                 case RecordTypeInts.MSTT:
                 {

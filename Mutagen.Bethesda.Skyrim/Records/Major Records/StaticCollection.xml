@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<Loqui xmlns="http://tempuri.org/LoquiSource.xsd">
+  <Object name="StaticCollection" recordType="SCOL" objType="Record" baseClass="SkyrimMajorRecord">
+    <Fields>
+      <RefDirect name="ObjectBounds" refName="ObjectBounds" nullable="False" />
+      <RefDirect name="Model" refName="Model" />
+      <RefList name="Parts" refName="StaticCollectionPart" />
+    </Fields>
+    <LinkInterface>IPlaceableObject</LinkInterface>
+    <LinkInterface>IReferenceableObject</LinkInterface>
+  </Object>
+  <Object name="StaticCollectionPart" objType="Subrecord">
+    <Fields>
+      <FormLink name="Static" recordType="ONAM" refName="Static" />
+      <RefList name="Placements" refName="StaticCollectionPlacement" recordType="DATA" />
+    </Fields>
+  </Object>
+  <Object name="StaticCollectionPlacement" objType="Subrecord">
+    <Fields>
+      <P3Float name="Position" />
+      <P3Float name="Rotation" />
+      <Float name="Scale" />
+    </Fields>
+  </Object>
+</Loqui>

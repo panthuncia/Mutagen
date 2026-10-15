@@ -4760,6 +4760,15 @@
     <Compile Include="Records\Common Subrecords\ModelBodyTexture_Generated.cs">
       <DependentUpon>ModelBodyTexture.xml</DependentUpon>
     </Compile>
+    <Compile Include="Records\Major Records\StaticCollection_Generated.cs">
+      <DependentUpon>StaticCollection.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Records\Major Records\StaticCollectionPart_Generated.cs">
+      <DependentUpon>StaticCollection.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Records\Major Records\StaticCollectionPlacement_Generated.cs">
+      <DependentUpon>StaticCollection.xml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Loqui" />

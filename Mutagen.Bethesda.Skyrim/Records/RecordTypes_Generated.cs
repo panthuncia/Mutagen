@@ -446,6 +446,7 @@ public partial class RecordTypes
     public static readonly RecordType SCDA = new(0x41444353);
     public static readonly RecordType SCEN = new(0x4E454353);
     public static readonly RecordType SCHR = new(0x52484353);
+    public static readonly RecordType SCOL = new(0x4C4F4353);
     public static readonly RecordType SCPT = new(0x54504353);
     public static readonly RecordType SCRL = new(0x4C524353);
     public static readonly RecordType SCRO = new(0x4F524353);

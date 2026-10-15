@@ -155,6 +155,7 @@ Functions can then be written that take in `INamed`, allowing any record that ha
 - Scroll
 - SoulGem
 - Static
+- StaticCollection
 - TalkingActivator
 - Tree
 - Weapon
@@ -270,12 +271,14 @@ Functions can then be written that take in `INamed`, allowing any record that ha
 - SoundMarker
 - Spell
 - Static
+- StaticCollection
 - TalkingActivator
 - TextureSet
 - Tree
 - Weapon
 ### IPositionRotation
 - Placement
+- StaticCollectionPlacement
 - TeleportDestination
 ### IScripted
 - Activator
@@ -707,6 +710,11 @@ Functions can then be written that take in `INamed`, allowing any record that ha
 ### Static
 - IModeled
 - IObjectBounded
+### StaticCollection
+- IModeled
+- IObjectBounded
+### StaticCollectionPlacement
+- IPositionRotation
 ### TalkingActivator
 - IHasDestructible
 - IHasVoiceType

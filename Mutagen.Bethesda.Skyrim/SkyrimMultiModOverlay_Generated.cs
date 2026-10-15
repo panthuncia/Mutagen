@@ -61,6 +61,7 @@ internal class SkyrimMultiModOverlay : ISkyrimModDisposableGetter
     private MergedGroup<IMiscItemGetter>? _miscItems;
     private MergedGroup<IAlchemicalApparatusGetter>? _alchemicalApparatuses;
     private MergedGroup<IStaticGetter>? _statics;
+    private MergedGroup<IStaticCollectionGetter>? _staticCollections;
     private MergedGroup<IMoveableStaticGetter>? _moveableStatics;
     private MergedGroup<IGrassGetter>? _grasses;
     private MergedGroup<ITreeGetter>? _trees;
@@ -272,6 +273,9 @@ internal class SkyrimMultiModOverlay : ISkyrimModDisposableGetter
     public ISkyrimGroupGetter<IStaticGetter> Statics =>
         _statics ??= new MergedGroup<IStaticGetter>(
             _sourceMods.Select(m => m.Statics));
+    public ISkyrimGroupGetter<IStaticCollectionGetter> StaticCollections =>
+        _staticCollections ??= new MergedGroup<IStaticCollectionGetter>(
+            _sourceMods.Select(m => m.StaticCollections));
     public ISkyrimGroupGetter<IMoveableStaticGetter> MoveableStatics =>
         _moveableStatics ??= new MergedGroup<IMoveableStaticGetter>(
             _sourceMods.Select(m => m.MoveableStatics));
@@ -1136,9 +1140,6 @@ internal class MergedCellBlock : ICellBlockGetter
         _mergedSubBlocks = new Lazy<List<ICellSubBlockGetter>>(MergeSubBlocks);
     }
 
-    // Merge method: sub-blocks with the same BlockNumber coming from different split
-    // files must be combined into a single sub-block, otherwise the reconstituted mod
-    // contains duplicate sub-blocks (and later duplicate records on GetOrAddAsOverride).
     private List<ICellSubBlockGetter> MergeSubBlocks()
     {
         var subBlocksByNumber = new Dictionary<int, List<ICellSubBlockGetter>>();
@@ -1220,8 +1221,6 @@ internal class MergedCellSubBlock : ICellSubBlockGetter
     public int LastModified => _sourceSubBlocks.Max(sb => sb.LastModified);
     public int Unknown => 0;
 
-    // Merge method: cells from sub-blocks of the same number are gathered together, and a
-    // cell sharing a FormKey across split files has its placed objects merged.
     private IReadOnlyList<ICellGetter> MergeCells()
     {
         var cellsByFormKey = new Dictionary<FormKey, List<ICellGetter>>();

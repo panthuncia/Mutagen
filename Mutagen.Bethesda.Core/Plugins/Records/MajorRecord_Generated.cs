@@ -1870,7 +1870,7 @@ namespace Mutagen.Bethesda.Plugins.Records
         private int? _EditorIDLocationStore;
         private int? _EditorIDLocation { get { EnsureFilled(); return _EditorIDLocationStore; } set => _EditorIDLocationStore = value; }
         public String? EditorID => ReadEditorID();
-        private String? ReadEditorID() { ReadObservation.Record(_package.MetaData.ModKey, this); return IsFillPending && TryPeekEditorID(out var peeked) ? peeked : _EditorIDLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(HeaderTranslation.ExtractSubrecordMemory(_recordData, _EditorIDLocation.Value, _package.MetaData.Constants), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?); }
+        private String? ReadEditorID() { ReadObservation.Record(_package.MetaData.ModKey, this); return IsFillPending && TryPeekEditorID(out var peeked) ? peeked : _EditorIDLocation.HasValue ? BinaryStringUtility.ProcessWholeToZString(ExtractEditorIDMemory(_EditorIDLocation.Value), encoding: _package.MetaData.Encodings.NonTranslated) : default(string?); }
         #endregion
         partial void CustomFactoryEnd(
             OverlayStream stream,

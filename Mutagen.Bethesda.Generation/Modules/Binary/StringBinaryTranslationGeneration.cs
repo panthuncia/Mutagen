@@ -223,7 +223,7 @@ public class StringBinaryTranslationGeneration : PrimitiveBinaryTranslationGener
             {
                 if (line.Length == 0) continue;
                 sb.AppendLine(line.Trim().StartsWith(property)
-                    ? line.Trim().Replace(property, $"{property}IsFillPending && TryPeekEditorID(out var peeked) ? peeked : ")
+                    ? line.Trim().Replace(property, $"{property}IsFillPending && TryPeekEditorID(out var peeked) ? peeked : ").Replace("HeaderTranslation.ExtractSubrecordMemory(_recordData, _EditorIDLocation.Value, _package.MetaData.Constants)", "ExtractEditorIDMemory(_EditorIDLocation.Value)")
                     : line.Trim());
             }
             return;
