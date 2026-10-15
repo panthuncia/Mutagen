@@ -35,10 +35,10 @@ public class SeparatedMasterPackage : IReadOnlySeparatedMasterPackage
     // Hack until this is better understood
     private static HashSet<ModKey> _starfieldMasters = new()
     {
-        "OldMars.esm", 
-        "Constellation.esm", 
-        "SFBGS003.esm", 
-        "SFBGS004.esm", 
+        "OldMars.esm",
+        "Constellation.esm",
+        "SFBGS003.esm",
+        "SFBGS004.esm",
         "SFBGS006.esm",
         "SFBGS007.esm",
         "SFBGS008.esm",
@@ -65,7 +65,7 @@ public class SeparatedMasterPackage : IReadOnlySeparatedMasterPackage
         }
         else
         {
-            return SeparatedMasterPackage.NotSeparate(masters);
+            return SeparatedMasterPackage.NotSeparate(masters, release);
         }
     }
 
@@ -87,16 +87,20 @@ public class SeparatedMasterPackage : IReadOnlySeparatedMasterPackage
 
         public IReadOnlyList<ModKey> Normal { get; }
 
+        private readonly ModKey _hardcodedMaster;
+
         internal IReadOnlyDictionary<ModKey, MasterStyleIndex> _lookup = null!;
 
         public NotSeparatedMasterPackage(
             ModKey currentMod,
             IReadOnlyMasterReferenceCollection masters,
-            IReadOnlyList<ModKey> normal)
+            IReadOnlyList<ModKey> normal,
+            ModKey hardcodedMaster = default)
         {
             CurrentMod = currentMod;
             Raw = masters;
             Normal = normal;
+            _hardcodedMaster = hardcodedMaster;
         }
 
         public bool TryLookupModKey(ModKey modKey, bool reference, out MasterStyle style, out uint index)
@@ -117,6 +121,12 @@ public class SeparatedMasterPackage : IReadOnlySeparatedMasterPackage
         {
             if (formKey == FormKey.Null) return FormID.Null;
 
+            if (!_hardcodedMaster.IsNull && formKey.ModKey == _hardcodedMaster
+                && formKey.ID is > 0 and < 0x800)
+            {
+                return new FormID(formKey.ID);
+            }
+
             if (!TryLookupModKey(formKey.ModKey, reference: true, out var style, out var index))
             {
                 throw new UnmappableFormIDException(
@@ -133,6 +143,14 @@ public class SeparatedMasterPackage : IReadOnlySeparatedMasterPackage
             if (reference && formId.Raw == 0)
             {
                 return FormKey.Null;
+            }
+
+            // Skyrim's nonzero raw IDs below 0x800 are references to the game master even
+            // when it is not a declared master (e.g. XMarker in the masterless FixLOD plugin).
+            // Do not reinterpret a record header's identity, null, or a prefixed local ID.
+            if (reference && !_hardcodedMaster.IsNull && formId.Raw is > 0 and < 0x800)
+            {
+                return new FormKey(_hardcodedMaster, formId.Raw);
             }
 
             var loadOrder = Normal;
@@ -152,14 +170,15 @@ public class SeparatedMasterPackage : IReadOnlySeparatedMasterPackage
         }
     }
 
-    internal static IReadOnlySeparatedMasterPackage NotSeparate(IReadOnlyMasterReferenceCollection masters)
+    internal static IReadOnlySeparatedMasterPackage NotSeparate(IReadOnlyMasterReferenceCollection masters, GameRelease? release = null)
     {
         var normal = new List<ModKey>(masters.Masters.Select((x => x.Master)));
         normal.Add(masters.CurrentMod);
         var ret = new NotSeparatedMasterPackage(
             masters.CurrentMod,
             masters,
-            normal);
+            normal,
+            release?.ToCategory() == GameCategory.Skyrim ? ModKey.FromNameAndExtension("Skyrim.esm") : default);
         var lookup = new Dictionary<ModKey, MasterStyleIndex>();
         FillLookup(ret.Normal, lookup, MasterStyle.Full);
         ret._lookup = lookup;
@@ -302,29 +321,29 @@ public class SeparatedMasterPackage : IReadOnlySeparatedMasterPackage
         switch (fullMasterIndex)
         {
             case FormID.SmallMasterMarker:
-            {
-                index = formId.LightMasterIndex;
-                id = formId.LightId;
-                style = MasterStyle.Small;
-                loadOrder = Small;
-                break;
-            }
+                {
+                    index = formId.LightMasterIndex;
+                    id = formId.LightId;
+                    style = MasterStyle.Small;
+                    loadOrder = Small;
+                    break;
+                }
             case FormID.MediumMasterMarker:
-            {
-                index = formId.MediumMasterIndex;
-                id = formId.MediumId;
-                style = MasterStyle.Medium;
-                loadOrder = Medium;
-                break;
-            }
+                {
+                    index = formId.MediumMasterIndex;
+                    id = formId.MediumId;
+                    style = MasterStyle.Medium;
+                    loadOrder = Medium;
+                    break;
+                }
             default:
-            {
-                index = formId.FullMasterIndex;
-                id = formId.FullId;
-                style = MasterStyle.Full;
-                loadOrder = Full;
-                break;
-            }
+                {
+                    index = formId.FullMasterIndex;
+                    id = formId.FullId;
+                    style = MasterStyle.Full;
+                    loadOrder = Full;
+                    break;
+                }
         }
     }
 
